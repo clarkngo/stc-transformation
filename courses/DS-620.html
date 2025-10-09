@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DS 620: ML & Deep Learning - Proposed Assessments</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 900px; margin: auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #e67e22; border-bottom: 2px solid #f39c12; padding-bottom: 10px; margin-bottom: 30px; }
+        h2 { color: #f39c12; margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        h3 { color: #2980b9; margin-top: 20px; }
+        .example-box { background-color: #e8f8f5; border-left: 5px solid #1abc9c; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        ul { list-style-type: disc; margin-left: 20px; }
+        li { margin-bottom: 8px; }
+        strong { color: #34495e; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DS 620: Machine Learning & Deep Learning - Proposed Assessments</h1>
+        <p><strong>Course Description:</strong> A rigorous exploration of fundamental machine learning algorithms and the theory and application of modern neural networks (Deep Learning).</p>
+
+        <h2>1. Applied Case Studies / Conceptual Assessment (40%)</h2>
+        <h3>Example Scenario: Model Selection for Medical Imaging</h3>
+        <div class="example-box">
+            <p><strong>Prompt:</strong> A hospital wants to develop a model to classify X-ray images into 'normal', 'pneumonia', and 'COVID-19'. As the lead ML engineer, you must evaluate two approaches: a **classic ML model** (e.g., SVM with engineered features) and a **Deep Learning model** (a Convolutional Neural Network - CNN). Prepare a <strong>model selection proposal (7-9 pages) with a risk analysis matrix</strong>. Your proposal must:</p>
+            <ul>
+                <li>Analyze the pros and cons of each approach regarding performance, data requirements, computational cost, and interpretability.</li>
+                <li>Propose a rigorous validation strategy to compare the models.</li>
+                <li>Assess the ethical risks associated with misclassification for each category and recommend a final model.</li>
+            </ul>
+            <p><strong>Why AI-Resistant?</strong> Requires a deep, comparative analysis of two different modeling paradigms for a high-stakes application. The critical thinking lies in evaluating the trade-offs (e.g., is the higher accuracy of a "black box" CNN worth the loss of interpretability from an SVM?), which an AI cannot do without significant human guidance and domain context.</p>
+        </div>
+        
+        <h3>Example Viva Questions (Post-Submission)</h3>
+        <div class="example-box">
+            <ul>
+                <li>"You highlighted 'interpretability' as a key concern. Using a specific **Hands-On Skill (HOS)** from an earlier course (like Explainable AI), how would you attempt to make the CNN model's decisions more transparent to a clinician?"</li>
+                <li>"Explain the concept of 'overfitting' in the context of your proposed CNN and what specific regularization techniques you would implement to mitigate it."</li>
+            </ul>
+        </div>
+
+        <h2>2. Team Project: Building and Deploying a Deep Learning Model (40%)</h2>
+        <h3>Example Scenario: Real-Time Object Detection</h3>
+        <div class="example-box">
+            <p><strong>Prompt:</strong> Your team will build and deploy a real-time object detection model (e.g., using YOLO or a similar architecture) that can identify a small set of custom objects (e.g., different types of recyclable materials). The project involves:</p>
+            <ul>
+                <li>Collecting and annotating a small, custom dataset.</li>
+                <li>Fine-tuning a pre-trained object detection model on your custom data.</li>
+                <li>Deploying the model as a simple web application that can process uploaded images or a live webcam feed.</li>
+            </ul>
+            <p>Your <strong>Project Portfolio</strong> must include your annotated dataset, the trained model, the functional web app, and individual reflections detailing your team's approach to data augmentation, hyperparameter tuning, and use of **AI Agents** for debugging.</p>
+            <p><strong>Why AI-Resistant?</strong> This is an end-to-end project that requires a wide range of practical skills: data collection/annotation, model fine-tuning, and deployment. While AI can help with code snippets, orchestrating the entire MLOps lifecycle—especially the messy, iterative process of data collection and model tuning—is a significant human-led engineering challenge.</p>
+        </div>
+
+        <h3>Example Viva Questions (Post-Submission)</h3>
+        <div class="example-box">
+            <ul>
+                <li>"Your team had to collect custom data. What was the biggest challenge in ensuring data quality and annotation consistency, and what specific **Hands-On Skill (HOS)** did you use to address it?"</li>
+                <li>"Walk me through the process of debugging your model when it failed to detect one of your custom objects. What did you change in your data or training process?"</li>
+            </ul>
+        </div>
+
+        <h2>3. Programming Exercises (PE) (20%)</h2>
+        <h3>Example Scenario: Implementing a Neural Network Layer from Scratch</h3>
+        <div class="example-box">
+            <p><strong>Prompt:</strong> Implement a single 'fully connected' layer of a neural network from scratch in Python (using only NumPy), including both the forward and backward propagation steps. Your task is to:</p>
+            <ul>
+                <li>Write the class for the layer, including methods for `forward(input)` and `backward(output_gradient)`.</li>
+                <li>Derive and implement the gradient calculations for weights and biases.</li>
+                <li>Write unit tests to verify the correctness of your gradients (e.g., using numerical approximation).</li>
+                <li>Submit your code, tests, and a <strong>Prompt Engineering Log & Reflection</strong> detailing how you used an **AI Agent** to help derive the backpropagation math and debug your NumPy code.</li>
+            </ul>
+            <p><strong>Why AI-Resistant?</strong> Focuses on the fundamental mathematical and programming building blocks of deep learning. While an AI can provide a complete solution, the student must understand the calculus and linear algebra well enough to debug the subtle errors that often arise in a from-scratch implementation, a critical **Hands-On Skill (HOS)**.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DS 625: Big Data Architectures - Proposed Assessments</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 900px; margin: auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #34495e; border-bottom: 2px solid #5d6d7e; padding-bottom: 10px; margin-bottom: 30px; }
+        h2 { color: #5d6d7e; margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        h3 { color: #2980b9; margin-top: 20px; }
+        .example-box { background-color: #e8f8f5; border-left: 5px solid #1abc9c; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        ul { list-style-type: disc; margin-left: 20px; }
+        li { margin-bottom: 8px; }
+        strong { color: #34495e; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DS 625: Big Data Architectures and Systems - Proposed Assessments</h1>
+        <p><strong>Course Description:</strong> Explores scalable infrastructure and architectural patterns for processing and storing massive datasets, focusing on distributed systems and cloud-native solutions.</p>
+
+        <h2>1. Applied Case Studies / Conceptual Assessment (40%)</h2>
+        <h3>Example Scenario: Architecture for Real-Time Ad Bidding</h3>
+        <div class="example-box">
+            <p><strong>Prompt:</strong> An advertising technology company needs to design a system that can process 1 million ad auction requests per second, with a 100ms response latency. Propose a **big data architecture diagram and a technology stack justification paper (6-8 pages)**. Your proposal must:</p>
+            <ul>
+                <li>Detail the data flow from request ingestion to final bid decision.</li>
+                <li>Justify your choice of technologies for stream processing (e.g., Kafka vs. Kinesis), data storage (e.g., NoSQL vs. in-memory), and processing (e.g., Spark vs. Flink).</li>
+                <li>Analyze the key trade-offs between cost, latency, and fault tolerance in your design.</li>
+            </ul>
+            <p><strong>Why AI-Resistant?</strong> Requires applying architectural patterns (like Lambda or Kappa architecture) to a problem with extreme performance constraints. An AI can list technologies, but designing a cohesive, end-to-end system that meets strict latency and throughput requirements demands deep human expertise in distributed systems.</p>
+        </div>
+        
+        <h3>Example Viva Questions (Post-Submission)</h3>
+        <div class="example-box">
+            <ul>
+                <li>"You chose Apache Flink for stream processing. Explain a specific scenario where Flink's event-time processing would be superior to Spark Streaming's micro-batching for this ad-bidding use case."</li>
+                <li>"Your architecture diagram shows a potential single point of failure at component X. How would you redesign it for higher availability, and what would be the cost implication?"</li>
+            </ul>
+        </div>
+
+        <h2>2. Team Project: Building a Batch Data Processing Pipeline (40%)</h2>
+        <h3>Example Scenario: Analyzing Public GitHub Activity</h3>
+        <div class="example-box">
+            <p><strong>Prompt:</strong> Your team will build a batch data pipeline to analyze the public GitHub event dataset (terabytes in size). The pipeline must:</p>
+            <ul>
+                <li>Ingest the data from a public source (e.g., Google BigQuery public dataset).</li>
+                <li>Use a distributed processing framework (e.g., Apache Spark on Databricks or AWS EMR) to transform the data and calculate key metrics (e.g., most active repositories, top programming languages by region).</li>
+                <li>Store the aggregated results in a data warehouse or data lake.</li>
+            </ul>
+            <p>Your <strong>Project Portfolio</strong> must include the functional pipeline code, **Infrastructure as Code (IaC) scripts** for deploying the cluster, performance tuning analysis, and individual reflections on the challenges of distributed computing.</p>
+            <p><strong>Why AI-Resistant?</strong> Requires hands-on experience with configuring, deploying, and optimizing a distributed computing job on a real cloud platform. While AI can generate Spark code, debugging performance bottlenecks, managing cluster resources, and ensuring the pipeline is cost-efficient are complex engineering tasks.</p>
+        </div>
+
+        <h3>Example Viva Questions (Post-Submission)</h3>
+        <div class="example-box">
+            <ul>
+                <li>"Your Spark job was initially slow. Describe the specific **Hands-On Skills (HOS)** you used (e.g., analyzing the Spark UI, checking for data skew) to identify and fix the performance bottleneck."</li>
+                <li>"Explain the difference between a 'narrow' and a 'wide' transformation in Spark and point to an example of each in your team's code."</li>
+            </ul>
+        </div>
+
+        <h2>3. Programming Exercises (PE) (20%)</h2>
+        <h3>Example Scenario: MapReduce Implementation</h3>
+        <div class="example-box">
+            <p><strong>Prompt:</strong> Implement the classic "Word Count" algorithm using the MapReduce paradigm from scratch (in Python, without using a full framework like Spark). Your task is to:</p>
+            <ul>
+                <li>Write separate `map` and `reduce` functions.</li>
+                <li>Create a driver script that simulates the shuffling and sorting phase.</li>
+                <li>Test your implementation on a large text file.</li>
+                <li>Submit your code and a <strong>Prompt Engineering Log & Reflection</strong> detailing how you used an **AI Agent** to understand the MapReduce paradigm and debug the logic of your simulation.</li>
+            </ul>
+            <p><strong>Why AI-Resistant?</strong> Focuses on understanding a fundamental distributed computing paradigm from first principles. Implementing the simulation requires a deep grasp of the data flow, which goes beyond simply asking an AI for a solution. The student must be able to debug the logic of the entire system.</p>
+        </div>
+    </div>
+</body>
+</html>

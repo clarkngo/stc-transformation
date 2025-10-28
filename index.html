@@ -35,10 +35,15 @@
                     .btn{background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;font-weight:600}
                     .secondary{background:transparent;border:1px solid #d1d5db;color:var(--muted);padding:8px 14px;border-radius:8px;text-decoration:none}
 
-                    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:20px}
-                    .card{background:var(--card);padding:18px;border-radius:10px;box-shadow:0 6px 14px rgba(15,23,42,0.04)}
-                    .card h3{margin:0 0 8px 0;font-size:1.05rem}
-                    .muted{color:var(--muted);font-size:0.95rem}
+                .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:20px}
+                .card{background:var(--card);padding:18px;border-radius:10px;box-shadow:0 6px 14px rgba(15,23,42,0.04);transition:transform .18s ease,box-shadow .18s ease;border:1px solid rgba(15,23,42,0.03)}
+                .card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(15,23,42,0.12)}
+                .card h3{margin:0 0 8px 0;font-size:1.05rem;display:flex;align-items:center;gap:10px}
+                .card .icon{width:36px;height:36px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:18px;background:#f3faf8}
+                .muted{color:var(--muted);font-size:0.95rem}
+                .card .cta{display:inline-block;margin-top:12px;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:600}
+                .card .cta.primary{background:var(--accent);color:#fff}
+                .card .cta.ghost{background:transparent;border:1px solid #e6eef0;color:var(--muted)}
 
                     footer{margin-top:28px;color:var(--muted);font-size:0.9rem;text-align:center}
 
@@ -73,28 +78,28 @@
                     </section>
 
                     <main class="grid" style="margin-top:22px">
-                        <article class="card">
-                            <h3>Current Model</h3>
+                        <article class="card" aria-labelledby="card-current-title">
+                            <h3><span class="icon" aria-hidden="true">📘</span><span id="card-current-title">Current Model</span></h3>
                             <p class="muted">Overview of the traditional high-activity model, including risks and QA challenges.</p>
-                            <p style="margin-top:10px"><a href="Proposed Curriculum Model - AI-Empowered Portfolio.html#current-model">Read current model →</a></p>
+                            <p style="margin-top:10px"><a class="cta primary" href="Proposed Curriculum Model - AI-Empowered Portfolio.html#current-model" aria-label="Read current model">Read current model →</a></p>
                         </article>
 
-                        <article class="card">
-                            <h3>Proposed Model</h3>
+                        <article class="card" aria-labelledby="card-proposed-title">
+                            <h3><span class="icon" aria-hidden="true">💡</span><span id="card-proposed-title">Proposed Model</span></h3>
                             <p class="muted">AI‑Empowered Portfolio approach with AI-resistant assessments and streamlined QA.</p>
-                            <p style="margin-top:10px"><a href="Proposed Curriculum Model - AI-Empowered Portfolio.html">Read proposed model →</a></p>
+                            <p style="margin-top:10px"><a class="cta primary" href="Proposed Curriculum Model - AI-Empowered Portfolio.html" aria-label="Read proposed model">Read proposed model →</a></p>
                         </article>
 
-                        <article class="card">
-                            <h3>Team Project</h3>
+                        <article class="card" aria-labelledby="card-team-title">
+                            <h3><span class="icon" aria-hidden="true">🧩</span><span id="card-team-title">Team Project</span></h3>
                             <p class="muted">Details and expectations for team-based capstone projects.</p>
-                            <p style="margin-top:10px"><a href="team-project.html">Open team project →</a></p>
+                            <p style="margin-top:10px"><a class="cta ghost" href="team-project.html" aria-label="Open team project">Open team project →</a></p>
                         </article>
 
-                        <article class="card">
-                            <h3>gpt-oss via Ollama</h3>
+                        <article class="card" aria-labelledby="card-proposal-title">
+                            <h3><span class="icon" aria-hidden="true">⚙️</span><span id="card-proposal-title">gpt-oss via Ollama</span></h3>
                             <p class="muted">Technical proposal: hardware, architectures, ops checklist, and cost comparisons for running gpt-oss locally.</p>
-                            <p style="margin-top:10px"><a href="gpt-oss-ollama-proposal.html">Open proposal →</a></p>
+                            <p style="margin-top:10px"><a class="cta ghost" href="gpt-oss-ollama-proposal.html" aria-label="Open gpt-oss Ollama proposal">Open proposal →</a></p>
                         </article>
                     </main>
 

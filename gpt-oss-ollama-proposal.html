@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Deploying gpt-oss via Ollama — Proposal</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; line-height: 1.5; color: #111; }
+        header { text-align: center; margin-bottom: 1.5em; }
+        h1 { margin: 0 0 .25em 0; }
+        .meta { color: #666; font-size: .95em; }
+        section { margin-top: 1.25em; }
+        pre { background:#f7f7f7; padding: .75em; overflow:auto }
+        code { background:#f1f1f1; padding: .15em .3em; border-radius:3px }
+        table { border-collapse: collapse; width: 100%; margin: .5em 0 1em 0 }
+        th, td { border: 1px solid #ddd; padding: .5em; text-align: left }
+        th { background: #f4f4f8 }
+        .container { max-width: 980px; margin: 0 auto }
+        .muted { color:#666 }
+      /* Tooltip styling for inline term help */
+      .tooltip { position: relative; border-bottom: 1px dotted #888; cursor: help; }
+      .tooltip::after {
+        content: attr(data-tip);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) translateY(6px);
+        bottom: 100%;
+        background: rgba(0,0,0,0.85);
+        color: #fff;
+        padding: .35em .6em;
+        border-radius: 4px;
+        white-space: nowrap;
+        font-size: .85em;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .12s ease, transform .12s ease;
+        z-index: 30;
+      }
+      .tooltip::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: calc(100% - 6px);
+        border-width: 6px 6px 0 6px;
+        border-style: solid;
+        border-color: rgba(0,0,0,0.85) transparent transparent transparent;
+        opacity: 0;
+        transition: opacity .12s ease;
+        z-index: 30;
+      }
+      .tooltip:hover::after,
+      .tooltip:hover::before { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Proposal: Deploying gpt-oss via Ollama</h1>
+    <div class="meta">City University of Seattle — School of Technology and Computing<br>Short proposal, hardware quick-reference, example architectures, ops checklist, and cost/throughput guidance — Date: October 28, 2025</div>
+  </header>
+
+  <!-- glossary removed per request; inline tooltips remain active -->
+
+  <section id="overview-nontech">
+    <h3>High-level overview (for non-technical stakeholders)</h3>
+    <p>This proposal recommends running an open-source conversational model locally using Ollama so the School of Technology and Computing at City University of Seattle can offer student-facing services such as conversational tutoring and code assistance while keeping student data private. Running models locally ("on-prem") or in dedicated cloud instances reduces recurring per-token API fees and gives the university control over data and latency.</p>
+    <p>End-user experience: students use a web chat or IDE-integrated assistant to ask questions, get study help, or request code suggestions. For accuracy, the system can search course materials and include citations in answers (RAG). Administrators get metrics on usage and performance and can tune capacity based on real demand.</p>
+    <p>High-level trade-offs: hosted APIs require less ops effort but cost more at scale and send data to third parties; on-prem or reserved cloud instances require more operational effort but lower long-term cost and stronger privacy guarantees.</p>
+  </section>
+
+  <section>
+    <h2>Executive summary</h2>
+    <p>Goal: run <code>gpt-oss</code> locally with Ollama to provide student-facing LLM services (chat assist, code assist) for up to ~50 concurrent users with data privacy and low-latency inference.</p>
+
+    <p><strong>Recommendation in brief</strong></p>
+    <ul>
+      <li>Start with a mid-tier deployment supporting ~50 concurrent users using a quantized 13B–33B model on 1–2 GPUs (48–80 GB aggregate GPU RAM) for chat and small code tasks. Use a dedicated higher-memory GPU (80 GB-class, or 2×48GB NVLink) for heavier code models (70B or code-specialized models).</li>
+      <li>Use RAG with an internal vector DB (PGVector, Milvus, or Weaviate) for course-specific knowledge — keep embeddings and chunks on-prem for privacy.</li>
+      <li>Evaluate cloud burst capacity for peak load and for heavy model fine-tuning or experimentation.</li>
+    </ul>
+
+    <p><strong>Why Ollama + gpt-oss:</strong> Ollama provides a local inference runtime, model packaging, and an easy developer UX (model registry, local serving). <code>gpt-oss</code> is an open-source GPT-like family that reduces recurring API costs and keeps student data private on-prem.</p>
+
+    <p><strong>Scope &amp; exclusions:</strong></p>
+    <ul>
+      <li>Scope: chat assist, code assist, RAG with private corpora, ops and monitoring guidance.</li>
+      <li>Exclude: DeepSeek (explicitly requested), third-party hosted vector indexing services unless used for cloud-bursting only.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Contract (inputs/outputs, success criteria)</h2>
+    <ul>
+      <li>Inputs: user prompts (text, code), optional uploaded context/docs, vector DB queries for RAG.</li>
+      <li>Outputs: text responses, code completions, citations to source documents (when RAG used).</li>
+      <li>Success criteria: median token-latency ≤ 700ms for chat (short prompts), p95 latency ≤ 2s for interactive chats for up to 50 concurrent users; privacy: no outgoing user PII to third-party APIs; budget: lower total cost of ownership (TCO) vs hosted API at sustained usage &gt; X tokens/month.</li>
+    </ul>
+
+    <p><strong>Edge cases to plan for</strong></p>
+    <ul>
+      <li>Very long context windows (must chunk and embed); bursty concurrency &gt; 50 (use cloud burst or queueing).</li>
+      <li>Model drift or hallucination in grading contexts (use RAG + citations + guardrails).</li>
+      <li>Sensitive content or student data (access control, audit logs, retention policy required).</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Quick-reference hardware table (short)</h2>
+    <p class="muted">Notes: model sizes and memory behavior vary with quantization and runtime. Values are estimates assuming optimized runtimes (4-bit quantization when possible).</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Target model size (est)</th>
+          <th>On-prem GPU suggestion</th>
+          <th>Minimum GPU RAM</th>
+          <th>vCPU / RAM</th>
+          <th>Storage (nvme)</th>
+          <th>Network</th>
+          <th>Typical use-case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Small (POC / dev)</td>
+          <td>7B (quantized)</td>
+          <td>1× NVIDIA L4 / A10G</td>
+          <td>24–32 GB</td>
+          <td>8–16 vCPU, 64–128 GB RAM</td>
+          <td>1 TB NVMe</td>
+          <td>1 Gbps</td>
+          <td>Developer testing, instructor demos, small classroom (≤10 concurrent)</td>
+        </tr>
+        <tr>
+          <td>Medium (production interactive)</td>
+          <td>13B–33B (4-bit)</td>
+          <td>1× NVIDIA L4 / A10G or 1× 48–80 GB GPU</td>
+          <td>48 GB</td>
+          <td>16–32 vCPU, 128–256 GB RAM</td>
+          <td>2–4 TB NVMe</td>
+          <td>10 Gbps</td>
+          <td>50 concurrent chat/code assist (latency-sensitive)</td>
+        </tr>
+        <tr>
+          <td>Heavy (higher-quality/code)</td>
+          <td>70B+ (quantized)</td>
+          <td>1× A100 80GB / H100 80GB or 2× 48–80GB NVLink</td>
+          <td>80+ GB (or NVLink pooled)</td>
+          <td>32+ vCPU, 256+ GB RAM</td>
+          <td>4+ TB NVMe</td>
+          <td>25+ Gbps</td>
+          <td>Code assist, larger context windows, small multi-user clusters</td>
+        </tr>
+        <tr>
+          <td>Scale-out (high throughput)</td>
+          <td>Multi-node</td>
+          <td>Cluster of 2–4 A100/H100 or multi-CPU nodes + shards</td>
+          <td>80+ GB per GPU/node</td>
+          <td>64+ vCPU per node, 512+ GB total RAM</td>
+          <td>10+ TB NVMe across cluster</td>
+          <td>25–100 Gbps, RDMA</td>
+          <td>Serving 100s of concurrent users with batching &amp; autoscaling</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Cloud equivalence guidance</strong> (vendor families): AWS: g5 / g5n (A10G), p4d/p4de (A100), p5 (H100). Azure: ND A100 v4 / ND H100 series. GCP: A2 (A100) and next-gen H100 instances.</p>
+
+    <p>Storage and DB: Use NVMe for model storage and local cache. For vector DB use dedicated nodes (Milvus/MongoDB+PGVector/Weaviate) on fast NVMe and 10Gb+ network.</p>
+  </section>
+
+  <section>
+    <h2>Throughput &amp; latency assumptions</h2>
+    <p><strong>Assumptions</strong></p>
+    <ul>
+      <li>Interactive chat prompt size: 32–256 tokens. Response size: 32–256 tokens.</li>
+      <li>Token-generation throughput depends on model size, GPU, quantization, and batching.</li>
+      <li>Concurrent users measured as concurrent active request streams (not session count).</li>
+    </ul>
+
+    <p><strong>Rough estimates (conservative)</strong></p>
+    <ul>
+      <li>7B quantized on L4/A10G: ~80–250 tokens/s single-stream; latency per 64-token response: ~100–400ms.</li>
+      <li>13B quantized on 48GB GPU: ~30–120 tokens/s; 64-token response latency: ~400–900ms.</li>
+      <li>70B on A100 80GB (optimized, NVLink): ~10–40 tokens/s; 64-token response latency: ~1.5–6s.</li>
+    </ul>
+
+    <p><strong>Concurrency mapping (ballpark)</strong></p>
+    <p>50 concurrent users with short responses (avg 64 tokens):</p>
+    <ul>
+      <li>13B on 48GB GPU: batch scheduling + streaming can handle ~40–80 concurrent if requests are staggered; aim for 1 GPU + small batcher + request queue.</li>
+      <li>70B: 50 concurrent likely needs multiple GPUs or queuing — expect p95 latencies &gt; 2s unless scaled out.</li>
+    </ul>
+
+    <p><strong>How to measure and tune:</strong> start with internal microbenchmarks (measure tokens/s for your chosen model and prompt profile) then compute required tokens/s = concurrent_users × avg_response_tokens × (1 / target_latency_seconds).</p>
+
+    <p><strong>Example compute</strong>: target p95 latency 2s, avg response 128 tokens; tokens/s needed for 50 users = 50 × 128 / 2 = 3,200 tokens/s. Then pick a GPU configuration whose tokens/s meets that at acceptable latency.</p>
+  </section>
+
+  <section>
+    <h2>Cost comparison: on-prem / cloud GPU vs hosted API</h2>
+    <p><strong>Important</strong>: pricing changes quickly; below are illustrative example calculations to compare recurring hosted API vs owning GPU capacity. Replace numbers with vendor quotes for procurement accuracy.</p>
+
+    <p><strong>Model of comparison</strong>: sustained interactive usage: 50 concurrent users, average 128 tokens generated per response, 30 responses per user-hour (≈1 response every 2 minutes) → tokens per hour = 50 × 30 × 128 = 192,000 tokens/hr → ≈4.6M tokens/day (≈138M tokens/month)</p>
+
+    <p><strong>Hosted-API example</strong> (priced per 1K tokens):</p>
+    <p>If a hosted API costs $0.03 per 1K tokens (example), monthly cost = 138,000 × $0.03 = $4,140 (illustrative).</p>
+
+    <p><strong>Cloud GPU (on-demand) example</strong> (illustrative ranges):</p>
+    <ul>
+      <li>1× A100 80GB on-demand: approximate $10–35/hr (varies by cloud &amp; region). Using $20/hr → monthly cost (24/7) = $14,400.</li>
+      <li>Smaller instance (g5 A10G) might be $1–4/hr; if that suffices for your load, monthly costs drop significantly.</li>
+    </ul>
+
+    <p><strong>On-prem purchase example</strong>:</p>
+    <p>One A100 80GB GPU card plus server, networking, power, maintenance — rough CAPEX ballpark: $40K–120K. Amortize over 3 years → $1.1K–3.3K/month plus ops &amp; power.</p>
+
+    <p><strong>Interpretation</strong>: For low, bursty usage, hosted API often costs less upfront. For sustained medium-to-high usage, owning GPUs or reserved cloud instances becomes cost-effective. Factor in staff time, security/compliance, and value of keeping student data on-prem.</p>
+
+    <p>Recommendation: run a 30–60 day pilot, track tokens/month and model performance, then decide.</p>
+
+    <h3>Cost estimates (illustrative monthly examples)</h3>
+    <p class="muted">These are ballpark estimates for the example workload used earlier (~138M tokens/month). Replace with vendor quotes for procurement or billing comparisons.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Option</th>
+          <th>Unit / Notes</th>
+          <th>Assumptions</th>
+          <th>Estimated monthly cost</th>
+          <th>Student BYO subscription (offset)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>OpenAI (example)</td>
+          <td>$0.03 per 1K tokens</td>
+          <td>138M tokens/mo (example)</td>
+          <td>$4,140</td>
+          <td>Possible: students with ChatGPT+ can do some work off their accounts; NOT for FERPA/graded data.</td>
+        </tr>
+        <tr>
+          <td>OpenRouter (example)</td>
+          <td>$0.02 per 1K tokens (gateway to open models)</td>
+          <td>138M tokens/mo (example)</td>
+          <td>$2,760</td>
+          <td>Possible: students can use personal OpenRouter-enabled endpoints; data routing varies by provider.</td>
+        </tr>
+        <tr>
+          <td>Cloud (A100 80GB) — on-demand</td>
+          <td>~$20 / hour (varies by region)</td>
+          <td>1 instance running 24/7 (no autoscale)</td>
+          <td>$14,400</td>
+          <td>N/A — cloud instance cost borne by university (students cannot offset server cost).</td>
+        </tr>
+        <tr>
+          <td>Cloud (g5 / A10G) — on-demand</td>
+          <td>~$3 / hour (example)</td>
+          <td>1 instance running 24/7; fits smaller models (7B–13B)</td>
+          <td>$2,160</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>Cloud (A100) — 1yr reserved (example)</td>
+          <td>~$8 / hour effective</td>
+          <td>Reserved pricing amortized (lower than on-demand)</td>
+          <td>$5,760</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>On-prem GPU (A100 80GB) — amortized CAPEX</td>
+          <td>$80,000 CAPEX (mid)</td>
+          <td>Amortized over 36 months + basic ops infra</td>
+          <td>~$2,222 CAPEX amortized + $500 ops = ~$2,722</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>On-prem full stack (redundant + vector DB)</td>
+          <td>Includes extra node + storage</td>
+          <td>Higher-availability on-prem cluster</td>
+          <td>~$3,500–5,000</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>Operations (staffing)</td>
+          <td>1 part-time engineer (or fractional)</td>
+          <td>Monitoring, updates, incident response</td>
+          <td>~$2,000–8,000 (varies by org)</td>
+          <td>Possible small offset if students self-manage certain tasks, but not recommended for security-sensitive work.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Notes:</strong> Hosted API cost scales linearly with tokens. Cloud GPU costs depend on instance size, utilization, and whether you reserve/schedule instances. On-prem CAPEX becomes attractive as sustained monthly usage increases; include staffing, power, and maintenance when computing TCO. Use the pilot metrics to get exact token/month and adjust these numbers for a decision.</p>
+    
+    <h3 id="hosted-apis">Hosted-API integration: OpenAI &amp; OpenRouter</h3>
+    <p>Hybrid deployments can combine Ollama-hosted local inference with hosted APIs (OpenAI or OpenRouter) for specific use cases:</p>
+    <ul>
+      <li><strong>Cloud-bursting / peak capacity:</strong> route overflow requests to a hosted API during traffic spikes to preserve interactive SLAs without over-provisioning on-prem hardware.</li>
+      <li><strong>Specialized models:</strong> use hosted providers when a proprietary or very large specialty model is required that you don't run locally (e.g., latest multimodal endpoints).</li>
+      <li><strong>Fallback and experimentation:</strong> use hosted APIs as a fallback or for A/B testing new models before pulling them into your on-prem workflow.</li>
+    </ul>
+
+    <p><strong>Privacy and compliance guidance</strong></p>
+    <ul>
+      <li>Default to on-prem inference for student PII, grades, or any FERPA-protected content. Only allow egress to hosted APIs with documented, auditable consent and with minimized/anonymized inputs.</li>
+      <li>Implement a proxy/gateway that enforces allowlists, logs requests, strips or hashes identifiers, and attaches consent metadata before sending requests externally.</li>
+      <li>Encrypt in transit and at rest. Keep a short retention policy for any logs that include prompt metadata; consider hashing or tokenizing identifiers to avoid storing raw PII.</li>
+    </ul>
+
+    <p><strong>Operational controls</strong></p>
+    <ul>
+      <li>Use an egress-proxy or API gateway to centralize credentials (rotate keys), apply rate limits, and enforce per-route policies.</li>
+      <li>Mark each request whether it may be sent to a third-party API and require explicit user opt-in for any prompts that will leave the university boundary.</li>
+      <li>Monitor usage and cost separately for hosted calls and local inference so you can decide whether to keep or move workloads on-prem.</li>
+      <li>For OpenRouter specifically: understand the routing policy (open models may be proxied through third-party infra) and confirm any SLA and data handling rules with the provider.</li>
+    </ul>
+
+    <p><strong>Hybrid architecture pattern (textual)</strong></p>
+    <p>User → API Gateway (auth &amp; policy) → Router:
+      <ul>
+        <li>If request contains FERPA/PII or course protected content → Ollama local inference</li>
+        <li>Else if local queue saturated or user opted-in for hosted models → Proxy to OpenAI/OpenRouter</li>
+        <li>Return response; store minimal audit trail and cost tags</li>
+      </ul>
+    </p>
+
+    <p><strong>When to choose OpenAI vs OpenRouter</strong></p>
+    <ul>
+      <li><strong>OpenAI:</strong> strong managed offering, consistent performance, latest proprietary models (may have higher per-token cost and stricter data policies).</li>
+      <li><strong>OpenRouter:</strong> gateway to various open model endpoints and can be lower-cost; confirm data routing and retention with the vendor since it may proxy requests to third parties.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Alternative models &amp; when to use them</h2>
+    <ul>
+      <li>LLaMA 2 (7B/13B/70B) — good general-purpose family, widely supported.</li>
+      <li>Vicuna — instruction-tuned LLaMA forks, lower-cost and good for chat prototypes.</li>
+      <li>Code Llama / StarCoder / CodeGen — specialized for code assist and completions.</li>
+      <li>MPT-7B / MosaicML models — flexible license options and good throughput on CPUs for smaller tasks.</li>
+      <li>Mistral / Mistral-Instruct — strong open models with good performance for chat.</li>
+    </ul>
+
+    <p><strong>When to pick</strong>:</p>
+    <ul>
+      <li>Chat: 13B–33B with instruction-tuning.</li>
+      <li>Code assist: Code Llama or StarCoder family.</li>
+      <li>RAG: any base model + an embedding model; prefer local embedding models for privacy.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Example architectures</h2>
+
+    <h3>1) Simple chat service (single-node)</h3>
+    <p>Components: Web UI → API Gateway (auth) → Ollama inference runtime (local model) → Optional cache → Response streaming to client.</p>
+    <p>Notes: Keep logs in protected store; apply content filters and rate limiting; store opt-in transcripts for training only with consent.</p>
+
+    <h3>2) Code-assist service (recommended separation)</h3>
+    <p>Components: Web IDE / VS Code extension → Backend service (API) → Ollama runtime (code-specialized model) + code-indexer for workspace search → Optional ephemeral sandbox for running submitted code.</p>
+
+    <h3>3) RAG for course materials (recommended for accuracy)</h3>
+    <p>Components: UI → API → RAG orchestrator → Vector DB (Milvus/Weaviate/PGVector) + chunk store (S3/NVMe) → Embedding service (local) → Ollama model.</p>
+    <p>Notes: Keep embeddings &amp; vectors on-prem; add a provenance layer that stores source doc ids and snippet offsets for reproducible citations.</p>
+
+    <h3>Horizontal scaling pattern</h3>
+    <p>Front tier: API gateways behind load balancer + autoscale. Worker tier: Ollama inference instances (1 per GPU) with queue + batching. Storage tier: Vector DB cluster, archival S3, logging &amp; metrics.</p>
+  </section>
+
+  <section>
+    <h2>Ops checklist (deployment &amp; monitoring)</h2>
+    <h3>Pre-deployment</h3>
+    <ul>
+      <li>Procurement: choose GPU tier based on pilot benchmarks (7B/13B/70B).</li>
+      <li>Network: ensure 10Gb+ internal network for vector DB and NVMe access; secure per PCI/edu policies.</li>
+      <li>Security: design RBAC, network segmentation, TLS everywhere, secrets management (Vault or cloud secrets manager).</li>
+      <li>Privacy &amp; compliance: approve data retention policy and student consent policy; ensure FERPA compliance where required.</li>
+    </ul>
+
+    <h3>Deployment</h3>
+    <ul>
+      <li>Containerize or use Ollama host install; use systemd or k8s for lifecycle management.</li>
+      <li>Use GPU device plugins for k8s (NVIDIA device plugin) if using k8s.</li>
+      <li>Setup vector DB nodes on fast NVMe; use backups/snapshots nightly.</li>
+    </ul>
+
+    <h3>Monitoring &amp; observability</h3>
+    <ul>
+      <li>Metrics: request count, latency (p50/p95/p99), tokens/s, GPU utilization, memory usage, queue depth, embedding latency, vector DB latencies.</li>
+      <li>Logs: structured request logs with pseudonymized user ids, model inputs hashed (if storing), error logs.</li>
+      <li>Alerting: high GPU mem pressure, GPU/CPU saturation, p95 latency &gt; threshold, vector DB errors.</li>
+      <li>Tracing: distributed traces for end-to-end requests (API → model → DB).</li>
+    </ul>
+
+    <h3>Maintenance</h3>
+    <ul>
+      <li>Model updates: plan scheduled windows for model upgrades and A/B tests.</li>
+      <li>Retraining/fine-tuning: separate training environment; do not train in the same cluster as serving.</li>
+      <li>Backups: config and vector DB backups daily; test restores quarterly.</li>
+    </ul>
+
+    <h3>Security hardening</h3>
+    <ul>
+      <li>Egress controls: deny outgoing traffic to third-party LLM APIs by default.</li>
+      <li>Input sanitization: redact secrets and PII automatically with a pre-filter before model requests.</li>
+      <li>Rate limiting &amp; quotas per user to prevent abuse.</li>
+    </ul>
+
+    <h3>Incident response</h3>
+    <ul>
+      <li>Playbook for model hallucination causing harm: immediate rollback to previous model, block feature, notify owners.</li>
+      <li>Audit trails enabled: who called what model and when (for compliance).</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Example pilot plan (30–60 days)</h2>
+    <ol>
+      <li>POC (Week 0–2): Choose a 13B model; run Ollama on a single 48GB GPU; implement a simple chat UI and instrument metrics.</li>
+      <li>Pilot (Week 3–6): Onboard 1–3 courses; collect usage metrics, token volumes, latency, and qualitative feedback.</li>
+      <li>Scale decision (Week 6–8): Decide whether to buy on-prem GPU(s), reserve cloud instances, or continue hosted API.</li>
+    </ol>
+
+    <p><strong>KPIs to measure</strong>: average tokens/session, p95 latency, GPU utilization, monthly tokens, incidence of hallucinations requiring human review.</p>
+  </section>
+
+  <section>
+    <h2>Recommended next steps (concrete)</h2>
+    <ul>
+      <li>Short-term (0–2 weeks): run microbenchmarks for candidate models (7B/13B/70B) using representative prompts; measure tokens/s and latency.</li>
+      <li>Medium-term (2–8 weeks): run 30-day pilot with a 13B model on a 48GB GPU node, integrate with a minimal vector DB for course notes, and gather metrics.</li>
+      <li>Decision point (after pilot): choose on-prem purchase vs reserved cloud capacity using measured token/month and latency needs.</li>
+    </ul>
+
+    <p><strong>Operational quick wins</strong>:</p>
+    <ul>
+      <li>Enforce egress-blocking network policy for inference nodes.</li>
+      <li>Automate redaction of obvious PII before inference.</li>
+      <li>Use a lightweight request queue + batcher to increase GPU throughput while maintaining streaming responses.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Citations &amp; further reading</h2>
+    <ul>
+      <li>Ollama — official docs &amp; guides: <a href="https://ollama.com">https://ollama.com</a></li>
+      <li>Hugging Face: model hub and deployment docs — <a href="https://huggingface.co">https://huggingface.co</a></li>
+      <li>Meta LLaMA &amp; Code Llama announcements: <a href="https://ai.meta.com/">https://ai.meta.com/</a></li>
+      <li>Stanford Alpaca (instruction-tuning example): <a href="https://crfm.stanford.edu/2023/03/13/alpaca.html">https://crfm.stanford.edu/2023/03/13/alpaca.html</a></li>
+      <li>Vector DB options: Milvus (<a href="https://milvus.io">milvus.io</a>), Weaviate (<a href="https://weaviate.io">weaviate.io</a>), PGVector (<a href="https://github.com/pgvector/pgvector">github.com/pgvector/pgvector</a>)</li>
+    </ul>
+
+    <p class="muted">Note on university case studies: public university-grade production deployments are often reported as internal projects or high-level case studies; consult vendor case studies on Hugging Face and Ollama for education examples.</p>
+  </section>
+
+  <section>
+    <h2>Appendix: Quick decision checklist for sizing</h2>
+    <ul>
+      <li>Low-latency chat &amp; 50 concurrent users: start with 13B on 48GB GPU + batching. If p95 latencies exceed 2s, move to 80GB-class or add a second GPU &amp; horizontal scale.</li>
+      <li>Code assist requiring high accuracy: choose code-specific models (Code Llama / StarCoder) and target 80GB-class GPU for larger-context or larger models.</li>
+      <li>RAG required for accuracy: embed &amp; store docs on-prem; use smaller embedding models locally and keep vector DB on fast NVMe.</li>
+    </ul>
+  </section>
+
+  <footer style="margin-top:2em; color:#666; font-size:.95em">Generated proposal — file: <code>gpt-oss-ollama-proposal.html</code></footer>
+</div>
+
+  <script>
+  // Auto-wrap known terms with tooltip spans. Runs on DOMContentLoaded.
+  (() => {
+    const terms = {
+      'L4': 'NVIDIA L4 — a lower-power inference GPU optimized for real-time serving.',
+      'A10G': 'NVIDIA A10G — a mid-range GPU commonly used for inference and mixed workloads.',
+      'A10P': 'NVIDIA A10P — A10-family variant (similar class for inference workloads).',
+      'A100': 'NVIDIA A100 — data-center GPU with large memory for big models and training.',
+      'H100': 'NVIDIA H100 — next-generation high-performance GPU for large models and throughput.',
+      'g5': 'AWS g5 instance family (usually provides A10G GPUs) — an instance SKU on AWS.',
+      'p4d': 'AWS p4d instance family (uses A100 GPUs) — optimized for ML training/inference.',
+      'p5': 'AWS p5 instance family (uses H100 GPUs) — newer generation for large-scale models.',
+      'p95': '95th percentile latency — 95% of requests complete within this time (captures tail latency).',
+      'p50': '50th percentile latency (median) — half of requests are faster than this value.',
+      'p99': '99th percentile latency — captures the extreme tail where very slow requests appear.',
+      'RAG': 'Retrieval-Augmented Generation — the model uses retrieved documents as sources to produce grounded answers.',
+      'Vector DB': 'Database optimized for vector similarity search (embeddings) used by RAG systems.',
+      'vector DB': 'Database optimized for vector similarity search (embeddings) used by RAG systems.',
+      'PGVector': 'PGVector — a PostgreSQL extension for storing and searching vector embeddings.',
+      'Milvus': 'Milvus — an open-source vector database for similarity search and embeddings.',
+      'Weaviate': 'Weaviate — an open-source vector search engine and vector DB with built-in ML integrations.',
+      'NVMe': 'NVMe — fast local SSD storage interface (good for model storage and vector DB caching).',
+      'NVLink': 'NVLink — high-speed interconnect between GPUs for pooling memory and faster transfers.',
+      'FERPA': 'Family Educational Rights and Privacy Act — US law protecting student education records; consider when handling student data.',
+      'embeddings': 'Embeddings — numeric vector representations of text used for semantic search and RAG.',
+      'quantization': 'Quantization — reducing model numeric precision (e.g., 4-bit) to save memory and compute at small accuracy cost.',
+      'quantized': 'Quantized — a model that has been converted to lower numeric precision to reduce memory and speed up inference.',
+      'tokens': 'Tokens — units of text (pieces of words) the model processes; billing and throughput often measured in tokens.',
+      'batcher': 'Batcher — a component that groups multiple inference requests to increase GPU utilization and throughput.',
+      'Ollama': 'Ollama — local model runtime and serving tool designed for on-prem inference and developer workflows.',
+      'gpt-oss': 'gpt-oss — an open-source GPT-like model family; used here as an example of an open model to run locally.'
+    };
+
+    function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function walk(node){
+      let skipTags = new Set(['SCRIPT','STYLE','CODE','PRE','A','TEXTAREA']);
+      if(node.nodeType === 3){ // text node
+        let text = node.nodeValue;
+        let replaced = false;
+        // build a regex that matches any term as a word boundary, prefer longer keys first
+        const keys = Object.keys(terms).sort((a,b)=>b.length-a.length).map(escapeRegex);
+        const re = new RegExp('\\b(' + keys.join('|') + ')\\b', 'g');
+        if(re.test(text)){
+          replaced = true;
+          const span = document.createElement('span');
+          // replace occurrences with spans
+          span.innerHTML = text.replace(re, function(m){
+            const tip = terms[m] || terms[m.toLowerCase()] || '';
+            return '<span class="tooltip" data-tip="'+ tip.replace(/\"/g,'&quot;') +'">'+ m +'</span>';
+          });
+          node.parentNode.replaceChild(span, node);
+        }
+        return replaced;
+      } else if(node.nodeType === 1 && !skipTags.has(node.tagName)){
+        for(let i=0;i<node.childNodes.length;i++) walk(node.childNodes[i]);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      walk(document.body);
+    });
+  })();
+  </script>
+</body>
+</html>

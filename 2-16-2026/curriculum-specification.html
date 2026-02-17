@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSAI Curriculum Specification & Design Framework</title>
+    <style>
+        :root{--accent:#1e8449;--muted:#6b7280;--card:#ffffff;--bg:#f6f8fb}
+        html,body{height:100%;margin:0}
+        body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:#0f1724}
+        .page{max-width:1100px;margin:32px auto;padding:28px}
+        header{display:flex;align-items:center;gap:18px;margin-bottom:32px}
+        .brand{display:flex;flex-direction:column}
+        h1{margin:0;font-size:1.45rem}
+        .tagline{color:var(--muted);font-size:0.95rem}
+        
+        nav{background:#ffffff;border-radius:10px;padding:16px;box-shadow:0 6px 14px rgba(15,23,42,0.04);margin-bottom:32px;border:1px solid rgba(15,23,42,0.03)}
+        nav ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:12px}
+        nav a{color:var(--accent);text-decoration:none;padding:8px 12px;border-radius:6px;font-weight:500;cursor:pointer;transition:background .18s ease}
+        nav a:hover{background:#f3faf8}
+        nav a.active{background:var(--accent);color:#fff}
+        
+        .section{display:none;animation:fadeIn 0.3s ease}
+        .section.active{display:block}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        
+        .section-content{background:#ffffff;padding:32px;border-radius:10px;box-shadow:0 6px 14px rgba(15,23,42,0.04);border:1px solid rgba(15,23,42,0.03)}
+        .section-content h2{color:#1e8449;border-bottom:2px solid #e5e7eb;padding-bottom:12px;margin-top:0}
+        .section-content h3{color:#2c5282;margin-top:24px}
+        .section-content h4{color:#2d3748;margin-top:18px}
+        .section-content p{line-height:1.7;color:#374151}
+        
+        .summary-box{background:#f3faf8;padding:20px;border-radius:8px;border-left:4px solid #1e8449;margin:20px 0}
+        .summary-box strong{color:#1e8449}
+        
+        .curriculum-track{background:#edf2f7;padding:20px;border-radius:8px;border-left:4px solid #2c5282;margin:20px 0}
+        .curriculum-track strong{color:#2c5282;display:block;margin-bottom:8px}
+        
+        .course-list{background:#ffffff;border:1px solid #e5e7eb;border-radius:8px;padding:20px;margin:15px 0}
+        .course-item{padding:12px;border-bottom:1px solid #e5e7eb;line-height:1.6}
+        .course-item:last-child{border-bottom:none}
+        .course-code{font-weight:600;color:#1e8449;min-width:80px;display:inline-block}
+        .course-desc{color:#374151}
+        
+        table{width:100%;border-collapse:collapse;margin:20px 0;background:#ffffff}
+        th,td{border:1px solid #e5e7eb;padding:12px;text-align:left}
+        th{background-color:#1e8449;color:white;font-weight:600}
+        
+        ul{padding-left:20px}
+        li{margin-bottom:10px;line-height:1.6}
+        
+        .pillar{background:#f9fafb;padding:16px;border-radius:6px;border-left:4px solid #1e8449;margin:12px 0}
+        .pillar strong{display:block;color:#1e8449;margin-bottom:6px}
+        
+        .back-link{display:inline-block;margin-bottom:20px;color:var(--accent);text-decoration:none;font-weight:500}
+        .back-link:hover{text-decoration:underline}
+        
+        footer{margin-top:40px;color:var(--muted);font-size:0.9rem;text-align:center;border-top:1px solid #e5e7eb;padding-top:20px}
+        
+        @media (max-width:640px){nav ul{flex-direction:column}.course-code{display:block;margin-bottom:6px}}
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div style="width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#eafaf1,#d8f3e6);display:flex;align-items:center;justify-content:center;font-size:28px">📚</div>
+            <div class="brand">
+                <h1>BSAI Curriculum Specification</h1>
+                <div class="tagline">Complete Design Framework & Academic Validation — February 2026</div>
+            </div>
+        </header>
+
+        <a class="back-link" href="2-16-2026-aggregate.html">← Back to BSAI 2026 Strategy</a>
+
+        <nav>
+            <ul>
+                <li><a class="active" onclick="showSection('overview')">Program Overview</a></li>
+                <li><a onclick="showSection('curriculum')">Curriculum Structure</a></li>
+                <li><a onclick="showSection('constraints')">Strategic Constraints</a></li>
+                <li><a onclick="showSection('deliverables')">Design Tasks & Validation</a></li>
+            </ul>
+        </nav>
+
+        <!-- Program Overview Section -->
+        <div id="overview" class="section active">
+            <div class="section-content">
+                <h2>BS in Artificial Intelligence (BSAI): Program Philosophy</h2>
+                
+                <div class="summary-box">
+                    <strong>Role & Objective:</strong> Design an expert-level curriculum for a Bachelor of Science in Artificial Intelligence at City University of Seattle. The program produces "Action-Ready" AI Engineers for the 2026 labor market while meeting NSA/NCAE-C CyberAI validation standards.
+                </div>
+
+                <h3>The Three Pillars: "Autonomy & Action"</h3>
+                
+                <p>Unlike traditional Data Science programs that focus on insights and dashboards, BSAI emphasizes building autonomous, real-time engines for production environments.</p>
+
+                <div class="pillar">
+                    <strong>🏗️ The Engineering Foundation</strong>
+                    Mastering the "silicon-to-cloud" pipeline: Operating Systems, Networks, Cloud Architecture, and Infrastructure. Students learn how intelligence integrates with system constraints.
+                </div>
+
+                <div class="pillar">
+                    <strong>🧠 Cognitive Architecture</strong>
+                    Semantic intelligence using Natural Language Processing, Deep Learning, Transformers, and Vector Databases. Focus on representation learning and reasoning engines.
+                </div>
+
+                <div class="pillar">
+                    <strong>🤖 The Agentic Edge</strong>
+                    MLOps/AgentOps and Physical AI—bridging digital intelligence with robotics, IoT, and industrial systems through Digital Twins and Operational Technology (OT) integration.
+                </div>
+
+                <h3>Target Roles & Market Positioning</h3>
+                <p>Graduates are prepared for four primary career paths:</p>
+                <ul>
+                    <li><strong>AI Engineer:</strong> Full-stack ML systems in production</li>
+                    <li><strong>ML Engineer:</strong> Algorithm development and optimization</li>
+                    <li><strong>Physical AI Specialist:</strong> Robotics, IoT, industrial automation</li>
+                    <li><strong>Agentic Systems Architect:</strong> Autonomous agent design and deployment</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Curriculum Structure Section -->
+        <div id="curriculum" class="section">
+            <div class="section-content">
+                <h2>Curriculum Structure: 180 Credit Hours</h2>
+
+                <h3>Preparatory Track: Python-First & Math Bridge</h3>
+                <p>Students begin with a <strong>computational foundation</strong> that bridges traditional CS fundamentals with AI-specific mathematical concepts.</p>
+
+                <div class="course-list">
+                    <div class="course-item">
+                        <span class="course-code">CS 132</span>
+                        <span class="course-desc"><strong>Computer Science I (Logic & Java Foundations)</strong> — Core logic, object-oriented thinking, and foundational algorithms using Java as the syntax vehicle.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">IS 201</span>
+                        <span class="course-desc"><strong>Fundamentals of Computing (The Python Bridge)</strong> — Intermediate Python, OOP patterns, libraries (NumPy, Pandas), and ecosystem introduction. Bridges Java to production Python.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">CS 251</span>
+                        <span class="course-desc"><strong>Statistical Computing (Computational Math)</strong> — <strong>Critical Innovation:</strong> Teaches Linear Algebra, Probability, and Vector Calculus entirely through Python/NumPy Tensors. Students master GPU-accelerated matrix operations before reaching Deep Learning labs. Replaces R-based statistics with production-ready Python.</span>
+                    </div>
+                </div>
+
+                <h3>Core Engineering Requirements</h3>
+                <p>These courses provide the foundational competencies required across all AI engineering roles.</p>
+
+                <div class="course-list">
+                    <div class="course-item">
+                        <span class="course-code">CS 320</span>
+                        <span class="course-desc"><strong>Fundamentals of AI</strong> — Classical machine learning (supervised/unsupervised), decision trees, ensemble methods, and foundational ML theory.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">CS 330</span>
+                        <span class="course-desc"><strong>Operating Systems</strong> — Critical for Physical AI and edge computing. Process management, memory hierarchy, and real-time constraints.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">CS 340</span>
+                        <span class="course-desc"><strong>Computer Networks</strong> — Essential for distributed AI, IoT integration, and cloud-edge communication patterns.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">CS 469</span>
+                        <span class="course-desc"><strong>Data Structures & Algorithms</strong> — Integrated with Discrete Mathematics. Complexity analysis, graph algorithms for knowledge graphs, and optimization techniques.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">IS 345</span>
+                        <span class="course-desc"><strong>Cybersecurity Foundations</strong> — Secure coding, threat modeling, and cryptographic concepts essential for securing AI systems.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">IS 360</span>
+                        <span class="course-desc"><strong>Database Technologies</strong> — Focus on Vector Databases (Pinecone, Weaviate, Milvus) for semantic search and retrieval-augmented generation (RAG).</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">IS 471</span>
+                        <span class="course-desc"><strong>Cyber and AI Ethics</strong> — Responsible AI, bias mitigation, adversarial resilience, and governance frameworks aligned with NSA CyberAI standards.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">IT 434</span>
+                        <span class="course-desc"><strong>Cloud Computing</strong> — AWS/Azure ML pipelines, containerization (Docker/Kubernetes), and scalable deployment patterns.</span>
+                    </div>
+                </div>
+
+                <h3>Depth of Study: Artificial Intelligence (60 Credits)</h3>
+                <p>Upper-division courses focusing on advanced AI systems, agentic architecture, and production deployment.</p>
+
+                <div class="course-list">
+                    <div class="course-item">
+                        <span class="course-code">AI 410</span>
+                        <span class="course-desc"><strong>AI Engineering</strong> — System design patterns, model serving, A/B testing frameworks, and production ML pipelines.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">AI 420</span>
+                        <span class="course-desc"><strong>Agentic Systems</strong> — Building autonomous agents: planning, reasoning loops, tool integration, and LLM orchestration.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">AI 430</span>
+                        <span class="course-desc"><strong>MLOps & AgentOps</strong> — Model monitoring, versioning, retraining pipelines, and operational excellence for agentic systems in production.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">AI 440</span>
+                        <span class="course-desc"><strong>Physical AI & Digital Twins</strong> — Integrating AI with robotics, IoT devices, and industrial systems. Simulation, control theory, and real-world deployment.</span>
+                    </div>
+                    <div class="course-item">
+                        <span class="course-code">DS 479</span>
+                        <span class="course-desc"><strong>Data Mining & Deep Learning</strong> — Deep neural networks, CNNs, RNNs, Transformers, and modern architectures. Backpropagation theory and practical implementation.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategic Constraints Section -->
+        <div id="constraints" class="section">
+            <div class="section-content">
+                <h2>Strategic Constraints & Design Goals</h2>
+
+                <h3>1. The Math Gap Resolution</h3>
+                <p>Traditional computer science curricula often leave students unprepared for Deep Learning mathematics. BSAI addresses this by embedding mathematical foundations directly into CS 251.</p>
+                
+                <div class="summary-box">
+                    <strong>The Approach:</strong> We teach Linear Algebra and Calculus entirely through <strong>Tensor manipulation in Python</strong>. Students work with NumPy arrays as the primary vehicle, ensuring they understand:
+                    <ul style="margin-top:10px">
+                        <li>Matrix operations and eigenvalue decomposition</li>
+                        <li>Tensor broadcasting and reshaping for deep learning</li>
+                        <li>GPU acceleration (CUDA fundamentals)</li>
+                        <li>Automatic differentiation for backpropagation</li>
+                    </ul>
+                </div>
+
+                <h3>2. Operational Technology (OT) Integration</h3>
+                <p>Unlike standard CS degrees focused on web/cloud, BSAI specifically targets the intersection of AI and OT—a high-growth "blue ocean" market.</p>
+                <p><strong>Differentiator:</strong> Coursework in Physical AI and Digital Twins prepares graduates for high-stakes roles in securing and managing industrial robotics, smart infrastructure, and critical systems—areas where traditional CS graduates lack expertise.</p>
+
+                <h3>3. NSA/CyberAI Validation Alignment</h3>
+                <p>The program explicitly targets the <strong>NSA SecureAI pathway</strong> and NCAE-C validation standards. This requires demonstrable rigor in:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Validation Requirement</th>
+                            <th>Supporting Courses</th>
+                            <th>Evidence Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Adversarial Learning & Attack Vectors</strong></td>
+                            <td>AI 440, IS 471, CS 469</td>
+                            <td>Lab reports on adversarial robustness testing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Securing the AI Lifecycle</strong></td>
+                            <td>AI 410, AI 430, IS 345</td>
+                            <td>Model card documentation, security audits, threat assessments</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Advanced Math for AI</strong></td>
+                            <td>CS 251, DS 479</td>
+                            <td>Mathematical proofs, optimization convergence analysis</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AI Governance & Ethics</strong></td>
+                            <td>IS 471</td>
+                            <td>Policy documentation, stakeholder impact assessments</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>4. Market-Driven Hireability</h3>
+                <p>The curriculum is explicitly designed to make graduates competitive at:</p>
+                <ul>
+                    <li><strong>AI Labs:</strong> OpenAI, Meta AI Research, DeepMind, Anthropic — looking for engineers who can optimize and deploy cutting-edge models</li>
+                    <li><strong>Industrial AI:</strong> Boston Dynamics, Tesla Autopilot, Siemens Digital Industries — requiring Physical AI and OT expertise</li>
+                    <li><strong>Defense & Intelligence:</strong> NSA, DoD contractors — prioritizing CyberAI validation and secure AI systems</li>
+                    <li><strong>Cloud AI Platforms:</strong> AWS, Azure, Google Cloud — requiring cloud-native MLOps skills</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Deliverables Section -->
+        <div id="deliverables" class="section">
+            <div class="section-content">
+                <h2>Design Tasks & Validation Deliverables</h2>
+
+                <h3>1. Refine Course Syllabi</h3>
+                <p><strong>Objective:</strong> Ensure the "Math Bridge" in CS 251 creates a logical progression into Deep Learning and Physical AI labs.</p>
+                <ul>
+                    <li><strong>CS 251 → DS 479:</strong> Linear Algebra via Tensors must directly enable backpropagation without additional remediation</li>
+                    <li><strong>CS 251 → AI 440:</strong> Vector calculus and optimization techniques must transfer to control systems and real-time learning</li>
+                    <li><strong>Deliverable:</strong> Detailed learning outcomes maps showing prerequisite mastery</li>
+                </ul>
+
+                <h3>2. Cross-Program Alignment</h3>
+                <p><strong>Objective:</strong> Position undergraduate core courses as a "Force Multiplier" for graduate programs (MS in Cyber, Data Science, and CS).</p>
+                <ul>
+                    <li><strong>Articulation Pathways:</strong> Define how BSAI courses compress prerequisites for graduate study</li>
+                    <li><strong>Dual Enrollment:</strong> Identify which BSAI 400-level courses can count toward MS programs</li>
+                    <li><strong>Delivery:</strong> Articulation agreements with graduate programs, cross-listed courses</li>
+                </ul>
+
+                <h3>3. NSA CyberAI Validation Evidence</h3>
+                <p><strong>Objective:</strong> Verify that the program produces measurable student work products for validation audits.</p>
+                <ul>
+                    <li><strong>Student Artifacts Required:</strong>
+                        <ul>
+                            <li>Lab reports demonstrating adversarial attack and defense methodologies</li>
+                            <li>Model documentation following NSA guidelines</li>
+                            <li>Mathematical proofs of algorithm correctness</li>
+                            <li>Secure code audits and vulnerability assessments</li>
+                            <li>AI governance and impact assessment documents</li>
+                        </ul>
+                    </li>
+                    <li><strong>Validation Checkpoint:</strong> Annual review of student artifacts by NSA assessors</li>
+                </ul>
+
+                <h3>4. Market Differentiation Narrative</h3>
+                <p><strong>Objective:</strong> Articulate why BSAI is superior to a standard CS degree for high-impact AI roles.</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dimension</th>
+                            <th>Standard CS Degree</th>
+                            <th>BSAI Program</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Math Preparation</strong></td>
+                            <td>Abstract linear algebra; limited GPU/tensor experience</td>
+                            <td>Tensor-native; backpropagation-ready from year 2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AI/ML Focus</strong></td>
+                            <td>Electives; limited depth</td>
+                            <td>60+ credits of specialized AI engineering</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Production Deployment</strong></td>
+                            <td>Theory-heavy; limited MLOps exposure</td>
+                            <td>Entire courses dedicated to AI 410, AI 430 production systems</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Physical AI / OT</strong></td>
+                            <td>Not addressed</td>
+                            <td>Dedicated AI 440 course + integration across robotics/IoT</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Validation Alignment</strong></td>
+                            <td>Generic; not CyberAI-specific</td>
+                            <td>Explicit NSA CyberAI validation pathway</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hiring Appeal</strong></td>
+                            <td>Generalist (requires specialization post-hire)</td>
+                            <td>AI-specialized engineer (immediate productivity)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            BSAI Curriculum Specification — February 2026 • City University of Seattle
+        </footer>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

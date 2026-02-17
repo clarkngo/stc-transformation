@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSAI Program Revision - Document Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a472a 0%, #2e7d32 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 60px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            color: #1a472a;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .status {
+            background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .doc-card {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            cursor: pointer;
+        }
+        
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-color: #2e7d32;
+        }
+        
+        .doc-card.primary {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+        
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            color: #1a472a;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .card-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .card-meta {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #2e7d32;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #1b5e20;
+            transform: scale(1.05);
+        }
+        
+        .btn-secondary {
+            background: #1565c0;
+        }
+        
+        .btn-secondary:hover {
+            background: #0d47a1;
+        }
+        
+        .info-banner {
+            background: #e3f2fd;
+            border-left: 5px solid #1565c0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .info-banner h3 {
+            color: #1565c0;
+            margin-bottom: 10px;
+        }
+        
+        .quick-links {
+            background: #fff3e0;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+        
+        .quick-links h3 {
+            color: #ef6c00;
+            margin-bottom: 20px;
+        }
+        
+        .quick-links ul {
+            list-style: none;
+        }
+        
+        .quick-links li {
+            margin: 12px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .quick-links li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 BSAI Program Revision</h1>
+            <p class="subtitle">Complete Documentation Package</p>
+            <p class="subtitle"><strong>Monday Leadership Meeting - February 2026</strong></p>
+            <div class="status">✅ All Documents Ready</div>
+        </div>
+        
+        <div class="info-banner">
+            <h3>📋 What's Included</h3>
+            <p>This package contains three comprehensive documents addressing all meeting requirements:</p>
+            <ul style="margin-left: 30px; margin-top: 10px;">
+                <li>Removal of Generative AI from core</li>
+                <li>Addition of Machine Learning as core requirement</li>
+                <li>New math foundation (Calculus, Linear Algebra, Probability)</li>
+                <li>Python-first programming pathway</li>
+                <li>Impact analysis on MS DS program</li>
+                <li>Cybersecurity/OT considerations</li>
+            </ul>
+        </div>
+        
+        <div class="cards-grid">
+            <div class="doc-card primary" onclick="window.open('BSAI_Executive_Summary.html', '_blank')">
+                <div class="card-icon">📊</div>
+                <div class="card-title">Executive Summary</div>
+                <div class="card-description">
+                    Concise presentation for Monday's leadership meeting. Includes problem statement, solutions, Q&A, and decision points.
+                </div>
+                <div class="card-meta">📄 Best for: Leadership presentation</div>
+                <a href="BSAI_Executive_Summary.html" class="btn" target="_blank">Open Executive Summary →</a>
+            </div>
+            
+            <div class="doc-card" onclick="window.open('BSAI_Program_Plan_Proposal.html', '_blank')">
+                <div class="card-icon">📖</div>
+                <div class="card-title">Full Program Proposal</div>
+                <div class="card-description">
+                    Complete 30-page documentation with curriculum details, course sequencing, implementation timeline, and references.
+                </div>
+                <div class="card-meta">📄 Best for: Detailed reference</div>
+                <a href="BSAI_Program_Plan_Proposal.html" class="btn btn-secondary" target="_blank">Open Full Proposal →</a>
+            </div>
+            
+            <div class="doc-card" onclick="window.open('BSAI_Meeting_Checklist.html', '_blank')">
+                <div class="card-icon">✅</div>
+                <div class="card-title">Meeting Checklist</div>
+                <div class="card-description">
+                    Verification document confirming all 17 meeting requirements are addressed with cross-references to proposal sections.
+                </div>
+                <div class="card-meta">📄 Best for: Verification & tracking</div>
+                <a href="BSAI_Meeting_Checklist.html" class="btn btn-secondary" target="_blank">Open Checklist →</a>
+            </div>
+        </div>
+        
+        <div class="quick-links">
+            <h3>🎯 Key Highlights</h3>
+            <ul>
+                <li><strong>Problem Identified:</strong> Math stops at Precalculus, missing ML foundation, R-based stats (industry uses Python)</li>
+                <li><strong>Solution Implemented:</strong> 3 new math courses, DS 479 Machine Learning core, Python-first pathway</li>
+                <li><strong>MS DS Impact:</strong> POSITIVE - Better-prepared students, strengthens pipeline</li>
+                <li><strong>CY/OT Needs:</strong> YES - Modern threats require AI understanding, recommend separate BSCY track</li>
+                <li><strong>Budget:</strong> ~$40k-$60k/year net cost (offset by enrollment increase)</li>
+                <li><strong>Timeline:</strong> Pilot Fall 2026, Full Implementation Fall 2027</li>
+            </ul>
+        </div>
+        
+        <div class="info-banner" style="margin-top: 30px;">
+            <h3>📥 Download Options</h3>
+            <p>All documents are also available in Markdown (.md) format for easy editing and version control.</p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; color: #666;">
+            <p><strong>Prepared for:</strong> City University of Seattle Leadership</p>
+            <p><strong>Date:</strong> February 14, 2026</p>
+            <p style="margin-top: 15px; font-size: 0.9em;">Click any card above to open the document in a new tab</p>
+        </div>
+    </div>
+</body>
+</html>

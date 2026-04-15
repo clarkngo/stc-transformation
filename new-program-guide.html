@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <title>New Program Proposal Guide — STC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #1e8449;
+            --accent-light: #eafaf1;
+            --primary: #1a365d;
+            --secondary: #2c5282;
+            --warn: #b7791f;
+            --warn-bg: #fffbeb;
+            --warn-border: #f6e05e;
+            --bg: #f7fafc;
+            --text: #2d3748;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --muted: #718096;
+            --step-bg: #f0fdf4;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.65;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            padding: 3.5rem 2rem 2.5rem;
+            text-align: center;
+        }
+        header h1 { margin: 0; font-size: 2.2rem; font-weight: 700; }
+        header p { margin: 0.6rem 0 0; opacity: 0.85; font-size: 1.05rem; }
+
+        .container { max-width: 960px; margin: 2rem auto; padding: 0 2rem 4rem; }
+
+        .nav-back { display: inline-block; margin-bottom: 1.5rem; color: var(--secondary); font-weight: 600; text-decoration: none; font-size: 0.95rem; }
+        .nav-back:hover { text-decoration: underline; }
+
+        /* TOC */
+        .toc {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .toc h2 { margin: 0 0 0.75rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+        .toc ol { margin: 0; padding-left: 1.25rem; columns: 2; column-gap: 2rem; }
+        .toc li { margin-bottom: 0.3rem; break-inside: avoid; }
+        .toc a { color: var(--secondary); text-decoration: none; font-size: 0.92rem; }
+        .toc a:hover { text-decoration: underline; }
+        @media (max-width: 600px) { .toc ol { columns: 1; } }
+
+        /* Section cards */
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            padding: 2rem 2.25rem;
+            margin-bottom: 1.75rem;
+            box-shadow: 0 2px 10px rgba(15,23,42,0.04);
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.4rem;
+            margin: 0 0 1.25rem;
+            scroll-margin-top: 1rem;
+        }
+        h3 { color: var(--secondary); font-size: 1rem; margin: 1.5rem 0 0.5rem; }
+        h4 { color: var(--primary); font-size: 0.95rem; margin: 1.25rem 0 0.35rem; }
+
+        /* Callout boxes */
+        .callout {
+            border-radius: 7px;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+            font-size: 0.93rem;
+        }
+        .callout.tip { background: var(--accent-light); border-left: 4px solid var(--accent); }
+        .callout.warn { background: var(--warn-bg); border-left: 4px solid var(--warn-border); }
+        .callout strong { display: block; margin-bottom: 0.25rem; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; }
+        .callout.tip strong { color: var(--accent); }
+        .callout.warn strong { color: var(--warn); }
+
+        /* Checklist */
+        .checklist { list-style: none; padding: 0; margin: 0.5rem 0; }
+        .checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.94rem;
+        }
+        .checklist li:last-child { border-bottom: none; }
+        .checklist li::before {
+            content: "☐";
+            font-size: 1rem;
+            color: var(--muted);
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Steps */
+        .steps { counter-reset: step; padding: 0; list-style: none; margin: 0.75rem 0; }
+        .steps li {
+            counter-increment: step;
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+        .steps li::before {
+            content: counter(step);
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.8rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .steps li > div { flex: 1; }
+        .steps li strong { display: block; margin-bottom: 0.2rem; font-size: 0.95rem; }
+
+        /* Section guide items */
+        .section-item {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .section-item-header {
+            background: #f8fafc;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+        }
+        .section-item-header .tag {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .tag.required { background: #fed7d7; color: #9b2c2c; }
+        .tag.consult { background: #bee3f8; color: #1a365d; }
+        .tag.attach { background: #e9d8fd; color: #44337a; }
+        .section-item-body { padding: 0.85rem 1rem; font-size: 0.92rem; }
+        .section-item-body p { margin: 0 0 0.5rem; }
+        .section-item-body p:last-child { margin-bottom: 0; }
+
+        /* Budget table */
+        .table-wrap { overflow-x: auto; margin: 0.75rem 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        th, td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border); }
+        th { background: var(--primary); color: #fff; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        td.label { font-weight: 600; color: var(--secondary); }
+        td.note { color: var(--muted); font-size: 0.83rem; }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 1.75rem; }
+        .timeline::before { content: ''; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: var(--border); }
+        .timeline-item { position: relative; margin-bottom: 1.25rem; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.45rem;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .timeline-item .phase {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+        }
+        .timeline-item strong { display: block; font-size: 0.95rem; color: var(--primary); }
+        .timeline-item p { margin: 0.25rem 0 0; font-size: 0.9rem; color: var(--muted); }
+
+        footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>New Program Proposal Guide</h1>
+    <p>STC — City University of Seattle &nbsp;&middot;&nbsp; Academic Affairs Committee (AAC) Process</p>
+</header>
+
+<div class="container">
+    <a class="nav-back" href="index.html">&larr; Back to STC Transformation</a>
+
+    <!-- TOC -->
+    <nav class="toc" aria-label="Table of contents">
+        <h2>Contents</h2>
+        <ol>
+            <li><a href="#overview">Overview &amp; When to Use This Guide</a></li>
+            <li><a href="#documents">Required Documents Checklist</a></li>
+            <li><a href="#suitability">Step 1 — Suitability Check</a></li>
+            <li><a href="#proposal-form">Step 2 — AAC Proposal Form Sections</a></li>
+            <li><a href="#budget">Step 3 — Budget Template</a></li>
+            <li><a href="#consultations">Step 4 — Department Consultations</a></li>
+            <li><a href="#curriculum-dev">Step 5 — Curriculum Development Plan</a></li>
+            <li><a href="#timeline">Launch Timeline Template</a></li>
+            <li><a href="#tips">Lessons from the BSAI Submission</a></li>
+        </ol>
+    </nav>
+
+    <!-- 1. Overview -->
+    <div class="card" id="overview">
+        <h2>1. Overview &amp; When to Use This Guide</h2>
+        <p>This guide walks through the Academic Affairs Committee (AAC) process for proposing a <strong>new degree or certificate program</strong> within an existing STC area of study (e.g., Computer Science, Data Science, Artificial Intelligence, Cybersecurity). It is derived from the AAC New Program or Certificate Proposal Form and the BSAI submission completed in April 2026.</p>
+        <p>Use this guide when STC is:</p>
+        <ul>
+            <li>Proposing a new undergraduate or graduate degree (B.S., M.S., etc.)</li>
+            <li>Proposing a new certificate program within an existing discipline</li>
+            <li><strong>Not</strong> proposing a new doctoral program (contact the Provost first)</li>
+            <li><strong>Not</strong> proposing a program in a discipline entirely new to the university (contact the Provost first)</li>
+        </ul>
+        <div class="callout tip">
+            <strong>Key principle</strong>
+            The AAC requires <em>narrative form</em> throughout the proposal — no bulleted lists. Submit the completed form and all attachments to the Executive Assistant to the Provost.
+        </div>
+    </div>
+
+    <!-- 2. Required Documents -->
+    <div class="card" id="documents">
+        <h2>2. Required Documents Checklist</h2>
+        <p>Assemble all of the following before submitting:</p>
+        <ul class="checklist">
+            <li>Completed AAC New Program or Certificate Proposal Form (narrative form, all sections)</li>
+            <li>Draft Program Plan — obtained from the Registrar's office</li>
+            <li>Completed Budget Template (all three fiscal years, quarterly breakdown)</li>
+            <li>New course descriptions for any courses being created (title, credits, prerequisites, outcomes)</li>
+            <li>Advisement degree audit / program plan sheet (from the Registrar)</li>
+            <li>Letters of support from external credentialing bodies (if obtained)</li>
+            <li>Library consultation sign-off confirming no new databases are required (or listing additions needed)</li>
+        </ul>
+    </div>
+
+    <!-- 3. Suitability -->
+    <div class="card" id="suitability">
+        <h2>3. Step 1 — Suitability Check</h2>
+        <p>Before filling out the full proposal, answer the three suitability questions on the first page of the AAC form. The routing depends on your answers:</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Question</th><th>If "Yes"</th><th>If "No"</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1. Is this proposal for a new <strong>doctoral degree</strong> program?</td>
+                        <td>Contact the Provost before proceeding.</td>
+                        <td>Continue.</td>
+                    </tr>
+                    <tr>
+                        <td>2. Is the area of study <strong>entirely new</strong> to the university (no existing degree or discipline)?</td>
+                        <td>Contact the Provost before proceeding.</td>
+                        <td>Continue.</td>
+                    </tr>
+                    <tr>
+                        <td>3. Does the proposed program fall within an <strong>existing academic area or department</strong>?</td>
+                        <td>Continue to the full form.</td>
+                        <td>Contact the Provost before proceeding.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="callout warn">
+            <strong>Important</strong>
+            For STC, a new B.S. in AI answered: doctoral = No, entirely new discipline = Yes (AI standalone did not exist), existing department = Yes (STC). Because Q2 was "Yes," the Provost was consulted before the proposal was developed further.
+        </div>
+    </div>
+
+    <!-- 4. Proposal Form -->
+    <div class="card" id="proposal-form">
+        <h2>4. Step 2 — AAC Proposal Form Sections</h2>
+        <p>The form is completed in narrative form. Each section below includes the required content, who is responsible, and tips from the BSAI submission.</p>
+
+        <div class="section-item">
+            <div class="section-item-header">Program Description <span class="tag required">Required</span></div>
+            <div class="section-item-body">
+                <p>Write a concise narrative (2–4 paragraphs) describing what the program does, who it serves, and what distinguishes it. Avoid listing; integrate concepts into full sentences.</p>
+                <p><em>Cover: core curriculum focus, advanced topic areas, pedagogical philosophy, and target career outcomes.</em></p>
+            </div>
+        </div>
+
+        <div class="section-item">
+            <div class="section-item-header">Alignment to Mission and Goals <span class="tag required">Required</span></div>
+            <div class="section-item-body">
+                <p>Address each element of CityU's Mission, Vision, and Core Values in separate sub-sections. Each must be its own narrative paragraph — do not combine.</p>
+                <ul style="font-size:0.92rem; margin:0.5rem 0 0; padding-left:1.25rem;">
+                    <li><strong>Mission:</strong> "To change lives for good by offering high-quality and relevant lifelong education to anyone with the desire to learn."</li>
+                    <li><strong>Vision:</strong> "To be the destination of choice for accessible, career-focused education."</li>
+                    <li><strong>Core Values:</strong> Flexibility, Accessibility, Innovation, Relevance, Global Perspectives — address all five.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-item">
+            <div class="section-item-header">Education Offering — Program Outcomes <span class="tag required">Required</span></div>
+            <div class="section-item-body">
+                <p>List 5–7 program outcomes. Each outcome must:</p>
+                <ul style="font-size:0.92rem; margin:0.25rem 0 0; padding-left:1.25rem;">
+                    <li>Begin with an action verb (Apply, Integrate, Evaluate, Create, Collaborate).</li>
+                    <li>End with a parenthetical label mapping it to an accreditation domain (e.g., <em>AI Principles and Practices</em>, <em>Quantitative Literacy</em>, <em>Communication</em>).</li>
+                    <li>Be verifiable through program assessments.</li>
+                </ul>
+                <p style="margin-top:0.5rem;">Attach the <strong>Draft Program Plan</strong> from the Registrar as a separate document.</p>
+            </div>
+        </div>
+
+        <div class="section-item">
+            <div class="section-item-header">Implementation and Timeline <span class="tag required">Required</span></div>
+            <div class="section-item-body">
+                <p>Provide: (1) proposed launch date for recruitment, (2) delivery modality (online, hybrid, on-ground) including initial launch modality, and (3) a phased timeline from marketing kick-off through inaugural cohort start.</p>
+                <p>See the <a href="#timeline">Launch Timeline Template</a> section for the recommended structure.</p>
+            </div>
+        </div>
+
+        <div class="section-item">
+            <div class="section-item-header">Marketing <span class="tag consult">Consult: Enrollment &amp; Marketing VP</span></div>
+            <div class="section-item-body">
+                <p>Address all four sub-questions in narrative form:</p>
+                <ol style="font-size:0.92rem; margin:0.25rem 0 0; padding-left:1.25rem;">
+                    <li><strong>Target Audience:</strong> Demographics + specific needs of that population.</li>
+                    <li><strong>Strategies &amp; Differentiators:</strong> How the program will be positioned vs. competitors.</li>
+                    <li><strong>Competitors:</strong> Regional, national online, and non-traditional (bootcamps, certifications) — organized by tier.</li>
+                    <li><strong>Job Market Outlook:</strong> Growth projections, salary benchmarks, and emerging career paths. Cite BLS or credible sources.</li>
+                </ol>
+                <p style="margin-top:0.5rem;">Also indicate whether the program will be marketed to international students (yes/no checkbox).</p>
+            </div>
+        </div>
+
+        <div class="section-item">
+            <div class="section-item-header">Physical Facilities Impact <span class="tag required">Required</span></div>
+            <div class="section-item-body">
+                <p>Describe whether the program requires any unique physical facilities (computer labs, wet labs, specialized equipment). If a "Cloud-First" or "Portable Lab" approach is used, explain the rationale and any residual networking or hardware requirements.</p>
+            </div>
+        </div>
+
+        <div class="section-item">
+            <div class="section-item-header">Department Consultations <span class="tag consult">Consult: 4 departments</span></div>
+            <div class="section-item-body">
+                <p>Four consultations are required — each becomes its own narrative sub-section. See <a href="#consultations">Step 4</a> for full details.</p>
+            </div>
+        </div>
+
+        <div class="section-item">
+            <div class="section-item-header">Budget <span class="tag attach">Attach: Budget Template</span></div>
+            <div class="section-item-body">
+                <p>Complete the official Budget Template (3 fiscal years, quarterly). Attach the full template to the proposal. See <a href="#budget">Step 3</a> for guidance.</p>
+            </div>
+        </div>
+
+        <div class="section-item">
+            <div class="section-item-header">External Authorizations <span class="tag required">Required</span></div>
+            <div class="section-item-body">
+                <p>Identify applicable professional standards, credentialing bodies, and regulatory frameworks. Common for STC programs:</p>
+                <ul style="font-size:0.92rem; margin:0.25rem 0 0; padding-left:1.25rem;">
+                    <li><strong>ABET</strong> (Computing Accreditation Commission) — map program outcomes to ABET student outcomes.</li>
+                    <li><strong>NWCCU</strong> — confirm the program follows the regional accreditation notification process; Board of Trustees approval precedes NWCCU notification.</li>
+                    <li><strong>NIST AI RMF</strong> — relevant for AI/cybersecurity programs.</li>
+                    <li>Any applicable federal mandates (e.g., maritime cybersecurity, CMMC).</li>
+                </ul>
+                <p style="margin-top:0.5rem;">Attach letters of support from credentialing bodies if obtained.</p>
+            </div>
+        </div>
+
+        <div class="section-item">
+            <div class="section-item-header">Faculty Impact <span class="tag required">Required</span></div>
+            <div class="section-item-body">
+                <p>Narrative must address three areas:</p>
+                <ol style="font-size:0.92rem; margin:0.25rem 0 0; padding-left:1.25rem;">
+                    <li><strong>Professional Development Needs:</strong> What skills do existing faculty need to upskill in?</li>
+                    <li><strong>Specialized Faculty Requirements:</strong> Which courses require industry-practitioner expertise beyond academic credentials?</li>
+                    <li><strong>Existing vs. New Recruitment:</strong> Which courses can be covered by current faculty? What SME/adjunct hiring is needed and by when?</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="section-item">
+            <div class="section-item-header">Curriculum Development <span class="tag required">Required</span></div>
+            <div class="section-item-body">
+                <p>Outline the development funding plan and phased schedule. See <a href="#curriculum-dev">Step 5</a> for details.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Budget -->
+    <div class="card" id="budget">
+        <h2>5. Step 3 — Budget Template</h2>
+        <p>The official Budget Template spans three fiscal years (12 quarters). Key guidance:</p>
+
+        <div class="callout warn">
+            <strong>Template rule</strong>
+            Cells marked <code>[auto]</code> contain automated calculations — do not overwrite them. Only enter figures in the non-auto input cells.
+        </div>
+
+        <h3>Expenditure Categories</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Category</th><th>What to Enter</th><th>Notes</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="label">Required FT Academic Personnel</td>
+                        <td>Headcount, FTE fraction, average annual salary</td>
+                        <td class="note">Benefits auto-calculated at 30%. Build up FTE gradually (e.g., 0.25 → 0.5 as enrollment grows).</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Required FT Services Personnel</td>
+                        <td>Headcount, FTE fraction, average annual salary</td>
+                        <td class="note">Covers advising, program management, and cloud/technical support staff. Start lean; add FTE as enrollment crosses thresholds (e.g., 50 students).</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Teaching Faculty</td>
+                        <td>Number of instructors, credits contracted, average per-credit rate</td>
+                        <td class="note">Per-credit rate is set by HR/Academic Affairs. Work comp (~10%) is auto-calculated. Ramp up sections as cohort grows.</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Program Development (SME Fees)</td>
+                        <td>Number of classes to develop per quarter, average per-SME fee</td>
+                        <td class="note">Per the LD&amp;E SME fee schedule: <strong>$2,500 per 5-credit course</strong>. Plan development in phases — do not budget all courses in Q1. Budget 8 new courses = $20,000 total.</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Faculty Development</td>
+                        <td>Conference fees, travel, New Faculty Orientation (NFO), professional dues</td>
+                        <td class="note">Include at least one conference per FTE per year. NFO applies to all new faculty.</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Administrative Travel</td>
+                        <td>Mileage, airfare, hotel, per diem</td>
+                        <td class="note">Include ~3% annual escalation for inflationary adjustment.</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Library and Other</td>
+                        <td>Instructional materials (auto from credits), new library materials</td>
+                        <td class="note">Consult Library Director for any new database costs. If none needed, leave row blank. IEEE Xplore and ACM Digital Library are sufficient for most STC programs.</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Marketing Costs</td>
+                        <td>Scholarships/discounts (auto), Events/Promotion/Sponsorship new spend</td>
+                        <td class="note">Scholarships/discounts auto-calculate from enrollment. Get Events/Promotion figures from the Enrollment &amp; Marketing VP during consultation.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Revenue Section</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Input</th><th>What to Enter</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="label">Unduplicated Headcount</td>
+                        <td>Number of unique students enrolled per quarter. Build a cohort-by-cohort table in the Assumptions section to arrive at these totals.</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Average Credits per HC</td>
+                        <td>Typically 10 credits/quarter for programs on a quarter system.</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Number of Classes Offered</td>
+                        <td>Sections running in that quarter.</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Cost Per Credit</td>
+                        <td>Current tuition rate from the university catalog. Apply a ~2.5% annual escalation factor.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Assumptions / Notes Section</h3>
+        <p>Use the Assumptions table at the bottom of the Budget Sheet to document your cohort enrollment model (e.g., Winter 2027: 8 students, Spring 2027: +8 new, etc.). This is required and must reconcile with the Unduplicated Headcount row.</p>
+
+        <div class="callout tip">
+            <strong>Expect a deficit in Year 1</strong>
+            It is normal and expected for total expenses to exceed revenue in the first two quarters while courses are being developed and the inaugural cohort is small. The budget should demonstrate a clear path to positive contribution by mid-Year 2.
+        </div>
+    </div>
+
+    <!-- 6. Consultations -->
+    <div class="card" id="consultations">
+        <h2>6. Step 4 — Department Consultations</h2>
+        <p>Four consultations are required. Each must be completed <em>before</em> submission, and the outcome of each forms a dedicated narrative sub-section in the proposal under "Department Consultations."</p>
+
+        <ol class="steps">
+            <li>
+                <div>
+                    <strong>Student Services</strong>
+                    Meet with the VP of Enrollment, Director of Student Services, and Director of ISO (if international students will be admitted). The key question: will the program require additional advising, coordination, or international student services staff? Document any staffing thresholds (e.g., "a dedicated advisor will be needed once enrollment exceeds 50 students").
+                </div>
+            </li>
+            <li>
+                <div>
+                    <strong>Library &amp; Learning Resource Center</strong>
+                    Share the draft course list with the Library Director. The key question: are any new databases or discipline-specific resources needed? For STC programs, IEEE Xplore and ACM Digital Library typically cover core needs. Confirm whether O'Reilly Learning access is in place. Note arXiv as a free supplement.
+                </div>
+            </li>
+            <li>
+                <div>
+                    <strong>Financial Aid</strong>
+                    Confirm the program is structured for Title IV eligibility (standard credit-hour model, accredited B.S. or M.S. format). Document employer reimbursement opportunities, military benefit eligibility (GI Bill), and how startup costs will be funded (typically from the school's strategic growth budget, not financial aid).
+                </div>
+            </li>
+            <li>
+                <div>
+                    <strong>Enrollment &amp; Marketing</strong>
+                    Consult the VP of Enrollment &amp; Marketing for U.S. programs (or VP of Enrollment &amp; Operations for Canadian programs). Determine: (1) whether additional marketing funds are needed beyond existing spend, and (2) the figure for the Events/Promotion/Sponsorship row in the Budget Template. Document this as the source in the budget.
+                </div>
+            </li>
+        </ol>
+
+        <div class="callout tip">
+            <strong>Timing</strong>
+            Schedule consultations early — ideally 4–6 weeks before submission. Library and Financial Aid sign-offs can take 1–2 weeks to receive in writing.
+        </div>
+    </div>
+
+    <!-- 7. Curriculum Dev -->
+    <div class="card" id="curriculum-dev">
+        <h2>7. Step 5 — Curriculum Development Plan</h2>
+        <p>The proposal must include a narrative identifying which development tasks must be completed <em>before</em> launch and which can follow in a phased rollout.</p>
+
+        <h3>SME Fee Structure</h3>
+        <ul>
+            <li>Per the LD&amp;E SME Contracts &amp; Fees schedule: <strong>$2,500 development fee per 5-credit course</strong>.</li>
+            <li>Budget and schedule development across multiple quarters rather than front-loading all courses in Q1.</li>
+            <li>Total for 8 new courses: <strong>$20,000</strong>.</li>
+        </ul>
+
+        <h3>Pre-Launch Tasks (Must be complete before inaugural cohort)</h3>
+        <ul class="checklist">
+            <li>Develop all preparatory / foundational courses (the first-quarter onboarding sequence).</li>
+            <li>Create onboarding curriculum covering cloud environment setup (e.g., GitHub Codespaces, development tooling).</li>
+            <li>Complete all Year-1 core courses for a stable initial pathway.</li>
+            <li>Finalize course outcomes and coding demonstrations for information sessions.</li>
+            <li>Recruit and onboard SMEs for pre-launch courses.</li>
+        </ul>
+
+        <h3>Post-Launch Tasks (Phased rollout, Year 1–2)</h3>
+        <ul class="checklist">
+            <li>Develop upper-division / Depth of Study courses, timed so they are ready when the cohort reaches them.</li>
+            <li>Refine capstone portfolio templates using feedback from the inaugural cohort's first-term projects.</li>
+            <li>Establish a quarterly revision cycle for technical labs to keep tools and specifications current.</li>
+        </ul>
+
+        <div class="callout warn">
+            <strong>Avoid over-building early</strong>
+            For rapidly evolving fields (AI, cloud), deferring advanced-course development until 6–12 months before delivery allows the content to reflect the actual state of the tools students will use.
+        </div>
+    </div>
+
+    <!-- 8. Timeline -->
+    <div class="card" id="timeline">
+        <h2>8. Launch Timeline Template</h2>
+        <p>Adapt the phases below to the specific program. Replace placeholder months with actual dates from your planning calendar.</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="phase">Phase 0 — Internal Alignment</div>
+                <strong>Provost Consultation (if required)</strong>
+                <p>Required before developing the proposal if the program is a new discipline or doctoral-level. Confirm routing and any pre-approval conditions.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="phase">Phase 1 — Proposal Development (~8–12 weeks)</div>
+                <strong>Draft proposal + complete all 4 department consultations</strong>
+                <p>Complete all AAC form sections. Obtain library and financial aid sign-offs. Get marketing figures. Complete the budget template.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="phase">Phase 2 — AAC Submission &amp; Approval</div>
+                <strong>Submit to Executive Assistant to the Provost</strong>
+                <p>Allow 4–6 weeks for AAC review. Address any revision requests before Board of Trustees submission.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="phase">Phase 3 — Recruitment Launch</div>
+                <strong>Marketing campaign goes live</strong>
+                <p>Targeted digital campaigns (LinkedIn, GEO-optimized content). Begin open house series to demonstrate the program.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="phase">Phase 4 — Open House Series (~4–5 months before start)</div>
+                <strong>Monthly virtual sessions</strong>
+                <p>Live demonstrations of hands-on curriculum. Focus on the program's differentiators and "Applied Research from Day 1" approach.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="phase">Phase 5 — Admissions Window</div>
+                <strong>Application deadline &amp; transcript evaluation</strong>
+                <p>Process applications, evaluate transfer credits, finalize inaugural cohort. Communicate preparatory course requirements to admitted students.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="phase">Phase 6 — Cohort Onboarding</div>
+                <strong>Preparatory / bridge quarter</strong>
+                <p>Offer preparatory courses (programming, math, computing foundations) to ensure all students enter the core on equal footing.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="phase">Phase 7 — Inaugural Class Start</div>
+                <strong>First academic term begins</strong>
+                <p>Monitor closely. Collect feedback at weeks 2, 5, and end-of-term for immediate content refinement.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. Tips -->
+    <div class="card" id="tips">
+        <h2>9. Lessons from the BSAI Submission</h2>
+        <p>Practical notes from preparing and submitting the BSAI proposal to the AAC in April 2026.</p>
+
+        <h3>On the Proposal Form</h3>
+        <ul>
+            <li><strong>No bullet points allowed.</strong> The AAC explicitly requires narrative form throughout. Write full paragraphs, even for lists of items — use transition language like "First… Second… Additionally…"</li>
+            <li><strong>Outcome labels matter.</strong> Each program outcome should close with a parenthetical label that maps to an accreditation framework (ABET, program review). This makes the assessment alignment visible to reviewers.</li>
+            <li><strong>Address all five core values individually.</strong> Reviewers check for each: Flexibility, Accessibility, Innovation, Relevance, Global Perspectives. Missing one risks a revision request.</li>
+            <li><strong>Competitor analysis should have tiers.</strong> Organize by: (1) regional academic, (2) national online, (3) non-traditional / skills-first. Distinguishing these three tiers shows market awareness.</li>
+        </ul>
+
+        <h3>On the Budget</h3>
+        <ul>
+            <li><strong>Phase SME development across quarters.</strong> Spreading course development over the first year (e.g., 2 courses per quarter) smooths the expense curve and is more realistic than developing all courses at once.</li>
+            <li><strong>Front-load preparatory courses.</strong> All courses in the onboarding/preparatory sequence must be fully developed before the program launches. Upper-division courses can be developed during Year 1.</li>
+            <li><strong>Get the Events/Promotion figure from Marketing first.</strong> This row is a required input and cannot be estimated — it must come from the Enrollment &amp; Marketing VP consultation.</li>
+            <li><strong>Model enrollment conservatively.</strong> Use a cohort-by-cohort model in the Assumptions table. Plan for students to take an average of 10 credits per quarter; some will accelerate, some will not.</li>
+        </ul>
+
+        <h3>On Accreditation &amp; External Authorizations</h3>
+        <ul>
+            <li><strong>ABET criteria are a living target.</strong> For AI programs, cite the most recently approved ABET Computing Area criteria and confirm with the Provost's office whether formal ABET pursuit is in scope for Year 1.</li>
+            <li><strong>NWCCU notification is post-approval.</strong> The Board of Trustees approves the program first; NWCCU notification comes after. Do not conflate the two in the proposal narrative.</li>
+        </ul>
+
+        <h3>On Faculty</h3>
+        <ul>
+            <li><strong>Be specific about which courses need industry SMEs vs. existing faculty.</strong> Reviewers look for realistic staffing plans. Generalities like "we will hire new faculty" are not sufficient — name the courses, the expertise required, and the timeline.</li>
+            <li><strong>Plan for faculty development lead time.</strong> SMEs for advanced courses (AI engineering, MLOps/AgentOps, Digital Twins) need to be recruited 3–6 months before their courses launch.</li>
+        </ul>
+
+        <h3>On Marketing</h3>
+        <ul>
+            <li><strong>Position Generative Engine Optimization (GEO) alongside SEO.</strong> Traditional keyword SEO is no longer sufficient — AI-generated search responses increasingly surface structured, authoritative content. A dedicated STC web presence (e.g., stc.cityu.edu) strengthens GEO signals.</li>
+            <li><strong>The "online-first" launch is a deliberate strategy, not a limitation.</strong> Frame it as enabling immediate global reach and allowing content to be perfected before hybrid delivery is introduced.</li>
+        </ul>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 City University of Seattle &mdash; School of Technology &amp; Computing &nbsp;&middot;&nbsp; Internal use only
+</footer>
+
+</body>
+</html>

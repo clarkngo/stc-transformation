@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <title>BSAI — AAC Approved Program (April 14, 2026)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2c5282;
+            --accent: #ed8936;
+            --green: #1e8449;
+            --bg: #f7fafc;
+            --text: #2d3748;
+            --white: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--green), #145a32);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        h1 { margin: 0; font-size: 2.5rem; font-weight: 700; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; margin-top: 0; }
+        h3 { color: var(--secondary); margin-top: 2rem; }
+        h4 { color: var(--primary); margin-top: 1.5rem; margin-bottom: 0.5rem; }
+
+        .tagline { font-size: 1.25rem; opacity: 0.9; margin-top: 1rem; }
+        .nav-back { display: inline-block; margin-bottom: 1.5rem; color: var(--secondary); font-weight: 600; text-decoration: none; }
+        .nav-back:hover { text-decoration: underline; }
+
+        .table-container { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: var(--white);
+            font-size: 0.95rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        th { background: var(--primary); color: var(--white); font-weight: 600; }
+        tr:hover { background: #f1f5f9; }
+        td:first-child { font-family: 'Fira Code', monospace; font-size: 0.85rem; white-space: nowrap; color: var(--secondary); }
+
+        .highlight-row td { font-style: italic; color: var(--green); }
+        .highlight-row td:first-child { color: var(--green); }
+
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .outcome-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--green);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+        }
+        .outcome-card .num { font-weight: 700; color: var(--green); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+
+        .course-block {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .course-block-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.75rem 1.25rem;
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .course-block-header .credits { font-size: 0.85rem; opacity: 0.85; font-weight: 400; }
+        .course-block-body { padding: 1.25rem; }
+
+        .new-badge {
+            display: inline-block;
+            background: var(--green);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .course-desc { font-size: 0.92rem; color: #4a5568; margin: 0.5rem 0 1rem 0; }
+        .course-outcomes ol { margin: 0; padding-left: 1.2rem; font-size: 0.9rem; color: #4a5568; }
+        .course-outcomes ol li { margin-bottom: 0.3rem; }
+        details summary { cursor: pointer; font-weight: 600; color: var(--secondary); margin-bottom: 0.5rem; }
+        details summary:hover { color: var(--primary); }
+
+        .gen-ed-table td:last-child { font-weight: 600; color: var(--primary); }
+
+        .footer { text-align: center; padding: 4rem 2rem; color: #718096; font-size: 0.875rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="badge">AAC Approved &mdash; April 14, 2026</div>
+    <h1>Bachelor of Science in Artificial Intelligence</h1>
+    <div class="tagline">City University of Seattle &mdash; School of Technology &amp; Computing</div>
+</header>
+
+<div class="container">
+    <a class="nav-back" href="index.html">&larr; Back to STC Transformation</a>
+
+    <!-- Program Justification -->
+    <section>
+        <h2>Program Justification</h2>
+        <p>The School of Technology &amp; Computing (STC) currently offers four graduate degree programs: Artificial Intelligence (AI), Computer Science (CS), Cybersecurity (CY), and Data Science (DS). At the undergraduate level, STC offers Computer Science, Cybersecurity, and Data Science, but does not yet have a dedicated Artificial Intelligence program. In response to a fundamental shift in the global economy and educational landscape in 2026, STC is launching a new undergraduate degree: the <strong>Bachelor of Science in Artificial Intelligence (BSAI)</strong>.</p>
+        <ul>
+            <li><strong>Labor market demand:</strong> As of 2026, the demand for AI specialists is projected to grow by 26%&mdash;significantly outpacing the average growth rate for traditional software developers (U.S. Bureau of Labor Statistics).</li>
+            <li><strong>Curriculum differentiation:</strong> A standalone BSAI provides greater mathematical rigor and a focused curriculum in NLP, Computer Vision, Deep Learning, and Reinforcement Learning&mdash;along with a distinct professional identity in machine reasoning and autonomous systems&mdash;compared to a concentration within BSCS.</li>
+            <li><strong>Accreditation alignment:</strong> As of the 2024&ndash;2025 cycle, ABET has formally established standalone criteria for Artificial Intelligence programs.</li>
+            <li><strong>Institutional growth:</strong> A BSAI program is a powerful recruitment tool, as today&rsquo;s students increasingly seek &ldquo;future-proof&rdquo; degrees.</li>
+        </ul>
+    </section>
+
+    <!-- Program Description -->
+    <section>
+        <h2>Program Description</h2>
+        <p>The Bachelor of Science in Artificial Intelligence (BSAI) is designed to produce the next generation of engineers who will define the &ldquo;Agentic Era.&rdquo; The curriculum seamlessly integrates core computing foundations&mdash;including operating systems, networks, and cloud technologies&mdash;with advanced topics such as machine learning, deep learning, natural language processing, and vector databases.</p>
+        <p>By placing a strong emphasis on <strong>MLOps and AgentOps</strong>, the program moves beyond traditional &ldquo;AI lab&rdquo; concepts into production-grade systems. Students develop expertise in &ldquo;spec-first&rdquo; development, orchestrating autonomous agents that navigate complex digital workflows and interact with the physical world via digital twins and physical AI. This comprehensive approach equips graduates for impactful careers as AI, ML, and physical AI engineers.</p>
+    </section>
+
+    <!-- Program Outcomes -->
+    <section>
+        <h2>Program Outcomes</h2>
+        <p>Upon completion of the BS in Artificial Intelligence, graduates will be able to:</p>
+        <div class="outcomes-grid">
+            <div class="outcome-card">
+                <div class="num">1 &mdash; AI Principles and Practices</div>
+                <p>Apply fundamental principles of traditional and Generative AI, integrating Natural Language Processing (NLP) and machine learning to build intelligent interfaces.</p>
+            </div>
+            <div class="outcome-card">
+                <div class="num">2 &mdash; General AI Knowledge</div>
+                <p>Integrate foundational knowledge across Operating Systems, Networks, and Cloud Computing to deploy resilient, scalable AI-driven cyber-physical systems.</p>
+            </div>
+            <div class="outcome-card">
+                <div class="num">3 &mdash; Critical and Ethical Thinking</div>
+                <p>Apply critical and ethical thinking to the &ldquo;Cyber and AI&rdquo; landscape, addressing challenges in privacy, deepfakes, and algorithmic accountability.</p>
+            </div>
+            <div class="outcome-card">
+                <div class="num">4 &mdash; Quantitative Literacy</div>
+                <p>Evaluate complex data structures and algorithms using Discrete Mathematics, Data Structures, and high-dimensional Vector Databases to optimize AI-native search and retrieval.</p>
+            </div>
+            <div class="outcome-card">
+                <div class="num">5 &mdash; Communication</div>
+                <p>Create advanced technical documentation and &ldquo;specifications-as-source-code&rdquo; to direct autonomous agents and human-AI collaborative workflows.</p>
+            </div>
+            <div class="outcome-card">
+                <div class="num">6 &mdash; Collaboration</div>
+                <p>Collaborate effectively with diverse engineering teams to design and maintain the &ldquo;MLOps and AgentOps&rdquo; pipelines that bridge the gap between digital models and physical autonomous systems.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admission -->
+    <section>
+        <h2>Admission Requirements</h2>
+        <p>City University of Seattle&rsquo;s undergraduate admission requirements apply to this program. <strong>Total Required Credits: 180</strong></p>
+    </section>
+
+    <!-- Program Structure -->
+    <section>
+        <h2>Program Structure</h2>
+
+        <!-- Lower Division -->
+        <div class="course-block">
+            <div class="course-block-header">
+                Lower Division Requirements <span class="credits">90 Credits</span>
+            </div>
+            <div class="course-block-body">
+                <p>Students must meet General Education requirements. The Quantitative/Symbolic Reasoning requirement is met through <em>MATH 141 Precalculus</em> (or equivalent; MATH 138 is a prerequisite).</p>
+                <div class="table-container">
+                    <table class="gen-ed-table">
+                        <thead><tr><th>General Education Area</th><th>Credits</th></tr></thead>
+                        <tbody>
+                            <tr><td>College Composition I** &amp; II (CCII)</td><td>10</td></tr>
+                            <tr><td>Quantitative/Symbolic Reasoning (QSR)</td><td>5</td></tr>
+                            <tr><td>Humanities (HU)</td><td>10</td></tr>
+                            <tr><td>Social Sciences (SS)</td><td>15</td></tr>
+                            <tr><td>Natural Sciences (NS)</td><td>15</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="font-size:0.85rem;color:#718096;">** If College Composition I is waived through transfer or articulation, students must take an additional 5 quarter credits from a humanities discipline.</p>
+            </div>
+        </div>
+
+        <!-- Preparatory -->
+        <div class="course-block">
+            <div class="course-block-header">
+                Preparatory Courses <span class="credits">15 Credits</span>
+            </div>
+            <div class="course-block-body">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Code</th><th>Course</th><th>Credits</th></tr></thead>
+                        <tbody>
+                            <tr><td>CS 132</td><td>Computer Science I *</td><td>5</td></tr>
+                            <tr class="highlight-row"><td>AI 251</td><td>Statistical Computing and AI Math (NS) * <span class="new-badge">NEW</span></td><td>5</td></tr>
+                            <tr><td>IS 201</td><td>Fundamentals of Computing</td><td>5</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core -->
+        <div class="course-block">
+            <div class="course-block-header">
+                Core Requirements <span class="credits">45 Credits</span>
+            </div>
+            <div class="course-block-body">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Code</th><th>Course</th><th>Credits</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row"><td>AI 320</td><td>Fundamentals of AI * <span class="new-badge">NEW</span></td><td>5</td></tr>
+                            <tr><td>CS 330</td><td>Network Communications *</td><td>5</td></tr>
+                            <tr><td>CS 340</td><td>Operating Systems *</td><td>5</td></tr>
+                            <tr class="highlight-row"><td>CS 352</td><td>Discrete Mathematics and Data Structures in Computing (NS) * <span class="new-badge">NEW</span></td><td>5</td></tr>
+                            <tr><td>DS 479</td><td>Algorithms for Machine and Deep Learning *</td><td>5</td></tr>
+                            <tr><td>IS 345</td><td>Cybersecurity</td><td>5</td></tr>
+                            <tr><td>IS 360</td><td>Database Technologies</td><td>5</td></tr>
+                            <tr class="highlight-row"><td>AI 371</td><td>Cyber and AI Ethics (SS) <span class="new-badge">NEW</span></td><td>5</td></tr>
+                            <tr><td>IT 434</td><td>Cloud Computing *</td><td>5</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Depth of Study -->
+        <div class="course-block">
+            <div class="course-block-header">
+                Depth of Study: Artificial Intelligence <span class="credits">30 Credits (select 30)</span>
+            </div>
+            <div class="course-block-body">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Code</th><th>Course</th><th>Credits</th></tr></thead>
+                        <tbody>
+                            <tr class="highlight-row"><td>AI 410</td><td>AI Engineering <span class="new-badge">NEW</span></td><td>5</td></tr>
+                            <tr class="highlight-row"><td>AI 420</td><td>Agentic AI <span class="new-badge">NEW</span></td><td>5</td></tr>
+                            <tr class="highlight-row"><td>AI 430</td><td>MLOps and AgentOps <span class="new-badge">NEW</span></td><td>5</td></tr>
+                            <tr class="highlight-row"><td>AI 440</td><td>Digital Twins and Physical AI <span class="new-badge">NEW</span></td><td>5</td></tr>
+                            <tr><td>CS 469</td><td>Data Structures and Algorithms in Computing</td><td>5</td></tr>
+                            <tr><td>DS 484</td><td>Big Data Systems</td><td>5</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Electives, Internship, Capstone -->
+        <div class="course-block">
+            <div class="course-block-header">
+                Electives <span class="credits">10 Credits</span>
+            </div>
+            <div class="course-block-body">
+                <p>Students may select two electives from any other undergraduate upper-division courses within the School of Technology &amp; Computing, or complete the internship.</p>
+            </div>
+        </div>
+
+        <div class="course-block">
+            <div class="course-block-header">
+                Internship (Repeatable) <span class="credits">5 Credits per enrollment</span>
+            </div>
+            <div class="course-block-body">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Code</th><th>Course</th><th>Credits</th></tr></thead>
+                        <tbody>
+                            <tr><td>CS 493</td><td>Technology and Computing Internship * (pre-approval required)</td><td>5</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-block">
+            <div class="course-block-header">
+                Capstone <span class="credits">5 Credits</span>
+            </div>
+            <div class="course-block-body">
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>Code</th><th>Course</th><th>Credits</th></tr></thead>
+                        <tbody>
+                            <tr><td>CS 497</td><td>Technology and Computing Capstone *</td><td>5</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Course Descriptions -->
+    <section>
+        <h2>New Course Descriptions</h2>
+        <p>The following eight courses were created specifically for the BSAI program and are included in the AAC submission.</p>
+
+        <!-- AI 251 -->
+        <div class="course-block">
+            <div class="course-block-header">AI 251 &mdash; Statistical Computing and AI Math (NS) *</div>
+            <div class="course-block-body">
+                <p class="course-desc">Bridges classical statistics and the high-dimensional mathematics of Machine Learning and Deep Learning using Python. Students evolve from data explorers into architects of mathematical optimization&mdash;mastering inferential statistics (t-tests, ANOVA, regression), Linear Algebra for tensors, Multivariable Calculus, and backpropagation to understand how gradients power model learning. <strong>5 Credits.</strong> Prerequisite: MATH 138 or MATH 141.</p>
+                <details>
+                    <summary>Course Outcomes</summary>
+                    <div class="course-outcomes">
+                        <ol>
+                            <li>Map classical statistical concepts (variance, correlation) to their Linear Algebra equivalents (norms, dot products).</li>
+                            <li>Execute complex data transformations and matrix operations on high-dimensional datasets using NumPy and Tensors.</li>
+                            <li>Interpret Gradient Descent paths and loss surfaces to diagnose why an AI model may fail to converge.</li>
+                            <li>Justify the selection of specific probability distributions (e.g., Gaussian, Bernoulli) when designing the loss function of a Deep Learning model.</li>
+                            <li>Build and visualize an end-to-end optimization loop in Python that uses derivatives to minimize prediction error.</li>
+                        </ol>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- AI 320 -->
+        <div class="course-block">
+            <div class="course-block-header">AI 320 &mdash; Fundamentals of AI *</div>
+            <div class="course-block-body">
+                <p class="course-desc">Comprehensive introduction to AI covering both traditional and generative concepts. Includes hands-on applications and discussions on ethical implications and societal impact of automation. <strong>5 Credits.</strong> Prerequisite: IS 201.</p>
+                <details>
+                    <summary>Course Outcomes</summary>
+                    <div class="course-outcomes">
+                        <ol>
+                            <li>Understand the fundamental principles of traditional AI techniques and their applications across various industries.</li>
+                            <li>Apply programming skills to implement basic AI algorithms and models through hands-on projects.</li>
+                            <li>Analyze both traditional and Generative AI techniques.</li>
+                            <li>Evaluate AI techniques&rsquo; strengths, weaknesses, and ethical implications in the context of applications.</li>
+                            <li>Design and develop a simple AI project incorporating traditional and Generative AI techniques.</li>
+                        </ol>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- CS 352 -->
+        <div class="course-block">
+            <div class="course-block-header">CS 352 &mdash; Discrete Mathematics and Data Structures in Computing (NS) *</div>
+            <div class="course-block-body">
+                <p class="course-desc">Bridges theoretical foundations of discrete mathematics with hands-on data structures. Covers Set Theory &amp; Logic, Combinatorics &amp; Probability, Number Theory, Linked Lists, Stacks, Queues, Trees, Graphs, and Big-O analysis. <strong>5 Credits.</strong> Prerequisite: CS 251.</p>
+                <details>
+                    <summary>Course Outcomes</summary>
+                    <div class="course-outcomes">
+                        <ol>
+                            <li>Articulate the mathematical properties of discrete structures (Sets, Sequences, Graphs) and demonstrate their representation in computer memory.</li>
+                            <li>Implement core data structures (Hash Maps, BSTs, Heaps) and apply Propositional and Predicate Logic to verify program correctness.</li>
+                            <li>Apply Big-O notation and recurrence relations to analyze the time and space complexity of algorithms.</li>
+                            <li>Evaluate and differentiate data structures to identify the most suitable option for given performance constraints.</li>
+                            <li>Design and implement graph algorithms (Dijkstra&rsquo;s, BFS/DFS) to solve real-world networking and optimization problems.</li>
+                        </ol>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- AI 371 -->
+        <div class="course-block">
+            <div class="course-block-header">AI 371 &mdash; Cyber and AI Ethics (SS)</div>
+            <div class="course-block-body">
+                <p class="course-desc">Moves beyond traditional Cyber Ethics to address rapidly evolving AI challenges: algorithmic bias, automated decision-making, generative AI ethics, data equity, digital surveillance, the &ldquo;alignment problem,&rdquo; and AI governance. <strong>5 Credits.</strong></p>
+                <details>
+                    <summary>Course Outcomes</summary>
+                    <div class="course-outcomes">
+                        <ol>
+                            <li>Explain fundamental ethical frameworks (Deontology, Utilitarianism, Virtue Ethics) and how they apply to both human cyber-behavior and AI logic.</li>
+                            <li>Analyze sources of algorithmic bias, data discrimination in ML pipelines, and AI-driven misinformation impacting civil liberties.</li>
+                            <li>Apply professional ethical codes to resolve conflicts related to privacy, security, and automated decision-making.</li>
+                            <li>Evaluate ethical implications of autonomous systems regarding accountability when an AI agent causes harm.</li>
+                            <li>Develop a comprehensive Ethical AI Framework incorporating data transparency, model explainability, and human-in-the-loop oversight.</li>
+                        </ol>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- AI 410 -->
+        <div class="course-block">
+            <div class="course-block-header">AI 410 &mdash; AI Engineering</div>
+            <div class="course-block-body">
+                <p class="course-desc">Applies rigorous software engineering principles to autonomous, learning-based systems. Covers LLM architecture, context engineering via RAG and vector databases, production deployment and monitoring, asynchronous data processing, and full-stack AI solutions. <strong>5 Credits.</strong> Prerequisites: CS 352 and DS 479.</p>
+                <details>
+                    <summary>Course Outcomes</summary>
+                    <div class="course-outcomes">
+                        <ol>
+                            <li>Define and explain essential components of full-stack AI systems, including LLM architecture, agentic loops, and context engineering.</li>
+                            <li>Design and implement a Retrieval-Augmented Generation (RAG) pipeline using vector databases to deliver context to autonomous agents.</li>
+                            <li>Analyze multi-layered agent architectures to identify and address bottlenecks in asynchronous processing and nondeterministic reasoning.</li>
+                            <li>Evaluate production AI model performance using observability tools and metrics for probabilistic outputs.</li>
+                            <li>Develop a fully functional, agent-driven application integrating real-time notifications and persistent vector storage.</li>
+                        </ol>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- AI 420 -->
+        <div class="course-block">
+            <div class="course-block-header">AI 420 &mdash; Agentic AI</div>
+            <div class="course-block-body">
+                <p class="course-desc">Empowers students to design intelligent systems that perceive environments, reason through multi-step plans, use external tools (APIs, browsers, databases), and self-correct&mdash;without ongoing human intervention. Covers individual agency, custom tools, advanced reasoning, multi-agent workflows, and orchestration. <strong>5 Credits.</strong> Prerequisites: CS 352 and DS 479.</p>
+                <details>
+                    <summary>Course Outcomes</summary>
+                    <div class="course-outcomes">
+                        <ol>
+                            <li>Explain the core components of an &ldquo;AI Agent&rdquo; (Reasoning, Planning, Tool Use, Memory), distinguish them from standard LLM inference, and identify common agentic patterns.</li>
+                            <li>Implement custom tools and integrate them into an agentic loop via function calling.</li>
+                            <li>Analyze agent reasoning traces to diagnose failures such as tool-call errors or logic loops.</li>
+                            <li>Assess agent system performance through agent-on-agent testing and quantitative metrics (success rate, cost per task, latency).</li>
+                            <li>Produce a professional-grade portfolio project that automates a multi-step business process (e.g., autonomous marketing department or self-healing coding assistant).</li>
+                        </ol>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- AI 430 -->
+        <div class="course-block">
+            <div class="course-block-header">AI 430 &mdash; MLOps and AgentOps</div>
+            <div class="course-block-body">
+                <p class="course-desc">In-depth lifecycle management for both ML models (MLOps) and autonomous AI agents (AgentOps). Covers DataOps, experiment tracking, CI/CD/CT pipelines, multi-step reasoning traces, long-term memory, agent-to-agent communication, LLM-based evaluation, and safety guardrails. <strong>5 Credits.</strong> Prerequisites: CS 352 and DS 479.</p>
+                <details>
+                    <summary>Course Outcomes</summary>
+                    <div class="course-outcomes">
+                        <ol>
+                            <li>Understand the architectural differences between traditional software pipelines, MLOps (model-centric), and AgentOps (action-centric) workflows.</li>
+                            <li>Apply CI/CD/CT principles to automate deployment of machine learning models and agentic workflows.</li>
+                            <li>Implement observability and monitoring tools to track model drift, agent reasoning accuracy, and system latency in real-time.</li>
+                            <li>Analyze Vector Database and RAG pipeline performance within an agentic system to optimize retrieval speed and context relevance.</li>
+                            <li>Evaluate security and ethical risks of autonomous agents, including prompt injection and unintended actions, within an enterprise framework.</li>
+                            <li>Create an end-to-end &ldquo;Agentic Pipeline&rdquo; demonstrating automated tool-use, memory persistence, and robust error handling.</li>
+                        </ol>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- AI 440 -->
+        <div class="course-block">
+            <div class="course-block-header">AI 440 &mdash; Digital Twins and Physical AI</div>
+            <div class="course-block-body">
+                <p class="course-desc">Explores the convergence of AI and the physical world through Digital Twins and Physical AI. Topics include high-fidelity 3D modeling, IoT real-time data assimilation, physics-informed neural networks (PINNs), synthetic data generation (SDG), sim-to-real robotics, and ethics of autonomous systems in safety-critical domains. <strong>5 Credits.</strong> Prerequisites: CS 352 and DS 479.</p>
+                <details>
+                    <summary>Course Outcomes</summary>
+                    <div class="course-outcomes">
+                        <ol>
+                            <li>Explain &ldquo;Digital Shadows&rdquo; vs. &ldquo;Digital Twins&rdquo; and design key architectural components: physical entity, virtual entity, and data connection.</li>
+                            <li>Apply Physics-Informed Neural Networks (PINNs) to ensure AI predictions in virtual environments align with real-world physical laws.</li>
+                            <li>Develop real-time data pipelines that synchronize sensor data with virtual models.</li>
+                            <li>Construct photorealistic, physically accurate simulation environments to generate synthetic data for training physical AI models.</li>
+                            <li>Conduct &ldquo;what-if&rdquo; scenario testing within digital twins to predict system failures and assess safety of autonomous actions before deployment.</li>
+                            <li>Design and deploy a functional digital twin for a targeted use case (smart building, drone, or manufacturing cell) demonstrating real-time monitoring and autonomous decision-making.</li>
+                        </ol>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<div class="footer">
+    &copy; 2026 City University of Seattle &mdash; School of Technology &amp; Computing<br>
+    Bachelor of Science in Artificial Intelligence &mdash; AAC Approved April 14, 2026
+</div>
+
+</body>
+</html>

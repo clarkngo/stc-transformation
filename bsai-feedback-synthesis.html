@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <title>BSAI Feedback Synthesis — AAC Review</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2c5282;
+            --accent: #1e8449;
+            --pro: #276749;
+            --pro-bg: #f0fff4;
+            --pro-border: #9ae6b4;
+            --con: #9b2c2c;
+            --con-bg: #fff5f5;
+            --con-border: #feb2b2;
+            --response: #744210;
+            --response-bg: #fffbeb;
+            --response-border: #f6e05e;
+            --quote-bg: #edf2f7;
+            --quote-border: #4a5568;
+            --bg: #f7fafc;
+            --text: #2d3748;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --muted: #718096;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.65;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2d3748, #1a365d);
+            color: #fff;
+            padding: 3.5rem 2rem 2.5rem;
+            text-align: center;
+        }
+        header h1 { margin: 0; font-size: 2rem; font-weight: 700; }
+        header p { margin: 0.6rem 0 0; opacity: 0.8; font-size: 1rem; }
+
+        .meta-bar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 2rem;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        .meta-bar span strong { color: var(--text); }
+
+        .container { max-width: 980px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+
+        .nav-back { display: inline-block; margin-bottom: 1.5rem; color: var(--secondary); font-weight: 600; text-decoration: none; font-size: 0.95rem; }
+        .nav-back:hover { text-decoration: underline; }
+
+        /* Summary scoreboard */
+        .scoreboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .score-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .score-card .num { font-size: 2rem; font-weight: 700; line-height: 1; }
+        .score-card .label { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .score-card.critical .num { color: var(--con); }
+        .score-card.moderate .num { color: var(--response); }
+        .score-card.affirmative .num { color: var(--pro); }
+
+        /* TOC */
+        .toc {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--secondary);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        .toc h2 { margin: 0 0 0.75rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+        .toc ol { margin: 0; padding-left: 1.25rem; columns: 2; column-gap: 2rem; }
+        .toc li { margin-bottom: 0.3rem; break-inside: avoid; }
+        .toc a { color: var(--secondary); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        @media (max-width: 600px) { .toc ol { columns: 1; } }
+
+        /* Theme cards */
+        .theme {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(15,23,42,0.04);
+            scroll-margin-top: 1rem;
+        }
+        .theme-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .theme-icon {
+            font-size: 1.5rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .theme-header h2 { margin: 0 0 0.2rem; font-size: 1.1rem; color: var(--primary); }
+        .theme-header p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+        .priority-tag {
+            margin-left: auto;
+            flex-shrink: 0;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            padding: 3px 10px;
+            border-radius: 999px;
+            align-self: flex-start;
+        }
+        .priority-high { background: #fed7d7; color: #9b2c2c; }
+        .priority-medium { background: #feebc8; color: #744210; }
+        .priority-low { background: #bee3f8; color: #1a365d; }
+
+        .theme-body { padding: 1.25rem 1.5rem; }
+
+        /* Quote blocks */
+        .quotes { margin: 0 0 1.25rem; }
+        .quote {
+            background: var(--quote-bg);
+            border-left: 3px solid var(--quote-border);
+            border-radius: 0 6px 6px 0;
+            padding: 0.65rem 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.88rem;
+            font-style: italic;
+            color: #4a5568;
+        }
+        .quote:last-child { margin-bottom: 0; }
+
+        /* Pro/Con/Response grid */
+        .analysis {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        @media (max-width: 650px) { .analysis { grid-template-columns: 1fr; } }
+
+        .analysis-box {
+            border-radius: 8px;
+            padding: 1rem 1.1rem;
+            font-size: 0.88rem;
+        }
+        .analysis-box h4 {
+            margin: 0 0 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .analysis-box ul { margin: 0; padding-left: 1.1rem; }
+        .analysis-box li { margin-bottom: 0.3rem; }
+
+        .box-pro { background: var(--pro-bg); border: 1px solid var(--pro-border); }
+        .box-pro h4 { color: var(--pro); }
+        .box-con { background: var(--con-bg); border: 1px solid var(--con-border); }
+        .box-con h4 { color: var(--con); }
+
+        .response-box {
+            background: var(--response-bg);
+            border: 1px solid var(--response-border);
+            border-radius: 8px;
+            padding: 1rem 1.1rem;
+            font-size: 0.88rem;
+            margin-top: 1rem;
+        }
+        .response-box h4 {
+            margin: 0 0 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--response);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .response-box ul { margin: 0; padding-left: 1.1rem; }
+        .response-box li { margin-bottom: 0.3rem; }
+
+        /* Proposed revision block */
+        .revision-block {
+            background: #f0f4ff;
+            border: 1px solid #c3d2f7;
+            border-radius: 8px;
+            padding: 1rem 1.1rem;
+            font-size: 0.88rem;
+            margin-top: 1rem;
+        }
+        .revision-block h4 {
+            margin: 0 0 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--secondary);
+        }
+
+        .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+        footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>BSAI Proposal — AAC Feedback Synthesis</h1>
+    <p>Reviewer comments analyzed with justifications, concerns, and recommended responses</p>
+</header>
+
+<div class="meta-bar">
+    <span><strong>Reviewer:</strong> AAC Member (M. Zantua)</span>
+    <span><strong>Review Date:</strong> April 14, 2026</span>
+    <span><strong>Proposal:</strong> Bachelor of Science in Artificial Intelligence</span>
+    <span><strong>Status:</strong> AAC Approved — pending revisions</span>
+</div>
+
+<div class="container">
+    <a class="nav-back" href="bs-ai-aac-04142026.html">&larr; Back to BSAI Approved Program</a>
+
+    <div class="scoreboard">
+        <div class="score-card critical">
+            <div class="num">4</div>
+            <div class="label">High-Priority Issues</div>
+        </div>
+        <div class="score-card moderate">
+            <div class="num">4</div>
+            <div class="label">Medium-Priority Items</div>
+        </div>
+        <div class="score-card affirmative">
+            <div class="num">2</div>
+            <div class="label">Low / Clarifying</div>
+        </div>
+        <div class="score-card">
+            <div class="num">10</div>
+            <div class="label">Total Themes</div>
+        </div>
+    </div>
+
+    <nav class="toc">
+        <h2>Feedback Themes</h2>
+        <ol>
+            <li><a href="#modality">Delivery Modality (Async vs. Sync/Hybrid)</a></li>
+            <li><a href="#hands-on">Hands-On &amp; Physical Learning</a></li>
+            <li><a href="#industry">Industry Partners &amp; Advisory Board</a></li>
+            <li><a href="#human-loop">Human-in-the-Loop &amp; AI Ethics Course</a></li>
+            <li><a href="#certifications">Professional Certifications</a></li>
+            <li><a href="#outcomes">Program Outcomes &amp; Fink's Taxonomy</a></li>
+            <li><a href="#curriculum-dev">Curriculum Dev — Instructional Design Model</a></li>
+            <li><a href="#security">Security Integration &amp; "Vibe Coding"</a></li>
+            <li><a href="#veterans">Veteran &amp; Military Outreach</a></li>
+            <li><a href="#cohort">Cohort-Building &amp; Residency</a></li>
+        </ol>
+    </nav>
+
+    <!-- 1. Delivery Modality -->
+    <div class="theme" id="modality">
+        <div class="theme-header">
+            <div class="theme-icon" style="background:#fff5f5;">🖥️</div>
+            <div>
+                <h2>1. Delivery Modality — Asynchronous vs. Synchronous/Hybrid</h2>
+                <p>The most recurring concern in the review — raised across 6 separate comments.</p>
+            </div>
+            <span class="priority-tag priority-high">High Priority</span>
+        </div>
+        <div class="theme-body">
+            <div class="quotes">
+                <div class="quote">"This is an impressive approach. However, I do not agree with an asynchronous delivery system. This is a highly technical and intense curriculum. Students deserve a synchronous or mixed mode — in-person."</div>
+                <div class="quote">"Asynchronous delivery is the hardest to write and deliver and we are getting good feedback on asynchronous format. Is using the same structure for asynch and synch a recipe for success? It hasn't been working for STC yet."</div>
+                <div class="quote">"Will STC's current course delivery structure support learning. Designing this degree in a silo is concerning."</div>
+                <div class="quote">"Recommend having synchronous and in-person classes. Global. I have watched SBM hold meetings at 6:30 a.m. and 7 p.m. etc. to accommodate people living in different time zones."</div>
+                <div class="quote">"Will the courses also be offered in-person and on-line. If the intent is to attract veterans, they will want in-person classes for BHA maximization."</div>
+                <div class="quote">"Offered when students can attend — evenings and weekends."</div>
+            </div>
+            <div class="analysis">
+                <div class="analysis-box box-pro">
+                    <h4>✓ Justification for Async-First</h4>
+                    <ul>
+                        <li>Target demographic (working adults 25–45, nontraditional students) genuinely cannot adhere to fixed schedules — asynchronous removes the largest access barrier.</li>
+                        <li>Cloud-based tooling (GitHub Codespaces, LLM APIs) is inherently asynchronous — the work itself doesn't require synchronous presence.</li>
+                        <li>An online-first launch allows immediate national/global scalability before adding the overhead of in-person infrastructure.</li>
+                        <li>The proposal explicitly plans a transition to Mixed-Mode (Hybrid) after the initial launch; async is a starting point, not a permanent constraint.</li>
+                        <li>CityU's existing asynchronous infrastructure is already in place; a synchronous launch would require significant new investment in live delivery systems.</li>
+                    </ul>
+                </div>
+                <div class="analysis-box box-con">
+                    <h4>✗ Concerns Raised</h4>
+                    <ul>
+                        <li>STC's current asynchronous execution record is cited as a concern — the reviewer suggests the model "hasn't been working" yet, making this a risky foundation for a brand-new, highly technical program.</li>
+                        <li>Highly technical subjects (MLOps, Physical AI, Agentic Systems) benefit from real-time Q&amp;A and guided debugging that asynchronous discussion forums can't replicate.</li>
+                        <li>Cohort isolation risk: students in async programs have lower social capital and peer collaboration, which is especially problematic for a program that emphasizes team-based agentic workflows.</li>
+                        <li>Veterans, a key target demographic, may lose BAH (Basic Allowance for Housing) eligibility under a fully async model, undermining a primary recruitment pipeline.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="response-box">
+                <h4>→ Recommended Response</h4>
+                <ul>
+                    <li><strong>Adopt a hybrid-first launch rather than async-first.</strong> Offer core courses in a synchronous evening/weekend format (live Zoom sessions, 2x/week) while keeping recordings available for those who miss sessions. This directly addresses the reviewer's concern without abandoning working-adult accessibility.</li>
+                    <li><strong>Separate the delivery model from the accessibility model.</strong> Synchronous doesn't mean on-campus — live online sessions at 6–8 p.m. PT accommodate most U.S. time zones and are more achievable for international students than assumed.</li>
+                    <li><strong>Pilot one section async and one section sync in Winter 2027.</strong> Use comparative completion rates and student satisfaction data to inform the permanent model before locking in a system-wide approach.</li>
+                    <li><strong>Confirm BAH eligibility.</strong> Consult Financial Aid and the VA certifying official before launch to confirm whether the proposed async format qualifies for GI Bill/BAH, and adjust if needed.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Hands-On Learning -->
+    <div class="theme" id="hands-on">
+        <div class="theme-header">
+            <div class="theme-icon" style="background:#fff0f0;">🤖</div>
+            <div>
+                <h2>2. Hands-On &amp; Physical Learning</h2>
+                <p>Concern that a cloud-only approach leaves students without experience on real hardware, drones, or robots.</p>
+            </div>
+            <span class="priority-tag priority-high">High Priority</span>
+        </div>
+        <div class="theme-body">
+            <div class="quotes">
+                <div class="quote">"How will the program incorporate physical hands experiential on learning with actual equipment?"</div>
+                <div class="quote">"Will all students be working in cloud based environments where they never use real equipment, drones, or robots?"</div>
+                <div class="quote">"There is an element of hands on learning and using the equipment that students deserve. How will the program provide this experience?"</div>
+                <div class="quote">"Delivery of the course must reflect the content."</div>
+            </div>
+            <div class="analysis">
+                <div class="analysis-box box-pro">
+                    <h4>✓ Justification for Cloud-First</h4>
+                    <ul>
+                        <li>Cloud-first dramatically lowers the barrier to entry — students don't need expensive GPUs or physical lab access, which directly supports CityU's accessibility mission.</li>
+                        <li>The proposal does include a "Portable Lab" approach for AI 440 (Digital Twins and Physical AI): mobile robotics kits and sensor arrays in flexible classroom spaces.</li>
+                        <li>Modern AI engineering roles — including Physical AI — increasingly operate through simulation-first pipelines before deploying to real hardware ("sim-to-real"). Learning this workflow is itself the target skill.</li>
+                        <li>Cloud environments like NVIDIA Omniverse and Isaac Sim provide highly realistic physical simulation that is standard in industry.</li>
+                    </ul>
+                </div>
+                <div class="analysis-box box-con">
+                    <h4>✗ Concerns Raised</h4>
+                    <ul>
+                        <li>The "Portable Lab" plan for AI 440 is underspecified — what kits, who procures them, and how are remote/online students expected to access physical hardware?</li>
+                        <li>Students in AI 440 who never deploy to a real robot or drone will have a gap vs. graduates from programs like Edmonds College (direct competitor) that provide physical lab access.</li>
+                        <li>The program name includes "Physical AI" as a differentiator; a fully virtual approach undermines the credibility of that claim with employers and accreditors.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="response-box">
+                <h4>→ Recommended Response</h4>
+                <ul>
+                    <li><strong>Define the Portable Lab explicitly.</strong> Specify the hardware kit (e.g., NVIDIA Jetson Nano, Raspberry Pi with sensor array, or a low-cost drone kit like DJI Tello), the procurement model, and whether online students receive a kit by mail or complete physical labs at a designated lab day/weekend.</li>
+                    <li><strong>Create a "Physical AI Lab Weekend" for AI 440.</strong> A single intensive in-person or on-campus session per quarter where students deploy models to physical hardware could satisfy this requirement without restructuring the entire delivery model.</li>
+                    <li><strong>Add explicit language in the course descriptions</strong> for AI 440 specifying that students will work with physical hardware in at least one hands-on lab component.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Industry Partners -->
+    <div class="theme" id="industry">
+        <div class="theme-header">
+            <div class="theme-icon" style="background:#f0fff4;">🤝</div>
+            <div>
+                <h2>3. Industry Partners &amp; Advisory Board</h2>
+                <p>No evidence of employer engagement, advisory board, or employer-linked project pipeline in the proposal.</p>
+            </div>
+            <span class="priority-tag priority-high">High Priority</span>
+        </div>
+        <div class="theme-body">
+            <div class="quotes">
+                <div class="quote">"Where are the industry partners who have reviewed the content? Microsoft William (Bill) met at PuPPy. Where is the marketing plan, recruiting plan, education plan to address 'learning' for US core students?"</div>
+                <div class="quote">"Who has been consulted in this approach? Market analysis. What other schools are rolling this out? Where is the support for transition into the workforce? Where is the advisory board with professionals to review the material, align curriculum to workplace scenarios? Don't need research papers; need project-based education. Need employers with projects — potential for employment."</div>
+                <div class="quote">"Where are the jobs? Hiring managers, showcasing and having mentors, jobs, and internships established when the program begins. Ideally, have managers identifying potential hires from a class — or upskilling of incumbent workers with the company paying tuition."</div>
+                <div class="quote">"Where is the industry outreach to companies, Port Authorities — where information sessions can be scheduled in addition to the current approach?"</div>
+            </div>
+            <div class="analysis">
+                <div class="analysis-box box-pro">
+                    <h4>✓ Justification for Current Approach</h4>
+                    <ul>
+                        <li>The curriculum was designed by practitioners (the PuPPy connection with Microsoft is evidence of informal industry input), even if formal advisory board documentation is absent from the proposal.</li>
+                        <li>The "Applied Research from Day 1" portfolio model and the "Pilot Log" assessment are specifically designed to produce employer-ready artifacts, not just transcripts.</li>
+                        <li>Establishing an advisory board before formal approval is administratively difficult — typically, program approval precedes formal industry partnership agreements.</li>
+                    </ul>
+                </div>
+                <div class="analysis-box box-con">
+                    <h4>✗ Concerns Raised</h4>
+                    <ul>
+                        <li>A program claiming to prepare graduates for cutting-edge AI roles without a single named employer or industry reviewer is a credibility gap — reviewers will ask "who validated this curriculum?"</li>
+                        <li>Without pre-established internship pipelines and hiring connections, the "Applied Research from Day 1" promise may not translate to actual employment outcomes.</li>
+                        <li>The maritime cybersecurity alignment (USCG/IMO) is highlighted as a differentiator, but there is no evidence of outreach to Port Authorities or maritime employers who would actually hire graduates.</li>
+                        <li>Competitor programs (e.g., Edmonds College) already have established industry lab partnerships — CityU needs a comparable industry signal to compete.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="response-box">
+                <h4>→ Recommended Response</h4>
+                <ul>
+                    <li><strong>Form a BSAI Industry Advisory Board before the Winter 2027 launch.</strong> Target 5–7 members from local employers (Amazon, Microsoft, NVIDIA, maritime/port sector, cybersecurity firms). Aim to meet quarterly.</li>
+                    <li><strong>Document the existing industry connections.</strong> The Microsoft/PuPPy relationship should be formalized into a letter of support or curriculum review sign-off for the next AAC submission cycle.</li>
+                    <li><strong>Build an internship pipeline into the pre-launch plan.</strong> Identify 3–5 employer partners willing to offer BSAI-specific internship slots before the first cohort reaches their second year.</li>
+                    <li><strong>Add employer-sponsored capstone projects as a track option</strong> — companies provide a real project brief, students deliver a working prototype. This is the most direct "upskilling of incumbent workers" pathway the reviewer is requesting.</li>
+                    <li><strong>Schedule outreach to Port of Seattle and Port of Tacoma</strong> for AI 440 (Digital Twins and Physical AI) — the maritime alignment needs concrete industry touchpoints, not just regulatory citations.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Human-in-the-Loop -->
+    <div class="theme" id="human-loop">
+        <div class="theme-header">
+            <div class="theme-icon" style="background:#f0f4ff;">🧠</div>
+            <div>
+                <h2>4. Human-in-the-Loop &amp; AI Ethics Course Design</h2>
+                <p>Two distinct concerns: the program description lacks augmentation framing, and the AI Ethics course risks being too generic.</p>
+            </div>
+            <span class="priority-tag priority-high">High Priority</span>
+        </div>
+        <div class="theme-body">
+            <div class="quotes">
+                <div class="quote">"No mention is made of the 'human-in-the-loop' creation within the AI program focusing on augmentation, not replacement of the human workforce."</div>
+                <div class="quote">"Creating a separate AI Ethics Course if it focuses on the deeply technical aspects of the program — this will not be the same cyber ethics for security if it is going to be heavily technical. The challenge is keeping the human in the loop."</div>
+            </div>
+            <div class="analysis">
+                <div class="analysis-box box-pro">
+                    <h4>✓ Justification for Current Approach</h4>
+                    <ul>
+                        <li>The "Pilot Log" assessment model is inherently human-in-the-loop — students must document every point where they intervened, corrected, or overrode AI output. This is a structural mechanism, not just rhetoric.</li>
+                        <li>AI 371 (Cyber and AI Ethics) is an original course created specifically for this program, covering the alignment problem, algorithmic accountability, and human oversight — it is not a copy of a generic cyber ethics course.</li>
+                        <li>The "spec-first" philosophy positions humans as architects and directors of AI systems, not passive observers — the framing of the entire program is around human orchestration.</li>
+                    </ul>
+                </div>
+                <div class="analysis-box box-con">
+                    <h4>✗ Concerns Raised</h4>
+                    <ul>
+                        <li>The program description emphasizes "agentic autonomy" and autonomous systems without explicitly balancing this with language about human oversight, responsibility, and augmentation vs. displacement.</li>
+                        <li>AI 371 as described (Cyber and AI Ethics) could appear to reviewers and students as a rebadged cybersecurity ethics course rather than a deeply technical AI governance course — the distinction needs to be explicit.</li>
+                        <li>The reviewer specifically notes the "challenge of keeping the human in the loop" — this is a real technical and pedagogical problem that the proposal doesn't address directly in its learning outcomes.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="response-box">
+                <h4>→ Recommended Response</h4>
+                <ul>
+                    <li><strong>Add "human-in-the-loop" language to the program description</strong> — explicitly state that graduates are trained as responsible architects of AI systems, emphasizing AI as an amplifier of human capability rather than a replacement.</li>
+                    <li><strong>Rename or re-subtitle AI 371</strong> to clarify its scope: e.g., "AI Governance and Ethics" or "Responsible AI Systems" — and distinguish it from IS 345 (Cybersecurity) in the course description language.</li>
+                    <li><strong>Add a program outcome specifically addressing human oversight:</strong> e.g., "Demonstrate responsible human-in-the-loop practices by designing AI systems with appropriate oversight mechanisms, audit trails, and escalation protocols." This maps directly to ABET's "professional and ethical responsibility" outcome.</li>
+                    <li><strong>Weave HITL checkpoints into the Pilot Log rubric</strong> — make it explicit that students must document not just interventions but decisions about when to override, defer to, or escalate beyond the AI agent.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Certifications -->
+    <div class="theme" id="certifications">
+        <div class="theme-header">
+            <div class="theme-icon" style="background:#fefcbf;">🏅</div>
+            <div>
+                <h2>5. Professional Certifications — Required vs. Optional</h2>
+                <p>The reviewer argues certifications should be built into the degree requirements, not listed as optional pursuits.</p>
+            </div>
+            <span class="priority-tag priority-medium">Medium Priority</span>
+        </div>
+        <div class="theme-body">
+            <div class="quotes">
+                <div class="quote">"Which professional certifications will be written into the program, courses, required. Not optional."</div>
+                <div class="quote">"STC must change the approach and make passing industry certifications part of the 'grade' — building certification cost into the tuition with additional supports for the students — extra workshops, etc."</div>
+            </div>
+            <div class="analysis">
+                <div class="analysis-box box-pro">
+                    <h4>✓ Justification for Current Approach</h4>
+                    <ul>
+                        <li>Mandating specific vendor certifications (AWS, CompTIA) creates a fragile dependency on third-party exam syllabi that change frequently and may not align with academic program outcomes.</li>
+                        <li>Certification costs (AWS Certified ML Engineer exam: ~$300, CompTIA: ~$400) embedded in tuition significantly increase program cost and could be a barrier to the target demographic.</li>
+                        <li>ABET and NWCCU evaluate programs on academic learning outcomes, not certification pass rates — making certifications required grades introduces accreditation complexity.</li>
+                        <li>Many employers in AI value demonstrated portfolio work and degree credentials over certification badges, particularly for senior technical roles.</li>
+                    </ul>
+                </div>
+                <div class="analysis-box box-con">
+                    <h4>✗ Concerns Raised</h4>
+                    <ul>
+                        <li>A program that prepares students "to pursue" certifications after graduation is weaker than one where certification readiness is embedded — the latter is a concrete, verifiable student outcome.</li>
+                        <li>Bootcamp competitors (General Assembly, Nucamp) increasingly include certification vouchers — if CityU doesn't match this, the degree's competitive advantage over faster/cheaper alternatives is reduced.</li>
+                        <li>The maritime/OT sector and some federal employers have specific certification requirements — students entering those pipelines would need certs regardless, so building in support is a practical benefit.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="response-box">
+                <h4>→ Recommended Response</h4>
+                <ul>
+                    <li><strong>Adopt a "Certification-Ready" model rather than "Certification-Required."</strong> Map each core course to its relevant certification exam domains, and include practice exams / voucher support as part of the course package. Students are not graded on passing the cert, but the coursework is explicitly designed to prepare them for it.</li>
+                    <li><strong>Negotiate vendor partnership agreements</strong> with AWS and CompTIA to provide discounted or bundled exam vouchers for enrolled students — similar to what WGU and other online universities have done. This can be a marketing differentiator without making external exam results part of the grade.</li>
+                    <li><strong>Consider a "Capstone Certification Track"</strong> as an optional upper-division elective where students who want to sit for a specific certification receive structured workshop support and an exam voucher as part of their elective credit.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Program Outcomes / Fink's Taxonomy -->
+    <div class="theme" id="outcomes">
+        <div class="theme-header">
+            <div class="theme-icon" style="background:#e9d8fd;">📐</div>
+            <div>
+                <h2>6. Program Outcomes &amp; Fink's Taxonomy of Significant Learning</h2>
+                <p>The reviewer proposed a complete rewrite of the outcomes using Fink's 6-dimension framework.</p>
+            </div>
+            <span class="priority-tag priority-medium">Medium Priority</span>
+        </div>
+        <div class="theme-body">
+            <div class="quotes">
+                <div class="quote">"Recommend using Fink's Taxonomy of Significant Learning."</div>
+                <div class="quote">[Proposed rewrite for Outcome 1] "Foundational Knowledge: Explain core principles of traditional and Generative AI... Application: Design and implement AI-driven systems... Integration: Synthesize concepts from AI theory, data science, and software engineering... Human Dimension: Collaborate effectively in multidisciplinary teams... Caring: Value the role of AI as a transformative tool... Learning How to Learn: Continuously evaluate emerging AI models, tools, and frameworks."</div>
+            </div>
+
+            <p style="font-size:0.9rem;margin:0 0 1rem;">The reviewer provided a detailed alternative rewrite of the program outcomes structured around Fink's six dimensions. The comparison between the current and proposed frameworks is below:</p>
+
+            <div class="revision-block">
+                <h4>Fink's Taxonomy — Current vs. Proposed Mapping</h4>
+                <table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin-top:0.5rem;">
+                    <thead>
+                        <tr style="background:#e8eaf6;">
+                            <th style="padding:0.5rem;border:1px solid #c3d2f7;text-align:left;">Fink Dimension</th>
+                            <th style="padding:0.5rem;border:1px solid #c3d2f7;text-align:left;">Current Outcomes Coverage</th>
+                            <th style="padding:0.5rem;border:1px solid #c3d2f7;text-align:left;">Reviewer's Proposed Language</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;font-weight:600;">Foundational Knowledge</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">Outcomes 1 &amp; 4 (Apply AI principles; Evaluate data structures)</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">"Explain core principles of traditional and Generative AI, including ML paradigms, NLP, and intelligent interface design."</td>
+                        </tr>
+                        <tr style="background:#fafafa;">
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;font-weight:600;">Application</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">Partially in Outcome 1 ("build intelligent interfaces") — not explicit</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">"Design and implement AI-driven systems that apply NLP and ML to real-world human-computer interaction problems."</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;font-weight:600;">Integration</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">Outcome 2 (Integrate OS, Networks, Cloud)</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">"Synthesize concepts from AI theory, data science, and software engineering to develop cohesive intelligent interfaces."</td>
+                        </tr>
+                        <tr style="background:#fafafa;">
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;font-weight:600;">Human Dimension</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">Outcome 6 (Collaborate with teams) — limited scope</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">"Collaborate effectively in multidisciplinary teams to design AI systems that respond to human needs and usability concerns."</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;font-weight:600;">Caring</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">Outcome 3 (Critical and ethical thinking) — present but framed as evaluation, not values</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">"Value the role of AI as a transformative tool for improving human productivity, accessibility, and decision-making."</td>
+                        </tr>
+                        <tr style="background:#fafafa;">
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;font-weight:600;">Learning How to Learn</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;color:#9b2c2c;font-style:italic;">Not present in current outcomes</td>
+                            <td style="padding:0.5rem;border:1px solid #c3d2f7;">"Continuously evaluate emerging AI models, tools, and frameworks to independently update skills in a rapidly evolving field."</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="analysis" style="margin-top:1rem;">
+                <div class="analysis-box box-pro">
+                    <h4>✓ Justification for Current Outcomes</h4>
+                    <ul>
+                        <li>The current outcomes use the standard action-verb format required by ABET and NWCCU — familiar to accreditation reviewers and assessors.</li>
+                        <li>Parenthetical domain labels (AI Principles and Practices, Quantitative Literacy, etc.) map directly to ABET Computing Criteria, making accreditation alignment transparent.</li>
+                        <li>Six outcomes is an appropriate number — Fink's taxonomy applied per outcome would expand to 36 sub-outcomes, which is unwieldy for program-level documentation.</li>
+                    </ul>
+                </div>
+                <div class="analysis-box box-con">
+                    <h4>✗ Concerns Raised</h4>
+                    <ul>
+                        <li>"Learning How to Learn" is genuinely missing — for a field changing as fast as AI, the ability to self-direct learning is arguably the most important graduate attribute and the current outcomes don't address it.</li>
+                        <li>The "Caring" dimension (valuing AI's impact on human lives) is weaker in the current framing, which treats ethics as evaluation ("apply critical thinking") rather than internalized professional values.</li>
+                        <li>The current outcomes could be read as a skills checklist rather than a description of transformed graduates — Fink's framework pushes toward describing what students become, not just what they can do.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="response-box">
+                <h4>→ Recommended Response</h4>
+                <ul>
+                    <li><strong>Add a 7th program outcome addressing "Learning How to Learn."</strong> This is the most substantive gap and the easiest addition: "Develop adaptive learning strategies to independently evaluate emerging AI frameworks, tools, and methodologies throughout a career in a rapidly evolving field." (Learning Agility)</li>
+                    <li><strong>Strengthen the "Caring" outcome language</strong> in Outcome 3 — shift from "apply critical and ethical thinking" to language that reflects internalized values: "Demonstrate a professional commitment to algorithmic accountability, human dignity, and responsible AI deployment."</li>
+                    <li><strong>Use Fink's framework at the course level</strong> (in CLOs) rather than at the program level — this is where its multi-dimensional richness is most useful and where the reviewer's detailed proposed language belongs.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Instructional Design Model -->
+    <div class="theme" id="curriculum-dev">
+        <div class="theme-header">
+            <div class="theme-icon" style="background:#e6fffa;">🎨</div>
+            <div>
+                <h2>7. Curriculum Development — Instructional Design Model</h2>
+                <p>The reviewer recommends a dedicated instructional designer working alongside SMEs, citing the UW Continuum College model.</p>
+            </div>
+            <span class="priority-tag priority-medium">Medium Priority</span>
+        </div>
+        <div class="theme-body">
+            <div class="quotes">
+                <div class="quote">"Recommend using an instructional designer to build the courses with input from the SME. This is the model used by UW Continuum College — and it would be a good investment in this and other degrees. Get a dedicated instructional designer to work with the SMEs — a PROFESSIONAL LDE to integrate their content into a revised course structure."</div>
+                <div class="quote">"Replace the busy work with performance-based activities that demonstrate critical thinking."</div>
+                <div class="quote">"Content delivery and the look of the course and programs needs to shift."</div>
+            </div>
+            <div class="analysis">
+                <div class="analysis-box box-pro">
+                    <h4>✓ Justification for Current Approach</h4>
+                    <ul>
+                        <li>CityU's LD&amp;E team already provides SME support and course development guidance — the SME fee structure is established and functional.</li>
+                        <li>The "Applied-First" curriculum philosophy (portfolio over exams, Pilot Log over HOS) already moves away from busy work toward performance-based assessment.</li>
+                        <li>The proposal allocates $20,000 for SME development — a meaningful budget that reflects commitment to quality course creation.</li>
+                    </ul>
+                </div>
+                <div class="analysis-box box-con">
+                    <h4>✗ Concerns Raised</h4>
+                    <ul>
+                        <li>SME + LD&amp;E collaboration without a dedicated instructional designer can produce technically deep but pedagogically shallow courses — great content, poor learning experience.</li>
+                        <li>The reviewer's observation that "the look of the course and programs needs to shift" suggests the existing course format (visual design, navigation, activity structure) is not meeting expectations and will not automatically improve with new SMEs alone.</li>
+                        <li>UW Continuum College's model (dedicated ID + SME) is a proven approach for technical professional programs — ignoring it for a program of this ambition is a missed opportunity.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="response-box">
+                <h4>→ Recommended Response</h4>
+                <ul>
+                    <li><strong>Allocate one dedicated instructional designer</strong> (0.5 FTE from LD&amp;E or a contract hire) specifically to the BSAI build — this person partners with each SME to translate technical expertise into structured, engaging course experiences.</li>
+                    <li><strong>Develop a BSAI course template</strong> before the first course is built — consistent visual design, activity types (Pilot Log, spec-first labs, peer code reviews), and navigation should be standardized across all 8 new courses.</li>
+                    <li><strong>Audit existing HOS-style activities</strong> in any courses being reused and replace them with performance-based alternatives (e.g., "debug this agent's reasoning trace" instead of "define what an agent is").</li>
+                    <li><strong>Budget for the instructional designer role</strong> in the next revision of the Budget Template — it's currently absent and represents a real gap in the development plan.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. Security Integration -->
+    <div class="theme" id="security">
+        <div class="theme-header">
+            <div class="theme-icon" style="background:#fff5f5;">🔐</div>
+            <div>
+                <h2>8. Security Integration &amp; "Vibe Coding"</h2>
+                <p>Marketing the program with "Vibe Coding" raises questions about where security principles get taught.</p>
+            </div>
+            <span class="priority-tag priority-medium">Medium Priority</span>
+        </div>
+        <div class="theme-body">
+            <div class="quotes">
+                <div class="quote">"When will security be built into the program if VIBE is being used to sell the program? How will the shift be made to security?"</div>
+                <div class="quote">"Implement this for cybersecurity, too."</div>
+            </div>
+            <div class="analysis">
+                <div class="analysis-box box-pro">
+                    <h4>✓ Justification for Current Approach</h4>
+                    <ul>
+                        <li>IS 345 (Cybersecurity) is a required core course — security fundamentals are already in the required curriculum, not left to electives.</li>
+                        <li>AI 371 explicitly covers deepfakes, data surveillance, and algorithmic accountability — these are AI-specific security and ethics concerns that a standard cyber course wouldn't cover.</li>
+                        <li>AI 430 (MLOps and AgentOps) includes "prompt injection" and enterprise security frameworks as explicit learning outcomes — security is woven into the production-AI curriculum.</li>
+                        <li>"Vibe Coding" is a marketing term for the accessible, low-friction entry point — the rigor comes later in the program, which is appropriate sequencing.</li>
+                    </ul>
+                </div>
+                <div class="analysis-box box-con">
+                    <h4>✗ Concerns Raised</h4>
+                    <ul>
+                        <li>Branding the program with "Vibe Coding" sends a signal to prospective students that the program is casual and tool-driven — this can create a cohort culture that resists the rigor of security and systems thinking introduced later.</li>
+                        <li>AI-specific security threats (prompt injection, model poisoning, adversarial examples, data leakage via RAG) are not fully captured by IS 345 alone — a dedicated treatment in the AI engineering courses is needed.</li>
+                        <li>The USCG maritime alignment specifically requires Zero Trust segmentation and OT security — these are advanced topics that need more than a single IS 345 course to deliver.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="response-box">
+                <h4>→ Recommended Response</h4>
+                <ul>
+                    <li><strong>Add "security-by-design" as an explicit thread</strong> in course descriptions for AI 410, AI 420, and AI 430 — not just in AI 371 and IS 345. Each agentic systems course should include a module on threat modeling for autonomous agents.</li>
+                    <li><strong>Be intentional about the "Vibe Coding" brand.</strong> Use it only for marketing to prospective students (the entry-point pitch) and replace it with "spec-first engineering" in the academic materials — this prevents the brand from shaping the wrong student expectations.</li>
+                    <li><strong>Consider a module on "Secure Agentic Systems"</strong> within AI 420 or AI 430 that covers prompt injection, jailbreaking, tool-call sandboxing, and least-privilege agent design — topics that don't exist in IS 345 but are increasingly critical in production AI.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. Veteran Outreach -->
+    <div class="theme" id="veterans">
+        <div class="theme-header">
+            <div class="theme-icon" style="background:#ebf8ff;">🎖️</div>
+            <div>
+                <h2>9. Veteran &amp; Military Outreach</h2>
+                <p>Veterans are identified as a key target segment, but the program design doesn't account for their specific needs.</p>
+            </div>
+            <span class="priority-tag priority-low">Low Priority</span>
+        </div>
+        <div class="theme-body">
+            <div class="quotes">
+                <div class="quote">"Recommend outreach to the military, WA PPA to accomplish the goals."</div>
+                <div class="quote">"If the intent is to attract veterans, they will want in-person classes for BHA maximization."</div>
+            </div>
+            <div class="analysis">
+                <div class="analysis-box box-pro">
+                    <h4>✓ Justification for Current Approach</h4>
+                    <ul>
+                        <li>The proposal confirms GI Bill and military benefit eligibility — the financial pathway for veterans is in place.</li>
+                        <li>Asynchronous delivery actually suits active-duty and recently transitioned veterans who may have irregular schedules or be deployed — not all veterans are local and available for in-person classes.</li>
+                    </ul>
+                </div>
+                <div class="analysis-box box-con">
+                    <h4>✗ Concerns Raised</h4>
+                    <ul>
+                        <li>BAH (Basic Allowance for Housing) is only paid at the full rate for in-person enrollment — an async-only program significantly reduces the financial value of the GI Bill for veterans, making CityU less competitive vs. programs that offer in-person options.</li>
+                        <li>WA PPA (Professional and Practical Arts) partnerships and military transition programs (e.g., DoD SkillBridge) are specific, actionable channels that are absent from the marketing and recruitment plan.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="response-box">
+                <h4>→ Recommended Response</h4>
+                <ul>
+                    <li><strong>Clarify BAH eligibility with the VA Certifying Official</strong> before finalizing the delivery model — if async-only disqualifies students from full BAH, this is a significant recruitment barrier for a stated key demographic.</li>
+                    <li><strong>Add WA State DoD SkillBridge and TAP (Transition Assistance Program) outreach</strong> to the marketing plan — these are direct pipelines to transitioning service members who are ideal BSAI candidates.</li>
+                    <li><strong>Develop a "Veteran Track" pathway</strong> that offers at least one synchronous option per quarter for students who need in-person enrollment for BAH purposes.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. Cohort Building -->
+    <div class="theme" id="cohort">
+        <div class="theme-header">
+            <div class="theme-icon" style="background:#f0fff4;">👥</div>
+            <div>
+                <h2>10. Cohort-Building &amp; Kick-Off Residency</h2>
+                <p>A recommendation to create a structured in-person cohort-bonding experience at the start of the program.</p>
+            </div>
+            <span class="priority-tag priority-low">Low Priority</span>
+        </div>
+        <div class="theme-body">
+            <div class="quotes">
+                <div class="quote">"Recommend a kick-off residency — a long weekend — 3 to 4 days to build a cohort. But only if you want the cohort to have a chance to succeed."</div>
+            </div>
+            <div class="analysis">
+                <div class="analysis-box box-pro">
+                    <h4>✓ Justification for Current Approach</h4>
+                    <ul>
+                        <li>The current proposal includes a full preparatory quarter (Winter 2027) specifically designed for onboarding — this already serves a cohort-building function even in an async format.</li>
+                        <li>A mandatory in-person residency creates an accessibility barrier for students who live outside the Seattle area or cannot travel — directly contradicting the accessibility mission.</li>
+                        <li>Online cohort-building tools (Discord servers, virtual hackathons, team capstone projects) can accomplish similar social bonding without requiring travel.</li>
+                    </ul>
+                </div>
+                <div class="analysis-box box-con">
+                    <h4>✗ Concerns Raised</h4>
+                    <ul>
+                        <li>Research on online program completion rates consistently shows that social cohesion is among the strongest predictors of retention — a technical, intense program launched entirely online without a social anchor risks high attrition in the inaugural cohort.</li>
+                        <li>The reviewer's phrasing ("only if you want the cohort to have a chance to succeed") signals this as a high-stakes concern drawn from observed experience, not just theory.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="response-box">
+                <h4>→ Recommended Response</h4>
+                <ul>
+                    <li><strong>Design an optional (strongly encouraged) virtual kick-off weekend</strong> at the start of Winter 2027 — a 2-day intensive online hackathon where students build a simple agent together in teams before formal coursework begins. This accomplishes cohort-bonding without the travel barrier.</li>
+                    <li><strong>For local students and the on-ground option:</strong> offer an in-person version of this kick-off at the Seattle campus as an alternative track, open to anyone who can attend.</li>
+                    <li><strong>Create a persistent cohort channel</strong> (e.g., Discord or Teams) with structured weekly check-ins, peer mentorship pairing, and a "cohort showcase" at the end of each quarter — formalize the social infrastructure rather than leaving it to chance.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Summary Table -->
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2rem;">
+        <h2 style="margin:0 0 1rem;font-size:1.15rem;color:var(--primary);border-bottom:2px solid var(--accent);padding-bottom:0.4rem;">Action Priority Summary</h2>
+        <table style="width:100%;border-collapse:collapse;font-size:0.875rem;">
+            <thead>
+                <tr style="background:var(--primary);color:#fff;">
+                    <th style="padding:0.6rem 0.75rem;text-align:left;">Theme</th>
+                    <th style="padding:0.6rem 0.75rem;text-align:left;">Priority</th>
+                    <th style="padding:0.6rem 0.75rem;text-align:left;">Top Action</th>
+                    <th style="padding:0.6rem 0.75rem;text-align:left;">Owner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:0.55rem 0.75rem;">Delivery Modality</td>
+                    <td style="padding:0.55rem 0.75rem;"><span style="background:#fed7d7;color:#9b2c2c;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600;">HIGH</span></td>
+                    <td style="padding:0.55rem 0.75rem;">Pilot sync evening/weekend sections alongside async in Winter 2027</td>
+                    <td style="padding:0.55rem 0.75rem;color:var(--muted);">Program Director</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);background:#fafafa;">
+                    <td style="padding:0.55rem 0.75rem;">Hands-On Learning</td>
+                    <td style="padding:0.55rem 0.75rem;"><span style="background:#fed7d7;color:#9b2c2c;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600;">HIGH</span></td>
+                    <td style="padding:0.55rem 0.75rem;">Define AI 440 Portable Lab kit &amp; delivery method for online students</td>
+                    <td style="padding:0.55rem 0.75rem;color:var(--muted);">SME + Program Director</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:0.55rem 0.75rem;">Industry Partners</td>
+                    <td style="padding:0.55rem 0.75rem;"><span style="background:#fed7d7;color:#9b2c2c;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600;">HIGH</span></td>
+                    <td style="padding:0.55rem 0.75rem;">Form 5-member Advisory Board; secure 3 internship employer partners before launch</td>
+                    <td style="padding:0.55rem 0.75rem;color:var(--muted);">Dean / Program Director</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);background:#fafafa;">
+                    <td style="padding:0.55rem 0.75rem;">Human-in-the-Loop</td>
+                    <td style="padding:0.55rem 0.75rem;"><span style="background:#fed7d7;color:#9b2c2c;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600;">HIGH</span></td>
+                    <td style="padding:0.55rem 0.75rem;">Add HITL program outcome; re-subtitle AI 371 to clarify scope</td>
+                    <td style="padding:0.55rem 0.75rem;color:var(--muted);">Curriculum Committee</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:0.55rem 0.75rem;">Professional Certifications</td>
+                    <td style="padding:0.55rem 0.75rem;"><span style="background:#feebc8;color:#744210;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600;">MEDIUM</span></td>
+                    <td style="padding:0.55rem 0.75rem;">Negotiate AWS/CompTIA voucher partnership; create Capstone Certification Track elective</td>
+                    <td style="padding:0.55rem 0.75rem;color:var(--muted);">Program Director</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);background:#fafafa;">
+                    <td style="padding:0.55rem 0.75rem;">Program Outcomes</td>
+                    <td style="padding:0.55rem 0.75rem;"><span style="background:#feebc8;color:#744210;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600;">MEDIUM</span></td>
+                    <td style="padding:0.55rem 0.75rem;">Add 7th outcome for Learning Agility; strengthen Caring dimension language</td>
+                    <td style="padding:0.55rem 0.75rem;color:var(--muted);">Curriculum Committee</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:0.55rem 0.75rem;">Instructional Design</td>
+                    <td style="padding:0.55rem 0.75rem;"><span style="background:#feebc8;color:#744210;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600;">MEDIUM</span></td>
+                    <td style="padding:0.55rem 0.75rem;">Allocate 0.5 FTE dedicated ID; develop standard BSAI course template</td>
+                    <td style="padding:0.55rem 0.75rem;color:var(--muted);">LD&amp;E / Program Director</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);background:#fafafa;">
+                    <td style="padding:0.55rem 0.75rem;">Security Integration</td>
+                    <td style="padding:0.55rem 0.75rem;"><span style="background:#feebc8;color:#744210;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600;">MEDIUM</span></td>
+                    <td style="padding:0.55rem 0.75rem;">Add "Secure Agentic Systems" module to AI 420/430; retire "Vibe Coding" from academic materials</td>
+                    <td style="padding:0.55rem 0.75rem;color:var(--muted);">SME + Curriculum Committee</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:0.55rem 0.75rem;">Veteran Outreach</td>
+                    <td style="padding:0.55rem 0.75rem;"><span style="background:#bee3f8;color:#1a365d;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600;">LOW</span></td>
+                    <td style="padding:0.55rem 0.75rem;">Confirm BAH eligibility; add SkillBridge/TAP to marketing plan</td>
+                    <td style="padding:0.55rem 0.75rem;color:var(--muted);">Financial Aid / Marketing</td>
+                </tr>
+                <tr>
+                    <td style="padding:0.55rem 0.75rem;background:#fafafa;">Cohort-Building</td>
+                    <td style="padding:0.55rem 0.75rem;background:#fafafa;"><span style="background:#bee3f8;color:#1a365d;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600;">LOW</span></td>
+                    <td style="padding:0.55rem 0.75rem;background:#fafafa;">Design optional virtual kick-off hackathon weekend for Winter 2027</td>
+                    <td style="padding:0.55rem 0.75rem;background:#fafafa;color:var(--muted);">Program Director</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 City University of Seattle &mdash; School of Technology &amp; Computing &nbsp;&middot;&nbsp; Internal use — AAC Review Cycle April 2026
+</footer>
+
+</body>
+</html>

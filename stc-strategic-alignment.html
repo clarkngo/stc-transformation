@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <title>Enable CityU STC's Priorities — Strategic Alignment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #edf2f7;
+            color: #1a202c;
+            padding: 28px 32px;
+            min-width: 1180px;
+        }
+
+        .nav-back {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: #2b4c7e;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .nav-back:hover { text-decoration: underline; }
+
+        .page-title {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #1a202c;
+            margin-bottom: 22px;
+            letter-spacing: -0.02em;
+        }
+
+        /* ── Outer wrapper ── */
+        .diagram-outer {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 28px rgba(0,0,0,0.09);
+            overflow: hidden;
+        }
+
+        /* ── Header row ── */
+        .header-row {
+            display: grid;
+            grid-template-columns: 150px 56px 224px 132px 256px 154px;
+            border-bottom: 2.5px solid #1a202c;
+        }
+        .hcell {
+            padding: 9px 10px 7px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #1a202c;
+            line-height: 1.25;
+        }
+        .hcell small {
+            display: block;
+            font-size: 0.66rem;
+            font-weight: 400;
+            font-style: italic;
+            color: #718096;
+            margin-top: 1px;
+        }
+        .hcell.center { text-align: center; }
+        .hcell.right  { text-align: right;  }
+
+        /* ── Sub-header (achieved through / support) ── */
+        .sub-row {
+            display: grid;
+            grid-template-columns: 150px 56px 224px 132px 256px 154px;
+            background: #f7fafc;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.64rem;
+            color: #718096;
+        }
+        .scell {
+            padding: 3px 10px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .scell.center { justify-content: center; font-weight: 700; color: #4a5568; letter-spacing: 0.06em; font-size: 0.66rem; }
+        .scell.right  { justify-content: flex-end; }
+
+        /* ══════════════════════════════
+           MAIN DIAGRAM ROW
+        ══════════════════════════════ */
+        .diagram-row {
+            display: grid;
+            grid-template-columns: 150px 56px 224px 132px 256px 154px;
+            height: 760px;
+        }
+
+        /* ─── Col 1: Priorities ─── */
+        .col-priorities {
+            display: flex;
+            flex-direction: column;
+        }
+        .pblock {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            gap: 6px;
+        }
+        .pblock:last-child { border-bottom: none; }
+        .pblock .picon { font-size: 1.6rem; }
+        .pblock .plabel { font-size: 0.77rem; font-weight: 700; line-height: 1.3; }
+        .p1 { background: #2b4c7e; }
+        .p2 { background: #2b4c7e; }
+        .p3 { background: #1a3258; }
+        .p4 { background: #1a3258; }
+        .p5 { background: #111827; }
+
+        /* ─── Col 2: Arrows ─── */
+        .col-arrows {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+        }
+        .azone {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 4px 0;
+            border-bottom: 1px solid #f0f4f8;
+        }
+        .azone:last-child { border-bottom: none; }
+        .arr { font-size: 1.1rem; line-height: 1; display: block; }
+        .c-orange     { color: #dd6b20; }
+        .c-red-orange { color: #c53030; }
+        .c-red        { color: #822727; }
+        .c-green      { color: #276749; }
+        .c-dark       { color: #2d3748; }
+
+        /* ─── Col 3: Initiatives ─── */
+        .col-initiatives {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-left: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+        }
+        .igroup {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6px 12px;
+            border-bottom: 1px solid #e8edf2;
+            gap: 4px;
+        }
+        .igroup:last-child { border-bottom: none; }
+        .iitem {
+            font-size: 0.72rem;
+            color: #2d3748;
+            line-height: 1.3;
+            padding: 2px 0;
+        }
+        .iitem + .iitem {
+            border-top: 1px dashed #e8edf2;
+            padding-top: 4px;
+        }
+
+        /* ─── Col 4: Center bowtie ─── */
+        .col-center {
+            position: relative;
+            overflow: hidden;
+            background: #fff;
+        }
+        .bowtie-wrap {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+        }
+        .bt-left, .bt-right {
+            position: absolute;
+            inset: 0;
+        }
+        .bt-left {
+            background: linear-gradient(to right, #bfdbfe, #dbeafe);
+            clip-path: polygon(0 0, 100% 36%, 100% 64%, 0 100%);
+        }
+        .bt-right {
+            background: linear-gradient(to left, #bfdbfe, #dbeafe);
+            clip-path: polygon(0 36%, 100% 0, 100% 100%, 0 64%);
+        }
+        .hub-wrap {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .hub {
+            width: 78px;
+            height: 78px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #2b4c7e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 16px rgba(43,76,126,0.2);
+            gap: 2px;
+        }
+        .hub .hicon { font-size: 1.6rem; line-height: 1; }
+        .hub .htext {
+            font-size: 0.45rem;
+            font-weight: 800;
+            color: #2b4c7e;
+            text-align: center;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        /* ─── Col 5: Academic Initiatives ─── */
+        .col-academic {
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+        }
+        /* Each group occupies exactly 1/5 of column height */
+        .agroup {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 2px solid #fff;
+        }
+        .agroup:last-child { border-bottom: none; }
+        .aitem {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 11px;
+            font-size: 0.68rem;
+            line-height: 1.25;
+            color: #2d3748;
+            border-bottom: 1px solid rgba(255,255,255,0.7);
+        }
+        .aitem:last-child { border-bottom: none; }
+        /* Pillar color bands */
+        .g-career     { background: #f0fdf4; }
+        .g-innovation { background: #eff6ff; }
+        .g-equity     { background: #fffbeb; }
+        .g-industry   { background: #fff7ed; }
+        .g-faculty    { background: #fef2f2; }
+
+        /* ─── Col 6: Pillars ─── */
+        .col-pillars {
+            display: flex;
+            flex-direction: column;
+        }
+        .pillar {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.18);
+        }
+        .pillar:last-child { border-bottom: none; }
+        .pillar .plabel { font-size: 0.78rem; font-weight: 700; line-height: 1.35; }
+        .pi-1 { background: #276749; }
+        .pi-2 { background: #2b4c7e; }
+        .pi-3 { background: #b7791f; }
+        .pi-4 { background: #c05621; }
+        .pi-5 { background: #9b2c2c; }
+
+        /* ── Footer ── */
+        .page-footer {
+            margin-top: 12px;
+            text-align: right;
+            font-size: 0.75rem;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+
+<a class="nav-back" href="index.html">← Back to STC Transformation</a>
+<div class="page-title">Enable CityU STC's Priorities</div>
+
+<div class="diagram-outer">
+
+    <!-- Header labels -->
+    <div class="header-row">
+        <div class="hcell">University<br>Priorities</div>
+        <div class="hcell"></div>
+        <div class="hcell">School<br>Initiatives</div>
+        <div class="hcell center"></div>
+        <div class="hcell">Academic &amp; Technology<br>Initiatives</div>
+        <div class="hcell right">Pillars</div>
+    </div>
+
+    <!-- Sub-row: achieved through + support -->
+    <div class="sub-row">
+        <div class="scell"><span style="font-style:italic">Achieved Through</span> <span>↑</span></div>
+        <div class="scell"></div>
+        <div class="scell"></div>
+        <div class="scell center">← &nbsp;SUPPORT&nbsp; →</div>
+        <div class="scell"></div>
+        <div class="scell right"><span style="font-style:italic">Achieved Through</span> <span>↑</span></div>
+    </div>
+
+    <!-- Main diagram body -->
+    <div class="diagram-row">
+
+        <!-- ══ Col 1: University Priorities ══ -->
+        <div class="col-priorities">
+            <div class="pblock p1">
+                <div class="picon">🎓</div>
+                <div class="plabel">Student Success &amp; Career Readiness</div>
+            </div>
+            <div class="pblock p2">
+                <div class="picon">💼</div>
+                <div class="plabel">Workforce Development</div>
+            </div>
+            <div class="pblock p3">
+                <div class="picon">🤖</div>
+                <div class="plabel">Technology &amp; AI Leadership</div>
+            </div>
+            <div class="pblock p4">
+                <div class="picon">♿</div>
+                <div class="plabel">Equity &amp; Accessibility</div>
+            </div>
+            <div class="pblock p5">
+                <div class="picon">🤝</div>
+                <div class="plabel">Industry &amp; Institutional Growth</div>
+            </div>
+        </div>
+
+        <!-- ══ Col 2: Arrows ══ -->
+        <div class="col-arrows">
+            <div class="azone">
+                <span class="arr c-orange">↗</span>
+                <span class="arr c-orange">→</span>
+                <span class="arr c-orange">↘</span>
+            </div>
+            <div class="azone">
+                <span class="arr c-red-orange">↗</span>
+                <span class="arr c-red-orange">→</span>
+            </div>
+            <div class="azone">
+                <span class="arr c-red">↗</span>
+                <span class="arr c-red">→</span>
+                <span class="arr c-red">↘</span>
+            </div>
+            <div class="azone">
+                <span class="arr c-green">↗</span>
+                <span class="arr c-green">→</span>
+                <span class="arr c-green">↘</span>
+            </div>
+            <div class="azone">
+                <span class="arr c-dark">↗</span>
+                <span class="arr c-dark">→</span>
+            </div>
+        </div>
+
+        <!-- ══ Col 3: School Initiatives ══ -->
+        <div class="col-initiatives">
+            <!-- Student Success -->
+            <div class="igroup">
+                <div class="iitem">BSAI Program Launch (2026)</div>
+                <div class="iitem">Portfolio-Based Learning Model</div>
+                <div class="iitem">STC Guild &amp; Student Community</div>
+            </div>
+            <!-- Workforce -->
+            <div class="igroup">
+                <div class="iitem">Applied Research from Day 1</div>
+                <div class="iitem">Internship &amp; Capstone Pathways</div>
+            </div>
+            <!-- Tech & AI -->
+            <div class="igroup">
+                <div class="iitem">Agentic Era Curriculum (Spec-First)</div>
+                <div class="iitem">Graduate Program Expansion (MS AI, DS, CS, CY)</div>
+                <div class="iitem">Open-Source AI Lab (Ollama)</div>
+            </div>
+            <!-- Equity -->
+            <div class="igroup">
+                <div class="iitem">Online-First Global Delivery</div>
+                <div class="iitem">Preparatory Course Bridge (AI 251, IS 201)</div>
+                <div class="iitem">Veterans &amp; Non-Traditional Support</div>
+            </div>
+            <!-- Industry -->
+            <div class="igroup">
+                <div class="iitem">Industry Advisory Board</div>
+                <div class="iitem">Employer-Sponsored Capstone Projects</div>
+            </div>
+        </div>
+
+        <!-- ══ Col 4: Center Bowtie ══ -->
+        <div class="col-center">
+            <div class="bt-left"></div>
+            <div class="bt-right"></div>
+            <div class="hub-wrap">
+                <div class="hub">
+                    <div class="hicon">🏫</div>
+                    <div class="htext">CityU<br>STC</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ Col 5: Academic & Technology Initiatives ══ -->
+        <div class="col-academic">
+
+            <!-- Group 1: Career-Ready (green) -->
+            <div class="agroup">
+                <div class="aitem g-career">Portfolio &amp; Pilot Log Assessment</div>
+                <div class="aitem g-career">Certification-Ready Tracks (AWS, CompTIA)</div>
+                <div class="aitem g-career">Capstone &amp; Internship Programs</div>
+                <div class="aitem g-career">Industry Mentorship Network</div>
+                <div class="aitem g-career">Performance-Based Curriculum Redesign</div>
+            </div>
+
+            <!-- Group 2: Innovation (blue) -->
+            <div class="agroup">
+                <div class="aitem g-innovation">Agentic AI (AI 420)</div>
+                <div class="aitem g-innovation">AI Engineering (AI 410)</div>
+                <div class="aitem g-innovation">MLOps &amp; AgentOps (AI 430)</div>
+                <div class="aitem g-innovation">Digital Twins &amp; Physical AI (AI 440)</div>
+                <div class="aitem g-innovation">AI House / Innovation Demonstration Lab</div>
+            </div>
+
+            <!-- Group 3: Equity (gold) -->
+            <div class="agroup">
+                <div class="aitem g-equity">Online-First Asynchronous Delivery Model</div>
+                <div class="aitem g-equity">Preparatory Course Bridge (AI 251, CS 132)</div>
+                <div class="aitem g-equity">Veterans &amp; Non-Traditional Student Track</div>
+                <div class="aitem g-equity">Digital Inclusion &amp; ADA Access 2026</div>
+            </div>
+
+            <!-- Group 4: Industry (orange) -->
+            <div class="agroup">
+                <div class="aitem g-industry">Industry Advisory Board Formation</div>
+                <div class="aitem g-industry">Employer-Sponsored Capstone Projects</div>
+                <div class="aitem g-industry">Open-Source LLM Infrastructure (Ollama)</div>
+                <div class="aitem g-industry">AI Dev Tooling Integration (Claude, Cursor)</div>
+            </div>
+
+            <!-- Group 5: Faculty/Excellence (red) -->
+            <div class="agroup">
+                <div class="aitem g-faculty">SME + Instructional Designer Model</div>
+                <div class="aitem g-faculty">Faculty AI Upskilling Program</div>
+                <div class="aitem g-faculty">Quarterly Curriculum Revision Cycle</div>
+                <div class="aitem g-faculty">ABET &amp; NWCCU Accreditation Alignment</div>
+            </div>
+
+        </div>
+
+        <!-- ══ Col 6: Pillars ══ -->
+        <div class="col-pillars">
+            <div class="pillar pi-1">
+                <div class="plabel">Career-Ready<br>Graduates</div>
+            </div>
+            <div class="pillar pi-2">
+                <div class="plabel">Innovation &amp;<br>Agentic Learning</div>
+            </div>
+            <div class="pillar pi-3">
+                <div class="plabel">Equity &amp;<br>Accessibility</div>
+            </div>
+            <div class="pillar pi-4">
+                <div class="plabel">Industry-<br>Integrated<br>Education</div>
+            </div>
+            <div class="pillar pi-5">
+                <div class="plabel">Faculty &amp;<br>Institutional<br>Excellence</div>
+            </div>
+        </div>
+
+    </div><!-- /diagram-row -->
+</div><!-- /diagram-outer -->
+
+<div class="page-footer">
+    City University of Seattle &nbsp;·&nbsp; School of Technology &amp; Computing &nbsp;·&nbsp; Strategic Alignment &nbsp;·&nbsp; FY 2026–2027
+</div>
+
+</body>
+</html>

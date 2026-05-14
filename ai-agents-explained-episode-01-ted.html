@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <title>AI Agents, Explained — Episode 1 (TED) — Production Script — STC Transformation</title>
+    <style>
+        :root {
+            --series: #be123c;
+            --series-dim: #fff1f2;
+            --series-ink: #881337;
+            --ink: #0f172a;
+            --slate: #475569;
+            --slate-light: #94a3b8;
+            --card: #ffffff;
+            --bg: #fafaf9;
+            --border: rgba(15, 23, 42, 0.1);
+            --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 12px 36px rgba(15, 23, 42, 0.06);
+            --radius: 14px;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        abbr[title] {
+            cursor: help;
+            text-decoration: underline dotted;
+            text-underline-offset: 0.12em;
+        }
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.58;
+            font-size: 17px;
+        }
+        .shell { max-width: 720px; margin: 0 auto; padding: 24px 18px 64px; }
+        .nav-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 16px;
+            margin-bottom: 22px;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .nav-row a { color: var(--series); text-decoration: none; }
+        .nav-row a:hover { text-decoration: underline; }
+
+        .hero {
+            background: linear-gradient(165deg, #fff 0%, var(--series-dim) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 26px 24px 22px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--series);
+            margin-bottom: 22px;
+        }
+        .hero .kicker {
+            margin: 0 0 6px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--series);
+        }
+        .hero h1 {
+            margin: 0 0 6px;
+            font-size: clamp(1.3rem, 4vw, 1.75rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            color: var(--series-ink);
+        }
+        .hero .subtitle {
+            margin: 0 0 10px;
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: #9f1239;
+        }
+        .hero .format-tag {
+            margin: 0 0 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--slate);
+        }
+        .hero .version {
+            margin: 0;
+            font-size: 0.88rem;
+            color: var(--slate);
+            font-weight: 600;
+        }
+
+        .alt-link {
+            margin: 0 0 20px;
+            padding: 12px 16px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            color: #4338ca;
+        }
+        .alt-link a { font-weight: 700; color: #4f46e5; }
+
+        .mini-toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0 0 24px;
+            padding: 0;
+            list-style: none;
+        }
+        .mini-toc a {
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--slate);
+            text-decoration: none;
+        }
+        .mini-toc a:hover { color: var(--series); border-color: rgba(190, 18, 60, 0.35); background: var(--series-dim); }
+
+        .meta-table-wrap {
+            overflow-x: auto;
+            margin: 18px 0 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--card);
+        }
+        table.meta {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .meta th, .meta td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .meta th {
+            width: 9rem;
+            background: #fafafa;
+            font-weight: 700;
+            color: var(--series-ink);
+        }
+        .meta tr:last-child td, .meta tr:last-child th { border-bottom: none; }
+        .meta td { color: var(--slate); }
+
+        .conventions {
+            margin: 0 0 28px;
+            padding: 16px 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.88rem;
+            color: var(--slate);
+        }
+        .conventions h2 {
+            margin: 0 0 10px;
+            font-size: 0.95rem;
+            color: var(--series-ink);
+        }
+        .conventions ul { margin: 0; padding-left: 1.15rem; }
+        .conventions li { margin-bottom: 6px; }
+        .conventions code { font-size: 0.82em; background: #fff1f2; padding: 2px 6px; border-radius: 4px; }
+
+        .script-part {
+            margin: 36px 0 28px;
+            padding-top: 8px;
+            border-top: 2px solid var(--series-dim);
+        }
+        .script-part h2 {
+            margin: 0 0 4px;
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: var(--series-ink);
+            letter-spacing: -0.02em;
+        }
+        .script-part .runtime {
+            margin: 0 0 16px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--series);
+        }
+
+        .cue {
+            margin: 14px 0 6px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #9d174d;
+        }
+        .cue code {
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: inherit;
+            font-weight: 800;
+            background: #fff1f2;
+            padding: 3px 8px;
+            border-radius: 6px;
+            color: var(--series-ink);
+        }
+        .speech {
+            margin: 0 0 14px;
+            color: var(--ink);
+            font-size: 1.02rem;
+        }
+        .speech strong:first-child {
+            font-weight: 800;
+            color: var(--series-ink);
+            margin-right: 6px;
+        }
+        .tone {
+            margin: 8px 0 14px;
+            font-size: 0.92rem;
+            font-style: italic;
+            color: var(--slate);
+        }
+        .slide-line {
+            margin: 14px 0;
+            padding: 14px 18px;
+            background: #0f172a;
+            color: #f8fafc;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            text-align: center;
+            border-left: 4px solid var(--series);
+        }
+        .slide-line.sub { font-size: 0.95rem; font-weight: 600; font-style: italic; margin-top: 8px; opacity: 0.95; }
+
+        .prod-section {
+            margin-top: 48px;
+            padding-top: 28px;
+            border-top: 2px dashed var(--border);
+        }
+        .prod-section h2 {
+            font-size: 1.12rem;
+            color: var(--series-ink);
+            margin: 0 0 16px;
+        }
+        .prod-section h3 {
+            margin: 22px 0 10px;
+            font-size: 1rem;
+            color: var(--series-ink);
+        }
+        .doc-table-wrap {
+            overflow-x: auto;
+            margin: 14px 0;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--card);
+        }
+        table.doc {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+        .doc th, .doc td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .doc th { background: #fafafa; font-weight: 700; color: var(--ink); }
+        .doc tr:last-child td { border-bottom: none; }
+
+        .defer {
+            margin: 16px 0;
+            padding: 16px 18px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 0.88rem;
+            color: var(--slate);
+        }
+        .defer ul { margin: 8px 0 0; padding-left: 1.1rem; }
+        .defer li { margin-bottom: 6px; }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border);
+            font-size: 0.85rem;
+            color: var(--slate-light);
+            text-align: center;
+        }
+        footer a { color: var(--series); font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <nav class="nav-row" aria-label="Page navigation">
+            <a href="index.html">← Hub</a>
+            <a href="ai-agents-explained-lecture-00-cs50.html">Lecture 0 · CS50-style</a>
+            <a href="ai-agents-explained-episode-01.html">Episode 1 · Vox / explainer version</a>
+            <a href="ai-agents-explained-episode-01-brandon.html">Episode 1 · Screen demo</a>
+            <a href="marketing-101-stc.html">Marketing 101</a>
+            <a href="strategic-growth-stc-content-engine.html#video-trust">Content Engine</a>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">School of Technology and Computing</p>
+            <h1>AI Agents, Explained</h1>
+            <p class="subtitle">TED Talk Version: &ldquo;The New Employee You&rsquo;ll Never Meet&rdquo;</p>
+            <p class="format-tag">Episode 01 of 08 · TED format · single speaker · sparse slides</p>
+            <p class="version">Production Script · Version 1.0</p>
+        </header>
+
+        <p class="alt-link">Alternate formats: <a href="ai-agents-explained-lecture-00-cs50.html">Lecture 0 · CS50-style hall</a> (props + whiteboard, 16&ndash;18 min) · <a href="ai-agents-explained-episode-01.html">Episode 1 · Vox / Kurzgesagt</a> (13&ndash;15 min) · <a href="ai-agents-explained-episode-01-brandon.html">Episode 1 · Screen demo</a> (12&ndash;14 min).</p>
+
+        <nav aria-label="Talk sections">
+            <ul class="mini-toc">
+                <li><a href="#meta">Meta</a></li>
+                <li><a href="#conventions">Conventions</a></li>
+                <li><a href="#opening">Opening</a></li>
+                <li><a href="#idea">Idea worth spreading</a></li>
+                <li><a href="#part-1">Part 1</a></li>
+                <li><a href="#part-2">Part 2</a></li>
+                <li><a href="#part-3">Part 3</a></li>
+                <li><a href="#part-4">Part 4</a></li>
+                <li><a href="#close">Close</a></li>
+                <li><a href="#outro">Applause / outro</a></li>
+                <li><a href="#production-notes">Production notes</a></li>
+            </ul>
+        </nav>
+
+        <div class="meta-table-wrap" id="meta">
+            <table class="meta">
+                <tbody>
+                    <tr><th scope="row">Series</th><td>AI Agents, Explained</td></tr>
+                    <tr><th scope="row">Episode</th><td>01 of 08 &mdash; TED format</td></tr>
+                    <tr><th scope="row">Runtime target</th><td>15&ndash;18 minutes</td></tr>
+                    <tr><th scope="row">Format</th><td>Single speaker, stage or minimal set</td></tr>
+                    <tr><th scope="row">Slides</th><td>Optional &mdash; sparse. Described where used</td></tr>
+                    <tr><th scope="row">Tone</th><td>Personal, story-driven, one big idea</td></tr>
+                    <tr><th scope="row">Audience</th><td>Adult non-tech working professionals</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <section class="conventions" id="conventions" aria-labelledby="conv-h">
+            <h2 id="conv-h">Script conventions</h2>
+            <ul>
+                <li><code>[STAGE]</code> &mdash; movement, blocking, or physical direction</li>
+                <li><code>[SLIDE]</code> &mdash; optional slide content (minimal, word or image only)</li>
+                <li><code>[PAUSE]</code> &mdash; deliberate silence; do not rush</li>
+                <li>Words in <strong>bold</strong> in the source &mdash; spoken with emphasis (marked below with <code>&lt;strong&gt;</code>)</li>
+                <li><em>(parenthetical)</em> &mdash; tone or intent note for the speaker</li>
+            </ul>
+        </section>
+
+        <article class="script-body">
+            <section class="script-part" id="opening">
+                <h2>OPENING &mdash; THE STORY</h2>
+                <p class="runtime">Runtime: 0:00 &ndash; 2:30</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>Speaker walks on from the side &mdash; not announced, not introduced yet. No fanfare. They stop near center stage. Quiet for a moment. Then:</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> A few months ago, I sent a message.</p>
+                <p class="speech">Three words.</p>
+                <p class="speech">&ldquo;Prepare the report.&rdquo;</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">I didn&rsquo;t specify which report. I didn&rsquo;t say who it was for. I didn&rsquo;t say what format, what length, what deadline.</p>
+                <p class="speech">I just said: prepare the report.</p>
+                <p class="speech">And something prepared it.</p>
+                <p class="speech">It found the right data. It structured the sections. It formatted it correctly. It flagged two numbers that didn&rsquo;t look right and asked me to verify them. And when I confirmed they were fine, it sent the finished document &mdash; to the right people, with the right subject line &mdash; before I&rsquo;d finished my second cup of coffee.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">Now. I want to be honest with you about how I felt in that moment.</p>
+                <p class="tone">(warmly self-deprecating)</p>
+                <p class="speech">I felt impressed.</p>
+                <p class="speech">And then I felt slightly unsettled.</p>
+                <p class="speech">And then I thought: most of the people I know &mdash; smart people, capable people, people who lead teams and run departments and make genuinely important decisions &mdash; have no idea that something like this even exists yet.</p>
+                <p class="speech">And that felt like a problem.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>A small step forward. More direct.</p>
+
+                <p class="speech">Because here&rsquo;s the thing. The people who <strong>build</strong> these systems? They have entire ecosystems of resources. Tutorials. Courses. Documentation. Communities. GitHub repositories full of code they can copy.</p>
+                <p class="speech">But the people who will <strong>manage</strong> these systems, <strong>deploy</strong> these systems, <strong>govern</strong> these systems, <strong>live alongside</strong> these systems &mdash; the managers, the executives, the policy makers, the educators, the people whose decisions will shape how this technology actually lands in the world?</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">We&rsquo;ve given them almost nothing.</p>
+                <p class="speech">That&rsquo;s what I want to start changing today.</p>
+            </section>
+
+            <section class="script-part" id="idea">
+                <h2>THE IDEA WORTH SPREADING</h2>
+                <p class="runtime">Runtime: 2:30 &ndash; 3:30</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>Land the thesis simply. Don&rsquo;t rush this line.</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> The most important people in the AI agent revolution are not the engineers who build agents.</p>
+                <p class="speech">They&rsquo;re the people who <strong>direct</strong> them.</p>
+                <p class="speech">And directing an AI agent well &mdash; designing what it does, writing what it knows, deciding what it&rsquo;s allowed to do &mdash; that is not a technical skill.</p>
+                <p class="speech">It is a <strong>human</strong> one.</p>
+
+                <p class="cue"><code>[SLIDE]</code> <em>(optional)</em></p>
+                <p>Four words on a dark background:</p>
+                <div class="slide-line">Directing is a human skill.</div>
+
+                <p class="speech"><strong>SPEAKER:</strong> Today I want to give you a mental model for understanding AI agents that you can actually use &mdash; whether you&rsquo;re leading a team, running an organization, or just trying to figure out what everyone in tech is talking about.</p>
+                <p class="speech">No code. No jargon. Just the real thing.</p>
+            </section>
+
+            <section class="script-part" id="part-1">
+                <h2>PART 1 &mdash; WHAT THEY ARE, ACTUALLY</h2>
+                <p class="runtime">Runtime: 3:30 &ndash; 7:00</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> Let&rsquo;s start with a word.</p>
+                <p class="speech">The word &ldquo;agent&rdquo; is doing a lot of work right now. You hear it constantly. AI agents. Agentic AI. Multi-agent systems.</p>
+                <p class="speech">But most explanations skip past the word itself. So let&rsquo;s stop there for a second.</p>
+                <p class="speech">An agent &mdash; in any context &mdash; is someone who acts on your behalf.</p>
+                <p class="speech">Your real estate agent finds you a house. Your literary agent sells your book. A travel agent, back when those existed, booked your flights.</p>
+                <p class="tone">(slight smile)</p>
+                <p class="speech">They all share one thing: they don&rsquo;t just <em>advise</em> you. They <em>act</em>. They do something in the world on your behalf.</p>
+                <p class="speech">An AI agent is the same idea &mdash; except the agent is software.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">Now &mdash; I know what some of you are thinking. &ldquo;Isn&rsquo;t that just ChatGPT? I type something, it responds, it does things.&rdquo;</p>
+                <p class="speech">It&rsquo;s not. And the distinction matters more than it might seem.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>Move to one side of the stage.</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> When you use a conversational AI &mdash; and most of us have, at this point &mdash; it responds to you. You ask it to write an email. It writes the email. You ask it to summarize a document. It summarizes it. You ask it to brainstorm ideas. It brainstorms.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>Move to other side of the stage. The physical movement should feel like crossing a line.</p>
+
+                <p class="speech">But then &mdash; and this is the key part &mdash; you have to <strong>do</strong> the thing.</p>
+                <p class="speech">You copy the email. You open your inbox. You paste it. You hit send.</p>
+                <p class="speech">The AI generated something. <em>You</em> acted on it.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>Back to center.</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> An AI agent closes that gap. It doesn&rsquo;t hand you a draft and wait. It sends the email. It updates the database. It books the meeting. It files the form.</p>
+                <p class="speech">It <strong>acts</strong>.</p>
+                <p class="speech">And that one word &mdash; <em>acts</em> &mdash; changes everything. Because now we&rsquo;re not talking about a very smart autocomplete. We&rsquo;re talking about something that has consequences in the world. Something that can do things you didn&rsquo;t explicitly review before they happened.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">That&rsquo;s why understanding this matters. Not just intellectually &mdash; but practically. Professionally. Ethically.</p>
+            </section>
+
+            <section class="script-part" id="part-2">
+                <h2>PART 2 &mdash; THE ANALOGY THAT CHANGED HOW I THINK ABOUT THIS</h2>
+                <p class="runtime">Runtime: 7:00 &ndash; 10:30</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> I&rsquo;ve been thinking about how to explain this for a while. And the analogy I keep coming back to &mdash; the one that actually works &mdash; is a new employee.</p>
+                <p class="speech">Not a robot. Not a machine. A person. Imagine you&rsquo;ve just hired someone.</p>
+                <p class="speech">They&rsquo;re extremely smart. Genuinely impressive. They process information fast. They never get tired. They&rsquo;re always on time.</p>
+                <p class="speech">But they have one defining characteristic.</p>
+                <p class="speech">They are <strong>profoundly, almost aggressively literal.</strong></p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">You tell them: &ldquo;Handle the customer emails.&rdquo;</p>
+                <p class="speech">They handle the customer emails &mdash; all of them, every single one, including the ones that should have gone to legal, including the one from the journalist, including the one that was actually internal and ended up in the wrong inbox.</p>
+                <p class="speech">You didn&rsquo;t say <em>which</em> emails. You didn&rsquo;t say <em>how</em> to handle them. You didn&rsquo;t say <em>what</em> handling meant.</p>
+                <p class="speech">And they did exactly what you said.</p>
+
+                <p class="tone">(let that land)</p>
+
+                <p class="speech">Sound familiar?</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">Now. This is the part where most people&rsquo;s instinct is: that sounds like a limitation. And in a human employee, it would be. We expect people to exercise judgment. To read between the lines. To understand context without being told every single thing.</p>
+                <p class="speech">But here&rsquo;s what I want you to notice.</p>
+                <p class="speech">That&rsquo;s not a description of a <em>broken</em> system. That&rsquo;s a description of a system that does <strong>exactly what it&rsquo;s told.</strong></p>
+                <p class="speech">Which means the quality of the output is almost entirely determined by the quality of the instructions.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>Step toward the audience. Quieter now. This is the pivot.</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> In the AI world, those instructions are called a system prompt, or sometimes just &ldquo;instructions.&rdquo; But I think we should call them what they are.</p>
+                <p class="speech">It&rsquo;s a <strong>job description.</strong></p>
+                <p class="speech">And just like in the real world: a vague job description produces unpredictable behavior. A contradictory job description produces confusion. A thoughtful, precise, well-crafted job description produces something that genuinely works.</p>
+
+                <p class="cue"><code>[SLIDE]</code> <em>(optional)</em></p>
+                <div class="slide-line">The agent is only as good as the job description you give it.</div>
+
+                <p class="speech"><strong>SPEAKER:</strong> Now. Who writes job descriptions?</p>
+                <p class="speech">Not engineers. Not data scientists. Not the people who built the system.</p>
+                <p class="speech">Managers write job descriptions. Leaders write job descriptions. People who understand the work, the context, the stakes &mdash; they write job descriptions.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">This is why I believe &mdash; deeply &mdash; that the people in this room are not behind the curve on AI agents. You are not playing catch-up. You bring exactly the skills this requires: clarity of thought, understanding of context, and the judgment to know what a role should and shouldn&rsquo;t do.</p>
+            </section>
+
+            <section class="script-part" id="part-3">
+                <h2>PART 3 &mdash; THREE PARTS, ONE PRINCIPLE</h2>
+                <p class="runtime">Runtime: 10:30 &ndash; 13:00</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> Let me give you one more piece of the mental model.</p>
+                <p class="speech">Every AI agent &mdash; and I&rsquo;ve looked at dozens of them now &mdash; is built from three things.</p>
+
+                <p class="cue"><code>[SLIDE]</code> <em>(optional)</em></p>
+                <p>Three words, appearing one at a time:</p>
+                <div class="slide-line">Brain. Job description. Memory.</div>
+
+                <p class="speech"><strong>SPEAKER:</strong> The brain is the AI model underneath. Think of it as raw intelligence &mdash; the capacity to understand language, reason about situations, and decide what to do next. You don&rsquo;t build this from scratch. You choose it, like choosing what kind of background your new employee comes from.</p>
+                <p class="speech">The job description &mdash; we&rsquo;ve talked about. It shapes everything. It&rsquo;s the most important part, and it&rsquo;s entirely in plain language.</p>
+                <p class="speech">And then there&rsquo;s memory. This one surprises people.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">Most AI agents, by default, remember nothing between conversations.</p>
+                <p class="speech">Nothing.</p>
+                <p class="speech">Every time a new conversation starts &mdash; whether it&rsquo;s a minute later or a month later &mdash; the agent begins completely fresh. It has no idea you&rsquo;ve ever spoken before. It has no idea what happened last time.</p>
+                <p class="tone">(with deliberate understatement)</p>
+                <p class="speech">This has some interesting implications.</p>
+                <p class="speech">For privacy &mdash; it means everything said in one conversation doesn&rsquo;t leak into the next. For consistency &mdash; it means the agent&rsquo;s behavior is predictable and controlled. But for continuity &mdash; it means you can&rsquo;t assume the agent &ldquo;knows&rdquo; your context unless you tell it every time.</p>
+                <p class="speech">Managing memory &mdash; deciding what the agent should remember, for how long, and in what situations &mdash; is one of the most important design decisions in any AI agent deployment.</p>
+                <p class="speech">And again: not a technical question. A <em>judgment</em> question.</p>
+            </section>
+
+            <section class="script-part" id="part-4">
+                <h2>PART 4 &mdash; WHAT I WANT YOU TO DO WITH THIS</h2>
+                <p class="runtime">Runtime: 13:00 &ndash; 15:30</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> I want to tell you about three people I spoke to in the last six months.</p>
+                <p class="speech">The first was a hospital administrator. Her organization was considering deploying an AI agent to handle patient appointment scheduling &mdash; an enormous volume, significant stress on her team.</p>
+                <p class="speech">She came to me and said: &ldquo;I don&rsquo;t understand how it works well enough to decide whether to do this.&rdquo;</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">The second was a senior government official. His department was being asked to approve a procurement for an AI agent that would assist with contract review. He said, almost word for word: &ldquo;I can&rsquo;t evaluate something I don&rsquo;t understand.&rdquo;</p>
+                <p class="speech">The third was a principal at a school. Her teachers were starting to use AI tools with students &mdash; some of them quite aggressively. She said: &ldquo;I need to understand this well enough to set a policy. But everything I read assumes I know things I don&rsquo;t.&rdquo;</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">Three people. Three different sectors. Three different decisions. All blocked by the same gap.</p>
+                <p class="speech">They didn&rsquo;t need to become engineers. They needed a mental model. They needed a vocabulary. They needed the ability to ask the right questions.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>Step forward again. Most direct moment of the talk.</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> An AI agent is not magic. It&rsquo;s not an autonomous decision-maker. It&rsquo;s not going to replace your best people.</p>
+                <p class="speech">But it is also not trivial. It is not a chatbot with a fancier name. When deployed thoughtfully, it can do a category of work &mdash; reliably, at scale, at hours no human wants to work &mdash; that changes what your team is capable of.</p>
+                <p class="speech">And the people who unlock that potential are not the people who built the agent.</p>
+                <p class="speech">They&rsquo;re the people who understand what work needs doing. Who can write a clear, precise job description. Who know what the agent should <em>not</em> do, and will hold that line.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">That hospital administrator? Once she understood the mental model &mdash; brain, job description, memory &mdash; she came back with the most incisive list of governance questions I&rsquo;ve ever seen from a non-technical stakeholder.</p>
+                <p class="speech">She didn&rsquo;t need to know <em>how</em> the agent worked. She needed to know <em>what</em> it was.</p>
+                <p class="speech">And that made all the difference.</p>
+            </section>
+
+            <section class="script-part" id="close">
+                <h2>CLOSE &mdash; THE IDEA, RESTATED</h2>
+                <p class="runtime">Runtime: 15:30 &ndash; 17:00</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>Quieter. More personal. Not winding down &mdash; landing.</p>
+
+                <p class="speech"><strong>SPEAKER:</strong> We are at a moment where the gap between technical capability and human understanding is growing faster than at any point in recent history.</p>
+                <p class="speech">The people building AI agents are moving fast. The tools are powerful. The deployments are real.</p>
+                <p class="speech">And there is a genuine risk that the decisions shaping how this technology lands in the world &mdash; in hospitals, in schools, in governments, in companies &mdash; get made by default, because the people who <em>should</em> be making them didn&rsquo;t feel equipped to.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">I don&rsquo;t think that&rsquo;s inevitable.</p>
+                <p class="speech">I think the skills required to direct AI agents well &mdash; clarity, judgment, communication, the ability to write a job description that actually reflects what you want &mdash; are skills that exist in abundance outside of Silicon Valley.</p>
+                <p class="speech">They exist in this room.</p>
+                <p class="speech">The question is whether we close the gap in time.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">So here&rsquo;s what I want to leave you with.</p>
+                <p class="speech">The next time someone talks to you about AI agents &mdash; in a meeting, in a pitch, in a policy briefing &mdash; don&rsquo;t let the conversation stay technical. Ask the question that matters:</p>
+                <p class="slide-line" style="margin-top:18px;">&ldquo;What&rsquo;s the job description?&rdquo;</p>
+                <p class="speech">Because if they can&rsquo;t answer that clearly &mdash; if they can&rsquo;t tell you in plain language what the agent is supposed to do, what it&rsquo;s supposed to <em>not</em> do, and how they&rsquo;ll know if it&rsquo;s working &mdash; then the conversation isn&rsquo;t finished yet.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">You&rsquo;re not behind. You&rsquo;re not missing something only engineers can understand.</p>
+                <p class="speech">You just needed a better starting point.</p>
+                <p class="tone">(small smile)</p>
+                <p class="speech">Now you have one.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>Hold eye contact. Let the silence sit. Then step back slightly &mdash; signal that it&rsquo;s done.</p>
+            </section>
+
+            <section class="script-part" id="outro">
+                <h2>APPLAUSE / OUTRO</h2>
+                <p class="runtime">Runtime: 17:00 &ndash; 18:00</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p>If there is a host or Q&amp;A, the speaker remains on stage. If this is a recorded episode for the series, the camera holds on the speaker for a moment, then:</p>
+
+                <p class="cue"><code>[SLIDE]</code> <em>(series end card)</em></p>
+                <div class="slide-line">
+                    &ldquo;AI Agents, Explained&rdquo;
+                    <div class="slide-line sub">Next episode: <em>Writing the Job Description</em></div>
+                    <div class="slide-line sub" style="font-weight:500;margin-top:10px;">[School name · logo · where to find the series]</div>
+                </div>
+            </section>
+        </article>
+
+        <section class="prod-section" id="production-notes" aria-labelledby="prod-h">
+            <h2 id="prod-h">Production notes</h2>
+
+            <h3>How this differs from the Vox / Kurzgesagt version</h3>
+            <div class="doc-table-wrap">
+                <table class="doc">
+                    <thead>
+                        <tr><th>Dimension</th><th>Vox / Kurzgesagt version</th><th>TED version</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Structure</td><td>Explainer &mdash; concept by concept</td><td>Story-driven &mdash; personal, builds to one insight</td></tr>
+                        <tr><td>Visuals</td><td>Heavy animation, motion graphics</td><td>Minimal or none. Speaker <em>is</em> the visual</td></tr>
+                        <tr><td>Voice</td><td>&ldquo;Let&rsquo;s explore this together&rdquo;</td><td>&ldquo;I&rsquo;ve thought about this and here&rsquo;s what I found&rdquo;</td></tr>
+                        <tr><td>Pacing</td><td>Fast, energetic, information-dense</td><td>Slower. Deliberate pauses carry as much weight as words</td></tr>
+                        <tr><td>Emotional arc</td><td>Curiosity &rarr; understanding &rarr; capability</td><td>Discomfort &rarr; recognition &rarr; resolve</td></tr>
+                        <tr><td>Signature moment</td><td>The three-part cutaway animation</td><td>&ldquo;What&rsquo;s the job description?&rdquo; as a portable takeaway</td></tr>
+                        <tr><td>Rewatchability</td><td>High &mdash; people pause and rewind</td><td>Lower &mdash; designed to be experienced once, in full</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Speaker direction notes</h3>
+            <ul style="color:var(--slate);font-size:0.9rem;padding-left:1.2rem;">
+                <li><strong>On the opening story.</strong> The &ldquo;prepare the report&rdquo; story works best if it feels like it actually happened to the speaker &mdash; because it did, or a version of it did. Speakers should feel free to adapt this to a real experience from their own work. Authenticity over polish here.</li>
+                <li><strong>On the three-person vignette (Part 4).</strong> These three people &mdash; the hospital administrator, the government official, the school principal &mdash; are composite figures drawn from real conversations. The speaker should feel free to replace any of them with real encounters they have had. Real specificity (&ldquo;a colleague of mine at a hospital in Kuala Lumpur&rdquo;) is always more powerful than generalized examples.</li>
+                <li><strong>On pauses.</strong> TED&rsquo;s most experienced coaches say most speakers use pauses too little, not too much. The <code>[PAUSE]</code> marks in this script are not awkward silences &mdash; they are the moments when the audience processes. Don&rsquo;t fill them. Let them breathe.</li>
+                <li><strong>On slides.</strong> All slides in this script are optional. The talk works without them. If slides are used, they should have one element only &mdash; a single word, a single short phrase, or a single image. No bullet points. No diagrams. The speaker&rsquo;s words and presence are the content.</li>
+                <li><strong>On the closing line.</strong> &ldquo;Now you have one&rdquo; is the emotional close. It should land like a door clicking shut &mdash; quiet, clean, final. The speaker should not add anything after it. Resist the urge to say &ldquo;Thank you&rdquo; or &ldquo;Any questions?&rdquo; in the moment &mdash; let the line live for a beat before the acknowledgment.</li>
+            </ul>
+
+            <h3>What this talk does NOT cover</h3>
+            <p style="color:var(--slate);font-size:0.88rem;margin:0 0 8px;"><em>(same as Vox version &mdash; intentional)</em></p>
+            <div class="defer">
+                <ul>
+                    <li>How to write a job description &rarr; <strong>Episode 2</strong></li>
+                    <li>Memory and context &rarr; <strong>Episode 3</strong></li>
+                    <li>Tools and integrations &rarr; <strong>Episode 4</strong></li>
+                    <li>Multi-agent systems &rarr; <strong>Episode 5</strong></li>
+                    <li>Governance and risk &rarr; <strong>Episode 6</strong></li>
+                </ul>
+                <p style="margin:12px 0 0;font-size:0.88rem;">The TED version plants the <em>emotional</em> stakes for the series (&ldquo;you are not behind, you bring the right skills&rdquo;) while the Vox version plants the <em>conceptual</em> framework (brain, job description, memory, acting vs. responding). Together, they serve different audiences and different moments &mdash; the Vox version is for someone who wants to understand; the TED version is for someone who needs to be convinced it matters.</p>
+            </div>
+
+            <p style="margin-top:28px;font-size:0.88rem;color:var(--slate-light);font-style:italic;">End of script &mdash; Episode 01, TED Version<br><abbr title="School of Technology and Computing">School of Technology and Computing</abbr> · AI Agents, Explained</p>
+        </section>
+
+        <footer>
+            <a href="index.html">STC Transformation hub</a>
+            · <a href="ai-agents-explained-lecture-00-cs50.html">Lecture 0 · CS50-style</a>
+            · <a href="ai-agents-explained-episode-01.html">Vox / explainer Episode 1</a>
+            · <a href="ai-agents-explained-episode-01-brandon.html">Screen demo Episode 1</a>
+            · Maintained by Clark Ngo
+        </footer>
+    </div>
+</body>
+</html>

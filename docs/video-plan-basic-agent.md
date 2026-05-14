@@ -1,10 +1,12 @@
-# Video production pack: ADK Example #1 (Basic Agent)
+# Video production pack: ADK Masterclass · Example #1 — Building Your First Agent
 
 **Companion to:** [Build AI Agents & Automate Workflows (Beginner to Pro)](https://youtu.be/P4VFL9nIaIA)  
-**Source repo:** [imvickykumar/agent-development-kit-crash-course](https://github.com/imvickykumar/agent-development-kit-crash-course) — **Example 1: Basic Agent**  
+**Source repo:** [imvickykumar/agent-development-kit-crash-course](https://github.com/imvickykumar/agent-development-kit-crash-course) — **Example 1: Basic Agent** (greeting agent: name in, personalized reply out)  
 **Official ADK docs:** [ADK quickstart](https://google.github.io/adk-docs/get-started/quickstart)
 
-**Working title:** *Example #1 (Basic Agent) — 10 concepts the crash course assumes you know*
+**Anchor lesson:** Example #1 introduces Google’s three building blocks — **Agent**, **Session**, and **Runner** — while walking a first agent that greets the user by name.
+
+**Working title (technical cut):** *Example #1 (Basic Agent) — 10 concepts the crash course assumes you know*
 
 **Target length:** ~24–28 minutes (tight) · ~32–38 minutes (extended: +5 min Q&A, +3 min “where to go next”)
 
@@ -14,15 +16,26 @@
 
 ---
 
+## Strategic picture (STC · ADK Masterclass)
+
+- **Democratization thought leadership:** STC-branded follow-on content can go *wider* than line-by-line competition with Google’s masterclass for senior developers — speak to managers, partners, and policy owners who will govern agents beside engineers, using workplace stories and failure modes.
+- **Why Example #1:** The greeting agent carries the philosophical questions non-developers ask (intent, instructions, accountability) without requiring code on screen.
+- **Execution risk:** A consistent on-camera anchor (Dean or named faculty) over years matters more than production polish; compare CS50’s single visible instructor model.
+
+**Deliverables on the HTML pack:** [Strategy + action shortcuts](../adk-basic-agent-video-plan.html#strategic-framing) · [Full script on concepts page](../adk-basic-agent-concepts-interplay.html#script)
+
+---
+
 ## 1. Learning outcomes
 
 By the end, the viewer can:
 
-1. Explain what an **ADK agent** is versus a one-off “call Gemini from Python.”
-2. Navigate the **Basic Agent** folder and name the files that define model + behavior + entrypoint.
-3. Create/activate **venv**, install deps, and configure **`.env`** from `.env.example` **in the correct folder**.
-4. Run the example and **diagnose** at least three common failures (key, Python version, wrong directory).
-5. Describe **sessions** at a high level (why multi-turn works without manual history concatenation).
+1. Name Google’s three lesson blocks — **Agent**, **Session**, **Runner** — and say what each owns in plain language.
+2. Explain what an **ADK agent** is versus a one-off “call Gemini from Python.”
+3. Navigate the **Basic Agent** folder and name the files that define model + behavior + entrypoint.
+4. Create/activate **venv**, install deps, and configure **`.env`** from `.env.example` **in the correct folder**.
+5. Run the example and **diagnose** at least three common failures (key, Python version, wrong directory).
+6. Describe **sessions** at a high level (why multi-turn works without manual history concatenation).
 
 ---
 

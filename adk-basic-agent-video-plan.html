@@ -147,27 +147,77 @@
             color: var(--slate-light);
         }
         .src a { color: var(--accent); font-weight: 600; }
+        .strat-card {
+            margin: 22px 0 8px;
+            padding: 20px 22px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+        }
+        .strat-card h2 {
+            margin: 0 0 12px;
+            font-size: 1.05rem;
+            color: var(--accent);
+            border: none;
+            padding: 0;
+        }
+        .strat-card p, .strat-card li { font-size: 0.92rem; }
+        .strat-card ul { margin: 0 0 0; padding-left: 1.15rem; }
+        .strat-card li { margin-bottom: 8px; }
+        .deliverable-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--border);
+        }
+        .deliverable-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: #fff;
+            background: var(--accent);
+            border: 1px solid rgba(13, 122, 62, 0.35);
+        }
+        .deliverable-btn:hover { filter: brightness(1.06); text-decoration: none; }
+        .deliverable-btn:focus-visible { outline: 2px solid #22c55e; outline-offset: 2px; }
+        .deliverable-btn.secondary {
+            background: #fff;
+            color: var(--accent);
+            border-color: rgba(13, 122, 62, 0.45);
+        }
     </style>
 </head>
 <body>
     <div class="shell">
         <nav class="nav-row" aria-label="Page navigation">
             <a href="index.html">← Hub</a>
-            <a href="adk-basic-agent-concepts-interplay.html">Concepts &amp; interplay (alternate)</a>
+            <a href="adk-basic-agent-concepts-interplay.html">Concepts &amp; interplay</a>
+            <a href="adk-basic-agent-concepts-interplay.html#masterclass-strategy">Strategy (concepts)</a>
             <a href="strategic-growth-stc-content-engine.html#video-trust">Content Engine · Video trust</a>
             <a href="docs/video-plan-basic-agent.md">Markdown source</a>
+            <a href="#strategic-framing">Strategy</a>
+            <a href="#deliverables">Deliverables</a>
         </nav>
 
         <header class="hero">
-            <h1>Video production pack: <abbr title="Agent Development Kit">ADK</abbr> Example #1 (Basic Agent)</h1>
+            <h1>Video production pack: <abbr title="Agent Development Kit">ADK</abbr> Masterclass · Example #1 — Building Your First Agent</h1>
             <p class="meta">
                 <strong>Companion:</strong>
                 <a href="https://youtu.be/P4VFL9nIaIA" target="_blank" rel="noopener noreferrer">Build AI Agents &amp; Automate Workflows (YouTube)</a>
                 · <a href="https://github.com/imvickykumar/agent-development-kit-crash-course" target="_blank" rel="noopener noreferrer">Crash-course repo</a>
                 · <a href="https://google.github.io/adk-docs/get-started/quickstart" target="_blank" rel="noopener noreferrer"><abbr title="Agent Development Kit">ADK</abbr> quickstart</a>
             </p>
-            <p class="muted" style="margin:0"><strong>Working title:</strong> <em>Example #1 (Basic Agent) — 10 concepts the crash course assumes you know</em></p>
+            <p class="muted" style="margin:0"><strong>Anchor lesson:</strong> Example #1 is a <strong>greeting agent</strong> that understands the user’s name and responds to it — the official tutorial introduces three core building blocks: <strong>Agent</strong>, <strong>Session</strong>, and <strong>Runner</strong>. This pack stays aligned to that story while teaching the <em>seams</em> beginners trip on.</p>
             <div class="pill-row" aria-label="Format">
+                <span class="pill"><abbr title="Agent Development Kit">ADK</abbr> Masterclass (Google)</span>
+                <span class="pill">Example #1 · greeting agent</span>
                 <span class="pill">~24–28 min (tight)</span>
                 <span class="pill">~32–38 min (extended)</span>
                 <span class="pill">Beginners · seams not hype</span>
@@ -177,9 +227,31 @@
         <p class="muted"><strong>Audience:</strong> People who cloned the repo or watched the long tutorial and hit “it worked once,” import errors, or “why <code>.env</code> in every folder?”</p>
         <p class="muted"><strong>Optional <abbr title="School of Technology and Computing">STC</abbr> closer:</strong> Bridge content = teach the <strong>seams</strong> (keys, cwd, agent vs script), not only the happy path — aligns with <em>Google <abbr title="Agent Development Kit">ADK</abbr> demystified</em> on the Content Engine strategy page.</p>
 
+        <section class="strat-card" id="strategic-framing" aria-labelledby="strat-h">
+            <h2 id="strat-h">Strategic picture (<abbr title="School of Technology and Computing">STC</abbr> · <abbr title="Agent Development Kit">ADK</abbr> Masterclass)</h2>
+            <p><strong>Source of truth:</strong> The public video is Google’s <strong><abbr title="Agent Development Kit">ADK</abbr> Masterclass</strong> track; Example #1 is <strong>Building Your First Agent</strong> — a greeting agent that captures the user’s name and responds to it, while introducing <strong>Agent</strong>, <strong>Session</strong>, and <strong>Runner</strong> as the three core building blocks.</p>
+            <p><strong>Democratization thought leadership.</strong> In content-strategy terms, the school’s play is to claim authority <em>by going wider</em>, not by out-explaining the masterclass line-for-line to senior developers. You open the same ideas to everyone those developers <strong>report to, collaborate with, and pitch to</strong> — a materially larger audience — using workplace scenarios and plain-language “what could go wrong?” framing instead of competing on terminal speed.</p>
+            <p><strong>Why Example #1 is the right anchor.</strong> The greeting agent is small in code but rich in the questions non-technical stakeholders actually ask: What does the agent “want”? Who wrote its personality? What if instructions are sloppy? What if the goal were wrong? You can run that thought experiment in a <strong>meeting-room story</strong> without showing code and often land more memorably than another screen recording.</p>
+            <p><strong>Biggest execution risk: the anchor persona.</strong> Courses like CS50 are inseparable from a <strong>consistent on-camera teacher</strong> over years. For <abbr title="School of Technology and Computing">STC</abbr>-branded follow-on content, the Dean (or one named faculty voice) needs to <strong>own that role with a multi-year commitment</strong> — production polish and channel tactics are secondary to showing up reliably with the same trusted face and voice.</p>
+        </section>
+
+        <div class="strat-card" id="deliverables" aria-label="Jump to deliverables">
+            <h2 style="margin-bottom:4px">Action shortcuts</h2>
+            <p class="muted" style="margin-bottom:0">Jump straight into artifacts on this hub (same spirit as tabbed “Ask” prompts elsewhere — these are links, not copy buttons).</p>
+            <div class="deliverable-row">
+                <a class="deliverable-btn" href="adk-basic-agent-concepts-interplay.html#script">Full episode script (concepts page)</a>
+                <a class="deliverable-btn secondary" href="#preprod">Production checklist</a>
+                <a class="deliverable-btn secondary" href="strategic-growth-stc-content-engine.html#vision">Content engine · vision &amp; pipeline</a>
+            </div>
+            <p class="muted" style="margin-top:12px;margin-bottom:0"><em>12-month calendar:</em> build cadence off the <a href="strategic-growth-stc-content-engine.html#roi">attribution &amp; <abbr title="Return on investment">ROI</abbr></a> and <a href="strategic-growth-stc-content-engine.html#platform">platform</a> sections; keep one canonical owner for campaign tags and <abbr title="Customer relationship management">CRM</abbr> handoffs.</p>
+        </div>
+
+        <p class="muted"><strong>Working title (technical cut):</strong> <em>Example #1 (Basic Agent) — 10 concepts the crash course assumes you know</em></p>
+
         <h2 id="outcomes">1. Learning outcomes</h2>
         <p class="muted">By the end, the viewer can:</p>
         <ol class="muted">
+            <li>Name Google’s three lesson blocks — <strong>Agent</strong>, <strong>Session</strong>, <strong>Runner</strong> — and say what each owns in plain language.</li>
             <li>Explain what an <strong><abbr title="Agent Development Kit">ADK</abbr> agent</strong> is versus a one-off “call Gemini from Python.”</li>
             <li>Navigate the <strong>Basic Agent</strong> folder and name the files that define model + behavior + entrypoint.</li>
             <li>Create/activate <strong>venv</strong>, install deps, and configure <strong><code>.env</code></strong> from <code>.env.example</code> <strong>in the correct folder</strong>.</li>

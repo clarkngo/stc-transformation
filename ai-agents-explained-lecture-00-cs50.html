@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <title>AI Agents, Explained — Lecture 0 (CS50-style) — Production Script — STC Transformation</title>
+    <style>
+        :root {
+            --series: #b45309;
+            --series-dim: #fffbeb;
+            --series-ink: #78350f;
+            --ink: #0f172a;
+            --slate: #475569;
+            --slate-light: #94a3b8;
+            --card: #ffffff;
+            --bg: #fafaf9;
+            --border: rgba(15, 23, 42, 0.1);
+            --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 12px 36px rgba(15, 23, 42, 0.06);
+            --radius: 14px;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        abbr[title] {
+            cursor: help;
+            text-decoration: underline dotted;
+            text-underline-offset: 0.12em;
+        }
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.58;
+            font-size: 17px;
+        }
+        .shell { max-width: 720px; margin: 0 auto; padding: 24px 18px 64px; }
+        .nav-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 16px;
+            margin-bottom: 22px;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .nav-row a { color: var(--series); text-decoration: none; }
+        .nav-row a:hover { text-decoration: underline; }
+
+        .hero {
+            background: linear-gradient(165deg, #1c1917 0%, #292524 42%, #fffbeb 42%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 26px 24px 22px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--series);
+            margin-bottom: 22px;
+        }
+        .hero .kicker {
+            margin: 0 0 6px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #fcd34d;
+        }
+        .hero h1 {
+            margin: 0 0 6px;
+            font-size: clamp(1.3rem, 4vw, 1.75rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            color: #fff;
+        }
+        .hero .subtitle {
+            margin: 0 0 6px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fde68a;
+        }
+        .hero .episode-title {
+            margin: 0 0 10px;
+            font-size: 1.12rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #fff;
+            line-height: 1.25;
+        }
+        .hero .format-tag {
+            margin: 0 0 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--series-ink);
+        }
+        .hero .version {
+            margin: 0 0 10px;
+            font-size: 0.88rem;
+            color: var(--series-ink);
+            font-weight: 600;
+        }
+        .format-note {
+            margin: 0;
+            font-size: 0.78rem;
+            color: var(--series-ink);
+            line-height: 1.45;
+        }
+
+        .alt-link {
+            margin: 0 0 20px;
+            padding: 12px 16px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            color: #4338ca;
+        }
+        .alt-link a { font-weight: 700; color: #4f46e5; }
+
+        .mini-toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0 0 24px;
+            padding: 0;
+            list-style: none;
+        }
+        .mini-toc a {
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--slate);
+            text-decoration: none;
+        }
+        .mini-toc a:hover { color: var(--series); border-color: rgba(180, 83, 9, 0.35); background: var(--series-dim); }
+
+        .meta-table-wrap {
+            overflow-x: auto;
+            margin: 18px 0 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--card);
+        }
+        table.meta {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .meta th, .meta td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .meta th {
+            width: 9rem;
+            background: #fafafa;
+            font-weight: 700;
+            color: var(--series-ink);
+        }
+        .meta tr:last-child td, .meta tr:last-child th { border-bottom: none; }
+        .meta td { color: var(--slate); }
+
+        .conventions {
+            margin: 0 0 28px;
+            padding: 16px 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.88rem;
+            color: var(--slate);
+        }
+        .conventions h2 {
+            margin: 0 0 10px;
+            font-size: 0.95rem;
+            color: var(--series-ink);
+        }
+        .conventions ul { margin: 0; padding-left: 1.15rem; }
+        .conventions li { margin-bottom: 6px; }
+        .conventions code { font-size: 0.82em; background: #ffedd5; padding: 2px 6px; border-radius: 4px; }
+
+        .pre-setup {
+            margin: 0 0 28px;
+            padding: 16px 18px;
+            background: #f1f5f9;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--slate);
+        }
+        .pre-setup p { margin: 0 0 8px; }
+        .pre-setup p:last-child { margin-bottom: 0; }
+
+        .script-part {
+            margin: 36px 0 28px;
+            padding-top: 8px;
+            border-top: 2px solid var(--series-dim);
+        }
+        .script-part h2 {
+            margin: 0 0 4px;
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: var(--series-ink);
+            letter-spacing: -0.02em;
+        }
+        .script-part .runtime {
+            margin: 0 0 16px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--series);
+        }
+        .script-part .tag {
+            margin: 0 0 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--slate);
+            font-style: italic;
+        }
+
+        .cue {
+            margin: 14px 0 6px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #b45309;
+        }
+        .cue code {
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: inherit;
+            font-weight: 800;
+            background: #ffedd5;
+            padding: 3px 8px;
+            border-radius: 6px;
+            color: var(--series-ink);
+        }
+        .speech {
+            margin: 0 0 14px;
+            color: var(--ink);
+            font-size: 1.02rem;
+        }
+        .speech strong:first-child {
+            font-weight: 800;
+            color: var(--series-ink);
+            margin-right: 6px;
+        }
+        .tone {
+            margin: 8px 0 14px;
+            font-size: 0.92rem;
+            font-style: italic;
+            color: var(--slate);
+        }
+        .slide-line {
+            margin: 14px 0;
+            padding: 14px 18px;
+            background: #0f172a;
+            color: #f8fafc;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            text-align: center;
+            border-left: 4px solid var(--series);
+        }
+        .slide-line.sub { font-size: 0.95rem; font-weight: 600; font-style: italic; margin-top: 8px; opacity: 0.95; }
+
+        .instruction-card {
+            margin: 14px 0;
+            padding: 16px 18px;
+            background: #fffbeb;
+            border: 2px dashed var(--series);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--ink);
+            line-height: 1.5;
+        }
+        .instruction-card .label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--series-ink);
+            margin-bottom: 8px;
+        }
+
+        pre.diagram {
+            margin: 14px 0;
+            padding: 14px 12px;
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            border-left: 4px solid var(--series);
+        }
+        @media (min-width: 520px) {
+            pre.diagram { font-size: 0.72rem; }
+        }
+
+        .prod-section {
+            margin-top: 48px;
+            padding-top: 28px;
+            border-top: 2px dashed var(--border);
+        }
+        .prod-section h2 {
+            font-size: 1.12rem;
+            color: var(--series-ink);
+            margin: 0 0 16px;
+        }
+        .prod-section h3 {
+            margin: 22px 0 10px;
+            font-size: 1rem;
+            color: var(--series-ink);
+        }
+        .doc-table-wrap {
+            overflow-x: auto;
+            margin: 14px 0;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--card);
+        }
+        table.doc {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.72rem;
+        }
+        .doc th, .doc td {
+            padding: 8px 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .doc th { background: #fafafa; font-weight: 700; color: var(--ink); }
+        .doc tr:last-child td { border-bottom: none; }
+
+        .defer {
+            margin: 16px 0;
+            padding: 16px 18px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 0.88rem;
+            color: var(--slate);
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border);
+            font-size: 0.85rem;
+            color: var(--slate-light);
+            text-align: center;
+        }
+        footer a { color: var(--series); font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <nav class="nav-row" aria-label="Page navigation">
+            <a href="index.html">← Hub</a>
+            <a href="ai-agents-explained-episode-01.html">Episode 1 · Vox</a>
+            <a href="ai-agents-explained-episode-01-ted.html">Episode 1 · TED</a>
+            <a href="ai-agents-explained-episode-01-brandon.html">Episode 1 · Screen demo</a>
+            <a href="marketing-101-stc.html">Marketing 101</a>
+            <a href="strategic-growth-stc-content-engine.html#video-trust">Content Engine</a>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">School of Technology and Computing</p>
+            <h1>AI Agents, Explained &mdash; Lecture 0</h1>
+            <p class="subtitle">David Malan / <abbr title="Harvard University&rsquo;s introduction to computer science course (name reference only)">CS50</abbr> style</p>
+            <p class="episode-title">&ldquo;This. Is. AI Agents.&rdquo;</p>
+            <p class="format-tag">Lecture 0 of 7 · live lecture hall + whiteboard + props · 16&ndash;18 min</p>
+            <p class="version">Production Script · Version 1.0</p>
+            <p class="format-note">Educational format inspired by structured lecture pedagogy associated with <abbr title="Harvard University">Harvard</abbr>&rsquo;s CS50 and David J. Malan&rsquo;s teaching style. Not affiliated with or endorsed by Harvard University, CS50, or David J. Malan.</p>
+        </header>
+
+        <p class="alt-link">Same foundation as Episode 1, different room: <a href="ai-agents-explained-episode-01.html">Vox / Kurzgesagt</a> · <a href="ai-agents-explained-episode-01-ted.html">TED</a> · <a href="ai-agents-explained-episode-01-brandon.html">Screen demo</a></p>
+
+        <nav aria-label="Lecture sections">
+            <ul class="mini-toc">
+                <li><a href="#meta">Meta</a></li>
+                <li><a href="#conventions">Conventions</a></li>
+                <li><a href="#pre">Pre-lecture</a></li>
+                <li><a href="#opening">Opening</a></li>
+                <li><a href="#part-1">Part 1</a></li>
+                <li><a href="#part-2">Part 2</a></li>
+                <li><a href="#part-3">Part 3</a></li>
+                <li><a href="#part-4">Part 4</a></li>
+                <li><a href="#part-5">Part 5</a></li>
+                <li><a href="#production-notes">Production notes</a></li>
+            </ul>
+        </nav>
+
+        <div class="meta-table-wrap" id="meta">
+            <table class="meta">
+                <tbody>
+                    <tr><th scope="row">Series</th><td>AI Agents, Explained</td></tr>
+                    <tr><th scope="row">Lecture</th><td>0 of 7 (<abbr title="Course counts from zero, like many computing curricula">CS50 counts from zero</abbr>)</td></tr>
+                    <tr><th scope="row">Runtime target</th><td>16&ndash;18 minutes</td></tr>
+                    <tr><th scope="row">Format</th><td>Live lecture hall + whiteboard + props + audience</td></tr>
+                    <tr><th scope="row">Anchor</th><td>Faculty member &mdash; rigorous, warm, theatrical</td></tr>
+                    <tr><th scope="row">Audience</th><td>Adult non-tech working professionals</td></tr>
+                    <tr><th scope="row">Tone</th><td>Structured, building, memorable, no condescension</td></tr>
+                    <tr><th scope="row">Signature prop</th><td>A sealed envelope &mdash; see Part 2</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <section class="conventions" id="conventions" aria-labelledby="conv-h">
+            <h2 id="conv-h">Script conventions</h2>
+            <ul>
+                <li><code>[STAGE]</code> &mdash; physical blocking, prop use, movement</li>
+                <li><code>[BOARD]</code> &mdash; whiteboard or slide: write this, leave it visible</li>
+                <li><code>[AUDIENCE]</code> &mdash; moment involving the live audience / volunteers</li>
+                <li><code>[SLIDE]</code> &mdash; clean, minimal slide (almost entirely black background, white text, single idea)</li>
+                <li><code>[PAUSE]</code> &mdash; deliberate silence</li>
+                <li><code>[CARD]</code> &mdash; instruction text on a physical card (shown to room / camera)</li>
+                <li>Words in <strong>bold</strong> &mdash; spoken with emphasis</li>
+                <li><em>(Italics)</em> in direction lines &mdash; tone or direction note, not spoken</li>
+                <li>Malan-style verbal tics preserved: &ldquo;So&rdquo;, &ldquo;right?&rdquo;, &ldquo;And so&rdquo;, &ldquo;Not to worry&rdquo;</li>
+            </ul>
+        </section>
+
+        <section class="pre-setup" id="pre" aria-labelledby="pre-h">
+            <h2 id="pre-h" style="margin:0 0 12px;font-size:1.05rem;font-weight:800;color:var(--series-ink);font-style:normal;">Pre-lecture setup</h2>
+            <p><em>While audience is seated. Faculty visible on stage, adjusting things. A table is set up with items:</em></p>
+            <p><em>&mdash; A stack of printed envelopes, sealed<br>
+            &mdash; A printed card face-down<br>
+            &mdash; A marker and a large notepad on an easel (the &ldquo;whiteboard&rdquo;)<br>
+            &mdash; Nothing else. Clean stage.</em></p>
+        </section>
+
+        <article class="script-body">
+            <section class="script-part" id="opening">
+                <h2>OPENING &mdash; &ldquo;This. Is. AI Agents.&rdquo;</h2>
+                <p class="runtime">Runtime: 0:00 &ndash; 1:30</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Faculty walks to center. Quiet. Makes eye contact with the audience. Waits a beat.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> Let me ask you a question.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">How many of you, in the last six months, have heard the words &ldquo;AI agent&rdquo; &mdash; in a meeting, in a news article, from someone in your IT department, somewhere &mdash; and nodded as though you understood what they meant?</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Looks around. Genuine, not confrontational.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> And how many of you &mdash; if I&rsquo;m being honest &mdash; weren&rsquo;t entirely sure?</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="tone">(warmly)</p>
+                <p class="speech">That&rsquo;s most of the room. And that&rsquo;s exactly right.</p>
+
+                <p class="speech">Because here&rsquo;s what I&rsquo;ve noticed. The people who <strong>build</strong> AI agents have done a remarkable job explaining them to other people who build AI agents. And a rather poor job explaining them to everyone else.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Moves slightly forward. More direct.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> So. Today we fix that.</p>
+
+                <p class="speech">By the end of this lecture, you will be able to answer &mdash; clearly and confidently &mdash; what an AI agent is, how it works, and why it matters to you specifically, regardless of whether you ever write a single line of code.</p>
+
+                <p class="speech">Not to worry if you haven&rsquo;t. Most of the people in this room haven&rsquo;t. That is precisely the point.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Steps back. Arms out slightly &mdash; addressing the room.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> This. Is. AI Agents.</p>
+
+                <p class="cue"><code>[SLIDE]</code> <em>Black screen. White text, centered:</em></p>
+                <div class="slide-line">
+                    AI Agents, Explained
+                    <div class="slide-line sub">Lecture 0: What Is an AI Agent?</div>
+                </div>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Holds for one beat. Then moves to the board.</p>
+            </section>
+
+            <section class="script-part" id="part-1">
+                <h2>PART 1 &mdash; &ldquo;Let&rsquo;s start at the very beginning&rdquo;</h2>
+                <p class="runtime">Runtime: 1:30 &ndash; 4:00</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Writes at the top, large and clear:</p>
+                <div class="slide-line" style="text-align:left;font-size:1.15rem;">AGENT</div>
+
+                <p class="speech"><strong>FACULTY:</strong> So. The word itself.</p>
+                <p class="speech">Before we talk about <em>AI</em> agents, let&rsquo;s talk about agents. Because the word is doing real work here, and I don&rsquo;t want us to skip past it.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Writes beneath:</p>
+                <div class="instruction-card"><span class="label">Board</span>(Latin: <em>agere</em> &mdash; to act, to do)</div>
+
+                <p class="speech"><strong>FACULTY:</strong> The word agent comes from the Latin <em>agere</em> &mdash; to act. To do something. An agent, in any context, is an entity that <strong>acts on someone else&rsquo;s behalf.</strong></p>
+                <p class="speech">You&rsquo;ve heard this word before. You may not have thought about it this way.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Writes a short list, pausing between each:</p>
+                <div class="instruction-card"><span class="label">Board</span>
+                    &mdash; Literary agent &rarr; acts on behalf of a writer<br>
+                    &mdash; Travel agent &rarr; acts on behalf of a traveler<br>
+                    &mdash; Real estate agent &rarr; acts on behalf of a buyer or seller<br>
+                    &mdash; Secret agent &rarr; acts on behalf of a government
+                </div>
+
+                <p class="tone">(slight smile)</p>
+                <p class="speech"><strong>FACULTY:</strong> We&rsquo;ll set aside the last one for now.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">But notice what they all share. They don&rsquo;t just <em>advise</em>. They <em>act</em>. They do something in the world on your behalf.</p>
+                <p class="speech">So when we say <strong>AI agent</strong>, we mean: an artificial intelligence that <strong>acts</strong>. Not one that simply responds to a question. Not one that generates text for you to review. One that does things.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Underlines the word ACTS.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> That one word &mdash; acts &mdash; is going to be the most important concept in this entire lecture. So let&rsquo;s make sure we really understand what it means.</p>
+            </section>
+
+            <section class="script-part" id="part-2">
+                <h2>PART 2 &mdash; THE ENVELOPE DEMONSTRATION</h2>
+                <p class="tag">&ldquo;The thing you&rsquo;ll remember from this lecture&rdquo;</p>
+                <p class="runtime">Runtime: 4:00 &ndash; 8:30</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Faculty picks up one of the sealed envelopes from the table. Holds it up.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> I want to try something.</p>
+
+                <p class="cue"><code>[AUDIENCE]</code></p>
+                <p class="tone">Addresses the room directly.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> I need a volunteer. Someone who is willing to follow instructions very precisely. And when I say precisely, I mean: <strong>exactly as written.</strong> No interpretation. No filling in gaps. No assuming you know what I meant.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Selects a volunteer. They come to the front.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> Now. Inside this envelope is a set of instructions. Your job &mdash; your only job &mdash; is to do exactly what the instructions say. Nothing more. Nothing less.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Hands the volunteer the envelope. They open it and read the card inside:</p>
+
+                <p class="cue"><code>[CARD]</code></p>
+                <div class="instruction-card"><span class="label">Instructions</span>
+                    1. Walk to the whiteboard.<br>
+                    2. Write the number 7 on it.<br>
+                    3. Return to your seat.
+                </div>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">The volunteer follows the instructions. Walks to the board. Writes 7. Returns.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> Perfect. Thank you.</p>
+                <p class="tone">(to the audience)</p>
+                <p class="speech">What just happened?</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">We gave a person a set of written instructions. They had a brain &mdash; they could understand the instructions. They had a job description &mdash; those three steps. And they acted on it.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <div class="instruction-card"><span class="label">Board</span>Brain + Job Description &rarr; Action</div>
+
+                <p class="speech"><strong>FACULTY:</strong> That is, in its simplest possible form, an AI agent.</p>
+                <p class="speech">Now &mdash; let me show you something more interesting.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Picks up a second envelope. Calls up a second volunteer.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> Same exercise. Follow the instructions exactly as written.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Second volunteer opens envelope. Card reads:</p>
+
+                <p class="cue"><code>[CARD]</code></p>
+                <div class="instruction-card"><span class="label">Instructions</span>1. Handle the emails.</div>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Volunteer looks at the card. Looks up at faculty. Looks back at card.</p>
+
+                <p class="tone">(gently)</p>
+                <p class="speech"><strong>FACULTY:</strong> Go ahead.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Volunteer looks helplessly around the room.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> Any questions?</p>
+
+                <p class="cue"><code>[AUDIENCE]</code></p>
+                <p class="tone">Laughter.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> Right. So. &ldquo;Handle the emails&rdquo; is &mdash; on its face &mdash; a complete instruction. It has a subject. It has a verb. But it raises immediately: which emails? Handle <em>how</em>? Reply? Delete? Forward? Prioritize? Archive?</p>
+                <p class="speech">The volunteer has a brain. They can understand the words. But the instruction is too vague to act on.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <div class="instruction-card"><span class="label">Board</span>Vague instructions &rarr; Confusion or wrong action</div>
+
+                <p class="speech"><strong>FACULTY:</strong> This is not a problem unique to artificial intelligence, by the way.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="tone">(drily)</p>
+                <p class="speech">This is a problem as old as management.</p>
+
+                <p class="cue"><code>[AUDIENCE]</code></p>
+                <p class="tone">Some knowing laughter.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Third envelope. Same volunteer, or a third one.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> One more. Bear with me.</p>
+
+                <p class="cue"><code>[CARD]</code></p>
+                <div class="instruction-card"><span class="label">Instructions</span>
+                    You are an assistant to the department head.<br>
+                    You have access to the shared inbox.<br>
+                    Your job is to read incoming emails and sort them into three categories:<br>
+                    &mdash; Urgent (needs a response today)<br>
+                    &mdash; Routine (can wait until end of week)<br>
+                    &mdash; FYI only (no response needed)<br><br>
+                    Do NOT reply to any email without being asked.<br>
+                    Do NOT delete anything.<br>
+                    If you are unsure which category an email belongs in, mark it &ldquo;Uncertain&rdquo; and flag it for review.
+                </div>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Volunteer reads. Nods. Looks confident.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> Now you could do something useful, yes?</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Volunteer nods.</p>
+
+                <p class="tone">(to the room)</p>
+                <p class="speech">Same brain. Three different job descriptions. Three completely different outcomes.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <div class="instruction-card"><span class="label">Board</span>
+                    Brain + &ldquo;Handle the emails&rdquo; &rarr; Confusion<br>
+                    Brain + Detailed job description &rarr; Useful, bounded action<br>
+                    Brain + No job description at all &rarr; Chaos
+                </div>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech"><strong>FACULTY:</strong> The brain of an AI agent is the AI model at its center. Off-the-shelf, powerful, general-purpose intelligence. You don&rsquo;t build the brain &mdash; you choose it, the way you&rsquo;d choose what kind of background someone comes from.</p>
+                <p class="speech">But the job description? That is <strong>entirely yours to write.</strong></p>
+                <p class="speech">And as we just saw &mdash; the quality of what the agent does is almost entirely determined by the quality of that job description.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Picks up the third card and holds it up.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> In the industry, this is called a <strong>system prompt</strong>. Or sometimes just &ldquo;instructions.&rdquo; But I think the better word &mdash; the more honest word &mdash; is <strong>job description</strong>.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <div class="instruction-card"><span class="label">Board</span><del>Job Description</del> = <strong>System Prompt</strong> (they mean the same thing)</div>
+
+                <p class="speech"><strong>FACULTY:</strong> Not to worry. We&rsquo;ll use both terms. But now you know what people mean when they say system prompt. They mean: the written instructions that tell the agent what to do, how to behave, and what <em>not</em> to do.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech"><strong>FACULTY:</strong> Any questions so far?</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Genuinely pauses. Scans the room.</p>
+            </section>
+
+            <section class="script-part" id="part-3">
+                <h2>PART 3 &mdash; &ldquo;Responding versus acting&rdquo;</h2>
+                <p class="runtime">Runtime: 8:30 &ndash; 11:30</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">New section. Draws a line and writes:</p>
+                <div class="slide-line" style="text-align:left;">Two kinds of AI</div>
+
+                <p class="speech"><strong>FACULTY:</strong> So. Now that we understand what an agent is, let me make a distinction that I think is genuinely important &mdash; and often glossed over.</p>
+                <p class="speech">There are, broadly speaking, two kinds of AI systems you&rsquo;re likely to encounter.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Writes, left side:</p>
+                <div class="instruction-card"><span class="label">Board</span><strong>Conversational AI</strong><br>(ChatGPT, Gemini, Claude&hellip;)</div>
+
+                <p class="speech"><strong>FACULTY:</strong> These systems respond. You give them input, they give you output. You ask a question, they answer. You ask them to write something, they write it. You ask them to analyze something, they analyze it.</p>
+                <p class="tone">(pausing)</p>
+                <p class="speech">And then &mdash; and this is the key part &mdash; you do something with the output. You copy it. You edit it. You send it. You use it. But <em>you</em> are the one who acts.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Writes, right side:</p>
+                <div class="instruction-card"><span class="label">Board</span><strong>AI Agents</strong><br>(can take actions in the world)</div>
+
+                <p class="speech"><strong>FACULTY:</strong> These systems act. They don&rsquo;t just hand you a result &mdash; they use that result to do something. Send the email. Update the database. Book the meeting. File the report.</p>
+                <p class="speech">The intelligence underneath might be identical. The brain might even be the same AI model. But the agent has been given <strong>tools</strong> &mdash; connections to real systems in the world &mdash; so that it can act, not just respond.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Draws an arrow between the two:</p>
+                <div class="instruction-card"><span class="label">Board</span>
+                    Conversational AI &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&rarr; AI Agent<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ tools<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ job description<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ permission to act
+                </div>
+
+                <p class="speech"><strong>FACULTY:</strong> So the question to ask about any AI system you encounter is simply: does it respond, or does it act?</p>
+                <p class="speech">If it responds &mdash; it&rsquo;s a conversational AI. Extraordinarily useful. Not an agent.</p>
+                <p class="speech">If it acts &mdash; it&rsquo;s an agent. Different capabilities, different risks, different governance questions.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech"><strong>FACULTY:</strong> More on that last point &mdash; the governance questions &mdash; later in this series. For now, let&rsquo;s just hold the distinction.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Boxes the arrow diagram. Leaves it visible.</p>
+            </section>
+
+            <section class="script-part" id="part-4">
+                <h2>PART 4 &mdash; &ldquo;Three parts of every agent&rdquo;</h2>
+                <p class="runtime">Runtime: 11:30 &ndash; 14:30</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <div class="slide-line" style="text-align:left;">Every agent has three parts.</div>
+
+                <p class="speech"><strong>FACULTY:</strong> Let&rsquo;s build up a complete picture.</p>
+                <p class="speech">I want to give you a mental model that you can carry out of this room and apply to any AI agent you encounter &mdash; whether you&rsquo;re evaluating a vendor, managing a team that&rsquo;s deploying one, or just trying to understand what your organization is getting into.</p>
+                <p class="speech">Three parts. I&rsquo;ll write them as we go.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Writes number 1, then pauses for effect before writing the label:</p>
+                <div class="instruction-card"><span class="label">Board</span><strong>1. The Brain</strong></div>
+
+                <p class="speech"><strong>FACULTY:</strong> The brain is the AI model at the center. It&rsquo;s what understands language, reasons about situations, and decides what to do next. In the industry, these are called large language models &mdash; LLMs. But for our purposes: the brain is the intelligence.</p>
+                <p class="speech">Importantly &mdash; you almost never build the brain yourself. You choose one. Think of it less like building an engine and more like hiring someone: you&rsquo;re choosing what kind of background, training, and capability they bring.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <div class="instruction-card"><span class="label">Board</span><strong>2. The Job Description</strong></div>
+
+                <p class="speech"><strong>FACULTY:</strong> We&rsquo;ve spent a lot of time here already. But let me add one layer.</p>
+                <p class="speech">A good job description for an AI agent has four things.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Indented under Job Description:</p>
+                <div class="instruction-card"><span class="label">Board</span>
+                    &mdash; What the agent IS (role, name, context)<br>
+                    &mdash; What the agent DOES (tasks, scope)<br>
+                    &mdash; What the agent SHOULD NOT DO (limits, escalation)<br>
+                    &mdash; How the agent should BEHAVE (tone, format, precision)
+                </div>
+
+                <p class="speech"><strong>FACULTY:</strong> Notice what is not on that list. Nothing technical. Nothing about programming. Nothing about models or parameters or architecture.</p>
+                <p class="speech">Writing a job description for an AI agent is a human task. A communication task. A management task. It requires clarity, judgment, and an understanding of what you actually want &mdash; all things that professionals in this room do every single day.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <div class="instruction-card"><span class="label">Board</span><strong>3. Memory</strong></div>
+
+                <p class="speech"><strong>FACULTY:</strong> This one surprises people. And it should.</p>
+                <p class="speech">By default &mdash; and I want to be precise about this: <strong>by default</strong> &mdash; most AI agents have no memory between conversations.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">None.</p>
+                <p class="speech">Every new conversation begins completely fresh. The agent has no record of anything that was said before. No context. No history. A blank slate.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Picks up a marker. Writes on a fresh part of the board:</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <div class="instruction-card"><span class="label">Board</span>Default: Memory resets every conversation.</div>
+
+                <p class="speech"><strong>FACULTY:</strong> Now &mdash; you <em>can</em> give agents memory. There are ways to build it in. But it is a deliberate design choice, not a default feature.</p>
+                <p class="speech">And this matters because it has real implications for privacy, for consistency, and for how agents behave across long-running tasks. We&rsquo;ll spend an entire lecture on memory later in this series. For now: just know that memory is a variable, not a constant.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <p class="tone">Steps back. The board now shows three numbered items with their labels.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> So. Three parts.</p>
+                <p class="speech">Brain. Job description. Memory.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech"><strong>FACULTY:</strong> Any questions?</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Waits.</p>
+            </section>
+
+            <section class="script-part" id="part-5">
+                <h2>PART 5 &mdash; &ldquo;So what do you do with this?&rdquo;</h2>
+                <p class="tag">The Problem Set setup</p>
+                <p class="runtime">Runtime: 14:30 &ndash; 16:30</p>
+
+                <p class="speech"><strong>FACULTY:</strong> Let me close with something practical.</p>
+                <p class="speech">In CS50 &mdash; the course that inspired this series &mdash; every lecture ends with a problem set. A concrete challenge that takes what you&rsquo;ve just learned and asks you to apply it.</p>
+                <p class="speech">So here is your problem set for Lecture 0.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Picks up a fresh card &mdash; like the ones from the envelopes &mdash; and holds it up.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> Think of one task in your current work &mdash; just one &mdash; that is: high in volume, repetitive, and well-defined.</p>
+                <p class="speech">Not a task that requires deep judgment. Not a relationship-critical task. Something that is done over and over, in roughly the same way, by a capable person who could be doing something more interesting instead.</p>
+                <p class="speech">And then write a job description for an AI agent that could do it.</p>
+
+                <p class="cue"><code>[BOARD]</code></p>
+                <div class="instruction-card"><span class="label">Board</span><strong>Your job description must include:</strong><br>
+                    1. What the agent IS<br>
+                    2. What the agent DOES<br>
+                    3. What the agent MUST NOT DO<br>
+                    4. How the agent should behave
+                </div>
+
+                <p class="speech"><strong>FACULTY:</strong> Don&rsquo;t worry about the technology. Don&rsquo;t worry about whether this is technically possible. Don&rsquo;t worry about implementation.</p>
+                <p class="speech">Just write the job description.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">Because here is what I want you to discover for yourself &mdash; and I want you to discover it through doing, not through me telling you:</p>
+                <p class="speech">The act of writing a job description for an AI agent forces you to be precise about something you have probably never had to be precise about before: exactly what a task consists of, where it starts, where it ends, and what &ldquo;done correctly&rdquo; actually looks like.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="tone">(genuinely, not dramatically)</p>
+                <p class="speech">That precision is the skill.</p>
+                <p class="speech">Not the technology. Not the prompting. Not knowing which model to use.</p>
+                <p class="speech">The skill is knowing clearly what you want &mdash; clearly enough to write it down in a way someone else can follow exactly.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Sets down the card. Steps to the center of the stage.</p>
+
+                <p class="speech"><strong>FACULTY:</strong> Next lecture, we&rsquo;re going to look at what happens when job descriptions go wrong &mdash; and what makes one genuinely good. We&rsquo;ll look at real examples side by side. And I think you&rsquo;ll find it illuminating.</p>
+                <p class="speech">For now &mdash; take the card. Write the job description. Bring it back.</p>
+
+                <p class="cue"><code>[STAGE]</code></p>
+                <p class="tone">Reaches into a small box on the table. Pulls out blank index cards &mdash; the same style as the ones from the envelopes. Holds them up.</p>
+
+                <p class="tone">(smiling)</p>
+                <p class="speech">Cards are on the table on your way out.</p>
+
+                <p class="cue"><code>[PAUSE]</code></p>
+
+                <p class="speech">See you next time.</p>
+
+                <p class="cue"><code>[SLIDE]</code> <em>Black screen. White text:</em></p>
+                <div class="slide-line">
+                    AI Agents, Explained
+                    <div class="slide-line sub">Lecture 0 &mdash; complete</div>
+                    <div class="slide-line sub" style="font-weight:600;">Next: Lecture 1 &mdash; Writing the Job Description</div>
+                    <div class="slide-line sub" style="font-weight:500;margin-top:10px;">Problem set: Write a job description for one task in your work.<br>Use the four-part template.</div>
+                </div>
+            </section>
+        </article>
+
+        <section class="prod-section" id="production-notes" aria-labelledby="prod-h">
+            <h2 id="prod-h">Production notes</h2>
+
+            <h3>The Malan method &mdash; what this script replicates</h3>
+            <div class="doc-table-wrap">
+                <table class="doc">
+                    <thead>
+                        <tr><th>Malan technique</th><th>This script&rsquo;s version</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Physical prop (phone book tear)</td><td>The three envelopes &mdash; each demonstrating a different instruction quality</td></tr>
+                        <tr><td>&ldquo;This. Is. CS50.&rdquo; signature opener</td><td>&ldquo;This. Is. AI Agents.&rdquo; &mdash; identical structure, new context</td></tr>
+                        <tr><td>Builds from word etymology</td><td>&ldquo;Agent&rdquo; from Latin <em>agere</em> &mdash; to act</td></tr>
+                        <tr><td>Pseudocode first</td><td>The job description card IS the pseudocode &mdash; plain language instructions</td></tr>
+                        <tr><td>Volunteer from audience</td><td>Three volunteers demonstrating instruction quality live</td></tr>
+                        <tr><td>Whiteboard accumulation</td><td>Board fills progressively &mdash; Brain, Job Description, Memory all visible at end</td></tr>
+                        <tr><td>Problem set</td><td>Write a job description &mdash; four-part template, tangible deliverable</td></tr>
+                        <tr><td>&ldquo;Not to worry&rdquo;</td><td>Used once, precisely, at the start</td></tr>
+                        <tr><td>&ldquo;Any questions so far?&rdquo;</td><td>Used twice &mdash; once mid-lecture, once at Part 4 close</td></tr>
+                        <tr><td>Counting from zero</td><td>Course opens at Lecture 0, not Lecture 1</td></tr>
+                        <tr><td>Self-deprecating humor</td><td>&ldquo;We&rsquo;ll set aside the secret agent for now&rdquo; / &ldquo;as old as management&rdquo;</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>The envelope demonstration &mdash; detailed staging notes</h3>
+            <p style="color:var(--slate);font-size:0.9rem;margin:0 0 12px;">This is the physical centerpiece of the lecture. It is the phone-book-tear equivalent. It <strong>must</strong> be rehearsed.</p>
+            <ul style="color:var(--slate);font-size:0.9rem;padding-left:1.2rem;">
+                <li><strong>Envelope 1 (clear instructions):</strong> The volunteer succeeds. Establishes the baseline: agent = brain + instructions &rarr; correct action.</li>
+                <li><strong>Envelope 2 (vague instructions):</strong> &ldquo;Handle the emails.&rdquo; The volunteer visibly stalls. The faculty doesn&rsquo;t mock the volunteer &mdash; gently ask &ldquo;any questions?&rdquo; Make clear this is <strong>not</strong> the volunteer&rsquo;s failure. &ldquo;You have a brain. The instruction is the problem.&rdquo;</li>
+                <li><strong>Envelope 3 (good job description):</strong> The volunteer reads it, nods, looks confident. They don&rsquo;t need to physically do anything &mdash; body language from envelope 2 to envelope 3 tells the story.</li>
+                <li><strong>Pacing:</strong> Don&rsquo;t rush between envelopes. Let each one land before moving on.</li>
+            </ul>
+
+            <h3>Whiteboard strategy</h3>
+            <p style="color:var(--slate);font-size:0.88rem;margin:0 0 8px;">The whiteboard is the memory of the lecture. Everything written on it should stay visible. By the end, the audience can see the full map at once:</p>
+            <pre class="diagram">AGENT (Latin: agere — to act)
+
+Brain + "Handle the emails"       → Confusion
+Brain + Detailed job description   → Useful, bounded action
+Brain + No job description         → Chaos
+
+Two kinds of AI:
+Conversational AI ——→ AI Agent
+                  + tools + job description + permission
+
+Every agent has three parts:
+1. The Brain
+2. The Job Description
+   — What the agent IS
+   — What the agent DOES
+   — What it MUST NOT DO
+   — How it should BEHAVE
+3. Memory
+   (Default: resets every conversation)
+
+Problem Set:
+Write a job description. Use the four-part template.</pre>
+
+            <h3>What this version does that the others don&rsquo;t</h3>
+            <div class="doc-table-wrap">
+                <table class="doc">
+                    <thead>
+                        <tr><th>Dimension</th><th>Vox</th><th>TED</th><th>Brandon</th><th>Malan / CS50</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Primary device</td><td>Animation</td><td>Personal story</td><td>Live demo</td><td>Physical props + audience</td></tr>
+                        <tr><td>Pacing</td><td>Fast, rhythmic</td><td>Slow, deliberate</td><td>Energetic, reactive</td><td>Methodical, building</td></tr>
+                        <tr><td>Audience role</td><td>Passive viewer</td><td>Moved listener</td><td>Co-discoverer</td><td>Active participant</td></tr>
+                        <tr><td>Tension source</td><td>What comes next?</td><td>Why does this matter?</td><td>Will it work?</td><td>What will the card say?</td></tr>
+                        <tr><td>Key emotion</td><td>Curiosity</td><td>Conviction</td><td>Excitement</td><td>Discovery</td></tr>
+                        <tr><td>Takeaway form</td><td>Mental model</td><td>A question to ask</td><td>Watch for demos</td><td>A physical card to write</td></tr>
+                        <tr><td>Memory device</td><td>Three-part cutaway</td><td>Job description question</td><td>Vague vs. clear demo</td><td>Three envelopes</td></tr>
+                        <tr><td>Repurposable asset</td><td>Animation clips</td><td>Quote excerpts</td><td>Short clips</td><td>Envelope exercise (workshops)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>The problem set &mdash; why it matters</h3>
+            <div class="defer">
+                <p style="margin:0 0 10px;">Problem sets work because they require <em>producing something</em> &mdash; not just understanding. The index card job description is this version&rsquo;s deliverable.</p>
+                <ul style="margin:0;padding-left:1.1rem;">
+                    <li><strong>Pedagogical</strong> &mdash; applies the four-part framework immediately, anchoring it in memory.</li>
+                    <li><strong>Strategic</strong> &mdash; with permission, real submissions can open Lecture 1 (&ldquo;Someone in last week&rsquo;s audience wrote this&hellip;&rdquo;).</li>
+                </ul>
+            </div>
+
+            <h3>A note on the course numbering</h3>
+            <p style="color:var(--slate);font-size:0.9rem;margin:0;">CS50 counts from zero. Lecture 0. Week 0. This series uses the same device: zero marks the foundation; everything builds on it. The numbering signals a real course architecture, not a loose playlist.</p>
+
+            <p style="margin-top:28px;font-size:0.88rem;color:var(--slate-light);font-style:italic;">End of script &mdash; Lecture 0, Malan / CS50 Style<br><abbr title="School of Technology and Computing">School of Technology and Computing</abbr> · AI Agents, Explained</p>
+        </section>
+
+        <footer>
+            <a href="index.html">STC Transformation hub</a>
+            · <a href="ai-agents-explained-episode-01.html">Episode 1 · Vox</a>
+            · <a href="ai-agents-explained-episode-01-ted.html">TED</a>
+            · <a href="ai-agents-explained-episode-01-brandon.html">Screen demo</a>
+            · Maintained by Clark Ngo
+        </footer>
+    </div>
+</body>
+</html>

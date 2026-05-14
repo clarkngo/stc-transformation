@@ -360,36 +360,63 @@
             color: var(--ink);
             margin-bottom: 4px;
         }
+        .masterclass-callout {
+            margin: 0 0 16px;
+            padding: 18px 20px;
+            background: linear-gradient(165deg, #fff 0%, #f0f9ff 100%);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            border-left: 4px solid var(--accent-2);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+        }
+        .masterclass-callout .kicker {
+            margin: 0 0 8px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--accent-2);
+        }
+        .masterclass-callout p { margin: 0 0 12px; font-size: 0.93rem; }
+        .masterclass-callout p:last-child { margin-bottom: 0; }
     </style>
 </head>
 <body>
     <div class="shell">
         <nav class="nav-row" aria-label="Page navigation">
             <a href="index.html">← Hub</a>
-            <a href="adk-basic-agent-video-plan.html">Production / shot-list version</a>
+            <a href="adk-basic-agent-video-plan.html">Production pack</a>
+            <a href="adk-basic-agent-video-plan.html#strategic-framing">Masterclass strategy</a>
             <a href="strategic-growth-stc-content-engine.html#content-bridge">Content Engine · ADK bridge</a>
             <a href="#script">Full script</a>
             <a href="#broll-frames">Storyboard frames</a>
         </nav>
 
         <header class="hero">
-            <span class="badge">Concept map · Example #1</span>
-            <h1><abbr title="Agent Development Kit">ADK</abbr> Basic Agent — concepts &amp; how they interplay</h1>
+            <span class="badge">Concept map · <abbr title="Agent Development Kit">ADK</abbr> Masterclass Example #1</span>
+            <h1><abbr title="Agent Development Kit">ADK</abbr> Masterclass — Building Your First Agent (concepts &amp; interplay)</h1>
             <p class="meta">
-                Companion to
+                Companion to Google’s <strong>Example #1</strong> (greeting agent: name in, personalized reply out) and the crash-course walkthrough
                 <a href="https://youtu.be/P4VFL9nIaIA" target="_blank" rel="noopener noreferrer">Build AI Agents &amp; Automate Workflows</a>
                 · <a href="https://github.com/imvickykumar/agent-development-kit-crash-course" target="_blank" rel="noopener noreferrer">Crash-course repo</a>
                 · <a href="https://google.github.io/adk-docs/get-started/quickstart" target="_blank" rel="noopener noreferrer"><abbr title="Agent Development Kit">ADK</abbr> quickstart</a>
             </p>
-            <p class="muted" style="margin:0">This page is the <strong>conceptual sibling</strong> of the <a href="adk-basic-agent-video-plan.html">production pack</a>: less shot list, more <em>mental model</em> — what depends on what, and how failures chain.</p>
+            <p class="muted" style="margin:0">This page is the <strong>conceptual sibling</strong> of the <a href="adk-basic-agent-video-plan.html">production pack</a>: less shot list, more <em>mental model</em> — what depends on what, and how failures chain. Official lesson introduces <strong>Agent</strong>, <strong>Session</strong>, and <strong>Runner</strong>; the stack below adds the <em>infrastructure seams</em> those three sit on top of.</p>
         </header>
 
+        <div class="masterclass-callout" id="masterclass-strategy" aria-labelledby="mc-kicker">
+            <p class="kicker" id="mc-kicker">Strategic frame</p>
+            <p><strong>Full picture:</strong> The YouTube line is the <strong><abbr title="Agent Development Kit">ADK</abbr> Masterclass</strong>; Example #1 is <strong>Building Your First Agent</strong> — the greeting agent that teaches <strong>Agent</strong>, <strong>Session</strong>, and <strong>Runner</strong>. <abbr title="School of Technology and Computing">STC</abbr> bridge content should practice <dfn>democratization thought leadership</dfn>: go <em>wider</em> than “out-deep” developer tutorials — speak to managers, partners, and policy owners who will govern agents beside engineers — using stories and failure modes, not only terminals.</p>
+            <p><strong>Why this example holds:</strong> It carries the philosophical questions non-developers ask (intent, instructions, accountability, wrong goals) without requiring viewers to read code. <strong>Execution risk:</strong> like CS50’s anchor instructor, <abbr title="School of Technology and Computing">STC</abbr> needs one <strong>consistent on-camera owner</strong> (Dean or named faculty) for years; polish is secondary to showing up.</p>
+            <p style="margin-bottom:0"><a href="adk-basic-agent-video-plan.html#deliverables">Deliverable shortcuts</a> on the production page · <a href="adk-basic-agent-video-plan.html#strategic-framing">Full strategic write-up</a></p>
+        </div>
+
         <p class="lead">
-            Example #1 is “small” in code but <strong>thick</strong> in ideas: several independent systems (Python, process environment, cloud identity, model routing, instruction state, session memory) must line up. Beginners often fixate on one line of code; most bugs are <strong>misalignment between layers</strong>.
+            Example #1 is “small” in code but <strong>thick</strong> in ideas: several independent systems (Python, process environment, cloud identity, model routing, instruction state, session memory) must line up. Beginners often fixate on one line of code; most bugs are <strong>misalignment between layers</strong>. The tutorial’s <strong>Agent / Session / Runner</strong> trio is how Google names the “happy path” orchestration; the diagram below is how you <strong>debug</strong> when the path breaks.
         </p>
 
         <h2 id="stack">1. Layer stack (bottom → top)</h2>
-        <p class="muted">Read upward: each layer <strong>assumes</strong> the one below is already valid. Skip a layer mentally and the failure looks random.</p>
+        <p class="muted">Read upward: each layer <strong>assumes</strong> the one below is already valid. Skip a layer mentally and the failure looks random. <strong>Map to Example #1:</strong> <em>Agent</em> ≈ configured behavior + model wiring inside the <abbr title="Agent Development Kit">ADK</abbr> runtime; <em>Session</em> ≈ conversation state the runtime keeps; <em>Runner</em> ≈ the entry path that executes turns (your run command / app harness) — still sitting on top of machine, secrets, and model policy.</p>
 
         <div class="layer-stack" aria-label="Layers from machine to user turn">
             <div class="layer">

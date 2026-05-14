@@ -289,6 +289,163 @@
             text-align: center;
         }
         footer a { color: var(--accent); font-weight: 600; }
+
+        /* Tabbed framework reference */
+        .fw-widget {
+            margin: 24px 0 8px;
+            padding: 0;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .fw-widget header {
+            padding: 18px 20px 14px;
+            background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        .fw-widget header h2 {
+            margin: 0 0 8px;
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .fw-widget header p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--slate);
+            line-height: 1.55;
+            max-width: 72ch;
+        }
+        .fw-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 12px 14px 8px;
+            background: #f1f5f9;
+            border-bottom: 1px solid var(--border);
+        }
+        .fw-tabs [role="tab"] {
+            appearance: none;
+            font: inherit;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--slate);
+            padding: 9px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+        .fw-tabs [role="tab"]:hover {
+            border-color: rgba(3, 105, 161, 0.35);
+            color: var(--accent);
+        }
+        .fw-tabs [role="tab"][aria-selected="true"] {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+        .fw-tabs [role="tab"]:focus-visible {
+            outline: 2px solid var(--accent-mid);
+            outline-offset: 2px;
+        }
+        .fw-panels {
+            padding: 20px 22px 22px;
+        }
+        .fw-panels [role="tabpanel"] {
+            margin: 0;
+        }
+        .fw-panels [role="tabpanel"]:focus {
+            outline: none;
+        }
+        .fw-panels [hidden] { display: none !important; }
+        .fw-panels h3 {
+            margin: 0 0 12px;
+            font-size: 1rem;
+            color: var(--ink);
+        }
+        .fw-panels p, .fw-panels li { font-size: 0.91rem; color: var(--slate); line-height: 1.58; }
+        .fw-panels ul { margin: 0 0 14px; padding-left: 1.15rem; }
+        .fw-panels li { margin-bottom: 8px; }
+        .fw-ask-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--border);
+        }
+        .fw-ask {
+            font: inherit;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--accent);
+            background: var(--accent-dim);
+            color: #0c4a6e;
+        }
+        .fw-ask:hover { background: #bae6fd; }
+        .fw-ask:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+        .fw-toast {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #047857;
+            min-height: 1.2em;
+        }
+        .fw-prompt-box {
+            margin: 0 22px 14px;
+            padding: 12px 14px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: 0.76rem;
+            color: #334155;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 10rem;
+            overflow: auto;
+            display: none;
+        }
+        .fw-prompt-box.is-visible { display: block; }
+        .fw-next {
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            background: var(--accent-dim);
+            border: 1px solid rgba(3, 105, 161, 0.2);
+            font-size: 0.88rem;
+            color: #0c4a6e;
+        }
+        .fw-next p { margin: 0 0 12px; }
+        .fw-next p:last-of-type { margin-bottom: 0; }
+        .fw-next strong { color: var(--ink); }
+
+        .fw-diagram {
+            margin: 18px 0 4px;
+            padding: 14px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+        }
+        .fw-diagram img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .fw-diagram figcaption {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--slate);
+            line-height: 1.45;
+        }
+        .fw-diagram figcaption a { color: var(--accent); font-weight: 600; }
     </style>
 </head>
 <body>
@@ -308,11 +465,13 @@
 
         <nav aria-label="On this page">
             <ul class="toc">
+                <li><a href="#frameworks">Frameworks (tabs)</a></li>
                 <li><a href="#m101">Marketing 101</a></li>
                 <li><a href="#stc-context"><abbr title="School of Technology and Computing">STC</abbr> context</a></li>
                 <li><a href="#internal">Internal marketing</a></li>
                 <li><a href="#pitch-comms">Pitch &amp; communication</a></li>
                 <li><a href="#external">To external marketing</a></li>
+                <li><a href="#democratization-thl">Democratization thought leadership</a></li>
                 <li><a href="#use-cases">Use-cases</a></li>
                 <li><a href="#case-studies">Case studies</a></li>
                 <li><a href="#scenarios">Scenarios</a></li>
@@ -323,6 +482,111 @@
         <p class="lead-card">
             <strong>Marketing is not only ads.</strong> In a school of technology and computing, marketing is the disciplined work of making <em>value, proof, and next steps</em> obvious — first to colleagues and partners who must carry the message, then to students and employers in the open market. This page names that sequence so your content engine, program launches, and classroom stories stay aligned.
         </p>
+        <p class="mini" style="margin-top:12px">For a tabbed pass through core frameworks (plus teaching notes for technical leaders), jump to <a href="#frameworks">Marketing frameworks reference</a> below.</p>
+
+        <section id="frameworks" class="doc-section" aria-labelledby="fw-heading" style="margin-top: 28px;">
+            <div class="fw-widget">
+                <header>
+                    <h2 id="fw-heading">Marketing frameworks reference</h2>
+                    <p>This is your compact <strong>Marketing 101</strong> stack in one place: click the tabs to move between frameworks. A few teaching notes for technical leaders and a School of Technology context sit in <strong>Teaching lens</strong> first; the other tabs unpack <abbr title="Segmentation, Targeting, Positioning">STP</abbr>, the value proposition canvas, journey (including alumni as funnel), unit economics, and funnel basics. <strong>Ask</strong> copies a ready-made prompt you can paste into your own assistant or share with marketing, to go deeper on that tab for CityU programs.</p>
+                </header>
+                <div class="fw-tabs" role="tablist" aria-label="Marketing frameworks">
+                    <button type="button" role="tab" id="tab-teach" aria-selected="true" aria-controls="panel-teach" tabindex="0">Teaching lens</button>
+                    <button type="button" role="tab" id="tab-stp" aria-selected="false" aria-controls="panel-stp" tabindex="-1"><abbr title="Segmentation, Targeting, Positioning">STP</abbr></button>
+                    <button type="button" role="tab" id="tab-vpc" aria-selected="false" aria-controls="panel-vpc" tabindex="-1">Value prop canvas</button>
+                    <button type="button" role="tab" id="tab-journey" aria-selected="false" aria-controls="panel-journey" tabindex="-1">Customer journey</button>
+                    <button type="button" role="tab" id="tab-ltv" aria-selected="false" aria-controls="panel-ltv" tabindex="-1"><abbr title="Lifetime value">LTV</abbr> : <abbr title="Customer acquisition cost">CAC</abbr></button>
+                    <button type="button" role="tab" id="tab-more" aria-selected="false" aria-controls="panel-more" tabindex="-1">Funnel &amp; mix</button>
+                </div>
+                <div class="fw-panels">
+                    <div id="panel-teach" role="tabpanel" aria-labelledby="tab-teach" tabindex="0">
+                        <h3>Why technical people pick up marketing faster than they expect</h3>
+                        <p>Most canonical frameworks are <strong>structured decision-making</strong> under different vocabulary. Market segmentation is close to <strong>data clustering</strong> (who clusters together on needs, constraints, and readiness). Positioning is <strong>feature differentiation</strong> in the buyer’s mental model, not only in your spec sheet. The customer funnel is a <strong>conversion pipeline</strong> with drop-off at each stage — the same intuition you use for systems throughput.</p>
+                        <h3>The mental shift that still hurts</h3>
+                        <p>Marketing forces you to reason <em>from the customer’s perception outward</em>, not from the product specification inward. A technically superior program with weak positioning consistently loses to a weaker competitor with <strong>clear, credible positioning</strong> — because buyers optimize for risk reduction and comprehension speed, not raw feature count. That lesson is the hardest for engineers and pure-academic leaders to internalize; naming it early saves bruised egos in cross-functional meetings.</p>
+                        <h3>For a Dean of a School of Technology</h3>
+                        <p>The other tabs highlight the four frameworks that pay rent fastest in your role: <strong><abbr title="Segmentation, Targeting, Positioning">STP</abbr></strong> (who to recruit and what to say to each segment), <strong>value proposition canvas</strong> (why your stack beats Coursera, bootcamps, and peer institutions for a defined job-to-be-done), <strong>customer journey</strong> (including alumni as the top of a <em>new</em> funnel), and <strong><abbr title="Lifetime value">LTV</abbr>:<abbr title="Customer acquisition cost">CAC</abbr></strong> (enrollment investment framed in unit economics for finance committees). <strong>Diagrams:</strong> open the <strong>Value prop canvas</strong>, <strong>Customer journey</strong>, and <strong>Funnel &amp; mix</strong> tabs for downloadable SVG figures.</p>
+                        <div class="fw-ask-row">
+                            <button type="button" class="fw-ask" data-prompt="You are a higher-ed marketing strategist. Explain in plain language how segmentation, positioning, and funnel metrics map to concepts a Dean from a School of Technology would already know from data science and systems thinking. Use one short analogy each. Then list three mistakes technical deans make when approving marketing copy.">Ask: tech ↔ marketing analogies</button>
+                            <button type="button" class="fw-ask" data-prompt="Draft talking points for a Dean of a School of Technology and Computing to explain to faculty why 'customer perception outward' matters more than internal feature lists for enrollment. Tone: respectful, evidence-oriented, no buzzwords. Include one counterexample where great tech still lost in market because positioning was weak.">Ask: perception-outward for faculty</button>
+                        </div>
+                    </div>
+                    <div id="panel-stp" role="tabpanel" aria-labelledby="tab-stp" tabindex="0" hidden>
+                        <h3><abbr title="Segmentation, Targeting, Positioning">STP</abbr> — segmentation, targeting, positioning</h3>
+                        <p><strong>Segmentation:</strong> partition the market into groups that respond similarly to an offer (working adults, career switchers, employer-sponsored cohorts, international, online-only vs hybrid, etc.). <strong>Targeting:</strong> choose which segments you will serve first given capacity, accreditation, and margin. <strong>Positioning:</strong> the deliberate story and proof you attach to the chosen segments — what you want them to repeat about you in one sentence.</p>
+                        <ul>
+                            <li>Use different <em>messages</em> per segment while keeping one <em>truth spine</em> (outcomes, assessments, support model) so advisors and web do not contradict each other.</li>
+                            <li>Explicitly decide what you <strong>will not</strong> chase this cycle; it sharpens the target and protects faculty load.</li>
+                        </ul>
+                        <div class="fw-ask-row">
+                            <button type="button" class="fw-ask" data-prompt="Build an STP table for a School of Technology and Computing at a private nonprofit university in the US West. Rows: at least 4 plausible student segments. Columns: segment needs, CityU STC fit score (1-5), primary risk if we over-recruit there, one positioning line that is truthful not hype. Ground claims only in generic SoT patterns; ask me for real data if needed.">Ask: STP table for <abbr title="School of Technology and Computing">STC</abbr></button>
+                        </div>
+                    </div>
+                    <div id="panel-vpc" role="tabpanel" aria-labelledby="tab-vpc" tabindex="0" hidden>
+                        <h3>Value proposition canvas (Osterwalder-style)</h3>
+                        <figure class="fw-diagram">
+                            <img src="assets/marketing-101/value-proposition-canvas.svg" width="920" height="520" loading="lazy" alt="Value proposition canvas: customer gains, pains, and jobs on the left; gain creators, pain relievers, and products on the right, with a fit column between"/>
+                            <figcaption>Blank-structure canvas for workshops. <a href="assets/marketing-101/value-proposition-canvas.svg" target="_blank" rel="noopener noreferrer">Open SVG</a> for slides or print.</figcaption>
+                        </figure>
+                        <p>Pair <strong>customer jobs, pains, and gains</strong> with your program’s <strong>pain relievers, gain creators, and products/services</strong>. For a tech school, the “competition” in the canvas is not only other universities: it includes self-study (Coursera, Udemy), bootcamps, employer academies, and “do nothing / stay in current job.”</p>
+                        <ul>
+                            <li>Force one row on <strong>risk reversal</strong> (time to first credential, transfer policy clarity, trial course, employer pathway).</li>
+                            <li>Align “gains” to <strong>measurable outcomes</strong> you already publish or can defend in accreditation language.</li>
+                        </ul>
+                        <div class="fw-ask-row">
+                            <button type="button" class="fw-ask" data-prompt="Using the value proposition canvas structure, compare a hypothetical Bachelor-level computing program at a mid-size private university against (a) a generic online bootcamp and (b) self-serve Coursera certificates. Fill only the customer side with realistic jobs/pains/gains for career-switching adults; then propose three differentiated gain creators the university could own if it invests in faculty and labs. Stay honest about where bootcamps win on speed.">Ask: canvas vs bootcamps</button>
+                        </div>
+                    </div>
+                    <div id="panel-journey" role="tabpanel" aria-labelledby="tab-journey" tabindex="0" hidden>
+                        <h3>Customer journey (and alumni as funnel top)</h3>
+                        <figure class="fw-diagram">
+                            <img src="assets/marketing-101/customer-journey-stc.svg" width="900" height="340" loading="lazy" alt="Journey stages from awareness through graduate, with alumni advocates box and dashed loop back toward awareness"/>
+                            <figcaption>SoT-oriented linear journey plus alumni loop (referrals, employers, proof). <a href="assets/marketing-101/customer-journey-stc.svg" target="_blank" rel="noopener noreferrer">Open SVG</a>.</figcaption>
+                        </figure>
+                        <p>Map stages from first touch through enrollment, persistence, graduation, and <strong>alumni</strong>. Alumni success is not only “welfare” — it is <strong>marketing infrastructure</strong>: referrals, employer intros, guest lectures, donor stories, and social proof for the next cohort.</p>
+                        <ul>
+                            <li>Instrument a few journey metrics per stage (e.g. time-to-advisor reply, % receiving faculty welcome, capstone showcase attendance).</li>
+                            <li>Design one <strong>alumni touch</strong> per year that feeds both advancement and recruiting narratives without overburdening graduates.</li>
+                        </ul>
+                        <div class="fw-ask-row">
+                            <button type="button" class="fw-ask" data-prompt="Outline a customer journey map for a School of Technology and Computing: stages from awareness through alumni year 5. For each stage list one key emotion, one failure mode, and one low-cost fix owned by the Dean's office or department chairs. Include explicit 'alumni as top of funnel' loop back to referrals.">Ask: journey map outline</button>
+                        </div>
+                    </div>
+                    <div id="panel-ltv" role="tabpanel" aria-labelledby="tab-ltv" tabindex="0" hidden>
+                        <h3><abbr title="Lifetime value">LTV</abbr> : <abbr title="Customer acquisition cost">CAC</abbr> — unit economics for enrollment</h3>
+                        <p><strong><abbr title="Customer acquisition cost">CAC</abbr></strong> is total recruitment + marketing + admissions touch cost divided by new starts (define the denominator with finance). <strong><abbr title="Lifetime value">LTV</abbr></strong> is discounted net tuition and auxiliary revenue over expected enrollment length, minus service cost — simplified models are fine for <em>directional</em> committee conversations if assumptions are labeled.</p>
+                        <ul>
+                            <li>Framing enrollment as unit economics helps align marketing spend, scholarship policy, and program mix with the same vocabulary the CFO uses.</li>
+                            <li>Never publish internal <abbr title="Lifetime value">LTV</abbr>:<abbr title="Customer acquisition cost">CAC</abbr> without governance; use ranges and footnoted assumptions externally.</li>
+                        </ul>
+                        <div class="fw-ask-row">
+                            <button type="button" class="fw-ask" data-prompt="Explain LTV:CAC for a non-profit university academic unit (School of Technology) in one page suitable for a finance committee. Include a simple formula, three caveats about data quality, and five questions the Dean should ask marketing before increasing paid media budget.">Ask: finance-committee explainer</button>
+                        </div>
+                    </div>
+                    <div id="panel-more" role="tabpanel" aria-labelledby="tab-more" tabindex="0" hidden>
+                        <h3>Funnel, <abbr title="Attention, Interest, Desire, Action">AIDA</abbr>, and extended <abbr title="Product, Price, Place, Promotion, People, Process, Physical evidence">7Ps</abbr></h3>
+                        <figure class="fw-diagram">
+                            <img src="assets/marketing-101/marketing-mix-4ps-7ps.svg" width="760" height="480" loading="lazy" alt="Four quadrants for Product Price Place Promotion with STC examples, plus a band for People Process Physical evidence"/>
+                            <figcaption>Classic <strong>4Ps</strong> with <strong>+3Ps</strong> for service-heavy offers (typical for schools). <a href="assets/marketing-101/marketing-mix-4ps-7ps.svg" target="_blank" rel="noopener noreferrer">Open SVG</a>.</figcaption>
+                        </figure>
+                        <p><strong><abbr title="Attention, Interest, Desire, Action">AIDA</abbr></strong> (attention → interest → desire → action) is the classic narrative arc for creative; pair it with operational metrics at each transition. The <strong>4Ps / 7Ps</strong> still help checklists for program launches: add <strong>people, process, physical evidence</strong> for schools because service delivery <em>is</em> the product.</p>
+                        <ul>
+                            <li>Match top-of-funnel content (thought leadership, events) to <strong>middle-funnel</strong> proof (syllabus excerpts, faculty bios, outcomes) before you buy bottom-funnel clicks.</li>
+                            <li>See also this hub’s <a href="#m101">Marketing 101</a> and <a href="strategic-growth-stc-content-engine.html">Content Engine</a> for attribution discipline.</li>
+                        </ul>
+                        <div class="fw-ask-row">
+                            <button type="button" class="fw-ask" data-prompt="List a minimal marketing measurement stack for a university academic department (School of Technology) with: one metric per funnel stage (awareness through enrollment), tool examples (CRM, web analytics), and privacy/FERPA cautions. Keep it under 400 words.">Ask: measurement stack sketch</button>
+                        </div>
+                    </div>
+                </div>
+                <p id="fw-toast" class="fw-toast" aria-live="polite" style="padding:0 22px;margin:0 0 4px;min-height:1.25em"></p>
+                <pre class="fw-prompt-box" id="fw-prompt-box" aria-label="Last copied prompt"></pre>
+                <div class="fw-next" id="case-study-teaser">
+                    <p><strong>Case study next step:</strong> The composite cases in <a href="#case-studies">§07 Case studies</a> can be extended into a single narrative that runs <abbr title="Segmentation, Targeting, Positioning">STP</abbr> → canvas → journey → economics for one flagship program (for example <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr>). If you want that built out on this site, treat it as a scoped writing project: pick one primary segment, lock claims to the <a href="bs-ai-aac-04142026.html">approved outcomes document</a>, and add finance-reviewed <abbr title="Lifetime value">LTV</abbr>:<abbr title="Customer acquisition cost">CAC</abbr> assumptions offline before any public numbers.</p>
+                    <button type="button" class="fw-ask" data-prompt="Write one integrated case study applying STP, value proposition canvas, customer journey (including alumni loop), and LTV:CAC framing to a single flagship tech bachelor's program at a private nonprofit university (School of Technology and Computing). Use generic segment names unless I provide data. For each framework section: 2-3 bullet actions the Dean's office would take this quarter. End with a risks-and-assumptions box. Tone: credible for faculty and finance, no hype.">Ask: integrated case study (all frameworks)</button>
+                </div>
+            </div>
+        </section>
 
         <section id="m101" class="doc-section">
             <div class="section-head">
@@ -437,6 +701,15 @@
                 → <strong>Canonical web &amp; <abbr title="Customer relationship management">CRM</abbr> assets</strong> (single URLs, forms, <abbr title="Urchin Tracking Module — URL campaign tags">UTM</abbr> discipline)<br>
                 → <strong>Public campaigns</strong> (content, ads, events) that <em>quote the same proof</em> advisors already use.
             </div>
+
+            <h3 id="democratization-thl" style="margin:28px 0 10px;font-size:1.08rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;">Democratization thought leadership</h3>
+            <p class="mini">In content strategy, what you are describing has a recognizable pattern: <strong>democratization thought leadership</strong>. The school claims authority not by out-deepening specialist competitors (for example, trying to out-explain a developer-grade <abbr title="Agent Development Kit">ADK</abbr> masterclass), but by <strong>going wider</strong> — opening the same ideas to everyone those specialists report to, collaborate with, and pitch to: managers, policy makers, educators, clinical and operations leaders, and partner organizations. The adjacent audience is <em>materially</em> larger than the core practitioner market alone. The <a href="strategic-growth-stc-content-engine.html">STC Content Engine</a> brief is the operational layer; this is the <strong>positioning logic</strong> behind why that layer includes non-code explainers alongside technical bridge content.</p>
+            <p class="mini"><strong>Why a simple agent example anchors the story.</strong> A deliberately small agent (for example the &ldquo;greeting&rdquo; / first agent in <a href="adk-basic-agent-video-plan.html">Example #1 — video plan</a>) is a strong teaching anchor because it carries the philosophical questions non-technical stakeholders actually ask: What does the agent seem to &ldquo;want&rdquo;? Who authored its tone and boundaries? What breaks when instructions are vague or wrong? What happens if the goal is mis-specified? You do not need a terminal window to run that conversation — a workplace scenario and a plain-language walkthrough are often <em>more</em> memorable for the audiences above.</p>
+            <div class="highlight-strip" role="note" aria-label="Primary execution risk">
+                <strong>Primary execution risk: the anchor persona.</strong> Flagship lecture-style courses often become inseparable from <strong>one consistent human face on camera over years</strong> (think of how <abbr title="Harvard University&rsquo;s introduction to computer science (name reference only)">CS50</abbr> is associated with a single instructor). For <abbr title="School of Technology and Computing">STC</abbr>, that role needs a clear owner: typically the <strong>Dean</strong> as the recurring voice, or a designated faculty partner who can carry the same commitment. Production polish, channel mix, and credentialing all matter — but they are secondary to <strong>sustained presence</strong> and a single credible narrator the market learns to recognize.
+            </div>
+            <p class="mini">On this hub, the <a href="ai-agents-explained-lecture-00-cs50.html">Lecture 0 (lecture-hall)</a> and <a href="ai-agents-explained-episode-01.html">Episode 1 (explainer / TED / screen-demo)</a> scripts are concrete format experiments for that wider lane — not substitutes for faculty review of claims, but aligned with the same handoff discipline in the bullets above.</p>
+
             <p class="mini">If external copy introduces a new superlative that internal teams cannot explain in plain language, pause and rewrite. That mismatch is how institutions lose trust.</p>
         </section>
 
@@ -617,5 +890,87 @@
         </footer>
     </div>
     <script src="assets/nav.js"></script>
+    <script>
+    (function () {
+        var tablist = document.querySelector(".fw-tabs");
+        if (!tablist) return;
+        var tabs = Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));
+        var panels = {};
+        tabs.forEach(function (t) {
+            var id = t.getAttribute("aria-controls");
+            if (id) panels[id] = document.getElementById(id);
+        });
+        function selectTab(tab) {
+            tabs.forEach(function (o) {
+                var on = o === tab;
+                o.setAttribute("aria-selected", on ? "true" : "false");
+                o.tabIndex = on ? 0 : -1;
+                var pid = o.getAttribute("aria-controls");
+                if (panels[pid]) panels[pid].hidden = !on;
+            });
+        }
+        tablist.addEventListener("click", function (e) {
+            var t = e.target.closest('[role="tab"]');
+            if (!t || !tablist.contains(t)) return;
+            selectTab(t);
+            t.focus();
+        });
+        tablist.addEventListener("keydown", function (e) {
+            var i = tabs.indexOf(document.activeElement);
+            if (i < 0) return;
+            var next = -1;
+            if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (i + 1) % tabs.length;
+            else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (i - 1 + tabs.length) % tabs.length;
+            else if (e.key === "Home") next = 0;
+            else if (e.key === "End") next = tabs.length - 1;
+            if (next >= 0) {
+                e.preventDefault();
+                selectTab(tabs[next]);
+                tabs[next].focus();
+            }
+        });
+        var widget = document.querySelector(".fw-widget");
+        var toast = document.getElementById("fw-toast");
+        var box = document.getElementById("fw-prompt-box");
+        function showCopied(text) {
+            if (toast) {
+                toast.textContent = "Copied prompt to clipboard.";
+                setTimeout(function () { toast.textContent = ""; }, 3200);
+            }
+            if (box) {
+                box.textContent = text;
+                box.classList.add("is-visible");
+            }
+        }
+        if (widget) {
+            widget.addEventListener("click", function (e) {
+                var btn = e.target.closest(".fw-ask");
+                if (!btn || !btn.dataset.prompt) return;
+                var text = btn.dataset.prompt;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function () { showCopied(text); }).catch(function () { fallbackCopy(text); });
+                } else {
+                    fallbackCopy(text);
+                }
+                function fallbackCopy(t) {
+                    try {
+                        var ta = document.createElement("textarea");
+                        ta.value = t;
+                        ta.setAttribute("readonly", "");
+                        ta.style.position = "fixed";
+                        ta.style.left = "-9999px";
+                        document.body.appendChild(ta);
+                        ta.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(ta);
+                        showCopied(t);
+                    } catch (err) {
+                        showCopied(t);
+                    }
+                }
+            });
+        }
+    })();
+    </script>
 </body>
 </html>

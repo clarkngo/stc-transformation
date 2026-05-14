@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/styles.css">
     <title>STC Transformation — Curriculum &amp; AI Strategy</title>
     <style>
         :root{--accent:#1e8449;--muted:#6b7280;--card:#ffffff;--bg:#f6f8fb}
@@ -19,25 +20,44 @@
         .hero{display:flex;align-items:center;justify-content:space-between;margin-top:20px;background:linear-gradient(180deg,#ffffff,#fbfeff);padding:22px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.06)}
         .hero-left{max-width:66%}
         .hero-left p{margin:10px 0;color:var(--muted)}
-        .cta-row{margin-top:12px;display:flex;gap:12px}
-        .btn{background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;font-weight:600}
-        .secondary{background:transparent;border:1px solid #d1d5db;color:var(--muted);padding:8px 14px;border-radius:8px;text-decoration:none}
+        .cta-row{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px}
+        .btn{background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.9rem}
+        .secondary{background:transparent;border:1px solid #d1d5db;color:var(--muted);padding:8px 14px;border-radius:8px;text-decoration:none;font-size:0.9rem}
 
-        /* Flex-based card layout for natural wrapping */
-        .grid{display:flex;flex-wrap:wrap;gap:18px;margin-top:20px;align-items:stretch}
+        /* Audience bands */
+        .audience-band{margin-top:36px;padding-top:24px;border-top:2px solid #e2e8f0}
+        .band-header{display:flex;align-items:baseline;gap:12px;margin-bottom:4px}
+        .band-label{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;white-space:nowrap}
+        .band-label.aac{background:#dbeafe;color:#1d4ed8}
+        .band-label.leadership{background:#ede9fe;color:#6d28d9}
+        .band-label.faculty{background:#dcfce7;color:#15803d}
+        .band-label.students{background:#fef3c7;color:#b45309}
+        .band-title{margin:0;font-size:1.2rem;font-weight:700;color:#0f1724;letter-spacing:-0.02em}
+        .band-lead{margin:4px 0 18px;max-width:760px;line-height:1.5;color:var(--muted);font-size:0.95rem}
+
+        /* Card grid */
+        .grid{display:flex;flex-wrap:wrap;gap:18px;align-items:stretch}
         .card{background:var(--card);padding:18px;border-radius:10px;box-shadow:0 6px 14px rgba(15,23,42,0.04);transition:transform .18s ease,box-shadow .18s ease;border:1px solid rgba(15,23,42,0.03);flex:1 1 240px;min-width:240px}
         @media (min-width:1100px){.card{flex-basis:calc(33.333% - 12px)}}
         .card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(15,23,42,0.12)}
         .card h3{margin:0 0 8px 0;font-size:1.05rem;display:flex;align-items:center;gap:10px}
-        .card .icon{width:36px;height:36px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:18px;background:#f3faf8}
+        .card .icon{width:36px;height:36px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:18px;background:#f3faf8;flex-shrink:0}
         .muted{color:var(--muted);font-size:0.95rem}
-        .card .cta{display:inline-block;margin-top:12px;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:600}
+        .card .cta{display:inline-block;margin-top:10px;padding:7px 12px;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.88rem}
         .card .cta.primary{background:var(--accent);color:#fff}
         .card .cta.ghost{background:transparent;border:1px solid #e6eef0;color:var(--muted)}
+        .cta-stack{display:flex;flex-direction:column;gap:6px;margin-top:10px}
 
-        .growth-band{margin-top:40px;padding-top:28px;border-top:2px solid #e2e8f0}
-        .growth-band .section-title{margin:0 0 8px;font-size:1.25rem;font-weight:700;color:#0f1724;letter-spacing:-0.02em}
-        .growth-band .section-lead{margin:0 0 20px;max-width:760px;line-height:1.5}
+        /* Archive collapsible */
+        .archive-section{margin-top:36px;padding-top:20px;border-top:2px solid #e2e8f0}
+        details summary{cursor:pointer;font-size:0.9rem;font-weight:600;color:var(--muted);padding:6px 0;user-select:none;list-style:none;display:flex;align-items:center;gap:8px}
+        details summary::before{content:"▶";font-size:0.65rem;transition:transform .2s}
+        details[open] summary::before{transform:rotate(90deg)}
+        .archive-grid{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}
+        .archive-card{background:#fafafa;border:1px solid #e2e8f0;padding:14px;border-radius:8px;flex:1 1 200px;min-width:200px}
+        .archive-card h4{margin:0 0 6px;font-size:0.9rem;color:#475569}
+        .archive-card a{font-size:0.85rem;color:var(--accent);text-decoration:none}
+        .archive-card a:hover{text-decoration:underline}
 
         footer{margin-top:40px;color:var(--muted);font-size:0.9rem;text-align:center}
         @media (max-width:640px){.hero{flex-direction:column;align-items:flex-start}.hero-left{max-width:100%}}
@@ -56,20 +76,15 @@
         <section class="hero">
             <div class="hero-left">
                 <h2 style="margin:0">Curriculum models &amp; <abbr title="Artificial intelligence">AI</abbr> strategy</h2>
-                <p>Explore the current and proposed curriculum models, team projects, and our technical proposal for running open-source <abbr title="Large language models">LLMs</abbr> locally using Ollama. This site contains quick-reference hardware guidance, operational checklists, and cost comparisons for pilots and teaching use-cases.</p>
+                <p>Strategic documentation hub for the <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> — <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> program approval, curriculum models, course specs, and growth strategy.</p>
                 <div class="cta-row">
-                    <a class="btn" href="stc-strategic-alignment.html"><abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Strategic Alignment</a>
-                    <a class="btn" href="new-program-guide.html">New Program Proposal Guide</a>
-                    <a class="btn" href="bs-ai-aac-04142026.html">View <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> — <abbr title="Academic Affairs Committee">AAC</abbr> Approved April 14, 2026</a>
-                    <a class="btn" href="2-16-2026/index.html">View <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> 2026 Strategy & Analysis</a>
-                    <a class="btn" href="bs-ai-for-acc-01282026.html">View Proposed <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> Program v2 - January 28, 2026</a>
-                    <a class="btn" href="bs-ai-01082026.html">View Proposed <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> Program v1 - January 8, 2026</a>
-                    <a class="btn" href="ai-curriculum-development-01062026.html">View Proposed Model - January 6, 2026</a>
-                    <a class="btn" href="ai-empowered-curriculum.html">View Proposed Model - October 28, 2025</a>
-                    <a class="secondary" href="gpt-oss-ollama-proposal.html">Open LLM Proposal</a>
+                    <a class="btn" href="bs-ai-aac-04142026.html">🎓 <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> — <abbr title="Academic Affairs Committee">AAC</abbr> Approved</a>
+                    <a class="btn" href="stc-strategic-alignment.html">🗺️ Strategic Alignment</a>
+                    <a class="btn" href="strategy/index.html">📊 2026 Strategy Hub</a>
+                    <a class="secondary" href="courses/index.html">📚 Course Catalog</a>
                 </div>
             </div>
-            <div style="text-align:right;min-width:200px">
+            <div style="text-align:right;min-width:160px">
                 <div style="background:#f3f9f6;border-radius:10px;padding:14px;display:inline-block;box-shadow:0 4px 10px rgba(16,24,40,0.03)">
                     <div style="font-size:14px;color:var(--muted)">Last updated</div>
                     <div style="font-weight:700;font-size:18px">April 18, 2026</div>
@@ -77,135 +92,224 @@
             </div>
         </section>
 
-        <main class="grid" style="margin-top:22px">
-            <article class="card" aria-labelledby="card-program-guide-title">
-                <h3><span class="icon" aria-hidden="true">📋</span><span id="card-program-guide-title">New Program Proposal Guide</span></h3>
-                <p class="muted">Step-by-step guide for proposing a new <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> degree or certificate through the <abbr title="Academic Affairs Committee">AAC</abbr> — suitability check, proposal form sections, budget template, department consultations, and lessons from the <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> submission.</p>
-                <p style="margin-top:10px"><a class="cta primary" href="new-program-guide.html" aria-label="Open new program proposal guide">Open guide →</a></p>
-            </article>
-
-            <article class="card" aria-labelledby="card-bsai-aac-title">
-                <h3><span class="icon" aria-hidden="true">🎓</span><span id="card-bsai-aac-title"><abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> — <abbr title="Academic Affairs Committee">AAC</abbr> Approved</span></h3>
-                <p class="muted">Official program submission approved by the Academic Affairs Committee on April 14, 2026. Includes full program structure, 8 new course descriptions, and 6 program outcomes.</p>
-                <p style="margin-top:10px"><a class="cta primary" href="bs-ai-aac-04142026.html" aria-label="View AAC-approved BSAI program">View approved program →</a></p>
-                <p style="margin-top:6px"><a class="cta ghost" href="bsai-feedback-synthesis.html" aria-label="View AAC reviewer feedback synthesis"><abbr title="Academic Affairs Committee">AAC</abbr> Feedback Synthesis →</a></p>
-            </article>
-
-            <article class="card" aria-labelledby="card-alignment-title">
-                <h3><span class="icon" aria-hidden="true">🗺️</span><span id="card-alignment-title"><abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Strategic Alignment</span></h3>
-                <p class="muted">Visual diagram mapping CityU's university priorities to <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> school initiatives, academic programs, and the five strategic pillars — Career-Ready, Innovation, Equity, Industry, and Faculty Excellence.</p>
-                <p style="margin-top:10px"><a class="cta primary" href="stc-strategic-alignment.html" aria-label="View STC strategic alignment diagram">View diagram →</a></p>
-            </article>
-
-            <article class="card" aria-labelledby="card-guild-title">
-                <h3><span class="icon" aria-hidden="true">🔰</span><span id="card-guild-title">The <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Guild</span></h3>
-                <p class="muted">New <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Club Format proposal that aims to solve the turn over trap.</p>
-                <p style="margin-top:10px"><a class="cta primary" href="stc-guild-proposal.html" aria-label="Read the STC Guild proposal">Read the STC Guild proposal →</a></p>
-                <p style="margin-top:10px"><a class="cta primary" href="stc-guild-framework.html" aria-label="Read the STC Guild proposal">Read the STC Guild framework →</a></p>
-            </article>
-
-            <article class="card" aria-labelledby="card-grading-title">
-                <h3><span class="icon" aria-hidden="true">📘</span><span id="card-grading-title">Current Grading Breakdown</span></h3>
-                <p class="muted">Overview of the traditional high-activity model, including risks and <abbr title="Quality assurance">QA</abbr> challenges.</p>
-                <p style="margin-top:10px"><a class="cta primary" href="current-grading-breakdown.html" aria-label="Read current grading breakdown">Read current grading breakdown →</a></p>
-            </article>
-
-            <article class="card" aria-labelledby="card-proposed-title">
-                <h3><span class="icon" aria-hidden="true">💡</span><span id="card-proposed-title">Proposed Model</span></h3>
-                <p class="muted"><abbr title="Artificial intelligence">AI</abbr>‑Empowered Portfolio approach with <abbr title="Artificial intelligence">AI</abbr>-resistant assessments and streamlined <abbr title="Quality assurance">QA</abbr>.</p>
-                <p style="margin-top:10px"><a class="cta primary" href="ai-empowered-curriculum.html" aria-label="Read proposed model">Read proposed model →</a></p>
-            </article>
-
-            <article class="card" aria-labelledby="card-team-title">
-                <h3><span class="icon" aria-hidden="true">🧩</span><span id="card-team-title">Team Project</span></h3>
-                <p class="muted">Details and expectations for team-based capstone projects.</p>
-                <p style="margin-top:10px"><a class="cta ghost" href="team-project.html" aria-label="Open team project">Open team project →</a></p>
-            </article>
-
-            <article class="card" aria-labelledby="card-proposal-title">
-                <h3><span class="icon" aria-hidden="true">⚙️</span><span id="card-proposal-title">gpt-oss via Ollama</span></h3>
-                <p class="muted">Technical proposal: hardware, architectures, ops checklist, and cost comparisons for running gpt-oss locally.</p>
-                <p style="margin-top:10px"><a class="cta ghost" href="gpt-oss-ollama-proposal.html" aria-label="Open gpt-oss Ollama proposal">Open proposal →</a></p>
-            </article>
-
-            <article class="card" aria-labelledby="card-tooling-title">
-                <h3><span class="icon" aria-hidden="true">🛠️</span><span id="card-tooling-title"><abbr title="Artificial intelligence">AI</abbr> Dev Tooling Comparison</span></h3>
-                <p class="muted">Stakeholder briefing comparing Claude Desktop, VS Code + Claude, and Cursor IDE — context, capability, and <abbr title="Return on investment">ROI</abbr>.</p>
-                <p style="margin-top:10px"><a class="cta ghost" href="ai-dev-tooling-comparison.html" aria-label="View AI dev tooling comparison">View comparison →</a></p>
-            </article>
-
-            <article class="card" aria-labelledby="card-adk-video-title">
-                <h3><span class="icon" aria-hidden="true">🎬</span><span id="card-adk-video-title"><abbr title="Agent Development Kit">ADK</abbr> Basic Agent — video plan</span></h3>
-                <p class="muted">Production pack for a follow-on to the crash-course Example #1: chapter map, shot list, script beats, B-roll notes, and YouTube description template.</p>
-                <p style="margin-top:10px"><a class="cta primary" href="adk-basic-agent-video-plan.html" aria-label="Open ADK video plan page">Production plan →</a></p>
-                <p style="margin-top:6px"><a class="cta ghost" href="adk-basic-agent-concepts-interplay.html" aria-label="Open concepts interplay page">Concepts &amp; interplay →</a></p>
-                <p style="margin-top:6px"><a class="cta ghost" href="docs/video-plan-basic-agent.md" aria-label="View markdown source">Markdown source →</a></p>
-            </article>
-
-            <article class="card" aria-labelledby="card-deced-title">
-                <h3><span class="icon" aria-hidden="true">📚</span><span id="card-deced-title">Digital Education Council Resources</span></h3>
-                <p class="muted">Supporting research on student <abbr title="Artificial intelligence">AI</abbr> adoption, integration patterns, and best practices in higher education.</p>
-                <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
-                    <a class="cta ghost" href="global-ai-student-survey-2024.pdf" aria-label="View Global AI Student Survey 2024">Global <abbr title="Artificial intelligence">AI</abbr> Student Survey 2024 (<abbr title="Portable Document Format">PDF</abbr>) →</a>
-                    <a class="cta ghost" href="ai-meets-academia-survey-2025.pdf" aria-label="View AI Meets Academia Survey 2025"><abbr title="Artificial intelligence">AI</abbr> Meets Academia Survey 2025 (<abbr title="Portable Document Format">PDF</abbr>) →</a>
-                    <a class="cta ghost" href="https://www.digitaleducationcouncil.com/post/how-students-are-using-and-misusing-ai-in-higher-education" target="_blank" rel="noopener noreferrer" aria-label="Read Digital Education Council article">How Students Are Using and Misusing AI (Article) →</a>
-                </div>
-            </article>
-        </main>
-
-        <section class="growth-band" aria-labelledby="growth-acquisition-heading">
-            <h2 id="growth-acquisition-heading" class="section-title">Growth &amp; Acquisition</h2>
-            <p class="section-lead muted">Program positioning, launch narrative, and evidence for recruiting and retention — flagship credentials, strategy hub, student community design, and national student-<abbr title="Artificial intelligence">AI</abbr> research for messaging and partnerships.</p>
-            <div class="grid" style="margin-top:0">
-                <article class="card" aria-labelledby="growth-m101-title">
-                    <h3><span class="icon" aria-hidden="true">🧭</span><span id="growth-m101-title">Marketing 101 (<abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr>)</span></h3>
-                    <p class="muted" style="font-size:0.88rem;font-weight:600;color:#0369a1;margin-top:-4px">Internal alignment → pitch → external campaigns</p>
-                    <p class="muted">Primer for the School of Technology and Computing: what marketing means in a tech school, why internal marketing and disciplined pitches come first, how that hands off to public content and campaigns — plus use-cases, case studies, scenarios, and data sources on this hub.</p>
-                    <p style="margin-top:10px"><a class="cta primary" href="marketing-101-stc.html" aria-label="Open Marketing 101 for STC">Open Marketing 101 →</a></p>
+        <!-- ── FOR ACADEMIC AFFAIRS ─────────────────────────────── -->
+        <section class="audience-band" aria-labelledby="band-aac-heading">
+            <div class="band-header">
+                <span class="band-label aac">Academic Affairs (<abbr title="Academic Affairs Committee">AAC</abbr>)</span>
+                <h2 id="band-aac-heading" class="band-title">Program review &amp; submission</h2>
+            </div>
+            <p class="band-lead">Official program documents, proposal process guidance, and reviewer feedback — everything needed for <abbr title="Academic Affairs Committee">AAC</abbr> evaluation and follow-up.</p>
+            <div class="grid">
+                <article class="card" aria-labelledby="card-bsai-aac-title">
+                    <h3><span class="icon" aria-hidden="true">🎓</span><span id="card-bsai-aac-title"><abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> — <abbr title="Academic Affairs Committee">AAC</abbr> Approved</span></h3>
+                    <p class="muted">Official program submission approved by the Academic Affairs Committee on April 14, 2026. Full program structure, 8 new course descriptions, and 6 program outcomes.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="bs-ai-aac-04142026.html" aria-label="View AAC-approved BSAI program">View approved program →</a>
+                        <a class="cta ghost" href="bsai-feedback-synthesis.html" aria-label="View AAC reviewer feedback synthesis"><abbr title="Academic Affairs Committee">AAC</abbr> Feedback Synthesis →</a>
+                    </div>
                 </article>
-                <article class="card" aria-labelledby="growth-content-engine-title">
-                    <h3><span class="icon" aria-hidden="true">📣</span><span id="growth-content-engine-title">Strategic Growth: The <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Content Engine</span></h3>
-                    <p class="muted" style="font-size:0.88rem;font-weight:600;color:#4338ca;margin-top:-4px">Thought Leadership &amp; Enrollment Strategy</p>
-                    <p class="muted">Technical bridge content, <abbr title="Open online learning platform (MIT/Harvard roots)">edX</abbr> micro-credentials, and an attribution model (<abbr title="Urchin Tracking Module — URL campaign tags">UTM</abbr>, lead magnets, <abbr title="Customer relationship management (e.g. Salesforce, Slate)">CRM</abbr>) — full brief on a dedicated page.</p>
-                    <p style="margin-top:10px"><a class="cta primary" href="strategic-growth-stc-content-engine.html" aria-label="Open STC Content Engine strategy page">Open strategy brief →</a></p>
+
+                <article class="card" aria-labelledby="card-program-guide-title">
+                    <h3><span class="icon" aria-hidden="true">📋</span><span id="card-program-guide-title">New Program Proposal Guide</span></h3>
+                    <p class="muted">Step-by-step guide for proposing a new <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> degree or certificate through the <abbr title="Academic Affairs Committee">AAC</abbr> — suitability check, proposal form sections, budget template, department consultations, and lessons from the <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> submission.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="new-program-guide.html" aria-label="Open new program proposal guide">Open guide →</a>
+                    </div>
                 </article>
-                <article class="card" aria-labelledby="growth-bsai-title">
-                    <h3><span class="icon" aria-hidden="true">🎯</span><span id="growth-bsai-title">Flagship program (<abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr>)</span></h3>
-                    <p class="muted"><abbr title="Academic Affairs Committee">AAC</abbr>-approved Bachelor of Science in Artificial Intelligence — outcomes, structure, and course stack for recruiters, advisors, and employer conversations.</p>
-                    <p style="margin-top:10px"><a class="cta primary" href="bs-ai-aac-04142026.html" aria-label="View AAC-approved BSAI for growth use">View approved program →</a></p>
-                </article>
-                <article class="card" aria-labelledby="growth-strategy-title">
-                    <h3><span class="icon" aria-hidden="true">📊</span><span id="growth-strategy-title">2026 strategy &amp; analysis</span></h3>
-                    <p class="muted"><abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> strategy working hub — curriculum specs, analytics, math bridge, and executive narrative for internal alignment and external storytelling.</p>
-                    <p style="margin-top:10px"><a class="cta primary" href="2-16-2026/index.html" aria-label="Open BSAI 2026 strategy hub">Open strategy hub →</a></p>
-                    <p style="margin-top:6px"><a class="cta ghost" href="2-16-2026/program-analytics.html" aria-label="Open program analytics">Program analytics →</a></p>
-                </article>
-                <article class="card" aria-labelledby="growth-guild-title">
-                    <h3><span class="icon" aria-hidden="true">🤝</span><span id="growth-guild-title">Community &amp; retention</span></h3>
-                    <p class="muted"><abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Guild proposal and framework — club format aimed at sustained engagement beyond the first term (pipeline and belonging).</p>
-                    <p style="margin-top:10px"><a class="cta primary" href="stc-guild-proposal.html" aria-label="Read STC Guild proposal">Guild proposal →</a></p>
-                    <p style="margin-top:6px"><a class="cta ghost" href="stc-guild-framework.html" aria-label="Read STC Guild framework">Guild framework →</a></p>
-                </article>
-                <article class="card" aria-labelledby="growth-alignment-title">
-                    <h3><span class="icon" aria-hidden="true">🗺️</span><span id="growth-alignment-title">Positioning &amp; pillars</span></h3>
-                    <p class="muted"><abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> strategic alignment map — how school initiatives connect to university priorities for partner decks and leadership briefings.</p>
-                    <p style="margin-top:10px"><a class="cta ghost" href="stc-strategic-alignment.html" aria-label="View STC strategic alignment">View alignment diagram →</a></p>
-                </article>
-                <article class="card" aria-labelledby="growth-dec-title">
-                    <h3><span class="icon" aria-hidden="true">📈</span><span id="growth-dec-title">Student &amp; market signals</span></h3>
-                    <p class="muted">Digital Education Council surveys and commentary — how students use <abbr title="Artificial intelligence">AI</abbr> in higher ed for prospect messaging and curriculum claims.</p>
-                    <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
-                        <a class="cta ghost" href="global-ai-student-survey-2024.pdf" aria-label="Global AI Student Survey 2024 PDF">Global <abbr title="Artificial intelligence">AI</abbr> Student Survey 2024 (<abbr title="Portable Document Format">PDF</abbr>) →</a>
-                        <a class="cta ghost" href="ai-meets-academia-survey-2025.pdf" aria-label="AI Meets Academia Survey 2025 PDF"><abbr title="Artificial intelligence">AI</abbr> Meets Academia Survey 2025 (<abbr title="Portable Document Format">PDF</abbr>) →</a>
-                        <a class="cta ghost" href="https://www.digitaleducationcouncil.com/post/how-students-are-using-and-misusing-ai-in-higher-education" target="_blank" rel="noopener noreferrer" aria-label="DEC article on student AI use"><abbr title="Digital Education Council">DEC</abbr> article: student <abbr title="Artificial intelligence">AI</abbr> use →</a>
+
+                <article class="card" aria-labelledby="card-courses-title">
+                    <h3><span class="icon" aria-hidden="true">📚</span><span id="card-courses-title">Course Catalog</span></h3>
+                    <p class="muted">Full catalog of AI, CS, and DS courses — including the 8 new courses proposed for the <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> program with assessment breakdowns and learning outcomes.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="courses/index.html" aria-label="Browse the full course catalog">Browse catalog →</a>
                     </div>
                 </article>
             </div>
+        </section>
+
+        <!-- ── FOR LEADERSHIP & STRATEGY ──────────────────────────── -->
+        <section class="audience-band" aria-labelledby="band-leadership-heading">
+            <div class="band-header">
+                <span class="band-label leadership">Leadership &amp; Strategy</span>
+                <h2 id="band-leadership-heading" class="band-title">Positioning, alignment &amp; growth</h2>
+            </div>
+            <p class="band-lead">Strategic maps, market analysis, and enrollment strategy — for dean-level briefings, partner decks, and external storytelling.</p>
+            <div class="grid">
+                <article class="card" aria-labelledby="card-alignment-title">
+                    <h3><span class="icon" aria-hidden="true">🗺️</span><span id="card-alignment-title"><abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Strategic Alignment</span></h3>
+                    <p class="muted">Visual diagram mapping CityU's university priorities to <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> school initiatives, academic programs, and the five strategic pillars — Career-Ready, Innovation, Equity, Industry, and Faculty Excellence.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="stc-strategic-alignment.html" aria-label="View STC strategic alignment diagram">View diagram →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="card-strategy-title">
+                    <h3><span class="icon" aria-hidden="true">📊</span><span id="card-strategy-title">2026 Strategy &amp; Analysis</span></h3>
+                    <p class="muted"><abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> strategy working hub — curriculum specs, analytics, math bridge, and executive narrative for internal alignment and external storytelling.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="strategy/index.html" aria-label="Open BSAI 2026 strategy hub">Open strategy hub →</a>
+                        <a class="cta ghost" href="strategy/program-analytics.html" aria-label="Open program analytics">Program analytics →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="card-marketing-title">
+                    <h3><span class="icon" aria-hidden="true">🧭</span><span id="card-marketing-title">Marketing 101 (<abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr>)</span></h3>
+                    <p class="muted" style="font-size:0.88rem;font-weight:600;color:#0369a1;margin-top:-4px">Internal alignment → pitch → external campaigns</p>
+                    <p class="muted">What marketing means in a tech school, why internal alignment and disciplined pitches come first, and how that hands off to public content and campaigns.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="marketing-101-stc.html" aria-label="Open Marketing 101 for STC">Open Marketing 101 →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="card-content-engine-title">
+                    <h3><span class="icon" aria-hidden="true">📣</span><span id="card-content-engine-title">Strategic Growth: The <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Content Engine</span></h3>
+                    <p class="muted" style="font-size:0.88rem;font-weight:600;color:#4338ca;margin-top:-4px">Thought Leadership &amp; Enrollment Strategy</p>
+                    <p class="muted">Technical bridge content, <abbr title="Open online learning platform (MIT/Harvard roots)">edX</abbr> micro-credentials, and an attribution model (<abbr title="Urchin Tracking Module — URL campaign tags">UTM</abbr>, lead magnets, <abbr title="Customer relationship management (e.g. Salesforce, Slate)">CRM</abbr>).</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="strategic-growth-stc-content-engine.html" aria-label="Open STC Content Engine strategy page">Open strategy brief →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="card-dec-signals-title">
+                    <h3><span class="icon" aria-hidden="true">📈</span><span id="card-dec-signals-title">Student &amp; Market Signals</span></h3>
+                    <p class="muted">Digital Education Council surveys — how students use <abbr title="Artificial intelligence">AI</abbr> in higher ed, for prospect messaging and curriculum claims.</p>
+                    <div class="cta-stack">
+                        <a class="cta ghost" href="global-ai-student-survey-2024.pdf">Global <abbr title="Artificial intelligence">AI</abbr> Student Survey 2024 (<abbr title="Portable Document Format">PDF</abbr>) →</a>
+                        <a class="cta ghost" href="ai-meets-academia-survey-2025.pdf"><abbr title="Artificial intelligence">AI</abbr> Meets Academia Survey 2025 (<abbr title="Portable Document Format">PDF</abbr>) →</a>
+                        <a class="cta ghost" href="https://www.digitaleducationcouncil.com/post/how-students-are-using-and-misusing-ai-in-higher-education" target="_blank" rel="noopener noreferrer"><abbr title="Digital Education Council">DEC</abbr>: How Students Use &amp; Misuse AI →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ── FOR FACULTY ─────────────────────────────────────────── -->
+        <section class="audience-band" aria-labelledby="band-faculty-heading">
+            <div class="band-header">
+                <span class="band-label faculty">Faculty</span>
+                <h2 id="band-faculty-heading" class="band-title">Curriculum design &amp; operations</h2>
+            </div>
+            <p class="band-lead">Course specs, assessment frameworks, grading models, retention tools, and technical resources for running AI infrastructure.</p>
+            <div class="grid">
+                <article class="card" aria-labelledby="card-grading-title">
+                    <h3><span class="icon" aria-hidden="true">📘</span><span id="card-grading-title">Current Grading Breakdown</span></h3>
+                    <p class="muted">Overview of the traditional high-activity model, including risks and <abbr title="Quality assurance">QA</abbr> challenges.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="current-grading-breakdown.html" aria-label="Read current grading breakdown">Read current grading breakdown →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="card-proposed-title">
+                    <h3><span class="icon" aria-hidden="true">💡</span><span id="card-proposed-title">Proposed Model</span></h3>
+                    <p class="muted"><abbr title="Artificial intelligence">AI</abbr>‑Empowered Portfolio approach with <abbr title="Artificial intelligence">AI</abbr>-resistant assessments and streamlined <abbr title="Quality assurance">QA</abbr>.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="ai-empowered-curriculum.html" aria-label="Read proposed model">Read proposed model →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="card-team-title">
+                    <h3><span class="icon" aria-hidden="true">🧩</span><span id="card-team-title">Team Project</span></h3>
+                    <p class="muted">Details and expectations for team-based capstone projects.</p>
+                    <div class="cta-stack">
+                        <a class="cta ghost" href="team-project.html" aria-label="Open team project">Open team project →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="card-guild-title">
+                    <h3><span class="icon" aria-hidden="true">🔰</span><span id="card-guild-title">The <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Guild</span></h3>
+                    <p class="muted">Club format proposal aimed at solving the turnover trap — sustained student engagement and belonging beyond the first term.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="stc-guild-proposal.html" aria-label="Read the STC Guild proposal">Guild proposal →</a>
+                        <a class="cta ghost" href="stc-guild-framework.html" aria-label="Read the STC Guild framework">Guild framework →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="card-tooling-title">
+                    <h3><span class="icon" aria-hidden="true">🛠️</span><span id="card-tooling-title"><abbr title="Artificial intelligence">AI</abbr> Dev Tooling Comparison</span></h3>
+                    <p class="muted">Stakeholder briefing comparing Claude Desktop, VS Code + Claude, and Cursor IDE — context, capability, and <abbr title="Return on investment">ROI</abbr>.</p>
+                    <div class="cta-stack">
+                        <a class="cta ghost" href="ai-dev-tooling-comparison.html" aria-label="View AI dev tooling comparison">View comparison →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="card-proposal-title">
+                    <h3><span class="icon" aria-hidden="true">⚙️</span><span id="card-proposal-title">gpt-oss via Ollama</span></h3>
+                    <p class="muted">Technical proposal: hardware, architectures, ops checklist, and cost comparisons for running open-source <abbr title="Large language models">LLMs</abbr> locally.</p>
+                    <div class="cta-stack">
+                        <a class="cta ghost" href="gpt-oss-ollama-proposal.html" aria-label="Open gpt-oss Ollama proposal">Open proposal →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="card-adk-video-title">
+                    <h3><span class="icon" aria-hidden="true">🎬</span><span id="card-adk-video-title"><abbr title="Agent Development Kit">ADK</abbr> Basic Agent — Video Plan</span></h3>
+                    <p class="muted">Production pack for the <abbr title="Agent Development Kit">ADK</abbr> crash-course follow-on: chapter map, shot list, script beats, B-roll notes, and YouTube description template.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="adk-basic-agent-video-plan.html" aria-label="Open ADK video plan page">Production plan →</a>
+                        <a class="cta ghost" href="adk-basic-agent-concepts-interplay.html" aria-label="Open concepts interplay page">Concepts &amp; interplay →</a>
+                        <a class="cta ghost" href="docs/video-plan-basic-agent.md" aria-label="View markdown source">Markdown source →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ── FOR STUDENTS & PROSPECTIVE LEARNERS ────────────────── -->
+        <section class="audience-band" aria-labelledby="band-students-heading">
+            <div class="band-header">
+                <span class="band-label students">Students &amp; Prospective Learners</span>
+                <h2 id="band-students-heading" class="band-title">Program overview &amp; enrollment</h2>
+            </div>
+            <p class="band-lead">What the <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> program involves, what you'll build, and research on how students are already using AI in higher ed.</p>
+            <div class="grid">
+                <article class="card" aria-labelledby="growth-bsai-title">
+                    <h3><span class="icon" aria-hidden="true">🎯</span><span id="growth-bsai-title">Flagship Program (<abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr>)</span></h3>
+                    <p class="muted"><abbr title="Academic Affairs Committee">AAC</abbr>-approved Bachelor of Science in Artificial Intelligence — outcomes, structure, and course stack for prospective students, advisors, and employer conversations.</p>
+                    <div class="cta-stack">
+                        <a class="cta primary" href="bs-ai-aac-04142026.html" aria-label="View the BSAI program overview">View program →</a>
+                        <a class="cta ghost" href="courses/index.html" aria-label="Browse individual course specs">Browse courses →</a>
+                    </div>
+                </article>
+
+                <article class="card" aria-labelledby="growth-deced-title">
+                    <h3><span class="icon" aria-hidden="true">📚</span><span id="growth-deced-title">Digital Education Council Resources</span></h3>
+                    <p class="muted">Supporting research on student <abbr title="Artificial intelligence">AI</abbr> adoption, integration patterns, and best practices in higher education.</p>
+                    <div class="cta-stack">
+                        <a class="cta ghost" href="global-ai-student-survey-2024.pdf">Global <abbr title="Artificial intelligence">AI</abbr> Student Survey 2024 (<abbr title="Portable Document Format">PDF</abbr>) →</a>
+                        <a class="cta ghost" href="ai-meets-academia-survey-2025.pdf"><abbr title="Artificial intelligence">AI</abbr> Meets Academia Survey 2025 (<abbr title="Portable Document Format">PDF</abbr>) →</a>
+                        <a class="cta ghost" href="https://www.digitaleducationcouncil.com/post/how-students-are-using-and-misusing-ai-in-higher-education" target="_blank" rel="noopener noreferrer">How Students Are Using and Misusing AI →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ── PROGRAM HISTORY (ARCHIVED VERSIONS) ────────────────── -->
+        <section class="archive-section" aria-label="Program history and archived versions">
+            <details>
+                <summary>📁 Program History — prior versions &amp; working documents</summary>
+                <p style="font-size:0.88rem;color:var(--muted);margin:8px 0 14px">These documents are preserved for reference. The <a href="bs-ai-aac-04142026.html" style="color:var(--accent)">AAC-approved April 2026 version</a> is the current authoritative document.</p>
+                <div class="archive-grid">
+                    <div class="archive-card">
+                        <h4>BSAI v2 — January 28, 2026</h4>
+                        <a href="bs-ai-for-acc-01282026.html">View proposal →</a>
+                    </div>
+                    <div class="archive-card">
+                        <h4>BSAI v1 — January 8, 2026</h4>
+                        <a href="bs-ai-01082026.html">View proposal →</a>
+                    </div>
+                    <div class="archive-card">
+                        <h4>Curriculum Model — January 6, 2026</h4>
+                        <a href="ai-curriculum-development-01062026.html">View model →</a>
+                    </div>
+                    <div class="archive-card">
+                        <h4>Curriculum Model — October 28, 2025</h4>
+                        <a href="ai-empowered-curriculum.html">View model →</a>
+                    </div>
+                </div>
+            </details>
         </section>
 
         <footer>
             Built for City University of Seattle — School of Technology and Computing • Maintained by Clark Ngo
         </footer>
     </div>
+    <script src="assets/nav.js"></script>
 </body>
 </html>

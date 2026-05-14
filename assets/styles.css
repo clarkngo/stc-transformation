@@ -1,0 +1,94 @@
+/* ═══════════════════════════════════════════════════════════
+   STC Transformation — Shared Stylesheet
+   assets/styles.css
+   ═══════════════════════════════════════════════════════════ */
+
+
+/* ─── Global CSS variables ─────────────────────────────────
+   Hub pages reuse these via their embedded <style>.
+   Course pages inherit them through body.course-page rules.
+   ─────────────────────────────────────────────────────────── */
+:root {
+    --stc-green:       #1e8449;
+    --stc-green-mid:   #27ae60;
+    --stc-primary:     #1a365d;
+    --stc-secondary:   #2c5282;
+    --stc-accent:      #ed8936;
+    --stc-bg:          #f7fafc;
+    --stc-text:        #2d3748;
+    --stc-border:      #e2e8f0;
+    --stc-muted:       #718096;
+    --stc-white:       #ffffff;
+}
+
+
+/* ─── Universal utility ─────────────────────────────────────
+   Applied on every page that links this stylesheet.
+   ─────────────────────────────────────────────────────────── */
+abbr[title] {
+    cursor: help;
+    text-decoration: underline dotted;
+    text-underline-offset: 0.12em;
+    text-decoration-color: rgba(71, 85, 105, 0.4);
+}
+
+
+/* ─── Course pages ──────────────────────────────────────────
+   Scoped to <body class="course-page"> so these rules never
+   bleed into hub pages even if both are open in the same tab.
+   ─────────────────────────────────────────────────────────── */
+body.course-page {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+
+body.course-page .container {
+    max-width: 900px;
+    margin: auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* h1 color is set by per-series embedded override */
+body.course-page h1 {
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+body.course-page h2 {
+    margin-top: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    /* color set by per-series embedded override */
+}
+
+/* Default h3 (blue) — CS series overrides this to green */
+body.course-page h3 {
+    color: #2980b9;
+    margin-top: 20px;
+}
+
+body.course-page .example-box {
+    background-color: #e8f8f5;
+    border-left: 5px solid #1abc9c;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+body.course-page ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+body.course-page li {
+    margin-bottom: 8px;
+}
+
+body.course-page strong {
+    color: #34495e;
+}

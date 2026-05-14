@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <title>ADK Example #1 — Video production pack — STC Transformation</title>
+    <style>
+        :root {
+            --accent: #0d7a3e;
+            --accent-dim: #ecfdf5;
+            --ink: #0f172a;
+            --slate: #475569;
+            --slate-light: #94a3b8;
+            --card: #ffffff;
+            --bg: #f1f5f9;
+            --border: rgba(15, 23, 42, 0.1);
+            --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 12px 40px rgba(15, 23, 42, 0.06);
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.55;
+            font-size: 16px;
+        }
+        abbr[title] {
+            cursor: help;
+            text-decoration: underline dotted;
+            text-underline-offset: 0.12em;
+            text-decoration-color: rgba(71, 85, 105, 0.42);
+        }
+        .shell { max-width: 900px; margin: 0 auto; padding: 24px 18px 56px; }
+        .nav-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            margin-bottom: 22px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .nav-row a { color: var(--accent); text-decoration: none; }
+        .nav-row a:hover { text-decoration: underline; }
+        .hero {
+            background: linear-gradient(165deg, #fff 0%, #f8fafc 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 26px 24px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent);
+            margin-bottom: 28px;
+        }
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: clamp(1.35rem, 3.5vw, 1.75rem);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        .hero .meta {
+            margin: 0 0 12px;
+            font-size: 0.92rem;
+            color: var(--slate);
+        }
+        .hero .meta a { color: var(--accent); font-weight: 600; text-decoration: none; }
+        .hero .meta a:hover { text-decoration: underline; }
+        .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+        .pill {
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--accent-dim);
+            color: #14532d;
+            border: 1px solid rgba(13, 122, 62, 0.2);
+        }
+        h2 {
+            margin: 40px 0 14px;
+            font-size: 1.2rem;
+            color: var(--accent);
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent-dim);
+        }
+        h2:first-of-type { margin-top: 8px; }
+        h3 {
+            margin: 28px 0 10px;
+            font-size: 1.05rem;
+            color: #1e293b;
+        }
+        p { margin: 0 0 12px; color: var(--slate); }
+        ul { margin: 0 0 16px; padding-left: 1.2rem; color: var(--slate); }
+        li { margin-bottom: 6px; }
+        .muted { color: var(--slate); font-size: 0.95rem; }
+        .table-wrap {
+            overflow-x: auto;
+            margin: 14px 0 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        }
+        table.doc {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.86rem;
+            min-width: 28rem;
+        }
+        .doc th, .doc td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .doc th {
+            background: #f1f5f9;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .doc tr:last-child td { border-bottom: none; }
+        .doc td:nth-child(2) { color: var(--slate); }
+        .beat-block {
+            margin: 18px 0 24px;
+            padding: 16px 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        .beat-block h3 { margin-top: 0; }
+        pre.desc {
+            margin: 12px 0 0;
+            padding: 16px;
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        .src {
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 1px dashed var(--border);
+            font-size: 0.85rem;
+            color: var(--slate-light);
+        }
+        .src a { color: var(--accent); font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <nav class="nav-row" aria-label="Page navigation">
+            <a href="index.html">← Hub</a>
+            <a href="adk-basic-agent-concepts-interplay.html">Concepts &amp; interplay (alternate)</a>
+            <a href="strategic-growth-stc-content-engine.html#video-trust">Content Engine · Video trust</a>
+            <a href="docs/video-plan-basic-agent.md">Markdown source</a>
+        </nav>
+
+        <header class="hero">
+            <h1>Video production pack: <abbr title="Agent Development Kit">ADK</abbr> Example #1 (Basic Agent)</h1>
+            <p class="meta">
+                <strong>Companion:</strong>
+                <a href="https://youtu.be/P4VFL9nIaIA" target="_blank" rel="noopener noreferrer">Build AI Agents &amp; Automate Workflows (YouTube)</a>
+                · <a href="https://github.com/imvickykumar/agent-development-kit-crash-course" target="_blank" rel="noopener noreferrer">Crash-course repo</a>
+                · <a href="https://google.github.io/adk-docs/get-started/quickstart" target="_blank" rel="noopener noreferrer"><abbr title="Agent Development Kit">ADK</abbr> quickstart</a>
+            </p>
+            <p class="muted" style="margin:0"><strong>Working title:</strong> <em>Example #1 (Basic Agent) — 10 concepts the crash course assumes you know</em></p>
+            <div class="pill-row" aria-label="Format">
+                <span class="pill">~24–28 min (tight)</span>
+                <span class="pill">~32–38 min (extended)</span>
+                <span class="pill">Beginners · seams not hype</span>
+            </div>
+        </header>
+
+        <p class="muted"><strong>Audience:</strong> People who cloned the repo or watched the long tutorial and hit “it worked once,” import errors, or “why <code>.env</code> in every folder?”</p>
+        <p class="muted"><strong>Optional <abbr title="School of Technology and Computing">STC</abbr> closer:</strong> Bridge content = teach the <strong>seams</strong> (keys, cwd, agent vs script), not only the happy path — aligns with <em>Google <abbr title="Agent Development Kit">ADK</abbr> demystified</em> on the Content Engine strategy page.</p>
+
+        <h2 id="outcomes">1. Learning outcomes</h2>
+        <p class="muted">By the end, the viewer can:</p>
+        <ol class="muted">
+            <li>Explain what an <strong><abbr title="Agent Development Kit">ADK</abbr> agent</strong> is versus a one-off “call Gemini from Python.”</li>
+            <li>Navigate the <strong>Basic Agent</strong> folder and name the files that define model + behavior + entrypoint.</li>
+            <li>Create/activate <strong>venv</strong>, install deps, and configure <strong><code>.env</code></strong> from <code>.env.example</code> <strong>in the correct folder</strong>.</li>
+            <li>Run the example and <strong>diagnose</strong> at least three common failures (key, Python version, wrong directory).</li>
+            <li>Describe <strong>sessions</strong> at a high level (why multi-turn works without manual history concatenation).</li>
+        </ol>
+
+        <h2 id="preprod">2. Pre-production checklist</h2>
+        <div class="table-wrap">
+            <table class="doc">
+                <thead>
+                    <tr><th>Task</th><th>Owner</th><th>Done</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Lock Example 1 folder name/path in current repo revision</td><td></td><td>☐</td></tr>
+                    <tr><td>Record <code>requirements.txt</code> / <abbr title="Agent Development Kit">ADK</abbr> package versions used</td><td></td><td>☐</td></tr>
+                    <tr><td>Test clean machine path: new venv → install → run</td><td></td><td>☐</td></tr>
+                    <tr><td>Prepare <strong>deliberate failure</strong> clips (wrong cwd, missing .env, bad key)</td><td></td><td>☐</td></tr>
+                    <tr><td>Screenshot file tree + <code>.env.example</code> for B-roll</td><td></td><td>☐</td></tr>
+                    <tr><td>Description draft with links (video, repo, <abbr title="Agent Development Kit">ADK</abbr> docs, disclaimers)</td><td></td><td>☐</td></tr>
+                    <tr><td>Chapters JSON / timestamps after edit</td><td></td><td>☐</td></tr>
+                    <tr><td>Captions export + technical term pass (<abbr title="Agent Development Kit">ADK</abbr>, Gemini, <code>.env</code>)</td><td></td><td>☐</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="muted"><strong>Disclaimers (say + put in description):</strong> Not official Google training; APIs, model IDs, and pricing change; use keys only on machines you control.</p>
+
+        <h2 id="chapters">3. Chapter map (YouTube chapters)</h2>
+        <div class="table-wrap">
+            <table class="doc">
+                <thead>
+                    <tr><th>#</th><th>Chapter title</th><th>~Start</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>0</td><td>Cold open — “if it broke, it’s one of these”</td><td>0:00</td></tr>
+                    <tr><td>1</td><td>What this video is (and isn’t)</td><td>0:45</td></tr>
+                    <tr><td>2</td><td>Repo map — why Example 1 is its own project</td><td>2:00</td></tr>
+                    <tr><td>3</td><td>Concepts 1–2 — Agent vs script · Runtime mental model</td><td>4:00</td></tr>
+                    <tr><td>4</td><td>Concepts 3–5 — venv, pip, Python version</td><td>8:00</td></tr>
+                    <tr><td>5</td><td>Concepts 6–7 — <code>.env</code> per folder · Keys &amp; billing (plain language)</td><td>12:00</td></tr>
+                    <tr><td>6</td><td>Concepts 8–9 — cwd · Model IDs</td><td>16:00</td></tr>
+                    <tr><td>7</td><td>Concept 10 — Instructions vs user message · intro to sessions</td><td>19:30</td></tr>
+                    <tr><td>8</td><td>Live run + fix one bug on camera</td><td>22:00</td></tr>
+                    <tr><td>9</td><td>Close — next step (Tool Agent) + <abbr title="School of Technology and Computing">STC</abbr> bridge line</td><td>25:00</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="muted"><em>Adjust timestamps after record; extended cut adds “FAQ rapid fire” after ch. 8.</em></p>
+
+        <h2 id="shots">4. Shot list (technical)</h2>
+        <div class="table-wrap">
+            <table class="doc">
+                <thead>
+                    <tr><th>Shot</th><th>Type</th><th>Subject</th><th>Notes</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>S01</td><td>Screen</td><td>Terminal <code>python --version</code></td><td>Large font, high contrast</td></tr>
+                    <tr><td>S02</td><td>Screen</td><td><code>ls</code> / file tree of repo root</td><td>Highlight examples path</td></tr>
+                    <tr><td>S03</td><td>Screen</td><td>Open Basic Agent folder in editor</td><td>Blur real API keys</td></tr>
+                    <tr><td>S04</td><td>Screen</td><td><code>.env.example</code> → <code>.env</code></td><td>Dummy key for demo</td></tr>
+                    <tr><td>S05</td><td>Screen</td><td><code>source .venv/bin/activate</code> (or Windows)</td><td>Show prompt change</td></tr>
+                    <tr><td>S06</td><td>Screen</td><td><code>pip install -r requirements.txt</code></td><td>Optional <code>-q</code> tradeoff</td></tr>
+                    <tr><td>S07</td><td>Screen</td><td>Successful agent reply</td><td>Happy path</td></tr>
+                    <tr><td>S08</td><td>Screen</td><td><strong>Failure</strong> — wrong directory</td><td>Readable stack trace</td></tr>
+                    <tr><td>S09</td><td>Screen</td><td><strong>Failure</strong> — missing <code>.env</code></td><td>Readable error</td></tr>
+                    <tr><td>S10</td><td>Screen</td><td><strong>Failure</strong> — invalid key</td><td>Don’t leak key</td></tr>
+                    <tr><td>S11</td><td>B-roll</td><td>Diagram: Agent vs raw API</td><td>Simple boxes + arrows</td></tr>
+                    <tr><td>S12</td><td>B-roll</td><td>Slide: per-example <code>.env</code></td><td>&lt;8s on screen</td></tr>
+                    <tr><td>S13</td><td>Talking head</td><td>Host ≤10s segments</td><td>Between terminal blocks</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="muted"><strong>Capture:</strong> 1080p+; terminal font 16–18pt; 44.1kHz+ audio; system + mic on separate tracks if possible.</p>
+
+        <h2 id="script">5. Beat-by-beat script + B-roll</h2>
+        <p class="muted"><em>Tone: calm, instructor-led. “We” / “you.”</em></p>
+
+        <div class="beat-block">
+            <h3>Ch. 0 — Cold open (0:00–0:45)</h3>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead><tr><th>Beat</th><th>Script</th><th>B-roll</th></tr></thead>
+                    <tbody>
+                        <tr><td>0.1</td><td>“You probably already tried <strong>Example 1 — Basic Agent</strong> from the crash course repo.”</td><td>README “### 1. Basic Agent”</td></tr>
+                        <tr><td>0.2</td><td>“Not a faster rerun — the <strong>seams</strong>: ten ideas the long tutorial assumes.”</td><td>Lower-third title</td></tr>
+                        <tr><td>0.3</td><td>“You’ll run Basic Agent <strong>and</strong> know what broke when it doesn’t.”</td><td>Flash of successful run</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="beat-block">
+            <h3>Ch. 1 — Framing (0:45–2:00)</h3>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead><tr><th>Beat</th><th>Script</th><th>B-roll</th></tr></thead>
+                    <tbody>
+                        <tr><td>1.1</td><td>“Links in description: YouTube, GitHub, <abbr title="Agent Development Kit">ADK</abbr> quickstart. Not Google — practical orientation.”</td><td>“Links in description” card ~3s</td></tr>
+                        <tr><td>1.2</td><td>“We stay on <strong>Example 1</strong> only — no tools, no multi-agent.”</td><td>Highlight Example 1 folder</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="beat-block">
+            <h3>Ch. 2 — Repo map (2:00–4:00)</h3>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead><tr><th>Beat</th><th>Script</th><th>B-roll</th></tr></thead>
+                    <tbody>
+                        <tr><td>2.1</td><td>“Course layout: each example can have its <strong>own</strong> <code>.env</code>.”</td><td>Tree + circle folder</td></tr>
+                        <tr><td>2.2</td><td>“Rule: whatever folder the README says to run from = project root for that lesson.”</td><td>Arrow to README</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="beat-block">
+            <h3>Ch. 3 — Agent vs script (4:00–8:00)</h3>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead><tr><th>Beat</th><th>Script</th><th>B-roll</th></tr></thead>
+                    <tbody>
+                        <tr><td>3.1</td><td>“Script = call API + print. <abbr title="Agent Development Kit">ADK</abbr> <strong>agent</strong> = <strong>runtime</strong> (instructions, model, tools/sessions later).”</td><td>Diagram S11</td></tr>
+                        <tr><td>3.2</td><td>“Without that model, later chapters feel like magic.”</td><td>Slow scroll agent file</td></tr>
+                        <tr><td>3.3</td><td>“Find where behavior is <strong>configured</strong> vs where the user types.”</td><td>Editor</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="beat-block">
+            <h3>Ch. 4 — venv, pip, Python (8:00–12:00)</h3>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead><tr><th>Beat</th><th>Script</th><th>B-roll</th></tr></thead>
+                    <tbody>
+                        <tr><td>4.1</td><td>“<code>python -m venv .venv</code> — activate <strong>every new terminal</strong>.”</td><td>S05, S06</td></tr>
+                        <tr><td>4.2</td><td>“Skip <code>pip install -r requirements.txt</code> → import errors look like ‘<abbr title="Agent Development Kit">ADK</abbr> is broken.’ It isn’t.”</td><td>Optional ModuleNotFoundError</td></tr>
+                        <tr><td>4.3</td><td>“<code>python --version</code> — use a <strong>modern</strong> Python; don’t fight ghosts on 3.9.”</td><td>S01</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="beat-block">
+            <h3>Ch. 5 — <code>.env</code>, keys, billing (12:00–16:00)</h3>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead><tr><th>Beat</th><th>Script</th><th>B-roll</th></tr></thead>
+                    <tbody>
+                        <tr><td>5.1</td><td>“Copy <code>.env.example</code> → <code>.env</code> <strong>inside Basic Agent folder</strong>.”</td><td>S04</td></tr>
+                        <tr><td>5.2</td><td>“<code>GOOGLE_API_KEY</code> per README. Never commit <code>.env</code>; <code>.gitignore</code> if you fork.”</td><td><code>.gitignore</code> line</td></tr>
+                        <tr><td>5.3</td><td>“Billing: key ↔ project; some flows need billing even for ‘free tier’ thinking — check current Google pricing before class demos.”</td><td>On-screen reminder only</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="beat-block">
+            <h3>Ch. 6 — cwd + model IDs (16:00–19:30)</h3>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead><tr><th>Beat</th><th>Script</th><th>B-roll</th></tr></thead>
+                    <tbody>
+                        <tr><td>6.1</td><td>“Wrong folder → obscure errors. <strong>cd</strong> first, then README command.”</td><td>S08</td></tr>
+                        <tr><td>6.2</td><td>“Model IDs aren’t interchangeable; swap when renamed/retired.”</td><td>Show string in code</td></tr>
+                        <tr><td>6.3</td><td>“Region/account rejection = policy, not Python.”</td><td>Neutral tone</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="beat-block">
+            <h3>Ch. 7 — Instructions vs user message + sessions (19:30–22:00)</h3>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead><tr><th>Beat</th><th>Script</th><th>B-roll</th></tr></thead>
+                    <tbody>
+                        <tr><td>7.1</td><td>“System/dev instructions shape every reply; <strong>user message</strong> is the variable part.”</td><td>Two-column slide</td></tr>
+                        <tr><td>7.2</td><td>“Basic Agent still touches <strong>sessions</strong>; deep state is Example 5 in repo.”</td><td>README “### 5. Sessions and State”</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="beat-block">
+            <h3>Ch. 8 — Live run + bugfix (22:00–25:00)</h3>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead><tr><th>Beat</th><th>Script</th><th>B-roll</th></tr></thead>
+                    <tbody>
+                        <tr><td>8.1</td><td>“Clean run from correct directory.”</td><td>S07</td></tr>
+                        <tr><td>8.2</td><td>“Break: wrong <code>cd</code> — watch error — fix live.”</td><td>S08</td></tr>
+                        <tr><td>8.3</td><td>“Break: move <code>.env</code> away — restore.”</td><td>S09</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="beat-block">
+            <h3>Ch. 9 — Close (25:00–26:30)</h3>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead><tr><th>Beat</th><th>Script</th><th>B-roll</th></tr></thead>
+                    <tbody>
+                        <tr><td>9.1</td><td>“Next: <strong>Example 2 — Tool Agent</strong>.”</td><td>README “### 2. Tool Agent”</td></tr>
+                        <tr><td>9.2</td><td><strong>Optional <abbr title="School of Technology and Computing">STC</abbr>:</strong> “Happy path + honest seams = how adults trust a technical school.”</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h2 id="extended">6. Extended cut (+8–12 min)</h2>
+        <div class="table-wrap">
+            <table class="doc">
+                <thead><tr><th>Segment</th><th>Content</th></tr></thead>
+                <tbody>
+                    <tr><td>FAQ rapid fire</td><td>Vertex? Ollama? Windows vs Mac? — one line each → docs</td></tr>
+                    <tr><td>Homework</td><td>Break three things on purpose; screenshot error + fix</td></tr>
+                    <tr><td>Instructor notes</td><td><a href="https://github.com/google/adk-python/issues" target="_blank" rel="noopener noreferrer">adk-python issues</a> for framework bugs — don’t blame tutorial authors</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 id="description">7. YouTube description template</h2>
+        <pre class="desc">Example #1 from the ADK crash course — the concepts beginners miss: venv, .env per folder, cwd, agent vs script, model IDs, keys/billing, sessions teaser, and live bugfix.
+
+Original course: https://youtu.be/P4VFL9nIaIA
+Code repo: https://github.com/imvickykumar/agent-development-kit-crash-course
+ADK docs: https://google.github.io/adk-docs/get-started/quickstart
+
+Not affiliated with Google. APIs and pricing change — verify current Google documentation.
+
+Chapters: (paste after upload)</pre>
+
+        <h2 id="a11y">8. Accessibility &amp; trust</h2>
+        <ul>
+            <li>Chapters on every major concept; captions with correct model/API names.</li>
+            <li>Disclose if script or B-roll used generative <abbr title="Artificial intelligence">AI</abbr>.</li>
+            <li>Pin a comment for fork path differences.</li>
+        </ul>
+
+        <h2 id="revision">9. Revision log</h2>
+        <div class="table-wrap">
+            <table class="doc">
+                <thead><tr><th>Date</th><th>Change</th></tr></thead>
+                <tbody>
+                    <tr><td>2026-02-12</td><td>Initial pack (markdown + this page)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="src">
+            Markdown twin: <a href="docs/video-plan-basic-agent.md">docs/video-plan-basic-agent.md</a>
+            · City University of Seattle — <abbr title="School of Technology and Computing">STC</abbr>
+            · <a href="index.html">index.html</a>
+        </p>
+    </div>
+</body>
+</html>

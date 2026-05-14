@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <title>ADK Example #1 — Concepts &amp; interplay — STC Transformation</title>
+    <style>
+        :root {
+            --accent: #0d4a7a;
+            --accent-soft: #e0f2fe;
+            --accent-2: #0369a1;
+            --ink: #0f172a;
+            --slate: #475569;
+            --slate-light: #94a3b8;
+            --card: #ffffff;
+            --bg: #f1f5f9;
+            --border: rgba(15, 23, 42, 0.1);
+            --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 12px 40px rgba(15, 23, 42, 0.06);
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.55;
+            font-size: 16px;
+        }
+        abbr[title] {
+            cursor: help;
+            text-decoration: underline dotted;
+            text-underline-offset: 0.12em;
+            text-decoration-color: rgba(71, 85, 105, 0.42);
+        }
+        .shell { max-width: 880px; margin: 0 auto; padding: 24px 18px 56px; }
+        .nav-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            margin-bottom: 22px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .nav-row a { color: var(--accent-2); text-decoration: none; }
+        .nav-row a:hover { text-decoration: underline; }
+        .hero {
+            background: linear-gradient(165deg, #fff 0%, #f0f9ff 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 26px 24px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent);
+            margin-bottom: 24px;
+        }
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: clamp(1.3rem, 3.2vw, 1.7rem);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        .hero .meta {
+            margin: 0 0 10px;
+            font-size: 0.9rem;
+            color: var(--slate);
+        }
+        .hero .meta a { color: var(--accent-2); font-weight: 600; text-decoration: none; }
+        .hero .meta a:hover { text-decoration: underline; }
+        .badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-2);
+            margin-bottom: 8px;
+        }
+        h2 {
+            margin: 38px 0 12px;
+            font-size: 1.18rem;
+            color: var(--accent);
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent-soft);
+        }
+        h2:first-of-type { margin-top: 6px; }
+        h3 {
+            margin: 22px 0 8px;
+            font-size: 1.02rem;
+            color: #1e293b;
+        }
+        p { margin: 0 0 12px; color: var(--slate); }
+        ul { margin: 0 0 14px; padding-left: 1.2rem; color: var(--slate); }
+        li { margin-bottom: 6px; }
+        .lead {
+            font-size: 0.98rem;
+            color: #334155;
+            padding: 16px 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        .layer-stack {
+            margin: 20px 0 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+        }
+        .layer {
+            padding: 14px 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        }
+        .layer strong { display: block; margin-bottom: 4px; color: var(--ink); font-size: 0.95rem; }
+        .layer span { font-size: 0.86rem; color: var(--slate); line-height: 1.45; }
+        .layer-arrow {
+            text-align: center;
+            padding: 4px 0;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-2);
+            letter-spacing: 0.04em;
+        }
+        .pair-grid {
+            display: grid;
+            gap: 14px;
+            margin: 16px 0;
+        }
+        @media (min-width: 700px) {
+            .pair-grid { grid-template-columns: 1fr 1fr; }
+        }
+        .pair {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 18px;
+        }
+        .pair .couple {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent-2);
+            margin-bottom: 8px;
+        }
+        .pair h3 { margin: 0 0 8px; font-size: 0.98rem; color: var(--ink); }
+        .pair p { margin: 0; font-size: 0.88rem; }
+        .table-wrap {
+            overflow-x: auto;
+            margin: 14px 0 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card);
+        }
+        table.doc {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84rem;
+            min-width: 26rem;
+        }
+        .doc th, .doc td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .doc th { background: #f8fafc; font-weight: 700; color: var(--ink); }
+        .doc tr:last-child td { border-bottom: none; }
+        .cascade {
+            margin: 16px 0;
+            padding: 14px 16px;
+            border-left: 4px solid #b45309;
+            background: #fffbeb;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.9rem;
+            color: #78350f;
+        }
+        .cascade strong { color: #92400e; }
+        .foot {
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border);
+            font-size: 0.85rem;
+            color: var(--slate-light);
+        }
+        .foot a { color: var(--accent-2); font-weight: 600; }
+
+        /* §5 animated process flow */
+        .flow-wrap {
+            margin: 18px 0 8px;
+            padding: 18px 12px 22px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .flow-wrap figcaption {
+            margin: 0 0 12px;
+            font-size: 0.82rem;
+            color: var(--slate);
+            text-align: center;
+        }
+        .flow-svg {
+            width: 100%;
+            max-width: 880px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .flow-node rect {
+            fill: #fff;
+            stroke: #94a3b8;
+            stroke-width: 1.5;
+            rx: 10;
+            transition: stroke 0.25s ease, filter 0.25s ease;
+        }
+        .flow-node text {
+            fill: #0f172a;
+            font-family: Inter, system-ui, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-anchor: middle;
+        }
+        .flow-node .sub {
+            fill: #64748b;
+            font-size: 9px;
+            font-weight: 600;
+        }
+        .flow-conn {
+            fill: none;
+            stroke: #7dd3fc;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-dasharray: 6 10;
+            animation: flowMarch 1.1s linear infinite;
+        }
+        @keyframes flowMarch {
+            to { stroke-dashoffset: -32; }
+        }
+        .flow-node.flow-n1 rect { animation: nodeGlow 8s ease-in-out infinite; animation-delay: 0s; }
+        .flow-node.flow-n2 rect { animation: nodeGlow 8s ease-in-out infinite; animation-delay: 1.1s; }
+        .flow-node.flow-n3 rect { animation: nodeGlow 8s ease-in-out infinite; animation-delay: 2.2s; }
+        .flow-node.flow-n4 rect { animation: nodeGlow 8s ease-in-out infinite; animation-delay: 3.3s; }
+        .flow-node.flow-n5 rect { animation: nodeGlow 8s ease-in-out infinite; animation-delay: 4.4s; }
+        .flow-node.flow-n6 rect { animation: nodeGlow 8s ease-in-out infinite; animation-delay: 5.5s; }
+        @keyframes nodeGlow {
+            0%, 8%, 100% { stroke: #94a3b8; filter: none; }
+            2%, 6% { stroke: #0369a1; stroke-width: 2.5; filter: drop-shadow(0 0 10px rgba(3, 105, 161, 0.45)); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .flow-conn { animation: none; stroke-dasharray: none; }
+            .flow-node.flow-n1 rect,
+            .flow-node.flow-n2 rect,
+            .flow-node.flow-n3 rect,
+            .flow-node.flow-n4 rect,
+            .flow-node.flow-n5 rect,
+            .flow-node.flow-n6 rect { animation: none; }
+        }
+
+        /* §6 full script */
+        .script-wrap {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px 20px 8px;
+            margin-top: 10px;
+        }
+        .script-block { margin-bottom: 22px; }
+        .script-block h3 {
+            margin: 0 0 8px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--accent-2);
+        }
+        .script-block p {
+            margin: 0 0 10px;
+            font-size: 0.93rem;
+            line-height: 1.62;
+            color: #1e293b;
+        }
+        .script-note {
+            margin: -4px 0 12px;
+            font-size: 0.8rem;
+            color: var(--slate);
+            font-style: italic;
+        }
+
+        /* §6 sample B-roll / on-screen frames (SVG) */
+        .broll-gallery {
+            margin: 14px 0 8px;
+            padding: 18px 16px 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        }
+        .broll-gallery > h3 {
+            margin: 0 0 6px;
+            font-size: 0.95rem;
+            color: var(--accent);
+            border: none;
+            padding: 0;
+        }
+        .broll-gallery > .muted { margin-bottom: 16px; font-size: 0.84rem; }
+        .broll-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
+        }
+        @media (min-width: 640px) {
+            .broll-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 900px) {
+            .broll-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .broll-card {
+            margin: 0;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f8fafc;
+        }
+        .broll-card figure { margin: 0; }
+        .broll-card a {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+        .broll-card a:focus-visible {
+            outline: 2px solid var(--accent-2);
+            outline-offset: 2px;
+        }
+        .broll-card a:hover figcaption { color: var(--accent-2); }
+        .broll-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            background: #fff;
+        }
+        .broll-card figcaption {
+            padding: 10px 12px;
+            font-size: 0.72rem;
+            line-height: 1.45;
+            color: var(--slate);
+            border-top: 1px solid var(--border);
+            background: var(--card);
+        }
+        .broll-card figcaption strong {
+            display: block;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <nav class="nav-row" aria-label="Page navigation">
+            <a href="index.html">← Hub</a>
+            <a href="adk-basic-agent-video-plan.html">Production / shot-list version</a>
+            <a href="strategic-growth-stc-content-engine.html#content-bridge">Content Engine · ADK bridge</a>
+            <a href="#script">Full script</a>
+            <a href="#broll-frames">Storyboard frames</a>
+        </nav>
+
+        <header class="hero">
+            <span class="badge">Concept map · Example #1</span>
+            <h1><abbr title="Agent Development Kit">ADK</abbr> Basic Agent — concepts &amp; how they interplay</h1>
+            <p class="meta">
+                Companion to
+                <a href="https://youtu.be/P4VFL9nIaIA" target="_blank" rel="noopener noreferrer">Build AI Agents &amp; Automate Workflows</a>
+                · <a href="https://github.com/imvickykumar/agent-development-kit-crash-course" target="_blank" rel="noopener noreferrer">Crash-course repo</a>
+                · <a href="https://google.github.io/adk-docs/get-started/quickstart" target="_blank" rel="noopener noreferrer"><abbr title="Agent Development Kit">ADK</abbr> quickstart</a>
+            </p>
+            <p class="muted" style="margin:0">This page is the <strong>conceptual sibling</strong> of the <a href="adk-basic-agent-video-plan.html">production pack</a>: less shot list, more <em>mental model</em> — what depends on what, and how failures chain.</p>
+        </header>
+
+        <p class="lead">
+            Example #1 is “small” in code but <strong>thick</strong> in ideas: several independent systems (Python, process environment, cloud identity, model routing, instruction state, session memory) must line up. Beginners often fixate on one line of code; most bugs are <strong>misalignment between layers</strong>.
+        </p>
+
+        <h2 id="stack">1. Layer stack (bottom → top)</h2>
+        <p class="muted">Read upward: each layer <strong>assumes</strong> the one below is already valid. Skip a layer mentally and the failure looks random.</p>
+
+        <div class="layer-stack" aria-label="Layers from machine to user turn">
+            <div class="layer">
+                <strong>Machine &amp; process</strong>
+                <span>Python interpreter version, working directory (<abbr title="Current working directory">cwd</abbr>), activated <abbr title="Virtual environment">venv</abbr>, installed packages. <em>Interplay:</em> wrong <abbr title="Current working directory">cwd</abbr> shifts <em>every</em> relative path — config, imports, and “where is main?” all disagree.</span>
+            </div>
+            <div class="layer-arrow">enables →</div>
+            <div class="layer">
+                <strong>Secrets &amp; project identity</strong>
+                <span><code>.env</code> loaded from a <strong>specific</strong> folder, <code>GOOGLE_API_KEY</code>, Cloud / AI Studio project, billing flags. <em>Interplay:</em> the key is not “magic text”; it couples your process to a <strong>remote quota + policy</strong> surface. A valid key in the wrong folder = same as missing.</span>
+            </div>
+            <div class="layer-arrow">enables →</div>
+            <div class="layer">
+                <strong><abbr title="Agent Development Kit">ADK</abbr> runtime</strong>
+                <span>Object that wires model id, instructions, tool hooks (later), and <strong>session</strong> plumbing. <em>Interplay:</em> this is what makes an “agent” differ from a script that calls <code>generate_content</code> once — the runtime owns <strong>repeated structure</strong> across turns.</span>
+            </div>
+            <div class="layer-arrow">feeds →</div>
+            <div class="layer">
+                <strong>Model surface</strong>
+                <span>Model id string, region / capability constraints, token limits. <em>Interplay:</em> instructions and user text are compressed through this surface; change the model and <strong>the same prompt</strong> can succeed or fail for capability reasons, not “bugs.”</span>
+            </div>
+            <div class="layer-arrow">shapes each call →</div>
+            <div class="layer">
+                <strong>Instruction state vs user turn</strong>
+                <span><strong>Instructions</strong> = slow-moving pressure on every generation. <strong>User message</strong> = fast-moving input for this turn only. <em>Interplay:</em> if you debug them as one blob, you cannot tell “model drift” from “bad user example.”</span>
+            </div>
+            <div class="layer-arrow">accumulates across turns via →</div>
+            <div class="layer">
+                <strong>Session memory (even in Basic)</strong>
+                <span>Light in Example #1, but the <strong>idea</strong> is already there: the runtime remembers what you do not paste back. <em>Interplay:</em> sessions are why multi-turn tutorials work without you manually concatenating chat history — they tie <strong>identity of the conversation</strong> to the runtime.</span>
+            </div>
+        </div>
+
+        <h2 id="matrix">2. Dependency matrix (what leans on what)</h2>
+        <div class="table-wrap">
+            <table class="doc">
+                <thead>
+                    <tr>
+                        <th>Concept</th>
+                        <th>Upstream (needs)</th>
+                        <th>Downstream (feeds)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong><abbr title="Virtual environment">venv</abbr> + <code>pip install</code></strong></td>
+                        <td>Correct Python version; network; writable disk</td>
+                        <td>Importable <abbr title="Agent Development Kit">ADK</abbr> modules; reproducible “works on my machine”</td>
+                    </tr>
+                    <tr>
+                        <td><strong><abbr title="Current working directory">cwd</abbr></strong></td>
+                        <td>You intentionally <code>cd</code> into the example folder (or equivalent)</td>
+                        <td>Relative paths to <code>.env</code>, app entry, and local assets resolve consistently</td>
+                    </tr>
+                    <tr>
+                        <td><strong><code>.env</code> in example folder</strong></td>
+                        <td><abbr title="Current working directory">cwd</abbr> + file actually named/location as README expects</td>
+                        <td>Process sees <code>GOOGLE_API_KEY</code>; client can authenticate to Google</td>
+                    </tr>
+                    <tr>
+                        <td><strong>API key / project</strong></td>
+                        <td>Billing &amp; policy as Google currently defines them</td>
+                        <td>Authorized calls; quota errors instead of silent “empty” failures</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Model id</strong></td>
+                        <td>Key authorized for that model family; model still offered</td>
+                        <td>Tokenization, safety filters, and capability set for the agent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agent + runtime</strong></td>
+                        <td>All of the above</td>
+                        <td>Stable pattern for tools (Ex. 2) and richer state (Ex. 5+)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Instructions</strong></td>
+                        <td>Runtime that applies them every call</td>
+                        <td>Consistent role, tone, and safety across user turns</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Session</strong></td>
+                        <td>Runtime keeping conversation identity</td>
+                        <td>Multi-turn without manual history stitching</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 id="pairs">3. Interplay pairs (tension &amp; contract)</h2>
+        <p class="muted">Each pair is a <strong>contract</strong>: when one side changes, the other must be re-checked.</p>
+
+        <div class="pair-grid">
+            <div class="pair">
+                <div class="couple">Script ↔ Agent</div>
+                <h3>One-off call vs hosted behavior</h3>
+                <p>A script ends when the process ends. An agent <strong>names</strong> a behavior slice the runtime can re-enter: same instructions, new user line. Confusing the two makes people “fix” prompts when the real issue is <strong>lifecycle</strong> (session, cwd, env).</p>
+            </div>
+            <div class="pair">
+                <div class="couple">Folder ↔ <code>.env</code></div>
+                <h3>Locality of configuration</h3>
+                <p>The course repo uses <strong>per-example</strong> config. Treat that as a design choice: each lesson is a mini-deployable. A key at repo root does not automatically <strong>shadow-copy</strong> into the child folder — there is no spooky action at a distance.</p>
+            </div>
+            <div class="pair">
+                <div class="couple">Key ↔ Model id</div>
+                <h3>Identity vs routing</h3>
+                <p>The key answers “who is paying / allowed.” The model id answers “which cognitive engine.” A policy error on one can look like a failure on the other if you only read the last line of the stack trace.</p>
+            </div>
+            <div class="pair">
+                <div class="couple">Instructions ↔ User message</div>
+                <h3>Static vs episodic input</h3>
+                <p>Instructions are <strong>amortized</strong> across turns; the user message is <strong>marginal</strong> to this turn. If output is wrong, ask: is the instruction contradicting the example? Is the user message under-specified? Swap them mentally before blaming the model.</p>
+            </div>
+            <div class="pair">
+                <div class="couple">Session ↔ “It forgot”</div>
+                <h3>State without spreadsheets</h3>
+                <p>When learners say the model “forgot,” often they mean <strong>no session</strong> or a new session id. Basic Agent still teaches you to expect <strong>persistence as a first-class object</strong>, not a side effect of variables in your script.</p>
+            </div>
+            <div class="pair">
+                <div class="couple">Imports ↔ Tutorial copy</div>
+                <h3>Version skew</h3>
+                <p>Repo pins versions; your global Python might not. Interplay: <code>pip freeze</code> vs README is a <strong>compatibility handshake</strong> between author time and your machine time.</p>
+            </div>
+        </div>
+
+        <h2 id="cascade">4. Failure cascades (why one bug looks like three)</h2>
+        <div class="cascade">
+            <strong>Example cascade A — wrong <abbr title="Current working directory">cwd</abbr>:</strong>
+            <code>.env</code> not found → key missing → auth fails → some stacks only show “request error.” You might wrongly tweak the <strong>model id</strong> or <strong>instructions</strong> when the root cause was <strong>path locality</strong>.
+        </div>
+        <div class="cascade">
+            <strong>Example cascade B — skipped <code>pip install</code>:</strong>
+            Import error deep in <abbr title="Agent Development Kit">ADK</abbr> → assume framework broken → prompt tuning. The true graph is: <strong>environment incomplete → no runtime object → no meaningful model call at all.</strong>
+        </div>
+        <div class="cascade">
+            <strong>Example cascade C — billing / project mismatch:</strong>
+            Key present but rejected → generic HTTP/GRPC message. Interplay: cloud identity is not “inside” Python; it is a <strong>cross-system handshake</strong>. Fix lives in console pages, not in string edits to the user message.
+        </div>
+
+        <h2 id="video-angle">5. How to teach this in one video arc</h2>
+        <p class="muted">Suggested narrative arc (overlaps the production pack, but <strong>centers the diagram in the viewer’s head</strong>):</p>
+        <ol class="muted">
+            <li><strong>Draw the stack first</strong> (even on a napkin graphic): machine → secrets → runtime → model → instructions/user → session.</li>
+            <li><strong>Annotate one happy path</strong> as a glowing line through all layers.</li>
+            <li><strong>Break one layer at a time</strong> and narrate which <em>downstream</em> symptoms appear — this teaches <strong>debugging as graph search</strong>, not superstition.</li>
+            <li><strong>Close</strong> by naming what Example 2 adds (tools) as <strong>new edges on the runtime node</strong>, not a unrelated topic.</li>
+        </ol>
+
+        <figure class="flow-wrap" aria-label="Animated process flow for one Basic Agent turn">
+            <svg class="flow-svg" viewBox="0 0 820 168" role="img" aria-labelledby="flowTitle flowDesc">
+                <title id="flowTitle">One Basic Agent turn: six layers</title>
+                <desc id="flowDesc">Sequential flow from machine environment through secrets, ADK runtime, model configuration, a single turn with instructions and user text, into session state and reply. Connectors animate with a marching dash; each node pulses in order.</desc>
+                <defs>
+                    <marker id="flowArr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                        <polygon points="0 0, 7 3.5, 0 7" fill="#0ea5e9"/>
+                    </marker>
+                </defs>
+                <path class="flow-conn" d="M 132 76 L 148 76" marker-end="url(#flowArr)"/>
+                <path class="flow-conn" d="M 266 76 L 282 76" marker-end="url(#flowArr)" style="animation-delay: 0.35s"/>
+                <path class="flow-conn" d="M 400 76 L 416 76" marker-end="url(#flowArr)" style="animation-delay: 0.7s"/>
+                <path class="flow-conn" d="M 534 76 L 550 76" marker-end="url(#flowArr)" style="animation-delay: 1.05s"/>
+                <path class="flow-conn" d="M 668 76 L 684 76" marker-end="url(#flowArr)" style="animation-delay: 1.4s"/>
+                <g class="flow-node flow-n1" transform="translate(14, 48)">
+                    <rect width="118" height="56" rx="10"/>
+                    <text x="59" y="26">MACHINE</text>
+                    <text class="sub" x="59" y="44">venv · cwd · Python</text>
+                </g>
+                <g class="flow-node flow-n2" transform="translate(148, 48)">
+                    <rect width="118" height="56" rx="10"/>
+                    <text x="59" y="26">SECRETS</text>
+                    <text class="sub" x="59" y="44">.env · project id</text>
+                </g>
+                <g class="flow-node flow-n3" transform="translate(282, 48)">
+                    <rect width="118" height="56" rx="10"/>
+                    <text x="59" y="26">RUNTIME</text>
+                    <text class="sub" x="59" y="44">ADK · agent</text>
+                </g>
+                <g class="flow-node flow-n4" transform="translate(416, 48)">
+                    <rect width="118" height="56" rx="10"/>
+                    <text x="59" y="26">MODEL</text>
+                    <text class="sub" x="59" y="44">id · policy</text>
+                </g>
+                <g class="flow-node flow-n5" transform="translate(550, 48)">
+                    <rect width="118" height="56" rx="10"/>
+                    <text x="59" y="26">TURN</text>
+                    <text class="sub" x="59" y="44">instr + user</text>
+                </g>
+                <g class="flow-node flow-n6" transform="translate(684, 48)">
+                    <rect width="118" height="56" rx="10"/>
+                    <text x="59" y="26">SESSION</text>
+                    <text class="sub" x="59" y="44">state · reply</text>
+                </g>
+            </svg>
+            <figcaption class="muted">Example process flow: one “happy path” request marches left to right. In the video, narrate each box before the dash reaches the next; when something breaks, <strong>stop the animation at the failing layer</strong> and show the symptom that layer owns.</figcaption>
+        </figure>
+
+        <h2 id="script">6. Full narrated script (concepts video)</h2>
+        <p class="muted">Approx. 18–22 minutes at a measured pace. Square brackets are optional B-roll or on-screen cues. Aligns with <a href="adk-basic-agent-video-plan.html">adk-basic-agent-video-plan.html</a> for shot-level detail.</p>
+
+        <section class="broll-gallery" id="broll-frames" aria-label="Sample storyboard frames for B-roll and on-screen graphics">
+            <h3>Sample B-roll &amp; on-screen frames</h3>
+            <p class="muted">Flat SVG storyboard art (not real product UI). Open any card for the full vector file — safe to screen-record, drop into Keynote, or trace in Descript / Resolve.</p>
+            <div class="broll-grid">
+                <div class="broll-card">
+                    <a href="assets/adk-basic-agent-broll/01-sketch-six-boxes.svg" target="_blank" rel="noopener noreferrer">
+                        <figure>
+                            <img src="assets/adk-basic-agent-broll/01-sketch-six-boxes.svg" width="460" height="100" loading="lazy" alt="Hand-drawn style six boxes in a row with arrows"/>
+                            <figcaption><strong>§1:30 · diagram</strong>Reveal or draw the stack — napkin / whiteboard tone.</figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="broll-card">
+                    <a href="assets/adk-basic-agent-broll/02-terminal-machine.svg" target="_blank" rel="noopener noreferrer">
+                        <figure>
+                            <img src="assets/adk-basic-agent-broll/02-terminal-machine.svg" width="320" height="140" loading="lazy" alt="Fake terminal with pwd, which python, python version"/>
+                            <figcaption><strong>§3:30 · machine</strong>Interpreter + cwd checks.</figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="broll-card">
+                    <a href="assets/adk-basic-agent-broll/03-env-and-project.svg" target="_blank" rel="noopener noreferrer">
+                        <figure>
+                            <img src="assets/adk-basic-agent-broll/03-env-and-project.svg" width="360" height="130" loading="lazy" alt="Dot env with redacted keys and cloud project dropdown mock"/>
+                            <figcaption><strong>§4:45 · secrets</strong><code>.env</code> redaction + project selector.</figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="broll-card">
+                    <a href="assets/adk-basic-agent-broll/04-agent-file-tree.svg" target="_blank" rel="noopener noreferrer">
+                        <figure>
+                            <img src="assets/adk-basic-agent-broll/04-agent-file-tree.svg" width="260" height="160" loading="lazy" alt="Folder tree with agent.py highlighted"/>
+                            <figcaption><strong>§6:15 · runtime</strong>Minimal repo / file layout.</figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="broll-card">
+                    <a href="assets/adk-basic-agent-broll/05-model-snippet.svg" target="_blank" rel="noopener noreferrer">
+                        <figure>
+                            <img src="assets/adk-basic-agent-broll/05-model-snippet.svg" width="380" height="130" loading="lazy" alt="Code editor with model string and docs sidebar"/>
+                            <figcaption><strong>§7:45 · model</strong>Model id + provider docs panel.</figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="broll-card">
+                    <a href="assets/adk-basic-agent-broll/06-turn-instructions.svg" target="_blank" rel="noopener noreferrer">
+                        <figure>
+                            <img src="assets/adk-basic-agent-broll/06-turn-instructions.svg" width="340" height="120" loading="lazy" alt="System and user message bubbles"/>
+                            <figcaption><strong>§9:00 · turn</strong>System instruction + user message.</figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="broll-card">
+                    <a href="assets/adk-basic-agent-broll/07-session-log.svg" target="_blank" rel="noopener noreferrer">
+                        <figure>
+                            <img src="assets/adk-basic-agent-broll/07-session-log.svg" width="320" height="130" loading="lazy" alt="Turn-by-turn session transcript mock"/>
+                            <figcaption><strong>§10:15 · session</strong>Transcript / continuity log.</figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="broll-card">
+                    <a href="assets/adk-basic-agent-broll/08-stack-broken-dim.svg" target="_blank" rel="noopener noreferrer">
+                        <figure>
+                            <img src="assets/adk-basic-agent-broll/08-stack-broken-dim.svg" width="450" height="100" loading="lazy" alt="Six layers with secrets in red and downstream boxes faded"/>
+                            <figcaption><strong>§11:30 · on-screen</strong>Break at one layer; dim downstream.</figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="broll-card">
+                    <a href="assets/adk-basic-agent-broll/09-github-tree.svg" target="_blank" rel="noopener noreferrer">
+                        <figure>
+                            <img src="assets/adk-basic-agent-broll/09-github-tree.svg" width="280" height="170" loading="lazy" alt="GitHub style header and file tree"/>
+                            <figcaption><strong>§14:45 · repo</strong>Example 1 tree (illustrative).</figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="broll-card">
+                    <a href="assets/adk-basic-agent-broll/10-demo-clean-vs-error.svg" target="_blank" rel="noopener noreferrer">
+                        <figure>
+                            <img src="assets/adk-basic-agent-broll/10-demo-clean-vs-error.svg" width="360" height="130" loading="lazy" alt="Two terminals side by side success and auth error"/>
+                            <figcaption><strong>§16:00 · demo</strong>Clean run vs mis-set env / project.</figcaption>
+                        </figure>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="script-wrap">
+            <div class="script-block"><strong>0:00 — Hook</strong>
+                <p>If you are learning Google’s Agent Development Kit from a crash course, you will see a small Python file, a model name, and a run command. That is enough to get a reply once. It is not enough to know <em>why</em> it broke when it breaks. In this video we are not racing through syntax. We are building one picture in your head: a <strong>stack of contracts</strong> between your laptop, your project, the runtime, the model, one user turn, and the session that remembers what happened. When you can see that stack, debugging stops feeling like superstition and starts feeling like reading a map.</p>
+            </div>
+            <div class="script-block"><strong>0:45 — Framing</strong>
+                <p>We will use the Basic Agent pattern from the community crash course and the official quickstart as our anchor examples. The code changes over time; the <strong>shape</strong> does not. Every agent framework eventually has to answer the same questions: where does configuration live, who holds credentials, what object actually calls the model, and what survives after the answer comes back. ADK answers those questions in a particular layout. Our job is to learn the layout once, then reuse it everywhere.</p>
+            </div>
+            <div class="script-block"><strong>1:30 — The diagram (on screen: simple six-box flow)</strong>
+                <p>[B-roll: draw or reveal six boxes left to right.] Imagine six stations on a conveyor belt. Station one is the <strong>machine</strong>: your virtual environment, your working directory, the Python interpreter you think you are using. Station two is <strong>secrets and project identity</strong>: environment variables, API keys, Google Cloud project IDs, anything that answers “which account and which quota bucket am I billing?” Station three is the <strong>runtime</strong>: the ADK objects that know how to assemble a request and interpret a response. Station four is the <strong>model configuration</strong>: which model ID, which safety or generation settings apply. Station five is a single <strong>turn</strong>: the system instructions plus the user message for this step. Station six is the <strong>session</strong>: the state that may carry history, metadata, or follow-up turns.</p>
+                <p class="script-note">A “happy path” is a glowing line that visits every station in order. A bug is almost always “the line never reached a station,” or “the wrong value was attached at a station.” Your first debugging move is not to tweak the user prompt. It is to ask <strong>which station never got the signal</strong>.</p>
+            </div>
+            <div class="script-block"><strong>3:30 — Machine layer</strong>
+                <p>[B-roll: terminal listing <code>python --version</code>, <code>which python</code>, project folder.] The machine layer is boring on purpose. If the wrong interpreter runs, imports fail before your agent exists. If the working directory is wrong, relative paths to config or to a <code>.env</code> file silently point into empty air. When someone says “it works on my machine,” they are usually describing a machine layer mismatch, not a mystical AI problem. Fix the interpreter and the cwd first; it is cheap and it eliminates whole classes of false leads.</p>
+            </div>
+            <div class="script-block"><strong>4:45 — Secrets and project layer</strong>
+                <p>[B-roll: <code>.env</code> file with keys redacted; cloud console project selector.] The secrets layer is a contract between your process and the outside world. Missing keys do not produce thoughtful model errors; they produce transport failures or generic authentication messages. Wrong project IDs produce “access denied” in places that look unrelated to Python. This layer is not “inside” your prompt string. Treat it as infrastructure: load order matters, shell exports matter, and CI versus laptop differences matter. When debugging, verify the secret at the boundary: print whether the variable is non-empty, never print the secret itself.</p>
+            </div>
+            <div class="script-block"><strong>6:15 — Runtime layer (ADK)</strong>
+                <p>[B-roll: minimal agent file structure from the repo.] The runtime layer is where the framework earns its keep. It is the code that knows how to take your agent definition and turn it into a concrete call pattern for the model provider. If this layer is wrong, you can have perfect credentials and still never form a valid request object. Import errors here often look like “the framework is broken,” when the real story is “the environment is incomplete or the installed package set does not match the tutorial.” Read the traceback bottom-up until you find the first frame that is <em>your</em> entry point, then walk upward one layer at a time.</p>
+            </div>
+            <div class="script-block"><strong>7:45 — Model configuration</strong>
+                <p>[B-roll: model string in code; provider docs.] The model layer is narrower than people think. It is mostly identifiers and knobs: which model, which region or endpoint, which parameters the provider accepts. Confusion at this layer usually sounds like “wrong model for the task” or “policy blocked this content,” not like “Python cannot find module X.” If the runtime reached the model call and you get a structured error from the provider, you have already cleared the lower stations. Celebrate that; it tells you where not to waste time.</p>
+            </div>
+            <div class="script-block"><strong>9:00 — Turn: instructions and user</strong>
+                <p>[B-roll: system instruction string + user input.] The turn layer is what beginners want to edit first, because it is made of words. It matters, but it is downstream. If the lower layers failed, no instruction rewrite will create a model response. When the lower layers succeed, this layer controls tone, format, and task framing. Teach yourself to separate “formatting the task” from “proving the plumbing.” Prove plumbing with a tiny, almost silly user message once; then grow the task complexity.</p>
+            </div>
+            <div class="script-block"><strong>10:15 — Session and memory</strong>
+                <p>[B-roll: session object or log of turns.] The session layer is where continuity lives: prior turns, tool results if you add tools later, and anything the runtime attaches for the next call. Basic Agent might look stateless at first glance, but the conceptual slot is still there. If you skip understanding it, multi-turn behavior and tool loops will feel like magic. If you map it early, Example Two in the course, tools and actions, becomes “new edges that start and end on the runtime node,” not a separate universe.</p>
+            </div>
+            <div class="script-block"><strong>11:30 — Interplay: one failure, many symptoms</strong>
+                <p>Now the useful part. Break the stack <em>deliberately</em> in your mind. [On screen: dim boxes after the break point.] If secrets fail, the runtime may never get a healthy client. The symptom shows up as HTTP or gRPC errors that mention auth, not as bad prose from the model. If the machine layer is wrong, you may not even instantiate the runtime. If the model layer is wrong, you get provider errors after a successful handshake. If only the turn layer is wrong, you get a valid answer that misses the task. Naming which symptom family you are in tells you which station to walk back to. That is graph search on a straight line, which is the easiest graph search there is.</p>
+            </div>
+            <div class="script-block"><strong>13:15 — Three short cascades (voice-over examples)</strong>
+                <p><strong>Cascade A — “bad answer.”</strong> Ask whether a model answer existed at all. If yes, the failure is often turn framing or evaluation, not credentials. If no answer, walk downward until you find the first hard error.</p>
+                <p><strong>Cascade B — “import error deep in ADK.”</strong> Suspect incomplete environment or version skew before you suspect the model. Re-sync the tutorial’s dependency set on a clean virtual environment.</p>
+                <p><strong>Cascade C — “cloud identity mismatch.”</strong> Treat project and service account as part of the secrets station. The fix lives in console pages and IAM bindings, not in string edits to the user message.</p>
+            </div>
+            <div class="script-block"><strong>14:45 — Connect to the crash course repo</strong>
+                <p>[B-roll: GitHub tree for Example 1 Basic Agent.] When you open Example One, read it through this lens. Point at each file or block and say which station it feeds. The goal is not memorizing file names; the goal is automatic classification. Within a few repos you will stop copying snippets blindly because you will feel where the contract boundaries are.</p>
+            </div>
+            <div class="script-block"><strong>16:00 — Live demo beat (optional but strong)</strong>
+                <p>[B-roll: run the agent twice: once clean, once with a deliberate mis-set env var.] First run: confirm the glowing path end-to-end with a boring user message. Second run: unset one variable or point to the wrong project, show the auth-layer symptom, then restore and show recovery. Narrate out loud which station broke. That thirty seconds teaches more than ten minutes of buzzwords.</p>
+            </div>
+            <div class="script-block"><strong>17:30 — Bridge to tools (preview Example 2)</strong>
+                <p>Tools do not replace this diagram; they add branches. A tool call is still orchestrated by the runtime, still billed against your project, still wrapped in turns, still recorded through session semantics. So when you click ahead to tool-based agents, you are extending the middle of the picture, not throwing it away. Keep the same map; draw more arrows from the runtime box outward and back.</p>
+            </div>
+            <div class="script-block"><strong>18:45 — Close</strong>
+                <p>If you take one line from this video, take this: <strong>learn ADK as a set of contracts between layers, not as a spellbook of prompts.</strong> Prompts matter after the contracts hold. Official docs and the crash course repo stay linked below; use the production checklist page if you are storyboarding your own recording. In the next video in your own learning path, pause at every error message and ask which station it belongs to before you change a single word of instruction. That habit will save you hours.</p>
+            </div>
+        </div>
+
+        <p class="foot">
+            Production checklist &amp; shot list: <a href="adk-basic-agent-video-plan.html">adk-basic-agent-video-plan.html</a>
+            · Markdown: <a href="docs/video-plan-basic-agent.md">docs/video-plan-basic-agent.md</a>
+            · <a href="index.html">index.html</a>
+        </p>
+    </div>
+</body>
+</html>

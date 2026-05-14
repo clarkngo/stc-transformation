@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <title>Marketing 101 — School of Technology &amp; Computing — STC Transformation</title>
+    <style>
+        :root {
+            --accent: #0369a1;
+            --accent-dim: #e0f2fe;
+            --accent-mid: #38bdf8;
+            --ink: #0f172a;
+            --slate: #475569;
+            --slate-light: #94a3b8;
+            --card: #ffffff;
+            --bg: #f1f5f9;
+            --bg-elevated: linear-gradient(165deg, #ffffff 0%, #f0f9ff 100%);
+            --border: rgba(15, 23, 42, 0.08);
+            --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 40px rgba(15, 23, 42, 0.06);
+            --radius: 16px;
+            --radius-sm: 12px;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        abbr[title] {
+            cursor: help;
+            text-decoration: underline dotted;
+            text-underline-offset: 0.12em;
+            text-decoration-color: rgba(71, 85, 105, 0.42);
+        }
+        body {
+            margin: 0;
+            font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.55;
+            font-size: 16px;
+        }
+        .shell { max-width: 960px; margin: 0 auto; padding: 24px 20px 64px; }
+        .nav-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            margin-bottom: 22px;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .nav-row a { color: var(--accent); text-decoration: none; }
+        .nav-row a:hover { text-decoration: underline; }
+        .nav-back { display: inline-flex; align-items: center; gap: 6px; }
+
+        .doc-hero {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 28px 26px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .doc-hero::before {
+            content: "";
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-mid));
+            border-radius: 4px 0 0 4px;
+        }
+        .eyebrow {
+            margin: 0 0 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--slate-light);
+        }
+        .doc-hero h1 {
+            margin: 0 0 10px;
+            font-size: clamp(1.35rem, 4vw, 1.85rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+        }
+        .doc-dek { margin: 0; font-size: 1.02rem; color: var(--slate); font-weight: 500; max-width: 56ch; }
+
+        .toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 24px 0 8px;
+            padding: 0;
+            list-style: none;
+        }
+        .toc a {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--slate);
+            background: var(--card);
+            border: 1px solid var(--border);
+            text-decoration: none;
+        }
+        .toc a:hover {
+            color: var(--accent);
+            border-color: rgba(3, 105, 161, 0.28);
+            background: var(--accent-dim);
+        }
+
+        .lead-card {
+            margin: 20px 0 0;
+            padding: 20px 22px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(3, 105, 161, 0.2);
+            border-radius: var(--radius-sm);
+            font-size: 0.98rem;
+            color: #0c4a6e;
+            line-height: 1.6;
+        }
+
+        .doc-section { margin-top: 44px; }
+        .section-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .section-num {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--ink);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 800;
+        }
+        .section-head h2 {
+            margin: 2px 0 4px;
+            font-size: 1.28rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .section-sub { margin: 0; font-size: 0.92rem; color: var(--slate); font-weight: 500; }
+
+        .mini { margin: 0 0 16px; font-size: 0.93rem; color: var(--slate); max-width: 68ch; }
+        .mini strong { color: var(--ink); }
+
+        ul.tight { margin: 0 0 16px; padding-left: 1.15rem; color: var(--slate); }
+        ul.tight li { margin-bottom: 8px; }
+
+        .bento {
+            display: grid;
+            gap: 14px;
+            margin: 18px 0;
+        }
+        @media (min-width: 640px) { .bento { grid-template-columns: 1fr 1fr; } }
+        .tile {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        }
+        .tile-label {
+            margin: 0 0 8px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+        }
+        .tile h3 { margin: 0 0 8px; font-size: 1rem; color: var(--ink); }
+        .tile p { margin: 0; font-size: 0.9rem; color: var(--slate); line-height: 1.55; }
+
+        .highlight-strip {
+            margin: 0 0 20px;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+        .highlight-strip strong { color: #fff; }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0 22px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--card);
+        }
+        table.doc {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.86rem;
+            min-width: 28rem;
+        }
+        .doc th, .doc td {
+            padding: 11px 13px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .doc th { background: #f8fafc; font-weight: 700; color: var(--ink); }
+        .doc tr:last-child td { border-bottom: none; }
+
+        .case-grid {
+            display: grid;
+            gap: 16px;
+            margin: 18px 0;
+        }
+        @media (min-width: 720px) { .case-grid { grid-template-columns: repeat(3, 1fr); } }
+        .case {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 18px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .case .tag {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--accent);
+        }
+        .case h3 { margin: 0; font-size: 0.95rem; color: var(--ink); line-height: 1.25; }
+        .case p { margin: 0; font-size: 0.84rem; color: var(--slate); line-height: 1.5; flex: 1; }
+        .case .metric {
+            font-size: 0.78rem;
+            color: var(--ink);
+            background: #f1f5f9;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .scenario {
+            margin: 14px 0;
+            padding: 16px 18px;
+            border-left: 4px solid #0d9488;
+            background: #f0fdfa;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-size: 0.9rem;
+            color: #134e4a;
+        }
+        .scenario strong { color: #0f7669; display: block; margin-bottom: 6px; }
+
+        .data-note {
+            margin-top: 12px;
+            padding: 14px 16px;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: var(--radius-sm);
+            font-size: 0.84rem;
+            color: #78350f;
+        }
+
+        .flow-inline {
+            margin: 18px 0;
+            padding: 18px;
+            background: var(--card);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.88rem;
+            color: var(--slate);
+            text-align: center;
+            line-height: 1.7;
+        }
+        .flow-inline strong { color: var(--ink); }
+
+        footer {
+            margin-top: 44px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+            color: var(--slate-light);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        footer a { color: var(--accent); font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <nav class="nav-row" aria-label="Page navigation">
+            <a class="nav-back" href="index.html">← Hub</a>
+            <a href="strategic-growth-stc-content-engine.html">STC Content Engine</a>
+            <a href="stc-strategic-alignment.html">Strategic alignment</a>
+            <a href="new-program-guide.html">New program guide</a>
+        </nav>
+
+        <header class="doc-hero">
+            <p class="eyebrow">City University of Seattle · <abbr title="School of Technology and Computing">STC</abbr></p>
+            <h1>Marketing 101 for the School of Technology and Computing</h1>
+            <p class="doc-dek">How programs like ours market: from internal alignment and crisp pitches to external campaigns — with use-cases, case studies, scenarios, and data you can actually cite.</p>
+        </header>
+
+        <nav aria-label="On this page">
+            <ul class="toc">
+                <li><a href="#m101">Marketing 101</a></li>
+                <li><a href="#stc-context"><abbr title="School of Technology and Computing">STC</abbr> context</a></li>
+                <li><a href="#internal">Internal marketing</a></li>
+                <li><a href="#pitch-comms">Pitch &amp; communication</a></li>
+                <li><a href="#external">To external marketing</a></li>
+                <li><a href="#use-cases">Use-cases</a></li>
+                <li><a href="#case-studies">Case studies</a></li>
+                <li><a href="#scenarios">Scenarios</a></li>
+                <li><a href="#data">Data &amp; evidence</a></li>
+            </ul>
+        </nav>
+
+        <p class="lead-card">
+            <strong>Marketing is not only ads.</strong> In a school of technology and computing, marketing is the disciplined work of making <em>value, proof, and next steps</em> obvious — first to colleagues and partners who must carry the message, then to students and employers in the open market. This page names that sequence so your content engine, program launches, and classroom stories stay aligned.
+        </p>
+
+        <section id="m101" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">01</span>
+                <div>
+                    <h2>Marketing 101 (higher-ed and <abbr title="Science, technology, engineering, and mathematics">STEM</abbr> lens)</h2>
+                    <p class="section-sub">Definitions that survive a faculty meeting</p>
+                </div>
+            </div>
+            <p class="mini"><strong>Marketing</strong> is choosing <em>who you serve</em>, <em>what promise you can keep</em>, and <em>how people discover, believe, and act</em> on that promise. <strong>Communications</strong> is the craft of packaging that promise in channels (slides, email, web, events, media). <strong>Brand</strong> is the accumulated memory of kept promises.</p>
+            <div class="bento">
+                <div class="tile">
+                    <p class="tile-label">Classic frame (still useful)</p>
+                    <h3>Offer &amp; proof</h3>
+                    <p>Product (programs, certificates, labs), Price (tuition, time, opportunity cost), Place (online, hybrid, partner sites), Promotion (everything visible). In <abbr title="School of Technology and Computing">STC</abbr>, add <strong>People</strong> (faculty, advisors, alumni mentors), <strong>Process</strong> (registration, support, grading integrity), and <strong>Physical evidence</strong> (syllabi, tooling, capstone artifacts).</p>
+                </div>
+                <div class="tile">
+                    <p class="tile-label">Funnel without jargon</p>
+                    <h3>Awareness → trust → action</h3>
+                    <p>Someone hears of CityU <abbr title="School of Technology and Computing">STC</abbr> → compares options → talks to a human or reads deep content → applies or joins a list. Marketing’s job is to <strong>remove friction and doubt</strong> at each hop, not to shout louder at the top.</p>
+                </div>
+            </div>
+            <div class="highlight-strip">
+                <strong>Non-negotiable in tech education:</strong> claims must be tethered to outcomes, outcomes to assessments, assessments to faculty capacity. Marketing that outruns delivery creates refunds, bad reviews, and accreditation risk.
+            </div>
+        </section>
+
+        <section id="stc-context" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">02</span>
+                <div>
+                    <h2>What “marketing” means inside <abbr title="School of Technology and Computing">STC</abbr></h2>
+                    <p class="section-sub">Programs, employers, students, and the wider university</p>
+                </div>
+            </div>
+            <p class="mini">The School of Technology and Computing markets <strong>multiple overlapping offers</strong>: degrees and certificates, career pathways into tech roles, faculty expertise (research and applied), and employer relevance (advisory boards, projects, hiring pipelines). Each audience needs a different emphasis but <strong>one consistent spine</strong> so recruiters, deans, and faculty do not contradict each other.</p>
+            <ul class="tight">
+                <li><strong>Prospective students</strong> want clarity on outcomes, time-to-degree, support, and how <abbr title="Artificial intelligence">AI</abbr> and software skills show up in courses — not slogan stacks.</li>
+                <li><strong>Current students</strong> are marketed to as well: retention is internal marketing (belonging, advising, guilds, transparent grading).</li>
+                <li><strong>Employers &amp; partners</strong> want signal on graduate capabilities, project depth, and low-friction ways to engage (guest lectures, capstone, apprenticeships).</li>
+                <li><strong>University leadership &amp; advancement</strong> need proof points that ladder to institutional priorities (completion, innovation, equity, revenue mix).</li>
+            </ul>
+            <p class="mini">Cross-link: map program stories to pillars on the <a href="stc-strategic-alignment.html">strategic alignment</a> page so every external claim has an internal “owner pillar.”</p>
+        </section>
+
+        <section id="internal" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">03</span>
+                <div>
+                    <h2>Internal marketing first</h2>
+                    <p class="section-sub">Alignment before amplification</p>
+                </div>
+            </div>
+            <p class="mini"><strong>Internal marketing</strong> is the work of winning <em>informed advocates</em> inside the school and across CityU: chairs, advisors, registrars, marketing &amp; comms, advancement, and faculty who will repeat your story in their own networks. If they are surprised by the public website, you skipped this step.</p>
+            <div class="bento">
+                <div class="tile">
+                    <p class="tile-label">Artifacts</p>
+                    <h3>What to produce early</h3>
+                    <p>One-page <strong>message house</strong> (audience, promise, three proof points, call-to-action), <strong>FAQ</strong> for advisors, <strong>slide skeleton</strong> for info sessions, and a <strong>change log</strong> when curriculum or policy shifts so comms stays accurate.</p>
+                </div>
+                <div class="tile">
+                    <p class="tile-label">Rituals</p>
+                    <h3>How it shows up</h3>
+                    <p>Short briefings before public launches, shared language in <abbr title="Learning management system">LMS</abbr> templates, “office hours” for staff questions, and <strong>pilot cohorts</strong> whose feedback becomes testimonial and process fixes before broad promotion.</p>
+                </div>
+            </div>
+            <p class="mini">Internal marketing lowers the cost of external campaigns: fewer retractions, fewer angry threads, faster approvals, and higher-quality student-staff interactions on day one.</p>
+        </section>
+
+        <section id="pitch-comms" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">04</span>
+                <div>
+                    <h2>Pitch and communication discipline</h2>
+                    <p class="section-sub">Structures that survive scrutiny</p>
+                </div>
+            </div>
+            <p class="mini">A <strong>pitch</strong> is not charisma; it is compressed logic. For <abbr title="School of Technology and Computing">STC</abbr> contexts, use a repeatable spine:</p>
+            <ul class="tight">
+                <li><strong>Problem</strong> — skills gap, career transition, or employer need (one sentence, concrete).</li>
+                <li><strong>Audience</strong> — who this program is for — and <em>who it is not for</em> (reduces mismatched enrollments).</li>
+                <li><strong>Proof</strong> — outcomes, assessments, faculty credentials, student artifacts, partners (prefer numbers or named examples you can defend).</li>
+                <li><strong>Mechanism</strong> — how learning happens (stack, projects, support), not buzzwords.</li>
+                <li><strong>Ask</strong> — apply, RSVP, join list, sponsor a capstone — one primary ask per touchpoint.</li>
+            </ul>
+            <div class="bento">
+                <div class="tile">
+                    <p class="tile-label">Async</p>
+                    <h3>Email &amp; docs</h3>
+                    <p>BLUF (bottom line up front), scannable headings, links to one canonical page per initiative, and explicit owners for replies. Avoid duplicating policy in email — <strong>link to source of truth</strong>.</p>
+                </div>
+                <div class="tile">
+                    <p class="tile-label">Sync</p>
+                    <h3>Meetings &amp; talks</h3>
+                    <p>Agenda with decisions needed, time-boxed Q&amp;A, and a single shared deck version. For mixed audiences (faculty + marketing), separate <strong>academic detail slides</strong> from <strong>public narrative slides</strong> in the same file using hidden sections or appendices.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="external" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">05</span>
+                <div>
+                    <h2>How internal work becomes external marketing</h2>
+                    <p class="section-sub">A clean handoff</p>
+                </div>
+            </div>
+            <p class="mini">When the message house and advisor FAQ are stable, external marketing is mostly <strong>distribution and creative</strong>: web pages, paid media, events, <abbr title="Public relations">PR</abbr>, and partner co-marketing. The <a href="strategic-growth-stc-content-engine.html">STC Content Engine</a> brief describes how technical thought leadership feeds the top of the funnel with measurable attribution.</p>
+            <div class="flow-inline">
+                <strong>Internal alignment</strong> (shared story + proof + constraints)<br>
+                → <strong>Pitch kit</strong> (slides, one-pagers, talk track)<br>
+                → <strong>Canonical web &amp; <abbr title="Customer relationship management">CRM</abbr> assets</strong> (single URLs, forms, <abbr title="Urchin Tracking Module — URL campaign tags">UTM</abbr> discipline)<br>
+                → <strong>Public campaigns</strong> (content, ads, events) that <em>quote the same proof</em> advisors already use.
+            </div>
+            <p class="mini">If external copy introduces a new superlative that internal teams cannot explain in plain language, pause and rewrite. That mismatch is how institutions lose trust.</p>
+        </section>
+
+        <section id="use-cases" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">06</span>
+                <div>
+                    <h2>Use-cases (where this playbook shows up)</h2>
+                    <p class="section-sub">Practical triggers</p>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead>
+                        <tr>
+                            <th>Use-case</th>
+                            <th>Primary audience</th>
+                            <th>Internal first</th>
+                            <th>External then</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>New or revised program (<abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr>, certificates)</td>
+                            <td>Faculty, <abbr title="Academic Affairs Committee">AAC</abbr>, advisors, marketing</td>
+                            <td>Outcomes map, advisor FAQ, employer talking points</td>
+                            <td>Landing page, webinars, partner emails, micro-credentials</td>
+                        </tr>
+                        <tr>
+                            <td>Student community / retention initiative</td>
+                            <td>Current students, student life, faculty sponsors</td>
+                            <td>Operating norms, role clarity, measurement</td>
+                            <td>Club fair, social proof, alumni spotlights</td>
+                        </tr>
+                        <tr>
+                            <td>Employer advisory or capstone sponsorship</td>
+                            <td>Partnerships, chairs, corporate relations</td>
+                            <td>Value exchange memo, <abbr title="Intellectual property">IP</abbr> &amp; data agreements</td>
+                            <td>Co-branded events, hiring pipeline pages</td>
+                        </tr>
+                        <tr>
+                            <td>Technical thought leadership (<abbr title="Artificial intelligence">AI</abbr>, agents, tooling)</td>
+                            <td>Prospects, practitioners, media</td>
+                            <td>Faculty review of claims, legal/comms check</td>
+                            <td>Articles, video, conference talks, lead magnets</td>
+                        </tr>
+                        <tr>
+                            <td>Crisis or policy change (grading, <abbr title="Artificial intelligence">AI</abbr> use, academic integrity)</td>
+                            <td>All internal + students</td>
+                            <td>Single authoritative memo, office hours, LMS language</td>
+                            <td>Minimal public statement; link to policy hub</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="case-studies" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">07</span>
+                <div>
+                    <h2>Case studies (composite, tied to this hub)</h2>
+                    <p class="section-sub">Patterns you can reuse — not anonymous vendor fairy tales</p>
+                </div>
+            </div>
+            <p class="mini">These three vignettes are <strong>structured as case studies</strong> (situation → action → result) and deliberately anchored to documents already on this site so you can drill into evidence.</p>
+            <div class="case-grid">
+                <div class="case">
+                    <span class="tag">Case A · Flagship program</span>
+                    <h3>From approval to coherent recruiting narrative</h3>
+                    <p><strong>Situation:</strong> A new degree needs one story for leadership, advisors, and public channels without overpromising on <abbr title="Artificial intelligence">AI</abbr> job markets.</p>
+                    <p><strong>Action:</strong> Build the message house from the approved outcomes and course stack; train advisors on boundaries (“what we teach” vs. “what employers vary by region”).</p>
+                    <p><strong>Result:</strong> Public pages and partner decks cite the same outcomes; internal reviewers catch drift early. Source pack: <a href="bs-ai-aac-04142026.html"><abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> <abbr title="Academic Affairs Committee">AAC</abbr> approved program</a>, <a href="bsai-feedback-synthesis.html">feedback synthesis</a>.</p>
+                    <div class="metric">Proof anchor: program outcomes + course list in the approved submission.</div>
+                </div>
+                <div class="case">
+                    <span class="tag">Case B · Internal evidence</span>
+                    <h3>Turning analytics into a defensible story</h3>
+                    <p><strong>Situation:</strong> Marketing wants “strong foundations” copy; faculty want claims tied to performance.</p>
+                    <p><strong>Action:</strong> Pair narrative with aggregated course metrics (transparent scope: cohorts, time window) and avoid cherry-picking single sections.</p>
+                    <p><strong>Result:</strong> Recruiting language that survives faculty Q&amp;A. Source: <a href="2-16-2026/program-analytics.html">Program analytics &amp; enrollment metrics</a> (e.g. foundational course rollups summarized there).</p>
+                    <div class="metric">Example fields on hub: total enrollments across tracked foundational courses, average GPA, at-risk counts — use only with the same definitions as the source page.</div>
+                </div>
+                <div class="case">
+                    <span class="tag">Case C · Community / retention</span>
+                    <h3>Marketing belonging, not only acquisition</h3>
+                    <p><strong>Situation:</strong> High early engagement but club churn risks pipeline narratives.</p>
+                    <p><strong>Action:</strong> Treat the guild model as an internal product: roles, cadence, faculty sponsorship — then publish student-visible value props.</p>
+                    <p><strong>Result:</strong> External storytelling (tours, web) matches what students actually experience. Sources: <a href="stc-guild-proposal.html">Guild proposal</a>, <a href="stc-guild-framework.html">framework</a>.</p>
+                    <div class="metric">Measure retention proxies: event attendance, repeat term participation, mentor ratios (define before you publish).</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="scenarios" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">08</span>
+                <div>
+                    <h2>Scenarios (tabletop drills)</h2>
+                    <p class="section-sub">15-minute team exercises</p>
+                </div>
+            </div>
+            <div class="scenario">
+                <strong>Scenario 1 — “The chancellor forwarded the headline.”</strong>
+                A blog title overstates job guarantees. Who owns the correction? Draft a 120-word internal note and a 80-word public revision. Rule: <strong>no new promises</strong> in the fix — only alignment to documented outcomes.
+            </div>
+            <div class="scenario">
+                <strong>Scenario 2 — Conflicting advisor scripts.</strong>
+                Two advisors describe different math prerequisites. Build a 5-bullet FAQ sourced from the catalog and program guide; pick one canonical link for email templates.
+            </div>
+            <div class="scenario">
+                <strong>Scenario 3 — Partner wants co-branded “certificate inside a degree.”</strong>
+                Internal marketing: map <abbr title="Intellectual property">IP</abbr>, accreditation, and transcript notation. External: nothing goes live until legal and academic affairs sign the same paragraph.
+            </div>
+            <div class="scenario">
+                <strong>Scenario 4 — Viral student TikTok misstates a course.</strong>
+                Internal: faculty response + student comms. External: optional clarifier post; avoid arguing with comments — <strong>point to canonical page</strong>.
+            </div>
+        </section>
+
+        <section id="data" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">09</span>
+                <div>
+                    <h2>Data, evidence, and what to cite</h2>
+                    <p class="section-sub">Hub-native sources + illustrative campaign math</p>
+                </div>
+            </div>
+            <p class="mini"><strong>Primary (on this site):</strong> Use program analytics and approved program documents when making quantitative claims about <abbr title="School of Technology and Computing">STC</abbr> performance or structure. <strong>Market context (student <abbr title="Artificial intelligence">AI</abbr> behavior):</strong> cite the Digital Education Council survey PDFs linked from the hub when explaining why transparent <abbr title="Artificial intelligence">AI</abbr> policies and pedagogy matter in recruiting copy.</p>
+            <ul class="tight">
+                <li><a href="2-16-2026/program-analytics.html">Program analytics &amp; enrollment performance metrics</a> — internal quantitative storytelling for foundations and risk flags.</li>
+                <li><a href="global-ai-student-survey-2024.pdf">Global <abbr title="Artificial intelligence">AI</abbr> Student Survey 2024 (<abbr title="Portable Document Format">PDF</abbr>)</a> and <a href="ai-meets-academia-survey-2025.pdf"><abbr title="Artificial intelligence">AI</abbr> Meets Academia Survey 2025 (<abbr title="Portable Document Format">PDF</abbr>)</a> — external student sentiment and usage patterns.</li>
+                <li><a href="index.html">Hub index</a> — stable jump-off points for footnotes in decks.</li>
+            </ul>
+            <p class="mini">The table below is <strong>illustrative only</strong> — generic funnel diagnostics sometimes used in enrollment marketing operations. Replace every cell with your own <abbr title="Customer relationship management">CRM</abbr> / analytics exports before publishing externally.</p>
+            <div class="table-wrap">
+                <table class="doc">
+                    <thead>
+                        <tr>
+                            <th>Illustrative metric</th>
+                            <th>Example purpose</th>
+                            <th>Representative range (industry talk — not CityU-specific)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Open rate (nurture email)</td>
+                            <td>Is the subject line aligned with audience reality?</td>
+                            <td>Often mid-teens to mid-twenties percent for cold edu lists; higher for opted-in admits</td>
+                        </tr>
+                        <tr>
+                            <td>Info-session → application rate</td>
+                            <td>Does the pitch match advisor follow-through?</td>
+                            <td>Highly variable by program; track <em>cohort-by-cohort</em></td>
+                        </tr>
+                        <tr>
+                            <td>Time-to-first-human-response</td>
+                            <td>Service-level signal for warm leads</td>
+                            <td>Best-in-class teams target hours, not days, during peak cycles</td>
+                        </tr>
+                        <tr>
+                            <td>Content-assisted conversion</td>
+                            <td>Did thought-leadership touch the journey?</td>
+                            <td>Requires <abbr title="Urchin Tracking Module — URL campaign tags">UTM</abbr> + <abbr title="Customer relationship management">CRM</abbr> discipline (see Content Engine brief)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="data-note">
+                <strong>Integrity rule:</strong> never paste hub numbers next to national benchmarks without labeling sources and time windows. Mixing incomparable denominators is how marketing loses faculty allies — and how institutions invite compliance headaches.
+            </div>
+        </section>
+
+        <footer>
+            <a href="index.html">STC Transformation hub</a>
+            · <a href="strategic-growth-stc-content-engine.html">Strategic Growth / Content Engine</a>
+            · Maintained by Clark Ngo
+        </footer>
+    </div>
+</body>
+</html>

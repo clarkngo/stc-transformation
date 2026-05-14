@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <title>Strategic Growth: The STC Content Engine — STC Transformation</title>
+    <style>
+        :root {
+            --accent: #0d7a3e;
+            --accent-dim: #ecfdf5;
+            --accent-mid: #6ee7b7;
+            --ink: #0f172a;
+            --slate: #475569;
+            --slate-light: #94a3b8;
+            --card: #ffffff;
+            --bg: #f1f5f9;
+            --bg-elevated: linear-gradient(165deg, #ffffff 0%, #f8fafc 100%);
+            --border: rgba(15, 23, 42, 0.08);
+            --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 40px rgba(15, 23, 42, 0.06);
+            --radius: 16px;
+            --radius-sm: 12px;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        abbr[title] {
+            cursor: help;
+            text-decoration: underline dotted;
+            text-underline-offset: 0.12em;
+            text-decoration-color: rgba(71, 85, 105, 0.42);
+        }
+        body {
+            margin: 0;
+            font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.55;
+            font-size: 16px;
+        }
+        .shell {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 20px 64px;
+        }
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .nav-back:hover { text-decoration: underline; }
+
+        .doc-hero {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 28px 26px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .doc-hero::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-mid));
+            border-radius: 4px 0 0 4px;
+        }
+        .eyebrow {
+            margin: 0 0 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--slate-light);
+        }
+        .doc-hero h1 {
+            margin: 0 0 10px;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            max-width: 20ch;
+        }
+        .doc-dek {
+            margin: 0;
+            font-size: 1.05rem;
+            color: var(--slate);
+            font-weight: 500;
+            max-width: 42ch;
+        }
+
+        .toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 24px 0 8px;
+            padding: 0;
+            list-style: none;
+        }
+        .toc a {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--slate);
+            background: var(--card);
+            border: 1px solid var(--border);
+            text-decoration: none;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .toc a:hover {
+            color: var(--accent);
+            border-color: rgba(13, 122, 62, 0.25);
+            background: var(--accent-dim);
+        }
+
+        .lead-card {
+            margin: 20px 0 0;
+            padding: 20px 22px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(13, 122, 62, 0.18);
+            border-radius: var(--radius-sm);
+            font-size: 0.98rem;
+            color: #14532d;
+            line-height: 1.6;
+        }
+
+        .doc-section {
+            margin-top: 48px;
+        }
+        .section-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .section-num {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--ink);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .section-num--primer {
+            background: linear-gradient(145deg, #64748b 0%, #334155 100%);
+            font-size: 0.72rem;
+        }
+        .section-head h2 {
+            margin: 2px 0 4px;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        .section-sub {
+            margin: 0;
+            font-size: 0.92rem;
+            color: var(--slate);
+            font-weight: 500;
+        }
+
+        .pull {
+            margin: 0 0 22px;
+            padding: 20px 22px 20px 24px;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: var(--ink);
+            letter-spacing: -0.02em;
+            line-height: 1.45;
+        }
+        .pull span { color: var(--accent); }
+
+        .bento {
+            display: grid;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        @media (min-width: 640px) {
+            .bento { grid-template-columns: 1fr 1fr; }
+        }
+        .tile {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 18px 18px 16px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        }
+        .tile-label {
+            margin: 0 0 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+        }
+        .tile h3 {
+            margin: 0 0 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .tile p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--slate);
+            line-height: 1.55;
+        }
+
+        .highlight-strip {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px 20px;
+            margin: 0 0 22px;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+        }
+        .highlight-strip strong {
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        .highlight-strip p {
+            margin: 0;
+            flex: 1;
+            min-width: 200px;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: #cbd5e1;
+        }
+
+        .mini {
+            margin: 0 0 18px;
+            font-size: 0.92rem;
+            color: var(--slate);
+            max-width: 62ch;
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 0 22px;
+        }
+        .pill {
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--slate);
+        }
+        .pill em { color: var(--ink); font-style: normal; }
+
+        .benefits {
+            display: grid;
+            gap: 12px;
+            margin: 0 0 20px;
+        }
+        @media (min-width: 720px) {
+            .benefits { grid-template-columns: repeat(3, 1fr); }
+        }
+        .benefit {
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+        .benefit strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: var(--ink);
+        }
+        .benefit span {
+            font-size: 0.82rem;
+            color: var(--slate);
+            line-height: 1.45;
+        }
+
+        .tagline-end {
+            margin: 0;
+            padding: 16px 18px;
+            border-radius: var(--radius-sm);
+            background: #f8fafc;
+            border: 1px dashed var(--border);
+            font-size: 0.92rem;
+            color: var(--slate);
+            text-align: center;
+        }
+        .tagline-end strong { color: var(--ink); }
+
+        .demyst-label {
+            margin: 22px 0 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+        }
+        .demyst-label:first-of-type { margin-top: 4px; }
+
+        .path-grid {
+            display: grid;
+            gap: 14px;
+            margin: 18px 0;
+        }
+        @media (min-width: 640px) {
+            .path-grid { grid-template-columns: 1fr 1fr; }
+        }
+        .path-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        }
+        .path-card h3 {
+            margin: 8px 0 10px;
+            font-size: 1rem;
+            color: var(--ink);
+        }
+        .path-card p { margin: 0; font-size: 0.9rem; color: var(--slate); line-height: 1.55; }
+        .tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--accent);
+        }
+
+        .platform-cards {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        @media (min-width: 700px) {
+            .platform-cards { grid-template-columns: repeat(3, 1fr); }
+        }
+        .pcard {
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+        .pcard .icon { font-size: 1.25rem; margin-bottom: 8px; }
+        .pcard strong { display: block; margin-bottom: 6px; font-size: 0.88rem; color: var(--ink); }
+        .pcard p { margin: 0; font-size: 0.82rem; color: var(--slate); line-height: 1.5; }
+
+        .track-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .track {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px 16px;
+            align-items: start;
+            padding: 16px 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+        }
+        .track-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .track h3 {
+            margin: 0 0 6px;
+            font-size: 0.95rem;
+            color: var(--ink);
+        }
+        .track p {
+            margin: 0;
+            font-size: 0.88rem;
+            color: var(--slate);
+            line-height: 1.5;
+        }
+
+        .bench-grid {
+            display: grid;
+            gap: 14px;
+            margin-top: 16px;
+        }
+        @media (min-width: 640px) {
+            .bench-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 900px) {
+            .bench-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .bench-card {
+            padding: 16px 16px 14px;
+            border-radius: var(--radius-sm);
+            background: var(--card);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .bench-kind {
+            margin: 0;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--slate-light);
+        }
+        .bench-card h3 {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.3;
+        }
+        .bench-card h3 a {
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .bench-card h3 a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+        .bench-card p {
+            margin: 0;
+            flex: 1;
+            font-size: 0.82rem;
+            color: var(--slate);
+            line-height: 1.45;
+        }
+        .bench-foot {
+            margin: 0;
+            padding-top: 4px;
+            font-size: 0.75rem;
+        }
+        .bench-foot a {
+            color: var(--accent);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .bench-foot a:hover { text-decoration: underline; }
+
+        .pattern-wrap {
+            margin-top: 18px;
+            margin-bottom: 6px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--card);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        }
+        table.pattern-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.86rem;
+            min-width: 32rem;
+        }
+        .pattern-table caption {
+            caption-side: top;
+            text-align: left;
+            padding: 14px 16px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--slate-light);
+        }
+        .pattern-table th {
+            text-align: left;
+            padding: 10px 14px;
+            background: #f1f5f9;
+            font-weight: 700;
+            color: var(--ink);
+            border-bottom: 1px solid var(--border);
+        }
+        .pattern-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--slate);
+            vertical-align: top;
+            line-height: 1.45;
+        }
+        .pattern-table td:first-child {
+            font-weight: 600;
+            color: var(--ink);
+        }
+        .pattern-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .pattern-table--revenue {
+            min-width: 36rem;
+        }
+
+        footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--slate-light);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        footer a { color: var(--accent); font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <a class="nav-back" href="index.html">← Back to <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Transformation</a>
+
+        <header class="doc-hero">
+            <p class="eyebrow"><abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Transformation</p>
+            <h1>Strategic Growth: The <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Content Engine</h1>
+            <p class="doc-dek">Thought Leadership &amp; Enrollment Strategy</p>
+        </header>
+
+        <nav aria-label="On this page">
+            <ul class="toc">
+                <li><a href="#demystify">Thought leadership 101</a></li>
+                <li><a href="#vision">Vision</a></li>
+                <li><a href="#content-bridge">Content bridge</a></li>
+                <li><a href="#platform">Platform</a></li>
+                <li><a href="#roi">Attribution &amp; <abbr title="Return on investment">ROI</abbr></a></li>
+                <li><a href="#benchmarks">Benchmarks</a></li>
+                <li><a href="#university-revenue">How universities earn</a></li>
+                <li><a href="#video-trust">Video trust</a></li>
+            </ul>
+        </nav>
+
+        <p class="lead-card">
+            Technical depth meets enrollment economics: public, high-trust content is the top of the funnel — not a side project to ads. Same rigor as curriculum and architecture; measurable path from curiosity to enrolled student.
+        </p>
+        <p class="mini" style="margin-top:14px">Companion primer — <a href="marketing-101-stc.html">Marketing 101 for <abbr title="School of Technology and Computing">STC</abbr></a>: internal marketing, pitch structure, communication discipline, and how that feeds external campaigns (use-cases, case studies, scenarios, data).</p>
+
+        <!-- §0 Primer: demystify thought leadership -->
+        <section id="demystify" class="doc-section">
+            <div class="section-head">
+                <span class="section-num section-num--primer" aria-hidden="true"><abbr title="Thought leadership (primer)">TL</abbr></span>
+                <div>
+                    <h2>Demystifying thought leadership</h2>
+                    <p class="section-sub">What it is, what it isn&rsquo;t — and why organizations and universities should care</p>
+                </div>
+            </div>
+
+            <p class="mini"><strong>Thought leadership</strong> gets misused as a buzzword. Here it means one thing: <em>earning trust by clarifying hard problems in public</em> — with substance that could live in a classroom, lab, or policy memo, not just in a press release.</p>
+
+            <div class="bento">
+                <div class="tile">
+                    <p class="tile-label">Often confused with</p>
+                    <h3>Myths</h3>
+                    <p>Hot takes for engagement, executive ghostwritten &ldquo;vision&rdquo; essays detached from delivery, or a content calendar that exists only to fill <abbr title="Search engine optimization">SEO</abbr> slots. Volume without a through-line to what you actually build or teach.</p>
+                </div>
+                <div class="tile">
+                    <p class="tile-label">What we mean here</p>
+                    <h3>Reality</h3>
+                    <p>Useful frameworks, worked examples, and honest tradeoffs — published where your audience already looks. The goal is <strong>clarity and credibility</strong>, not personal fame; the institution (or program) is the durable author.</p>
+                </div>
+            </div>
+
+            <div class="highlight-strip">
+                <strong>Why it matters</strong>
+                <p>Buyers and learners research in the open. If your best thinking is locked inside <abbr title="Learning management system (e.g. Canvas, Moodle, Blackboard)">LMS</abbr> shells, you are invisible in the moments when people decide who to trust.</p>
+            </div>
+
+            <p class="demyst-label">For any organization</p>
+            <div class="benefits">
+                <div class="benefit">
+                    <strong>Trust at a distance</strong>
+                    <span>Complex <abbr title="Business to business">B2B</abbr> and professional services are won on proof. Public depth shortens sales cycles and de-risks procurement.</span>
+                </div>
+                <div class="benefit">
+                    <strong>Talent &amp; narrative</strong>
+                    <span>Clear technical voice helps recruiting: candidates self-select in aligned with how you actually work.</span>
+                </div>
+                <div class="benefit">
+                    <strong>Partnerships &amp; category</strong>
+                    <span>Peers, regulators, and integrators cite organizations that publish durable reference material — it becomes the default explainer for an industry problem.</span>
+                </div>
+            </div>
+
+            <p class="demyst-label">Especially for academia</p>
+            <div class="benefits">
+                <div class="benefit">
+                    <strong>Enrollment &amp; yield</strong>
+                    <span>Students compare dozens of programs online. Syllabus-grade public work answers &ldquo;Will I learn something real?&rdquo; before they ever talk to an advisor.</span>
+                </div>
+                <div class="benefit">
+                    <strong>Accreditation &amp; shared governance</strong>
+                    <span>Outcomes and assessment stories are easier to defend when the same ideas appear in public explainers faculty already stand behind — less disconnect between marketing copy and curriculum reality.</span>
+                </div>
+                <div class="benefit">
+                    <strong>Research → teaching → public good</strong>
+                    <span>Universities are one of the few institutions expected to advance knowledge <em>and</em> teach it. Thought leadership is the bridge: it makes research legible to learners and employers without dumbing it down.</span>
+                </div>
+            </div>
+
+            <p class="tagline-end">Bottom line: in academia, <strong>thought leadership is reputation infrastructure</strong> — it protects the brand when hype cycles turn and proves the mission is more than a tuition invoice.</p>
+        </section>
+
+        <!-- §1 Vision -->
+        <section id="vision" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">01</span>
+                <div>
+                    <h2>The vision</h2>
+                    <p class="section-sub">Thought leadership, not a wall of slogans</p>
+                </div>
+            </div>
+
+            <p class="pull">Prospects rarely open with <span>“I need a degree.”</span> They arrive with a <strong>problem in motion</strong> — and they need proof, fast.</p>
+
+            <div class="bento">
+                <div class="tile">
+                    <p class="tile-label">The moment</p>
+                    <h3>Doubt, not shopping</h3>
+                    <p>A stack they don’t recognize. A tool from a podcast. A 10 p.m. phone scroll. Partial info, high urgency — they’re reducing uncertainty, not comparing brochures.</p>
+                </div>
+                <div class="tile">
+                    <p class="tile-label">The gap</p>
+                    <h3>Why generic ads stall</h3>
+                    <p>Banners don’t teach retrieval vs. reasoning, or when a digital twin fits the plant floor. For technical audiences, <strong>credibility is the currency</strong> — pitch-first touchpoints read as noise.</p>
+                </div>
+            </div>
+
+            <div class="highlight-strip">
+                <strong>Thought leadership ≠ glossy PR</strong>
+                <p>It’s syllabus-grade work: definitions, tradeoffs, worked examples — the kind of piece that could live in a footnote or a staff engineer’s onboarding doc.</p>
+            </div>
+
+            <p class="mini"><abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr>&rsquo;s learners are often <strong>skeptical adults</strong> burned by shallow bootcamp hype. They reward <em>practitioners who teach</em> — not borrowed buzzwords.</p>
+
+            <div class="pill-row" aria-label="Bridge content formats">
+                <span class="pill"><em>Explainers</em> — clarity first</span>
+                <span class="pill"><em>Labs</em> — hands-on proof</span>
+                <span class="pill"><em>Micro-modules</em> — respect their time</span>
+            </div>
+
+            <p class="mini"><strong>Authority-building</strong> means bridge experiences that show <em>how</em> <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> teaches before tuition or applications. Same assets attract strangers <em>and</em> pre-align them with faculty tone, assessment integrity with <abbr title="Artificial intelligence">AI</abbr>, and portfolio quality.</p>
+
+            <div class="benefits">
+                <div class="benefit">
+                    <strong>One story</strong>
+                    <span>Marketing and program chairs point to the same artifacts — no split between ads and what you grade.</span>
+                </div>
+                <div class="benefit">
+                    <strong>Quality ratchet</strong>
+                    <span>Sharp public layers keep internal materials and talks sharp; the brand forces clarity.</span>
+                </div>
+                <div class="benefit">
+                    <strong>Compound reach</strong>
+                    <span>Search, referrals, and cohort word-of-mouth accrete on durable explainers — stronger than claim copy.</span>
+                </div>
+            </div>
+
+            <p class="tagline-end"><strong>Technical generosity</strong> as the front door — teach in public, then invite the right learners into degrees and certificates.</p>
+        </section>
+
+        <!-- §2 -->
+        <section id="content-bridge" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">02</span>
+                <div>
+                    <h2>The content bridge</h2>
+                    <p class="section-sub">100-level intro pathways</p>
+                </div>
+            </div>
+
+            <p class="mini"><strong>Low-friction entry</strong> for learners who are curious but not yet shopping a full program. Two lanes: <em>accessibility</em> and <em>industry prestige</em>.</p>
+
+            <div class="path-grid">
+                <div class="path-card">
+                    <span class="tag">Accessibility &amp; reach</span>
+                    <h3>Google <abbr title="Agent Development Kit — Google toolkit for building AI agents">ADK</abbr> demystified</h3>
+                    <p>Orchestration kits are opaque. A structured intro — what it is, when to use it, responsible production patterns — meets learners where headlines already sent them.</p>
+                    <p style="margin-top:10px;font-size:0.88rem"><a href="adk-basic-agent-video-plan.html" style="color:var(--accent);font-weight:700">Production pack →</a> · <a href="adk-basic-agent-concepts-interplay.html" style="color:var(--accent);font-weight:700">Concepts &amp; interplay →</a></p>
+                </div>
+                <div class="path-card">
+                    <span class="tag">Industry prestige</span>
+                    <h3>NVIDIA Digital Twin lane</h3>
+                    <p>Industrial <abbr title="Artificial intelligence">AI</abbr> and physical-digital systems: a badge employers recognize. Positions <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> in <abbr title="Operational technology — industrial and plant-floor systems">OT</abbr> / simulation depth, not generic <abbr title="Artificial intelligence">AI</abbr> hype.</p>
+                </div>
+            </div>
+
+            <p class="tagline-end">Capture the <strong>curious</strong> before degree intent — trade a little time for proof, then invite credit stack, certificate, or degree.</p>
+        </section>
+
+        <!-- §3 -->
+        <section id="platform" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">03</span>
+                <div>
+                    <h2>Platform &amp; reach</h2>
+                    <p class="section-sub"><abbr title="Open online learning platform (MIT/Harvard roots; now operated by 2U)">edX</abbr> and open distribution</p>
+                </div>
+            </div>
+
+            <p class="mini">Meet skeptical adults where they already look for <strong>credible</strong> learning: open platforms, micro-credentials aligned to <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> outcomes.</p>
+
+            <div class="platform-cards">
+                <div class="pcard">
+                    <div class="icon" aria-hidden="true">📦</div>
+                    <strong>Micro-credential</strong>
+                    <p>Bounded, stackable modules with clear artifacts employers can read — projects, checklists, assessments.</p>
+                </div>
+                <div class="pcard">
+                    <div class="icon" aria-hidden="true">↗</div>
+                    <strong>Credit bridge</strong>
+                    <p><strong>1–3 credits</strong> toward a full <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> degree on matriculation, per policy and faculty approval — honest “try us → enroll” path.</p>
+                </div>
+                <div class="pcard">
+                    <div class="icon" aria-hidden="true">✓</div>
+                    <strong>Same bar</strong>
+                    <p>Rubric mindset and oversight match for-credit work so the funnel never dilutes the brand.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- §4 -->
+        <section id="roi" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">04</span>
+                <div>
+                    <h2>Attribution &amp; <abbr title="Return on investment">ROI</abbr></h2>
+                    <p class="section-sub">From first touch to registered student</p>
+                </div>
+            </div>
+
+            <p class="mini">Without measurement, thought leadership is a hobby. Treat the engine as <strong>revenue-adjacent</strong> — every layer auditable.</p>
+
+            <div class="track-list">
+                <div class="track">
+                    <span class="track-badge"><abbr title="Urchin Tracking Module — campaign parameters on URLs for analytics">UTM</abbr></span>
+                    <div>
+                        <h3>Campaign discipline</h3>
+                        <p>Source, medium, campaign, content on every outbound link — YouTube, LinkedIn, partners, syllabus <abbr title="Quick Response code (2D barcode linking to a URL)">QR</abbr> — so analytics and <abbr title="Customer relationship management (e.g. Salesforce, Slate)">CRM</abbr> agree on origin.</p>
+                    </div>
+                </div>
+                <div class="track">
+                    <span class="track-badge"><abbr title="Lead magnet — gated asset (e.g. PDF) in exchange for email">LM</abbr></span>
+                    <div>
+                        <h3>Lead magnets</h3>
+                        <p>Cheat sheets, architecture one-pagers, lab setup guides — gated email with consent and interest tags.</p>
+                    </div>
+                </div>
+                <div class="track">
+                    <span class="track-badge"><abbr title="Customer relationship management (e.g. Salesforce, Slate)">CRM</abbr></span>
+                    <div>
+                        <h3>Pipeline stages</h3>
+                        <p>Web behavior (video completion, <abbr title="Open online learning platform (MIT/Harvard roots)">edX</abbr> progress) ties to recruiters: <em>awareness → engaged learner → applicant → registered</em>, with lost-reason codes.</p>
+                    </div>
+                </div>
+                <div class="track">
+                    <span class="track-badge">→</span>
+                    <div>
+                        <h3>Proof narrative</h3>
+                        <p>Document paths like: <strong>YouTube</strong> → <abbr title="Urchin Tracking Module — URL campaign tags">UTM</abbr> click → magnet → <abbr title="Open online learning platform">edX</abbr> micro-credential → credit on <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr>/<abbr title="Master of Science">MS</abbr> → <strong>registered student</strong>, one auditable journey.</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="tagline-end">Review with enrollment and retention dashboards — optimize for <strong>qualified pipeline and yield</strong>, not vanity views.</p>
+        </section>
+
+        <!-- §5 Benchmarks -->
+        <section id="benchmarks" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">05</span>
+                <div>
+                    <h2>Benchmarks</h2>
+                    <p class="section-sub">Universities, platforms &amp; creators — patterns, not endorsements</p>
+                </div>
+            </div>
+
+            <p class="mini">Analogues for the <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> content engine: <strong>open or flagship teaching</strong> as the trust layer, then <strong>credentials or degrees</strong> as the business layer. External sites; <abbr title="City University of Seattle">CityU</abbr> is not affiliated unless noted.</p>
+
+            <div class="pattern-wrap">
+                <table class="pattern-table">
+                    <caption>How to read these for <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr></caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Pattern</th>
+                            <th scope="col">Example flavor</th>
+                            <th scope="col">Takeaway</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Open corpus</td>
+                            <td>MIT <abbr title="OpenCourseWare — free MIT course materials online">OCW</abbr></td>
+                            <td>Authority at scale; aligns with &ldquo;technical generosity.&rdquo;</td>
+                        </tr>
+                        <tr>
+                            <td>Signature course as brand</td>
+                            <td>CS50</td>
+                            <td>One flagship can carry the whole school&rsquo;s <abbr title="Computer science">CS</abbr> reputation.</td>
+                        </tr>
+                        <tr>
+                            <td>Platform + credential ladder</td>
+                            <td>Coursera / <abbr title="Open online learning platform (MIT/Harvard roots)">edX</abbr> specials</td>
+                            <td>Bridge &rarr; micro-credential &rarr; degree is a proven story.</td>
+                        </tr>
+                        <tr>
+                            <td>Creator engine</td>
+                            <td>3Blue1Brown, fast.ai</td>
+                            <td>Distinct <abbr title="Point of view">POV</abbr> + quality beats volume.</td>
+                        </tr>
+                        <tr>
+                            <td>Media + curriculum</td>
+                            <td>freeCodeCamp</td>
+                            <td>Owned media extends reach beyond course pages.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bench-grid">
+                <article class="bench-card">
+                    <p class="bench-kind">University</p>
+                    <h3><a href="https://ocw.mit.edu/" target="_blank" rel="noopener noreferrer">MIT OpenCourseWare</a></h3>
+                    <p>Institution-wide open materials — authority and global reach at scale; the classic “technical generosity” institutional bet.</p>
+                    <p class="bench-foot"><a href="https://library.educause.edu/resources/2012/5/case-study-8-opencourseware" target="_blank" rel="noopener noreferrer">Educause case study →</a></p>
+                </article>
+                <article class="bench-card">
+                    <p class="bench-kind">University</p>
+                    <h3><a href="https://cs50.harvard.edu/" target="_blank" rel="noopener noreferrer">Harvard CS50</a></h3>
+                    <p>One intro sequence as a public brand: production, distribution, and community — pedagogy as billboard for how the school teaches <abbr title="Computer science">CS</abbr>.</p>
+                </article>
+                <article class="bench-card">
+                    <p class="bench-kind">Platform</p>
+                    <h3><a href="https://www.coursera.org/" target="_blank" rel="noopener noreferrer">Coursera</a></h3>
+                    <p><strong><abbr title="Massive open online course">MOOC</abbr>-era marketplace:</strong> faculty-taught courses at scale (early wave tied to Stanford-led experiments) showed that signature technical sequences + platforms can define a category.</p>
+                </article>
+                <article class="bench-card">
+                    <p class="bench-kind">Platform / vendor</p>
+                    <h3><a href="https://grow.google/certificates/" target="_blank" rel="noopener noreferrer">Google Career Certificates</a></h3>
+                    <p>Bridge skills → job narrative → paid pathway; useful reference for micro-credential language and employer-facing badges.</p>
+                </article>
+                <article class="bench-card">
+                    <p class="bench-kind">Platform / vendor</p>
+                    <h3><a href="https://learn.microsoft.com/" target="_blank" rel="noopener noreferrer">Microsoft Learn</a></h3>
+                    <p>Documentation-scale learning + certifications — <abbr title="Search engine optimization">SEO</abbr> + depth as acquisition, not traditional “campus marketing.”</p>
+                </article>
+                <article class="bench-card">
+                    <p class="bench-kind">Creator</p>
+                    <h3><a href="https://www.3blue1brown.com/" target="_blank" rel="noopener noreferrer">3Blue1Brown</a></h3>
+                    <p>Distinct visual + rigor = <strong>owned category</strong> in how millions expect math/<abbr title="Computer science">CS</abbr> to be explained — quality beats volume.</p>
+                </article>
+                <article class="bench-card">
+                    <p class="bench-kind">Creator</p>
+                    <h3><a href="https://www.fast.ai/" target="_blank" rel="noopener noreferrer">fast.ai</a></h3>
+                    <p>Free practical ML + strong POV; <strong>thought leadership = pedagogy + manifesto</strong>, with courses and community reinforcing each other.</p>
+                </article>
+                <article class="bench-card">
+                    <p class="bench-kind">Creator / nonprofit</p>
+                    <h3><a href="https://www.khanacademy.org/" target="_blank" rel="noopener noreferrer">Khan Academy</a></h3>
+                    <p>Massive free explainers as mission + top of funnel; partnerships and formal prep products monetize without eroding trust at the base.</p>
+                </article>
+                <article class="bench-card">
+                    <p class="bench-kind">Creator / nonprofit</p>
+                    <h3><a href="https://www.freecodecamp.org/" target="_blank" rel="noopener noreferrer">freeCodeCamp</a></h3>
+                    <p>Open curriculum + certifications + <a href="https://www.freecodecamp.org/news/" target="_blank" rel="noopener noreferrer">owned media</a> — <abbr title="Search engine optimization">SEO</abbr> + evergreen tutorials as durable acquisition.</p>
+                </article>
+            </div>
+
+            <p class="tagline-end" style="margin-top:20px"><strong><abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> takeaway:</strong> pick 1–2 flagship bridges, ship at syllabus quality, measure <abbr title="Urchin Tracking Module — URL campaign tags">UTM</abbr>s — don’t imitate every model; <em>borrow the pattern</em>.</p>
+        </section>
+
+        <!-- §6 University revenue on open platforms -->
+        <section id="university-revenue" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">06</span>
+                <div>
+                    <h2>How universities earn</h2>
+                    <p class="section-sub">YouTube, Coursera, <abbr title="Open online learning platform (MIT/Harvard roots)">edX</abbr> — direct vs. pipeline revenue</p>
+                </div>
+            </div>
+
+            <p class="mini">Splits and contracts <strong>differ by partner, program, and year</strong>; platforms renegotiate. Treat the table as <em>typical patterns</em>, not universal accounting.</p>
+
+            <div class="pattern-wrap">
+                <table class="pattern-table pattern-table--revenue">
+                    <caption>Direct platform money vs. larger economic levers</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Channel</th>
+                            <th scope="col">Typical direct money</th>
+                            <th scope="col">Typical bigger money</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>YouTube</td>
+                            <td>Ad revenue share (<abbr title="YouTube Partner Program — ad monetization for eligible channels">YPP</abbr>) when enrolled</td>
+                            <td>Applications, advancement, employer visibility, partnerships — <strong>brand &amp; pipeline</strong> often outweigh <abbr title="Cost per thousand ad impressions">CPM</abbr>s.</td>
+                        </tr>
+                        <tr>
+                            <td>Coursera</td>
+                            <td>Verified certificates, Specializations, Professional Certificates, Guided Projects; <strong>revenue split</strong> with the platform</td>
+                            <td><strong>Online degrees</strong> on-platform (tuition with negotiated split), <strong>Coursera for Business / Campus / Government</strong>, subscription catalog <strong>allocations</strong> (e.g. Coursera Plus–style pools).</td>
+                        </tr>
+                        <tr>
+                            <td><abbr title="Open online learning platform (MIT/Harvard roots)">edX</abbr></td>
+                            <td>Fees for verified tracks, short programs, and professional offerings; <strong>partner royalties / splits</strong></td>
+                            <td>Executive education, bootcamps, <strong>degree &amp; stack pathways</strong>, enterprise sales — post-2U structure still partner-specific.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="track-list">
+                <div class="track">
+                    <span class="track-badge">▶</span>
+                    <div>
+                        <h3>YouTube</h3>
+                        <p>Partner Program ads can be <strong>real but modest</strong> for many university channels. The strategic return is usually <strong>discovery + trust</strong> → program pages, mailing lists, and donor or corporate relationships — not replacing tuition with <abbr title="Google AdSense — display ad program for publishers">AdSense</abbr>.</p>
+                    </div>
+                </div>
+                <div class="track">
+                    <span class="track-badge">C</span>
+                    <div>
+                        <h3>Coursera</h3>
+                        <p>Classic path: <strong>audit free / pay to certify</strong> at scale, plus <strong><abbr title="Business to business">B2B</abbr> seat licenses</strong>. The heavy economics often sit in <strong>credit-bearing degrees</strong> sold through the marketplace (platform provides distribution, payments, tech — <strong><abbr title="Online program management — third-party marketing and operations for online degrees">OPM</abbr>-like</strong> economics with a negotiated take).</p>
+                    </div>
+                </div>
+                <div class="track">
+                    <span class="track-badge">e</span>
+                    <div>
+                        <h3><abbr title="Open online learning platform (MIT/Harvard roots; now operated by 2U)">edX</abbr></h3>
+                        <p>Historically a large share of platform revenue came from <strong>certificate-style fees</strong> with universities earning <strong>royalties</strong> on their courses. Today’s mix still includes credentials and programs, but <strong>read current partner agreements</strong> under the operating company (<abbr title="2U — online education company that acquired edX">2U</abbr>).</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mini" style="margin-top:8px"><strong>Further reading (external):</strong>
+                <a href="https://www.insidehighered.com/news/2021/08/10/coursera-plans-share-wealth-university-partners-add-online-programs" target="_blank" rel="noopener noreferrer">Inside Higher Ed — Coursera partner revenue sharing (2021)</a>
+                ·
+                <a href="https://www.edsurge.com/news/2021-08-09-in-new-push-to-grow-online-degree-offerings-coursera-changes-revenue-sharing-options" target="_blank" rel="noopener noreferrer">EdSurge — Coursera degree revenue options (2021)</a>
+                ·
+                <a href="https://www.classcentral.com/report/edx-final-tax-returns/" target="_blank" rel="noopener noreferrer">Class Central — <abbr title="Open online learning platform">edX</abbr> financials &amp; royalties discussion</a>
+            </p>
+
+            <p class="tagline-end" style="margin-top:18px"><strong>Design implication for <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr>:</strong> model both <strong>per-credential revenue</strong> and <strong>enrollment yield</strong> from the same assets — YouTube and open courses often <strong>feed degrees</strong> more than they replace them.</p>
+        </section>
+
+        <!-- §7 Trust in educational video -->
+        <section id="video-trust" class="doc-section">
+            <div class="section-head">
+                <span class="section-num" aria-hidden="true">07</span>
+                <div>
+                    <h2>Trust in educational video</h2>
+                    <p class="section-sub">Checklist for <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr>-style public teaching — especially skeptical adults</p>
+                </div>
+            </div>
+
+            <p class="mini">Video is often the <strong>first proof</strong> someone has of your faculty voice. Trust is not charisma alone — it is <em>predictable quality + honest limits + visible pedagogy</em>.</p>
+
+            <div class="benefits" style="margin-top:8px">
+                <div class="benefit">
+                    <strong>Signal competence</strong>
+                    <span>State a concrete outcome in the first 30s. Use correct notation; show real work (diagram, terminal, derivation)—not buzzword slides only.</span>
+                </div>
+                <div class="benefit">
+                    <strong>Name uncertainty</strong>
+                    <span>State assumptions, when the method breaks, and what you are skipping. Version-stamp fast-moving tools (&ldquo;as of 2026…&rdquo;).</span>
+                </div>
+                <div class="benefit">
+                    <strong>Respect time &amp; ears</strong>
+                    <span>Tight pacing, chapters/timestamps, readable captions for technical terms, and <strong>clean audio</strong> (more than fancy graphics).</span>
+                </div>
+                <div class="benefit">
+                    <strong>Provenance &amp; disclosure</strong>
+                    <span>Who is speaking and why they are credible <em>for this topic</em>. Disclose sponsors, employer ties, course upsells, and <abbr title="Artificial intelligence">AI</abbr> use in scripts, demos, or visuals.</span>
+                </div>
+                <div class="benefit">
+                    <strong>Show pedagogy</strong>
+                    <span>One main idea per segment; mini-recap or check. Worked example + slight variation; call out common mistakes (&ldquo;people think X because…&rdquo;).</span>
+                </div>
+                <div class="benefit">
+                    <strong>Cite &amp; engage</strong>
+                    <span>Link papers, docs, standards in the description. Answer comments; pin clarifications when many viewers misread the same point.</span>
+                </div>
+                <div class="benefit">
+                    <strong>Series consistency</strong>
+                    <span>Repeatable segment structure across episodes; clear series promise (&ldquo;by the end you can…&rdquo;) and update the intro if scope drifts.</span>
+                </div>
+                <div class="benefit">
+                    <strong>Accessibility &amp; tone</strong>
+                    <span>Contrast, legible type, plain language where possible. Never punch down at beginners—patronizing reads as insecure expertise.</span>
+                </div>
+            </div>
+
+            <p class="mini" style="margin-top:16px"><strong>Worked example pack:</strong> <a href="adk-basic-agent-video-plan.html" style="color:var(--accent);font-weight:700">ADK Example #1 — video plan (web)</a> · <a href="adk-basic-agent-concepts-interplay.html" style="color:var(--accent);font-weight:700">Concepts &amp; interplay</a> · <a href="docs/video-plan-basic-agent.md" style="color:var(--accent);font-weight:600">Markdown</a> — production checklist vs mental-model layers.</p>
+
+            <p class="tagline-end" style="margin-top:20px"><strong>Short formula:</strong> <em>competence</em> (correct + concrete) + <em>honesty</em> (limits + disclosures) + <em>pedagogy</em> (structure + checks) + <em>respect</em> (time + clarity + access).</p>
+        </section>
+
+        <footer>
+            City University of Seattle — School of Technology and Computing · <a href="index.html">Hub</a>
+        </footer>
+    </div>
+</body>
+</html>

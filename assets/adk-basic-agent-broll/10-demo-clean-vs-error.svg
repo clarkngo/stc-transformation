@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" role="img" aria-labelledby="t10">
+  <title id="t10">Two runs: clean vs mis-set env</title>
+  <rect width="100%" height="100%" fill="#e2e8f0"/>
+  <text x="20" y="28" fill="#475569" font-family="system-ui,sans-serif" font-size="12" font-weight="600">B-roll: live demo beat</text>
+  <rect x="20" y="44" width="330" height="196" rx="10" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
+  <text x="36" y="72" fill="#86efac" font-family="system-ui,sans-serif" font-size="10" font-weight="700">RUN 1 - clean</text>
+  <g font-family="ui-monospace,Menlo,monospace" font-size="10" fill="#e2e8f0">
+    <text x="36" y="104" fill="#64748b">$ adk run .</text>
+    <text x="36" y="132" fill="#7dd3fc">... model reply OK</text>
+    <text x="36" y="168" fill="#64748b"># boring user msg - glowing path</text>
+  </g>
+  <rect x="370" y="44" width="330" height="196" rx="10" fill="#0f172a" stroke="#f87171" stroke-width="2"/>
+  <text x="386" y="72" fill="#fca5a5" font-family="system-ui,sans-serif" font-size="10" font-weight="700">RUN 2 - wrong project / key</text>
+  <g font-family="ui-monospace,Menlo,monospace" font-size="10" fill="#e2e8f0">
+    <text x="386" y="104" fill="#64748b">$ unset GOOGLE_CLOUD_PROJECT</text>
+    <text x="386" y="132" fill="#fca5a5">401 / permission denied</text>
+    <text x="386" y="156" fill="#94a3b8">grpc::UNAUTHENTICATED</text>
+    <text x="386" y="188" fill="#64748b">-&gt; fix secrets station, restore, re-run</text>
+  </g>
+</svg>

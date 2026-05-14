@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/styles.css">
+    <title>Format Synthesis — AI Agents, Explained — STC Transformation</title>
+    <style>
+        :root {
+            --green: #1e8449;
+            --green-dark: #14532d;
+            --green-mid: #27ae60;
+            --green-light: #f0fdf4;
+            --green-border: #bbf7d0;
+            --ink: #0f172a;
+            --slate: #475569;
+            --muted: #6b7280;
+            --card: #ffffff;
+            --bg: #f6f8fb;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(15,23,42,0.06), 0 4px 12px rgba(15,23,42,0.06);
+            --shadow: 0 2px 6px rgba(15,23,42,0.06), 0 12px 36px rgba(15,23,42,0.08);
+            --radius: 12px;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        .shell { max-width: 960px; margin: 0 auto; padding: 24px 20px 72px; }
+
+        /* Nav */
+        .nav-row { display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:24px; font-size:0.85rem; font-weight:600; }
+        .nav-row a { color:var(--green); text-decoration:none; }
+        .nav-row a:hover { text-decoration:underline; }
+        .sep { color:var(--border); }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(150deg, #0f172a 0%, #1e3a2f 45%, var(--green-light) 45%);
+            border-radius: var(--radius);
+            border-left: 5px solid var(--green);
+            padding: 32px 28px 28px;
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+        }
+        .hero .kicker { margin:0 0 8px; font-size:0.7rem; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:#86efac; }
+        .hero h1 { margin:0 0 8px; font-size:clamp(1.4rem,4vw,2rem); font-weight:800; letter-spacing:-0.03em; color:#fff; line-height:1.15; }
+        .hero .dek { margin:0; font-size:0.95rem; color:#bbf7d0; font-weight:500; max-width:52ch; }
+
+        /* TOC pills */
+        .toc { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:32px; }
+        .toc a { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:999px; font-size:0.82rem; font-weight:600; background:var(--card); border:1px solid var(--border); color:var(--slate); text-decoration:none; box-shadow:var(--shadow-sm); }
+        .toc a:hover { color:var(--green); border-color:var(--green-border); background:var(--green-light); }
+
+        /* Section headers */
+        .doc-section { margin-top:48px; }
+        .section-head { display:flex; align-items:flex-start; gap:14px; margin-bottom:16px; }
+        .sec-num { flex-shrink:0; width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:10px; background:var(--green); color:#fff; font-size:0.85rem; font-weight:800; }
+        .section-head h2 { margin:2px 0 4px; font-size:1.25rem; font-weight:700; letter-spacing:-0.02em; }
+        .section-sub { margin:0; font-size:0.9rem; color:var(--muted); }
+        .section-lead { margin:0 0 20px; color:var(--slate); max-width:76ch; line-height:1.6; }
+
+        /* Format DNA table */
+        .table-wrap { overflow-x:auto; border-radius:var(--radius); border:1px solid var(--border); background:var(--card); box-shadow:var(--shadow-sm); margin-bottom:8px; }
+        table.dna { width:100%; border-collapse:collapse; font-size:0.88rem; min-width:640px; }
+        .dna th { padding:11px 14px; text-align:left; font-weight:700; border-bottom:2px solid var(--border); background:#f8fafc; color:var(--ink); white-space:nowrap; }
+        .dna th.dim { width:140px; }
+        .dna th.vox  { color:#7c3aed; }
+        .dna th.ted  { color:#0369a1; }
+        .dna th.bran { color:#0891b2; }
+        .dna th.cs50 { color:var(--green-dark); }
+        .dna td { padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.45; color:var(--slate); }
+        .dna td:first-child { font-weight:600; color:var(--ink); background:#fafafa; }
+        .dna tr:last-child td { border-bottom:none; }
+        .dna tr:hover td { background:#f8fafc; }
+        .dna tr:hover td:first-child { background:#f3f4f6; }
+
+        /* Format deep-dive cards */
+        .format-grid { display:grid; gap:20px; grid-template-columns:1fr 1fr; margin-top:0; }
+        @media(max-width:680px){ .format-grid { grid-template-columns:1fr; } }
+        .fcard {
+            background:var(--card);
+            border-radius:var(--radius);
+            border:1px solid var(--border);
+            box-shadow:var(--shadow-sm);
+            overflow:hidden;
+        }
+        .fcard-head { padding:16px 18px 14px; border-bottom:1px solid var(--border); }
+        .fcard-head .tag { display:inline-block; font-size:0.68rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; padding:2px 8px; border-radius:12px; margin-bottom:6px; }
+        .fcard-head h3 { margin:0 0 4px; font-size:1.02rem; font-weight:700; }
+        .fcard-head .hook { margin:0; font-size:0.83rem; color:var(--muted); font-style:italic; }
+        .fcard-body { padding:16px 18px; }
+        .fcard-row { margin-bottom:12px; }
+        .fcard-row:last-child { margin-bottom:0; }
+        .fcard-label { font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+        .fcard-val { font-size:0.88rem; color:var(--slate); line-height:1.5; }
+
+        .vox-card .fcard-head  { background:#faf5ff; border-bottom-color:#ede9fe; }
+        .vox-card .tag         { background:#ede9fe; color:#6d28d9; }
+        .vox-card .fcard-head h3 { color:#5b21b6; }
+
+        .ted-card .fcard-head  { background:#eff6ff; border-bottom-color:#bfdbfe; }
+        .ted-card .tag         { background:#dbeafe; color:#1d4ed8; }
+        .ted-card .fcard-head h3 { color:#1e40af; }
+
+        .bran-card .fcard-head { background:#ecfeff; border-bottom-color:#a5f3fc; }
+        .bran-card .tag        { background:#cffafe; color:#0e7490; }
+        .bran-card .fcard-head h3 { color:#0369a1; }
+
+        .cs50-card .fcard-head { background:var(--green-light); border-bottom-color:var(--green-border); }
+        .cs50-card .tag        { background:var(--green-border); color:var(--green-dark); }
+        .cs50-card .fcard-head h3 { color:var(--green-dark); }
+
+        /* Arc diagram */
+        .arc-row { display:flex; align-items:center; gap:0; flex-wrap:wrap; }
+        .arc-step { display:flex; flex-direction:column; align-items:center; gap:3px; }
+        .arc-dot { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:700; color:#fff; }
+        .arc-label { font-size:0.68rem; color:var(--muted); text-align:center; max-width:52px; line-height:1.3; }
+        .arc-arrow { color:var(--border); font-size:0.75rem; padding:0 2px; margin-bottom:14px; }
+
+        /* Audience fit */
+        .fit-grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); }
+        .fit-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; box-shadow:var(--shadow-sm); }
+        .fit-card h4 { margin:0 0 10px; font-size:0.9rem; font-weight:700; }
+        .fit-bars { display:flex; flex-direction:column; gap:6px; }
+        .fit-bar-row { display:flex; align-items:center; gap:8px; }
+        .fit-bar-label { font-size:0.75rem; color:var(--muted); width:72px; flex-shrink:0; }
+        .fit-bar-track { flex:1; height:7px; background:#f1f5f9; border-radius:4px; overflow:hidden; }
+        .fit-bar-fill { height:100%; border-radius:4px; }
+
+        /* Decision guide */
+        .decision-table-wrap { overflow-x:auto; border-radius:var(--radius); border:1px solid var(--border); background:var(--card); box-shadow:var(--shadow-sm); }
+        table.decision { width:100%; border-collapse:collapse; font-size:0.86rem; min-width:560px; }
+        .decision th { padding:10px 14px; background:#f8fafc; font-weight:700; border-bottom:2px solid var(--border); text-align:left; }
+        .decision td { padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:top; color:var(--slate); }
+        .decision tr:last-child td { border-bottom:none; }
+        .decision td:first-child { font-weight:600; color:var(--ink); }
+        .pill { display:inline-block; padding:2px 8px; border-radius:10px; font-size:0.72rem; font-weight:700; margin:1px; white-space:nowrap; }
+        .pill-vox  { background:#ede9fe; color:#6d28d9; }
+        .pill-ted  { background:#dbeafe; color:#1d4ed8; }
+        .pill-bran { background:#cffafe; color:#0e7490; }
+        .pill-cs50 { background:var(--green-border); color:var(--green-dark); }
+
+        /* Hybrid section */
+        .hybrid-grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+        .hybrid-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px; box-shadow:var(--shadow-sm); }
+        .hybrid-card h4 { margin:0 0 6px; font-size:0.95rem; font-weight:700; }
+        .hybrid-card p { margin:0 0 10px; font-size:0.86rem; color:var(--slate); line-height:1.5; }
+        .hybrid-pills { display:flex; gap:4px; flex-wrap:wrap; }
+
+        /* Learning science */
+        .ls-grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); }
+        .ls-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; box-shadow:var(--shadow-sm); border-top:3px solid var(--green); }
+        .ls-card h4 { margin:0 0 6px; font-size:0.88rem; font-weight:700; color:var(--green-dark); }
+        .ls-card p { margin:0; font-size:0.83rem; color:var(--slate); line-height:1.5; }
+
+        /* STC recommendation box */
+        .rec-box { background:linear-gradient(135deg,#0f172a,#1e3a2f); color:#fff; border-radius:var(--radius); padding:28px; box-shadow:var(--shadow); }
+        .rec-box h3 { margin:0 0 12px; font-size:1.1rem; font-weight:700; color:#86efac; }
+        .rec-box p { margin:0 0 10px; font-size:0.9rem; line-height:1.6; color:#d1fae5; }
+        .rec-box p:last-child { margin:0; }
+        .rec-box strong { color:#fff; }
+
+        footer { margin-top:56px; color:var(--muted); font-size:0.85rem; text-align:center; border-top:1px solid var(--border); padding-top:20px; }
+        footer a { color:var(--green); text-decoration:none; }
+    </style>
+</head>
+<body>
+<div class="shell">
+
+    <nav class="nav-row">
+        <a href="index.html">← STC Hub</a>
+        <span class="sep">|</span>
+        <span style="color:var(--muted)">AI Agents, Explained</span>
+        <span class="sep">|</span>
+        <a href="ai-agents-explained-lecture-00-cs50.html">Lecture 0</a>
+        <a href="ai-agents-explained-episode-01.html">Ep 1 · Explainer</a>
+        <a href="ai-agents-explained-episode-01-ted.html">Ep 1 · TED</a>
+        <a href="ai-agents-explained-episode-01-brandon.html">Ep 1 · Screen demo</a>
+    </nav>
+
+    <div class="hero">
+        <p class="kicker">School of Technology and Computing · AI Agents, Explained</p>
+        <h1>Format Synthesis</h1>
+        <p class="dek">How Vox, TED, Brandon Hancock, and Malan/CS50 teach the same idea differently — and what that means for what the viewer walks away with.</p>
+    </div>
+
+    <nav class="toc" aria-label="Jump to section">
+        <a href="#format-dna">📊 Format DNA</a>
+        <a href="#deep-dives">🔍 Deep Dives</a>
+        <a href="#emotional-arc">🎭 Emotional Arc</a>
+        <a href="#learning-science">🧠 Learning Science</a>
+        <a href="#audience-fit">🎯 Audience Fit</a>
+        <a href="#decision-guide">⚖️ Decision Guide</a>
+        <a href="#hybrid">🔀 Hybrid Approaches</a>
+        <a href="#stc-rec">✅ STC Recommendation</a>
+    </nav>
+
+    <!-- ── 1. FORMAT DNA ──────────────────────────────────────────── -->
+    <section class="doc-section" id="format-dna">
+        <div class="section-head">
+            <div class="sec-num">1</div>
+            <div>
+                <h2>Format DNA</h2>
+                <p class="section-sub">Eight dimensions that define how each format teaches</p>
+            </div>
+        </div>
+        <p class="section-lead">Each format makes the same trade-off differently: what it prioritises in delivery determines what the viewer retains and feels compelled to do next.</p>
+        <div class="table-wrap">
+            <table class="dna">
+                <thead>
+                    <tr>
+                        <th class="dim">Dimension</th>
+                        <th class="vox">Vox / Kurzgesagt</th>
+                        <th class="ted">TED</th>
+                        <th class="bran">Brandon Hancock</th>
+                        <th class="cs50">Malan / CS50</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Primary device</td>
+                        <td>Animation</td>
+                        <td>Personal story</td>
+                        <td>Live demo</td>
+                        <td>Physical props + audience</td>
+                    </tr>
+                    <tr>
+                        <td>Pacing</td>
+                        <td>Fast, rhythmic</td>
+                        <td>Slow, deliberate</td>
+                        <td>Energetic, reactive</td>
+                        <td>Methodical, building</td>
+                    </tr>
+                    <tr>
+                        <td>Audience role</td>
+                        <td>Passive viewer</td>
+                        <td>Moved listener</td>
+                        <td>Co-discoverer</td>
+                        <td>Active participant</td>
+                    </tr>
+                    <tr>
+                        <td>Tension source</td>
+                        <td>What comes next?</td>
+                        <td>Why does this matter?</td>
+                        <td>Will it work?</td>
+                        <td>What will the card say?</td>
+                    </tr>
+                    <tr>
+                        <td>Key emotion</td>
+                        <td>Curiosity</td>
+                        <td>Conviction</td>
+                        <td>Excitement</td>
+                        <td>Discovery</td>
+                    </tr>
+                    <tr>
+                        <td>Takeaway form</td>
+                        <td>Mental model</td>
+                        <td>A question to ask</td>
+                        <td>Watch for demos</td>
+                        <td>A physical card to write</td>
+                    </tr>
+                    <tr>
+                        <td>Memory device</td>
+                        <td>Three-part cutaway</td>
+                        <td>Job description question</td>
+                        <td>Vague vs. clear demo</td>
+                        <td>Three envelopes</td>
+                    </tr>
+                    <tr>
+                        <td>Repurposable asset</td>
+                        <td>Animation clips</td>
+                        <td>Quote excerpts</td>
+                        <td>Short clips</td>
+                        <td>Envelope exercise (workshops)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ── 2. DEEP DIVES ──────────────────────────────────────────── -->
+    <section class="doc-section" id="deep-dives">
+        <div class="section-head">
+            <div class="sec-num">2</div>
+            <div>
+                <h2>Deep Dives</h2>
+                <p class="section-sub">What each format is really doing under the hood</p>
+            </div>
+        </div>
+        <p class="section-lead">Behind every stylistic choice is a theory of how people learn and what makes them act. These breakdowns make the implicit logic explicit.</p>
+
+        <div class="format-grid">
+
+            <div class="fcard vox-card">
+                <div class="fcard-head">
+                    <span class="tag">Vox / Kurzgesagt</span>
+                    <h3>Concept as spectacle</h3>
+                    <p class="hook">"Make the invisible visible, then make it satisfying to understand."</p>
+                </div>
+                <div class="fcard-body">
+                    <div class="fcard-row">
+                        <div class="fcard-label">What it's doing</div>
+                        <div class="fcard-val">Uses animation to externalise abstract ideas — the viewer never has to hold a complex mental model in working memory because it's rendered on screen. Each cut is a cognitive handoff.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Core mechanism</div>
+                        <div class="fcard-val">Dual coding (paired visual + narration) reduces load. Fast rhythm keeps attention without demanding active effort. The <em>reveal</em> structure (show problem → show consequence → show reframe) creates repeated micro-satisfactions.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Viewer walks away with</div>
+                        <div class="fcard-val">A sharable analogy. They can say "it's like…" to someone else. High share-intent, low recall of specifics after 48 hours without reinforcement.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Risk</div>
+                        <div class="fcard-val">Passive consumption can feel like learning without being learning. The viewer may overestimate their understanding ("fluency illusion").</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">STC use-case</div>
+                        <div class="fcard-val">Top-of-funnel awareness. Pre-enrollment. Social media clips. "What is AI?" for a non-technical audience that will never run code.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fcard ted-card">
+                <div class="fcard-head">
+                    <span class="tag">TED</span>
+                    <h3>Idea as personal stake</h3>
+                    <p class="hook">"Give the audience a belief they didn't have when they sat down."</p>
+                </div>
+                <div class="fcard-body">
+                    <div class="fcard-row">
+                        <div class="fcard-label">What it's doing</div>
+                        <div class="fcard-val">Opens with a personal story that creates identity-level stakes, then widens to a universal truth. The speaker models the intellectual journey so the audience can mirror it emotionally rather than analytically.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Core mechanism</div>
+                        <div class="fcard-val">Narrative transportation — when someone is absorbed in a story, counter-arguing drops. The job-description question ("what does it know, what can it do, what should it decide?") is a decision framework disguised as a rhetorical device.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Viewer walks away with</div>
+                        <div class="fcard-val">A question they'll ask in their next meeting. High conviction, medium-term behaviour change — but only if it connects to something the viewer already cares about.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Risk</div>
+                        <div class="fcard-val">Inspirational but not actionable if the story doesn't land. Mismatch between speaker's personal stakes and audience's actual situation breaks the mirror.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">STC use-case</div>
+                        <div class="fcard-val">Faculty/dean alignment. Accreditation committees. Partner/employer conversations. Any room where you need to shift a belief before presenting a plan.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fcard bran-card">
+                <div class="fcard-head">
+                    <span class="tag">Brandon Hancock</span>
+                    <h3>Learning by watching someone figure it out</h3>
+                    <p class="hook">"Show me struggling intelligently, then succeeding — and I'll believe I can too."</p>
+                </div>
+                <div class="fcard-body">
+                    <div class="fcard-row">
+                        <div class="fcard-label">What it's doing</div>
+                        <div class="fcard-val">The live screen demo makes the learner a co-discoverer. Real errors, real terminal output, real debugging — the process is the content. Vague-vs-clear agent demo creates a comparison the viewer can reference later when writing their own instructions.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Core mechanism</div>
+                        <div class="fcard-val">Observational learning (Bandura). Seeing someone solve a problem in real time activates the same pathways as doing it yourself — the viewer mentally predicts what comes next. When they're wrong, the surprise deepens encoding.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Viewer walks away with</div>
+                        <div class="fcard-val">Permission and a template. "They did it, I can do it. I know roughly what my screen will look like." High near-transfer (same tool, slightly different task).</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Risk</div>
+                        <div class="fcard-val">If the demo breaks badly or drags, engagement falls faster than any other format. Requires tight editing. Low abstraction = low far-transfer (different tool or context).</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">STC use-case</div>
+                        <div class="fcard-val">Current students. Developers already using AI tools. Follow-along labs. The "okay I want to actually build this" viewer segment after they've watched Vox or TED.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fcard cs50-card">
+                <div class="fcard-head">
+                    <span class="tag">Malan / CS50</span>
+                    <h3>Discovery as ritual</h3>
+                    <p class="hook">"The moment of understanding should feel like something happened to you, not something you were told."</p>
+                </div>
+                <div class="fcard-body">
+                    <div class="fcard-row">
+                        <div class="fcard-label">What it's doing</div>
+                        <div class="fcard-val">Physical props (envelopes, cards, volunteers) make the audience responsible for the reveal. The whiteboard tracks state visibly. The live audience reaction gives remote viewers a reference point for how to respond.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Core mechanism</div>
+                        <div class="fcard-val">Embodied cognition — manipulating physical objects while learning creates stronger encoding than watching or hearing alone. Active prediction (what will the card say?) means the learner is constructing the answer before it's given, making the reveal a confirmation rather than information delivery.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Viewer walks away with</div>
+                        <div class="fcard-val">A memory of the moment, not just the fact. High long-term retention. The envelope exercise can be replicated in a workshop, making it the most reproducible learning artefact of the four formats.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">Risk</div>
+                        <div class="fcard-val">Requires a live or near-live production. Hardest to fake — a flat delivery of this format performs worse than a good Vox-style piece. The instructor's presence and energy are load-bearing.</div>
+                    </div>
+                    <div class="fcard-row">
+                        <div class="fcard-label">STC use-case</div>
+                        <div class="fcard-val">Signature recorded lecture. New-student orientation. Faculty development workshops. Any context where you want the content to feel like a CityU/STC experience, not just internet content.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ── 3. EMOTIONAL ARC ───────────────────────────────────────── -->
+    <section class="doc-section" id="emotional-arc">
+        <div class="section-head">
+            <div class="sec-num">3</div>
+            <div>
+                <h2>Emotional Arc</h2>
+                <p class="section-sub">How each format moves the viewer from start to finish</p>
+            </div>
+        </div>
+        <p class="section-lead">Emotion is the delivery mechanism for memory. A viewer who feels nothing retains nothing. Each format targets a different emotional journey — and the destination determines what they do next.</p>
+
+        <div style="display:flex;flex-direction:column;gap:20px;margin-top:4px;">
+
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-sm);border-left:4px solid #7c3aed">
+                <div style="font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#7c3aed;margin-bottom:10px">Vox / Kurzgesagt — The Curiosity Loop</div>
+                <div class="arc-row">
+                    <div class="arc-step"><div class="arc-dot" style="background:#a78bfa">😐</div><div class="arc-label">Neutral / scrolling</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#8b5cf6">🤔</div><div class="arc-label">Hook curiosity</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#7c3aed">😮</div><div class="arc-label">Reveal / reframe</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#6d28d9">😄</div><div class="arc-label">Satisfaction</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#5b21b6">🗣️</div><div class="arc-label">Share / talk about it</div></div>
+                </div>
+                <p style="margin:12px 0 0;font-size:0.83rem;color:var(--slate)"><strong>The loop:</strong> Each segment re-opens a small question before closing the last one. Dropping out feels like leaving mid-sentence. High completion rate — the viewer stays to resolve the tension even if they weren't deeply invested at the start.</p>
+            </div>
+
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-sm);border-left:4px solid #0369a1">
+                <div style="font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0369a1;margin-bottom:10px">TED — The Conviction Arc</div>
+                <div class="arc-row">
+                    <div class="arc-step"><div class="arc-dot" style="background:#7dd3fc">🤨</div><div class="arc-label">Mild skepticism</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#38bdf8">😌</div><div class="arc-label">Drawn in by story</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#0ea5e9">🧐</div><div class="arc-label">Stakes become real</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#0369a1">😤</div><div class="arc-label">Conviction</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#1e40af">💬</div><div class="arc-label">Ask the question</div></div>
+                </div>
+                <p style="margin:12px 0 0;font-size:0.83rem;color:var(--slate)"><strong>The shift:</strong> The speaker's personal story makes the abstract personal. By the time the framework lands, the audience has emotionally accepted the premise. The question ("what does it know, what can it do, what should it decide?") is a tool the viewer can use in their next conversation — making them feel like an insider.</p>
+            </div>
+
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-sm);border-left:4px solid #0891b2">
+                <div style="font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0891b2;margin-bottom:10px">Brandon Hancock — The Excitement Ladder</div>
+                <div class="arc-row">
+                    <div class="arc-step"><div class="arc-dot" style="background:#a5f3fc">😟</div><div class="arc-label">Uncertainty / doubt</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#67e8f9">👀</div><div class="arc-label">Watching closely</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#22d3ee">😬</div><div class="arc-label">Will it work?</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#0891b2">😲</div><div class="arc-label">It works!</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#0e7490">🙋</div><div class="arc-label">"I can do this"</div></div>
+                </div>
+                <p style="margin:12px 0 0;font-size:0.83rem;color:var(--slate)"><strong>The ladder:</strong> Each demo step is slightly harder than the last. Early successes build psychological safety ("I understand what I'm watching") and late surprises trigger genuine excitement ("I didn't know it could do that"). The viewer leaves not just informed but <em>motivated</em> — which is rarer than it sounds.</p>
+            </div>
+
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-sm);border-left:4px solid var(--green)">
+                <div style="font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--green-dark);margin-bottom:10px">Malan / CS50 — The Discovery Ritual</div>
+                <div class="arc-row">
+                    <div class="arc-step"><div class="arc-dot" style="background:#86efac">🙂</div><div class="arc-label">Present, alert</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#4ade80">🤔</div><div class="arc-label">Holding a question</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#22c55e">😳</div><div class="arc-label">Prediction challenged</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:#16a34a">💡</div><div class="arc-label">Aha moment</div></div>
+                    <span class="arc-arrow">→</span>
+                    <div class="arc-step"><div class="arc-dot" style="background:var(--green)">✍️</div><div class="arc-label">Write it on the card</div></div>
+                </div>
+                <p style="margin:12px 0 0;font-size:0.83rem;color:var(--slate)"><strong>The ritual:</strong> The physical act of writing closes the loop between "I heard it" and "I know it." Malan's format is designed so that the <em>act of revelation</em> is the learning event — not the information delivered before or after it. Writing on the card is the moment the idea transfers from the instructor to the learner.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ── 4. LEARNING SCIENCE ────────────────────────────────────── -->
+    <section class="doc-section" id="learning-science">
+        <div class="section-head">
+            <div class="sec-num">4</div>
+            <div>
+                <h2>Learning Science Behind Each Format</h2>
+                <p class="section-sub">The cognitive and pedagogical theories each format leans on</p>
+            </div>
+        </div>
+        <p class="section-lead">No format is accidental. Each one has drifted toward the techniques that work for its medium and audience over years of iteration. Here's what the research says about <em>why</em> they work.</p>
+        <div class="ls-grid">
+            <div class="ls-card">
+                <h4>Dual Coding (Paivio)</h4>
+                <p>Information encoded in both verbal and visual channels is recalled more reliably. Vox maximises this — every concept has a paired animation. The other formats use it less deliberately.</p>
+            </div>
+            <div class="ls-card">
+                <h4>Cognitive Load Theory (Sweller)</h4>
+                <p>Working memory is limited. Vox offloads via animation. CS50 offloads via props and audience participation. TED and Brandon rely on the learner's working memory more — which is fine for motivated adults, risky for novices.</p>
+            </div>
+            <div class="ls-card">
+                <h4>Narrative Transportation (Green &amp; Brock)</h4>
+                <p>When absorbed in a story, critical thinking drops and belief change rises. TED exploits this deliberately — the personal story at the open lowers the audience's defences before the argument is made.</p>
+            </div>
+            <div class="ls-card">
+                <h4>Observational Learning (Bandura)</h4>
+                <p>We learn from watching others succeed. Brandon's demo format works because the viewer isn't just watching a result — they're watching a process, including errors. Models who struggle and recover are more effective than models who perform flawlessly.</p>
+            </div>
+            <div class="ls-card">
+                <h4>Desirable Difficulty (Bjork)</h4>
+                <p>Learning that feels harder encodes deeper. CS50's prediction model (what will the card say?) is a built-in desirable difficulty — the learner generates an answer before seeing the correct one, which is more effective than passive reception.</p>
+            </div>
+            <div class="ls-card">
+                <h4>Embodied Cognition (Lakoff &amp; Johnson)</h4>
+                <p>Physical actions during learning create stronger and more retrievable memories. Writing on the card at the end of Lecture 0 is not a cute prop trick — it's encoding the concept through motor memory, spatial location, and personal handwriting simultaneously.</p>
+            </div>
+            <div class="ls-card">
+                <h4>Spacing &amp; Interleaving (Ebbinghaus)</h4>
+                <p>All four formats produce one dense learning event. To convert any of them into durable knowledge, they need follow-up: a lab, a discussion, a quiz, or a build task within 48 hours. The format gets them to the door; the curriculum has to take them through it.</p>
+            </div>
+            <div class="ls-card">
+                <h4>Self-Efficacy (Bandura)</h4>
+                <p>Belief that you can do something precedes actually doing it. Brandon's format builds self-efficacy directly ("I watched someone do it, I can picture myself doing it"). TED builds it indirectly through conviction. Vox builds curiosity but not confidence. CS50 builds ownership.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── 5. AUDIENCE FIT ────────────────────────────────────────── -->
+    <section class="doc-section" id="audience-fit">
+        <div class="section-head">
+            <div class="sec-num">5</div>
+            <div>
+                <h2>Audience Fit</h2>
+                <p class="section-sub">Which format lands best with which viewer</p>
+            </div>
+        </div>
+        <p class="section-lead">The best format is the one that matches your audience's prior knowledge, motivation, and available attention — not the one that's hardest to produce.</p>
+
+        <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--card);box-shadow:var(--shadow-sm);">
+            <table style="width:100%;border-collapse:collapse;font-size:0.86rem;min-width:600px;">
+                <thead>
+                    <tr>
+                        <th style="padding:10px 14px;background:#f8fafc;font-weight:700;border-bottom:2px solid var(--border);text-align:left;">Audience segment</th>
+                        <th style="padding:10px 14px;background:#f8fafc;font-weight:700;border-bottom:2px solid var(--border);text-align:left;color:#7c3aed;">Vox</th>
+                        <th style="padding:10px 14px;background:#f8fafc;font-weight:700;border-bottom:2px solid var(--border);text-align:left;color:#1d4ed8;">TED</th>
+                        <th style="padding:10px 14px;background:#f8fafc;font-weight:700;border-bottom:2px solid var(--border);text-align:left;color:#0e7490;">Brandon</th>
+                        <th style="padding:10px 14px;background:#f8fafc;font-weight:700;border-bottom:2px solid var(--border);text-align:left;color:var(--green-dark);">CS50</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;">General public (no CS background)</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐⭐ Best fit</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;">Prospective students</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐⭐ Best fit</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;">Current students (hands-on)</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐⭐ Best fit</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;">Faculty / educators</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐⭐ Best fit</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;">Executives / decision-makers</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐⭐ Best fit</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;">Developers / practitioners</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐⭐⭐ Best fit</td>
+                        <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--slate);">⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px 14px;font-weight:600;">Workshop participants</td>
+                        <td style="padding:10px 14px;color:var(--slate);">⭐⭐</td>
+                        <td style="padding:10px 14px;color:var(--slate);">⭐⭐⭐</td>
+                        <td style="padding:10px 14px;color:var(--slate);">⭐⭐⭐⭐</td>
+                        <td style="padding:10px 14px;color:var(--slate);">⭐⭐⭐⭐⭐ Best fit</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ── 6. DECISION GUIDE ──────────────────────────────────────── -->
+    <section class="doc-section" id="decision-guide">
+        <div class="section-head">
+            <div class="sec-num">6</div>
+            <div>
+                <h2>Decision Guide</h2>
+                <p class="section-sub">Choose a format based on your constraints and goal</p>
+            </div>
+        </div>
+        <p class="section-lead">When you know your goal, your audience, and your production capacity — the format often chooses itself.</p>
+        <div class="decision-table-wrap">
+            <table class="decision">
+                <thead>
+                    <tr>
+                        <th>If your goal is…</th>
+                        <th>Best format</th>
+                        <th>Why</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Maximum reach, social sharing</td>
+                        <td><span class="pill pill-vox">Vox</span></td>
+                        <td>Fast, visually satisfying, repeatable as clips. High share-intent when the analogy lands.</td>
+                    </tr>
+                    <tr>
+                        <td>Shift a belief or unlock buy-in</td>
+                        <td><span class="pill pill-ted">TED</span></td>
+                        <td>Narrative transportation reduces resistance. The job-description question gives them something to use immediately.</td>
+                    </tr>
+                    <tr>
+                        <td>Get someone to open a terminal</td>
+                        <td><span class="pill pill-bran">Brandon</span></td>
+                        <td>Observational learning + self-efficacy boost. Seeing it done in real time removes the "I don't know where to start" blocker.</td>
+                    </tr>
+                    <tr>
+                        <td>Create a memorable learning experience</td>
+                        <td><span class="pill pill-cs50">CS50</span></td>
+                        <td>Embodied cognition + prediction + physical artefact = highest long-term retention of the four formats.</td>
+                    </tr>
+                    <tr>
+                        <td>Low production capacity, async</td>
+                        <td><span class="pill pill-bran">Brandon</span></td>
+                        <td>Screen recording + narration. No animation team, no stage, no audience needed. Highest ROI per production hour.</td>
+                    </tr>
+                    <tr>
+                        <td>High production investment, flagship</td>
+                        <td><span class="pill pill-cs50">CS50</span> <span class="pill pill-vox">Vox</span></td>
+                        <td>CS50 for the signature recorded lecture; Vox for the accompanying explainer clips. Together they cover awareness + ownership.</td>
+                    </tr>
+                    <tr>
+                        <td>Live event (conference, orientation)</td>
+                        <td><span class="pill pill-ted">TED</span> <span class="pill pill-cs50">CS50</span></td>
+                        <td>TED for the opening keynote slot; CS50 for the breakout/workshop. One shifts beliefs, the other creates the memory.</td>
+                    </tr>
+                    <tr>
+                        <td>Recurring curriculum content</td>
+                        <td><span class="pill pill-cs50">CS50</span></td>
+                        <td>The envelope exercise and whiteboard approach scale to any cohort and can be facilitated by any prepared instructor — not just the original creator.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ── 7. HYBRID APPROACHES ───────────────────────────────────── -->
+    <section class="doc-section" id="hybrid">
+        <div class="section-head">
+            <div class="sec-num">7</div>
+            <div>
+                <h2>Hybrid Approaches</h2>
+                <p class="section-sub">Combining formats to cover more ground with fewer videos</p>
+            </div>
+        </div>
+        <p class="section-lead">The formats are not mutually exclusive. The most effective content series often borrow deliberately across them — using one format's strength to patch another's weakness.</p>
+        <div class="hybrid-grid">
+            <div class="hybrid-card">
+                <h4>The Awareness → Action sequence</h4>
+                <p>Release the Vox-style explainer first to build awareness and social reach. Follow it within a week with the Brandon demo for people who are now curious enough to try it. The TED version can live as the "why it matters" piece for decision-makers who found the Vox piece too shallow.</p>
+                <div class="hybrid-pills">
+                    <span class="pill pill-vox">Vox first</span>
+                    <span style="color:var(--muted);font-size:0.8rem;align-self:center">→</span>
+                    <span class="pill pill-bran">Brandon follow-up</span>
+                    <span style="color:var(--muted);font-size:0.8rem;align-self:center">→</span>
+                    <span class="pill pill-ted">TED for leaders</span>
+                </div>
+            </div>
+            <div class="hybrid-card">
+                <h4>The Lecture + Lab pairing</h4>
+                <p>Use CS50-style for the recorded lecture (high retention, high STC brand identity). Use Brandon-style for the companion lab walkthrough. Students watch the lecture to understand concepts, then watch the demo before their own coding session.</p>
+                <div class="hybrid-pills">
+                    <span class="pill pill-cs50">CS50 lecture</span>
+                    <span style="color:var(--muted);font-size:0.8rem;align-self:center">+</span>
+                    <span class="pill pill-bran">Brandon lab</span>
+                </div>
+            </div>
+            <div class="hybrid-card">
+                <h4>The Workshop Opener</h4>
+                <p>Open a live session with 3 minutes of a Vox-style clip to set context (works even for a non-technical audience). Then transition to CS50-style facilitation with props. The clip does the cognitive heavy lifting; the workshop does the embodied learning.</p>
+                <div class="hybrid-pills">
+                    <span class="pill pill-vox">Vox clip (3 min)</span>
+                    <span style="color:var(--muted);font-size:0.8rem;align-self:center">→</span>
+                    <span class="pill pill-cs50">CS50 workshop</span>
+                </div>
+            </div>
+            <div class="hybrid-card">
+                <h4>The Borrow: TED opens a Brandon video</h4>
+                <p>Start a screen-demo video with 90 seconds of personal story (TED device) before showing the terminal. This lifts the demo's emotional stakes — the viewer cares about the outcome before the code appears. Works especially well for "Why I switched to agents" tutorials.</p>
+                <div class="hybrid-pills">
+                    <span class="pill pill-ted">TED open (90 sec)</span>
+                    <span style="color:var(--muted);font-size:0.8rem;align-self:center">→</span>
+                    <span class="pill pill-bran">Brandon demo</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── 8. STC RECOMMENDATION ──────────────────────────────────── -->
+    <section class="doc-section" id="stc-rec">
+        <div class="section-head">
+            <div class="sec-num">8</div>
+            <div>
+                <h2>STC Recommendation</h2>
+                <p class="section-sub">Which formats to prioritise given STC's goals and capacity</p>
+            </div>
+        </div>
+        <p class="section-lead">Given STC's position — a growing tech school with a flagship AI program, limited production budget, and three distinct audiences (leadership, faculty, students) — the format choice is a strategic asset allocation, not just a creative preference.</p>
+        <div class="rec-box">
+            <h3>Priority order for "AI Agents, Explained"</h3>
+            <p><strong>1. CS50-style Lecture 0 (flagship).</strong> This is the one STC should invest in most. It creates a signature experience tied to the STC/CityU brand, scales to workshops and orientations, and produces the strongest long-term retention. A consistent on-camera anchor (named faculty or dean) over multiple episodes matters more than production polish — the CS50 comparison holds here.</p>
+            <p><strong>2. Brandon-style demo (companion lab).</strong> High ROI, low production overhead. Pairs directly with the lecture to give students something to do. Release as the follow-up for every CS50 episode.</p>
+            <p><strong>3. TED version (leadership brief).</strong> Use for the AAC presentation, faculty alignment sessions, and employer/partner conversations — not for YouTube. The job-description question is the single most portable tool in the series for non-technical decision-makers.</p>
+            <p><strong>4. Vox/Kurzgesagt (when budget allows).</strong> The highest-reach format but the most expensive to produce well. Commission one or two animated pieces for the BSAI program launch — not as the primary curriculum delivery vehicle but as the top-of-funnel asset that drives enrollment conversations.</p>
+        </div>
+    </section>
+
+    <footer>
+        Part of the <a href="index.html">STC Transformation Hub</a> · AI Agents, Explained series · Maintained by Clark Ngo
+    </footer>
+
+</div>
+    <script src="assets/nav.js"></script>
+</body>
+</html>

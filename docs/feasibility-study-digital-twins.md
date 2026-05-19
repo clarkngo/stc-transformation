@@ -1431,6 +1431,21 @@ The argument for Clark's leadership is not theoretical — he has already built 
 
 These resources demonstrate Clark's capacity to translate complex technical domains into structured, student-ready curriculum — exactly the skill the Digital Twins lab initiative requires.
 
+### Clark's Professional Background
+
+Clark's qualifications for leading this initiative are grounded in a decade of professional engineering and teaching experience across industry, academia, and program management:
+
+| Role | Organization | Relevance to Digital Twins Lab |
+|---|---|---|
+| **AI Engineer** (Jan 2024–Present) | City University of Seattle | Built RAG pipelines, custom MCP server, and multi-agent workflows using Google ADK — directly applicable to the AI/analytics layer of Digital Twin systems. Designed swarm-style agent frameworks with supervisor/specialist coordination, real-time context management, and LLM integration. |
+| **Technical Program Manager** (Jan 2019–Apr 2020) | City University of Seattle | Led a university-wide AWS apprenticeship program for military veterans. Transitioned 40 of 43 veterans into AWS developer roles across two 17-week cohorts. Achieved 40% reduction in operational costs ($72,000 saved). Demonstrates Clark's ability to design and execute structured technical training programs at institutional scale. |
+| **Software Engineer** (Aug 2021–Oct 2023) | eBay (Contract) | Built distributed backend systems at enterprise scale — Elasticsearch, Kafka, Java Spring microservices, Kubernetes. Reduced incident detection time from 1 minute to 10 seconds. Increased test coverage by 40%. Demonstrates production-grade engineering credibility relevant to the cloud and IoT infrastructure layers of Digital Twins. |
+| **Software Engineer** (Jul 2020–Dec 2020) | CloudEagle (YC W22) | Part of the pre-launch engineering team for a Y Combinator-backed AI-driven Vendor Management System. Built high-performance Java Spring backend on AWS. Demonstrates experience with early-stage, high-stakes technical builds — the same profile as a lab launch. |
+| **Software Engineer** (Jan 2021–Jul 2021) | Worldwide American | Architected a basketball platform with real-time data handling on AWS (S3, EC2, CloudFront). Full-stack build: Angular/React front-end, Java Spring/MongoDB backend. |
+| **IT Consultant** (Nov–Dec 2023) | Self-employed | Led digital transformation engagements: knowledge base consolidation, Git/GitHub standardization, ERPNext ERP modernization, VPN/DDNS infrastructure. |
+
+Clark brings rare depth: he has shipped production software at enterprise scale (eBay), built and managed technical training programs at the university level (CityU AWS Apprenticeship), and is actively applying cutting-edge AI tooling (RAG, MCP, Google ADK) in his current role at STC. This combination — engineering credibility, teaching experience, and current AI domain expertise — is precisely what the Digital Twins lab needs in a program lead.
+
 ### 14.4 The Risk of Not Resourcing This Role
 
 If STC approves the initiative but does not formally recognize and resource Clark's leadership of it, the predictable outcomes are:

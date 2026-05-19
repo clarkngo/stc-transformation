@@ -1444,7 +1444,33 @@ Clark's qualifications for leading this initiative are grounded in a decade of p
 | **Software Engineer** (Jan 2021–Jul 2021) | Worldwide American | Architected a basketball platform with real-time data handling on AWS (S3, EC2, CloudFront). Full-stack build: Angular/React front-end, Java Spring/MongoDB backend. |
 | **IT Consultant** (Nov–Dec 2023) | Self-employed *(Paper mill & corrugated boxes industry)* | Led digital transformation for a paper mill and corrugated boxes manufacturer: knowledge base consolidation, Git/GitHub standardization, ERPNext ERP modernization, VPN/DDNS infrastructure. Direct industry overlap with the Manufacturing Industry Primer Clark built and with corrugated packaging as a Digital Twin use case. |
 
-Clark brings rare depth: he has shipped production software at enterprise scale (eBay), built and managed technical training programs at the university level (CityU AWS Apprenticeship), and is actively applying cutting-edge AI tooling (RAG, MCP, Google ADK) in his current role at STC. This combination — engineering credibility, teaching experience, and current AI domain expertise — is precisely what the Digital Twins lab needs in a program lead.
+Clark brings rare depth: he has shipped production software at enterprise scale (eBay), built and managed technical training programs at the university level (CityU AWS Apprenticeship — $72K saved, 93% placement), published six academic works including a peer-reviewed paper at UKC 2024, built 114 free teaching videos on YouTube, and is actively applying cutting-edge AI tooling (RAG, MCP, Google ADK) in his current role at STC. This combination — engineering credibility, teaching experience, research output, and current AI domain expertise — is precisely what the Digital Twins lab needs in a program lead.
+
+### Academic Credentials & Certifications
+
+| Credential | Institution | Year |
+|---|---|---|
+| **M.B.A.** (GPA 3.9) | City University of Seattle | 2025 |
+| **M.S. Computer Science** (GPA 3.9, President's Honor) | City University of Seattle | 2020 |
+| **B.S. Commerce** | De La Salle University — Manila | 2011 |
+| AWS Cloud Practitioner | Amazon Web Services | 2020–23 |
+| CompTIA Linux+ Certified | CompTIA | 2020–23 |
+| The Firehose Project — Software Engineering | The Firehose Project | 2019 |
+
+### Research & Publications
+
+Six academic contributions across peer-reviewed journals and international conferences — research partner: Dr. Sam Chung (CityU):
+
+| Year | Title | Venue |
+|---|---|---|
+| 2025 | Threat Model on Google ADK Agents: An OWASP Agentic Security Initiative Perspective | CISSE 2025 |
+| 2024 | **Enterprise AI: Full-Stack DevSecOps with Retrieval-Augmented Generation** *(peer-reviewed)* | UKC 2024 Conference Proceedings, vol. 238 — San Francisco |
+| 2023 | Open-Source Access and Equity in Computing Education | ISCAP |
+| 2020 | Serverless Security — Cloud-Native Threat Modeling | Journal of CISSE |
+| 2019 | Crossing the Chasm between FinTech and Finance Professionals *(first student-track paper from CityU Tech)* | CISSE — Las Vegas |
+| 2019 | FinTech & Emerging Technology in Finance Professional Practice | ICOAF — Vietnam |
+
+For Clark's full professional portfolio, see: [clarkngo.github.io/cityu-contributions](https://clarkngo.github.io/cityu-contributions/)
 
 ### 14.4 The Risk of Not Resourcing This Role
 
@@ -1499,6 +1525,7 @@ This is not an unusual ask for a new program initiative at a university. It is a
 - Genesis World. (2026). *Genesis Open-Source Robotics Simulator*. https://github.com/Genesis-Embodied-AI/Genesis
 - AMD & Robotec.ai. (October 2025). *AMD and Robotec partner to advance open-source simulation for autonomous systems*. https://roboticsandautomationnews.com/2025/10/31/amd-partners-with-robotec-to-build-open-ecosystem-for-autonomous-systems-and-robotics/
 - Hackster.io. *AMD Pervasive AI Developer Contest*. https://www.hackster.io/contests/amd2023
+- Ngo, C. (2026). *Clark Jason Ngo — Contributions Portfolio · CityU of Seattle*. https://clarkngo.github.io/cityu-contributions/
 
 ---
 

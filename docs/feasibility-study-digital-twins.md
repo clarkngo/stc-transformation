@@ -1418,6 +1418,19 @@ The qualities that make Clark the right person to lead this are:
 
 **Student connection:** For a program serving primarily non-technical students entering a technically demanding field, the instructor's ability to meet students where they are — and build confidence progressively — matters enormously. Clark's design of this curriculum already reflects that understanding: starting with visual, browser-based tools before introducing code; tiering outcomes by ability; flagging accessibility risks before they become failures.
 
+### Resources Clark Has Already Built
+
+The argument for Clark's leadership is not theoretical — he has already built curriculum-ready learning materials in this exact domain:
+
+| Resource | Description |
+|---|---|
+| **[Digital Twin Interactive Playground](https://clarkngo.github.io/playground/digital-twin/01-intro.html)** (10-activity series) | Self-paced interactive course covering Digital Twin fundamentals through 10 hands-on activities: intro, smart factory twin, building twin, maintenance twin, city twin, health twin, sync twin, scenario modeling, quiz, and capstone design exercise. Purpose-built for accessible, browser-based student learning. |
+| **[Physical AI Learning Hub](https://clarkngo.github.io/physical-ai/)** | Dedicated resource hub covering AI systems that operate in physical environments — robotics, embodied AI, and sim-to-real pipelines. Directly aligned with Track A of this feasibility study. |
+| **[Maritime & Shipping Industry Primer](https://clarkngo.github.io/playground/primer/industry/maritime/index.html)** | Comprehensive reference guide on global ocean freight, container shipping, port operations, and vessel management — demonstrating Clark's ability to build domain-specific Digital Twin context for real industry verticals. |
+| **[Manufacturing Industry Primer](https://clarkngo.github.io/playground/primer/industry/manufacturing/index.html)** (Corrugated Packaging) | Deep-dive manufacturing primer covering the corrugated packaging value chain — from pulp mills through box production and delivery — with terminology, metrics, key players, and operational workflows relevant to Digital Twin implementation in manufacturing. |
+
+These resources demonstrate Clark's capacity to translate complex technical domains into structured, student-ready curriculum — exactly the skill the Digital Twins lab initiative requires.
+
 ### 14.4 The Risk of Not Resourcing This Role
 
 If STC approves the initiative but does not formally recognize and resource Clark's leadership of it, the predictable outcomes are:

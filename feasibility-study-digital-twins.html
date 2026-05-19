@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/styles.css">
+    <title>Digital Twins Lab — Feasibility Study · STC</title>
+    <style>
+        :root {
+            --accent: #1e8449;
+            --accent-light: #eafaf1;
+            --muted: #6b7280;
+            --bg: #f6f8fb;
+            --card: #ffffff;
+            --border: #e2e8f0;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+        body {
+            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+            background: var(--bg);
+            color: #0f1724;
+            line-height: 1.65;
+            font-size: 0.97rem;
+        }
+
+        /* ── Layout ──────────────────────────────── */
+        .layout {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            grid-template-areas: "sidebar main";
+            max-width: 1200px;
+            margin: 32px auto;
+            padding: 0 20px;
+            gap: 32px;
+            align-items: start;
+        }
+        @media (max-width: 900px) {
+            .layout { grid-template-columns: 1fr; grid-template-areas: "main"; }
+            .sidebar { display: none; }
+        }
+
+        /* ── Sidebar TOC ─────────────────────────── */
+        .sidebar {
+            grid-area: sidebar;
+            position: sticky;
+            top: 72px;
+        }
+        .toc-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+        }
+        .toc-box h4 {
+            margin: 0 0 10px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+        }
+        .toc-box ol {
+            margin: 0;
+            padding-left: 16px;
+            list-style: decimal;
+        }
+        .toc-box li { margin: 5px 0; }
+        .toc-box a {
+            text-decoration: none;
+            color: #374151;
+            font-size: 0.83rem;
+            line-height: 1.4;
+            display: block;
+        }
+        .toc-box a:hover { color: var(--accent); }
+        .toc-box a.active { color: var(--accent); font-weight: 600; }
+
+        /* ── Main content area ───────────────────── */
+        .main { grid-area: main; }
+
+        /* ── Doc header ──────────────────────────── */
+        .doc-header {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 14px rgba(15,23,42,0.05);
+            border: 1px solid var(--border);
+        }
+        .doc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+        .doc-header h1 {
+            margin: 0 0 4px;
+            font-size: 1.7rem;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+        .doc-header .subtitle {
+            color: var(--muted);
+            font-size: 1rem;
+            margin: 0 0 16px;
+        }
+        .doc-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            padding-top: 14px;
+        }
+        .doc-meta span strong { color: #374151; }
+
+        /* ── Section ─────────────────────────────── */
+        .section {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(15,23,42,0.03);
+        }
+        .section h2 {
+            margin: 0 0 16px;
+            font-size: 1.25rem;
+            color: #0f1724;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent-light);
+        }
+        .section h2 .sec-num {
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+        .section h3 {
+            font-size: 1.05rem;
+            color: #1a2e1a;
+            margin: 24px 0 10px;
+        }
+        .section h3:first-child { margin-top: 0; }
+        .section h4 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #374151;
+            margin: 18px 0 8px;
+        }
+        .section p { margin: 0 0 12px; }
+        .section ul, .section ol { margin: 0 0 14px; padding-left: 22px; }
+        .section li { margin-bottom: 5px; }
+
+        /* ── Tables ──────────────────────────────── */
+        .section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px;
+            font-size: 0.88rem;
+        }
+        .section th {
+            background: #f3faf8;
+            color: #0f1724;
+            font-weight: 700;
+            padding: 9px 12px;
+            text-align: left;
+            border-bottom: 2px solid #c6e9d8;
+        }
+        .section td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f0f4f8;
+            vertical-align: top;
+        }
+        .section tr:last-child td { border-bottom: none; }
+        .section tr:hover td { background: #fafcff; }
+        .table-scroll { overflow-x: auto; }
+
+        /* ── Callout boxes ───────────────────────── */
+        .callout {
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin: 14px 0;
+            font-size: 0.9rem;
+        }
+        .callout-note {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+        .callout-warning {
+            background: #fff7ed;
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+        }
+        .callout-verdict {
+            background: #f0fdf4;
+            border-left: 4px solid var(--accent);
+            color: #14532d;
+        }
+        .callout-danger {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+        .callout strong { display: block; margin-bottom: 4px; }
+
+        /* ── Code blocks ─────────────────────────── */
+        pre {
+            background: #f8fafc;
+            border-left: 3px solid var(--accent);
+            border-radius: 6px;
+            padding: 14px 16px;
+            overflow-x: auto;
+            font-size: 0.83rem;
+            line-height: 1.55;
+            margin: 12px 0 16px;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.87em;
+            color: #1e293b;
+        }
+        pre code { background: none; padding: 0; font-size: inherit; }
+
+        /* ── Variation tabs ──────────────────────── */
+        .var-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+        .var-tab {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            color: #374151;
+            padding: 7px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .var-tab:hover { background: var(--accent-light); border-color: #86efac; }
+        .var-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .var-panel { display: none; }
+        .var-panel.active { display: block; }
+
+        .var-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .var-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+        .var-title h3 { margin: 0 0 4px; font-size: 1.1rem; }
+        .var-track {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+        .track-a { background: #dcfce7; color: #15803d; }
+        .track-b { background: #dbeafe; color: #1d4ed8; }
+        .track-ab { background: #fef9c3; color: #854d0e; }
+
+        /* ── Scorecard stars ─────────────────────── */
+        .stars { color: #fbbf24; letter-spacing: -1px; }
+
+        /* ── Phase badge ─────────────────────────── */
+        .phase-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-right: 6px;
+        }
+
+        /* ── Recommendation cards ────────────────── */
+        .phase-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+        }
+        .phase-card h4 { margin: 0 0 6px; font-size: 0.95rem; }
+        .phase-card p { margin: 0; font-size: 0.9rem; color: #374151; }
+
+        /* ── "Who's hiring" role list ────────────── */
+        .role-tier {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+        }
+        .role-tier h5 {
+            margin: 0 0 8px;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--muted);
+        }
+        .role-tier ul { margin: 0; padding-left: 18px; }
+        .role-tier li { font-size: 0.88rem; margin-bottom: 3px; }
+
+        /* ── Next steps list ─────────────────────── */
+        .next-step {
+            display: flex;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f4f8;
+        }
+        .next-step:last-child { border-bottom: none; }
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ── Footer ──────────────────────────────── */
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.88rem;
+            padding: 32px 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- ── SIDEBAR TOC ────────────────────────────── -->
+    <aside class="sidebar">
+        <div class="toc-box">
+            <h4>Contents</h4>
+            <ol>
+                <li><a href="#exec-summary">Executive Summary</a></li>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#what-are-dt">What Are Digital Twins?</a></li>
+                <li><a href="#why-a-lab">Why a Digital Twins Lab?</a></li>
+                <li><a href="#constraints">Constraints &amp; Requirements</a></li>
+                <li><a href="#variations">Implementation Variations</a></li>
+                <li><a href="#comparative">Comparative Analysis</a></li>
+                <li><a href="#recommendation">Recommended Approach</a></li>
+                <li><a href="#roadmap">Implementation Roadmap</a></li>
+                <li><a href="#risks">Risks &amp; Mitigations</a></li>
+                <li><a href="#openedx">Course Delivery: OpenEdX</a></li>
+                <li><a href="#conclusion">Conclusion &amp; Next Steps</a></li>
+                <li><a href="#dean-pitch">How the Dean Can Present This</a></li>
+                <li><a href="#clark-ngo">Why Clark Ngo Is Essential</a></li>
+                <li><a href="#references">References</a></li>
+            </ol>
+        </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ───────────────────────────── -->
+    <div class="main">
+
+        <!-- Doc header -->
+        <div class="doc-header">
+            <div class="doc-badge">📋 Feasibility Study · Draft 3.0</div>
+            <h1>Digital Twins Laboratory</h1>
+            <p class="subtitle">School of Technology and Computing — City University of Seattle</p>
+            <div class="doc-meta">
+                <span><strong>Prepared by:</strong> Clark Ngo</span>
+                <span><strong>Date:</strong> May 2026</span>
+                <span><strong>Version:</strong> Draft 3.0</span>
+                <span><strong>Variations evaluated:</strong> 6 (NVIDIA · Azure · Open-Source · Unity · XMPro · AMD)</span>
+            </div>
+        </div>
+
+        <!-- ── 1. Executive Summary ───────────────── -->
+        <section class="section" id="exec-summary">
+            <h2><span class="sec-num">1</span> Executive Summary</h2>
+            <p>This feasibility study evaluates the viability of establishing a Digital Twins laboratory within the School of Technology and Computing (STC) at City University of Seattle. The study examines six distinct implementation variations, assessing each against STC's key constraints: limited physical space, budget sensitivity, implementation complexity, and long-term maintainability.</p>
+            <p>Digital Twins technology — the real-time virtual representation of physical systems — is rapidly becoming a foundational skill across engineering, manufacturing, IoT, and AI industries. Establishing a lab-based curriculum positions STC graduates with a competitive, future-ready skillset aligned with current industry demands.</p>
+            <div class="callout callout-verdict">
+                <strong>Study Finding</strong>
+                A phased, cloud-and-simulation-first approach — beginning with low-cost, software-only tools and scaling toward cloud platforms — offers the most feasible path for STC given its size and resource profile. All viable options are documented herein to support informed decision-making by department leadership and the dean.
+            </div>
+        </section>
+
+        <!-- ── 2. Introduction ────────────────────── -->
+        <section class="section" id="introduction">
+            <h2><span class="sec-num">2</span> Introduction</h2>
+            <h3>2.1 Purpose</h3>
+            <p>This study was commissioned by the School of Technology and Computing at City University of Seattle to assess the feasibility of launching a Digital Twins laboratory for educational purposes. The goal is to equip students with hands-on experience in Digital Twin concepts, tools, and workflows used in real-world industry.</p>
+
+            <h3>2.2 Scope</h3>
+            <ul>
+                <li>A technical overview of Digital Twins and Physical AI</li>
+                <li>Educational context and institutional benchmarks</li>
+                <li>Six distinct implementation variations</li>
+                <li>Comparative analysis across cost, complexity, space, and maintainability</li>
+                <li>Recommendations and a phased implementation roadmap</li>
+            </ul>
+
+            <h3>2.3 Institutional Context &amp; Constraints</h3>
+            <p>STC operates within a small urban university environment. The following constraints frame all evaluations in this study:</p>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Constraint</th><th>Description</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Physical Space</strong></td><td><strong>No dedicated lab space available.</strong> A small unused server room exists but contains only decade-old, outdated hardware. Cannot be relied upon as primary infrastructure.</td></tr>
+                    <tr><td><strong>Budget</strong></td><td>Preference for free/open-source tools; dean willing to support justified costs</td></tr>
+                    <tr><td><strong>Complexity</strong></td><td>Must be executable by a small faculty team without dedicated DevOps staff</td></tr>
+                    <tr><td><strong>Maintainability</strong></td><td>Tools must be sustainable long-term without significant ongoing effort</td></tr>
+                    <tr><td><strong>Student Audience</strong></td><td>Undergraduate and graduate CS/IT/engineering students — <strong>majority have non-technical or limited programming backgrounds</strong></td></tr>
+                </tbody>
+            </table>
+            </div>
+        </section>
+
+        <!-- ── 3. What Are Digital Twins? ─────────── -->
+        <section class="section" id="what-are-dt">
+            <h2><span class="sec-num">3</span> What Are Digital Twins?</h2>
+            <p>A <strong>Digital Twin</strong> is a real-time, dynamic virtual representation of a physical object, process, or system. It continuously ingests data from sensors, IoT devices, or simulated environments to reflect the state of its physical counterpart, enabling monitoring, analysis, prediction, and control.</p>
+
+            <h3>3.1 Core Components</h3>
+            <ul>
+                <li><strong>Physical Layer</strong> — Real or simulated sensors, devices, and actuators</li>
+                <li><strong>Connectivity Layer</strong> — Data pipelines (e.g., MQTT, REST APIs, Node-RED flows)</li>
+                <li><strong>Data Processing Layer</strong> — Cloud platforms or edge computing nodes</li>
+                <li><strong>Digital Model Layer</strong> — 3D models, simulation environments (e.g., NVIDIA Omniverse, Unity)</li>
+                <li><strong>AI/Analytics Layer</strong> — Predictive models, AI agents, anomaly detection</li>
+                <li><strong>Visualization Layer</strong> — Dashboards, 3D renderings, telemetry displays</li>
+            </ul>
+
+            <h3>3.2 Physical AI and the Sim-to-Real Pipeline</h3>
+            <p>A rapidly growing subfield is <strong>Physical AI</strong> — training AI models within simulated environments and deploying them to real-world hardware. This "sim-to-real" pipeline is central to modern robotics and autonomous systems development. Key enabling concepts include:</p>
+            <ul>
+                <li><strong>Synthetic Data Generation</strong> — Using simulated environments to create large-scale training datasets without physical hardware</li>
+                <li><strong>World Foundation Models (WFMs)</strong> — Large AI models capable of understanding and generating physics-based simulations (e.g., NVIDIA Cosmos)</li>
+                <li><strong>ROS 2 (Robot Operating System)</strong> — The industry-standard middleware for robotics communication and control</li>
+                <li><strong>OpenUSD (Universal Scene Description)</strong> — A framework for describing, composing, and simulating 3D environments</li>
+            </ul>
+
+            <h3>3.3 Teaching Tracks</h3>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Track</th><th>Focus</th><th>Key Tools</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Track A: Robotics &amp; Simulation</strong></td><td>Sim-to-real pipeline, autonomous robots, Physical AI</td><td>NVIDIA Isaac Sim, ROS 2, Wokwi, OpenUSD</td></tr>
+                    <tr><td><strong>Track B: Industrial Data Analytics</strong></td><td>IoT data flows, industrial monitoring, cloud integration</td><td>Azure Digital Twins, Node-RED, XMPro</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h3>3.5 Why Digital Twins and Physical AI Matter Right Now</h3>
+            <p>Digital Twins are not new — the concept existed since NASA used simulation models in the 1960s. What <em>is</em> new is that the technology has become accessible, affordable, and industry-standard at the same time that the workforce gap is widening faster than universities can respond.</p>
+
+            <h4>The Convergence That Changed Everything (2022–2024)</h4>
+            <ul>
+                <li><strong>Cloud commoditization.</strong> Azure, AWS, and Google Cloud now offer managed IoT and Digital Twin services at consumption-based pricing — a student can build a functional twin for under $10.</li>
+                <li><strong>Open-source maturation.</strong> Tools like Eclipse Ditto, Node-RED, and ROS 2 have reached production-grade stability. NVIDIA released Omniverse as free for individuals. The "enterprise tax" on simulation technology has been effectively eliminated for education.</li>
+                <li><strong>AI integration.</strong> The addition of generative models, reinforcement learning, and World Foundation Models transformed Digital Twins from passive monitoring dashboards into active, predictive, autonomous systems — Physical AI.</li>
+            </ul>
+
+            <h4>Market Reality (Present, Not Projection)</h4>
+            <ul>
+                <li>The global Digital Twin market was valued at <strong>~$28–35 billion in 2025</strong>, growing at a <strong>CAGR of 31–47%</strong></li>
+                <li>The U.S. market alone is projected to grow from <strong>$3.9 billion in 2025 to $29.8 billion by 2032</strong></li>
+                <li><strong>72% of manufacturers</strong> plan to deploy Digital Twin technology by 2026</li>
+                <li>Siemens acquired Altair Engineering for <strong>$10 billion in March 2025</strong> specifically to strengthen its Digital Twin and industrial AI capabilities</li>
+            </ul>
+
+            <h4>The Workforce Gap</h4>
+            <p>On LinkedIn as of May 2026, there are <strong>933+ active Digital Twin job postings</strong> in the United States. On Indeed, <strong>2,367+ Digital Twin roles</strong> are listed nationally. Average salaries range from <strong>$98,000–$152,000+</strong>, with senior engineers and architects commanding <strong>$180,000–$280,000</strong>.</p>
+
+            <div class="callout callout-note">
+                <strong>The Early-Mover Window Is Closing</strong>
+                CMU, University of Michigan, and MIT are already running Digital Twins programs. NVIDIA, Microsoft, and AMD have all launched free academic programs specifically because they need university partners to train the next wave of talent. These programs have finite capacity and preferential terms for early adopters.
+            </div>
+        </section>
+
+        <!-- ── 4. Why a Digital Twins Lab? ────────── -->
+        <section class="section" id="why-a-lab">
+            <h2><span class="sec-num">4</span> Why a Digital Twins Lab?</h2>
+
+            <h3>4.1 Industry Relevance</h3>
+            <ul>
+                <li><strong>Manufacturing:</strong> Predictive maintenance, process optimization</li>
+                <li><strong>Healthcare:</strong> Patient monitoring, surgical simulation</li>
+                <li><strong>Smart Cities:</strong> Infrastructure management, traffic systems</li>
+                <li><strong>Aerospace &amp; Defense:</strong> Simulation-based testing, mission planning</li>
+                <li><strong>Retail &amp; Logistics:</strong> Supply chain visibility, warehouse automation</li>
+            </ul>
+
+            <h3>4.2 Student Audience Profile</h3>
+            <p>STC's student body spans undergraduate and graduate levels across CS, IT, and engineering programs. However, <strong>the majority enter with limited or no programming experience</strong> — many come from career-change or interdisciplinary backgrounds. This is a critical design constraint for the lab.</p>
+            <div class="callout callout-warning">
+                <strong>Implication for tool selection</strong>
+                Variations that rely heavily on Linux terminal work, manual environment configuration, or low-level coding (e.g., NVIDIA's full local stack, AMD ROCm setup) carry higher friction for this audience and require more instructor scaffolding. Browser-based, visual, or GUI-first tools (Node-RED, Wokwi, Azure Portal, XMPro) are significantly more accessible as entry points.
+            </div>
+
+            <h3>4.3 Student Outcomes by Difficulty Tier</h3>
+            <p><strong>Foundational (accessible to all students):</strong></p>
+            <ul>
+                <li>Understanding Digital Twin concepts and architecture</li>
+                <li>IoT sensor simulation and data visualization (browser-based tools)</li>
+                <li>Flow-based programming without code (Node-RED drag-and-drop)</li>
+                <li>Reading and interpreting real-time dashboards (Grafana, Azure Portal)</li>
+            </ul>
+            <p><strong>Intermediate (for students with some technical exposure):</strong></p>
+            <ul>
+                <li>IoT data pipelines and MQTT messaging</li>
+                <li>Cloud platform integration and basic scripting (Azure, Python)</li>
+                <li>Digital twin state modeling (DTDL, Eclipse Ditto)</li>
+                <li>3D scene navigation and asset configuration (Unity, Omniverse GUI)</li>
+            </ul>
+            <p><strong>Advanced (for technically stronger students):</strong></p>
+            <ul>
+                <li>AI model training using synthetic and real data (Isaac Lab, Genesis)</li>
+                <li>Robotics programming and simulation (ROS 2, Isaac Sim, Genesis)</li>
+                <li>GPU-accelerated computing (ROCm, CUDA)</li>
+                <li>Sim-to-real transfer and deployment</li>
+            </ul>
+
+            <h3>4.3 Institutional Benchmarks</h3>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Institution</th><th>Program</th><th>Approach</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Carnegie Mellon University</strong></td><td>AI Engineering Graduate Certificate (Digital Twins &amp; Analytics)</td><td>Mathematical/statistical foundations, predictive analytics, AI ethics</td></tr>
+                    <tr><td><strong>University of Michigan (Coursera)</strong></td><td>Digital Twins Specialization</td><td>Manufacturing ecosystem focus, business value and implementation strategy</td></tr>
+                    <tr><td><strong>MIT Professional Education</strong></td><td>Digital Twins – The Vision Demystified</td><td>Digital thread, sensor-to-computation data flow</td></tr>
+                    <tr><td><strong>NVIDIA Deep Learning Institute</strong></td><td>Physical AI Learning Path</td><td>Hands-on sim-to-real, Isaac Sim, ROS 2, Cosmos WFMs</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h3>4.6 Job Market Alignment</h3>
+            <h4>4.6.1 Salary Landscape (United States, 2025–2026)</h4>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Role</th><th>Entry Level</th><th>Mid-Level</th><th>Senior</th></tr></thead>
+                <tbody>
+                    <tr><td>Digital Twin Developer</td><td>$85,000–$110,000</td><td>$110,000–$145,000</td><td>$145,000–$180,000</td></tr>
+                    <tr><td>Digital Twin Engineer</td><td>$113,980–$136,000</td><td>$136,000–$151,973</td><td>$180,000–$278,110</td></tr>
+                    <tr><td>Digital Twin Architect / Lead</td><td>$180,000–$220,000</td><td>$220,000–$280,000+</td><td>—</td></tr>
+                    <tr><td>AI/ML Engineer (Seattle)</td><td>—</td><td>~$140,000–$206,000</td><td>$200,000–$312,000</td></tr>
+                    <tr><td>IoT / Systems Integration Engineer</td><td>$80,000–$110,000</td><td>$110,000–$145,000</td><td>$145,000–$180,000+</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h4>4.6.2 Key Seattle &amp; Puget Sound Employers</h4>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Employer</th><th>Relevance to Digital Twins / Physical AI</th><th>Location</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Microsoft</strong></td><td>Azure Digital Twins (the platform itself), Azure IoT Hub, HoloLens, AI Copilot</td><td>Redmond / Seattle</td></tr>
+                    <tr><td><strong>Amazon / Amazon Robotics</strong></td><td>Warehouse automation, Physical AI for fulfillment robots, AWS IoT TwinMaker</td><td>Seattle / Bellevue</td></tr>
+                    <tr><td><strong>Boeing</strong></td><td>Digital twin of aircraft components, manufacturing simulation, aerospace modeling</td><td>Renton / Everett</td></tr>
+                    <tr><td><strong>NVIDIA</strong> (Seattle office)</td><td>Isaac Sim, Omniverse, robotics AI</td><td>Seattle</td></tr>
+                    <tr><td><strong>T-Mobile</strong></td><td>Network digital twins for 5G infrastructure management</td><td>Bellevue</td></tr>
+                    <tr><td><strong>Carbon Robotics</strong></td><td>AI-powered agricultural robotics, computer vision, real-time simulation</td><td>Seattle</td></tr>
+                    <tr><td><strong>PACCAR</strong> (Kenworth/Peterbilt)</td><td>Vehicle simulation, autonomous truck development</td><td>Bellevue</td></tr>
+                    <tr><td><strong>Port of Seattle / Port of Tacoma</strong></td><td>Smart port infrastructure, logistics digital twins</td><td>Seattle / Tacoma</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h4>4.6.5 Job Titles STC Graduates Could Target</h4>
+            <div class="role-tier">
+                <h5>Entry-level (0–2 years)</h5>
+                <ul>
+                    <li>IoT Engineer / IoT Developer</li>
+                    <li>Digital Twin Analyst</li>
+                    <li>Junior Simulation Engineer</li>
+                    <li>Cloud Infrastructure Associate (Azure IoT)</li>
+                    <li>Data Pipeline Engineer</li>
+                </ul>
+            </div>
+            <div class="role-tier">
+                <h5>Mid-level (2–5 years)</h5>
+                <ul>
+                    <li>Digital Twin Developer / Engineer</li>
+                    <li>Robotics Software Engineer (with simulation background)</li>
+                    <li>AI Systems Engineer</li>
+                    <li>Industrial IoT Architect</li>
+                </ul>
+            </div>
+            <div class="role-tier">
+                <h5>Advanced / Specialist</h5>
+                <ul>
+                    <li>Digital Twin Architect</li>
+                    <li>Physical AI Engineer</li>
+                    <li>Simulation &amp; Validation Lead</li>
+                    <li>Director of Digital Engineering</li>
+                </ul>
+            </div>
+
+            <h3>4.5 Physical Infrastructure Assessment</h3>
+            <div class="callout callout-danger">
+                <strong>Current State</strong>
+                STC currently has: <strong>no dedicated student lab space</strong> for a Digital Twins lab; one small unused server room containing hardware approximately a decade old; and <strong>no confirmed working components</strong>. The lab must be designed around what students already have (laptops) and what STC can access remotely (cloud).
+            </div>
+
+            <h4>Server Room Hardware: Repurposability Assessment</h4>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Component</th><th>Minimum Viable</th><th>Typical Decade-Old Server</th><th>Verdict</th></tr></thead>
+                <tbody>
+                    <tr><td>CPU</td><td>4-core, 64-bit (2010+)</td><td>Intel Xeon E5 / Core i5-i7 (2012–2015 era)</td><td>✅ Likely sufficient for lightweight backend only</td></tr>
+                    <tr><td>RAM</td><td>8 GB</td><td>8–16 GB DDR3 (may need upgrade)</td><td>⚠️ Check; may need RAM upgrade (~$20–$40)</td></tr>
+                    <tr><td>Storage</td><td>50 GB free, ideally SSD</td><td>HDD likely (slow); SSD unlikely</td><td>⚠️ HDD degrades performance; SSD upgrade recommended (~$50–$80)</td></tr>
+                    <tr><td><strong>GPU</strong></td><td><strong>None required for V3 backend</strong></td><td><strong>❌ Confirmed: no graphics card present</strong></td><td><strong>✅ Not needed for open-source stack. Rules out all simulation variations (V1, V4, V6) entirely on this hardware.</strong></td></tr>
+                    <tr><td>OS compatibility</td><td>Ubuntu 22.04 LTS</td><td>64-bit Intel/AMD hardware</td><td>✅ Compatible</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h4>What STC Actually Needs to Start (Phase 1 Physical Checklist)</h4>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Item</th><th>What's Needed</th><th>Where to Get It</th><th>Cost</th></tr></thead>
+                <tbody>
+                    <tr><td>Student access device</td><td>Any modern laptop (2018+) or Chromebook</td><td>Students' own devices</td><td>$0</td></tr>
+                    <tr><td>Internet connection</td><td>Reliable campus WiFi or wired</td><td>Existing campus network</td><td>$0</td></tr>
+                    <tr><td>Cloud VM for backend services</td><td>2 vCPU, 4–8 GB RAM, 50 GB SSD</td><td>DigitalOcean, Linode, or AWS Lightsail</td><td>~$10–$20/month</td></tr>
+                    <tr><td>Faculty management laptop</td><td>Any modern laptop</td><td>Existing</td><td>$0</td></tr>
+                    <tr><td><strong>Total Phase 1</strong></td><td></td><td></td><td><strong>~$10–$20/month</strong></td></tr>
+                </tbody>
+            </table>
+            </div>
+        </section>
+
+        <!-- ── 5. Constraints ─────────────────────── -->
+        <section class="section" id="constraints">
+            <h2><span class="sec-num">5</span> Constraints &amp; Requirements Summary</h2>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Requirement</th><th>Priority</th><th>Threshold</th></tr></thead>
+                <tbody>
+                    <tr><td>Low upfront cost</td><td>High</td><td>Prefer free; &lt; $5,000 acceptable for dean-approved setup</td></tr>
+                    <tr><td><strong>No dedicated lab or server space</strong></td><td><strong>Critical</strong></td><td><strong>No student lab space exists. All tools must run on student laptops and/or cloud. No variation requiring physical lab workstations is viable as primary infrastructure.</strong></td></tr>
+                    <tr><td>Low implementation complexity</td><td>High</td><td>Setup completable by 1–2 faculty members</td></tr>
+                    <tr><td>Low ongoing maintenance burden</td><td>High</td><td>No dedicated sysadmin required</td></tr>
+                    <tr><td><strong>Accessible to non-technical students</strong></td><td><strong>High</strong></td><td><strong>Tools must have GUI, browser-based, or visual interfaces as the entry point; command-line should be optional or scaffolded</strong></td></tr>
+                    <tr><td>Scalable to more students</td><td>Medium</td><td>Should support 15–30 concurrent students</td></tr>
+                    <tr><td>Curriculum-ready resources</td><td>Medium</td><td>Existing teaching kits, tutorials, or course materials preferred</td></tr>
+                    <tr><td>Industry-recognized tools</td><td>Medium</td><td>Tools used in real-world practice</td></tr>
+                </tbody>
+            </table>
+            </div>
+        </section>
+
+        <!-- ── 6. Implementation Variations ──────── -->
+        <section class="section" id="variations">
+            <h2><span class="sec-num">6</span> Implementation Variations</h2>
+            <p>Six distinct variations were evaluated. Use the tabs below to explore each one.</p>
+
+            <div class="var-tabs">
+                <button class="var-tab active" onclick="showVar('v1')">V1: NVIDIA</button>
+                <button class="var-tab" onclick="showVar('v2')">V2: Azure</button>
+                <button class="var-tab" onclick="showVar('v3')">V3: Open-Source</button>
+                <button class="var-tab" onclick="showVar('v4')">V4: Unity</button>
+                <button class="var-tab" onclick="showVar('v5')">V5: XMPro</button>
+                <button class="var-tab" onclick="showVar('v6')">V6: AMD</button>
+            </div>
+
+            <!-- V1: NVIDIA -->
+            <div class="var-panel active" id="var-v1">
+                <div class="var-header">
+                    <div class="var-icon" style="background:#f0fdf4;">🟢</div>
+                    <div class="var-title">
+                        <h3>Variation 1: NVIDIA Omniverse Ecosystem</h3>
+                        <span class="var-track track-a">Track A — Robotics &amp; Simulation</span>
+                    </div>
+                </div>
+                <p>Builds the lab entirely on NVIDIA's simulation and Physical AI stack, leveraging free academic licenses and pre-built teaching kits.</p>
+
+                <h4>Core Tools</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Tool</th><th>Role</th><th>Cost</th></tr></thead>
+                    <tbody>
+                        <tr><td><a href="https://www.nvidia.com/en-us/omniverse/" target="_blank" rel="noopener">NVIDIA Omniverse</a></td><td>3D simulation platform and Digital Twin environment</td><td>Free (individual/academic, up to 2 collaborators)</td></tr>
+                        <tr><td><a href="https://docs.omniverse.nvidia.com/isaacsim/latest/index.html" target="_blank" rel="noopener">NVIDIA Isaac Sim</a></td><td>Robotics simulation built on Omniverse</td><td>Free with Omniverse</td></tr>
+                        <tr><td><a href="https://github.com/isaac-sim/IsaacLab" target="_blank" rel="noopener">NVIDIA Isaac Lab</a></td><td>Reinforcement learning and robot policy training</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://docs.ros.org/en/humble/index.html" target="_blank" rel="noopener">ROS 2</a></td><td>Robotics middleware (perception, navigation, control)</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://docs.nvidia.com/learn-openusd/latest/index.html" target="_blank" rel="noopener">OpenUSD</a></td><td>3D scene description and asset interoperability</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://www.nvidia.com/en-us/training/educator-programs/teaching-kits/" target="_blank" rel="noopener">NVIDIA Teaching Kits</a></td><td>Edge AI, Robotics, Generative AI lab kits</td><td>Free for faculty</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-note">
+                    <strong>Licensing note</strong>
+                    NVIDIA Omniverse is free for individuals and academic use with up to 2 collaborators on shared project content. If 3 or more faculty/students collaborate on the same project asset, Omniverse Enterprise Subscription Licenses are required. For classroom use where students work on individual projects, the free tier applies.
+                </div>
+
+                <h4>What Students Learn</h4>
+                <ul>
+                    <li>Building and assembling industrial 3D scenes in Omniverse</li>
+                    <li>Generating synthetic training datasets using Cosmos</li>
+                    <li>Training robot policies in Isaac Lab and deploying via sim-to-real transfer</li>
+                    <li>ROS 2-based robot perception and navigation</li>
+                    <li>Vision-language model integration for factory intelligence</li>
+                    <li>OpenUSD scene composition and asset interoperability</li>
+                </ul>
+
+                <h4>Hardware &amp; Cost</h4>
+                <p><strong>Option A (Recommended — Cloud-First, Zero Hardware):</strong> Students access the full simulation environment through a browser. No GPU, no lab space, no installation required. Contact NVIDIA academic sales at <a href="https://developer.nvidia.com/education-pricing" target="_blank" rel="noopener">developer.nvidia.com/education-pricing</a> for Omniverse Cloud academic rates.</p>
+                <p><strong>Option B (Future — On-Premise, requires lab space STC does not have):</strong></p>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Item</th><th>Quantity</th><th>Unit Cost</th><th>Total</th></tr></thead>
+                    <tbody>
+                        <tr><td>GPU Workstation (RTX 4080, education-grade)</td><td>3–5 units</td><td>~$2,500–$4,500</td><td>~$7,500–$22,500</td></tr>
+                        <tr><td>Monitor (27", 4K)</td><td>3–5 units</td><td>~$300–$500</td><td>~$900–$2,500</td></tr>
+                        <tr><td><strong>Total (On-Premise, future)</strong></td><td></td><td></td><td><strong>~$8,900–$25,500</strong></td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-warning">
+                    STC's existing server room has <strong>no graphics card</strong>. It cannot run NVIDIA Isaac Sim, Omniverse, or any GPU-accelerated workload. Cloud access (Option A) is the only viable path given current infrastructure.
+                </div>
+
+                <h4>Feasibility Assessment</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Factor</th><th>Rating</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Cost</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Software free; cost limited to optional GPU hardware</td></tr>
+                        <tr><td>Implementation Complexity</td><td><span class="stars">⭐⭐</span></td><td>High barrier for non-technical students: requires Linux, terminal setup, Python, and GPU configuration. Suitable as an advanced/elective track.</td></tr>
+                        <tr><td>Space Requirements</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Cloud option requires zero physical footprint</td></tr>
+                        <tr><td>Maintainability</td><td><span class="stars">⭐⭐⭐⭐</span></td><td>NVIDIA maintains software; regular updates and solid support</td></tr>
+                        <tr><td>Curriculum Readiness</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Extensive free teaching kits, DLI courses, documentation</td></tr>
+                        <tr><td>Industry Relevance</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>NVIDIA is the dominant platform in robotics and Physical AI</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-verdict">
+                    <strong>Verdict</strong>
+                    Strongest option for a forward-looking simulation-focused curriculum — but <strong>not suitable as a first course for non-technical students</strong>. Recommended as a second-year elective or advanced capstone track, after students have built foundational skills through V3 or V2. Cloud option eliminates space and hardware barriers.
+                </div>
+
+                <h4>Example End Goal: Autonomous Warehouse Robot Digital Twin</h4>
+                <p>A student team builds a <strong>simulated autonomous warehouse robot arm</strong> in NVIDIA Isaac Sim using the Franka Emika Panda robot asset. The robot is trained in Isaac Lab using reinforcement learning to pick and place boxes on a conveyor belt. Synthetic training data is generated using Cosmos. The trained policy is tested via sim-to-real transfer in a ROS 2 environment. The final deliverable is a 3D Omniverse scene showing the robot operating in real time with telemetry overlaid.</p>
+            </div>
+
+            <!-- V2: Azure -->
+            <div class="var-panel" id="var-v2">
+                <div class="var-header">
+                    <div class="var-icon" style="background:#eff6ff;">☁️</div>
+                    <div class="var-title">
+                        <h3>Variation 2: Azure Digital Twins</h3>
+                        <span class="var-track track-b">Track B — Industrial Data Analytics</span>
+                    </div>
+                </div>
+                <p>Uses Microsoft Azure's managed Digital Twins service. Mirrors the approach described in <em>Building Industrial Digital Twins</em> (Nath, 2021). Well-suited for IoT, data engineering, and cloud architecture courses.</p>
+
+                <h4>Core Tools</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Tool</th><th>Role</th><th>Cost</th></tr></thead>
+                    <tbody>
+                        <tr><td><a href="https://azure.microsoft.com/en-us/products/digital-twins/" target="_blank" rel="noopener">Azure Digital Twins</a></td><td>Core platform for modeling digital twin graphs</td><td>Pay-per-use: $1/million ops, $2.50/million messages</td></tr>
+                        <tr><td><a href="https://azure.microsoft.com/en-us/products/iot-hub/" target="_blank" rel="noopener">Azure IoT Hub</a></td><td>Device connectivity and telemetry ingestion</td><td>Free tier: 8,000 msgs/day; S1 tier: ~$25/month</td></tr>
+                        <tr><td><a href="https://nodered.org/" target="_blank" rel="noopener">Node-RED</a></td><td>Visual IoT data flow programming</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://wokwi.com/" target="_blank" rel="noopener">Wokwi</a></td><td>Browser-based hardware simulation (Arduino, ESP32)</td><td>Free</td></tr>
+                        <tr><td><a href="https://azure.microsoft.com/en-us/free/students/" target="_blank" rel="noopener">Azure for Students</a></td><td>$100 credit + free services</td><td>Free — no credit card required</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <h4>Department Annual Cost</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Item</th><th>Monthly</th><th>Annual</th></tr></thead>
+                    <tbody>
+                        <tr><td>Azure IoT Hub (S1 tier, shared classroom)</td><td>~$25/month</td><td>~$300/year</td></tr>
+                        <tr><td>Azure Digital Twins operations</td><td>~$10/month</td><td>~$120/year</td></tr>
+                        <tr><td>Azure Data Explorer (optional)</td><td>~$140/month</td><td>~$1,680/year</td></tr>
+                        <tr><td>OpenEdX VM (course delivery)</td><td>~$15/month</td><td>~$180/year</td></tr>
+                        <tr><td><strong>Total Annual Operating Cost</strong></td><td></td><td><strong>~$430–$2,280/year</strong></td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-note">
+                    <strong>Cost mitigation via student credits</strong>
+                    Each student enrolled in the Azure for Students program receives $100 in free Azure credits (no credit card required). With 20 students, that's $2,000 in free cloud credits per cohort — enough to cover all lab exercises if structured correctly. The department only pays for shared infrastructure.
+                </div>
+
+                <h4>What Students Learn</h4>
+                <ul>
+                    <li>Modeling physical environments as digital twin graphs using DTDL (Digital Twins Definition Language)</li>
+                    <li>Connecting simulated IoT devices (via Wokwi) to Azure IoT Hub</li>
+                    <li>Building real-time telemetry pipelines using Node-RED</li>
+                    <li>Querying and visualizing live digital twin state in Azure Digital Twins Explorer</li>
+                    <li>Event-driven architecture with Azure Event Grid</li>
+                </ul>
+
+                <h4>Feasibility Assessment</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Factor</th><th>Rating</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Cost</td><td><span class="stars">⭐⭐⭐⭐</span></td><td>Free tier + student credits cover coursework; ~$430–$2,280/year for dept.</td></tr>
+                        <tr><td>Implementation Complexity</td><td><span class="stars">⭐⭐⭐⭐</span></td><td>Azure Portal is GUI-driven and browser-based — accessible to non-technical students. Node-RED's visual drag-and-drop interface is highly approachable.</td></tr>
+                        <tr><td>Space Requirements</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Fully cloud; zero physical footprint</td></tr>
+                        <tr><td>Maintainability</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Fully managed by Microsoft; no infrastructure to maintain</td></tr>
+                        <tr><td>Curriculum Readiness</td><td><span class="stars">⭐⭐⭐⭐</span></td><td>Microsoft Learn modules available; reference textbook available</td></tr>
+                        <tr><td>Industry Relevance</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Azure is widely used in enterprise IoT and smart building sectors</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-verdict">
+                    <strong>Verdict</strong>
+                    One of the two most accessible options for non-technical students. Azure Portal and Node-RED are both GUI/browser-first tools. Excellent low-maintenance option with predictable, low annual costs. Best for programs focused on cloud architecture, data engineering, or IoT.
+                </div>
+
+                <h4>Example End Goal: Smart Building Digital Twin</h4>
+                <p>A student team models a <strong>multi-floor university building</strong> as a digital twin graph in Azure Digital Twins, with rooms, floors, and HVAC zones modeled using DTDL. Wokwi-simulated ESP32 sensors feed temperature and occupancy data via MQTT into a Node-RED pipeline routing telemetry to Azure IoT Hub. The Azure Digital Twin graph updates in real time and is visualized in both Azure Digital Twins Explorer and a 3D Scenes Studio view of the building floor plan.</p>
+            </div>
+
+            <!-- V3: Open-Source -->
+            <div class="var-panel" id="var-v3">
+                <div class="var-header">
+                    <div class="var-icon" style="background:#f0fdf4;">🔓</div>
+                    <div class="var-title">
+                        <h3>Variation 3: Open-Source IoT Simulation Stack</h3>
+                        <span class="var-track track-b">Track B — Industrial Data Analytics</span>
+                        <span class="var-track track-a" style="margin-left:6px;">Recommended Phase 1</span>
+                    </div>
+                </div>
+                <p>Builds a lightweight Digital Twins lab using entirely free, open-source tools. The <strong>lowest-cost and lowest-complexity</strong> option — serves as a practical Phase 1 entry point before scaling to more advanced platforms.</p>
+
+                <h4>Core Tools</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Tool</th><th>Role</th><th>Cost</th></tr></thead>
+                    <tbody>
+                        <tr><td><a href="https://wokwi.com/" target="_blank" rel="noopener">Wokwi</a></td><td>Browser-based simulation of Arduino, ESP32, Raspberry Pi Pico</td><td>Free</td></tr>
+                        <tr><td><a href="https://nodered.org/" target="_blank" rel="noopener">Node-RED</a></td><td>Visual flow-based IoT programming and dashboard</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://eclipse.dev/ditto/" target="_blank" rel="noopener">Eclipse Ditto</a></td><td>Open-source Digital Twins framework (device state management)</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://www.influxdata.com/" target="_blank" rel="noopener">InfluxDB</a></td><td>Time-series database for telemetry storage</td><td>Free (self-hosted or cloud free tier)</td></tr>
+                        <tr><td><a href="https://grafana.com/" target="_blank" rel="noopener">Grafana</a></td><td>Real-time telemetry dashboards</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://mosquitto.org/" target="_blank" rel="noopener">Eclipse Mosquitto</a></td><td>Lightweight MQTT broker for IoT messaging</td><td>Free, open-source</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <h4>Department Cost</h4>
+                <p><strong>Option A: Cloud VM (Recommended Primary)</strong></p>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Item</th><th>Cost/Month</th><th>Annual Cost</th></tr></thead>
+                    <tbody>
+                        <tr><td>Cloud VM (2 vCPU, 4–8 GB RAM, 50 GB SSD)</td><td>~$10–$20/month</td><td>~$120–$240/year</td></tr>
+                        <tr><td>Domain name (optional)</td><td>~$1/month</td><td>~$12/year</td></tr>
+                        <tr><td><strong>Total Annual (Cloud)</strong></td><td></td><td><strong>~$132–$252/year</strong></td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <p>Recommended providers: DigitalOcean (~$12/month for 2 vCPU / 4 GB), Linode/Akamai (~$12/month), or AWS Lightsail (~$10/month).</p>
+
+                <h4>Docker Compose Deployment</h4>
+                <p>Deploy the following as Docker containers on the server:</p>
+                <pre><code>Eclipse Mosquitto  — MQTT broker         (port 1883)
+Eclipse Ditto      — Digital Twin state   (port 8080)
+InfluxDB           — Time-series storage  (port 8086)
+Grafana            — Dashboard viz        (port 3000)
+Node-RED           — IoT flow pipeline    (port 1880)</code></pre>
+
+                <h4>Feasibility Assessment</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Factor</th><th>Rating</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Cost</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>~$132–$252/year (cloud)</td></tr>
+                        <tr><td>Implementation Complexity</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><strong>Most accessible option for non-technical students.</strong> Wokwi runs entirely in a browser. Node-RED uses drag-and-drop visual programming. Grafana dashboards are point-and-click. Docker Compose backend setup is handled by faculty, invisible to students.</td></tr>
+                        <tr><td>Space Requirements</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>No physical footprint (cloud)</td></tr>
+                        <tr><td>Maintainability</td><td><span class="stars">⭐⭐⭐⭐</span></td><td>All tools are actively maintained open-source projects</td></tr>
+                        <tr><td>Curriculum Readiness</td><td><span class="stars">⭐⭐⭐</span></td><td>Good community resources, but no dedicated teaching kits</td></tr>
+                        <tr><td>Industry Relevance</td><td><span class="stars">⭐⭐⭐</span></td><td>Tools are used in industry but less prestigious than Azure or NVIDIA</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-verdict">
+                    <strong>Verdict</strong>
+                    The <strong>most accessible variation for non-technical students</strong> and the strongest Phase 1 starting point. Faculty handle the Docker backend once; students interact only through dashboards and visual flows. Ideal first course before introducing any coding-heavy tools.
+                </div>
+
+                <h4>Example End Goal: Smart Factory Floor Monitor</h4>
+                <p>A student team builds a <strong>simulated smart factory monitoring system</strong> using only free, open-source tools. Five Wokwi-simulated ESP32 sensors publish MQTT messages to an Eclipse Mosquitto broker hosted on a cloud VM. Node-RED flows route and transform the data, storing it in InfluxDB and updating Eclipse Ditto digital twin state models. A Grafana dashboard displays live machine health, anomaly alerts, and historical trend graphs. The final deliverable runs entirely in the browser and on a single cloud VM — no physical hardware required.</p>
+            </div>
+
+            <!-- V4: Unity -->
+            <div class="var-panel" id="var-v4">
+                <div class="var-header">
+                    <div class="var-icon" style="background:#faf5ff;">🎮</div>
+                    <div class="var-title">
+                        <h3>Variation 4: Unity-Based Digital Twin</h3>
+                        <span class="var-track track-a">Track A — Visualization-Focused</span>
+                    </div>
+                </div>
+                <p>Uses Unity — the widely adopted game engine — as the primary Digital Twin visualization and simulation platform. Suitable for students already familiar with Unity and programs emphasizing real-time 3D and interactive simulation.</p>
+
+                <h4>Core Tools</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Tool</th><th>Role</th><th>Cost</th></tr></thead>
+                    <tbody>
+                        <tr><td><a href="https://unity.com/education" target="_blank" rel="noopener">Unity (Education Plan)</a></td><td>3D simulation, visualization, Digital Twin runtime</td><td>Free for students/educators</td></tr>
+                        <tr><td><a href="https://nodered.org/" target="_blank" rel="noopener">Node-RED</a></td><td>Data ingestion and pipeline orchestration</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://mosquitto.org/" target="_blank" rel="noopener">MQTT (Mosquitto)</a></td><td>Device communication protocol</td><td>Free</td></tr>
+                        <tr><td><a href="https://wokwi.com/" target="_blank" rel="noopener">Wokwi</a></td><td>IoT hardware simulation</td><td>Free</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-note">Unity does not provide dedicated Digital Twin teaching kits. Faculty must build curriculum from scratch, which is the primary time cost of this variation.</div>
+
+                <h4>Feasibility Assessment</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Factor</th><th>Rating</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Cost</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Near-zero; free Unity education license</td></tr>
+                        <tr><td>Implementation Complexity</td><td><span class="stars">⭐⭐</span></td><td>Unity's GUI is visual but requires C# scripting to connect live data — a significant barrier for non-technical students. Unsuitable as an introductory course.</td></tr>
+                        <tr><td>Space Requirements</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>No physical footprint</td></tr>
+                        <tr><td>Maintainability</td><td><span class="stars">⭐⭐⭐⭐</span></td><td>Unity is well-supported; large developer community</td></tr>
+                        <tr><td>Curriculum Readiness</td><td><span class="stars">⭐⭐⭐</span></td><td>No dedicated Digital Twin teaching kits; custom curriculum required</td></tr>
+                        <tr><td>Industry Relevance</td><td><span class="stars">⭐⭐⭐⭐</span></td><td>Used in manufacturing, AEC, and defense digital twin deployments</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-verdict">
+                    <strong>Verdict</strong>
+                    The 3D visualization payoff is compelling, but C# scripting for live data integration makes this <strong>unsuitable as a first course for non-technical students</strong>. Recommended as an intermediate elective for students who have completed a foundational coding course.
+                </div>
+
+                <h4>Example End Goal: Interactive 3D Server Room Digital Twin</h4>
+                <p>A student team builds an <strong>interactive 3D digital twin of a university server room</strong> in Unity. Physical server rack models are linked via C# scripts to a live telemetry API fed by Node-RED and Wokwi-simulated temperature/humidity sensors. When a simulated server rack exceeds a temperature threshold, its 3D model changes color in real time from green → yellow → red, and a dashboard overlay displays the alert.</p>
+            </div>
+
+            <!-- V5: XMPro -->
+            <div class="var-panel" id="var-v5">
+                <div class="var-header">
+                    <div class="var-icon" style="background:#fff7ed;">🏭</div>
+                    <div class="var-title">
+                        <h3>Variation 5: XMPro – Industrial No-Code Platform</h3>
+                        <span class="var-track track-b">Track B — Industrial Analytics</span>
+                    </div>
+                </div>
+                <p><a href="https://xmpro.com/" target="_blank" rel="noopener">XMPro</a> is an enterprise-grade, no-code/low-code Digital Twins platform used in real industrial deployments (energy, mining, manufacturing).</p>
+
+                <h4>Core Tools</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Tool</th><th>Role</th><th>Cost</th></tr></thead>
+                    <tbody>
+                        <tr><td>XMPro iBOS</td><td>End-to-end Digital Twin platform (data streams, AI agents, dashboards)</td><td>Enterprise annual subscription — pricing not public</td></tr>
+                        <tr><td>XMPro + Azure Digital Twins</td><td>XMPro can integrate with Azure DT as the underlying twin graph</td><td>Requires both licenses</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-danger">
+                    <strong>Critical note on academic access</strong>
+                    XMPro's free trial is explicitly restricted to business use. Per their website: "Students interested in learning about XMPro should request for their university to obtain a license for educational purposes." STC must negotiate an institutional license directly with XMPro. No public academic pricing is listed. This variation depends entirely on a successful licensing agreement.
+                </div>
+
+                <h4>Feasibility Assessment</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Factor</th><th>Rating</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Cost</td><td><span class="stars">⭐⭐</span></td><td>Enterprise pricing; academic licensing unconfirmed — high budget risk</td></tr>
+                        <tr><td>Implementation Complexity</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><strong>Most accessible for non-technical students</strong> — XMPro is a no-code/low-code drag-and-drop platform. However, this rating is conditional on securing academic licensing.</td></tr>
+                        <tr><td>Space Requirements</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Cloud SaaS; no physical footprint</td></tr>
+                        <tr><td>Maintainability</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Fully managed SaaS</td></tr>
+                        <tr><td>Curriculum Readiness</td><td><span class="stars">⭐⭐</span></td><td>Limited public academic resources; no teaching kits</td></tr>
+                        <tr><td>Industry Relevance</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Highly relevant in heavy industry sectors</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-verdict">
+                    <strong>Verdict</strong>
+                    High industry relevance and low technical complexity, but cost and curriculum gaps make this a high-risk option without a confirmed academic licensing agreement. <strong>Do not commit to this variation without first securing a license.</strong>
+                </div>
+            </div>
+
+            <!-- V6: AMD -->
+            <div class="var-panel" id="var-v6">
+                <div class="var-header">
+                    <div class="var-icon" style="background:#fff1f2;">🔴</div>
+                    <div class="var-title">
+                        <h3>Variation 6: AMD Ecosystem</h3>
+                        <span class="var-track track-a">Track A — Robotics &amp; Simulation</span>
+                    </div>
+                </div>
+                <p>AMD offers a compelling open-source alternative to NVIDIA's simulation stack, built around the <strong>ROCm</strong> GPU computing platform, the <strong>Genesis</strong> robotics simulator, and the <strong>AMD University Program</strong>. Best understood as a cost-conscious, open-source counterpart to Variation 1.</p>
+                <div class="callout callout-note">
+                    AMD published a dedicated blog post in February 2026 — <em>Digital Twins on AMD: Building Robotic Simulations Using Edge AI PCs</em> — demonstrating that high-fidelity robotic simulation and digital twins can run on a <strong>single AMD Ryzen AI MAX laptop</strong>, without needing a separate GPU workstation.
+                </div>
+
+                <h4>Core Tools</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Tool</th><th>Role</th><th>Cost</th></tr></thead>
+                    <tbody>
+                        <tr><td><a href="https://rocm.docs.amd.com/" target="_blank" rel="noopener">AMD ROCm</a></td><td>Open-source GPU computing platform (AMD's equivalent to NVIDIA CUDA)</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://github.com/Genesis-Embodied-AI/Genesis" target="_blank" rel="noopener">Genesis</a></td><td>Open-source physics-based robotics simulation platform</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://www.amd.com/en/corporate/university-program.html" target="_blank" rel="noopener">AMD University Program (AUP)</a></td><td>Free teaching materials, discounted hardware, AI training for academics</td><td>Free (registration required)</td></tr>
+                        <tr><td><a href="https://github.com/AMDResearch/aup-learning-cloud" target="_blank" rel="noopener">AUP Learning Cloud</a></td><td>Pre-configured Jupyter-based AI courses incl. "Physical Simulation"</td><td>Free, open-source</td></tr>
+                        <tr><td><a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener">PyTorch (ROCm build)</a></td><td>AI/ML framework running natively on AMD GPUs</td><td>Free, open-source</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <h4>AMD vs NVIDIA Comparison</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Capability</th><th>NVIDIA (V1)</th><th>AMD (V6)</th></tr></thead>
+                    <tbody>
+                        <tr><td>Simulation platform</td><td>Isaac Sim (NVIDIA-proprietary)</td><td>Genesis (open-source, hardware-agnostic)</td></tr>
+                        <tr><td>GPU computing</td><td>CUDA (proprietary)</td><td>ROCm (open-source)</td></tr>
+                        <tr><td>Teaching kits</td><td>NVIDIA DLI kits (polished, extensive)</td><td>AUP Learning Cloud (growing, open-source)</td></tr>
+                        <tr><td>Hardware requirement</td><td>Dedicated NVIDIA GPU (RTX)</td><td>AMD Ryzen AI MAX laptop or discrete Radeon GPU</td></tr>
+                        <tr><td>Ecosystem maturity</td><td>Very high (industry standard)</td><td>Growing rapidly; still behind NVIDIA</td></tr>
+                        <tr><td>Vendor lock-in</td><td>High (CUDA/NVIDIA-only)</td><td>Low (open-source, portable)</td></tr>
+                        <tr><td>Cost</td><td>Free software; higher hardware cost</td><td>Free software; lower hardware cost</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <h4>Hardware Options</h4>
+                <p><strong>Option A: AMD AUP HPC Cluster Access (Zero Hardware — Recommended First)</strong></p>
+                <p>The AMD University Program may provide remote HPC cluster access to qualified institutions at no cost. Students run Genesis simulations through a browser-based Jupyter interface — no local GPU needed. Apply at <a href="https://www.amd.com/en/corporate/university-program.html" target="_blank" rel="noopener">amd.com/university-program</a>. HPC access is not guaranteed — confirm availability before building curriculum around it.</p>
+
+                <p><strong>Option B: AMD Ryzen AI MAX Laptops (No Lab Space Needed)</strong></p>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Item</th><th>Quantity</th><th>Unit Cost</th><th>Total</th></tr></thead>
+                    <tbody>
+                        <tr><td>AMD Ryzen AI MAX 395 laptop</td><td>3–5 units (faculty + demo)</td><td>~$1,500–$2,000</td><td>~$4,500–$10,000</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-note">
+                    <strong>Student contest opportunity</strong>
+                    The <a href="https://www.hackster.io/contests/amd2023" target="_blank" rel="noopener">AMD Pervasive AI Developer Contest</a> offers a <strong>$2,500 USD prize specifically for university students</strong> in the AMD University Program category. This is a direct funding opportunity for STC students and could subsidize lab hardware costs.
+                </div>
+
+                <h4>AUP Learning Cloud Setup</h4>
+                <pre><code>git clone https://github.com/AMDResearch/aup-learning-cloud.git
+cd aup-learning-cloud/deploy/
+sudo ./single-node.sh install
+# Access pre-built courses at http://localhost:30890</code></pre>
+
+                <h4>Feasibility Assessment</h4>
+                <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Factor</th><th>Rating</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Cost</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Software fully free; hardware cheaper than NVIDIA; AUP HPC option costs $0</td></tr>
+                        <tr><td>Implementation Complexity</td><td><span class="stars">⭐⭐</span></td><td><strong>High barrier for non-technical students.</strong> ROCm requires Linux installation, terminal commands, and Python environment setup. Genesis is Python-based. Suitable as an advanced elective, not an introductory course.</td></tr>
+                        <tr><td>Space Requirements</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td>Laptops or AUP cloud — no dedicated lab space needed</td></tr>
+                        <tr><td>Maintainability</td><td><span class="stars">⭐⭐⭐⭐</span></td><td>Open-source stack; AMD actively maintains ROCm; Genesis is community-maintained</td></tr>
+                        <tr><td>Curriculum Readiness</td><td><span class="stars">⭐⭐⭐⭐</span></td><td>AUP Learning Cloud provides structured courses; less polished than NVIDIA DLI</td></tr>
+                        <tr><td>Industry Relevance</td><td><span class="stars">⭐⭐⭐⭐</span></td><td>Growing rapidly; ROCm + open-source stack increasingly valued in industry</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="callout callout-verdict">
+                    <strong>Verdict</strong>
+                    Strong budget-conscious alternative to NVIDIA with genuine open-source advantages, but <strong>not appropriate as an introductory course for non-technical students</strong>. Recommended as a parallel advanced track alongside V1, or as the simulation option when hardware budget is tight and students already have programming foundations.
+                </div>
+
+                <h4>Example End Goal: Quadruped Robot Navigation Digital Twin on AMD Hardware</h4>
+                <p>A student team uses Genesis and the AUP Learning Cloud's Physical Simulation course to build a <strong>digital twin of a quadruped robot navigating varied terrain</strong>. Running on AMD Ryzen AI MAX hardware (or the AUP HPC cluster), the team trains a locomotion policy using PyTorch on ROCm via parallel simulation environments. The final deliverable is a reproducible Jupyter notebook and Genesis scene demonstrating sim-to-real locomotion concepts — runnable on any AMD GPU or Google Colab.</p>
+            </div>
+        </section>
+
+        <!-- ── 7. Comparative Analysis ─────────────── -->
+        <section class="section" id="comparative">
+            <h2><span class="sec-num">7</span> Comparative Analysis</h2>
+
+            <h3>7.1 Department Cost Summary</h3>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Variation</th><th>Year 1 Cost (Dept.)</th><th>Ongoing Annual</th><th>Feasible Now?</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>V1: NVIDIA (Omniverse Cloud)</strong></td><td>~$0–TBD</td><td>~$0–TBD</td><td>✅ Yes — pending NVIDIA academic cloud pricing</td></tr>
+                    <tr><td><strong>V1: NVIDIA (On-Premise, 3 stations)</strong></td><td>~$8,900–$25,500</td><td>~$0</td><td>❌ No lab space; no GPU; future only</td></tr>
+                    <tr><td><strong>V2: Azure Digital Twins</strong></td><td>~$430–$2,280</td><td>~$430–$2,280/year</td><td>✅ Yes — immediately feasible</td></tr>
+                    <tr><td><strong>V3: Open-Source (Cloud VM)</strong></td><td>~$132–$252</td><td>~$132–$252/year</td><td>✅ Yes — immediately feasible</td></tr>
+                    <tr><td><strong>V3: Open-Source (Old Server Room)</strong></td><td>~$0–$120 one-time</td><td>~$0</td><td>⚠️ Conditional — inspect hardware first; no GPU needed</td></tr>
+                    <tr><td><strong>V4: Unity</strong></td><td>~$120–$240</td><td>~$120–$240/year</td><td>⚠️ Partial — basic scenes OK on student laptops</td></tr>
+                    <tr><td><strong>V5: XMPro</strong></td><td>Unknown</td><td>Unknown</td><td>⚠️ Conditional — requires confirmed academic license</td></tr>
+                    <tr><td><strong>V6: AMD (AUP HPC Cluster)</strong></td><td>~$0</td><td>~$0</td><td>✅ Possible — pending AUP application approval</td></tr>
+                    <tr><td><strong>V6: AMD (Ryzen AI MAX Laptops)</strong></td><td>~$4,500–$10,000</td><td>~$0</td><td>⚠️ No lab space needed; requires budget approval</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h3>7.2 Variation Scorecard</h3>
+            <p><em>Student Accessibility has been elevated to the highest single weight (25%) given that most STC students have non-technical or limited programming backgrounds.</em></p>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Factor (Weight)</th><th>V1: NVIDIA</th><th>V2: Azure</th><th>V3: Open-Source</th><th>V4: Unity</th><th>V5: XMPro</th><th>V6: AMD</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Cost</strong> (20%)</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td></tr>
+                    <tr><td><strong>Student Accessibility</strong> (25%)</td><td><span class="stars">⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span>*</td><td><span class="stars">⭐⭐</span></td></tr>
+                    <tr><td><strong>Low Faculty Complexity</strong> (15%)</td><td><span class="stars">⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐</span></td></tr>
+                    <tr><td><strong>Space Requirements</strong> (10%)</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td></tr>
+                    <tr><td><strong>Maintainability</strong> (10%)</td><td><span class="stars">⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td></tr>
+                    <tr><td><strong>Curriculum Readiness</strong> (10%)</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐</span></td><td><span class="stars">⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td></tr>
+                    <tr><td><strong>Industry Relevance</strong> (10%)</td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="stars">⭐⭐⭐⭐</span></td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p><small>*V5 XMPro accessibility rating is conditional on academic licensing being confirmed.</small></p>
+
+            <h3>7.4 Example End Goals by Path</h3>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Variation</th><th>Capstone End Goal</th><th>Skills Showcased</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>V1: NVIDIA</strong></td><td>Autonomous warehouse robot arm: trained in Isaac Lab, visualized in Omniverse, deployed via ROS 2</td><td>RL training, sim-to-real, OpenUSD, synthetic data</td></tr>
+                    <tr><td><strong>V2: Azure</strong></td><td>Smart building digital twin: live sensor telemetry → Azure IoT Hub → DTDL twin graph → 3D dashboard</td><td>DTDL modeling, cloud IoT, Node-RED pipelines</td></tr>
+                    <tr><td><strong>V3: Open-Source</strong></td><td>Smart factory floor monitor: 5 simulated sensors → MQTT → Node-RED → Eclipse Ditto → Grafana</td><td>MQTT, IoT data flows, open-source DT management</td></tr>
+                    <tr><td><strong>V4: Unity</strong></td><td>Interactive 3D server room twin: live telemetry data drives real-time color and alert overlays in Unity</td><td>Unity 3D, C# data binding, HMI visualization</td></tr>
+                    <tr><td><strong>V5: XMPro</strong></td><td>Predictive maintenance dashboard: AI agent monitors pump telemetry → auto-generates work orders</td><td>No-code AI streams, prescriptive analytics</td></tr>
+                    <tr><td><strong>V6: AMD</strong></td><td>Quadruped robot navigation: parallel RL training on AMD GPU → terrain navigation policy via Genesis</td><td>ROCm, Genesis, PyTorch, open-source sim-to-real</td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h3>7.6 Best Fit by Scenario</h3>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Scenario</th><th>Best Variation</th></tr></thead>
+                <tbody>
+                    <tr><td>Non-technical students, zero budget, start now</td><td><strong>V3: Open-Source Stack</strong> (most accessible, no coding required)</td></tr>
+                    <tr><td>Non-technical students, cloud-first</td><td><strong>V2: Azure Digital Twins</strong> (GUI/browser-driven, guided tutorials)</td></tr>
+                    <tr><td>Mixed ability cohort (non-tech majority + some tech)</td><td><strong>V3 (all students) + V2 (intermediate) + V1 or V6 (advanced elective)</strong></td></tr>
+                    <tr><td>Zero budget, AMD HPC access approved</td><td>V6: AMD (advanced students only)</td></tr>
+                    <tr><td>Dean-approved budget, maximum industry impact</td><td>V1: NVIDIA Hybrid (advanced track)</td></tr>
+                    <tr><td>Budget-conscious simulation track (advanced students)</td><td>V6: AMD Ryzen AI MAX</td></tr>
+                    <tr><td>Phased approach, low risk</td><td><strong>V3 → V2 → V1 or V6</strong></td></tr>
+                    <tr><td>NVIDIA vs AMD comparison lab (senior elective)</td><td>V1 + V6 side-by-side</td></tr>
+                </tbody>
+            </table>
+            </div>
+        </section>
+
+        <!-- ── 8. Recommended Approach ────────────── -->
+        <section class="section" id="recommendation">
+            <h2><span class="sec-num">8</span> Recommended Approach</h2>
+            <p>Based on STC's confirmed infrastructure constraints — <strong>no dedicated lab space, no GPU hardware, a decade-old server room, and a student majority with non-technical backgrounds</strong> — the recommended approach prioritizes what is immediately feasible with zero infrastructure investment, then builds toward more advanced capabilities only as resources allow.</p>
+
+            <p>The guiding principle is <em>accessibility first, depth second</em>: start every student on visual, browser-based tools, then progressively introduce technical depth for students who are ready.</p>
+
+            <div class="phase-card">
+                <h4><span class="phase-badge">Phase 1</span> Immediate, ~$0–$252/year — Open-Source Foundation (All Students)</h4>
+                <p>Deploy the open-source stack (Wokwi + Node-RED + Eclipse Ditto + Grafana) on a low-cost cloud VM. Students interact exclusively through browser-based and visual interfaces. No terminal or coding required at the introductory level. Suitable for <strong>all students regardless of technical background</strong>. Answers the question: <em>"What is a digital twin and how does data flow through it?"</em></p>
+            </div>
+            <div class="phase-card">
+                <h4><span class="phase-badge">Phase 2A</span> Semester 2, ~$430–$2,280/year — Azure Digital Twins (Intermediate Track)</h4>
+                <p>Introduce Azure Digital Twins for students who have completed Phase 1. Azure Portal and DTDL modeling are GUI-driven and supported by structured Microsoft Learn tutorials. Node-RED, already introduced in Phase 1, connects directly to Azure IoT Hub, minimizing the learning leap.</p>
+            </div>
+            <div class="phase-card">
+                <h4><span class="phase-badge">Phase 2B</span> Semester 2–3, ~$0 software — NVIDIA / AMD Simulation (Advanced Elective)</h4>
+                <p>Introduce NVIDIA Omniverse or AMD Genesis for students with prior coding experience or those who excelled in Phase 1 and Phase 2A. Positioned as an <strong>advanced elective or capstone project</strong>, not a core course requirement. Faculty should provide scaffolded setup (pre-configured environments, Docker containers, or cloud access).</p>
+            </div>
+            <div class="phase-card">
+                <h4><span class="phase-badge">Phase 3</span> Year 2+ — Deeper Specialization</h4>
+                <p>Add XMPro as an industrial no-code capstone module <em>if</em> academic licensing is secured. Introduce Unity as a visualization elective for students with some coding background. Offer AMD/NVIDIA side-by-side comparison for advanced CS students.</p>
+            </div>
+        </section>
+
+        <!-- ── 9. Implementation Roadmap ──────────── -->
+        <section class="section" id="roadmap">
+            <h2><span class="sec-num">9</span> Implementation Roadmap</h2>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Phase</th><th>Timeline</th><th>Actions</th><th>Estimated Cost</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Phase 1</strong></td><td>Month 1</td><td>Provision cloud VM; install Docker, Mosquitto, Eclipse Ditto, InfluxDB, Grafana, Node-RED</td><td>~$10–$20/month</td></tr>
+                    <tr><td><strong>Phase 1</strong></td><td>Month 2</td><td>Build 3 Wokwi lab exercises; test full pipeline; document setup</td><td>$0</td></tr>
+                    <tr><td><strong>Phase 1</strong></td><td>Month 3–4</td><td>Pilot with first student cohort (IoT Digital Twins module); gather feedback</td><td>$0</td></tr>
+                    <tr><td><strong>Phase 2</strong></td><td>Month 5</td><td>Register for NVIDIA DLI faculty program; download teaching kits</td><td>$0</td></tr>
+                    <tr><td><strong>Phase 2</strong></td><td>Month 6</td><td>Set up NVIDIA Omniverse Cloud accounts for students; test Isaac Sim labs</td><td>$0</td></tr>
+                    <tr><td><strong>Phase 2</strong></td><td>Month 7–9</td><td>Deliver robotics simulation and Physical AI module</td><td>$0</td></tr>
+                    <tr><td><strong>Phase 2</strong></td><td>Month 8 (parallel)</td><td>Submit dean request for 2x GPU workstations if local rendering is needed</td><td>~$6,400 (optional)</td></tr>
+                    <tr><td><strong>Phase 3</strong></td><td>Year 2, Q1</td><td>Enroll students in Azure for Students; provision shared Azure IoT Hub</td><td>~$300–$500 setup</td></tr>
+                    <tr><td><strong>Phase 3</strong></td><td>Year 2, Q2–Q4</td><td>Deliver Azure Digital Twins module; connect Wokwi to Azure IoT Hub</td><td>~$130–$1,780/year</td></tr>
+                    <tr><td><strong>Phase 4</strong></td><td>Year 2+</td><td>Contact XMPro for academic licensing; evaluate feasibility</td><td>TBD</td></tr>
+                </tbody>
+            </table>
+            </div>
+        </section>
+
+        <!-- ── 10. Risks & Mitigations ────────────── -->
+        <section class="section" id="risks">
+            <h2><span class="sec-num">10</span> Risks &amp; Mitigations</h2>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>No lab space — all student work must run on personal laptops or cloud</strong></td><td>Confirmed</td><td>High</td><td>All variations must be fully browser or cloud-based. Verify all tools run on minimum-spec student laptops before semester launch.</td></tr>
+                    <tr><td><strong>Server room has no GPU — simulation variations cannot run on existing hardware</strong></td><td>Confirmed</td><td>High</td><td>V1, V4, and V6 require cloud GPU access or future hardware investment. No on-premise simulation is possible with current infrastructure.</td></tr>
+                    <tr><td><strong>Old server room hardware may fail if used as backend</strong></td><td>High</td><td>High</td><td>Use cloud VM as primary backend. Only consider old hardware as a secondary experiment after passing full inspection.</td></tr>
+                    <tr><td><strong>Non-technical students overwhelmed by terminal/CLI tools</strong></td><td>High</td><td>High</td><td>Start all students on browser-based tools (Wokwi, Node-RED, Azure Portal); gate advanced tools behind prerequisite completion.</td></tr>
+                    <tr><td>Student drop-off when transitioning from visual to code-based tools</td><td>Medium</td><td>High</td><td>Scaffold with pre-configured environments; offer code-optional paths in early courses.</td></tr>
+                    <tr><td>GPU not available for NVIDIA/AMD tools unless cloud access secured</td><td>Medium</td><td>High</td><td>Secure NVIDIA Omniverse Cloud or AMD AUP HPC access before scheduling simulation modules</td></tr>
+                    <tr><td>Azure costs exceed student credits</td><td>Medium</td><td>Medium</td><td>Cap usage with Azure spending limits; use instructor-managed shared accounts</td></tr>
+                    <tr><td>NVIDIA Omniverse 2-collaborator limit in free tier</td><td>Medium</td><td>Medium</td><td>Students work on individual projects; instructor uses separate account</td></tr>
+                    <tr><td>Faculty learning curve for new tools</td><td>Medium</td><td>High</td><td>Use NVIDIA DLI teaching kits; schedule faculty training the semester before launch</td></tr>
+                    <tr><td>XMPro licensing not available for academia</td><td>High</td><td>Low</td><td>XMPro is optional Phase 3+; does not block Phase 1–2</td></tr>
+                    <tr><td>Cloud VM goes down during lab</td><td>Low</td><td>Medium</td><td>Keep a local Docker backup on a faculty laptop; document recovery steps</td></tr>
+                    <tr><td>NVIDIA Omniverse Launcher deprecated (Oct 2025)</td><td>Confirmed</td><td>Low</td><td>Use NGC Catalog for installation instead — fully documented</td></tr>
+                </tbody>
+            </table>
+            </div>
+        </section>
+
+        <!-- ── 11. OpenEdX ────────────────────────── -->
+        <section class="section" id="openedx">
+            <h2><span class="sec-num">11</span> Course Delivery: OpenEdX Integration</h2>
+            <p>Regardless of which variation is adopted, <a href="https://openedx.org/" target="_blank" rel="noopener"><strong>OpenEdX</strong></a> can serve as the course delivery and learning management platform. It is open-source, self-hostable, and supports:</p>
+            <ul>
+                <li>Lab exercise distribution and submission</li>
+                <li>Student progress tracking and grading</li>
+                <li>Embedded simulations and video content</li>
+                <li>Discussion forums and peer review</li>
+                <li>Integration with Jupyter notebooks for analytics exercises</li>
+            </ul>
+            <p>OpenEdX can be self-hosted on a $10–20/month VM or accessed via a managed provider such as <a href="https://docs.tutor.edly.io/" target="_blank" rel="noopener">Tutor</a> (the recommended self-hosted deployment method). This keeps course delivery separate from the Digital Twins lab infrastructure, making the overall system modular and maintainable.</p>
+        </section>
+
+        <!-- ── 12. Conclusion ─────────────────────── -->
+        <section class="section" id="conclusion">
+            <h2><span class="sec-num">12</span> Conclusion &amp; Next Steps</h2>
+            <p>This study finds that implementing a Digital Twins lab at STC is <strong>feasible, practical, and achievable within a modest budget</strong>. The breadth of free, high-quality tooling — particularly from NVIDIA and the open-source ecosystem — means that STC can begin immediately without significant capital expenditure.</p>
+
+            <h3>Recommended Next Steps</h3>
+            <div class="next-step">
+                <div class="step-num">1</div>
+                <div><strong>Faculty alignment meeting</strong> — Confirm which teaching track(s) to prioritize (Robotics/Simulation vs. Industrial Analytics) and agree on Phase 1 tools</div>
+            </div>
+            <div class="next-step">
+                <div class="step-num">2</div>
+                <div><strong>Register for NVIDIA DLI faculty program</strong> — Visit <a href="https://www.nvidia.com/en-us/training/educator-programs/" target="_blank" rel="noopener">nvidia.com/training/educator-programs</a> to access free teaching kits</div>
+            </div>
+            <div class="next-step">
+                <div class="step-num">3</div>
+                <div><strong>Launch Phase 1 open-source stack</strong> — Spin up a cloud VM and deploy the Docker Compose lab environment; target a 2-week setup window</div>
+            </div>
+            <div class="next-step">
+                <div class="step-num">4</div>
+                <div><strong>Enroll students in Azure for Students</strong> — Secure $100 per-student Azure credits at <a href="https://azure.microsoft.com/en-us/free/students/" target="_blank" rel="noopener">azure.microsoft.com/free/students</a></div>
+            </div>
+            <div class="next-step">
+                <div class="step-num">5</div>
+                <div><strong>Register for AMD University Program</strong> — Apply at <a href="https://www.amd.com/en/corporate/university-program.html" target="_blank" rel="noopener">amd.com/en/corporate/university-program.html</a> for free teaching kits, AUP Learning Cloud access, and potential HPC cluster access</div>
+            </div>
+            <div class="next-step">
+                <div class="step-num">6</div>
+                <div><strong>Submit dean budget request for Phase 2</strong> — Request ~$6,400 for 2 NVIDIA GPU workstations OR ~$4,500–$6,000 for 3 AMD Ryzen AI MAX laptops, depending on preferred variation</div>
+            </div>
+            <div class="next-step">
+                <div class="step-num">7</div>
+                <div><strong>Contact XMPro for academic licensing</strong> — Email <a href="https://xmpro.com/contact-us/" target="_blank" rel="noopener">xmpro.com/contact-us</a> to determine if academic access is available and at what cost</div>
+            </div>
+            <div class="next-step">
+                <div class="step-num">8</div>
+                <div><strong>Set up OpenEdX</strong> — Deploy via <a href="https://docs.tutor.edly.io/" target="_blank" rel="noopener">Tutor</a> on a shared VM for course content hosting</div>
+            </div>
+        </section>
+
+        <!-- ── 13. Dean Pitch ─────────────────────── -->
+        <section class="section" id="dean-pitch">
+            <h2><span class="sec-num">13</span> How the Dean Can Present This to the University President</h2>
+
+            <h3>13.2 The One-Paragraph Case</h3>
+            <div class="callout callout-verdict">
+                City University of Seattle has an opportunity to become the only institution in the region offering hands-on Digital Twins and Physical AI education — skills that over 2,300 employers are actively hiring for nationally, with average starting salaries above $85,000 and senior roles exceeding $200,000. The cost of launching this initiative in Year 1 is as low as $250/year in cloud subscriptions — less than most textbook budgets. The cost of not launching it is losing enrollment to schools that do, and missing a three-to-five year window to establish STC as the regional training partner of choice for companies like Microsoft, Boeing, Amazon, and T-Mobile.
+            </div>
+
+            <h3>13.3 Framing by Presidential Priority</h3>
+
+            <h4>Enrollment Growth</h4>
+            <p>Digital Twins and Physical AI are appearing in job postings faster than universities are incorporating them into curricula. When prospective students search for schools that teach these skills, STC currently does not appear. A program in this space — even a modest one — creates a searchable, marketable differentiator.</p>
+            <div class="callout callout-note"><strong>The ask:</strong> "We are not asking to build a new building or hire new faculty immediately. We are asking for permission and a modest budget to launch a lab-based course that puts STC on the map as a technology-forward institution. The first year costs less than a single faculty conference travel budget."</div>
+
+            <h4>Corporate Partnerships</h4>
+            <p>Microsoft's Academic Alliance provides Azure credits and curriculum support. NVIDIA's DLI program provides free faculty training and teaching kits. AMD's University Program provides hardware access and research collaboration. These partnerships are existing programs that STC can apply to immediately.</p>
+            <div class="callout callout-note"><strong>The ask:</strong> "We have identified at least three vendor programs (NVIDIA, Microsoft, AMD) that will provide STC with free resources — teaching materials, cloud credits, and faculty training — in exchange for becoming a named academic partner. This is a reputational gain with zero financial outlay."</div>
+
+            <h4>Workshops and Community Engagement</h4>
+            <p>A working lab creates the infrastructure for corporate workshops (paid half-day/full-day upskilling sessions), community education events, K–12 pipeline events, and industry certification prep courses. These activities generate revenue, press, and enrollment leads from the same infrastructure.</p>
+            <div class="callout callout-note"><strong>The ask:</strong> "A Digital Twins lab is not just a classroom. It is a revenue-generating asset that positions STC as a community technology hub. Comparable programs at other small institutions have generated $50,000–$150,000 annually in workshop and continuing education revenue within two years of launch."</div>
+
+            <h4>Reputation as a Technology-Forward Institution</h4>
+            <p>CMU, University of Michigan, and MIT have already launched Digital Twins programs. These are not comparable in scale to STC, but their existence means the question is no longer "is this a credible field?" — it is "why doesn't STC have this yet?"</p>
+            <div class="callout callout-note"><strong>The ask:</strong> "We have the opportunity to be first in our peer segment — small regional universities with strong CS/IT programs — to offer this. That first-mover position is worth significantly more than the cost of the initiative, in enrollment, press, and partnership terms."</div>
+
+            <h3>13.4 Summary: What the President Is Being Asked to Approve</h3>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>Item</th><th>Ask</th><th>Cost</th></tr></thead>
+                <tbody>
+                    <tr><td>Phase 1 launch authorization</td><td>Permission to deploy open-source lab stack</td><td>$0</td></tr>
+                    <tr><td>Cloud VM subscription</td><td>Monthly infrastructure for student labs</td><td>~$20/month (~$240/year)</td></tr>
+                    <tr><td>Faculty time allocation</td><td>Clark Ngo to lead initiative</td><td>Internal reallocation</td></tr>
+                    <tr><td>NVIDIA / AMD / Microsoft program enrollment</td><td>Permission to register STC as academic partner</td><td>$0</td></tr>
+                    <tr><td>Phase 2 hardware budget (future)</td><td>2 GPU laptops or workstations if Phase 1 succeeds</td><td>~$4,500–$6,400 (deferred, conditional)</td></tr>
+                    <tr><td><strong>Total Year 1 ask</strong></td><td></td><td><strong>~$240 in operating costs + internal faculty time</strong></td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p>This is not a capital project. It is a strategic program initiative with one of the highest potential ROI profiles of any academic investment the university could make in the current technology landscape.</p>
+        </section>
+
+        <!-- ── 14. Why Clark Ngo ───────────────────── -->
+        <section class="section" id="clark-ngo">
+            <h2><span class="sec-num">14</span> Why Clark Ngo Is Essential to This Initiative</h2>
+
+            <h3>14.1 The Challenge of Initiating Without a Champion</h3>
+            <p>Academic programs do not launch themselves. Behind every successful new curriculum initiative — especially in a small institution with limited administrative bandwidth — there is a specific person who carries the idea through the gap between proposal and reality: writing the documentation, navigating the approvals, setting up the infrastructure, building the curriculum, and sustaining the momentum when institutional inertia pushes back.</p>
+            <p>Digital Twins and Physical AI are highly technical, rapidly evolving domains. They require someone who understands both the technology and the academic context, can bridge the gap between vendor resources and classroom application, and has the credibility to represent STC in conversations with industry partners, technology vendors, and students. That person, for this initiative at STC, is Clark Ngo.</p>
+
+            <h3>14.2 What This Initiative Actually Requires</h3>
+            <p>Launching and sustaining a Digital Twins lab is not a task that can be assigned as a small addition to an existing faculty workload. The work includes:</p>
+            <ul>
+                <li><strong>Technical setup and maintenance</strong> — Provisioning and managing cloud infrastructure; maintaining Docker-based backend services; evaluating and updating tools as the ecosystem evolves</li>
+                <li><strong>Curriculum development</strong> — Designing lab exercises from scratch for V3 and V2 tracks; adapting NVIDIA and AMD teaching kits for STC's non-technical student majority</li>
+                <li><strong>Partnership and vendor management</strong> — Registering STC with NVIDIA DLI, AMD University Program, and Microsoft Azure for Education; maintaining those relationships over time</li>
+                <li><strong>Student mentorship</strong> — Supporting students through a technology domain most have never encountered; identifying strong students for industry referrals and internship pipelines</li>
+                <li><strong>Program advocacy</strong> — Reporting to the dean and president on program outcomes; proposing Phase 2 investments based on evidence from Phase 1</li>
+            </ul>
+            <p>This is the work of a program lead, not a part-time committee.</p>
+
+            <h3>14.3 Why Clark Ngo Specifically</h3>
+            <ul>
+                <li><strong>Domain knowledge:</strong> Clark has researched the Digital Twins landscape deeply enough to identify six distinct implementation variations, evaluate their feasibility for STC's constraints, map them to specific tools and teaching resources, and connect them to the job market.</li>
+                <li><strong>Initiative and ownership:</strong> This proposal exists because Clark chose to investigate it, document it, and bring it forward. That kind of self-directed initiative is what program launches require.</li>
+                <li><strong>Stakeholder credibility:</strong> Clark is positioned to speak credibly with NVIDIA, Microsoft, and AMD academic program representatives — a conversation that requires both technical literacy and institutional standing.</li>
+                <li><strong>Student connection:</strong> For a program serving primarily non-technical students entering a technically demanding field, the instructor's ability to meet students where they are — and build confidence progressively — matters enormously.</li>
+            </ul>
+
+            <h3>14.4 The Risk of Not Resourcing This Role</h3>
+            <p>If STC approves the initiative but does not formally recognize and resource Clark's leadership of it, the predictable outcomes are: Phase 1 launches but stalls when maintenance issues arise that no one owns; vendor partnerships expire without renewal; curriculum development falls behind as other obligations take priority; students encounter technical problems that go unresolved, damaging the program's reputation.</p>
+            <p><strong>The most reliable predictor of a successful new academic program is whether the person who championed it is given the time and authority to see it through. Clark Ngo has already demonstrated the commitment. The institution's job is to match it.</strong></p>
+
+            <h3>14.5 Recommended Role Recognition</h3>
+            <div class="table-scroll">
+            <table>
+                <thead><tr><th>What Is Needed</th><th>Recommendation</th></tr></thead>
+                <tbody>
+                    <tr><td>Formal program lead title</td><td>Digital Twins Lab Director or equivalent</td></tr>
+                    <tr><td>Protected time allocation</td><td>Minimum one course-equivalent of time per semester dedicated to lab development and maintenance</td></tr>
+                    <tr><td>Budget authority</td><td>Ability to approve Phase 1 operating costs (~$240/year) without multi-layer approval</td></tr>
+                    <tr><td>Vendor relationship authority</td><td>Authorization to register STC with NVIDIA, AMD, and Microsoft academic programs on the institution's behalf</td></tr>
+                    <tr><td>Path to Phase 2</td><td>Clear criteria for when Phase 2 hardware investment will be evaluated (e.g., after X students complete Phase 1)</td></tr>
+                </tbody>
+            </table>
+            </div>
+        </section>
+
+        <!-- ── 15. References ─────────────────────── -->
+        <section class="section" id="references">
+            <h2><span class="sec-num">15</span> References</h2>
+            <ul style="font-size:0.88rem; line-height:1.8;">
+                <li>Nath, S. V. (2021). <em>Building Industrial Digital Twins: Design, Develop, and Deploy Digital Twin Solutions for Real-World Industries Using Azure Digital Twins</em>. Packt Publishing.</li>
+                <li>NVIDIA. (2026). <em>Physical AI Learning Path</em>. <a href="https://docs.nvidia.com/learning/physical-ai/" target="_blank" rel="noopener">docs.nvidia.com/learning/physical-ai/</a></li>
+                <li>NVIDIA. (2026). <em>Omniverse Platform Overview</em>. <a href="https://www.nvidia.com/en-us/omniverse/" target="_blank" rel="noopener">nvidia.com/en-us/omniverse/</a></li>
+                <li>NVIDIA Deep Learning Institute. <em>Edge AI and Robotics Teaching Kit</em>. <a href="https://bitbucket.org/nvidia-dli/edge-ai-and-robotics-teaching-kit-labs/" target="_blank" rel="noopener">bitbucket.org/nvidia-dli/</a></li>
+                <li>Microsoft. (2026). <em>Azure Digital Twins Documentation</em>. <a href="https://learn.microsoft.com/en-us/azure/digital-twins/" target="_blank" rel="noopener">learn.microsoft.com/azure/digital-twins/</a></li>
+                <li>Microsoft. (2026). <em>Azure for Students</em>. <a href="https://azure.microsoft.com/en-us/free/students/" target="_blank" rel="noopener">azure.microsoft.com/free/students/</a></li>
+                <li>Eclipse Foundation. <em>Eclipse Ditto</em>. <a href="https://eclipse.dev/ditto/" target="_blank" rel="noopener">eclipse.dev/ditto/</a></li>
+                <li>AMD. (2026). <em>AMD University Program</em>. <a href="https://www.amd.com/en/corporate/university-program.html" target="_blank" rel="noopener">amd.com/en/corporate/university-program.html</a></li>
+                <li>AMD ROCm Blogs. (February 2026). <em>Digital Twins on AMD: Building Robotic Simulations Using Edge AI PCs</em>. <a href="https://rocm.blogs.amd.com/artificial-intelligence/rocm-genesis/README.html" target="_blank" rel="noopener">rocm.blogs.amd.com</a></li>
+                <li>Genesis World. (2026). <em>Genesis Open-Source Robotics Simulator</em>. <a href="https://github.com/Genesis-Embodied-AI/Genesis" target="_blank" rel="noopener">github.com/Genesis-Embodied-AI/Genesis</a></li>
+                <li>XMPro. (2026). <em>XMPro iBOS Platform</em>. <a href="https://xmpro.com/" target="_blank" rel="noopener">xmpro.com/</a></li>
+                <li>Unity Technologies. <em>Unity Education</em>. <a href="https://unity.com/education" target="_blank" rel="noopener">unity.com/education</a></li>
+                <li>Open edX. <em>Open Source LMS</em>. <a href="https://openedx.org/" target="_blank" rel="noopener">openedx.org/</a></li>
+                <li>AMD Research. (2026). <em>AUP Learning Cloud</em>. <a href="https://github.com/AMDResearch/aup-learning-cloud" target="_blank" rel="noopener">github.com/AMDResearch/aup-learning-cloud</a></li>
+            </ul>
+        </section>
+
+        <footer>
+            Feasibility Study · Digital Twins Laboratory · STC, City University of Seattle · Clark Ngo · May 2026
+        </footer>
+    </div><!-- /main -->
+</div><!-- /layout -->
+
+<script src="assets/nav.js"></script>
+<script>
+    function showVar(id) {
+        document.querySelectorAll('.var-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.var-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('var-' + id).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // Highlight active TOC item on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.toc-box a');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                tocLinks.forEach(a => a.classList.remove('active'));
+                const link = document.querySelector(`.toc-box a[href="#${entry.target.id}"]`);
+                if (link) link.classList.add('active');
+            }
+        });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

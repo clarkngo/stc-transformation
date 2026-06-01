@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/styles.css">
+    <title>Peer Instruction &amp; CATs in the AI Age — STC Transformation</title>
+    <style>
+        :root {
+            --accent: #0369a1;
+            --accent-dim: #f0f9ff;
+            --accent-mid: #38bdf8;
+            --accent-dark: #075985;
+            --ink: #0f172a;
+            --slate: #475569;
+            --slate-light: #94a3b8;
+            --card: #ffffff;
+            --bg: #f1f5f9;
+            --bg-elevated: linear-gradient(165deg, #ffffff 0%, #f0f9ff 100%);
+            --border: rgba(15, 23, 42, 0.08);
+            --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 40px rgba(15, 23, 42, 0.06);
+            --radius: 16px;
+            --radius-sm: 12px;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        abbr[title] {
+            cursor: help;
+            text-decoration: underline dotted;
+            text-underline-offset: 0.12em;
+            text-decoration-color: rgba(71, 85, 105, 0.42);
+        }
+        body {
+            margin: 0;
+            font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        .shell { max-width: 900px; margin: 0 auto; padding: 24px 20px 72px; }
+
+        /* ── Nav ── */
+        .nav-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            margin-bottom: 22px;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .nav-row a { color: var(--accent); text-decoration: none; }
+        .nav-row a:hover { text-decoration: underline; }
+
+        /* ── Hero ── */
+        .doc-hero {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 36px 40px 32px;
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+        }
+        .doc-hero .eyebrow {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        .doc-hero h1 {
+            margin: 0 0 14px;
+            font-size: 1.9rem;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            color: var(--ink);
+        }
+        .doc-hero .lede {
+            color: var(--slate);
+            font-size: 1.05rem;
+            line-height: 1.65;
+            max-width: 760px;
+            margin: 0 0 22px;
+        }
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.82rem;
+            color: var(--slate-light);
+        }
+        .meta-pill {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* ── Alert / key-insight box ── */
+        .insight {
+            background: #fef9ec;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            padding: 16px 20px;
+            margin: 28px 0;
+            color: #78350f;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .insight strong { color: #92400e; }
+
+        /* ── Section headings ── */
+        .section-block {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px 36px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(15,23,42,0.04);
+        }
+        .section-block h2 {
+            margin: 0 0 6px;
+            font-size: 1.35rem;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+        }
+        .section-block .section-sub {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--slate-light);
+            margin: 0 0 18px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .section-block p { margin: 0 0 14px; color: var(--slate); }
+        .section-block p:last-child { margin-bottom: 0; }
+
+        /* ── Vulnerability callout ── */
+        .vulnerability {
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            margin: 18px 0;
+        }
+        .vulnerability .vuln-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #be123c;
+            margin-bottom: 6px;
+        }
+        .vulnerability p { color: #9f1239; margin: 0; font-size: 0.93rem; }
+
+        /* ── Bullet list ── */
+        .adaptation-list {
+            list-style: none;
+            padding: 0;
+            margin: 18px 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .adaptation-list li {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .adaptation-list .al-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .adaptation-list .al-body { flex: 1; font-size: 0.95rem; color: var(--slate); line-height: 1.55; }
+        .adaptation-list .al-body strong { color: var(--ink); }
+
+        /* ── CATs table ── */
+        .cats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        .cats-table th {
+            background: var(--accent-dim);
+            color: var(--accent-dark);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 2px solid var(--accent-mid);
+        }
+        .cats-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+            color: var(--slate);
+            line-height: 1.5;
+        }
+        .cats-table tr:last-child td { border-bottom: none; }
+        .cats-table tr:hover td { background: #f8fafc; }
+        .cats-table td:first-child { color: var(--ink); font-weight: 600; min-width: 160px; }
+        .cats-table td .cat-sub { font-weight: 400; font-size: 0.82rem; color: var(--slate-light); display: block; margin-top: 2px; }
+        .cats-table td:nth-child(2) { font-style: italic; }
+        .cats-table td:nth-child(2) strong { font-style: normal; color: var(--accent-dark); }
+
+        /* ── Paradigm shift summary ── */
+        .summary-block {
+            background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%);
+            border-radius: var(--radius);
+            padding: 32px 36px;
+            color: #e0f2fe;
+            margin-bottom: 24px;
+        }
+        .summary-block h2 { margin: 0 0 12px; color: #ffffff; font-size: 1.25rem; }
+        .summary-block p { margin: 0; line-height: 1.7; font-size: 0.97rem; }
+        .summary-block strong { color: #bae6fd; }
+
+        @media (max-width: 640px) {
+            .doc-hero { padding: 24px 20px; }
+            .doc-hero h1 { font-size: 1.45rem; }
+            .section-block { padding: 22px 18px; }
+            .cats-table { font-size: 0.82rem; }
+            .cats-table td, .cats-table th { padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <nav class="nav-row" aria-label="Breadcrumb">
+            <a href="index.html">← STC Hub</a>
+            <span style="color:#cbd5e1">/</span>
+            <span style="color:#94a3b8">Peer Instruction &amp; CATs in the AI Age</span>
+        </nav>
+
+        <header class="doc-hero">
+            <div class="eyebrow">Pedagogy Initiative · May 30, 2026</div>
+            <h1>Peer Instruction &amp; <abbr title="Classroom Assessment Techniques">CATs</abbr> in the AI Age</h1>
+            <p class="lede">
+                Eric Mazur's <strong>Peer Instruction</strong> and Angelo &amp; Cross's <strong>Classroom Assessment Techniques</strong> were designed to rescue students from passive lecturing in physical classrooms. In an online environment with generative AI, the challenge has fundamentally changed: AI can now mimic the <em>output</em> of learning — a correct multiple-choice answer, a well-phrased summary — without the student doing any cognitive heavy lifting.
+            </p>
+            <div class="meta-row">
+                <span class="meta-pill">🎓 Pedagogy</span>
+                <span class="meta-pill">🤖 AI-Resistant Design</span>
+                <span class="meta-pill">🌐 Online &amp; Async</span>
+                <span class="meta-pill">📋 Faculty Resource</span>
+            </div>
+        </header>
+
+        <div class="insight">
+            <strong>Core thesis:</strong> To keep these methodologies powerful online, design must shift from evaluating the <em>final product</em> to capturing the <em>live human process</em>. The goal is no longer to see if a student can produce a correct explanation — it is to <strong>reveal how a student navigates their own misconceptions when confronted with automated information.</strong>
+        </div>
+
+        <!-- ── SECTION 1: Peer Instruction ── -->
+        <section class="section-block" aria-labelledby="pi-heading">
+            <div class="section-sub">Section 1</div>
+            <h2 id="pi-heading">Peer Instruction (Eric Mazur)</h2>
+            <p>
+                Mazur's core workflow relies on the <strong>ConcepTest</strong>: a conceptual multiple-choice question designed to expose misunderstandings. Students vote individually, debate with a peer, and vote again. The shift in votes — not the final answer — is the evidence of learning.
+            </p>
+
+            <div class="vulnerability">
+                <div class="vuln-label">⚠️ AI Vulnerability in Online Classes</div>
+                <p>
+                    A student at home during a synchronous Zoom session — or working asynchronously — can effortlessly feed a conceptual question into an AI and receive the correct answer alongside a highly convincing rationale. Peer discussion becomes a mechanical exercise of reading an AI response to a classmate.
+                </p>
+            </div>
+
+            <h3 style="font-size:1rem;margin:22px 0 10px;color:var(--ink)">How It Needs to Change</h3>
+            <ul class="adaptation-list">
+                <li>
+                    <span class="al-icon">🐛</span>
+                    <div class="al-body">
+                        <strong>Move from "Find the Answer" to "Debug the AI."</strong>
+                        Give students a prompt and a flawed AI-generated explanation. The ConcepTest becomes: <em>"AI generated this explanation. Which line contains a fatal conceptual flaw?"</em> This forces students to critique logic rather than retrieve a fact.
+                    </div>
+                </li>
+                <li>
+                    <span class="al-icon">🤝</span>
+                    <div class="al-body">
+                        <strong>AI as the "First Peer" (Asynchronous Flipped Design).</strong>
+                        In an async forum, allow students to use AI to test their initial hypothesis. Have them write down their initial thought, ask an AI tool to argue against them, and document how their thinking evolved from that friction.
+                    </div>
+                </li>
+                <li>
+                    <span class="al-icon">⏱️</span>
+                    <div class="al-body">
+                        <strong>Enforce Live "Cameras-On" Rapid Breakouts.</strong>
+                        If synchronous, use tight 2–3 minute unrecorded breakout rooms of 2–3 students immediately after a live poll. Time pressure must be tight enough that consulting an AI in a separate window introduces more friction than authentic human dialogue.
+                    </div>
+                </li>
+                <li>
+                    <span class="al-icon">✍️</span>
+                    <div class="al-body">
+                        <strong>Capture the Shift, Not Just the Vote.</strong>
+                        Use collaborative tools where students don't just vote A or B, but must type a single sentence explaining <em>why</em> they changed their answer from Vote 1 to Vote 2.
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ── SECTION 2: CATs ── -->
+        <section class="section-block" aria-labelledby="cats-heading">
+            <div class="section-sub">Section 2</div>
+            <h2 id="cats-heading">Classroom Assessment Techniques (<abbr title="Classroom Assessment Techniques">CATs</abbr>)</h2>
+            <p>
+                Angelo and Cross built <abbr title="Classroom Assessment Techniques">CATs</abbr> as quick, low-stakes, often anonymous checks of student understanding — the Minute Paper, the Muddiest Point, the One-Sentence Summary. They were designed to surface confusion before it compounds.
+            </p>
+
+            <div class="vulnerability">
+                <div class="vuln-label">⚠️ AI Vulnerability in Online Classes</div>
+                <p>
+                    In an online class, asynchronous text boxes are an open invitation for automated completion. An instructor's "One-Sentence Summary" on a discussion board is trivially satisfied by pasting the reading into an LLM — entirely bypassing the synthesis step that was the whole point.
+                </p>
+            </div>
+
+            <h3 style="font-size:1rem;margin:22px 0 10px;color:var(--ink)">Adapted CATs for the AI Age</h3>
+            <p style="font-size:0.9rem;color:var(--slate-light)">Each classic technique is re-mapped to leverage or out-index AI.</p>
+
+            <div style="overflow-x:auto">
+                <table class="cats-table">
+                    <thead>
+                        <tr>
+                            <th>Classic CAT</th>
+                            <th>AI Age Online Adaptation</th>
+                            <th>Why It Works</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>The Minute Paper</strong>
+                                <span class="cat-sub">What is the most significant thing you learned?</span>
+                            </td>
+                            <td>
+                                <strong>The "Aha vs. AI" Voice Note.</strong>
+                                Students submit a 45-second audio or video snippet via Canvas Studio or Flip, explaining what finally clicked for them.
+                            </td>
+                            <td>Speaking extemporaneously captures raw, unscripted human cognition far better than polished text.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>The Muddiest Point</strong>
+                                <span class="cat-sub">What is still most confusing to you?</span>
+                            </td>
+                            <td>
+                                <strong>The Prompt Sandbox.</strong>
+                                Students paste a confusing concept into an AI tool, ask for an analogy, then submit the analogy plus a critique of where it breaks down.
+                            </td>
+                            <td>Normalizes confusion while teaching AI literacy; evaluating an analogy requires higher-order thinking.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>One-Sentence Summary</strong>
+                                <span class="cat-sub">Synthesize a complex topic into one structured sentence.</span>
+                            </td>
+                            <td>
+                                <strong>The Structural Reverse-Engineer.</strong>
+                                Give students an AI-generated summary. Ask them to identify the core variables (Who, What, Why) and point out what critical nuance the AI oversimplified.
+                            </td>
+                            <td>Shifts the task from <em>production</em> (which AI excels at) to <em>evaluation</em> and precision editing.</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Directed Paraphrasing</strong>
+                                <span class="cat-sub">Explain a concept to a specific lay audience.</span>
+                            </td>
+                            <td>
+                                <strong>The Roleplay Feedback Loop.</strong>
+                                Students instruct an AI: <em>"Act as a 10-year-old. Ask me follow-up questions where my explanation is too complicated."</em> They screenshot the interaction log.
+                            </td>
+                            <td>Transmutes a passive assignment into an interactive, formative dialogue — the student becomes the true instructor.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ── Summary ── -->
+        <div class="summary-block" role="region" aria-label="Summary of paradigm shift">
+            <h2>Summary: The Paradigm Shift</h2>
+            <p>
+                For both Peer Instruction and <abbr title="Classroom Assessment Techniques">CATs</abbr> to survive online in the age of AI, instructors must stop treating technology as an administrative delivery mechanism — like an electronic scantron — and start treating it as a <strong>cognitive partner</strong>. Online formative assessment must shift from evaluating whether a student can <em>produce</em> a correct explanation to <strong>revealing how a student navigates their own misconceptions when confronted with automated information.</strong>
+            </p>
+        </div>
+
+        <footer style="text-align:center;color:#94a3b8;font-size:0.85rem;margin-top:40px">
+            Built for City University of Seattle — School of Technology and Computing · Maintained by Clark Ngo
+        </footer>
+    </div>
+    <script src="assets/nav.js"></script>
+</body>
+</html>

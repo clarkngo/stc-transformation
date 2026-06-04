@@ -59,4 +59,146 @@
   } else {
     body.appendChild(nav);
   }
+
+  // ── Section Navigator HUD ─────────────────────────────────────────────────
+  // Only activate when the page has at least 2 navigable stops.
+  function buildSectionNav() {
+    function getTargets() {
+      var hero     = document.querySelector('.hero, .doc-hero');
+      var sections = Array.from(document.querySelectorAll('.section-block'));
+      var all = hero ? [hero].concat(sections) : sections;
+      return all.length >= 2 ? all : [];
+    }
+
+    var targets = getTargets();
+    if (targets.length < 2) return; // not a multi-section briefing
+
+    // Detect accent colour from CSS variable so HUD counter matches the page theme
+    var accentColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--accent').trim() || '#60a5fa';
+
+    // Build HUD
+    var hud = document.createElement('div');
+    hud.id = 'sec-nav-hud';
+    hud.setAttribute('role', 'navigation');
+    hud.setAttribute('aria-label', 'Section navigation');
+    hud.style.cssText = [
+      'position:fixed', 'bottom:24px', 'left:50%', 'transform:translateX(-50%)',
+      'background:rgba(15,23,42,0.88)', 'backdrop-filter:blur(10px)',
+      '-webkit-backdrop-filter:blur(10px)', 'color:#fff',
+      'border-radius:40px', 'padding:10px 20px',
+      'display:flex', 'align-items:center', 'gap:14px',
+      'font-family:Inter,system-ui,sans-serif', 'font-size:0.82rem', 'font-weight:600',
+      'box-shadow:0 4px 24px rgba(0,0,0,0.3)',
+      'border:1px solid rgba(255,255,255,0.12)',
+      'user-select:none', 'z-index:998', 'transition:opacity 0.3s',
+      'white-space:nowrap'
+    ].join(';');
+
+    var btnStyle = [
+      'background:rgba(255,255,255,0.12)',
+      'border:1px solid rgba(255,255,255,0.2)',
+      'color:#fff', 'border-radius:50%',
+      'width:30px', 'height:30px',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'cursor:pointer', 'font-size:0.9rem',
+      'transition:background 0.15s', 'flex-shrink:0',
+      'line-height:1'
+    ].join(';');
+
+    hud.innerHTML =
+      '<button id="snav-prev" title="Previous section (← or ↑)" style="' + btnStyle + '">←</button>' +
+      '<div style="display:flex;align-items:center;gap:8px;">' +
+        '<span id="snav-label" style="opacity:0.7;max-width:240px;overflow:hidden;text-overflow:ellipsis;"></span>' +
+        '<span style="opacity:0.3;">·</span>' +
+        '<span id="snav-counter" style="font-variant-numeric:tabular-nums;"></span>' +
+      '</div>' +
+      '<button id="snav-next" title="Next section (→ or ↓)" style="' + btnStyle + '">→</button>' +
+      '<div style="width:1px;height:18px;background:rgba(255,255,255,0.15);"></div>' +
+      '<span style="opacity:0.35;font-size:0.75rem;letter-spacing:0.03em;">← → keys</span>';
+
+    document.body.appendChild(hud);
+
+    var prevBtn = document.getElementById('snav-prev');
+    var nextBtn = document.getElementById('snav-next');
+    var labelEl = document.getElementById('snav-label');
+    var counterEl = document.getElementById('snav-counter');
+    counterEl.style.color = accentColor;
+
+    var current = 0;
+
+    function getLabel(el, idx) {
+      if (el.classList.contains('hero') || el.classList.contains('doc-hero')) return 'Overview';
+      var lbl = el.querySelector('.section-label, .eyebrow');
+      var ttl = el.querySelector('.section-title, h2');
+      if (lbl && ttl) return lbl.textContent.trim() + ' — ' + ttl.textContent.trim();
+      if (ttl) return ttl.textContent.trim();
+      return 'Section ' + idx;
+    }
+
+    function refreshHud() {
+      var t = getTargets();
+      labelEl.textContent   = getLabel(t[current], current + 1);
+      counterEl.textContent = (current + 1) + ' / ' + t.length;
+      prevBtn.style.opacity = current === 0 ? '0.3' : '1';
+      nextBtn.style.opacity = current === t.length - 1 ? '0.3' : '1';
+    }
+
+    function goTo(idx) {
+      var t = getTargets();
+      if (idx < 0 || idx >= t.length) return;
+      current = idx;
+      t[current].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function () { window.scrollBy({ top: -16, behavior: 'smooth' }); }, 350);
+      refreshHud();
+    }
+
+    // Sync HUD when user scrolls manually
+    var scrollTimer;
+    window.addEventListener('scroll', function () {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(function () {
+        var t = getTargets();
+        var best = 0, bestDist = Infinity;
+        t.forEach(function (el, i) {
+          var d = Math.abs(el.getBoundingClientRect().top);
+          if (d < bestDist) { bestDist = d; best = i; }
+        });
+        if (best !== current) { current = best; refreshHud(); }
+      }, 80);
+    }, { passive: true });
+
+    // Keyboard
+    document.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' ||
+          e.target.isContentEditable) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault(); goTo(current + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault(); goTo(current - 1);
+      }
+    });
+
+    prevBtn.addEventListener('click', function () { goTo(current - 1); });
+    nextBtn.addEventListener('click', function () { goTo(current + 1); });
+
+    [prevBtn, nextBtn].forEach(function (btn) {
+      btn.addEventListener('mouseenter', function () {
+        if (parseFloat(btn.style.opacity) !== 0.3)
+          btn.style.background = 'rgba(255,255,255,0.22)';
+      });
+      btn.addEventListener('mouseleave', function () {
+        btn.style.background = 'rgba(255,255,255,0.12)';
+      });
+    });
+
+    refreshHud();
+  }
+
+  // Run after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', buildSectionNav);
+  } else {
+    buildSectionNav();
+  }
 })();

@@ -1131,5 +1131,153 @@
   </div>
 
 </div>
+<!-- ── Keyboard Section Navigator ── -->
+<div id="sec-nav-hud" style="
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15,23,42,0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  border-radius: 40px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.12);
+  user-select: none;
+  z-index: 999;
+  transition: opacity 0.3s;
+">
+  <button id="sec-prev" title="Previous section (←)" style="
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 50%;
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 0.9rem;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  ">←</button>
+
+  <div style="display:flex;align-items:center;gap:8px;">
+    <span id="sec-label" style="opacity:0.7;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Section</span>
+    <span style="opacity:0.35;">·</span>
+    <span id="sec-counter" style="color:#fb923c;font-variant-numeric:tabular-nums;">1 / 7</span>
+  </div>
+
+  <button id="sec-next" title="Next section (→)" style="
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 50%;
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 0.9rem;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  ">→</button>
+
+  <div style="width:1px;height:18px;background:rgba(255,255,255,0.15);"></div>
+  <span style="opacity:0.4;font-size:0.75rem;letter-spacing:0.03em;">← → keys</span>
+</div>
+
+<script>
+(function () {
+  // Collect navigable targets: hero + each section-block
+  function getTargets() {
+    const hero = document.querySelector('.hero');
+    const sections = Array.from(document.querySelectorAll('.section-block'));
+    return hero ? [hero, ...sections] : sections;
+  }
+
+  // Labels for each stop
+  function getLabel(el, idx) {
+    if (el.classList.contains('hero')) return 'Overview';
+    const lbl = el.querySelector('.section-label');
+    const ttl = el.querySelector('.section-title');
+    if (lbl && ttl) return lbl.textContent.trim() + ' — ' + ttl.textContent.trim();
+    if (ttl) return ttl.textContent.trim();
+    return 'Section ' + idx;
+  }
+
+  let current = 0;
+  const hud   = document.getElementById('sec-nav-hud');
+  const prevBtn = document.getElementById('sec-prev');
+  const nextBtn = document.getElementById('sec-next');
+  const label   = document.getElementById('sec-label');
+  const counter = document.getElementById('sec-counter');
+
+  function updateHud() {
+    const targets = getTargets();
+    label.textContent   = getLabel(targets[current], current + 1);
+    counter.textContent = (current + 1) + ' / ' + targets.length;
+    prevBtn.style.opacity = current === 0 ? '0.3' : '1';
+    nextBtn.style.opacity = current === targets.length - 1 ? '0.3' : '1';
+  }
+
+  function goTo(idx) {
+    const targets = getTargets();
+    if (idx < 0 || idx >= targets.length) return;
+    current = idx;
+    targets[current].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // small offset for fixed header breathing room
+    setTimeout(() => window.scrollBy({ top: -16, behavior: 'smooth' }), 350);
+    updateHud();
+  }
+
+  // Sync current index while user scrolls manually
+  let scrollTimer;
+  window.addEventListener('scroll', function () {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function () {
+      const targets = getTargets();
+      let best = 0, bestDist = Infinity;
+      targets.forEach(function (el, i) {
+        const rect = el.getBoundingClientRect();
+        const dist = Math.abs(rect.top);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      });
+      if (best !== current) { current = best; updateHud(); }
+    }, 80);
+  }, { passive: true });
+
+  // Keyboard
+  document.addEventListener('keydown', function (e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      goTo(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      goTo(current - 1);
+    }
+  });
+
+  // Button clicks
+  prevBtn.addEventListener('click', function () { goTo(current - 1); });
+  nextBtn.addEventListener('click', function () { goTo(current + 1); });
+
+  // Hover styles
+  [prevBtn, nextBtn].forEach(function (btn) {
+    btn.addEventListener('mouseenter', function () {
+      if (btn.style.opacity !== '0.3') btn.style.background = 'rgba(255,255,255,0.22)';
+    });
+    btn.addEventListener('mouseleave', function () {
+      btn.style.background = 'rgba(255,255,255,0.12)';
+    });
+  });
+
+  // Init
+  updateHud();
+})();
+</script>
 </body>
 </html>

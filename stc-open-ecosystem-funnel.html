@@ -212,12 +212,14 @@
     }
     .pipe-node.youtube  { background: #fef2f2; border-color: #fca5a5; }
     .pipe-node.github   { background: #f0fdf4; border-color: #86efac; }
+    .pipe-node.discord  { background: #eef2ff; border-color: #a5b4fc; }
     .pipe-node.workshop { background: #fff7ed; border-color: #fdba74; }
     .pipe-node.opededx  { background: #eff6ff; border-color: #93c5fd; }
     .pipe-icon { font-size: 2rem; display: block; margin-bottom: 6px; }
     .pipe-name { font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
     .pipe-name.youtube  { color: #dc2626; }
     .pipe-name.github   { color: #15803d; }
+    .pipe-name.discord  { color: #4f46e5; }
     .pipe-name.workshop { color: var(--accent); }
     .pipe-name.opededx  { color: var(--blue); }
     .pipe-sub { font-size: 0.78rem; color: var(--slate); line-height: 1.4; }
@@ -231,10 +233,11 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    .pipe-badge.free    { background: #dcfce7; color: #15803d; }
-    .pipe-badge.open    { background: #f0fdf4; color: #15803d; }
-    .pipe-badge.live    { background: #fff7ed; color: var(--accent); }
-    .pipe-badge.credit  { background: #eff6ff; color: var(--blue); }
+    .pipe-badge.free      { background: #dcfce7; color: #15803d; }
+    .pipe-badge.open      { background: #f0fdf4; color: #15803d; }
+    .pipe-badge.community { background: #eef2ff; color: #4f46e5; }
+    .pipe-badge.live      { background: #fff7ed; color: var(--accent); }
+    .pipe-badge.credit    { background: #eff6ff; color: var(--blue); }
 
     .pipeline-note {
       margin-top: 20px;
@@ -266,6 +269,7 @@
     }
     .stage-card.youtube  { border-top-color: #dc2626; }
     .stage-card.github   { border-top-color: #16a34a; }
+    .stage-card.discord  { border-top-color: #5865f2; }
     .stage-card.workshop { border-top-color: var(--accent); }
     .stage-card.opededx  { border-top-color: var(--blue); }
     .stage-num {
@@ -277,6 +281,7 @@
     }
     .stage-card.youtube  .stage-num { color: #dc2626; }
     .stage-card.github   .stage-num { color: #16a34a; }
+    .stage-card.discord  .stage-num { color: #5865f2; }
     .stage-card.workshop .stage-num { color: var(--accent); }
     .stage-card.opededx  .stage-num { color: var(--blue); }
     .stage-card h3 {
@@ -299,8 +304,24 @@
     }
     .stage-card.youtube  .stage-goal { background: #fef2f2; color: #991b1b; }
     .stage-card.github   .stage-goal { background: #f0fdf4; color: #166534; }
+    .stage-card.discord  .stage-goal { background: #eef2ff; color: #3730a3; }
     .stage-card.workshop .stage-goal { background: #fff7ed; color: #9a3412; }
     .stage-card.opededx  .stage-goal { background: #eff6ff; color: #1e40af; }
+    .stage-revenue {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--slate);
+      line-height: 1.55;
+    }
+    .stage-revenue strong { color: var(--ink); font-weight: 700; }
+    .stage-revenue .rev-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #16a34a; display: block; margin-bottom: 4px;
+    }
 
     /* ── Video cards ── */
     .video-grid {
@@ -572,8 +593,8 @@
     <h1>The STC Content Engine:<br>Open Ecosystem Funnel</h1>
     <p class="hero-sub">
       A skills-first pipeline that transitions internet-scale public discovery into formal, structured learning —
-      turning open-source contributions and free video content into a repeatable enrollment funnel —
-      and redefining the associate faculty role in the process.
+      turning open-source contributions, community-driven instructors, and free video content into
+      a repeatable enrollment funnel — and redefining the associate faculty role in the process.
     </p>
     <div class="hero-meta">
       <span>🎯 Prepared for: Dean &amp; Strategic Leadership</span>
@@ -585,6 +606,7 @@
       <span class="pillar-chip">🔗 Ecosystem Funnel Pillar</span>
       <span class="pillar-chip">🎓 Open edX / LMS Integration</span>
       <span class="pillar-chip">🤝 Industry Co-branding</span>
+      <span class="pillar-chip">💬 Discord Community</span>
       <span class="pillar-chip">👩‍🏫 New Faculty Archetype</span>
     </div>
   </div>
@@ -647,14 +669,15 @@
   <!-- Section 2: The Pipeline -->
   <div class="section-block">
     <div class="section-label">Section 02</div>
-    <h2 class="section-title">The Four-Stage Funnel Architecture</h2>
+    <h2 class="section-title">The Five-Stage Funnel Architecture</h2>
     <p class="section-lead">
-      Each stage builds on the last — moving a learner from passive internet consumer to formally enrolled student
-      with academic credit or a micro-credential.
+      Each stage builds on the last — moving a learner from passive internet consumer to formally enrolled student.
+      Community-driven platforms (Discord, Open edX) and community-driven instructors act as the connective tissue
+      that turns one-time viewers into long-term learners and paying students.
     </p>
 
     <div class="pipeline-wrap">
-      <div class="pipeline-title">Discovery → Lab → Conversion → Credential</div>
+      <div class="pipeline-title">Discovery → Lab → Community → Conversion → Credential</div>
       <div class="pipeline">
 
         <div class="pipe-stage">
@@ -670,8 +693,17 @@
           <div class="pipe-node github">
             <span class="pipe-icon">🐙</span>
             <div class="pipe-name github">GitHub Repo</div>
-            <div class="pipe-sub">Hands-on lab code<br>Templates &amp; frameworks</div>
+            <div class="pipe-sub">Hands-on lab code<br>Open-source templates</div>
             <span class="pipe-badge open">Open Source</span>
+          </div>
+        </div>
+
+        <div class="pipe-stage">
+          <div class="pipe-node discord">
+            <span class="pipe-icon">💬</span>
+            <div class="pipe-name discord">Discord</div>
+            <div class="pipe-sub">Community retention<br>Peer-to-peer learning</div>
+            <span class="pipe-badge community">Community</span>
           </div>
         </div>
 
@@ -695,8 +727,9 @@
 
       </div>
       <div class="pipeline-note">
-        <strong>Workshop acts as the conversion bridge:</strong> cold internet traffic → engaged cohort → formal enrollment.
-        GitHub repo anchors both the workshop and the Open edX lab environment — the same code drives both stages.
+        <strong>Discord is the retention layer</strong> that keeps YouTube viewers in the orbit of STC until they're ready to convert.
+        Community-driven instructors moderate and teach across Discord <em>and</em> Open edX — bringing their own audiences at every stage.
+        Workshop graduates are the highest-converting enrollment candidates because they've already been through three prior stages of trust-building.
       </div>
     </div>
 
@@ -709,9 +742,15 @@
           High-quality, free, micro-content designed for maximum reach. Captures the attention of the tech
           community by focusing on immediate, skills-first outcomes — "Building with Model Context Protocol,"
           "Deploying a DevSecOps RAG Pipeline," or a simple 18-second GitHub tip that goes viral.
+          Community-driven instructors and content creators publish under their own names, pulling their
+          existing subscriber bases directly into STC's orbit.
         </p>
         <div class="stage-goal">
           🎯 Goal: Build brand equity and drive traffic away from passive algorithmic consumption toward active building.
+        </div>
+        <div class="stage-revenue">
+          <span class="rev-label">💰 Enrollment &amp; Revenue Impact</span>
+          <strong>Zero acquisition cost, compounding reach.</strong> Every video is a permanent, searchable asset — 175K views on a single 18-second clip demonstrates the model. At even a 0.5% conversion rate to a $500 workshop or course, a 200K-view catalog generates $1,000+ in direct pipeline per quarter with no ad spend. More importantly, it primes the brand: students who discover STC here are far more likely to trust and enroll later.
         </div>
       </div>
 
@@ -721,38 +760,163 @@
         <p class="concept">
           Every video hooks directly into an open-source GitHub repository. Acts as the concrete sandbox
           where code templates, multi-agent frameworks, and lab instructions live. Establishes institutional
-          credibility through production-ready code.
+          credibility through production-ready code. Community-driven instructors maintain these repos
+          collaboratively — contributors become students, and students become contributors.
         </p>
         <div class="stage-goal">
           🎯 Goal: Move the learner from <em>watching</em> to <em>doing</em> (Kolb's Experiential Learning cycle).
         </div>
+        <div class="stage-revenue">
+          <span class="rev-label">💰 Enrollment &amp; Revenue Impact</span>
+          <strong>Industry credibility that converts to B2B revenue.</strong> GitHub stars and forks are visible social proof — enterprise partners evaluating STC for corporate training agreements look at repos first. A well-maintained public repo signals that STC faculty build things that actually work. This is the asset that opens doors to employer-sponsored enrollment and workforce development contracts.
+        </div>
+      </div>
+
+      <div class="stage-card discord">
+        <div class="stage-num">Stage 03 · Discord</div>
+        <h3>💬 Community Retention &amp; Peer Learning Hub</h3>
+        <p class="concept">
+          A community-driven platform where YouTube viewers, GitHub contributors, and workshop alumni
+          coexist. Community instructors and content creators moderate channels, answer questions, run
+          study groups, and announce upcoming workshops. Discord bridges the gap between passive content
+          consumption and the active commitment of a paid workshop or enrolled course — it is the
+          holding layer where cold leads warm up on their own timeline.
+        </p>
+        <div class="stage-goal">
+          🎯 Goal: Retain audience attention between content drops, build peer-to-peer trust, and surface high-intent learners for workshop upsell.
+        </div>
+        <div class="stage-revenue">
+          <span class="rev-label">💰 Enrollment &amp; Revenue Impact</span>
+          <strong>The lowest-CAC enrollment channel we have.</strong> A Discord member who converts to a workshop did so because their peers convinced them — zero direct marketing spend. Community members refer friends, share job postings, and create social accountability loops that dramatically increase workshop show rates and Open edX course completions. A 500-member Discord community converting at 10% per semester = 50 workshop seats or course enrollments per term.
+        </div>
       </div>
 
       <div class="stage-card workshop">
-        <div class="stage-num">Stage 03 · Workshop</div>
-        <h3>🧑‍💻 The Interactive Conversion Bridge</h3>
+        <div class="stage-num">Stage 04 · Workshop</div>
+        <h3>🧑‍💻 The Live Conversion Event</h3>
         <p class="concept">
           Live, intensive synchronization points (online or onsite) built around the GitHub repository.
-          Provides immediate feedback, troubleshooting, and community-driven coaching. This layer serves as
-          the natural inflection point for student conversion — where intent becomes enrollment.
+          Facilitated by community-driven instructors who know the audience from Discord and YouTube.
+          Provides immediate feedback, troubleshooting, and hands-on coaching. This layer serves as
+          the natural inflection point — where intent becomes enrollment and interest becomes tuition.
         </p>
         <div class="stage-goal">
-          🎯 Goal: Transition cold internet traffic into highly engaged learners ready for formal coursework.
+          🎯 Goal: Generate direct revenue, validate curriculum, and convert the highest-intent learners into formally enrolled students.
+        </div>
+        <div class="stage-revenue">
+          <span class="rev-label">💰 Enrollment &amp; Revenue Impact</span>
+          <strong>Immediate cash flow + enrollment pipeline.</strong> At $99–$299/seat with cohorts of 20–50 participants, a single workshop generates $2,000–$15,000 in direct revenue. More valuably, workshop alumni convert to formal enrollment at 3–5× the rate of cold leads. Running two workshops per quarter = $16K–$120K/year in workshop revenue alone, plus a steady stream of pre-qualified enrollment candidates for Open edX courses.
         </div>
       </div>
 
       <div class="stage-card opededx">
-        <div class="stage-num">Stage 04 · Open edX</div>
+        <div class="stage-num">Stage 05 · Open edX</div>
         <h3>🎓 Formal, Scalable Academic Destination</h3>
         <p class="concept">
           The structured environment where modular components are integrated into a formal LMS. Labs are
           combined with rigorous assessments, multi-agent evaluation tools, and micro-credentials or degree
-          pathways. Workshop-validated modules map directly to Open edX course shells.
+          pathways. Workshop-validated modules map directly to Open edX course shells. Community-driven
+          instructors from Discord and workshops can transition to formal adjunct faculty roles here —
+          teaching cohorts they already know and trust.
         </p>
         <div class="stage-goal">
-          🎯 Goal: Monetization, formal academic credit, and long-term retention.
+          🎯 Goal: Tuition revenue, formal academic credit, micro-credentials, degree pathways, and long-term student retention.
+        </div>
+        <div class="stage-revenue">
+          <span class="rev-label">💰 Enrollment &amp; Revenue Impact</span>
+          <strong>The full-revenue destination.</strong> A single enrolled student in a certificate program generates $500–$3,000 per course; a full BSAI degree pathway generates $15,000–$60,000 in lifetime tuition value. Students who enter through the funnel (YouTube → Discord → Workshop → Open edX) arrive pre-motivated, pre-skilled, and pre-committed — resulting in higher completion rates and lower attrition than cold-admit students. This is the highest-LTV segment STC can cultivate.
         </div>
       </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 2b: Community-Driven Instructors -->
+  <div class="section-block">
+    <div class="section-label">Section 02b</div>
+    <h2 class="section-title">Community-Driven Instructors &amp; Content Creators</h2>
+    <p class="section-lead">
+      The most powerful accelerant for every stage in the funnel is not a marketing budget —
+      it is a community-driven instructor who already has an audience, already produces content,
+      and already commands trust in a specific technical domain.
+    </p>
+
+    <!-- What they are -->
+    <div style="background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:28px 30px;margin-bottom:22px;">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5865f2;margin-bottom:10px;">Who they are</div>
+      <h3 style="margin:0 0 14px;font-size:1.1rem;font-weight:800;">The Practitioner-Publisher: A Different Kind of Instructor</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+        <div style="background:#eef2ff;border-radius:10px;padding:16px;border:1px solid #c7d2fe;">
+          <div style="font-size:1.3rem;margin-bottom:6px;">▶️</div>
+          <div style="font-weight:700;font-size:0.88rem;color:#3730a3;margin-bottom:4px;">YouTube Creator</div>
+          <div style="font-size:0.82rem;color:var(--slate);line-height:1.5;">Has an active channel solving real developer problems. Brings subscriber base directly into STC's funnel with every upload.</div>
+        </div>
+        <div style="background:#f0fdf4;border-radius:10px;padding:16px;border:1px solid #86efac;">
+          <div style="font-size:1.3rem;margin-bottom:6px;">🐙</div>
+          <div style="font-weight:700;font-size:0.88rem;color:#166534;margin-bottom:4px;">Open-Source Contributor</div>
+          <div style="font-size:0.82rem;color:var(--slate);line-height:1.5;">Maintains public repos with real usage. GitHub stars = proof of demand that no marketing deck can replicate.</div>
+        </div>
+        <div style="background:#eef2ff;border-radius:10px;padding:16px;border:1px solid #a5b4fc;">
+          <div style="font-size:1.3rem;margin-bottom:6px;">💬</div>
+          <div style="font-weight:700;font-size:0.88rem;color:#4338ca;margin-bottom:4px;">Discord Moderator</div>
+          <div style="font-size:0.82rem;color:var(--slate);line-height:1.5;">Runs or moderates a server in their domain. The community they've already built is an enrollment pipeline waiting to be connected to a formal program.</div>
+        </div>
+        <div style="background:#fff7ed;border-radius:10px;padding:16px;border:1px solid #fdba74;">
+          <div style="font-size:1.3rem;margin-bottom:6px;">🧑‍💻</div>
+          <div style="font-weight:700;font-size:0.88rem;color:#9a3412;margin-bottom:4px;">Workshop Facilitator</div>
+          <div style="font-size:0.82rem;color:var(--slate);line-height:1.5;">Runs live technical workshops — paid or free. Brings a cohort mentality and hands-on credibility that no syllabus alone can convey.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How they amplify each funnel stage -->
+    <div style="background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:28px 30px;margin-bottom:22px;">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;">Enrollment impact per stage</div>
+      <h3 style="margin:0 0 16px;font-size:1.05rem;font-weight:800;">How a Community Instructor Multiplies Every Funnel Stage</h3>
+      <div style="display:flex;flex-direction:column;gap:0;">
+
+        <div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start;">
+          <div style="width:90px;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:0.05em;padding-top:2px;">YouTube</div>
+          <div style="font-size:0.88rem;color:var(--slate);line-height:1.55;">Their existing subscribers subscribe to <em>STC-branded</em> content. A community instructor with 5,000 followers publishing two videos per month = <strong>~120K impressions/year at zero cost</strong>. Their audience trusts them — that trust transfers to STC's programs.</div>
+        </div>
+
+        <div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start;">
+          <div style="width:90px;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:0.05em;padding-top:2px;">GitHub</div>
+          <div style="font-size:0.88rem;color:var(--slate);line-height:1.55;">Their repos get forked, starred, and cited by practitioners. <strong>GitHub activity signals institutional quality to corporate training buyers</strong> evaluating STC for workforce development partnerships — a B2B revenue channel traditional faculty rarely open.</div>
+        </div>
+
+        <div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start;">
+          <div style="width:90px;flex-shrink:0;font-size:0.75rem;font-weight:700;color:#4f46e5;text-transform:uppercase;letter-spacing:0.05em;padding-top:2px;">Discord</div>
+          <div style="font-size:0.88rem;color:var(--slate);line-height:1.55;">They invite their existing community into STC's Discord server. Peer-to-peer learning and accountability dramatically increase course completion rates — <strong>community-enrolled students complete at 2–3× the rate of solo enrollees</strong>. Completed courses = positive reviews = more enrollment.</div>
+        </div>
+
+        <div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start;">
+          <div style="width:90px;flex-shrink:0;font-size:0.75rem;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.05em;padding-top:2px;">Workshop</div>
+          <div style="font-size:0.88rem;color:var(--slate);line-height:1.55;">They fill seats. A community instructor announcing a paid workshop to their Discord and YouTube audience can hit 30–50 registrations without a single marketing email from STC. <strong>That's $3,000–$15,000 in direct revenue per event, self-generated.</strong></div>
+        </div>
+
+        <div style="display:flex;gap:16px;padding:12px 0;align-items:flex-start;">
+          <div style="width:90px;flex-shrink:0;font-size:0.75rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.05em;padding-top:2px;">Open edX</div>
+          <div style="font-size:0.88rem;color:var(--slate);line-height:1.55;">They become the face of the course — the reason a student enrolls is often <em>the instructor</em>, not the institution. A community instructor teaching on Open edX brings their entire audience one link away from formal enrollment. <strong>LTV per community-referred student: $15,000–$60,000</strong> over a certificate or degree pathway.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- The flywheel -->
+    <div style="background:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#4f46e5 100%);border-radius:var(--radius);padding:26px 30px;color:#fff;">
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#a5b4fc;margin-bottom:8px;">The Flywheel Effect</div>
+      <h3 style="margin:0 0 10px;font-size:1rem;font-weight:800;">Why This Compounds Over Time</h3>
+      <p style="margin:0;font-size:0.9rem;line-height:1.7;opacity:0.88;">
+        Each community instructor who joins STC's ecosystem adds their audience to the funnel. Their
+        students complete courses, join Discord, refer friends, and some of those friends become
+        community instructors themselves. <strong style="color:#c7d2fe;">The funnel feeds itself.</strong>
+        Unlike a paid advertising campaign that stops the moment you stop spending, a community
+        built on trust and real skills keeps recruiting for STC indefinitely —
+        every YouTube video, every GitHub commit, every Discord message is a permanent,
+        compounding enrollment asset.
+      </p>
     </div>
   </div>
 

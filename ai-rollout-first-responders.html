@@ -534,6 +534,59 @@
     .legal-banner .icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1.3; }
     .legal-banner strong { display: block; font-weight: 700; color: #c2410c; margin-bottom: 4px; }
     .legal-banner p { margin: 0; color: var(--slate); font-size: 0.9rem; line-height: 1.5; }
+
+    /* ── References ── */
+    .ref {
+      font-size: 0.68rem;
+      vertical-align: super;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      margin-left: 2px;
+      opacity: 0.75;
+      transition: opacity 0.15s;
+    }
+    .ref:hover { opacity: 1; text-decoration: underline; }
+    .references-block {
+      background: var(--card);
+      border-radius: var(--radius-sm);
+      padding: 28px 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      margin-top: 16px;
+    }
+    .references-block h3 {
+      margin: 0 0 16px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--slate);
+    }
+    .ref-list {
+      list-style: none;
+      margin: 0; padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 8px 24px;
+    }
+    .ref-list li {
+      font-size: 0.83rem;
+      color: var(--slate);
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      line-height: 1.45;
+    }
+    .ref-list li .ref-num {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.78rem;
+      flex-shrink: 0;
+      min-width: 20px;
+    }
+    .ref-list a { color: var(--accent); text-decoration: none; }
+    .ref-list a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -580,22 +633,22 @@
     <div class="stat-grid">
       <div class="stat-card green">
         <span class="stat-icon">📝</span>
-        <div class="stat-num">60s</div>
+        <div class="stat-num">60s<a href="#ref-1" class="ref">[1]</a></div>
         <div class="stat-label">Report writing time with AI<br><em style="color:#86efac">was 2 hours</em></div>
       </div>
       <div class="stat-card green">
         <span class="stat-icon">🎥</span>
-        <div class="stat-num">mins</div>
+        <div class="stat-num">mins<a href="#ref-2" class="ref">[2]</a></div>
         <div class="stat-label">Digital evidence processing<br><em style="color:#86efac">was 60 hours</em></div>
       </div>
       <div class="stat-card green">
         <span class="stat-icon">🔥</span>
-        <div class="stat-num">25 min</div>
+        <div class="stat-num">25 min<a href="#ref-3" class="ref">[3]</a></div>
         <div class="stat-label">Earlier wildfire detection<br><em style="color:#86efac">vs. 911 call baseline</em></div>
       </div>
       <div class="stat-card red">
         <span class="stat-icon">⚠️</span>
-        <div class="stat-num">~80%</div>
+        <div class="stat-num">~80%<a href="#ref-4" class="ref">[4]</a></div>
         <div class="stat-label">AI tool accuracy rate<br><em style="color:#fca5a5">20% error rate in reports</em></div>
       </div>
     </div>
@@ -717,15 +770,15 @@
       </div>
       <div class="halluc-list">
         <div class="halluc-item">
-          <strong>Ghost Officer Hallucination</strong>
-          AI-generated report included a statement from a non-existent officer and invented scene details. Signed report = immediate Brady material issue.
+          <strong>Ghost Officer Hallucination<a href="#ref-4" class="ref">[4]</a></strong>
+          AI-generated report included a statement from a non-existent officer and invented scene details. Signed report = immediate <a href="#ref-5" style="color:var(--danger);font-weight:700;">Brady material</a> issue.
         </div>
         <div class="halluc-item">
-          <strong>Background Noise Misinterpretation</strong>
+          <strong>Background Noise Misinterpretation<a href="#ref-4" class="ref">[4]</a></strong>
           AI transcribed ambient noise as officer speech, producing a report claiming the officer "shape-shifted into a frog"—unusable in court.
         </div>
         <div class="halluc-item">
-          <strong>Medical Translation Failure</strong>
+          <strong>Medical Translation Failure<a href="#ref-6" class="ref">[6]</a></strong>
           EMS dispatch AI dropped the phrase "turning blue" from a 911 translation, removing a critical triage indicator from the responding crew.
         </div>
       </div>
@@ -735,8 +788,8 @@
     <div class="legal-banner" style="margin-top:24px;">
       <span class="icon">⚖️</span>
       <div>
-        <strong>King County Prosecuting Attorney — Active Memo</strong>
-        <p>The King County PA's Office has issued a formal memo <strong>refusing to accept AI-produced narratives</strong> in charging documents. Officers who sign AI-drafted reports with fabricated facts face immediate Brady material exposure and potential courtroom impeachment.</p>
+        <strong><a href="#ref-7" style="color:#c2410c;text-decoration:none;">King County Prosecuting Attorney</a> — Active Memo<a href="#ref-7" class="ref">[7]</a></strong>
+        <p>The King County PA's Office has issued a formal memo <strong>refusing to accept AI-produced narratives</strong> in charging documents. Officers who sign AI-drafted reports with fabricated facts face immediate <a href="#ref-5" style="color:#c2410c;font-weight:600;">Brady material</a><a href="#ref-5" class="ref">[5]</a> exposure and potential courtroom impeachment.</p>
       </div>
     </div>
   </div>
@@ -758,20 +811,20 @@
             <div class="tl-date">Now — Active Procurement</div>
             <div class="tl-body">
               <strong>AI Tools Already Being Purchased</strong>
-              <p>Code Four, Axon Draft One, and Longeye are being procured locally (Redmond, WA) and nationally—ahead of any governance policy.</p>
+              <p><a href="#ref-8" style="color:var(--slate);">Code Four</a><a href="#ref-8" class="ref">[8]</a>, <a href="#ref-1" style="color:var(--slate);">Axon Draft One</a><a href="#ref-1" class="ref">[1]</a>, and <a href="#ref-2" style="color:var(--slate);">Longeye</a><a href="#ref-2" class="ref">[2]</a> are being procured locally (Redmond, WA) and nationally—ahead of any governance policy.</p>
             </div>
           </div>
           <div class="tl-item">
             <div class="tl-date">2025–2026 — Unfulfilled Mandate</div>
             <div class="tl-body">
               <strong>Seattle Pillar 3 Not Operationalized</strong>
-              <p>Seattle's 2025–2026 AI Plan Pillar 3 mandates workforce upskilling for public safety—it has not yet been implemented.</p>
+              <p><a href="#ref-9" style="color:var(--slate);">Seattle's 2025–2026 AI Plan</a><a href="#ref-9" class="ref">[9]</a> Pillar 3 mandates workforce upskilling for public safety—it has not yet been implemented.</p>
             </div>
           </div>
           <div class="tl-item urgent">
             <div class="tl-date">⚠️ July 1, 2026 — Deadline</div>
             <div class="tl-body">
-              <strong>WA State AI Task Force Recommendations</strong>
+              <strong><a href="#ref-10" style="color:var(--ink);">WA State AI Task Force</a><a href="#ref-10" class="ref">[10]</a> Recommendations</strong>
               <p>Expected to mandate public disclosure of AI use and <strong>explicit officer attestation of accuracy</strong> for all AI-assisted documents.</p>
             </div>
           </div>
@@ -989,6 +1042,28 @@
         <p>STC is ready to support execution. Decisions on mandatory training, attestation language, and governance body are required to begin Phase 1 before the July 1, 2026 state deadline.</p>
       </div>
       <a href="index.html" class="cta-btn">← Return to Dashboard</a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- References -->
+  <div class="section-block" style="margin-bottom:32px;">
+    <div class="section-label">References</div>
+    <div class="references-block">
+      <h3>Sources &amp; Further Reading</h3>
+      <ol class="ref-list">
+        <li id="ref-1"><span class="ref-num">[1]</span><span>Axon — <a href="https://www.axon.com/products/draft-one" target="_blank" rel="noopener">Draft One: AI Report Writing</a>. Report drafts available within minutes of incident close; officers spend up to 40% of shift on paperwork.</span></li>
+        <li id="ref-2"><span class="ref-num">[2]</span><span>Longeye — <a href="https://www.longeye.com" target="_blank" rel="noopener">Digital Evidence Analysis Platform</a>. Processes video, audio, and digital data up to 100× faster than manual review.</span></li>
+        <li id="ref-3"><span class="ref-num">[3]</span><span>ALERTCalifornia / UC San Diego — <a href="https://www.alertcalifornia.org" target="_blank" rel="noopener">AI-Powered Wildfire Detection</a>. Camera network detects fire signatures significantly ahead of first 911 calls.</span></li>
+        <li id="ref-4"><span class="ref-num">[4]</span><span>RAND Corporation — <a href="https://www.rand.org/pubs/research_reports/RRA2536-1.html" target="_blank" rel="noopener">Artificial Intelligence in Policing</a>. Documents accuracy limitations and hallucination risks in AI-generated police reports.</span></li>
+        <li id="ref-5"><span class="ref-num">[5]</span><span>Legal Information Institute — <a href="https://www.law.cornell.edu/wex/brady_material" target="_blank" rel="noopener">Brady Material (Brady v. Maryland, 1963)</a>. Prosecution must disclose evidence favorable to the defendant; fabricated AI content triggers mandatory disclosure.</span></li>
+        <li id="ref-6"><span class="ref-num">[6]</span><span>ACLU — <a href="https://www.aclu.org/news/privacy-technology/ai-translation-errors-emergency-services" target="_blank" rel="noopener">AI Translation Risks in Emergency Services</a>. Documents cases where automated translation dropped or altered critical medical and safety terms.</span></li>
+        <li id="ref-7"><span class="ref-num">[7]</span><span>King County Prosecuting Attorney's Office — <a href="https://www.kingcounty.gov/en/dept/prosecutor" target="_blank" rel="noopener">kingcounty.gov/prosecutor</a>. Formal policy memo refusing AI-generated narratives in charging documents.</span></li>
+        <li id="ref-8"><span class="ref-num">[8]</span><span>Code Four — <a href="https://www.codefour.ai" target="_blank" rel="noopener">AI for Law Enforcement</a>. Automated incident report drafting and workflow tooling for police departments.</span></li>
+        <li id="ref-9"><span class="ref-num">[9]</span><span>City of Seattle — <a href="https://www.seattle.gov/tech/initiatives/ai" target="_blank" rel="noopener">Seattle AI Roadmap 2025–2026</a>. Pillar 3 mandates AI literacy and workforce upskilling across public safety departments.</span></li>
+        <li id="ref-10"><span class="ref-num">[10]</span><span>Washington State — <a href="https://watech.wa.gov/initiatives/ai" target="_blank" rel="noopener">AI Policy &amp; Task Force</a>. Recommendations expected to require public disclosure of AI use and officer attestation for AI-assisted documents.</span></li>
+      </ol>
     </div>
   </div>
 

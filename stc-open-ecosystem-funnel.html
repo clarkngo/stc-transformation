@@ -329,6 +329,59 @@
       text-transform: uppercase; color: #16a34a; display: block; margin-bottom: 4px;
     }
 
+    /* ── Ecosystem Diagram ── */
+    .eco-node {
+      border: 2px solid;
+      border-radius: 12px;
+      padding: 14px 12px 12px;
+      width: 112px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .eco-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 0.9rem; font-weight: 700;
+      margin: 0 auto 8px;
+    }
+    .eco-name {
+      font-size: 0.78rem; font-weight: 800; margin-bottom: 6px;
+    }
+    .eco-tag {
+      font-size: 0.65rem; color: var(--slate); line-height: 1.5;
+    }
+    .eco-arrow {
+      width: 2px; height: 28px;
+      background: linear-gradient(180deg, #cbd5e1, #64748b);
+      border-radius: 2px;
+      position: relative;
+      margin: 0 55px;
+    }
+    .eco-arrow::after {
+      content: '';
+      position: absolute;
+      bottom: -6px; left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 7px solid #64748b;
+    }
+    .cityu-output {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .cityu-output-icon { font-size: 1.3rem; margin-bottom: 6px; }
+    .cityu-output-label {
+      font-size: 0.83rem; font-weight: 700; color: #fff; margin-bottom: 4px;
+    }
+    .cityu-output-desc {
+      font-size: 0.75rem; color: rgba(255,255,255,0.65); line-height: 1.5;
+    }
+
     /* ── Video cards ── */
     .video-grid {
       display: grid;
@@ -1334,6 +1387,201 @@
       </div>
     </div>
   </div>
+
+  <!-- Section 7: Ecosystem → CityU Curriculum Diagram -->
+  <div class="section-block">
+    <div class="section-label">Section 07</div>
+    <h2 class="section-title">From Ecosystem to CityU Curriculum</h2>
+    <p class="section-lead">
+      Every stage of the content engine generates real instructional material. YouTube videos become lecture modules.
+      GitHub repos become lab environments. Seminars surface high-demand topics. Workshops validate hands-on
+      curricula. Open edX pilots test full course structures — all feeding directly into CityU's formal
+      course catalog and degree programs.
+    </p>
+
+    <!-- Diagram -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:36px 28px 28px;box-shadow:var(--shadow);margin-bottom:28px;overflow-x:auto;">
+
+      <!-- Top row: ecosystem sources -->
+      <div style="text-align:center;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);margin-bottom:16px;">Content Ecosystem</div>
+      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:0;">
+
+        <!-- YouTube -->
+        <div class="eco-node" style="border-color:#dc2626;background:#fef2f2;">
+          <div class="eco-icon" style="background:#dc2626;">▶</div>
+          <div class="eco-name" style="color:#dc2626;">YouTube</div>
+          <div class="eco-tag">Video lectures<br>Concept explainers<br>Student testimonials</div>
+        </div>
+
+        <!-- GitHub -->
+        <div class="eco-node" style="border-color:#16a34a;background:#f0fdf4;">
+          <div class="eco-icon" style="background:#16a34a;">⌥</div>
+          <div class="eco-name" style="color:#16a34a;">GitHub</div>
+          <div class="eco-tag">Lab environments<br>Starter code<br>Project templates</div>
+        </div>
+
+        <!-- Community Hub -->
+        <div class="eco-node" style="border-color:#7c3aed;background:#f5f3ff;">
+          <div class="eco-icon" style="background:#7c3aed;">◈</div>
+          <div class="eco-name" style="color:#7c3aed;">Community Hub</div>
+          <div class="eco-tag">Student FAQs<br>Industry pain points<br>Demand signals</div>
+        </div>
+
+        <!-- Seminar -->
+        <div class="eco-node" style="border-color:#b45309;background:#fffbeb;">
+          <div class="eco-icon" style="background:#b45309;">🎓</div>
+          <div class="eco-name" style="color:#b45309;">Seminar</div>
+          <div class="eco-tag">Guest lectures<br>Topic validation<br>Guest speaker pool</div>
+        </div>
+
+        <!-- Workshop -->
+        <div class="eco-node" style="border-color:#ea580c;background:#fff7ed;">
+          <div class="eco-icon" style="background:#ea580c;">🔧</div>
+          <div class="eco-name" style="color:#ea580c;">Workshop</div>
+          <div class="eco-tag">Hands-on curricula<br>Competency benchmarks<br>Real cohort feedback</div>
+        </div>
+
+        <!-- Open edX -->
+        <div class="eco-node" style="border-color:#1d4ed8;background:#eff6ff;">
+          <div class="eco-icon" style="background:#1d4ed8;">🎓</div>
+          <div class="eco-name" style="color:#1d4ed8;">Open edX</div>
+          <div class="eco-tag">Pilot course shells<br>Assessment data<br>Completion analytics</div>
+        </div>
+      </div>
+
+      <!-- Arrows down to aggregator -->
+      <div style="display:flex;justify-content:center;margin:10px 0 4px;">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+          <!-- 6 arrows -->
+          <div class="eco-arrow"></div>
+          <div class="eco-arrow"></div>
+          <div class="eco-arrow"></div>
+          <div class="eco-arrow"></div>
+          <div class="eco-arrow"></div>
+          <div class="eco-arrow"></div>
+        </div>
+      </div>
+
+      <!-- Aggregator band -->
+      <div style="background:linear-gradient(90deg,#1e293b 0%,#0f172a 100%);border-radius:12px;padding:18px 28px;margin:0 auto 8px;max-width:780px;display:flex;align-items:center;gap:18px;">
+        <div style="font-size:1.6rem;flex-shrink:0;">🔄</div>
+        <div>
+          <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:4px;">Curriculum Intelligence Layer</div>
+          <div style="color:#fff;font-size:0.92rem;font-weight:600;line-height:1.5;">
+            Audience insights · Engagement data · Validated competencies · Real-world projects · Instructor talent pool
+          </div>
+          <div style="color:#64748b;font-size:0.78rem;margin-top:6px;">
+            Every stage generates signals: what topics resonate, what skills are in demand, who teaches well, what exercises work.
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow down to CityU -->
+      <div style="display:flex;justify-content:center;margin:6px 0;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+          <div style="width:2px;height:24px;background:linear-gradient(180deg,#64748b,#1d4ed8);"></div>
+          <div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:10px solid #1d4ed8;"></div>
+        </div>
+      </div>
+
+      <!-- CityU destination -->
+      <div style="background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 50%,#2563eb 100%);border-radius:16px;padding:24px 32px;margin:0 auto;max-width:780px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <div style="font-size:2rem;flex-shrink:0;">🏛️</div>
+          <div>
+            <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:2px;">Destination</div>
+            <div style="color:#fff;font-size:1.2rem;font-weight:800;letter-spacing:-0.02em;">City University of Seattle — Formal Curriculum</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+          <div class="cityu-output">
+            <div class="cityu-output-icon">📄</div>
+            <div class="cityu-output-label">New Course Modules</div>
+            <div class="cityu-output-desc">YouTube → ready-made lecture content; GitHub → verified lab sets</div>
+          </div>
+          <div class="cityu-output">
+            <div class="cityu-output-icon">📋</div>
+            <div class="cityu-output-label">Updated Syllabi</div>
+            <div class="cityu-output-desc">Workshop feedback + Open edX analytics inform curriculum refresh cycle</div>
+          </div>
+          <div class="cityu-output">
+            <div class="cityu-output-icon">🧑‍🏫</div>
+            <div class="cityu-output-label">Qualified Instructors</div>
+            <div class="cityu-output-desc">Seminar speakers + workshop leads become vetted associate faculty candidates</div>
+          </div>
+          <div class="cityu-output">
+            <div class="cityu-output-icon">🎓</div>
+            <div class="cityu-output-label">New Degree Programs</div>
+            <div class="cityu-output-desc">High-engagement topic clusters signal where new certificates or concentrations are warranted</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end diagram card -->
+
+    <!-- Feedback loop callout -->
+    <div style="background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border:1.5px solid #86efac;border-radius:var(--radius-sm);padding:20px 24px;display:flex;gap:16px;align-items:flex-start;">
+      <div style="font-size:1.6rem;flex-shrink:0;">♻️</div>
+      <div>
+        <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#15803d;margin-bottom:6px;">The Feedback Loop</div>
+        <div style="font-size:0.92rem;color:var(--ink);line-height:1.6;">
+          The flow doesn't stop at CityU — it loops back. Formal course offerings are
+          <strong>announced to the ecosystem</strong> (YouTube subscribers, workshop alumni, community members), which
+          drives enrollment. Enrolled students generate new questions, projects, and testimonials that feed back
+          into the content engine. The ecosystem and the institution <strong>continuously strengthen each other.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Per-stage curriculum contribution table -->
+    <div style="margin-top:28px;">
+      <h3 style="font-size:1.05rem;font-weight:800;margin:0 0 14px;">What Each Stage Contributes to CityU Curriculum</h3>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.88rem;">
+          <thead>
+            <tr style="background:#f1f5f9;">
+              <th style="text-align:left;padding:10px 14px;font-weight:700;color:var(--slate);border-bottom:2px solid var(--border);">Stage</th>
+              <th style="text-align:left;padding:10px 14px;font-weight:700;color:var(--slate);border-bottom:2px solid var(--border);">Curriculum Contribution</th>
+              <th style="text-align:left;padding:10px 14px;font-weight:700;color:var(--slate);border-bottom:2px solid var(--border);">How It Gets Used</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:12px 14px;"><span style="font-weight:700;color:#dc2626;">▶ YouTube</span></td>
+              <td style="padding:12px 14px;">Video lecture library, concept explainers, student-facing demos</td>
+              <td style="padding:12px 14px;">Embedded in LMS as pre-class or supplemental content; replaces expensive production shoots</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);background:#fafafa;">
+              <td style="padding:12px 14px;"><span style="font-weight:700;color:#16a34a;">⌥ GitHub</span></td>
+              <td style="padding:12px 14px;">Lab starter repos, project templates, reference implementations</td>
+              <td style="padding:12px 14px;">Forked into course repos each semester; battle-tested by public users before students touch them</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:12px 14px;"><span style="font-weight:700;color:#7c3aed;">◈ Community Hub</span></td>
+              <td style="padding:12px 14px;">Real-world pain points, FAQ patterns, industry demand signals</td>
+              <td style="padding:12px 14px;">Informs syllabus priorities; surfaces what practitioners actually struggle with vs. what textbooks cover</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);background:#fafafa;">
+              <td style="padding:12px 14px;"><span style="font-weight:700;color:#b45309;">🎓 Seminar</span></td>
+              <td style="padding:12px 14px;">Guest speakers, topic validation, emerging industry trends</td>
+              <td style="padding:12px 14px;">Guest lecturers are sourced from seminar pool; topic resonance data guides elective development</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:12px 14px;"><span style="font-weight:700;color:#ea580c;">🔧 Workshop</span></td>
+              <td style="padding:12px 14px;">Hands-on exercises, competency rubrics, real cohort completion data</td>
+              <td style="padding:12px 14px;">Workshop modules are directly adapted into course project units; rubrics become grading standards</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;"><span style="font-weight:700;color:#1d4ed8;">🎓 Open edX</span></td>
+              <td style="padding:12px 14px;">Pilot course shells, assessment question banks, completion analytics</td>
+              <td style="padding:12px 14px;">Proven Open edX courses are submitted to curriculum committee as credit-bearing course proposals</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end Section 07 -->
 
   <!-- CTA -->
   <div class="section-block">

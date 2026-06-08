@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Talking Points — The Impact of AI on First Responders</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    /* Nav */
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Header card */
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      margin: 0 0 8px; font-size: 1.7rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.2;
+    }
+    .doc-header .subtitle {
+      color: var(--slate); font-size: 0.95rem; margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .meta-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px; color: var(--slate);
+    }
+
+    /* Version toggle */
+    .version-toggle {
+      display: flex; gap: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+      width: fit-content;
+    }
+    .vtab {
+      padding: 10px 24px;
+      border-radius: 7px;
+      font-size: 0.88rem; font-weight: 700;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--slate);
+      transition: all 0.2s;
+    }
+    .vtab.active {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(29,78,216,0.25);
+    }
+    .vtab:hover:not(.active) { background: var(--bg); }
+
+    /* Script versions */
+    .version-panel { display: none; }
+    .version-panel.active { display: block; }
+
+    /* How to use box */
+    .how-to {
+      background: #fef9c3;
+      border: 1.5px solid #fde047;
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      color: #713f12;
+      margin-bottom: 32px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .how-to strong { display: block; margin-bottom: 3px; }
+
+    /* Beat block */
+    .beat {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .beat-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .beat-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 800; flex-shrink: 0;
+      color: #fff;
+    }
+    .beat-num.red    { background: var(--red); }
+    .beat-num.orange { background: var(--orange); }
+    .beat-num.violet { background: var(--violet); }
+    .beat-num.blue   { background: var(--blue); }
+    .beat-num.green  { background: var(--green); }
+    .beat-num.amber  { background: var(--amber); }
+    .beat-num.dark   { background: #0f172a; }
+
+    .beat-meta { flex: 1; }
+    .beat-meta .beat-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 2px;
+    }
+    .beat-meta .beat-label.red    { color: var(--red); }
+    .beat-meta .beat-label.orange { color: var(--orange); }
+    .beat-meta .beat-label.violet { color: var(--violet); }
+    .beat-meta .beat-label.blue   { color: var(--blue); }
+    .beat-meta .beat-label.green  { color: var(--green); }
+    .beat-meta .beat-label.amber  { color: var(--amber); }
+    .beat-meta .beat-label.dark   { color: var(--slate); }
+    .beat-meta h2 {
+      margin: 0; font-size: 1.05rem; font-weight: 800; line-height: 1.3;
+    }
+    .beat-timer {
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--slate-light); white-space: nowrap;
+      background: var(--bg); border-radius: 20px;
+      padding: 4px 12px; border: 1px solid var(--border);
+    }
+    .beat-body { padding: 20px 24px; }
+
+    /* The big hook line */
+    .hook-line {
+      font-size: 1.15rem; font-weight: 800; line-height: 1.4;
+      color: var(--ink); margin-bottom: 16px;
+      border-left: 4px solid var(--blue);
+      padding-left: 16px;
+    }
+    .hook-line.red  { border-left-color: var(--red); }
+    .hook-line.green { border-left-color: var(--green); }
+
+    /* Talking points list */
+    .tp-list { list-style: none; margin: 0; padding: 0; }
+    .tp-list li {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem; line-height: 1.55;
+      color: var(--ink);
+    }
+    .tp-list li:last-child { border-bottom: none; }
+    .tp-bullet {
+      width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 800; flex-shrink: 0;
+      margin-top: 2px; color: #fff;
+    }
+    .tp-bullet.red    { background: var(--red); }
+    .tp-bullet.orange { background: var(--orange); }
+    .tp-bullet.violet { background: var(--violet); }
+    .tp-bullet.blue   { background: var(--blue); }
+    .tp-bullet.green  { background: var(--green); }
+    .tp-bullet.amber  { background: var(--amber); }
+    .tp-bullet.dark   { background: #0f172a; }
+
+    .tp-list li strong { color: var(--ink); font-weight: 700; }
+    .tp-list li em { color: var(--slate); font-style: normal; font-size: 0.88rem; display: block; margin-top: 3px; }
+
+    /* Script block — verbatim text */
+    .script-text {
+      background: #f8fafc;
+      border-left: 3px solid var(--slate-light);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 14px 18px;
+      font-size: 0.93rem;
+      color: var(--ink);
+      line-height: 1.7;
+      margin: 12px 0 4px;
+      font-style: italic;
+    }
+    .script-text strong { font-style: normal; color: var(--ink); }
+
+    /* Data callout inline */
+    .data-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin: 14px 0 6px;
+    }
+    .data-chip {
+      border-radius: 8px; padding: 8px 14px;
+      font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px;
+    }
+    .data-chip.red    { background: var(--red-dim);    color: #991b1b; }
+    .data-chip.orange { background: var(--orange-dim); color: #9a3412; }
+    .data-chip.green  { background: var(--green-dim);  color: #166534; }
+    .data-chip.blue   { background: var(--blue-dim);   color: #1e40af; }
+    .data-chip.amber  { background: var(--amber-dim);  color: #92400e; }
+
+    /* Anchor line at bottom of beat */
+    .anchor-line {
+      margin-top: 14px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--slate);
+      border: 1px solid var(--border);
+    }
+    .anchor-line span { color: var(--ink); }
+
+    /* One-liner card */
+    .one-liner {
+      background: #0f172a;
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      color: #fff;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .one-liner .ol-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #93c5fd; margin-bottom: 10px;
+    }
+    .one-liner blockquote {
+      margin: 0; padding: 0;
+      font-size: 1.2rem; font-weight: 800; line-height: 1.5;
+      letter-spacing: -0.02em;
+    }
+    .one-liner cite {
+      display: block; margin-top: 10px;
+      font-size: 0.8rem; font-style: normal; opacity: 0.45;
+    }
+
+    /* The ask */
+    .ask-block {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1d4ed8 100%);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .ask-block .ask-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; opacity: 0.6; margin-bottom: 10px;
+    }
+    .ask-block h2 { margin: 0 0 14px; font-size: 1.3rem; font-weight: 900; }
+    .ask-block p { margin: 0 0 18px; opacity: 0.85; font-size: 0.95rem; line-height: 1.65; }
+    .ask-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .ask-list li {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 0.92rem; opacity: 0.9; line-height: 1.55;
+    }
+    .ask-list li::before { content: "→"; opacity: 0.5; flex-shrink: 0; margin-top: 1px; }
+
+    /* Delivery tip */
+    .delivery-tip {
+      background: var(--card);
+      border: 1.5px solid #bfdbfe;
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 0.83rem;
+      color: var(--slate);
+      display: flex; gap: 10px; align-items: flex-start;
+      margin-top: 12px;
+    }
+    .delivery-tip strong { color: var(--blue); font-weight: 700; }
+
+    /* Print */
+    @media print {
+      body { background: white; font-size: 14px; }
+      .shell { padding: 0; max-width: 100%; }
+      .nav-row, .how-to, .version-toggle { display: none !important; }
+      .version-panel { display: block !important; }
+      .beat { box-shadow: none; border: 1.5px solid #e2e8f0; break-inside: avoid; }
+      .ask-block, .one-liner { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">← Home</a>
+    <span class="nav-sep">|</span>
+    <a href="ai-rollout-first-responders.html">Research Brief</a>
+    <span class="nav-sep">|</span>
+    <span style="color:var(--slate)">Talking Points</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="eyebrow">Presentation Scripts · 5-Min &amp; 10-Min</div>
+    <h1>The Impact of AI on<br>First Responders</h1>
+    <p class="subtitle">
+      Police officers, firefighters, and paramedics are already using AI on shift.
+      These scripts present the research, the risks, and the path forward — for the STC President and the public.
+    </p>
+    <div class="meta-row">
+      <span class="meta-chip">🎯 Presented to: STC President</span>
+      <span class="meta-chip">⏱ 5-min &amp; 10-min versions</span>
+      <span class="meta-chip">📅 June 2026</span>
+      <span class="meta-chip">🖨 Print-ready</span>
+    </div>
+  </div>
+
+  <!-- Version Toggle -->
+  <div class="version-toggle">
+    <button class="vtab active" onclick="switchVersion('v5')">⚡ 5-Minute Script</button>
+    <button class="vtab" onclick="switchVersion('v10')">📋 10-Minute Script</button>
+  </div>
+
+  <div class="how-to">
+    <span style="font-size:1.2rem;flex-shrink:0;">💡</span>
+    <div>
+      <strong>How to use these talking points</strong>
+      Each beat is one section. <strong>Bold lines</strong> are the phrases to say out loud — memorize these.
+      <em>Italic lines</em> are supporting context — know them, don't read them.
+      The <strong>Anchor</strong> at the bottom of each beat is your recovery line if you lose your place.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  5-MINUTE VERSION                          -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="v5" class="version-panel active">
+
+    <!-- Opening -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num blue">0</div>
+        <div class="beat-meta">
+          <div class="beat-label blue">Opening Hook</div>
+          <h2>Start with a question — then the stakes</h2>
+        </div>
+        <div class="beat-timer">⏱ 0:00 – 0:45</div>
+      </div>
+      <div class="beat-body">
+        <div class="hook-line">"How long does it take a police officer to write an incident report? Two hours. With AI — 60 seconds. That sounds like a win. It is — until the report includes an officer who wasn't there."</div>
+        <ul class="tp-list">
+          <li>
+            <span class="tp-bullet blue">▸</span>
+            <div>
+              <strong>AI is already in the hands of first responders — tonight, on shift.</strong>
+              <em>This isn't a future scenario. Police, firefighters, and paramedics are using AI tools right now — without governance, without training, and without legal protection.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet blue">▸</span>
+            <div>
+              <strong>The technology moved fast. The policy didn't.</strong>
+              <em>That gap is what this research is about — and why it matters to STC.</em>
+            </div>
+          </li>
+        </ul>
+        <div class="delivery-tip"><strong>💡 Tip:</strong> Pause after "wasn't there." Let it land before moving on.</div>
+      </div>
+    </div>
+
+    <!-- Beat 1: Wins + Risks -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num green">1</div>
+        <div class="beat-meta">
+          <div class="beat-label green">The Reality · ~1 min</div>
+          <h2>Real wins — and real harm</h2>
+        </div>
+        <div class="beat-timer">⏱ 0:45 – 1:45</div>
+      </div>
+      <div class="beat-body">
+        <ul class="tp-list">
+          <li>
+            <span class="tp-bullet green">1</span>
+            <div>
+              <strong>The upside is real.</strong>
+              <em>Axon Draft One: reports in 60 seconds. Longeye: 60 hours of digital evidence in under an hour. AI wildfire cameras: fires detected 25 minutes before the first 911 call. These tools save time and save lives.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">2</span>
+            <div>
+              <strong>But these tools are only about 80% accurate. That 20% error rate is showing up in official documents.</strong>
+              <em>An AI report in one department invented a full statement from an officer who did not exist. The officer signed it — immediate Brady material violation. The King County Prosecuting Attorney now refuses to accept AI-generated narratives in court. Full stop.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">3</span>
+            <div>
+              <strong>In EMS, an AI translation dropped the phrase "turning blue" from a 911 call.</strong>
+              <em>The paramedics arrived without knowing the patient was in respiratory distress. That's not a software glitch — that's a life-safety failure.</em>
+            </div>
+          </li>
+        </ul>
+        <div class="data-row">
+          <div class="data-chip green">✅ 60s report writing</div>
+          <div class="data-chip green">✅ 25 min early wildfire detection</div>
+          <div class="data-chip red">🚨 ~20% AI error rate in reports</div>
+          <div class="data-chip red">🚨 King County PA refuses AI narratives</div>
+        </div>
+        <div class="anchor-line">Anchor: <span>"The efficiency gains are real. The legal exposure is also real. Right now, first responders are carrying both — with no guidance on which is which."</span></div>
+      </div>
+    </div>
+
+    <!-- Beat 2: The Framework -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num amber">2</div>
+        <div class="beat-meta">
+          <div class="beat-label amber">The Framework · ~1 min</div>
+          <h2>A traffic light for AI use — Green, Yellow, Red</h2>
+        </div>
+        <div class="beat-timer">⏱ 1:45 – 2:45</div>
+      </div>
+      <div class="beat-body">
+        <ul class="tp-list">
+          <li>
+            <span class="tp-bullet green">G</span>
+            <div>
+              <strong>Green — use it today:</strong> Fleet routing, bulk evidence processing with human review, translated public announcements.
+              <em>Low risk, high value. No new policy needed.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet amber">Y</span>
+            <div>
+              <strong>Yellow — pilot with supervision:</strong> Draft reports that require mandatory supervisor redlining before they go anywhere. Body camera summaries for training only.
+              <em>The AI drafts. A human owns it. Always.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">R</span>
+            <div>
+              <strong>Red — hard stop:</strong> AI-written charging documents. Signing anything under penalty of perjury without full human verification. Running consumer AI on confidential case data.
+              <em>These aren't recommendations — they need to be policy.</em>
+            </div>
+          </li>
+        </ul>
+        <div class="anchor-line">Anchor: <span>"This isn't about blocking AI. It's about making sure the people using it are protected."</span></div>
+      </div>
+    </div>
+
+    <!-- Beat 3: Urgency -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num orange">3</div>
+        <div class="beat-meta">
+          <div class="beat-label orange">The Urgency · ~45 sec</div>
+          <h2>July 1 — the clock is running</h2>
+        </div>
+        <div class="beat-timer">⏱ 2:45 – 3:30</div>
+      </div>
+      <div class="beat-body">
+        <ul class="tp-list">
+          <li>
+            <span class="tp-bullet orange">▸</span>
+            <div>
+              <strong>AI tools are already being purchased ahead of any governance policy — locally in Redmond and nationally.</strong>
+              <em>Seattle's own AI Plan has a Pillar 3 mandating public safety workforce upskilling. It has not been implemented.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">▸</span>
+            <div>
+              <strong>Washington State's AI Task Force recommendations land July 1, 2026 — weeks away.</strong>
+              <em>Expected to require public disclosure of AI use and explicit officer attestation on every AI-assisted document. Departments that aren't ready will be scrambling.</em>
+            </div>
+          </li>
+        </ul>
+        <div class="anchor-line">Anchor: <span>"The deadline isn't ours — it's the state's. We're either ahead of it or behind it."</span></div>
+      </div>
+    </div>
+
+    <!-- Beat 4: Close -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num blue">4</div>
+        <div class="beat-meta">
+          <div class="beat-label blue">Close · ~1 min</div>
+          <h2>What needs to happen — and who it protects</h2>
+        </div>
+        <div class="beat-timer">⏱ 3:30 – 5:00</div>
+      </div>
+      <div class="beat-body">
+        <ul class="tp-list">
+          <li>
+            <span class="tp-bullet blue">1</span>
+            <div>
+              <strong>Six policy gaps need decisions: training requirements, attestation language, tool governance, error reporting, delivery method, and deadline alignment.</strong>
+              <em>None of these are unsolvable. All of them are time-sensitive.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet blue">2</span>
+            <div>
+              <strong>STC is positioned to help lead this conversation — through research, curriculum, and training that protects the people on the front lines.</strong>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">3</span>
+            <div>
+              <strong>These first responders didn't sign up to be AI test subjects. They signed up to protect people. Our job is to make sure the tools they're handed don't put them — or the public — at risk.</strong>
+            </div>
+          </li>
+        </ul>
+        <div class="delivery-tip"><strong>💡 Tip:</strong> Slow down on the last line. It's your emotional close — let it breathe.</div>
+      </div>
+    </div>
+
+    <!-- One-liner -->
+    <div class="one-liner">
+      <div class="ol-label">Close with this line</div>
+      <blockquote>
+        "The tools are already in the field.<br>
+        The question is whether the people holding them<br>
+        are protected — or exposed."
+      </blockquote>
+      <cite>— Clark Ngo · The Impact of AI on First Responders · June 2026</cite>
+    </div>
+
+    <!-- The ask -->
+    <div class="ask-block">
+      <div class="ask-label">The Ask</div>
+      <h2>Three things that need attention</h2>
+      <p>The research is done. The framework exists. What's needed now is institutional action — before the state deadline and before the next AI-generated error ends up in court.</p>
+      <ul class="ask-list">
+        <li><strong>Adopt the Green / Yellow / Red framework</strong> — give departments clear, actionable guidance on which AI uses are safe today, which need supervision, and which are banned.</li>
+        <li><strong>Draft officer attestation language</strong> — with legal counsel and union input, so every AI-assisted document has a clear, legally defensible human sign-off process.</li>
+        <li><strong>Deploy AI literacy training before July 1</strong> — whether STC leads it, partners on it, or advocates for it, first responders need to know what these tools can and cannot do.</li>
+      </ul>
+    </div>
+
+  </div><!-- /v5 -->
+
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  10-MINUTE VERSION                         -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="v10" class="version-panel">
+
+    <!-- Opening -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num blue">0</div>
+        <div class="beat-meta">
+          <div class="beat-label blue">Opening Hook</div>
+          <h2>Start with a question that everyone knows the answer to</h2>
+        </div>
+        <div class="beat-timer">⏱ 0:00 – 1:00</div>
+      </div>
+      <div class="beat-body">
+        <div class="hook-line">"How long does it take a police officer to write an incident report after a call? On average — about two hours. With AI, that same report takes 60 seconds."</div>
+        <div class="script-text">
+          "That sounds like a win. And it is — <strong>until the report includes a statement from an officer who wasn't there. Until it says the suspect 'shape-shifted into a frog.' Until the King County Prosecuting Attorney refuses to accept it in court.</strong>
+          <br><br>
+          That's the reality we're in right now. AI is already in the hands of first responders — police, firefighters, paramedics — and we don't have the guardrails to protect them yet. That's what this research is about."
+        </div>
+        <div class="delivery-tip"><strong>💡 Tip:</strong> Pause after "shape-shifted into a frog." It's absurd and alarming — that combination sticks.</div>
+      </div>
+    </div>
+
+    <!-- Beat 1: Efficiency -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num green">1</div>
+        <div class="beat-meta">
+          <div class="beat-label green">Section 1 · ~1.5 min</div>
+          <h2>The efficiency case — the upside is real</h2>
+        </div>
+        <div class="beat-timer">⏱ 1:00 – 2:30</div>
+      </div>
+      <div class="beat-body">
+        <div class="script-text">
+          "Let me give you the upside first, because it's real."
+        </div>
+        <ul class="tp-list">
+          <li>
+            <span class="tp-bullet green">1</span>
+            <div>
+              <strong>Axon's Draft One cuts report writing from two hours to under a minute.</strong>
+              <em>Officers are staying with their families instead of writing reports at midnight.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet green">2</span>
+            <div>
+              <strong>Longeye processes 60 hours of digital evidence in under an hour — 100 times faster than manual review.</strong>
+              <em>Investigators are closing cases faster. The evidence that used to sit in a queue gets processed the same shift.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet green">3</span>
+            <div>
+              <strong>AI wildfire detection cameras are catching fires 25 minutes before the first 911 call comes in.</strong>
+              <em>That's 25 extra minutes of response time. In a wildfire, that's not a nice-to-have — that's lives.</em>
+            </div>
+          </li>
+        </ul>
+        <div class="data-row">
+          <div class="data-chip green">📝 60s report writing</div>
+          <div class="data-chip green">🎥 60 hrs → &lt;1 hr evidence</div>
+          <div class="data-chip green">🔥 25 min early fire detection</div>
+        </div>
+        <div class="script-text">"So the efficiency gains are undeniable. The problem is what happens when those gains come with a 20% error rate."</div>
+        <div class="anchor-line">Anchor: <span>"The upside is undeniable. Now let me tell you what it's costing."</span></div>
+      </div>
+    </div>
+
+    <!-- Beat 2: The Risk -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num red">2</div>
+        <div class="beat-meta">
+          <div class="beat-label red">Section 2 · ~2 min</div>
+          <h2>The risk — what ~80% accuracy actually means on the ground</h2>
+        </div>
+        <div class="beat-timer">⏱ 2:30 – 4:30</div>
+      </div>
+      <div class="beat-body">
+        <ul class="tp-list">
+          <li>
+            <span class="tp-bullet red">1</span>
+            <div>
+              <strong>Ghost Officer Hallucination.</strong>
+              <em>An AI-generated police report included a full statement from an officer who did not exist. The officer signed it. That's a Brady material violation — the prosecution is legally required to hand that fabrication to the defense. Case potentially thrown out. Career potentially over.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">2</span>
+            <div>
+              <strong>Background noise misinterpretation.</strong>
+              <em>AI transcribed ambient noise as officer speech and produced a report claiming the suspect "shape-shifted into a frog." Unusable. Embarrassing. Potentially damaging if it ever reached court.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">3</span>
+            <div>
+              <strong>Medical translation failure — EMS dropped "turning blue" from a 911 translation.</strong>
+              <em>Paramedics arrived without knowing the patient was in respiratory distress. That is a life-safety failure, not a software inconvenience.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">4</span>
+            <div>
+              <strong>The King County Prosecuting Attorney has issued a formal memo — they will not accept AI-generated narratives in charging documents. Full stop.</strong>
+              <em>Brady material: any evidence favorable to the defendant that the prosecution must disclose by law. A fabricated AI statement qualifies — and can unravel an entire case.</em>
+            </div>
+          </li>
+        </ul>
+        <div class="data-row">
+          <div class="data-chip red">🚨 ~20% error rate in AI reports</div>
+          <div class="data-chip red">⚖️ Brady material exposure</div>
+          <div class="data-chip red">🚫 King County PA refuses AI narratives</div>
+        </div>
+        <div class="delivery-tip"><strong>💡 Tip:</strong> Say "Brady material" slowly. Pause and give the one-line definition. Most people in the room won't know it — don't assume.</div>
+        <div class="anchor-line">Anchor: <span>"These aren't edge cases. These are real incidents, happening right now, in departments near us."</span></div>
+      </div>
+    </div>
+
+    <!-- Beat 3: Governance Gap -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num orange">3</div>
+        <div class="beat-meta">
+          <div class="beat-label orange">Section 3 · ~2 min</div>
+          <h2>The governance gap — procurement outpaced policy</h2>
+        </div>
+        <div class="beat-timer">⏱ 4:30 – 6:30</div>
+      </div>
+      <div class="beat-body">
+        <ul class="tp-list">
+          <li>
+            <span class="tp-bullet orange">1</span>
+            <div>
+              <strong>Code Four, Axon Draft One, Longeye — already being purchased locally in Redmond and nationally, ahead of any governance policy.</strong>
+              <em>Officers are using these tools on shift tonight. Without training. Without attestation language. Without a clear understanding of what they're signing.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet orange">2</span>
+            <div>
+              <strong>Seattle's own 2025–2026 AI Plan has a Pillar 3 that mandates workforce upskilling for public safety. It has not been implemented.</strong>
+              <em>The mandate exists. The action doesn't.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">3</span>
+            <div>
+              <strong>Washington State's AI Task Force recommendations land July 1, 2026 — weeks away.</strong>
+              <em>Expected to require public disclosure of AI use and explicit officer attestation on every AI-assisted document. Departments that aren't prepared will be scrambling to comply.</em>
+            </div>
+          </li>
+        </ul>
+        <div class="data-row">
+          <div class="data-chip orange">⚠️ Tools procured before policy</div>
+          <div class="data-chip orange">⚠️ Seattle Pillar 3 unimplemented</div>
+          <div class="data-chip red">🚨 WA State deadline: July 1, 2026</div>
+        </div>
+        <div class="anchor-line">Anchor: <span>"The gap is this: the technology moved fast, the tools are in the field, but the training and legal protection for these responders doesn't exist yet."</span></div>
+      </div>
+    </div>
+
+    <!-- Beat 4: Framework -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num violet">4</div>
+        <div class="beat-meta">
+          <div class="beat-label violet">Section 4 · ~2 min</div>
+          <h2>The framework — a traffic light that gives departments clarity</h2>
+        </div>
+        <div class="beat-timer">⏱ 6:30 – 8:30</div>
+      </div>
+      <div class="beat-body">
+        <div class="script-text">"What this research proposes is a simple, practical three-tier framework — a traffic light system that gives departments clear guidance on what's safe to use today."</div>
+        <ul class="tp-list">
+          <li>
+            <span class="tp-bullet green">G</span>
+            <div>
+              <strong>Green — approved, use it today:</strong> Fleet routing, bulk evidence processing with human verification, translated public safety announcements.
+              <em>Low risk, high value. Go.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet amber">Y</span>
+            <div>
+              <strong>Yellow — pilot with supervision only:</strong> Draft reports requiring mandatory supervisor redlining. Body camera summaries for training only. Supervisor sign-off before any official use.
+              <em>The AI drafts. A human owns it. Every time.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">R</span>
+            <div>
+              <strong>Red — banned, hard stop:</strong> AI-written charging documents. Signing anything under penalty of perjury without full human verification. Consumer AI on CJIS or health data.
+              <em>These aren't recommendations. They need to be policy.</em>
+            </div>
+          </li>
+        </ul>
+        <div class="script-text">"This isn't about blocking AI. It's about making sure the people using it are protected."</div>
+        <div class="anchor-line">Anchor: <span>"Green means go. Yellow means a human owns it. Red means the department owns the liability."</span></div>
+      </div>
+    </div>
+
+    <!-- Beat 5: Close -->
+    <div class="beat section-block">
+      <div class="beat-header">
+        <div class="beat-num blue">5</div>
+        <div class="beat-meta">
+          <div class="beat-label blue">Close · ~1.5 min</div>
+          <h2>The ask — and who it's really for</h2>
+        </div>
+        <div class="beat-timer">⏱ 8:30 – 10:00</div>
+      </div>
+      <div class="beat-body">
+        <ul class="tp-list">
+          <li>
+            <span class="tp-bullet blue">1</span>
+            <div>
+              <strong>Six policy gaps need decisions — training requirements, attestation language, tool governance, error reporting, delivery method, and July 1 deadline alignment.</strong>
+              <em>None of these are unsolvable. All of them are time-sensitive.</em>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet blue">2</span>
+            <div>
+              <strong>STC is positioned to help lead this conversation — through research, curriculum, and training that protects the people on the front lines.</strong>
+            </div>
+          </li>
+          <li>
+            <span class="tp-bullet red">3</span>
+            <div>
+              <strong>These first responders didn't sign up to be AI test subjects. They signed up to protect people. Our job is to make sure that when they pick up an AI tool on shift, they know exactly what it can do, what it can't, and that they're legally protected either way.</strong>
+            </div>
+          </li>
+        </ul>
+        <div class="delivery-tip"><strong>💡 Tip:</strong> End on the responders, not the policy. Slow down on the last line — it's your emotional close.</div>
+      </div>
+    </div>
+
+    <!-- One-liner -->
+    <div class="one-liner">
+      <div class="ol-label">Close with this line</div>
+      <blockquote>
+        "First responders didn't sign up to be AI test subjects.<br>
+        They signed up to protect people.<br>
+        The time to protect them is now."
+      </blockquote>
+      <cite>— Clark Ngo · The Impact of AI on First Responders · June 2026</cite>
+    </div>
+
+    <!-- The ask -->
+    <div class="ask-block">
+      <div class="ask-label">The Ask — What Decision Are You Seeking?</div>
+      <h2>Three things that need to happen before July 1</h2>
+      <p>The research is done. The framework exists. The window before the state deadline is closing. These are the three actions that protect first responders, departments, and the public.</p>
+      <ul class="ask-list">
+        <li><strong>Adopt the Green / Yellow / Red framework</strong> — give departments actionable guidance immediately so officers know what is safe to use, what needs oversight, and what is off-limits.</li>
+        <li><strong>Draft officer attestation language</strong> — with legal counsel and union input, create clear, defensible language so every AI-assisted document has an explicit human sign-off process before the July 1 state mandate.</li>
+        <li><strong>Deploy AI literacy training across SPD, SFD, and EMS</strong> — whether STC leads it, partners on it, or advocates for it, first responders need to understand what these tools can and cannot do before the next AI error ends up in court.</li>
+      </ul>
+    </div>
+
+  </div><!-- /v10 -->
+
+</div>
+
+<script>
+function switchVersion(id) {
+  document.querySelectorAll('.version-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.vtab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+<script src="assets/nav.js"></script>
+</body>
+</html>

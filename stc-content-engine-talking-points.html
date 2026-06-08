@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>5-Minute Talking Points — STC Content Engine & Survival</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    /* Nav */
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--orange); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Header card */
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--red);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--red); margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      margin: 0 0 8px; font-size: 1.7rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.2;
+    }
+    .doc-header .subtitle {
+      color: var(--slate); font-size: 0.95rem; margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .meta-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px; color: var(--slate);
+    }
+
+    /* How to use box */
+    .how-to {
+      background: #fef9c3;
+      border: 1.5px solid #fde047;
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      color: #713f12;
+      margin-bottom: 32px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .how-to strong { display: block; margin-bottom: 3px; }
+
+    /* Beat block */
+    .beat {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .beat-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .beat-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 800; flex-shrink: 0;
+      color: #fff;
+    }
+    .beat-num.red    { background: var(--red); }
+    .beat-num.orange { background: var(--orange); }
+    .beat-num.violet { background: var(--violet); }
+    .beat-num.blue   { background: var(--blue); }
+    .beat-num.green  { background: var(--green); }
+    .beat-num.dark   { background: #0f172a; }
+
+    .beat-meta { flex: 1; }
+    .beat-meta .beat-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 2px;
+    }
+    .beat-meta .beat-label.red    { color: var(--red); }
+    .beat-meta .beat-label.orange { color: var(--orange); }
+    .beat-meta .beat-label.violet { color: var(--violet); }
+    .beat-meta .beat-label.blue   { color: var(--blue); }
+    .beat-meta .beat-label.green  { color: var(--green); }
+    .beat-meta .beat-label.dark   { color: var(--slate); }
+    .beat-meta h2 {
+      margin: 0; font-size: 1.05rem; font-weight: 800; line-height: 1.3;
+    }
+    .beat-timer {
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--slate-light); white-space: nowrap;
+      background: var(--bg); border-radius: 20px;
+      padding: 4px 12px; border: 1px solid var(--border);
+    }
+
+    .beat-body { padding: 20px 24px; }
+
+    /* The big hook line */
+    .hook-line {
+      font-size: 1.25rem; font-weight: 800; line-height: 1.4;
+      color: var(--ink); margin-bottom: 16px;
+      border-left: 4px solid var(--red);
+      padding-left: 16px;
+    }
+
+    /* Talking points list */
+    .tp-list { list-style: none; margin: 0; padding: 0; }
+    .tp-list li {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem; line-height: 1.55;
+      color: var(--ink);
+    }
+    .tp-list li:last-child { border-bottom: none; }
+    .tp-bullet {
+      width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 800; flex-shrink: 0;
+      margin-top: 2px; color: #fff;
+    }
+    .tp-bullet.red    { background: var(--red); }
+    .tp-bullet.orange { background: var(--orange); }
+    .tp-bullet.violet { background: var(--violet); }
+    .tp-bullet.blue   { background: var(--blue); }
+    .tp-bullet.green  { background: var(--green); }
+    .tp-bullet.dark   { background: #0f172a; }
+
+    .tp-list li strong { color: var(--ink); font-weight: 700; }
+    .tp-list li em { color: var(--slate); font-style: normal; font-size: 0.88rem; display: block; margin-top: 3px; }
+
+    /* Data callout inline */
+    .data-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin: 14px 0 6px;
+    }
+    .data-chip {
+      border-radius: 8px; padding: 8px 14px;
+      font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px;
+    }
+    .data-chip.red    { background: var(--red-dim);    color: #991b1b; }
+    .data-chip.orange { background: var(--orange-dim); color: #9a3412; }
+    .data-chip.green  { background: var(--green-dim);  color: #166534; }
+    .data-chip.blue   { background: var(--blue-dim);   color: #1e40af; }
+
+    /* Anchor line at bottom of beat */
+    .anchor-line {
+      margin-top: 14px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--slate);
+      border: 1px solid var(--border);
+    }
+    .anchor-line span { color: var(--ink); }
+
+    /* The ask */
+    .ask-block {
+      background: linear-gradient(135deg, #0f172a 0%, #7c2d12 45%, #ea580c 100%);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .ask-block .ask-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; opacity: 0.6; margin-bottom: 10px;
+    }
+    .ask-block h2 { margin: 0 0 14px; font-size: 1.3rem; font-weight: 900; }
+    .ask-block p { margin: 0 0 18px; opacity: 0.85; font-size: 0.95rem; line-height: 1.65; }
+    .ask-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .ask-list li {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 0.92rem; opacity: 0.9;
+    }
+    .ask-list li::before {
+      content: "→";
+      opacity: 0.5; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* One-liner card */
+    .one-liner {
+      background: #0f172a;
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      color: #fff;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .one-liner .ol-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #fb923c; margin-bottom: 10px;
+    }
+    .one-liner blockquote {
+      margin: 0; padding: 0;
+      font-size: 1.3rem; font-weight: 800; line-height: 1.4;
+      letter-spacing: -0.02em;
+    }
+    .one-liner cite {
+      display: block; margin-top: 10px;
+      font-size: 0.8rem; font-style: normal; opacity: 0.45;
+    }
+
+    /* Print styles */
+    @media print {
+      body { background: white; font-size: 14px; }
+      .shell { padding: 0; max-width: 100%; }
+      .nav-row, .how-to, #sec-nav-hud { display: none !important; }
+      .beat { box-shadow: none; border: 1.5px solid #e2e8f0; break-inside: avoid; }
+      .ask-block { background: #0f172a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">← Home</a>
+    <span class="nav-sep">|</span>
+    <a href="stc-open-ecosystem-funnel.html">Open Ecosystem Funnel</a>
+    <span class="nav-sep">|</span>
+    <span style="color:var(--slate)">5-Minute Talking Points</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="eyebrow">Executive Talking Points · ~5 Minutes</div>
+    <h1>Why the Content Engine<br>Is STC's Survival Strategy</h1>
+    <p class="subtitle">
+      A concise case for leadership, deans, and academic affairs — delivered in five beats.
+      Use the section navigator (← → keys) to move beat by beat during the presentation.
+    </p>
+    <div class="meta-row">
+      <span class="meta-chip">🎯 Audience: Dean / Provost / AAC</span>
+      <span class="meta-chip">⏱ ~5 minutes spoken</span>
+      <span class="meta-chip">📅 June 2026</span>
+      <span class="meta-chip">🖨 Print-ready</span>
+    </div>
+  </div>
+
+  <div class="how-to">
+    <span style="font-size:1.2rem;flex-shrink:0;">💡</span>
+    <div>
+      <strong>How to use these talking points</strong>
+      Each beat is one minute. Bold lines are the phrases to say out loud.
+      Italic lines are supporting context — know them, but don't read them verbatim.
+      The one-liner at the top of each beat is your anchor if you lose your place.
+    </div>
+  </div>
+
+  <!-- ── OPENING ── -->
+  <div class="beat section-block">
+    <div class="beat-header">
+      <div class="beat-num red">0</div>
+      <div class="beat-meta">
+        <div class="beat-label red">Opening Hook</div>
+        <h2>The problem in one sentence</h2>
+      </div>
+      <div class="beat-timer">⏱ 0:00 – 0:30</div>
+    </div>
+    <div class="beat-body">
+      <div class="hook-line">
+        "Right now, a student who Googles 'learn AI engineering' will find YouTube, Coursera, and MIT OpenCourseWare before they find us. That is an existential problem."
+      </div>
+      <ul class="tp-list">
+        <li>
+          <span class="tp-bullet red">▸</span>
+          <div>
+            <strong>We are invisible at the moment students are deciding where to learn.</strong>
+            <em>Discovery happens on the internet before it happens in a brochure. If we're not on page one of a YouTube search for AI skills, we don't exist to that prospective student.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet red">▸</span>
+          <div>
+            <strong>Every year we wait is enrollment we will never recover.</strong>
+            <em>Brand equity on YouTube compounds — channels with a 3-year head start are virtually impossible to catch. The window to build this is now, not after the next curriculum cycle.</em>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── BEAT 1 ── -->
+  <div class="beat section-block">
+    <div class="beat-header">
+      <div class="beat-num red">1</div>
+      <div class="beat-meta">
+        <div class="beat-label red">Threat 1 · ~1 min</div>
+        <h2>Our competition is free — and it's winning</h2>
+      </div>
+      <div class="beat-timer">⏱ 0:30 – 1:30</div>
+    </div>
+    <div class="beat-body">
+      <ul class="tp-list">
+        <li>
+          <span class="tp-bullet red">1</span>
+          <div>
+            <strong>Students are learning from YouTube, GitHub, and Discord before they ever consider a degree program.</strong>
+            <em>That's not a complaint — it's data. The question is: do we fight it, or do we put STC content in that exact stream?</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet red">2</span>
+          <div>
+            <strong>Bootcamps and online platforms charge $10,000–$20,000 and promise a job in 6 months. Traditional degrees charge $30,000+ and promise a diploma in 4 years.</strong>
+            <em>We are being squeezed from both sides. The only way out is differentiation — and our differentiation has to be visible before a student pays for anything.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet red">3</span>
+          <div>
+            <strong>The students who will enroll in 2027 are watching YouTube right now.</strong>
+            <em>If STC faculty are not in that feed, someone else's faculty are — and those students will never reach our enrollment page.</em>
+          </div>
+        </li>
+      </ul>
+      <div class="data-row">
+        <div class="data-chip red">🔴 Bootcamps grew 15% YoY in 2024</div>
+        <div class="data-chip red">🔴 70%+ of tech learners start on YouTube</div>
+        <div class="data-chip orange">⚠️ STC has near-zero organic search presence for "AI engineering"</div>
+      </div>
+      <div class="anchor-line">Anchor: <span>"We are competing against free. We cannot win on price. We have to win on trust — and trust is built before enrollment, not after."</span></div>
+    </div>
+  </div>
+
+  <!-- ── BEAT 2 ── -->
+  <div class="beat section-block">
+    <div class="beat-header">
+      <div class="beat-num orange">2</div>
+      <div class="beat-meta">
+        <div class="beat-label orange">Threat 2 · ~1 min</div>
+        <h2>Our curriculum clock is running 12 months behind the market</h2>
+      </div>
+      <div class="beat-timer">⏱ 1:30 – 2:30</div>
+    </div>
+    <div class="beat-body">
+      <ul class="tp-list">
+        <li>
+          <span class="tp-bullet orange">1</span>
+          <div>
+            <strong>The standard academic approval cycle takes 6 to 12 months. AI is releasing transformative tools every 6 to 8 weeks.</strong>
+            <em>By the time a course on Large Language Models clears curriculum committee, GPT-5 has shipped, agents are mainstream, and students are asking about something we haven't proposed yet.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet orange">2</span>
+          <div>
+            <strong>This is not a criticism of our process — it's a structural mismatch between academic governance and technology velocity.</strong>
+            <em>Every school faces this. The ones that solve it first win the decade.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet orange">3</span>
+          <div>
+            <strong>The Content Engine decouples content creation from curriculum approval.</strong>
+            <em>We publish a YouTube video on Model Context Protocol this week. We run a workshop next month. By the time the formal course goes through AAC, we already know it works — 207,000 views and a paying workshop cohort are the proof of concept.</em>
+          </div>
+        </li>
+      </ul>
+      <div class="anchor-line">Anchor: <span>"We don't have to choose between speed and rigor. The pipeline gives us speed at the top and rigor at the bottom — exactly where each one belongs."</span></div>
+    </div>
+  </div>
+
+  <!-- ── BEAT 3 ── -->
+  <div class="beat section-block">
+    <div class="beat-header">
+      <div class="beat-num violet">3</div>
+      <div class="beat-meta">
+        <div class="beat-label violet">The Model · ~1 min</div>
+        <h2>The pipeline that turns content into enrollment</h2>
+      </div>
+      <div class="beat-timer">⏱ 2:30 – 3:30</div>
+    </div>
+    <div class="beat-body">
+      <ul class="tp-list">
+        <li>
+          <span class="tp-bullet violet">1</span>
+          <div>
+            <strong>YouTube is our top-of-funnel. A free, searchable video solves a real problem for a developer or student. They find us — we don't pay to find them.</strong>
+            <em>Example: an 18-second GitHub tip — zero production budget — has 175,000 views. That's 175,000 people who now know STC faculty build things that work.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet violet">2</span>
+          <div>
+            <strong>GitHub is the lab. Every video links to a live, open-source repository. That's where watching becomes doing — and doing is what creates retention.</strong>
+            <em>This is Kolb's experiential learning in practice. It also gives us institutional credibility with industry partners who can see production-quality code, not just a syllabus.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet violet">3</span>
+          <div>
+            <strong>Workshops are the conversion point. A student who clones the repo and builds something with us for two hours is ten times more likely to enroll than one who reads a program brochure.</strong>
+            <em>September 2024 AI Engineer Quick Start workshop — small cohort, by design. These are not marketing events. They are high-intent enrollment funnels.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet violet">4</span>
+          <div>
+            <strong>Open edX is the destination. Workshop-validated content gets wrapped in formal assessment and plugged into the LMS. The course arrives pre-tested, pre-marketed, with a known audience.</strong>
+            <em>This is what the course catalog at clarkngo.github.io/courses already looks like — a live preview of what formalized content can become.</em>
+          </div>
+        </li>
+      </ul>
+      <div class="anchor-line">Anchor: <span>"YouTube → GitHub → Workshop → Open edX. Each stage earns the right to ask for the next commitment. The student chooses us every step of the way."</span></div>
+    </div>
+  </div>
+
+  <!-- ── BEAT 4 ── -->
+  <div class="beat section-block">
+    <div class="beat-header">
+      <div class="beat-num blue">4</div>
+      <div class="beat-meta">
+        <div class="beat-label blue">The Faculty Angle · ~1 min</div>
+        <h2>This redefines who we hire — and why they come here</h2>
+      </div>
+      <div class="beat-timer">⏱ 3:30 – 4:15</div>
+    </div>
+    <div class="beat-body">
+      <ul class="tp-list">
+        <li>
+          <span class="tp-bullet blue">1</span>
+          <div>
+            <strong>The traditional associate faculty model hires practitioners to teach. This model hires practitioners who also build in public — and those practitioners bring their audience with them.</strong>
+            <em>When a faculty member has 207,000 YouTube views, their students are already out there. We don't have to market to them — we just have to convert them.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet blue">2</span>
+          <div>
+            <strong>This changes recruiting. A GitHub profile and a YouTube channel become credentials, not just a CV.</strong>
+            <em>We attract a new type of practitioner-educator — someone who is already doing the work the market wants, and wants to formalize it into a teaching career.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet blue">3</span>
+          <div>
+            <strong>Their content doesn't disappear at the end of the semester. It compounds. Every video they publish is a permanent enrollment asset for STC.</strong>
+            <em>This is something no competitor can replicate quickly. You can copy a syllabus overnight. You cannot copy three years of trusted public content.</em>
+          </div>
+        </li>
+      </ul>
+      <div class="anchor-line">Anchor: <span>"We are not just building a content strategy. We are building a new kind of faculty — one whose public work is the school's most durable competitive advantage."</span></div>
+    </div>
+  </div>
+
+  <!-- ── BEAT 5 / CLOSE ── -->
+  <div class="beat section-block">
+    <div class="beat-header">
+      <div class="beat-num green">5</div>
+      <div class="beat-meta">
+        <div class="beat-label green">Close · ~45 sec</div>
+        <h2>What we need — and what happens if we don't</h2>
+      </div>
+      <div class="beat-timer">⏱ 4:15 – 5:00</div>
+    </div>
+    <div class="beat-body">
+      <ul class="tp-list">
+        <li>
+          <span class="tp-bullet green">1</span>
+          <div>
+            <strong>This model is already running. The YouTube videos are live. The GitHub repos exist. The workshop has happened. We have 207,000 views of proof.</strong>
+            <em>We are not asking for permission to experiment. We are asking for institutional recognition of something that is already working.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet green">2</span>
+          <div>
+            <strong>What we need: a framework that formally recognizes public content production as part of the faculty role — and an IP policy that protects both the faculty member and STC.</strong>
+            <em>Without that, this model stays informal, scales to one person, and is one resignation away from disappearing.</em>
+          </div>
+        </li>
+        <li>
+          <span class="tp-bullet red">3</span>
+          <div>
+            <strong>If we don't build this, someone else will — and their funnel will be feeding their enrollment, not ours.</strong>
+            <em>This is not a risk to manage slowly. The audience we don't capture this year is the cohort we don't enroll in 2027.</em>
+          </div>
+        </li>
+      </ul>
+      <div class="data-row">
+        <div class="data-chip green">✅ Proof of concept: live now</div>
+        <div class="data-chip green">✅ No new budget required to start</div>
+        <div class="data-chip blue">📋 Needs: IP framework + faculty role definition</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- One-liner to close -->
+  <div class="one-liner section-block">
+    <div class="ol-label">Close with this line</div>
+    <blockquote>
+      "STC's survival doesn't depend on us being the biggest school.<br>
+      It depends on us being the most findable, most trustworthy,<br>
+      most useful school — before a student ever pays a dollar."
+    </blockquote>
+    <cite>— Clark Ngo, STC Content Engine Briefing, June 2026</cite>
+  </div>
+
+  <!-- The ask -->
+  <div class="ask-block section-block">
+    <div class="ask-label">The Ask — What Decision Are You Seeking?</div>
+    <h2>Three things we need leadership to act on</h2>
+    <p>
+      The pipeline exists. The proof is in the view counts, the workshop recordings, and the live
+      course catalog. The bottleneck is institutional — not technical.
+    </p>
+    <ul class="ask-list">
+      <li>
+        <strong>Formal recognition of the Practitioner-Publisher faculty role</strong> — define public content production (YouTube, GitHub, workshops) as a legitimate and compensable part of the associate faculty workload.
+      </li>
+      <li>
+        <strong>An IP and co-branding agreement template</strong> — clarify who owns what when faculty publish under their name but with STC institutional support, so the model can scale safely.
+      </li>
+      <li>
+        <strong>A small publishing fund or release time</strong> — the minimum viable investment to move from one person's side project to a repeatable school-wide system. This does not require a new hire or a new budget line — it requires redirecting existing resources toward what is already working.
+      </li>
+    </ul>
+  </div>
+
+</div>
+<script src="assets/nav.js"></script>
+</body>
+</html>

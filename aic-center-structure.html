@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Applied Intelligence Center — Structure & Roadmap</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --cyan: #0891b2;
+      --cyan-dim: #ecfeff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 940px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    /* Tab nav */
+    .tab-nav {
+      display: flex; gap: 4px; background: var(--card);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 5px; margin-bottom: 28px; box-shadow: var(--shadow); flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 10px 20px; border-radius: 8px; font-size: 0.88rem;
+      font-weight: 700; cursor: pointer; border: none;
+      background: transparent; color: var(--slate); transition: all 0.18s; white-space: nowrap;
+    }
+    .tab-btn.active { background: var(--violet); color: #fff; box-shadow: 0 2px 8px rgba(124,58,237,0.25); }
+    .tab-btn:hover:not(.active) { background: var(--bg); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    /* Org chart */
+    .org-wrap { overflow-x: auto; padding-bottom: 8px; }
+    .org {
+      display: flex; flex-direction: column; align-items: center;
+      min-width: 640px; gap: 0;
+    }
+    .org-node {
+      border-radius: 10px; padding: 12px 20px; text-align: center;
+      border: 2px solid transparent; min-width: 180px; position: relative;
+    }
+    .org-node .node-title { font-size: 0.88rem; font-weight: 800; }
+    .org-node .node-sub { font-size: 0.75rem; color: var(--slate); margin-top: 2px; }
+
+    .org-university { background: #f8fafc; border-color: var(--border); }
+    .org-center { background: var(--violet-dim); border-color: #c4b5fd; }
+    .org-center .node-title { color: var(--violet); }
+    .org-stc { background: var(--blue-dim); border-color: #bfdbfe; }
+    .org-stc .node-title { color: var(--blue); }
+    .org-liaison { background: var(--cyan-dim); border-color: #a5f3fc; }
+    .org-liaison .node-title { color: var(--cyan); }
+
+    .org-row { display: flex; gap: 16px; justify-content: center; }
+    .org-child { background: var(--bg); border-color: var(--border); }
+
+    .connector-v {
+      width: 2px; height: 24px; background: var(--border);
+      margin: 0 auto;
+    }
+    .connector-h-wrap {
+      display: flex; justify-content: center; position: relative;
+      margin-bottom: 0;
+    }
+    .connector-h-wrap::before {
+      content: ''; position: absolute; top: 0; left: 50%; right: 50%;
+      height: 2px; background: var(--border);
+    }
+    .connector-branch {
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+    }
+    .connector-branch-top {
+      width: 2px; height: 20px; background: var(--border);
+    }
+
+    .split-row {
+      display: flex; gap: 0; justify-content: center; width: 100%;
+    }
+    .split-branch {
+      display: flex; flex-direction: column; align-items: center;
+      flex: 1;
+    }
+    .split-line-h {
+      height: 2px; width: 100%; background: var(--border);
+      margin-top: 24px;
+    }
+    .split-line-h.left { border-radius: 2px 0 0 2px; }
+    .split-line-h.right { border-radius: 0 2px 2px 0; }
+    .split-line-h.hidden { background: transparent; }
+
+    /* Role cards */
+    .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 620px) { .role-grid { grid-template-columns: 1fr; } }
+    .role-card {
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .role-head { padding: 14px 16px 10px; }
+    .role-badge {
+      display: inline-block; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 20px; margin-bottom: 8px;
+    }
+    .role-title { font-size: 0.98rem; font-weight: 800; margin: 0 0 3px; }
+    .role-sub { font-size: 0.78rem; color: var(--slate); }
+    .role-body { padding: 0 16px 14px; }
+    .role-item {
+      display: flex; gap: 8px; padding: 6px 0;
+      border-top: 1px solid var(--border); font-size: 0.84rem; align-items: flex-start;
+    }
+    .role-item::before { content: '→'; color: var(--slate-light); flex-shrink: 0; font-weight: 700; }
+
+    .role-internal { background: var(--violet-dim); }
+    .role-liaison  { background: var(--cyan-dim); }
+    .role-sme      { background: var(--amber-dim); }
+    .role-student  { background: var(--green-dim); }
+
+    .badge-violet { background: var(--violet-dim); color: var(--violet); border: 1px solid #c4b5fd; }
+    .badge-cyan   { background: var(--cyan-dim);   color: var(--cyan);   border: 1px solid #a5f3fc; }
+    .badge-amber  { background: var(--amber-dim);  color: var(--amber);  border: 1px solid #fde68a; }
+    .badge-green  { background: var(--green-dim);  color: var(--green);  border: 1px solid #bbf7d0; }
+    .badge-blue   { background: var(--blue-dim);   color: var(--blue);   border: 1px solid #bfdbfe; }
+
+    /* Revenue roadmap */
+    .rev-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 640px) { .rev-grid { grid-template-columns: 1fr; } }
+    .rev-card {
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      padding: 18px; position: relative; overflow: hidden;
+    }
+    .rev-year {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .rev-card h3 { font-size: 0.98rem; font-weight: 800; margin: 0 0 10px; }
+    .rev-stream {
+      display: flex; gap: 8px; padding: 7px 0;
+      border-top: 1px solid var(--border); font-size: 0.84rem; align-items: flex-start;
+    }
+    .rev-stream .stream-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+    }
+    .rev-stream .stream-name { font-weight: 700; display: block; font-size: 0.82rem; }
+    .rev-stream .stream-desc { color: var(--slate); font-size: 0.8rem; }
+
+    /* Maturity phases */
+    .phase-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
+    @media (max-width: 640px) { .phase-row { grid-template-columns: 1fr; } }
+    .phase {
+      padding: 20px; border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .phase:last-child { border-right: none; }
+    .phase-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .phase h3 { font-size: 0.95rem; font-weight: 800; margin: 0 0 10px; }
+    .phase ul { margin: 0; padding-left: 18px; }
+    .phase ul li { font-size: 0.84rem; color: var(--slate); margin-bottom: 5px; line-height: 1.4; }
+
+    /* STC relationship */
+    .rel-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: start; }
+    @media (max-width: 600px) { .rel-row { grid-template-columns: 1fr; } }
+    .rel-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 18px; }
+    .rel-card h3 { font-size: 0.95rem; font-weight: 800; margin: 0 0 10px; }
+    .rel-card ul { margin: 0; padding-left: 18px; }
+    .rel-card ul li { font-size: 0.84rem; margin-bottom: 6px; line-height: 1.4; }
+    .rel-arrow {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 6px; padding-top: 40px;
+      color: var(--slate-light); font-size: 1.2rem;
+    }
+    .rel-arrow span { font-size: 0.72rem; font-weight: 700; color: var(--slate-light); letter-spacing: .04em; text-transform: uppercase; }
+
+    /* Callout */
+    .callout {
+      border-radius: var(--radius-sm); padding: 14px 18px;
+      font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55;
+    }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue   { background: var(--blue-dim); }
+    .icon-amber  { background: var(--amber-dim); }
+    .icon-green  { background: var(--green-dim); }
+    .icon-cyan   { background: var(--cyan-dim); }
+
+    .mt16 { margin-top: 16px; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="meeting-notes-ai-strategy.html">AI Strategy Meeting Notes</a>
+    <span class="nav-sep">›</span>
+    <span>Applied Intelligence Center — Structure</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Applied Intelligence Center</div>
+    <h1>Center Structure &amp; Growth Roadmap</h1>
+    <p class="subtitle">A standalone applied consulting and learning unit. Starts lean with internal leadership and STC faculty — grows by adding subject matter experts as engagements expand.</p>
+    <div class="meta-row">
+      <span class="meta-chip">🏛️ Standalone Unit</span>
+      <span class="meta-chip">Internal → SME Growth Model</span>
+      <span class="meta-chip">Mixed Revenue</span>
+      <span class="meta-chip">STC Pipeline</span>
+    </div>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('org')">Org Structure</button>
+    <button class="tab-btn" onclick="switchTab('roles')">Roles</button>
+    <button class="tab-btn" onclick="switchTab('stc')">STC Relationship</button>
+    <button class="tab-btn" onclick="switchTab('revenue')">Revenue Roadmap</button>
+    <button class="tab-btn" onclick="switchTab('maturity')">Year 1 → Year 3</button>
+  </div>
+
+  <!-- ══════════ TAB 1 — ORG STRUCTURE ══════════ -->
+  <div class="tab-panel active" id="tab-org">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon icon-violet">🏛️</div>
+        <div>
+          <h2>Organizational Chart</h2>
+          <div class="section-sub">Center sits standalone under the university; STC remains intact with a new liaison role as the connective tissue</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="org-wrap">
+          <div class="org">
+
+            <!-- University -->
+            <div class="org-node org-university">
+              <div class="node-title">University</div>
+              <div class="node-sub">President's Office</div>
+            </div>
+            <div class="connector-v"></div>
+
+            <!-- Two branches: AIC + STC -->
+            <div style="display:flex; width:100%; justify-content:center; gap:40px;">
+
+              <!-- AIC branch -->
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+                <div style="width:2px;height:20px;background:var(--border);"></div>
+                <div class="org-node org-center" style="width:100%;max-width:260px;">
+                  <div class="node-title">Applied Intelligence Center</div>
+                  <div class="node-sub">Standalone unit</div>
+                </div>
+                <div style="width:2px;height:20px;background:var(--border);"></div>
+                <!-- AIC children -->
+                <div style="display:flex;gap:12px;width:100%;max-width:480px;justify-content:center;">
+                  <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+                    <div style="display:flex;height:2px;background:var(--border);width:100%;"></div>
+                    <div style="width:2px;height:16px;background:var(--border);"></div>
+                    <div class="org-node org-child" style="width:100%;text-align:center;padding:10px 12px;">
+                      <div class="node-title" style="font-size:0.8rem;">Director</div>
+                      <div class="node-sub" style="font-size:0.72rem;">Internal to start</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+                    <div style="display:flex;height:2px;background:var(--border);width:100%;"></div>
+                    <div style="width:2px;height:16px;background:var(--border);"></div>
+                    <div class="org-node org-child" style="width:100%;text-align:center;padding:10px 12px;">
+                      <div class="node-title" style="font-size:0.8rem;">Subject Matter Experts</div>
+                      <div class="node-sub" style="font-size:0.72rem;">Project-based</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+                    <div style="display:flex;height:2px;background:var(--border);width:100%;"></div>
+                    <div style="width:2px;height:16px;background:var(--border);"></div>
+                    <div class="org-node org-child" style="width:100%;text-align:center;padding:10px 12px;">
+                      <div class="node-title" style="font-size:0.8rem;">Student Practicum</div>
+                      <div class="node-sub" style="font-size:0.72rem;">From STC pipeline</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STC branch -->
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+                <div style="width:2px;height:20px;background:var(--border);"></div>
+                <div class="org-node org-stc" style="width:100%;max-width:260px;">
+                  <div class="node-title">School of Technology &amp; Computing</div>
+                  <div class="node-sub">Unchanged structure</div>
+                </div>
+                <div style="width:2px;height:20px;background:var(--border);"></div>
+                <!-- STC children -->
+                <div style="display:flex;gap:12px;width:100%;max-width:380px;justify-content:center;">
+                  <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+                    <div style="display:flex;height:2px;background:var(--border);width:100%;"></div>
+                    <div style="width:2px;height:16px;background:var(--border);"></div>
+                    <div class="org-node org-liaison" style="width:100%;text-align:center;padding:10px 12px;">
+                      <div class="node-title" style="font-size:0.8rem;">Center Liaison</div>
+                      <div class="node-sub" style="font-size:0.72rem;">New role within STC</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+                    <div style="display:flex;height:2px;background:var(--border);width:100%;"></div>
+                    <div style="width:2px;height:16px;background:var(--border);"></div>
+                    <div class="org-node org-child" style="width:100%;text-align:center;padding:10px 12px;">
+                      <div class="node-title" style="font-size:0.8rem;">Faculty &amp; Programs</div>
+                      <div class="node-sub" style="font-size:0.72rem;">Existing structure</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="callout callout-violet mt16">
+          <strong>The Center Liaison is the connective tissue.</strong> Without this role, the pipeline between STC faculty, students, and active Center engagements depends on informal relationships — and breaks under workload pressure. The Liaison manages release time, practicum placements, and curriculum feedback loops between both units.
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 2 — ROLES ══════════ -->
+  <div class="tab-panel" id="tab-roles">
+
+    <div class="callout callout-blue" style="margin-bottom:24px;">
+      <strong>Start lean.</strong> Year 1 is one Director, the Liaison, and faculty fellows from STC. SMEs are brought in per engagement — not hired full-time until the pipeline justifies it.
+    </div>
+
+    <div class="role-grid">
+
+      <div class="role-card">
+        <div class="role-head role-internal">
+          <span class="role-badge badge-violet">Internal · Year 1</span>
+          <div class="role-title">Director, Applied Intelligence Center</div>
+          <div class="role-sub">Internal hire to start — faculty with industry experience and credibility to represent the Center externally</div>
+        </div>
+        <div class="role-body">
+          <div class="role-item">Owns all active client engagements — scoping, delivery, relationships</div>
+          <div class="role-item">Builds and manages the SME roster for incoming projects</div>
+          <div class="role-item">Works with the Liaison to assign faculty fellows and student cohorts per project</div>
+          <div class="role-item">Represents the Center in partnership conversations (SPD, port, sports, etc.)</div>
+          <div class="role-item">Oversees micro-credential development pipeline in Year 2+</div>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head role-liaison">
+          <span class="role-badge badge-cyan">New Role · Within STC</span>
+          <div class="role-title">Center Liaison / Associate Director of Applied Programs</div>
+          <div class="role-sub">Bridge between STC's existing structure and the Center's project needs</div>
+        </div>
+        <div class="role-body">
+          <div class="role-item">Manages faculty fellow pipeline — coordinates release time and project assignments with STC Dean</div>
+          <div class="role-item">Runs the student practicum and capstone placement process into Center projects</div>
+          <div class="role-item">Brings engagement findings back into STC curriculum — keeps coursework current</div>
+          <div class="role-item">Protects STC faculty from over-commitment — sets and enforces engagement boundaries</div>
+          <div class="role-item">Single point of contact between the two units — no informal side channels</div>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head role-sme">
+          <span class="role-badge badge-amber">Project-Based · As Needed</span>
+          <div class="role-title">Subject Matter Experts</div>
+          <div class="role-sub">External practitioners brought in per engagement — not full-time hires until volume justifies it</div>
+        </div>
+        <div class="role-body">
+          <div class="role-item">Domain experts matched to each project (law enforcement AI, maritime cybersecurity, sports analytics, etc.)</div>
+          <div class="role-item">Contracted per project — scoped deliverables, defined timeline, no open-ended commitment</div>
+          <div class="role-item">Potential to become recurring faculty fellows or micro-credential instructors over time</div>
+          <div class="role-item">Sourced from the Director's network and practitioner-publisher pipeline from STC</div>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head role-student">
+          <span class="role-badge badge-green">Pipeline · From STC</span>
+          <div class="role-title">Student Practicum Cohort</div>
+          <div class="role-sub">STC students placed into active Center engagements as capstone or practicum work</div>
+        </div>
+        <div class="role-body">
+          <div class="role-item">Assigned to specific project tasks — research, data analysis, documentation, audit support</div>
+          <div class="role-item">Supervised by faculty fellow on the project, not by the client directly</div>
+          <div class="role-item">Earn academic credit — no compensation initially; evolves with Center funding</div>
+          <div class="role-item">Generates real deliverables for clients while building student portfolios</div>
+          <div class="role-item">Managed by the Liaison — not informal faculty-to-student direct asks</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 3 — STC RELATIONSHIP ══════════ -->
+  <div class="tab-panel" id="tab-stc">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon icon-blue">🔗</div>
+        <div>
+          <h2>How STC and the Center Work Together</h2>
+          <div class="section-sub">STC stays intact. The Center draws from it — it doesn't absorb it.</div>
+        </div>
+      </div>
+      <div class="section-body">
+
+        <div class="rel-row">
+          <div class="rel-card" style="background:var(--blue-dim);border-color:#bfdbfe;">
+            <h3 style="color:var(--blue);">School of Technology &amp; Computing</h3>
+            <ul>
+              <li>Owns degree programs, curriculum, and academic standards</li>
+              <li>Hires and retains all faculty — no faculty report to the Center</li>
+              <li>Faculty participate in Center projects via release time, negotiated through the Liaison</li>
+              <li>Student enrollment and advising stays within STC</li>
+              <li>Gets first look at engagement findings to update curriculum</li>
+              <li>Center Liaison role created within STC — reports to STC Dean, not Center Director</li>
+            </ul>
+          </div>
+
+          <div class="rel-arrow">
+            <div>⇄</div>
+            <span>Liaison</span>
+          </div>
+
+          <div class="rel-card" style="background:var(--violet-dim);border-color:#c4b5fd;">
+            <h3 style="color:var(--violet);">Applied Intelligence Center</h3>
+            <ul>
+              <li>Owns client relationships, engagements, and deliverables</li>
+              <li>Requests faculty fellows and student cohorts through the Liaison — not directly</li>
+              <li>Controls its own budget and revenue — separate from STC financials</li>
+              <li>Brings SMEs in per project without STC approval needed</li>
+              <li>Micro-credentials built with STC faculty input but branded as Center products</li>
+              <li>Director reports to the President's Office — not to STC Dean</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-amber mt16">
+          <strong>The boundary that matters most:</strong> The Center Director does not have direct authority over STC faculty time. All faculty assignments go through the Liaison. This protects faculty from being pulled in two directions and prevents resentment that would undermine the whole model.
+        </div>
+
+        <div style="margin-top:20px;">
+          <div style="font-size:0.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);margin-bottom:12px;">What flows between the two units</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;">
+              <div style="font-size:0.78rem;font-weight:700;color:var(--blue);margin-bottom:6px;">STC → Center</div>
+              <ul style="margin:0;padding-left:16px;font-size:0.84rem;color:var(--slate);">
+                <li>Faculty fellows (via release time)</li>
+                <li>Student practicum cohorts</li>
+                <li>Domain knowledge and research</li>
+                <li>Credentialing infrastructure</li>
+              </ul>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;">
+              <div style="font-size:0.78rem;font-weight:700;color:var(--violet);margin-bottom:6px;">Center → STC</div>
+              <ul style="margin:0;padding-left:16px;font-size:0.84rem;color:var(--slate);">
+                <li>Real-world case studies for curriculum</li>
+                <li>Student portfolio work and placements</li>
+                <li>Industry relationships and guest access</li>
+                <li>Revenue share for micro-credentials</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 4 — REVENUE ROADMAP ══════════ -->
+  <div class="tab-panel" id="tab-revenue">
+
+    <div class="callout callout-violet" style="margin-bottom:24px;">
+      <strong>Consulting is the engine in Year 1.</strong> It funds operations, builds credibility, and generates the case studies that make micro-credentials sellable. Grants follow once there's a track record.
+    </div>
+
+    <div class="rev-grid">
+
+      <div class="rev-card" style="border-color:#c4b5fd;background:var(--violet-dim);">
+        <div class="rev-year" style="color:var(--violet);">Year 1 — Build</div>
+        <h3>Consulting-Led</h3>
+        <div class="rev-stream">
+          <div class="stream-dot" style="background:var(--violet);"></div>
+          <div>
+            <span class="stream-name">Project-Based Consulting</span>
+            <span class="stream-desc">SPD pilot as anchor engagement. Port and sports as secondary targets. Fee-for-service, scoped deliverables.</span>
+          </div>
+        </div>
+        <div class="rev-stream">
+          <div class="stream-dot" style="background:var(--slate-light);"></div>
+          <div>
+            <span class="stream-name">Micro-Credentials (Prep)</span>
+            <span class="stream-desc">No revenue yet — curriculum design begins using engagement IP. Practitioner-publisher partners identified.</span>
+          </div>
+        </div>
+        <div class="rev-stream">
+          <div class="stream-dot" style="background:var(--slate-light);"></div>
+          <div>
+            <span class="stream-name">Grants (Research)</span>
+            <span class="stream-desc">Identify DOJ, DHS, NSF public safety AI grant opportunities. First applications drafted.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rev-card" style="border-color:#bfdbfe;background:var(--blue-dim);">
+        <div class="rev-year" style="color:var(--blue);">Year 2 — Diversify</div>
+        <h3>Two-Stream</h3>
+        <div class="rev-stream">
+          <div class="stream-dot" style="background:var(--blue);"></div>
+          <div>
+            <span class="stream-name">Consulting (Expanded)</span>
+            <span class="stream-desc">2–3 active engagements. SPD model replicated for port and sports. Retainer conversations begin with repeat clients.</span>
+          </div>
+        </div>
+        <div class="rev-stream">
+          <div class="stream-dot" style="background:var(--blue);"></div>
+          <div>
+            <span class="stream-name">Micro-Credentials (Launch)</span>
+            <span class="stream-desc">First 2–3 short courses live on Open edX. Co-developed with practitioner-publishers from STC ecosystem. Revenue split defined.</span>
+          </div>
+        </div>
+        <div class="rev-stream">
+          <div class="stream-dot" style="background:var(--slate-light);"></div>
+          <div>
+            <span class="stream-name">Grants (First Awards)</span>
+            <span class="stream-desc">First grant funding received, backed by SPD pilot case study as proof of impact.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rev-card" style="border-color:#bbf7d0;background:var(--green-dim);">
+        <div class="rev-year" style="color:var(--green);">Year 3 — Sustain</div>
+        <h3>Mixed &amp; Self-Sustaining</h3>
+        <div class="rev-stream">
+          <div class="stream-dot" style="background:var(--green);"></div>
+          <div>
+            <span class="stream-name">Consulting</span>
+            <span class="stream-desc">Core revenue stream. 4–6 engagements annually. Some multi-year retainer relationships.</span>
+          </div>
+        </div>
+        <div class="rev-stream">
+          <div class="stream-dot" style="background:var(--green);"></div>
+          <div>
+            <span class="stream-name">Micro-Credentials</span>
+            <span class="stream-desc">Growing catalog. Community and cohort models generating recurring revenue independent of consulting activity.</span>
+          </div>
+        </div>
+        <div class="rev-stream">
+          <div class="stream-dot" style="background:var(--green);"></div>
+          <div>
+            <span class="stream-name">Grants</span>
+            <span class="stream-desc">Active grant portfolio. Funds research staff and student fellowships without drawing from consulting revenue.</span>
+          </div>
+        </div>
+        <div class="rev-stream">
+          <div class="stream-dot" style="background:var(--amber);"></div>
+          <div>
+            <span class="stream-name">IP &amp; Licensing</span>
+            <span class="stream-desc">Frameworks, tools, and risk registries developed during engagements — packaged and licensed to peer institutions or agencies.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 5 — MATURITY ══════════ -->
+  <div class="tab-panel" id="tab-maturity">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon icon-amber">📈</div>
+        <div>
+          <h2>Year 1 → Year 3 Maturity Model</h2>
+          <div class="section-sub">What the Center looks like at each stage — people, engagements, and market position</div>
+        </div>
+      </div>
+      <div class="section-body" style="padding:0;">
+        <div class="phase-row">
+
+          <div class="phase">
+            <div class="phase-label" style="color:var(--violet);">Year 1 — Prove It</div>
+            <h3>One Engagement. One Team. One Win.</h3>
+            <ul>
+              <li>Director (internal) + Liaison in place</li>
+              <li>SPD pilot as sole active engagement</li>
+              <li>2–3 STC faculty fellows on the project</li>
+              <li>First student practicum cohort (4–6 students)</li>
+              <li>1–2 external SMEs brought in for SPD vendor analysis</li>
+              <li>Micro-credential curriculum design begins</li>
+              <li>First grant applications submitted</li>
+              <li>Center identity and website launched</li>
+            </ul>
+          </div>
+
+          <div class="phase">
+            <div class="phase-label" style="color:var(--blue);">Year 2 — Scale It</div>
+            <h3>Multiple Engagements. Proven Model.</h3>
+            <ul>
+              <li>SPD engagement extended or replicated</li>
+              <li>Port Authority and one sports org engaged</li>
+              <li>SME roster grows to 4–6 recurring experts</li>
+              <li>First micro-credentials live — 2–3 courses</li>
+              <li>Practicum cohort expands to 10–15 students</li>
+              <li>First grant funding received</li>
+              <li>Director begins transition plan toward external hire</li>
+              <li>Revenue covers Center operating costs</li>
+            </ul>
+          </div>
+
+          <div class="phase">
+            <div class="phase-label" style="color:var(--green);">Year 3 — Lead It</div>
+            <h3>Regional Hub for Applied AI &amp; Cybersecurity.</h3>
+            <ul>
+              <li>External Director hired — industry credibility, national network</li>
+              <li>4–6 active engagements across public and private sectors</li>
+              <li>Growing micro-credential catalog with practitioner-publisher co-authors</li>
+              <li>Grant portfolio funds dedicated research and student fellowships</li>
+              <li>Risk registry and frameworks licensed to peer institutions</li>
+              <li>Center recognized as the Pacific Northwest's go-to for public sector AI governance</li>
+              <li>STC curriculum directly shaped by Center engagement outputs</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-violet">
+      <strong>The Year 1 anchor is SPD.</strong> A successful pilot — with a university-authored audit report the department can take to command staff — is the case study that opens every door after it. Port, sports, other municipalities. The pilot isn't just one engagement; it's the proof of concept for the entire Center model.
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>

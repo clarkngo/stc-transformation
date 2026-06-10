@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — AI Strategy &amp; Partnerships</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    /* Nav */
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Header card */
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      margin: 0 0 8px; font-size: 1.7rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.2;
+    }
+    .doc-header .subtitle {
+      color: var(--slate); font-size: 0.95rem; margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .meta-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px; color: var(--slate);
+    }
+
+    /* TOC */
+    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+    .toc h2 {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--slate); margin: 0 0 12px;
+    }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* Section */
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .section-header h2 {
+      margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .section-body { padding: 20px 24px; }
+
+    /* Points list */
+    .point {
+      display: flex; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label {
+      flex-shrink: 0;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      height: fit-content;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+
+    /* Traffic light chips */
+    .tl-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-top: 4px;
+    }
+    @media (max-width: 560px) { .tl-grid { grid-template-columns: 1fr; } }
+    .tl-card {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      border: 1px solid transparent;
+    }
+    .tl-card .tl-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      display: inline-block; margin-right: 6px; vertical-align: middle;
+    }
+    .tl-card .tl-title {
+      font-size: 0.8rem; font-weight: 800; letter-spacing: 0.04em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .tl-card p { margin: 0; font-size: 0.85rem; line-height: 1.5; }
+
+    .tl-green { background: var(--green-dim); border-color: #bbf7d0; }
+    .tl-green .tl-dot { background: var(--green); }
+    .tl-green .tl-title { color: var(--green); }
+
+    .tl-yellow { background: var(--amber-dim); border-color: #fde68a; }
+    .tl-yellow .tl-dot { background: var(--amber); }
+    .tl-yellow .tl-title { color: var(--amber); }
+
+    .tl-red { background: var(--red-dim); border-color: #fecaca; }
+    .tl-red .tl-dot { background: var(--red); }
+    .tl-red .tl-title { color: var(--red); }
+
+    /* Partner cards */
+    .partner-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media (max-width: 560px) { .partner-grid { grid-template-columns: 1fr; } }
+    .partner-card {
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 16px;
+      background: var(--bg);
+    }
+    .partner-card .partner-name {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--slate); margin-bottom: 6px;
+    }
+    .partner-card p { margin: 0; font-size: 0.88rem; line-height: 1.5; }
+
+    /* Color variants for section icons */
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+
+    /* Label color variants */
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+
+    /* Callout */
+    .callout {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      border: 1px solid transparent;
+      margin-top: 12px;
+    }
+    .callout-amber { background: var(--amber-dim); border-color: #fde68a; color: #92400e; }
+    .callout strong { font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — AI Strategy &amp; Partnerships</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes</div>
+    <h1>AI Strategy, Educational Innovation &amp; Partnerships</h1>
+    <p class="subtitle">Key points extracted from a leadership meeting covering AI for first responders, the practitioner-publisher ecosystem, consulting opportunities, and institutional restructuring.</p>
+    <div class="meta-row">
+      <span class="meta-chip">June 2026</span>
+      <span class="meta-chip">Internal</span>
+      <span class="meta-chip">4 Topics</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#first-responders">AI for First Responders &amp; Law Enforcement</a></li>
+      <li><a href="#ecosystem">The "Practitioner-Publisher" Educational Ecosystem</a></li>
+      <li><a href="#partnerships">Future Consulting Opportunities &amp; Partnerships</a></li>
+      <li><a href="#restructuring">Institutional Restructuring</a></li>
+    </ol>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section" id="first-responders">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🚔</div>
+      <h2>AI for First Responders &amp; Law Enforcement</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="point">
+        <span class="point-label lbl-green">Efficiency</span>
+        <div class="point-body">
+          AI can dramatically shrink the time it takes officers to write reports — from <strong>two hours down to 60 seconds</strong> — and can review terabytes of digital video evidence that would otherwise require manual review.
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-red">Risks</span>
+        <div class="point-body">
+          AI usage carries significant operational and legal risks, including a current <strong>20% error rate</strong> and the potential for <strong>"ghost officer hallucinations"</strong> — embellished or fictitious scenes inserted into AI-drafted reports. If an officer signs such a report, it could result in Brady material exposure, costing them their job and compromising the prosecutor's case. Additional concerns include difficulty transcribing background noise and biases embedded in historical training data.
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-amber">Framework</span>
+        <div class="point-body">
+          <strong>Traffic Light Framework</strong> proposed to govern AI use:
+          <div class="tl-grid" style="margin-top:12px;">
+            <div class="tl-card tl-green">
+              <div class="tl-title"><span class="tl-dot"></span>Green</div>
+              <p>Approved for back-end processing — automated tasks without officer-facing output.</p>
+            </div>
+            <div class="tl-card tl-yellow">
+              <div class="tl-title"><span class="tl-dot"></span>Yellow</div>
+              <p>Prototyping allowed with a human in the loop to review and verify outputs.</p>
+            </div>
+            <div class="tl-card tl-red">
+              <div class="tl-title"><span class="tl-dot"></span>Red</div>
+              <p>Strictly banned — unvetted consumer AI tools and AI-generated initial charging documents.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section" id="ecosystem">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🎓</div>
+      <h2>The "Practitioner-Publisher" Educational Ecosystem</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="point">
+        <span class="point-label lbl-violet">Faculty</span>
+        <div class="point-body">
+          The university is shifting toward a <strong>"practitioner-publisher" model</strong>, recruiting external industry experts who already have established digital brands, content libraries, and followings on platforms like YouTube or GitHub — rather than relying solely on traditional academic hires.
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-violet">Pedagogy</span>
+        <div class="point-body">
+          This ecosystem prioritizes <strong>hands-on, step-by-step competency learning</strong> over traditional academic concepts, filling a gap for non-STEM or struggling students who need applied skill-building rather than theory-first instruction.
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-violet">Delivery</span>
+        <div class="point-body">
+          Courses and micro-credentials will be hosted on flexible platforms like <strong>Open edX and GitHub</strong> rather than Coursera — avoiding high licensing costs while retaining the university's own brand identity and data.
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-violet">Marketing</span>
+        <div class="point-body">
+          Modern students often bypass traditional university inquiry phases, relying instead on AI tools and search engines to evaluate programs. Partnering with existing content creators functions as a <strong>thought leadership and marketing strategy</strong> — driving organic traffic, building community hubs, and generating alternative revenue through micro-credentials.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section" id="partnerships">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🤝</div>
+      <h2>Future Consulting Opportunities &amp; Partnerships</h2>
+    </div>
+    <div class="section-body">
+      <div class="partner-grid">
+
+        <div class="partner-card">
+          <div class="partner-name">🚔 Seattle Police Department</div>
+          <p>The department is seeking AI tools to draft reports from body-worn cameras, reducing officer desk time. The university is considering acting as an <strong>external technical consultant</strong> to evaluate software vendors, navigate AI restrictions, and build a risk registry to mitigate AI bias and legal exposure.</p>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-name">⚓ Maritime / Port Authority</div>
+          <p>A maritime expert requested a briefing on the team's "blue tech" research. Following a <strong>recent cyber attack at the port</strong>, there is an immediate opening to introduce the university's cybersecurity and AI expertise as a consulting resource.</p>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-name">🏈 Professional Sports Teams</div>
+          <p>Conversations are underway with local professional sports organizations facing cybersecurity challenges. The university's new ecosystem could provide <strong>tech team upskilling and consulting</strong> across multiple franchises.</p>
+        </div>
+
+        <div class="partner-card" style="background: var(--blue-dim); border-color: #bfdbfe;">
+          <div class="partner-name" style="color: var(--blue);">💡 Consulting Model</div>
+          <p>Across all three verticals, the university's role is <strong>evaluator and risk navigator</strong> — not vendor — helping organizations build governance frameworks, assess software, and manage emerging AI liability.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4 -->
+  <div class="section" id="restructuring">
+    <div class="section-header">
+      <div class="section-icon icon-green">🏛️</div>
+      <h2>Institutional Restructuring</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="point">
+        <span class="point-label lbl-green">Rebranding</span>
+        <div class="point-body">
+          To properly house this agile, non-traditional consulting and micro-credential model, the current structure of the <strong>School of Technology and Computing</strong> is under review. A dedicated <strong>"Center"</strong> with a new name is being explored — one that signals a clear departure from traditional higher education structures and positions the university as an applied innovation hub.
+        </div>
+      </div>
+
+      <div class="callout callout-amber">
+        <strong>Open question:</strong> What name and structure best differentiates the Center from conventional academic departments while maintaining institutional credibility?
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

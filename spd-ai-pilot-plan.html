@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>SPD AI Pilot — Applied Intelligence Center</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --cyan: #0891b2;
+      --cyan-dim: #ecfeff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 920px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    /* Nav */
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Header */
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    /* Tab nav */
+    .tab-nav {
+      display: flex; gap: 4px; background: var(--card);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 5px; margin-bottom: 28px; box-shadow: var(--shadow);
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 10px 20px; border-radius: 8px; font-size: 0.88rem;
+      font-weight: 700; cursor: pointer; border: none;
+      background: transparent; color: var(--slate); transition: all 0.18s;
+      white-space: nowrap;
+    }
+    .tab-btn.active { background: var(--blue); color: #fff; box-shadow: 0 2px 8px rgba(29,78,216,0.25); }
+    .tab-btn:hover:not(.active) { background: var(--bg); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Section card */
+    .section {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    /* Audience roadmap */
+    .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 640px) { .audience-grid { grid-template-columns: 1fr; } }
+
+    .audience-card {
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .audience-head {
+      padding: 14px 16px 10px;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .audience-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+    .audience-title { font-size: 0.95rem; font-weight: 800; margin: 0 0 2px; }
+    .audience-fear { font-size: 0.78rem; font-weight: 600; }
+    .audience-steps { padding: 0 16px 14px; }
+    .step {
+      display: flex; gap: 10px; padding: 8px 0;
+      border-top: 1px solid var(--border); align-items: flex-start;
+    }
+    .step-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      font-size: 0.7rem; font-weight: 800; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .step-text { font-size: 0.85rem; line-height: 1.45; }
+    .step-text strong { font-weight: 700; display: block; margin-bottom: 1px; }
+    .step-text span { color: var(--slate); }
+
+    .key-moment {
+      margin: 4px 0 0; padding: 8px 12px;
+      background: #fef9c3; border: 1px solid #fde047;
+      border-radius: 6px; font-size: 0.78rem; color: #713f12;
+    }
+    .key-moment strong { font-weight: 700; }
+
+    /* Color themes per audience */
+    .aud-command .audience-head { background: var(--blue-dim); }
+    .aud-command .audience-fear { color: var(--blue); }
+    .aud-command .step-num { background: var(--blue); }
+
+    .aud-union .audience-head { background: var(--amber-dim); }
+    .aud-union .audience-fear { color: var(--amber); }
+    .aud-union .step-num { background: var(--amber); }
+
+    .aud-legal .audience-head { background: var(--red-dim); }
+    .aud-legal .audience-fear { color: var(--red); }
+    .aud-legal .step-num { background: var(--red); }
+
+    .aud-it .audience-head { background: var(--violet-dim); }
+    .aud-it .audience-fear { color: var(--violet); }
+    .aud-it .step-num { background: var(--violet); }
+
+    /* Vendor table */
+    .vendor-grid { display: grid; gap: 16px; }
+    .vendor-card {
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      padding: 18px 20px; background: var(--bg);
+      display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; align-items: start;
+    }
+    .vendor-name { font-size: 1rem; font-weight: 800; margin: 0 0 2px; }
+    .vendor-maker { font-size: 0.78rem; color: var(--slate); margin-bottom: 8px; font-weight: 500; }
+    .vendor-desc { font-size: 0.88rem; color: var(--ink); line-height: 1.5; grid-column: 1; }
+    .vendor-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; grid-column: 1 / -1; }
+    .tag {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; border: 1px solid transparent;
+    }
+    .tag-green { background: var(--green-dim); color: var(--green); border-color: #bbf7d0; }
+    .tag-amber { background: var(--amber-dim); color: var(--amber); border-color: #fde68a; }
+    .tag-red   { background: var(--red-dim);   color: var(--red);   border-color: #fecaca; }
+    .tag-blue  { background: var(--blue-dim);  color: var(--blue);  border-color: #bfdbfe; }
+    .tag-violet{ background: var(--violet-dim);color: var(--violet);border-color: #ddd6fe; }
+    .tag-cyan  { background: var(--cyan-dim);  color: var(--cyan);  border-color: #a5f3fc; }
+
+    .vendor-badge {
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 5px 12px;
+      border-radius: 20px; white-space: nowrap; height: fit-content;
+    }
+    .badge-recommended { background: var(--green-dim); color: var(--green); border: 1px solid #bbf7d0; }
+    .badge-consider    { background: var(--blue-dim);  color: var(--blue);  border: 1px solid #bfdbfe; }
+    .badge-monitor     { background: var(--amber-dim); color: var(--amber); border: 1px solid #fde68a; }
+
+    .vendor-risks {
+      font-size: 0.82rem; color: var(--red); margin-top: 8px;
+      grid-column: 1;
+    }
+    .vendor-risks strong { font-weight: 700; }
+
+    /* Pilot design */
+    .timeline {
+      position: relative; padding-left: 28px;
+    }
+    .timeline::before {
+      content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px;
+      width: 2px; background: var(--border);
+    }
+    .tl-item { position: relative; margin-bottom: 24px; }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-dot {
+      position: absolute; left: -24px; top: 4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid #fff;
+    }
+    .tl-phase {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .tl-title { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+    .tl-body { font-size: 0.88rem; color: var(--slate); line-height: 1.55; }
+    .tl-checklist { margin: 8px 0 0; padding: 0; list-style: none; }
+    .tl-checklist li {
+      font-size: 0.85rem; padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .tl-checklist li:last-child { border-bottom: none; }
+    .tl-checklist li::before { content: '—'; color: var(--slate-light); flex-shrink: 0; }
+
+    /* Metrics grid */
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 560px) { .metrics-grid { grid-template-columns: 1fr; } }
+    .metric-card {
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      padding: 16px; text-align: center; background: var(--bg);
+    }
+    .metric-value { font-size: 1.8rem; font-weight: 900; letter-spacing: -0.04em; }
+    .metric-label { font-size: 0.78rem; color: var(--slate); font-weight: 600; margin-top: 2px; }
+
+    /* Guardrails */
+    .guardrail {
+      display: flex; gap: 14px; padding: 14px 0;
+      border-bottom: 1px solid var(--border); align-items: flex-start;
+    }
+    .guardrail:last-child { border-bottom: none; padding-bottom: 0; }
+    .guardrail:first-child { padding-top: 0; }
+    .guardrail-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .guardrail-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+    .guardrail-body { font-size: 0.85rem; color: var(--slate); line-height: 1.5; }
+
+    /* Callout */
+    .callout {
+      border-radius: var(--radius-sm); padding: 14px 18px;
+      font-size: 0.88rem; border: 1px solid transparent; margin-top: 16px;
+      line-height: 1.55;
+    }
+    .callout-blue { background: var(--blue-dim); border-color: #bfdbfe; color: #1e3a8a; }
+    .callout-amber { background: var(--amber-dim); border-color: #fde68a; color: #92400e; }
+    .callout strong { font-weight: 700; }
+
+    /* Icon backgrounds */
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-red { background: var(--red-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-cyan { background: var(--cyan-dim); }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="meeting-notes-ai-strategy.html">AI Strategy Meeting Notes</a>
+    <span class="nav-sep">›</span>
+    <span>SPD AI Pilot — Applied Intelligence Center</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Applied Intelligence Center · Pilot Plan</div>
+    <h1>Helping SPD Make the Case for BWC AI</h1>
+    <p class="subtitle">A roadmap for convincing each internal audience — and the deliverables that back it up. Goal: 90-day body-worn camera AI pilot that keeps officers on patrol instead of at a desk.</p>
+    <div class="meta-row">
+      <span class="meta-chip">🚔 SPD Engagement</span>
+      <span class="meta-chip">Project-Based · Faculty-Led</span>
+      <span class="meta-chip">90-Day Pilot</span>
+      <span class="meta-chip">June 2026</span>
+    </div>
+  </div>
+
+  <!-- Tab nav -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('audiences')">Audience Roadmaps</button>
+    <button class="tab-btn" onclick="switchTab('vendors')">Vendor Landscape</button>
+    <button class="tab-btn" onclick="switchTab('pilot')">Pilot Design</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TAB 1 — AUDIENCE ROADMAPS
+  ══════════════════════════════════════════ -->
+  <div class="tab-panel active" id="tab-audiences">
+
+    <div class="callout callout-blue" style="margin-bottom:24px; margin-top:0;">
+      <strong>The chief has the will — he needs the ammunition.</strong> Each internal audience has a different fear driving their resistance. The roadmaps below give him the right argument for each room.
+    </div>
+
+    <div class="audience-grid">
+
+      <!-- Command Staff -->
+      <div class="audience-card aud-command">
+        <div class="audience-head">
+          <div class="audience-icon">🎖️</div>
+          <div>
+            <div class="audience-title">Command Staff</div>
+            <div class="audience-fear">Core fear: liability — one bad AI report tanks a prosecution</div>
+          </div>
+        </div>
+        <div class="audience-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Show the real cost of the status quo</strong><span>Calculate patrol hours lost per officer per week to desk report writing. Frame it as a staffing and public safety problem, not a tech upgrade.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>Present the vendor landscape</strong><span>Show which tools peer departments are already using. Removes the "we're the guinea pig" objection.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Walk through the risk registry</strong><span>Every known risk paired with a specific mitigation. They need to see the university has already thought through what they're afraid of.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-text"><strong>Present the pilot ask</strong><span>One precinct, 90 days, university-audited, automatic rollback trigger. Make it easy to say yes.</span></div>
+          </div>
+          <div class="key-moment"><strong>Key moment:</strong> Show the math first. Hours lost × headcount = a number that frames everything else as solving a real problem.</div>
+        </div>
+      </div>
+
+      <!-- Officers / Union -->
+      <div class="audience-card aud-union">
+        <div class="audience-head">
+          <div class="audience-icon">👮</div>
+          <div>
+            <div class="audience-title">Officers &amp; Union</div>
+            <div class="audience-fear">Core fear: AI gets them in trouble — signing something false</div>
+          </div>
+        </div>
+        <div class="audience-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Bring union reps in early</strong><span>Not after the plan is set — during it. Being consulted is fundamentally different from being notified. This is the single most important sequencing decision.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>Establish the iron rule</strong><span>The AI drafts. The officer reviews and signs. The officer is always the legal author. No exceptions, no ambiguity in the policy language.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Distribute the officer FAQ</strong><span>Plain-language Q&A on how the tool works, what happens if the AI is wrong, and what opt-in/opt-out looks like during the pilot.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-text"><strong>Frame pilot as voluntary</strong><span>Officers who participate get time back. Officers who don't aren't penalized. Voluntary adoption in the pilot builds organic credibility for a future rollout.</span></div>
+          </div>
+          <div class="key-moment"><strong>Key moment:</strong> Union rep in the room before the pilot design is finalized — not after. Once they feel ownership, they become advocates.</div>
+        </div>
+      </div>
+
+      <!-- City Attorney -->
+      <div class="audience-card aud-legal">
+        <div class="audience-head">
+          <div class="audience-icon">⚖️</div>
+          <div>
+            <div class="audience-title">City Attorney</div>
+            <div class="audience-fear">Core fear: Brady exposure and discovery complications</div>
+          </div>
+        </div>
+        <div class="audience-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Deliver the legal brief first</strong><span>Faculty-authored memo covering Brady implications, how peer jurisdictions handle AI-drafted report discovery, and existing case law. Give them something to react to.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>Frame the ask as "help us write the guardrails"</strong><span>Not "please approve this." Involving them in drafting the policy language gives them ownership and surfaces objections early.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Show the audit trail design</strong><span>Demonstrate that every AI output is logged, timestamped, and preserved for discovery — the AI version is always distinguishable from the officer's final signed report.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-text"><strong>Secure written sign-off on pilot scope</strong><span>Narrow written approval on a 90-day, one-precinct pilot is much easier to get than blanket program approval. Start small.</span></div>
+          </div>
+          <div class="key-moment"><strong>Key moment:</strong> "Help us write the guardrails" framing transforms the city attorney from a gatekeeper into a co-author — dramatically increasing approval odds.</div>
+        </div>
+      </div>
+
+      <!-- IT / Records -->
+      <div class="audience-card aud-it">
+        <div class="audience-head">
+          <div class="audience-icon">🖥️</div>
+          <div>
+            <div class="audience-title">IT &amp; Records</div>
+            <div class="audience-fear">Core fear: RMS integration failures and chain-of-custody gaps</div>
+          </div>
+        </div>
+        <div class="audience-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Involve IT in vendor selection</strong><span>Not after. Share the vendor landscape with IT first and let them flag RMS compatibility issues before a vendor is chosen. Prevents the "we can't integrate this" surprise.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>Map the data flow</strong><span>Document exactly how BWC footage moves to the AI, how drafts are stored, and how the final report lands in the RMS. Every handoff needs a clear owner.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Confirm chain-of-custody design</strong><span>AI draft and officer-edited final must be stored separately and linked by case number. Records needs to sign off on the retention and disclosure policy.</span></div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-text"><strong>Run a pre-pilot integration test</strong><span>Before any officer touches the tool, IT validates that data flows correctly end-to-end in a sandboxed environment. No surprises on Day 1.</span></div>
+          </div>
+          <div class="key-moment"><strong>Key moment:</strong> IT as vendor co-evaluator, not downstream recipient. They'll defend a system they helped select.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TAB 2 — VENDOR LANDSCAPE
+  ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-vendors">
+
+    <div class="callout callout-blue" style="margin-bottom:24px; margin-top:0;">
+      <strong>The university's role is evaluator, not recommender.</strong> This landscape gives SPD command staff and IT a common baseline — removing the "we don't even know what we're buying" objection before it's raised.
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon icon-blue">🏆</div>
+        <div>
+          <h2>Primary Candidates</h2>
+          <div class="section-sub">Deployed in law enforcement, BWC-native or deep integration</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="vendor-grid">
+
+          <div class="vendor-card">
+            <div>
+              <div class="vendor-name">Axon Draft One</div>
+              <div class="vendor-maker">Axon Enterprise — Scottsdale, AZ</div>
+              <div class="vendor-desc">The market leader for BWC AI report drafting. Integrates directly with Axon body cameras and Evidence.com. Generates a full incident report draft from audio/video within minutes of a BWC upload. Already used by hundreds of departments nationally including LAPD, Phoenix PD, and Louisville Metro.</div>
+              <div class="vendor-risks"><strong>Watch:</strong> Tied to Axon ecosystem — switching costs are high. Hallucination rate not publicly disclosed. Requires Axon BWC hardware.</div>
+            </div>
+            <span class="vendor-badge badge-recommended">Recommended to Evaluate</span>
+            <div class="vendor-tags">
+              <span class="tag tag-green">BWC Native</span>
+              <span class="tag tag-green">Widely Deployed</span>
+              <span class="tag tag-blue">Cloud-Based</span>
+              <span class="tag tag-amber">Vendor Lock-In Risk</span>
+            </div>
+          </div>
+
+          <div class="vendor-card">
+            <div>
+              <div class="vendor-name">Motorola Solutions — PremierOne AI</div>
+              <div class="vendor-maker">Motorola Solutions — Chicago, IL</div>
+              <div class="vendor-desc">Motorola's AI layer sits atop its PremierOne CAD/RMS platform. Generates narrative report drafts from incident data, officer notes, and BWC transcripts. Strong existing relationships with mid-size municipal departments. RMS integration is native if SPD runs PremierOne.</div>
+              <div class="vendor-risks"><strong>Watch:</strong> BWC integration less mature than Axon. Best fit if SPD already uses PremierOne RMS.</div>
+            </div>
+            <span class="vendor-badge badge-consider">Consider If RMS Aligned</span>
+            <div class="vendor-tags">
+              <span class="tag tag-green">RMS Native</span>
+              <span class="tag tag-blue">CAD Integration</span>
+              <span class="tag tag-amber">BWC Integration Maturing</span>
+            </div>
+          </div>
+
+          <div class="vendor-card">
+            <div>
+              <div class="vendor-name">Truleo</div>
+              <div class="vendor-maker">Truleo — Chicago, IL</div>
+              <div class="vendor-desc">AI platform focused on analyzing BWC audio for policy compliance, professionalism, and report accuracy auditing — rather than drafting reports from scratch. Useful as an independent audit layer on top of another drafting tool. Used by departments wanting early-warning dashboards for officer conduct patterns.</div>
+              <div class="vendor-risks"><strong>Watch:</strong> Not a drafting tool — a monitoring tool. Raises distinct union concerns around surveillance. Must be negotiated carefully.</div>
+            </div>
+            <span class="vendor-badge badge-monitor">Audit Layer Only</span>
+            <div class="vendor-tags">
+              <span class="tag tag-cyan">Compliance Audit</span>
+              <span class="tag tag-violet">Pattern Detection</span>
+              <span class="tag tag-red">Union Sensitivity</span>
+            </div>
+          </div>
+
+          <div class="vendor-card">
+            <div>
+              <div class="vendor-name">Utility AI (formerly CopBot)</div>
+              <div class="vendor-maker">Utility — San Francisco, CA</div>
+              <div class="vendor-desc">Newer entrant offering multimodal report drafting from BWC footage, CAD data, and officer voice memos. Positioned as vendor-agnostic and camera-hardware independent. Lower price point than Axon. Fewer reference departments but growing traction in West Coast agencies.</div>
+              <div class="vendor-risks"><strong>Watch:</strong> Less proven at scale. Limited published accuracy data. Worth a structured demo and reference check with existing customers.</div>
+            </div>
+            <span class="vendor-badge badge-consider">Demo &amp; Verify</span>
+            <div class="vendor-tags">
+              <span class="tag tag-green">Hardware Agnostic</span>
+              <span class="tag tag-blue">Lower Cost</span>
+              <span class="tag tag-amber">Early Stage</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon icon-amber">📋</div>
+        <div>
+          <h2>Evaluation Criteria</h2>
+          <div class="section-sub">University-led scoring framework for SPD's vendor review</div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+
+          <div style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px;">
+            <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin-bottom:6px;">Accuracy &amp; Reliability</div>
+            <ul style="margin:0;padding-left:18px;font-size:0.85rem;color:var(--slate);">
+              <li>Published error/hallucination rate</li>
+              <li>Performance on noisy audio (TVs, crowds)</li>
+              <li>Accuracy on minority dialect transcription</li>
+              <li>Human review catch-rate in peer deployments</li>
+            </ul>
+          </div>
+
+          <div style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px;">
+            <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--violet);margin-bottom:6px;">Legal &amp; Compliance</div>
+            <ul style="margin:0;padding-left:18px;font-size:0.85rem;color:var(--slate);">
+              <li>Brady / discovery audit trail design</li>
+              <li>Data retention and deletion policy</li>
+              <li>CJIS compliance certification</li>
+              <li>Indemnification language in contract</li>
+            </ul>
+          </div>
+
+          <div style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px;">
+            <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--green);margin-bottom:6px;">Integration &amp; IT</div>
+            <ul style="margin:0;padding-left:18px;font-size:0.85rem;color:var(--slate);">
+              <li>RMS compatibility (out of box vs. custom)</li>
+              <li>BWC hardware requirements</li>
+              <li>SSO / Active Directory support</li>
+              <li>Data residency (cloud region, on-prem option)</li>
+            </ul>
+          </div>
+
+          <div style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px;">
+            <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--amber);margin-bottom:6px;">Cost &amp; Deployment</div>
+            <ul style="margin:0;padding-left:18px;font-size:0.85rem;color:var(--slate);">
+              <li>Per-seat or per-incident pricing</li>
+              <li>Pilot pricing vs. full contract terms</li>
+              <li>Training and onboarding timeline</li>
+              <li>Exit clause and data portability</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TAB 3 — PILOT DESIGN
+  ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-pilot">
+
+    <!-- Success metrics -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon icon-green">📊</div>
+        <h2>What Success Looks Like</h2>
+      </div>
+      <div class="section-body">
+        <div class="metrics-grid" style="margin-bottom:16px;">
+          <div class="metric-card">
+            <div class="metric-value" style="color:var(--green);">90 min</div>
+            <div class="metric-label">Target time saved per officer per shift on report writing</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" style="color:var(--blue);">&lt;5%</div>
+            <div class="metric-label">Maximum acceptable AI error rate after officer review</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" style="color:var(--violet);">100%</div>
+            <div class="metric-label">Officer review and sign-off required on every AI-generated draft</div>
+          </div>
+        </div>
+        <div class="callout callout-amber">
+          <strong>Rollback trigger:</strong> If the AI error rate (hallucinations or material inaccuracies caught by officers) exceeds 10% in any 30-day window, the pilot automatically pauses pending university review.
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon icon-blue">📅</div>
+        <h2>90-Day Pilot Timeline</h2>
+      </div>
+      <div class="section-body">
+        <div class="timeline">
+
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--violet);"></div>
+            <div class="tl-phase" style="color:var(--violet);">Pre-Pilot · Weeks 1–4</div>
+            <div class="tl-title">Setup &amp; Stakeholder Alignment</div>
+            <div class="tl-body">University faculty conduct vendor demos, IT integration assessment, and legal brief delivery. Union briefing and FAQ distribution. City attorney policy drafting session.</div>
+            <ul class="tl-checklist">
+              <li>Vendor selected and contract scoped</li>
+              <li>RMS integration tested in sandbox</li>
+              <li>Union rep briefed and FAQ approved</li>
+              <li>City attorney sign-off on pilot scope</li>
+              <li>Participating precinct identified, officers briefed</li>
+              <li>Audit logging system confirmed</li>
+            </ul>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--amber);"></div>
+            <div class="tl-phase" style="color:var(--amber);">Month 1 · Days 1–30</div>
+            <div class="tl-title">Soft Launch — Supervised Use</div>
+            <div class="tl-body">Voluntary officer participation. Every AI draft reviewed by a designated supervisor before officer sign-off. Faculty conduct weekly check-ins and error logging.</div>
+            <ul class="tl-checklist">
+              <li>30-day accuracy audit by university faculty</li>
+              <li>Officer feedback survey (anonymous)</li>
+              <li>Error rate reported to command staff</li>
+              <li>Union rep debrief on officer experience</li>
+            </ul>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--blue);"></div>
+            <div class="tl-phase" style="color:var(--blue);">Month 2 · Days 31–60</div>
+            <div class="tl-title">Expanded Use — Officer-Direct Review</div>
+            <div class="tl-body">If Month 1 error rate is under 10%, supervisor pre-review is removed. Officers review and sign AI drafts directly. Participation may expand to additional volunteer officers.</div>
+            <ul class="tl-checklist">
+              <li>60-day accuracy and bias audit</li>
+              <li>Patrol hours recovered — first measurement</li>
+              <li>IT stability and RMS sync review</li>
+              <li>Mid-pilot briefing to command staff</li>
+            </ul>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--green);"></div>
+            <div class="tl-phase" style="color:var(--green);">Month 3 · Days 61–90</div>
+            <div class="tl-title">Evaluation &amp; Decision</div>
+            <div class="tl-body">University delivers final audit report. Command staff and union receive full findings. Decision: expand, modify, or discontinue — based on data, not assumption.</div>
+            <ul class="tl-checklist">
+              <li>90-day university audit report delivered</li>
+              <li>Patrol hours recovered — final measurement</li>
+              <li>Risk registry updated with pilot findings</li>
+              <li>Recommendation memo for command staff</li>
+              <li>Full department briefing if expanding</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Guardrails -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon icon-red">🛡️</div>
+        <h2>Non-Negotiable Guardrails</h2>
+      </div>
+      <div class="section-body">
+
+        <div class="guardrail">
+          <div class="guardrail-icon icon-red">✍️</div>
+          <div>
+            <div class="guardrail-title">Officer Is Always the Legal Author</div>
+            <div class="guardrail-body">Every AI output is a draft only. The officer reads, edits, and signs. The signed report is the officer's sworn statement — not the AI's. This is written into the pilot policy and the vendor contract.</div>
+          </div>
+        </div>
+
+        <div class="guardrail">
+          <div class="guardrail-icon icon-violet">🗂️</div>
+          <div>
+            <div class="guardrail-title">Immutable Audit Trail</div>
+            <div class="guardrail-body">The original AI draft and the officer's final signed version are both stored and linked by case number. The diff between them is preserved for discovery. No AI output can be deleted before retention period expires.</div>
+          </div>
+        </div>
+
+        <div class="guardrail">
+          <div class="guardrail-icon icon-amber">🚦</div>
+          <div>
+            <div class="guardrail-title">Traffic Light Scope Enforcement</div>
+            <div class="guardrail-body">AI is Yellow tier only during the pilot — human in the loop on every output. Red tier uses (initial charging documents, use-of-force justifications) are explicitly excluded from the pilot scope in writing.</div>
+          </div>
+        </div>
+
+        <div class="guardrail">
+          <div class="guardrail-icon icon-green">🔁</div>
+          <div>
+            <div class="guardrail-title">Automatic Rollback Trigger</div>
+            <div class="guardrail-body">If error rate exceeds 10% in any 30-day window, the pilot pauses automatically. Resumption requires university sign-off on a remediation plan. Command staff are notified within 24 hours of any trigger event.</div>
+          </div>
+        </div>
+
+        <div class="guardrail">
+          <div class="guardrail-icon icon-blue">🔒</div>
+          <div>
+            <div class="guardrail-title">CJIS Compliance Required</div>
+            <div class="guardrail-body">Any vendor selected must be CJIS Security Policy compliant. Data residency, encryption standards, and access controls are verified by IT before the pilot begins. No consumer-grade AI tools.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>

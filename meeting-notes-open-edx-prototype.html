@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — Office of AI Experience &amp; Innovation Prototype</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      margin: 0 0 8px; font-size: 1.7rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.2;
+    }
+    .doc-header .subtitle {
+      color: var(--slate); font-size: 0.95rem; margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .meta-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px; color: var(--slate);
+    }
+
+    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+    .toc h2 {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--slate); margin: 0 0 12px;
+    }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .section-header h2 {
+      margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .section-body { padding: 20px 24px; }
+
+    .point {
+      display: flex; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label {
+      flex-shrink: 0;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      height: fit-content;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+
+    .stance-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-top: 4px;
+    }
+    @media (max-width: 560px) { .stance-grid { grid-template-columns: 1fr; } }
+    .stance-card {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      border: 1px solid transparent;
+    }
+    .stance-card .stance-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      display: inline-block; margin-right: 6px; vertical-align: middle;
+    }
+    .stance-card .stance-title {
+      font-size: 0.8rem; font-weight: 800; letter-spacing: 0.04em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .stance-card p { margin: 0; font-size: 0.85rem; line-height: 1.5; }
+
+    .tl-green { background: var(--green-dim); border-color: #bbf7d0; }
+    .tl-green .stance-dot { background: var(--green); }
+    .tl-green .stance-title { color: var(--green); }
+
+    .tl-yellow { background: var(--amber-dim); border-color: #fde68a; }
+    .tl-yellow .stance-dot { background: var(--amber); }
+    .tl-yellow .stance-title { color: var(--amber); }
+
+    .tl-red { background: var(--red-dim); border-color: #fecaca; }
+    .tl-red .stance-dot { background: var(--red); }
+    .tl-red .stance-title { color: var(--red); }
+
+    .task-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media (max-width: 560px) { .task-grid { grid-template-columns: 1fr; } }
+    .task-card {
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 16px;
+      background: var(--bg);
+    }
+    .task-card .task-name {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--slate); margin-bottom: 6px;
+    }
+    .task-card p { margin: 0; font-size: 0.88rem; line-height: 1.5; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+
+    .callout {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      border: 1px solid transparent;
+      margin-top: 12px;
+    }
+    .callout-amber { background: var(--amber-dim); border-color: #fde68a; color: #92400e; }
+    .callout-green { background: var(--green-dim); border-color: #bbf7d0; color: #14532d; }
+    .callout strong { font-weight: 700; }
+
+    .budget-table {
+      width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 8px;
+    }
+    .budget-table th {
+      text-align: left; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--slate); padding: 8px 10px; border-bottom: 2px solid var(--border);
+    }
+    .budget-table td { padding: 10px 10px; border-bottom: 1px solid var(--border); }
+    .budget-table tr:last-child td { font-weight: 700; border-bottom: none; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — Open edX Prototype</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes</div>
+    <h1>Office of AI Experience &amp; Innovation — Open edX Demo Prototype</h1>
+    <p class="subtitle">Notes from the STC leadership discussion on building a working demo ecosystem to win institutional buy-in for a new micro-credentials and workforce-training department.</p>
+    <div class="meta-row">
+      <span class="meta-chip">June 2026</span>
+      <span class="meta-chip">Internal</span>
+      <span class="meta-chip">2-Week Sprint</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#dynamics">Institutional Dynamics</a></li>
+      <li><a href="#objective">Core Objective &amp; Revenue Strategy</a></li>
+      <li><a href="#assignment">Two-Week Assignment &amp; Deliverables</a></li>
+    </ol>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="section" id="dynamics">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🏛️</div>
+      <h2>Institutional Dynamics</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="point">
+        <span class="point-label lbl-blue">Proposal</span>
+        <div class="point-body">
+          A new department is being proposed, potentially named the <strong>Office of AI Experience and Innovation</strong>, to house an agile micro-credentials and workforce-training ecosystem.
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-amber">Leadership</span>
+        <div class="point-body">
+          Key stakeholders hold differing views on the proposal:
+          <div class="stance-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="stance-card tl-green">
+              <div class="stance-title"><span class="stance-dot"></span>President</div>
+              <p>Very positive toward the concept — already considering position structures and budgeting.</p>
+            </div>
+            <div class="stance-card tl-yellow">
+              <div class="stance-title"><span class="stance-dot"></span>Provost</div>
+              <p>Doubtful and reserved — requires clear evidence or an established ROI before fully supporting the shift toward micro-credentials, and is pessimistic about direct revenue generation, raising operational questions on platform hosting and tech costs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section" id="objective">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🎯</div>
+      <h2>Core Objective &amp; Revenue Strategy</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="point">
+        <span class="point-label lbl-violet">Demo Case</span>
+        <div class="point-body">
+          To secure institutional buy-in and funding, the goal is to build a small, functional <strong>"demo case" (prototype)</strong> of the ecosystem using an open-source platform — specifically <strong>Open edX</strong> — rather than relying purely on abstract concepts or slide presentations.
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-violet">Revenue</span>
+        <div class="point-body">
+          The ultimate goal is to prove the infrastructure can host <strong>micro-credentials, industrial certifications, and advanced workforce training</strong> to generate sustainable revenue streams and boost university enrollment.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section" id="assignment">
+    <div class="section-header">
+      <div class="section-icon icon-green">📋</div>
+      <h2>Two-Week Assignment &amp; Deliverables</h2>
+    </div>
+    <div class="section-body">
+      <div class="task-grid">
+
+        <div class="task-card">
+          <div class="task-name">1. Local Prototype Deployment</div>
+          <p>Open edX is already installed via <strong>Docker locally</strong>. Next step: continue studying the platform and ensure its stability as a baseline environment.</p>
+        </div>
+
+        <div class="task-card">
+          <div class="task-name">2. Hosting Research — AWS</div>
+          <p>Research minimum server configurations needed to run a small-scale Open edX demo environment on AWS, the most familiar cloud environment.</p>
+        </div>
+
+        <div class="task-card">
+          <div class="task-name">3. Domain Selection</div>
+          <p>Factor in purchase of a standard domain name (~<strong>$15</strong>) to point to the temporary cloud environment.</p>
+        </div>
+
+        <div class="task-card" style="background: var(--blue-dim); border-color: #bfdbfe;">
+          <div class="task-name" style="color: var(--blue);">4. Cloud Access Handover</div>
+          <p>Prepare to give leadership access to the AWS account environment next week, once their own account details have been audited.</p>
+        </div>
+
+      </div>
+
+      <div class="point" style="margin-top: 10px;">
+        <span class="point-label lbl-amber">Budget</span>
+        <div class="point-body">
+          Keep the budget minimal — a remaining <strong>$600 research grant</strong> will cover temporary hosting fees, with an absolute maximum budget of <strong>$1,000</strong>.
+          <table class="budget-table">
+            <tr><th>Item</th><th>Estimated Cost</th></tr>
+            <tr><td>Domain name</td><td>~$15</td></tr>
+            <tr><td>Temporary AWS hosting</td><td>Remaining $600 research grant</td></tr>
+            <tr><td>Hard ceiling</td><td>$1,000 max</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout callout-green">
+        <strong>Focus for the sprint:</strong> infrastructure research and setup — keep the local demo stable, scope a minimal AWS footprint, and be ready to hand off cloud access next week.
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Education Summit 2026 — Learnings</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            line-height: 1.7;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #161b22 0%, #0d1117 60%);
+            border-bottom: 1px solid #30363d;
+            padding: 60px 40px 50px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            color: #8b949e;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: #58a6ff;
+        }
+
+        .hero .meta {
+            color: #8b949e;
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+
+        .hero .summary {
+            max-width: 680px;
+            margin: 0 auto;
+            color: #c9d1d9;
+            font-size: 1.05rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 30px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #58a6ff;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 8px;
+        }
+
+        .section-intro {
+            color: #8b949e;
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+        }
+
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin-bottom: 16px;
+        }
+
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #c9d1d9;
+            font-size: 0.95rem;
+        }
+
+        .card .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-right: 6px;
+        }
+
+        .tag-blue   { background: #1f3a5f; color: #58a6ff; }
+        .tag-green  { background: #1a3a2a; color: #3fb950; }
+        .tag-purple { background: #2d1f3f; color: #bc8cff; }
+        .tag-amber  { background: #3d2a00; color: #e3b341; }
+        .tag-red    { background: #3d1a1a; color: #f85149; }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #21262d;
+            margin: 48px 0;
+        }
+
+        .quote-block {
+            background: #161b22;
+            border-left: 3px solid #58a6ff;
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-style: italic;
+            color: #c9d1d9;
+        }
+
+        .quote-block .attr {
+            font-style: normal;
+            font-size: 0.8rem;
+            color: #8b949e;
+            margin-top: 8px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .two-col { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.8rem; }
+        }
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 600px) {
+            .stat-row { grid-template-columns: 1fr 1fr; }
+        }
+
+        .stat-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #58a6ff;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .stat-card .label {
+            font-size: 0.82rem;
+            color: #8b949e;
+        }
+
+        .path-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 640px) {
+            .path-row { grid-template-columns: 1fr 1fr; }
+        }
+
+        .path-step {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 16px 12px;
+            text-align: center;
+        }
+
+        .path-step .num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            margin: 0 auto 10px;
+        }
+
+        .path-step .title { font-weight: 700; font-size: 0.9rem; color: #f0f6fc; }
+        .path-step .skill { font-size: 0.78rem; color: #8b949e; margin-top: 4px; }
+
+        .layers-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+
+        .layers-table th {
+            background: #21262d;
+            color: #8b949e;
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 14px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .layers-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #21262d;
+            color: #c9d1d9;
+        }
+
+        .layers-table tr:last-child td { border-bottom: none; }
+        .layers-table tr:hover td { background: #21262d; }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .action-grid { grid-template-columns: 1fr; }
+        }
+
+        .action-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .action-card .icon { font-size: 1.5rem; margin-bottom: 10px; }
+        .action-card h4 { font-size: 1rem; font-weight: 700; color: #f0f6fc; margin-bottom: 6px; }
+        .action-card p { font-size: 0.88rem; color: #8b949e; }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #21262d;
+            color: #484f58;
+            font-size: 0.85rem;
+        }
+
+        ul.clean {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul.clean li {
+            padding: 6px 0;
+            color: #c9d1d9;
+            font-size: 0.95rem;
+            padding-left: 18px;
+            position: relative;
+        }
+
+        ul.clean li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #58a6ff;
+        }
+
+        .cost-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        @media (max-width: 600px) { .cost-row { grid-template-columns: 1fr; } }
+
+        .cost-card {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .cost-card .who {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #8b949e;
+            margin-bottom: 6px;
+        }
+
+        .cost-card .amount {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #3fb950;
+        }
+
+        .cost-card .detail {
+            font-size: 0.8rem;
+            color: #484f58;
+            margin-top: 4px;
+        }
+
+        .link-strip {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .link-strip .link-icon {
+            font-size: 1.1rem;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .link-strip .link-body .link-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 2px;
+        }
+
+        .link-strip .link-body a {
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 0.82rem;
+            word-break: break-all;
+        }
+
+        .link-strip .link-body a:hover { text-decoration: underline; }
+
+        .link-strip .link-body .link-desc {
+            font-size: 0.82rem;
+            color: #8b949e;
+            margin-top: 2px;
+        }
+
+        .insight-highlight {
+            background: linear-gradient(135deg, #1a2a1a, #161b22);
+            border: 1px solid #3fb950;
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin-bottom: 16px;
+        }
+
+        .insight-highlight h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #3fb950;
+            margin-bottom: 8px;
+        }
+
+        .insight-highlight p {
+            color: #c9d1d9;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <div class="hero-badge">Field Notes</div>
+        <h1>GitHub <span>Education</span> Summit 2026</h1>
+        <div class="meta">June 11, 2026 &nbsp;·&nbsp; Seattle, WA &nbsp;·&nbsp; Clark Ngo</div>
+        <p class="summary">
+            A day of sessions on AI in CS education — from rethinking curricula and assessments to democratizing who builds software. These are the ideas that stuck.
+        </p>
+    </div>
+
+    <div class="container">
+
+        <!-- KEY NUMBERS -->
+        <div class="stat-row">
+            <div class="stat-card">
+                <div class="number">75%</div>
+                <div class="label">of educators acknowledge AI is changing the skills needed to program</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">30%</div>
+                <div class="label">are actually integrating GenAI into their classes</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">46%</div>
+                <div class="label">of student developers used GitHub Copilot for the first time at an MLH event in 2025</div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- SESSION 1 -->
+        <div class="section-label">Session 1 · GenAI in CS Education Consortium</div>
+        <h2>The Academia–Industry Gap Is Not New — But It's More Urgent</h2>
+        <p class="section-intro">Speaker: GenAI in CS Education Consortium (UCSD, funded by Google.org)</p>
+
+        <div class="card">
+            <span class="tag tag-blue">Core Tension</span>
+            <h3>Faculty are divided on AI in the classroom</h3>
+            <p>Views range from "students should only use AI for things they can already do themselves" to "if we don't change our curriculum we'll be as relevant as learning ancient Greek." The Consortium exists to support faculty who want to change but face real barriers — skills gaps, assessment design challenges, and lack of recent industry experience.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-green">What's Changing</span>
+            <h3>Less emphasis on writing code from scratch</h3>
+            <p>Shared courses shift learning goals toward <strong>specification, verification, and debugging</strong> — the skills that matter when AI is doing the generation. Students use GenAI tools to complete take-home projects rather than writing everything by hand.</p>
+        </div>
+
+        <div class="quote-block">
+            "Software creation with GenAI has changed more than I'd realized, and the skills to write software with these new tools are still a bit unclear."
+            <div class="attr">— Consortium researcher, closing reflection</div>
+        </div>
+
+        <div class="quote-block">
+            "We need close academia/industry collaborations more than ever."
+            <div class="attr">— Consortium closing slide</div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- SESSION 2 -->
+        <div class="section-label">Session 2 · Geoffrey Challen, University of Illinois</div>
+        <h2>Using and Understanding AI — A Course Co-Built with Claude</h2>
+        <p class="section-intro">Talk slides: <a href="https://www.geoffreychallen.com/talks/2026-06-11-using-and-understanding-ai" target="_blank" style="color:#58a6ff;">geoffreychallen.com/talks/2026-06-11</a> &nbsp;·&nbsp; Course: <a href="https://www.usingandunderstanding.ai" target="_blank" style="color:#58a6ff;">usingandunderstanding.ai</a></p>
+
+        <!-- Cost breakdown -->
+        <h3 style="color:#f0f6fc; margin: 0 0 12px; font-size: 1rem; font-weight: 700;">Course Cost Structure</h3>
+        <div class="cost-row">
+            <div class="cost-card">
+                <div class="who">Instructor</div>
+                <div class="amount">~$100</div>
+                <div class="detail">Claude API (per semester)</div>
+            </div>
+            <div class="cost-card">
+                <div class="who">Students</div>
+                <div class="amount">Free</div>
+                <div class="detail">Free tier access</div>
+            </div>
+            <div class="cost-card">
+                <div class="who">University</div>
+                <div class="amount">Azure</div>
+                <div class="detail">Cloud instance for infra</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-purple">Origin Story</span>
+            <h3>25 years of writing code — then a full stop</h3>
+            <p>Challen spent 25 years writing code by hand four days a week. Since July 2025 he no longer reads, writes, or debugs code by hand — and he's building more than ever. This personal shift drove him to redesign his course from the ground up.</p>
+        </div>
+
+        <div class="two-col">
+            <div class="card">
+                <span class="tag tag-blue">The Course</span>
+                <h3>No prerequisites, no code</h3>
+                <p>An AI course for everyone. No code mental models required. Students engage with AI through conversation, not syntax.</p>
+            </div>
+            <div class="card">
+                <span class="tag tag-green">The Collaboration</span>
+                <h3>Claude as co-instructor</h3>
+                <p>Every line of the course site, syllabus, rubrics, assessments, and annotated readings was written through conversational AI. Claude is content, infrastructure, and operations.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-amber">Assessment Design</span>
+            <h3>Conversational, multi-agent, autograded</h3>
+            <p>Students complete Turing Test conversations and other AI-driven assessments. A hidden second agent scores engagement in real time so the instructor sees readiness levels before class starts. Feedback is near-instant — the value of feedback decays rapidly after submission, so autograding everything matters.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-green">Pedagogy</span>
+            <h3>No lecturing — agents run the room</h3>
+            <p>Before class: structured prep chats build context and surface readiness. During class: AI agents facilitate small-group discussion, surface patterns across the room, and signal when a group is ready to share. Humans do the thinking; the AI does the structural work.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-purple">Hypothesis</span>
+            <h3>AI collaboration is its own distinct skill</h3>
+            <p>Not "classical programming → AI on top." AI collaboration is <em>independent from but related to</em> classical programming — like studio art and art history. Either can come first; an artist learns both regardless. This framing changes how you sequence and assess learning.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-amber">What's Next</span>
+            <h3>Fall 2026: Conversational Programming</h3>
+            <p>"If you can talk it, you can create it." The next evolution of the course leans fully into the idea that natural language is the new programming interface — not a shortcut, but the actual medium.</p>
+            <p style="margin-top:10px; color:#8b949e; font-size:0.88rem;">Think of it like <strong style="color:#c9d1d9;">Roblox as a sandbox</strong> — a creative environment where you describe what you want to build and the platform handles the execution. The skill is imagination and specification, not syntax.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-blue">PRD as the New Code</span>
+            <h3>The product requirements document is now a primary artifact</h3>
+            <p>In a conversational programming model, students write <strong>PRDs</strong> (product requirements documents) to specify what they want built — articulating the problem, the user, the constraints, and the success criteria. The AI handles generation. This shifts assessment toward clarity of thought and problem framing, not implementation detail.</p>
+        </div>
+
+        <div class="insight-highlight">
+            <h3>Grace Hopper saw this coming</h3>
+            <p>Grace Hopper's vision was that normal human language — not machine code — should be the interface for building software. Her work on compilers was about making software creation accessible to people who think in words, not bits. Conversational programming is the next step in that same arc: if you can describe the problem clearly, you can build the solution.</p>
+        </div>
+
+        <div class="quote-block">
+            "I dislike the term 'vibe coding' because it implies a certain degree of not caring about the results. I'm trying to establish <em>conversational programming</em> as an alternative."
+            <div class="attr">— Geoffrey Challen, live Q&A</div>
+        </div>
+
+        <div class="quote-block">
+            "It's not a purist issue. Geoff literally said 'don't look at the code.' We're offloading all of the cognitive work to an AI with this methodology."
+            <div class="attr">— Attendee pushback in chat</div>
+        </div>
+
+        <div class="quote-block">
+            "The analogy to studio art is great — they've had a long running discussion about whether teaching technique first or aesthetic first is the way to go. Either way, an artist learns both, regardless of where they start."
+            <div class="attr">— Attendee in chat</div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- SESSION 3 -->
+        <div class="section-label">Session 3 · GitHub Education × Major League Hacking (MLH)</div>
+        <h2>Software Is Having Its iPhone Moment</h2>
+        <p class="section-intro">The case for hackathons as the new classroom for AI skills.</p>
+
+        <div class="card">
+            <span class="tag tag-green">The Big Claim</span>
+            <h3>Coding is becoming a universal skill</h3>
+            <p>The same democratization that happened to photography (85B photos in 2000 → 2.1 trillion today, a 25× increase) is happening to software. What was once a walled garden requiring specialized equipment and professional training is becoming commoditized, faster than humans, and basically free.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-blue">The Problem</span>
+            <h3>97% of the future AI market doesn't exist yet</h3>
+            <p>Daily AI users are in the 0.01% of early adopters. Most people's opinions on AI are based on experiences from 6+ months ago, used on contrived problems that don't actually apply. The gap between early adopters and the rest of the market represents enormous educational opportunity.</p>
+        </div>
+
+        <!-- Path from Curious to Native -->
+        <h3 style="color:#f0f6fc; margin: 24px 0 12px; font-size: 1.1rem;">The Path from AI Curious to AI Native</h3>
+        <div class="path-row">
+            <div class="path-step">
+                <div class="num" style="background:#1f3a5f; color:#58a6ff;">1</div>
+                <div class="title">Curious</div>
+                <div class="skill">Prompting</div>
+            </div>
+            <div class="path-step">
+                <div class="num" style="background:#1a3a2a; color:#3fb950;">2</div>
+                <div class="title">User</div>
+                <div class="skill">Workflows</div>
+            </div>
+            <div class="path-step">
+                <div class="num" style="background:#3d2a00; color:#e3b341;">3</div>
+                <div class="title">Builder</div>
+                <div class="skill">Vibe Coding</div>
+            </div>
+            <div class="path-step">
+                <div class="num" style="background:#3d1a00; color:#f0883e;">4</div>
+                <div class="title">Operator</div>
+                <div class="skill">Agents</div>
+            </div>
+            <div class="path-step">
+                <div class="num" style="background:#1a3a2a; color:#3fb950;">5</div>
+                <div class="title">Native</div>
+                <div class="skill">Systems</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-amber">The Shift</span>
+            <h3>When the cost of code goes to zero, ideas, taste, and distribution win</h3>
+            <p>Aka: judgment, connection, and trust. Hackathons aren't just for developers anymore — writing prompts that produce results, interviewing users to build context, and sketching interfaces people want to use are now valid hackathon contributions.</p>
+        </div>
+
+        <div class="two-col">
+            <div class="card">
+                <span class="tag tag-blue">Prompts vs. Agents</span>
+                <h3>Know the difference</h3>
+                <p>A <strong>prompt</strong> is a one-shot instruction that lives and dies in the chat. An <strong>agent</strong> is a saved workflow with a job description — context preloaded, multi-step, reusable by your whole team.</p>
+            </div>
+            <div class="card">
+                <span class="tag tag-green">Better Prompts</span>
+                <h3>Chain small steps, not one big ask</h3>
+                <p>One big prompt → inconsistent, mediocre output. Five small prompts (Research → Outline → Draft → Critique → Polish) → consistent, better output. Decompose before you generate.</p>
+            </div>
+        </div>
+
+        <!-- GitHub AI Tools table -->
+        <h3 style="color:#f0f6fc; margin: 24px 0 12px; font-size: 1.1rem;">GitHub's AI Productivity Tools Landscape</h3>
+        <table class="layers-table">
+            <thead>
+                <tr>
+                    <th>Tool</th>
+                    <th>Skill Level</th>
+                    <th>Best For</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Copilot Chat (Web)</td>
+                    <td><span class="tag tag-green" style="font-size:0.75rem;padding:2px 8px;">Easy</span></td>
+                    <td>Fast Q&A, throwaway questions, explaining code</td>
+                </tr>
+                <tr>
+                    <td>Copilot Spaces</td>
+                    <td><span class="tag tag-green" style="font-size:0.75rem;padding:2px 8px;">Easy</span></td>
+                    <td>Grounding Copilot in repos & docs; shareable course context</td>
+                </tr>
+                <tr>
+                    <td>GitHub Spark</td>
+                    <td><span class="tag tag-amber" style="font-size:0.75rem;padding:2px 8px;">Medium</span></td>
+                    <td>Build & deploy a full-stack app from a prompt — no editor</td>
+                </tr>
+                <tr>
+                    <td>Web Agents (Agents panel)</td>
+                    <td><span class="tag tag-red" style="font-size:0.75rem;padding:2px 8px;">Hard</span></td>
+                    <td>Delegate tasks; Copilot works in background, opens a PR</td>
+                </tr>
+                <tr>
+                    <td>Copilot in VS Code</td>
+                    <td><span class="tag tag-red" style="font-size:0.75rem;padding:2px 8px;">Hard</span></td>
+                    <td>Full editor agent running across files & terminal</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="divider">
+
+        <!-- CROSS-CUTTING TENSIONS -->
+        <div class="section-label">Cross-Cutting Themes</div>
+        <h2>The Hard Questions the Room Was Wrestling With</h2>
+        <p class="section-intro">From the live Q&A and attendee chat — the tensions that didn't resolve neatly.</p>
+
+        <div class="card">
+            <span class="tag tag-red">Unresolved</span>
+            <h3>Will AI eliminate junior developer roles?</h3>
+            <p>If AI can automate entry-level tasks, does integrating GenAI into academia help students enter a shrinking market, or does it equip them to operate at a higher level from day one? The room had no consensus — but most agreed the question demands an answer from educators.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-red">Unresolved</span>
+            <h3>Are students actually learning — or just shipping?</h3>
+            <p>Conversational programming gets things built faster. But one attendee challenged: "We're offloading all cognitive work. Does it let students make things more quickly with less effort? Yes. Do they actually learn as much? No way." The pedagogy is genuinely open.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-amber">Insight</span>
+            <h3>The four layers of the future workforce</h3>
+            <table class="layers-table" style="margin-top:14px;">
+                <thead>
+                    <tr><th>Layer</th><th>Role</th><th>Key Skill</th><th>Risk</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Problem-Focused Builders</td><td>Domain expertise</td><td>Low</td></tr>
+                    <tr><td>2</td><td>Technical Facilitators / Producers</td><td>Productizing & bridging</td><td>Medium</td></tr>
+                    <tr><td>3</td><td>Software Engineers</td><td>Platforms, governance, scale</td><td>High</td></tr>
+                    <tr><td>4</td><td>Computer Scientists</td><td>Theory, research</td><td>Very high</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-purple">Community Voice</span>
+            <h3>Educators are feeling lost — and that's honest</h3>
+            <p>One attendee summed it up plainly: <em>"I'm so discouraged as a CS educator. We don't know the skills we need to teach, and we don't even know what those skills are."</em> The response wasn't to dismiss the concern — it was to build advisory relationships with industry employers to stay calibrated.</p>
+        </div>
+
+        <div class="card">
+            <span class="tag tag-red">Structural Problem</span>
+            <h3>CS educators struggle to teach Level 1</h3>
+            <p>The hardest layer to teach is Layer 1 — the <strong>problem-focused builder</strong> who uses AI to solve domain problems without deep engineering knowledge. Traditional CS curricula are built around Layers 3 and 4. Reaching Level 1 thinkers — the nurses, the lawyers, the small business owners — requires a completely different pedagogical approach that most CS educators weren't trained for.</p>
+        </div>
+
+        <div class="insight-highlight">
+            <h3>We are problem solvers — not programmers</h3>
+            <p>The most resonant reframe from the day: identifying as a <em>programmer</em> constrains how much you think you can impact the world. Identifying as a <em>problem solver</em> opens every domain. The question isn't "can I code this?" — it's "what problem am I solving, and for whom?" AI handles the translation from intent to implementation. This identity shift is as much a curriculum design challenge as a technical one.</p>
+        </div>
+
+        <div class="quote-block">
+            "CS is becoming ancillary to any field — bioengineering, chemistry, biology, law — where critical thinking will be important. The emphasis on fundamentals like networking, cybersecurity, system design, and architecture is more important, not less."
+            <div class="attr">— Attendee in chat</div>
+        </div>
+
+        <div class="quote-block">
+            "We should do a teacher hackathon for curriculum design."
+            <div class="attr">— Attendee at close of day</div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- RESOURCES -->
+        <div class="section-label">Resources & Links</div>
+        <h2>Everything Referenced — In One Place</h2>
+        <p class="section-intro">Open resources, community spaces, and tools worth bookmarking.</p>
+
+        <div class="link-strip">
+            <div class="link-icon">🎓</div>
+            <div class="link-body">
+                <div class="link-title">Geoffrey Challen — Talk Slides</div>
+                <a href="https://www.geoffreychallen.com/talks/2026-06-11-using-and-understanding-ai" target="_blank">geoffreychallen.com/talks/2026-06-11-using-and-understanding-ai</a>
+                <div class="link-desc">Full slide deck from today's "Using and Understanding AI" session</div>
+            </div>
+        </div>
+
+        <div class="link-strip">
+            <div class="link-icon">🛠️</div>
+            <div class="link-body">
+                <div class="link-title">usingandunderstanding.ai/create — Course Builder</div>
+                <a href="https://www.usingandunderstanding.ai/create" target="_blank">usingandunderstanding.ai/create</a>
+                <div class="link-desc">Create and customize course content using Challen's conversational AI framework</div>
+            </div>
+        </div>
+
+        <div class="link-strip">
+            <div class="link-icon">🐙</div>
+            <div class="link-body">
+                <div class="link-title">GitHub Skills — Exercise Creator</div>
+                <a href="https://github.com/skills/exercise-creator" target="_blank">github.com/skills/exercise-creator</a>
+                <div class="link-desc">Generate custom coding exercises using GitHub's AI-powered skills framework</div>
+            </div>
+        </div>
+
+        <div class="link-strip">
+            <div class="link-icon">🐙</div>
+            <div class="link-body">
+                <div class="link-title">iTeachCompSci — GitHub Org</div>
+                <a href="https://github.com/iteachcompsci" target="_blank">github.com/iteachcompsci</a>
+                <div class="link-desc">Open curriculum resources for CS educators integrating AI into their courses</div>
+            </div>
+        </div>
+
+        <div class="link-strip">
+            <div class="link-icon">💬</div>
+            <div class="link-body">
+                <div class="link-title">GenAI in CS Ed — Community of Practice (Slack)</div>
+                <a href="https://genaiincsedco-xug6366.slack.com/join/shared_invite/zt-40m705lar-fAYGMXfzncjbD7r2uMTXCA#/shared-invite/email" target="_blank">Join the Slack workspace</a>
+                <div class="link-desc">Active community of CS educators navigating GenAI curriculum integration together</div>
+            </div>
+        </div>
+
+        <div class="link-strip">
+            <div class="link-icon">📜</div>
+            <div class="link-body">
+                <div class="link-title">Microsoft — Agentic AI Developer Certification</div>
+                <a href="https://learn.microsoft.com/en-us/credentials/certifications/agentic-ai-developer/?practice-assessment-type=certification" target="_blank">learn.microsoft.com — Agentic AI Developer</a>
+                <div class="link-desc">Formal certification path for building and deploying agentic AI systems — relevant stackable credential</div>
+            </div>
+        </div>
+
+        <div class="link-strip">
+            <div class="link-icon">📖</div>
+            <div class="link-body">
+                <div class="link-title">teachCSwithAI.org — Free Course Materials</div>
+                <a href="https://www.teachcswithai.org" target="_blank">teachcswithai.org</a>
+                <div class="link-desc">CS1, CS2, Algorithms, SWE, Product Management, Large Code Bases — open and adoptable for any program</div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- SO WHAT -->
+        <div class="section-label">So What</div>
+        <h2>Implications for STC</h2>
+        <p class="section-intro">How these ideas connect to the work we're already doing.</p>
+
+        <div class="action-grid">
+            <div class="action-card">
+                <div class="icon">🎯</div>
+                <h4>Reframe learning goals around verification, not generation</h4>
+                <p>Less emphasis on writing from scratch. More emphasis on specifying what you want, critiquing what AI produces, and debugging when it's wrong.</p>
+            </div>
+            <div class="action-card">
+                <div class="icon">📐</div>
+                <h4>Assessment redesign is the hardest part</h4>
+                <p>Conversational, multi-agent, autograded feedback is where Challen's approach is most ahead. Worth piloting even one assignment in this mode.</p>
+            </div>
+            <div class="action-card">
+                <div class="icon">🛤️</div>
+                <h4>Use the Curious → Native spectrum as a placement tool</h4>
+                <p>MLH's 5-level path (Curious / User / Builder / Operator / Native) maps cleanly to how we could differentiate instruction or advise students on next steps.</p>
+            </div>
+            <div class="action-card">
+                <div class="icon">🤝</div>
+                <h4>Industry advisory ties aren't optional anymore</h4>
+                <p>Multiple voices at the Summit pushed this. If we don't know what skills employers need in 12–24 months, we're designing curriculum for the past.</p>
+            </div>
+            <div class="action-card">
+                <div class="icon">🔓</div>
+                <h4>Hackathons as accessible AI labs</h4>
+                <p>Non-developers belong in hackathons now — prompt engineers, interviewers, UX sketchers. Could be a low-barrier way to introduce AI to non-CS students.</p>
+            </div>
+            <div class="action-card">
+                <div class="icon">🪪</div>
+                <h4>The Microsoft Agentic AI cert is worth tracking</h4>
+                <p>A formal, stackable credential for building agentic AI systems. Could anchor a certificate program or serve as an industry validation alongside our own courses.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        GitHub Education Summit &nbsp;·&nbsp; June 11, 2026 &nbsp;·&nbsp; Notes by Clark Ngo &nbsp;·&nbsp; STC
+    </div>
+
+</body>
+</html>

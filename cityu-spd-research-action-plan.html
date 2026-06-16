@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Action &amp; Research Plan — CityU × SPD AI for First Responders</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --cyan: #0891b2;
+      --cyan-dim: #ecfeff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 920px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    /* Nav */
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Header */
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    /* TOC */
+    .toc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow); }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 24px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+    @media (max-width: 560px) { .toc ol { columns: 1; } }
+
+    /* Section */
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { margin: 2px 0 0; font-size: 0.85rem; color: var(--slate); }
+    .section-body { padding: 20px 24px; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+    .icon-cyan { background: var(--cyan-dim); }
+
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-cyan { background: var(--cyan-dim); color: var(--cyan); }
+
+    /* Points */
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .point-body ul { margin: 6px 0 0; padding-left: 18px; }
+    .point-body li { margin-bottom: 4px; }
+
+    /* Evidence tier badges */
+    .evidence-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 20px; }
+    @media (max-width: 600px) { .evidence-grid { grid-template-columns: 1fr; } }
+    .evidence-card { border-radius: var(--radius-sm); border: 2px solid; padding: 16px; }
+    .evidence-card .ev-tier { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+    .evidence-card .ev-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 6px; }
+    .evidence-card p { margin: 0; font-size: 0.82rem; color: var(--slate); line-height: 1.5; }
+    .ev-tier-1 { background: var(--green-dim); border-color: #bbf7d0; }
+    .ev-tier-1 .ev-tier { color: var(--green); }
+    .ev-tier-2 { background: var(--amber-dim); border-color: #fde68a; }
+    .ev-tier-2 .ev-tier { color: var(--amber); }
+    .ev-tier-3 { background: var(--red-dim); border-color: #fecaca; }
+    .ev-tier-3 .ev-tier { color: var(--red); }
+
+    /* Guardrail rules */
+    .guardrail { display: flex; gap: 14px; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .guardrail:last-child { border-bottom: none; padding-bottom: 0; }
+    .guardrail:first-child { padding-top: 0; }
+    .guardrail-icon { flex-shrink: 0; font-size: 1.1rem; margin-top: 1px; width: 28px; text-align: center; }
+    .guardrail-body { font-size: 0.9rem; }
+    .guardrail-body strong { font-weight: 700; display: block; margin-bottom: 2px; }
+    .guardrail-body span { color: var(--slate); font-size: 0.85rem; }
+
+    /* Claim card */
+    .claim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 580px) { .claim-grid { grid-template-columns: 1fr; } }
+    .claim-card { border-radius: var(--radius-sm); padding: 14px 16px; border: 1.5px solid; }
+    .claim-card .claim-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .claim-card p { margin: 0; font-size: 0.86rem; line-height: 1.55; }
+    .claim-dont { background: var(--red-dim); border-color: #fecaca; }
+    .claim-dont .claim-label { color: var(--red); }
+    .claim-do { background: var(--green-dim); border-color: #bbf7d0; }
+    .claim-do .claim-label { color: var(--green); }
+
+    /* Phase timeline */
+    .phase-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 760px) { .phase-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .phase-grid { grid-template-columns: 1fr; } }
+    .phase-card { border-radius: var(--radius-sm); border: 1.5px solid; padding: 16px 16px 14px; }
+    .phase-card .phase-when { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .phase-card .phase-title { font-size: 0.92rem; font-weight: 800; margin-bottom: 8px; }
+    .phase-card ul { margin: 0; padding-left: 16px; font-size: 0.82rem; color: var(--ink); line-height: 1.6; }
+    .phase-q1 { background: var(--blue-dim); border-color: #bfdbfe; }
+    .phase-q1 .phase-when { color: var(--blue); }
+    .phase-q2 { background: var(--cyan-dim); border-color: #a5f3fc; }
+    .phase-q2 .phase-when { color: var(--cyan); }
+    .phase-q3 { background: var(--amber-dim); border-color: #fde68a; }
+    .phase-q3 .phase-when { color: var(--amber); }
+    .phase-q4 { background: var(--green-dim); border-color: #bbf7d0; }
+    .phase-q4 .phase-when { color: var(--green); }
+
+    /* Workstream cards */
+    .ws-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .ws-grid { grid-template-columns: 1fr; } }
+    .ws-card { border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); padding: 16px 18px; }
+    .ws-card .ws-name { font-size: 0.82rem; font-weight: 800; letter-spacing: 0.02em; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .ws-card p { margin: 0; font-size: 0.86rem; color: var(--slate); line-height: 1.55; }
+    .ws-card .ws-lead { display: inline-block; margin-top: 8px; font-size: 0.74rem; font-weight: 700; color: var(--slate); background: var(--card); border-radius: 20px; padding: 2px 10px; border: 1px solid var(--border); }
+
+    /* Action item list */
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+    .action-owner { display: inline-block; margin-top: 4px; margin-right: 6px; font-size: 0.74rem; font-weight: 700; color: var(--slate); background: var(--bg); border-radius: 20px; padding: 2px 10px; }
+    .action-when { display: inline-block; margin-top: 4px; font-size: 0.74rem; font-weight: 700; color: var(--blue); background: var(--blue-dim); border-radius: 20px; padding: 2px 10px; }
+
+    /* Risk table */
+    .risk-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    .risk-table th { text-align: left; padding: 10px 12px; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate); background: var(--bg); border-bottom: 2px solid var(--border); }
+    .risk-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--ink); }
+    .risk-table tr:last-child td { border-bottom: none; }
+    .sev-chip { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 2px 9px; border-radius: 12px; white-space: nowrap; }
+    .sev-high { background: var(--red-dim); color: var(--red); }
+    .sev-med { background: var(--amber-dim); color: var(--amber); }
+    .sev-low { background: var(--green-dim); color: var(--green); }
+
+    /* Callout */
+    .callout { border-radius: var(--radius-sm); padding: 14px 16px; font-size: 0.88rem; border: 1px solid transparent; margin-top: 12px; }
+    .callout-amber { background: var(--amber-dim); border-color: #fde68a; color: #92400e; }
+    .callout-blue { background: var(--blue-dim); border-color: #bfdbfe; color: #1e3a8a; }
+    .callout-green { background: var(--green-dim); border-color: #bbf7d0; color: #14532d; }
+    .callout strong { font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="meeting-notes-cityu-spd-2026-06-16.html">SPD Meeting Notes (Jun 16)</a>
+    <span class="nav-sep">›</span>
+    <span>Action &amp; Research Plan</span>
+    <span class="nav-sep">|</span>
+    <a href="ai-rollout-first-responders.html">Research Brief →</a>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Action &amp; Research Plan</div>
+    <h1>CityU × SPD — AI for First Responders</h1>
+    <p class="subtitle">A working plan to turn the June 16, 2026 SPD meeting into a year-long research, evaluation, and education partnership — built around what SPD actually needs, not a generic AI rollout pitch.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Draft v1 — June 2026</span>
+      <span class="meta-chip">Owner: Suzanne Walsh / CityU</span>
+      <span class="meta-chip">Horizon: 12 months</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#thesis">Working Thesis</a></li>
+      <li><a href="#workstreams">Four Workstreams</a></li>
+      <li><a href="#roadmap">Year-1 Roadmap</a></li>
+      <li><a href="#immediate">Immediate Next Steps (2–4 Weeks)</a></li>
+      <li><a href="#evaluator">CityU's Evaluator Role — Scope</a></li>
+      <li><a href="#prosecutor-strategy">Prosecutor Strategy</a></li>
+      <li><a href="#risks">Open Risks &amp; Unresolved Questions</a></li>
+      <li><a href="#funding">Funding &amp; Scale-Out</a></li>
+      <li><a href="#presentation-framework">Research Presentation Framework</a></li>
+    </ol>
+  </div>
+
+  <!-- Thesis -->
+  <div class="section" id="thesis">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🎯</div>
+      <div>
+        <h2>Working Thesis</h2>
+        <p class="section-sub">What we now know changes the pitch</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Don't lead with</span>
+        <div class="point-body">
+          Time savings on report narratives. An independent, pre-registered RCT (Adams et al., 2024) found <strong>no significant reduction</strong> in report-writing time from Axon's Draft One — directly contradicting vendor marketing. Loren Atherley raised this study unprompted, which means SPD's own research arm is already skeptical of the efficiency pitch. Leading with "2 hours → 60 seconds" undercuts our credibility with the one audience whose trust we need most.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Lead with instead</span>
+        <div class="point-body">
+          What SPD is already doing: positioning AI as <strong>QA, consistency, and supervisory accountability tooling</strong> (Mark 43 prompts, planned NLP review of reasonable-suspicion language) rather than a narrative-writing shortcut. This is also the approach least likely to trip the King County Prosecutor's blanket prohibition, since it never puts AI output into a signed narrative.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">CityU's actual opening</span>
+        <div class="point-body">
+          Not "build us an AI report writer." It's <strong>research partner, third-party evaluator, and education provider</strong> — three roles SPD explicitly said it doesn't have covered (no evaluation partner since PNNL lost funding; no internal capacity to run the kind of mixed tech + social-science evaluation Loren described wanting).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Workstreams -->
+  <div class="section" id="workstreams">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🧩</div>
+      <div>
+        <h2>Four Workstreams</h2>
+        <p class="section-sub">Mapped from Jai Stone's "four-headed dragon" framework</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="ws-grid">
+        <div class="ws-card" style="border-top: 3px solid var(--blue);">
+          <div class="ws-name" style="color:var(--blue);">🔬 Research</div>
+          <p>Re-run or replicate the report-writing speed question with current-generation models (the 2024 study is already dated). Investigate CJIS-data handling patterns at peer agencies. Document SPD's QA-first AI use cases as a case study.</p>
+          <span class="ws-lead">Lead: Clark, Sam Chung</span>
+        </div>
+        <div class="ws-card" style="border-top: 3px solid var(--cyan);">
+          <div class="ws-name" style="color:var(--cyan);">🧪 Evaluation</div>
+          <p>Serve as SPD's third-party evaluator for AI tools entering production (CaseX/Corvus, Mark 43 QA, closed Claude instance) — combining technologists and social scientists so findings aren't dismissed as either purely technical or purely advocacy-driven. Support SPD's ISO certification goal for the closed Claude deployment.</p>
+          <span class="ws-lead">Lead: CityU eval team + Jai Stone</span>
+        </div>
+        <div class="ws-card" style="border-top: 3px solid var(--amber);">
+          <div class="ws-name" style="color:var(--amber);">🎓 Education</div>
+          <p>Workshops and micro-credentials for officers, supervisors, and command staff on AI literacy. Separate track for policy-level education aimed at the prosecutor's office and other skeptical stakeholders — not advocacy, just shared vocabulary (e.g., distinguishing "transcription" from "AI" from "generative AI").</p>
+          <span class="ws-lead">Lead: Jai Stone, Sam Chung</span>
+        </div>
+        <div class="ws-card" style="border-top: 3px solid var(--violet);">
+          <div class="ws-name" style="color:var(--violet);">📣 Advocacy / Integration</div>
+          <p>Help SPD socialize a differentiated narrative to the prosecutor and city stakeholders: QA/accountability tooling first, narrative generation deferred. Draft MOU language for the CityU–SPD research relationship. Scope whether the same model extends to SFD/EMS.</p>
+          <span class="ws-lead">Lead: Suzanne Walsh, Lee Hunt</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roadmap -->
+  <div class="section" id="roadmap">
+    <div class="section-header">
+      <div class="section-icon icon-cyan">🗺️</div>
+      <div>
+        <h2>Year-1 Roadmap</h2>
+        <p class="section-sub">Crawl → walk → run, per Jai Stone's guidance: small increments, not a swing for the fences</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="phase-grid">
+        <div class="phase-card phase-q1">
+          <div class="phase-when">Q1 — Crawl</div>
+          <div class="phase-title">Listen &amp; Scope</div>
+          <ul>
+            <li>On-site visit, tour, meet Elena/Loren's teams</li>
+            <li>Review SPD's draft AI policy in detail</li>
+            <li>Source &amp; circulate 2024 Axon study</li>
+            <li>Stand up CityU working group</li>
+            <li>Draft MOU</li>
+          </ul>
+        </div>
+        <div class="phase-card phase-q2">
+          <div class="phase-when">Q2 — Crawl → Walk</div>
+          <div class="phase-title">First Evaluation Pilot</div>
+          <ul>
+            <li>Evaluate one live, low-risk tool (e.g., Mark 43 QA or CaseX/Corvus)</li>
+            <li>Begin interviews with prosecutor's office &amp; other skeptics</li>
+            <li>Replicate/refresh report-speed research question</li>
+            <li>Scope ISO certification support</li>
+          </ul>
+        </div>
+        <div class="phase-card phase-q3">
+          <div class="phase-when">Q3 — Walk</div>
+          <div class="phase-title">Education Launch</div>
+          <ul>
+            <li>Pilot AI-literacy workshop for one SPD unit</li>
+            <li>Publish first evaluation findings internally</li>
+            <li>Begin drafting funding pitch deck</li>
+            <li>Explore extension to SFD/EMS</li>
+          </ul>
+        </div>
+        <div class="phase-card phase-q4">
+          <div class="phase-when">Q4 — Walk → Run</div>
+          <div class="phase-title">Scale &amp; Pitch</div>
+          <ul>
+            <li>Formalize MOU / ongoing evaluator retainer</li>
+            <li>Present multi-agency funding pitch to prospective funders</li>
+            <li>Recommend next pilot tier (medium-risk Claude use cases)</li>
+            <li>Plan year 2 research agenda</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Immediate -->
+  <div class="section" id="immediate">
+    <div class="section-header">
+      <div class="section-icon icon-green">✅</div>
+      <div>
+        <h2>Immediate Next Steps (2–4 Weeks)</h2>
+        <p class="section-sub">Direct commitments made on the call</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check">1</span>
+          <div class="action-body">
+            Source and circulate the Adams et al. (2024) report-writing speed study for full group review.
+            <div><span class="action-owner">Loren Atherley</span><span class="action-when">~1 week</span></div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">2</span>
+          <div class="action-body">
+            Coordinate on-site visit logistics through research program manager Mirzman Ashen Cook; tour current work, meet Elena Blackmore and Loren's team, review the AI policy draft.
+            <div><span class="action-owner">Loren Atherley</span><span class="action-when">1–2 weeks</span></div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">3</span>
+          <div class="action-body">
+            Stand up the CityU working group (Jai Stone, Lee Hunt, Loren Atherley, Sam Chung, Clark) to scope the year-1 roadmap above.
+            <div><span class="action-owner">Suzanne Walsh</span><span class="action-when">2 weeks</span></div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">4</span>
+          <div class="action-body">
+            Draft a one-page evaluator-role proposal (scope, deliverables, cadence) to give SPD something concrete to react to before the on-site visit.
+            <div><span class="action-owner">CityU eval team</span><span class="action-when">2 weeks</span></div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">5</span>
+          <div class="action-body">
+            Investigate how peer agencies handle CJIS data in AI-assisted workflows — direct ask from Lee Hunt, currently unanswered.
+            <div><span class="action-owner">Clark</span><span class="action-when">2–4 weeks</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Evaluator role -->
+  <div class="section" id="evaluator">
+    <div class="section-header">
+      <div class="section-icon icon-cyan">🧪</div>
+      <div>
+        <h2>CityU's Evaluator Role — Scope</h2>
+        <p class="section-sub">SPD said it doesn't have this. We can be it.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-cyan">Why us</span>
+        <div class="point-body">
+          SPD's prior evaluation-partner candidate, PNNL, lost funding last year. Loren explicitly named the gap. CityU's applied-research model (vs. purely peer-reviewed academic output) was specifically called out by Lee Hunt as a differentiator worth pursuing.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-cyan">Composition</span>
+        <div class="point-body">
+          Mixed team of <strong>technologists and social scientists</strong> — Suzanne was explicit that tech-only evaluation invites bias critiques the team can't defend against alone.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-cyan">What gets evaluated</span>
+        <div class="point-body">
+          <ul>
+            <li>Tools as they're adopted: CaseX/Corvus, Mark 43 QA prompts, the planned NLP supervisor-review model</li>
+            <li>The closed Claude instance, as it moves from low-risk to medium/high-risk use cases</li>
+            <li>Progress against SPD's ISO certification goal (NIST is the fallback standard, Loren prefers ISO)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-cyan">Adjacent ask</span>
+        <div class="point-body">
+          Jai Stone, as a CityU-affiliated partner, could conduct structured interviews with internal skeptics — starting with the prosecutor's office — to surface the actual root objection rather than guessing at it.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prosecutor strategy -->
+  <div class="section" id="prosecutor-strategy">
+    <div class="section-header">
+      <div class="section-icon icon-red">⚖️</div>
+      <div>
+        <h2>Prosecutor Strategy</h2>
+        <p class="section-sub">The blanket AI prohibition is the central blocker — treat it as political, not technical</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Diagnosis</span>
+        <div class="point-body">
+          Group consensus on the call: the prohibition is <strong>preemptive of public concern</strong>, not a response to a specific incident. Root cause still unconfirmed — needs to be established before any messaging is built.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Approach</span>
+        <div class="point-body">
+          <ul>
+            <li>Don't lecture the prosecutor's office — bring them along.</li>
+            <li>Separate "AI" from "technology" in the conversation. A lot of the QA/transcription work isn't generative AI at all; conflating them invites unnecessary opposition.</li>
+            <li>Demonstrate trust incrementally with already-running tools (Mark 43, CaseX/Corvus) before reopening the narrative-writing question.</li>
+            <li>Use Jai Stone's interviews (see above) to find the actual lever — is it case-loss risk, liability exposure, or general caution?</li>
+          </ul>
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Reference point</span>
+        <div class="point-body">
+          See <a href="ai-rollout-first-responders.html#ref-7">ref-7 in the Research Brief</a> for the EFF coverage of the underlying King County PA memo, and the brief's broader framing of why AI-as-QA is more defensible than AI-as-author.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risks -->
+  <div class="section" id="risks">
+    <div class="section-header">
+      <div class="section-icon icon-amber">⚠️</div>
+      <div>
+        <h2>Open Risks &amp; Unresolved Questions</h2>
+        <p class="section-sub">Things we don't have an answer to yet — flagged honestly</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div style="overflow-x:auto;">
+        <table class="risk-table">
+          <thead>
+            <tr><th>Question</th><th>Why it matters</th><th>Severity</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>How do peer agencies handle CJIS data in AI workflows?</td>
+              <td>SPD's no-CJIS-in-GenAI rule may structurally block narrative-writing AI regardless of prosecutor policy</td>
+              <td><span class="sev-chip sev-high">High</span></td>
+            </tr>
+            <tr>
+              <td>What's the actual root objection at the prosecutor's office?</td>
+              <td>Without it, any messaging strategy is guesswork</td>
+              <td><span class="sev-chip sev-high">High</span></td>
+            </tr>
+            <tr>
+              <td>Does CityU's evaluator role create a conflict if CityU also wants a paid consulting relationship?</td>
+              <td>Independence of evaluation findings could be questioned</td>
+              <td><span class="sev-chip sev-med">Medium</span></td>
+            </tr>
+            <tr>
+              <td>Is the 2024 Axon study still representative of current-generation models?</td>
+              <td>Both the optimistic and pessimistic claims about AI report-writing speed may now be outdated</td>
+              <td><span class="sev-chip sev-med">Medium</span></td>
+            </tr>
+            <tr>
+              <td>Does this scale cleanly to SFD/EMS, or is SPD's structure (CJIS, prosecutor relationship) a special case?</td>
+              <td>Affects whether the funding pitch should be SPD-only or multi-agency from the start</td>
+              <td><span class="sev-chip sev-low">Low</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-amber">
+        <strong>Note:</strong> Elena Blackmore and Alex Ricketts left the call before the policy-draft discussion concluded — confirm with them directly before assuming the policy unit's review timeline.
+      </div>
+    </div>
+  </div>
+
+  <!-- Funding -->
+  <div class="section" id="funding">
+    <div class="section-header">
+      <div class="section-icon icon-green">💰</div>
+      <div>
+        <h2>Funding &amp; Scale-Out</h2>
+        <p class="section-sub">Suzanne's framing: don't make this SPD-only, or we lose leverage</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-green">Pitch framing</span>
+        <div class="point-body">
+          Present the research/evaluation/education model as applicable across <strong>first-responder units broadly</strong> (police, fire, EMS) rather than SPD-specific — explicitly to maximize appeal to prospective funders.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">What funders see</span>
+        <div class="point-body">
+          A track record forming over Q1–Q3: one completed evaluation, one education pilot, one research output (refreshed report-speed study or CJIS-handling survey) — concrete deliverables, not a proposal in the abstract.
+        </div>
+      </div>
+      <div class="callout callout-green">
+        <strong>Target:</strong> have a fundable, evidence-backed pitch deck ready by end of Q3, informed by real pilot data rather than projections.
+      </div>
+    </div>
+  </div>
+
+  <!-- Research Presentation Framework -->
+  <div class="section" id="presentation-framework">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🛡️</div>
+      <div>
+        <h2>Research Presentation Framework &amp; Guardrails</h2>
+        <p class="section-sub">How CityU presents evidence — so we don't get caught out by our own slides</p>
+      </div>
+    </div>
+    <div class="section-body">
+
+      <!-- What happened / lesson -->
+      <div class="point">
+        <span class="point-label lbl-amber">What we learned</span>
+        <div class="point-body">
+          In the June 16 meeting, a vendor-derived "99.2% faster" time-savings claim was on our slide when SPD's own research scientist had a peer-reviewed RCT in hand that found <strong>no significant time savings</strong>. We didn't lose the room — Clark immediately acknowledged the counter-study and Loren's framing actually aligned with ours — but it exposed a gap in how we vet and label the evidence behind our claims before a meeting. This framework closes that gap.
+        </div>
+      </div>
+
+      <!-- Evidence tiers -->
+      <div class="point">
+        <span class="point-label lbl-violet">Step 1 — Tier every claim before it goes on a slide</span>
+        <div class="point-body">
+          <p style="margin:0 0 12px;">Every data point we present should be tagged with one of three tiers. If you can't tag it, it doesn't go in the deck.</p>
+          <div class="evidence-grid">
+            <div class="evidence-card ev-tier-1">
+              <div class="ev-tier">Tier 1 — Independent research</div>
+              <div class="ev-title">Peer-reviewed / RCT / government study</div>
+              <p>Can be stated as fact. Still requires context (sample size, agency type, recency). <em>Example: Adams et al. 2024 RCT on report-writing speed.</em></p>
+            </div>
+            <div class="evidence-card ev-tier-2">
+              <div class="ev-tier">Tier 2 — Applied / practitioner evidence</div>
+              <div class="ev-title">Agency pilots, conference reports, anecdotal from practitioners</div>
+              <p>Can be stated as "field experience suggests…" Always name the source. <em>Example: Chiefs at PERF said officers liked using it even without speed gains.</em></p>
+            </div>
+            <div class="evidence-card ev-tier-3">
+              <div class="ev-tier">Tier 3 — Vendor-provided</div>
+              <div class="ev-title">Marketing claims, press releases, internal studies</div>
+              <p>Must be labeled as vendor claims. Never present as research. Always pair with independent evidence or acknowledge the gap. <em>Example: "Axon claims 82% reduction — not yet independently verified."</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Do / Don't for contested claims -->
+      <div class="point">
+        <span class="point-label lbl-violet">Step 2 — When evidence is contested, own the tension</span>
+        <div class="point-body">
+          <p style="margin:0 0 12px;">The worst outcome is being caught defending a claim you didn't vet. The best outcome is being the people in the room who already know both sides.</p>
+          <div class="claim-grid">
+            <div class="claim-card claim-dont">
+              <div class="claim-label">❌ Don't say</div>
+              <p>"AI reduces report writing time from 2 hours to 60 seconds." <br><br>This is a Tier 3 vendor claim stated as fact. If your audience has read Adams et al., you've lost credibility before the conversation starts.</p>
+            </div>
+            <div class="claim-card claim-do">
+              <div class="claim-label">✅ Say instead</div>
+              <p>"Vendors claim up to 82% time reduction. The first independent RCT found no significant difference — but it only measured narrative writing, not full report time or quality. That gap is exactly what we're designed to evaluate."</p>
+            </div>
+            <div class="claim-card claim-dont">
+              <div class="claim-label">❌ Don't say</div>
+              <p>"AI tools are 80% accurate." <br><br>This is an aggregate figure from mixed sources with no agency or tool context. In a room with a research scientist, it will be challenged immediately.</p>
+            </div>
+            <div class="claim-card claim-do">
+              <div class="claim-label">✅ Say instead</div>
+              <p>"Accuracy varies significantly by tool, use case, and how 'accuracy' is defined. Hallucinations are documented and real — which is why human-in-the-loop validation is non-negotiable, not optional."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guardrails checklist -->
+      <div class="point">
+        <span class="point-label lbl-violet">Step 3 — Pre-meeting guardrails checklist</span>
+        <div class="point-body">
+          <p style="margin:0 0 14px;">Run every deck through this before entering a room with SPD, legal, or the prosecutor's office.</p>
+          <div class="guardrail">
+            <span class="guardrail-icon">1️⃣</span>
+            <div class="guardrail-body">
+              <strong>Is every statistic tagged with a source tier?</strong>
+              <span>If a number has no citation or is from a vendor press release, it either gets labeled as such or comes out.</span>
+            </div>
+          </div>
+          <div class="guardrail">
+            <span class="guardrail-icon">2️⃣</span>
+            <div class="guardrail-body">
+              <strong>Do we know the counter-argument for every Tier 2 or Tier 3 claim?</strong>
+              <span>If there's a published study that disputes a claim we're making, we should be the ones who bring it up — not the audience. Citing the counter-study ourselves is a credibility gain, not a concession.</span>
+            </div>
+          </div>
+          <div class="guardrail">
+            <span class="guardrail-icon">3️⃣</span>
+            <div class="guardrail-body">
+              <strong>Is the recency of each study noted?</strong>
+              <span>AI moves fast. A 2022 study on GPT-3 accuracy is not a claim about Claude 3.7 or GPT-4o. Always note the year and model generation when citing AI performance research.</span>
+            </div>
+          </div>
+          <div class="guardrail">
+            <span class="guardrail-icon">4️⃣</span>
+            <div class="guardrail-body">
+              <strong>Are we leading with what we know vs. what we're proposing to find out?</strong>
+              <span>CityU's value to SPD is as evaluators and researchers — not as people who have all the answers already. It's fine (and often stronger) to say "we don't know yet, and that's the study we want to run."</span>
+            </div>
+          </div>
+          <div class="guardrail">
+            <span class="guardrail-icon">5️⃣</span>
+            <div class="guardrail-body">
+              <strong>Have we separated what the evidence says from what we recommend?</strong>
+              <span>These are two different things and should never be collapsed. "The research shows X" and "we therefore recommend Y" need to be clearly distinct sentences. Recommendations are ours to own; findings belong to the study authors.</span>
+            </div>
+          </div>
+          <div class="guardrail">
+            <span class="guardrail-icon">6️⃣</span>
+            <div class="guardrail-body">
+              <strong>Is there a Tier 3 claim carrying weight it shouldn't?</strong>
+              <span>If removing the vendor number would collapse the argument, the argument isn't ready. The case should stand on Tier 1 and Tier 2 evidence, with Tier 3 presented only as context for what's being claimed in the market.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recovery protocol -->
+      <div class="point">
+        <span class="point-label lbl-green">Step 4 — If challenged in the room</span>
+        <div class="point-body">
+          <p style="margin:0 0 10px;">What happened on June 16 was actually the right response — Clark acknowledged the counter-study, noted the recency gap, and kept moving. That's the playbook.</p>
+          <ul>
+            <li><strong>Acknowledge immediately.</strong> "That's the Adams study — yes, we've read it. Here's what we think it does and doesn't tell us…"</li>
+            <li><strong>Narrow the claim, don't abandon it.</strong> "The speed finding is disputed. The quality and consistency findings aren't — and that's actually the more important argument for this audience."</li>
+            <li><strong>Redirect to what we're there to do.</strong> "This is exactly why independent evaluation matters. You shouldn't have to take vendor numbers or our numbers on faith — you should have a research partner who runs the test."</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-blue">
+        <strong>The meta-rule:</strong> CityU's credibility in this partnership comes from being the people who read the fine print — not from having the most optimistic numbers. Every time we acknowledge a limitation before the room does, we bank trust. Every time the room catches us on something we should have known, we spend it.
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Minutes — CityU × Seattle PD, June 16 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    /* Nav */
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Header card */
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      margin: 0 0 8px; font-size: 1.7rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.2;
+    }
+    .doc-header .subtitle {
+      color: var(--slate); font-size: 0.95rem; margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .meta-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px; color: var(--slate);
+    }
+
+    /* TOC */
+    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+    .toc h2 {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--slate); margin: 0 0 12px;
+    }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* Section */
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .section-header h2 {
+      margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .section-body { padding: 20px 24px; }
+
+    /* Points list */
+    .point {
+      display: flex; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label {
+      flex-shrink: 0;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      height: fit-content;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+
+    /* Attendee grid */
+    .attendee-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    @media (max-width: 560px) { .attendee-grid { grid-template-columns: 1fr; } }
+    .attendee-card {
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      background: var(--bg);
+    }
+    .attendee-card .name {
+      font-size: 0.88rem; font-weight: 700; margin-bottom: 2px;
+    }
+    .attendee-card .role {
+      font-size: 0.78rem; color: var(--slate);
+    }
+    .attendee-card .left-early {
+      font-size: 0.7rem; color: var(--orange); font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+
+    /* Partner cards (reused for product cards) */
+    .partner-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media (max-width: 560px) { .partner-grid { grid-template-columns: 1fr; } }
+    .partner-card {
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 16px;
+      background: var(--bg);
+    }
+    .partner-card .partner-name {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--slate); margin-bottom: 6px;
+    }
+    .partner-card p { margin: 0; font-size: 0.88rem; line-height: 1.5; }
+
+    /* Action item list */
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+    }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px;
+      background: var(--blue-dim); color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; margin-top: 1px;
+    }
+    .action-body { font-size: 0.92rem; }
+    .action-owner {
+      display: inline-block; margin-top: 4px;
+      font-size: 0.74rem; font-weight: 700; color: var(--slate);
+      background: var(--bg); border-radius: 20px; padding: 2px 10px;
+    }
+
+    /* Color variants for section icons */
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    /* Label color variants */
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+
+    /* Callout */
+    .callout {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      border: 1px solid transparent;
+      margin-top: 12px;
+    }
+    .callout-amber { background: var(--amber-dim); border-color: #fde68a; color: #92400e; }
+    .callout-blue { background: var(--blue-dim); border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Minutes — CityU × Seattle PD, June 16 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Minutes</div>
+    <h1>CityU × Seattle Police Department — AI for First Responders</h1>
+    <p class="subtitle">Joint planning call between CityU's AI-for-first-responders research team and SPD leadership on report-writing efficiency, the King County Prosecutor's AI prohibition, SPD's in-progress AI tooling, and a proposed research/evaluation partnership.</p>
+    <div class="meta-row">
+      <span class="meta-chip">June 16, 2026</span>
+      <span class="meta-chip">~51 min</span>
+      <span class="meta-chip">Internal / Partner</span>
+      <span class="meta-chip">11 attendees</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#attendees">Attendees</a></li>
+      <li><a href="#context">Context &amp; Goal</a></li>
+      <li><a href="#data">Key Data Point Presented</a></li>
+      <li><a href="#prosecutor">Major Obstacle: King County Prosecutor</a></li>
+      <li><a href="#spd-tools">What SPD Already Has in Motion</a></li>
+      <li><a href="#other-ideas">Other Ideas Raised</a></li>
+      <li><a href="#next-steps">Action Items &amp; Next Steps</a></li>
+    </ol>
+  </div>
+
+  <!-- Attendees -->
+  <div class="section" id="attendees">
+    <div class="section-header">
+      <div class="section-icon icon-blue">👥</div>
+      <h2>Attendees</h2>
+    </div>
+    <div class="section-body">
+      <div class="attendee-grid">
+        <div class="attendee-card">
+          <div class="name">Suzanne Walsh</div>
+          <div class="role">CityU — facilitator</div>
+        </div>
+        <div class="attendee-card">
+          <div class="name">Sam Chung</div>
+          <div class="role">Dean, School of Technology &amp; Computing, CityU</div>
+          <div class="left-early">Dropped early — poor connection</div>
+        </div>
+        <div class="attendee-card">
+          <div class="name">Clark</div>
+          <div class="role">CityU alum / researcher</div>
+        </div>
+        <div class="attendee-card">
+          <div class="name">Jai Stone</div>
+          <div class="role">AI strategy &amp; bias consultant, Atlanta</div>
+        </div>
+        <div class="attendee-card">
+          <div class="name">Sean Barnes</div>
+          <div class="role">Chief of Police, Seattle</div>
+          <div class="left-early">Left early — next meeting</div>
+        </div>
+        <div class="attendee-card">
+          <div class="name">Alex Ricketts</div>
+          <div class="role">Chief of Staff, SPD</div>
+          <div class="left-early">Left early</div>
+        </div>
+        <div class="attendee-card">
+          <div class="name">Lee Hunt</div>
+          <div class="role">Executive Director, Crime &amp; Community Harm Reduction, SPD</div>
+        </div>
+        <div class="attendee-card">
+          <div class="name">Loren Atherley</div>
+          <div class="role">Sr. Director, Performance Analytics &amp; Research / Sr. Research Scientist, SPD</div>
+        </div>
+        <div class="attendee-card">
+          <div class="name">Elena Blackmore</div>
+          <div class="role">Project Manager, SPD AI policy</div>
+          <div class="left-early">Left early — next meeting</div>
+        </div>
+        <div class="attendee-card">
+          <div class="name">Barbara Delales</div>
+          <div class="role">Communications, SPD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Context -->
+  <div class="section" id="context">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🎯</div>
+      <h2>Context &amp; Goal</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Background</span>
+        <div class="point-body">
+          CityU has been researching <strong>"AI for first responders"</strong> broadly, looking at commonalities across police, fire, and EMS — not just SPD. The original catalyst was Chief Barnes's request to explore AI for incident report writing.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Chief Barnes's stated goals</span>
+        <div class="point-body">
+          Leverage whatever AI capability current policy allows; increase officer experience; decrease time spent on administrative tasks; put more officer time back into the community.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key data -->
+  <div class="section" id="data">
+    <div class="section-header">
+      <div class="section-icon icon-green">📊</div>
+      <h2>Key Data Point Presented (Clark's Research)</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-green">Time savings claim</span>
+        <div class="point-body">
+          Average police report currently takes <strong>~2 hours</strong> to write (officer pulled out of the field). Goal floated: get a first AI-assisted draft down to <strong>~60 seconds</strong>.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Accuracy caveat</span>
+        <div class="point-body">
+          Cited AI tool accuracy figures around <strong>80%</strong>, not 100% — group agreed the priority is identifying and mitigating risk, plus having a plan for when something still goes wrong.
+        </div>
+      </div>
+      <div class="callout callout-blue">
+        <strong>Counterpoint raised by Loren Atherley:</strong> a 2024 peer-reviewed study (Adams et al., <em>Journal of Experimental Criminology</em>) on Axon's "Draft One" found <strong>no statistically significant time savings</strong> from AI-assisted report writing in a randomized controlled trial — directly contradicting vendor marketing claims of an 82% reduction. Loren is sourcing the article for the group; Clark noted the study is already ~2 years old and newer models may perform differently.
+      </div>
+    </div>
+  </div>
+
+  <!-- Prosecutor obstacle -->
+  <div class="section" id="prosecutor">
+    <div class="section-header">
+      <div class="section-icon icon-red">🚫</div>
+      <h2>Major Obstacle: King County Prosecutor</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Policy</span>
+        <div class="point-body">
+          <strong>Hard, blanket prohibition</strong> on AI involvement in anything an officer writes, especially narratives — no AI-assisted first drafts allowed at all.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Diagnosis</span>
+        <div class="point-body">
+          Group consensus: this is a <strong>political</strong> position, not grounded in a specific incident — likely preemptive of public concern rather than evidence-based. Root cause ("the why") still needs to be pinned down before crafting a response.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Possible workarounds discussed</span>
+        <div class="point-body">
+          <ul style="margin: 6px 0 0; padding-left: 18px;">
+            <li>Position AI as <strong>QA/copy-editor</strong>, not author — officer writes in own words, AI checks against policy requirements ("you're missing X").</li>
+            <li>Microsoft's approach: AI drafts a narrative from officer prompts but deliberately inserts odd/nonsensical words, forcing the officer to re-read, correct, validate, and sign off.</li>
+            <li>Use AI to compare body-worn-camera transcript against the written report for QA, rather than having AI write the report.</li>
+            <li>Strategy from Jai Stone: <strong>"You only need ONE successful integration to open the gates."</strong> Slow-walk adoption, build trust in one low-risk use case before expanding ("crawl, walk, run," not "swing for the fences").</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPD tools -->
+  <div class="section" id="spd-tools">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🛠️</div>
+      <h2>What SPD Already Has in Motion</h2>
+    </div>
+    <div class="section-body">
+      <div class="partner-grid">
+        <div class="partner-card">
+          <div class="partner-name">📝 CaseX / Corvus</div>
+          <p>AI-assisted public-facing online crime reporting tool, just cleared privacy review. Walks the public through report creation, diverts non-crime reports, and drafts a report the citizen reviews and approves before submitting.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">✅ Mark 43 QA utility</div>
+          <p>RMS vendor's new prompt-based quality assurance feature — checks completeness (e.g., verifying a hospital is listed when an officer says someone was transported). Just submitted for privacy approval.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">🔎 Planned NLP review model</div>
+          <p>Flags poorly articulated reasonable suspicion / probable cause distinctions for supervisor review — a training and accountability tool, not a report-drafting tool.</p>
+        </div>
+        <div class="partner-card" style="background: var(--blue-dim); border-color: #bfdbfe;">
+          <div class="partner-name" style="color: var(--blue);">🤖 Closed Claude instance</div>
+          <p>City has procured a <strong>private/closed Claude instance</strong> specifically for SPD (separate from city-wide Copilot), with guardrails and an SPD-specific knowledge base via MCP. Currently in <strong>low-risk use case phase</strong> (public data only) while security/roles/permissions are configured; medium/high-risk phases planned next. MCP configuration permission was granted the morning of this meeting — Claude expected online for SPD within the next couple of weeks.</p>
+        </div>
+      </div>
+      <div class="point" style="margin-top: 16px;">
+        <span class="point-label lbl-amber">Policy status</span>
+        <div class="point-body">
+          AI policy draft has been reviewed by Legal and Privacy; currently sitting with the <strong>policy unit</strong> for standard review. Strict internal rule: employees may <strong>not</strong> enter CJIS / PII / other protected data into any generative AI system — the core reason for building an in-house, closed instance rather than using a public cloud model.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-red">Open question</span>
+        <div class="point-body">
+          How do other police/sheriff departments handle CJIS data in AI-assisted report writing, given SPD officers currently cannot bring CJIS data into any GenAI tool? Unresolved — flagged for follow-up.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other ideas -->
+  <div class="section" id="other-ideas">
+    <div class="section-header">
+      <div class="section-icon icon-amber">💡</div>
+      <h2>Other Ideas Raised</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">Alt. low-risk use case</span>
+        <div class="point-body">
+          Reduce <strong>field training officer documentation time</strong> (currently 2 hrs of overtime/day) as a lower-risk AI pilot, separate from patrol report writing.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Citizen-facing accuracy</span>
+        <div class="point-body">
+          Could AI help community members file more accurate self-reports, reducing the rework/correction rate SPD currently sees?
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Research partnership</span>
+        <div class="point-body">
+          Loren noted SPD has a robust global research network (criminology + tech) and is open to a formal <strong>MOU</strong> with CityU. CityU's research approach is distinguished as <strong>applied and consumable</strong>, versus purely peer-reviewed academic output.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Evaluation role</span>
+        <div class="point-body">
+          CityU offered to serve as a <strong>third-party evaluator</strong> — combining technologists and social scientists so findings aren't dismissed as purely techno-optimist or exposed to bias critiques. CityU could also interview internal "skeptics" (e.g., the prosecutor's office) to surface root objections. Loren separately noted SPD doesn't yet have an evaluation partner and is looking for help pursuing <strong>ISO certification</strong> (preferred over NIST) for the closed Claude implementation — a prior candidate, PNNL, lost funding last year.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Framework</span>
+        <div class="point-body">
+          Jai Stone's model: <strong>problem → process → people → platform.</strong> She also framed a "four-headed dragon" needing attention: advocacy (top-down), integration (policy-down), education (leadership / workforce / policy), and bias.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">External interest</span>
+        <div class="point-body">
+          Lee Hunt noted Microsoft recently held an AI public-safety workshop and is interested in assisting SPD.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Budget angle</span>
+        <div class="point-body">
+          Chief Barnes raised a political/budget argument: AI report-writing efficiency could reduce officer overtime costs. He's not pursuing a "fewer officers needed" framing until SPD returns to full staffing.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next steps -->
+  <div class="section" id="next-steps">
+    <div class="section-header">
+      <div class="section-icon icon-green">✅</div>
+      <h2>Action Items &amp; Next Steps</h2>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check">1</span>
+          <div class="action-body">
+            Source and circulate the 2024 academic study on AI report-writing accuracy (Adams et al., Axon Draft One RCT) for group review.
+            <div><span class="action-owner">Owner: Loren Atherley</span></div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">2</span>
+          <div class="action-body">
+            Host CityU team on-site at SPD — tour current work, meet Loren's team and Elena, review the AI policy draft in detail, and discuss partnership/pilot opportunities.
+            <div><span class="action-owner">Owner: Chief Barnes / SPD</span></div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">3</span>
+          <div class="action-body">
+            Coordinate logistics for the on-site meeting in the next 1–2 weeks via research program manager Mirzman Ashen Cook; Jai Stone to join remotely.
+            <div><span class="action-owner">Owner: Loren Atherley</span></div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">4</span>
+          <div class="action-body">
+            Form a working group (Jai Stone, Lee Hunt, Loren Atherley, Sam Chung, Clark) to scope a year-long roadmap spanning research, evaluation, and education/workshops.
+            <div><span class="action-owner">Owner: Suzanne Walsh</span></div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">5</span>
+          <div class="action-body">
+            Develop a funding pitch framed broadly across first-responder units (not SPD-only) to maximize leverage with prospective funders.
+            <div><span class="action-owner">Owner: Suzanne Walsh</span></div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">6</span>
+          <div class="action-body">
+            Explore a formal MOU between CityU and SPD's research network for collaborative research and third-party evaluation.
+            <div><span class="action-owner">Owner: Lee Hunt / Loren Atherley</span></div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">7</span>
+          <div class="action-body">
+            Investigate how peer agencies handle CJIS data within AI-assisted report-writing workflows.
+            <div><span class="action-owner">Owner: Lee Hunt</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

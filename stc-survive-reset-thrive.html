@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Survive · Reset · Thrive — STC Strategic Frameworks</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --green: #15803d;
+      --green-dim: #f0fdf4;
+      --green-mid: #bbf7d0;
+      --amber: #b45309;
+      --amber-dim: #fffbeb;
+      --amber-mid: #fde68a;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --blue-mid: #bfdbfe;
+      --violet: #6d28d9;
+      --violet-dim: #f5f3ff;
+      --violet-mid: #ddd6fe;
+      --red: #be123c;
+      --red-dim: #fff1f2;
+      --red-mid: #fecdd3;
+      --orange: #c2410c;
+      --orange-dim: #fff7ed;
+      --orange-mid: #fed7aa;
+      --teal: #0f766e;
+      --teal-dim: #f0fdfa;
+      --teal-mid: #99f6e4;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .shell { max-width: 920px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    /* Nav */
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Doc header */
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 32px;
+    }
+    .doc-header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin: 0 0 6px;
+    }
+    .doc-header .sub {
+      color: var(--slate);
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+    .doc-meta {
+      display: flex; flex-wrap: wrap; gap: 8px 20px;
+      font-size: 0.82rem; color: var(--slate-light);
+    }
+    .doc-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* Section */
+    .section { margin-bottom: 36px; }
+    .section-header {
+      display: flex; align-items: baseline; gap: 12px;
+      margin-bottom: 16px;
+    }
+    .section-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--slate-light);
+    }
+    .section-title {
+      font-size: 1.2rem; font-weight: 800; color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .section-desc {
+      font-size: 0.88rem; color: var(--slate); margin-bottom: 18px;
+      max-width: 720px; line-height: 1.65;
+    }
+
+    /* ── Uncertainty Matrix ── */
+    .matrix-wrap {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+    .matrix-axes {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      grid-template-rows: 1fr 28px;
+      gap: 0;
+    }
+    .axis-y {
+      grid-column: 1; grid-row: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .axis-y span {
+      display: block;
+      transform: rotate(-90deg);
+      white-space: nowrap;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--slate);
+    }
+    .axis-x {
+      grid-column: 2; grid-row: 2;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--slate);
+      padding-top: 6px;
+    }
+    .matrix-grid {
+      grid-column: 2; grid-row: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .quadrant {
+      padding: 18px 20px;
+      position: relative;
+    }
+    .q-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .q-name {
+      font-size: 1rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em;
+    }
+    .q-posture {
+      font-size: 0.72rem; font-weight: 600; border-radius: 4px;
+      display: inline-block; padding: 2px 8px; margin-bottom: 10px;
+    }
+    .quadrant ul {
+      margin: 0; padding: 0 0 0 14px;
+      font-size: 0.8rem; line-height: 1.55;
+    }
+    .quadrant ul li { margin-bottom: 3px; }
+
+    /* Q positions: top-left = low familiarity / high impact (executive)
+       top-right = high familiarity / high impact (business)
+       bottom-left = low familiarity / low impact (emerging)
+       bottom-right = high familiarity / low impact (operational) */
+    .q-executive  { background: var(--red-dim);    border: 1.5px solid var(--red-mid); }
+    .q-business   { background: var(--amber-dim);  border: 1.5px solid var(--amber-mid); }
+    .q-emerging   { background: var(--blue-dim);   border: 1.5px solid var(--blue-mid); }
+    .q-operational{ background: var(--teal-dim);   border: 1.5px solid var(--teal-mid); }
+
+    .q-executive  .q-label  { color: var(--red); }
+    .q-executive  .q-name   { color: var(--red); }
+    .q-executive  .q-posture{ background: var(--red-mid); color: var(--red); }
+    .q-business   .q-label  { color: var(--amber); }
+    .q-business   .q-name   { color: var(--amber); }
+    .q-business   .q-posture{ background: var(--amber-mid); color: var(--amber); }
+    .q-emerging   .q-label  { color: var(--blue); }
+    .q-emerging   .q-name   { color: var(--blue); }
+    .q-emerging   .q-posture{ background: var(--blue-mid); color: var(--blue); }
+    .q-operational.q-label  { color: var(--teal); }
+    .q-operational .q-label { color: var(--teal); }
+    .q-operational .q-name  { color: var(--teal); }
+    .q-operational .q-posture{ background: var(--teal-mid); color: var(--teal); }
+
+    .axis-arrow {
+      font-size: 0.72rem; color: var(--slate-light);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .axis-labels-x {
+      grid-column: 2; grid-row: 2;
+      display: flex; justify-content: space-between;
+      font-size: 0.68rem; color: var(--slate-light);
+      padding: 4px 0 0;
+    }
+    .axis-labels-y {
+      grid-column: 1; grid-row: 1;
+      display: flex; flex-direction: column; justify-content: space-between;
+      align-items: center;
+      font-size: 0.68rem; color: var(--slate-light);
+      padding: 0 2px;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    /* ── 4 Cs grid ── */
+    .four-c-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .c-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 24px;
+      border-top: 4px solid;
+    }
+    .c-cash    { border-color: var(--green); }
+    .c-cost    { border-color: var(--amber); }
+    .c-customers { border-color: var(--blue); }
+    .c-communication { border-color: var(--violet); }
+
+    .c-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .c-badge {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 900; flex-shrink: 0;
+    }
+    .c-cash .c-badge       { background: var(--green-dim); color: var(--green); }
+    .c-cost .c-badge       { background: var(--amber-dim); color: var(--amber); }
+    .c-customers .c-badge  { background: var(--blue-dim);  color: var(--blue); }
+    .c-communication .c-badge { background: var(--violet-dim); color: var(--violet); }
+
+    .c-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; }
+    .c-card ul { margin: 0; padding: 0 0 0 16px; }
+    .c-card ul li {
+      font-size: 0.85rem; color: var(--slate); line-height: 1.6;
+      margin-bottom: 6px;
+    }
+    .c-card ul li strong { color: var(--ink); font-weight: 600; }
+    .diag {
+      margin-top: 12px; padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem; font-style: italic; color: var(--slate);
+      border-left: 3px solid;
+    }
+    .c-cash .diag        { background: var(--green-dim); border-color: var(--green); }
+    .c-cost .diag        { background: var(--amber-dim); border-color: var(--amber); }
+    .c-customers .diag   { background: var(--blue-dim);  border-color: var(--blue); }
+    .c-communication .diag { background: var(--violet-dim); border-color: var(--violet); }
+
+    /* ── BLAST ── */
+    .blast-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    .blast-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 16px;
+      border-top: 4px solid;
+    }
+    .b-card { border-color: #7c3aed; }
+    .l-card { border-color: #0f766e; }
+    .a-card { border-color: #1d4ed8; }
+    .s-card { border-color: #b45309; }
+    .t-card { border-color: #be123c; }
+
+    .blast-letter {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; font-weight: 900;
+      margin-bottom: 10px;
+    }
+    .b-card .blast-letter { background: #f5f3ff; color: #7c3aed; }
+    .l-card .blast-letter { background: #f0fdfa; color: #0f766e; }
+    .a-card .blast-letter { background: #eff6ff; color: #1d4ed8; }
+    .s-card .blast-letter { background: #fffbeb; color: #b45309; }
+    .t-card .blast-letter { background: #fff1f2; color: #be123c; }
+
+    .blast-name {
+      font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .b-card .blast-name { color: #7c3aed; }
+    .l-card .blast-name { color: #0f766e; }
+    .a-card .blast-name { color: #1d4ed8; }
+    .s-card .blast-name { color: #b45309; }
+    .t-card .blast-name { color: #be123c; }
+
+    .blast-def {
+      font-size: 0.8rem; font-weight: 600; color: var(--ink);
+      margin-bottom: 10px; line-height: 1.4;
+    }
+    .blast-card ul {
+      margin: 0; padding: 0 0 0 14px;
+    }
+    .blast-card ul li {
+      font-size: 0.78rem; color: var(--slate);
+      line-height: 1.55; margin-bottom: 5px;
+    }
+    .blast-card ul li strong { color: var(--ink); font-weight: 600; }
+
+    /* ── References ── */
+    .refs-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .ref-group {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 22px;
+    }
+    .ref-group-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--slate-light);
+      margin-bottom: 10px;
+    }
+    .ref-list {
+      margin: 0; padding: 0;
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .ref-list li {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .ref-list a {
+      font-size: 0.88rem; font-weight: 600;
+      color: var(--blue); text-decoration: none;
+    }
+    .ref-list a:hover { text-decoration: underline; }
+    .ref-note {
+      font-size: 0.78rem; color: var(--slate); line-height: 1.5;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 48px; padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem; color: var(--slate-light);
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px;
+    }
+    .footer a { color: var(--blue); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+      .four-c-grid { grid-template-columns: 1fr; }
+      .blast-grid { grid-template-columns: 1fr 1fr; }
+      .blast-grid .t-card { grid-column: 1 / -1; }
+      .doc-header h1 { font-size: 1.35rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Nav -->
+  <nav class="nav-row">
+    <a href="index.html">← Home</a>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--slate)">STC Strategy</span>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--slate)">Survive · Reset · Thrive</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="doc-header">
+    <h1>Survive · Reset · Thrive: STC Strategic Frameworks</h1>
+    <p class="sub">Applied to School of Technology &amp; Computing · City University of Seattle</p>
+    <div class="doc-meta">
+      <span>📅 June 2026</span>
+      <span>📖 Source: <em>Survive Reset Thrive</em> (framework attribution)</span>
+      <span>🎯 Audience: STC Leadership</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 1: Uncertainty Matrix             -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Framework 1</span>
+      <span class="section-title">The Uncertainty Matrix</span>
+    </div>
+    <p class="section-desc">
+      Plot STC's uncertainties across two axes — <strong>familiarity</strong> (can our current model handle it? has it happened before?) and <strong>potential impact</strong> (does it challenge core assumptions? require major investment?). The quadrant determines who owns the response and at what urgency.
+    </p>
+
+    <div class="matrix-wrap">
+      <div style="display:grid; grid-template-columns: 28px 1fr; grid-template-rows: 1fr 44px; gap: 0;">
+
+        <!-- Y-axis label -->
+        <div style="grid-column:1; grid-row:1; display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding: 4px 0; font-size:0.68rem; color:var(--slate-light);">
+          <span style="writing-mode:vertical-rl; text-orientation:mixed; transform:rotate(180deg); white-space:nowrap; font-weight:600; letter-spacing:.05em;">HIGH IMPACT ↑</span>
+          <span style="writing-mode:vertical-rl; text-orientation:mixed; transform:rotate(180deg); white-space:nowrap; font-weight:600; letter-spacing:.05em;">LOW IMPACT</span>
+        </div>
+
+        <!-- 2×2 grid -->
+        <div style="grid-column:2; grid-row:1; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:3px; border-radius:8px; overflow:hidden;">
+
+          <!-- Top-left: Executive (low familiarity, high impact) -->
+          <div class="quadrant q-executive">
+            <div class="q-label">Executive Issue</div>
+            <div class="q-name">Game Changer</div>
+            <div class="q-posture">→ CEO / Dean agenda</div>
+            <ul>
+              <li>AI displacing entry-level developer roles — threatens graduate employability</li>
+              <li>GenAI making traditional CS degree content obsolete faster than curriculum cycles allow</li>
+              <li>Demographic enrollment cliff arriving 2026–2028</li>
+              <li>Credentialing disruption: employer-led bootcamps &amp; micro-credentials bypassing 4-year programs</li>
+            </ul>
+          </div>
+
+          <!-- Top-right: Business (high familiarity, high impact) -->
+          <div class="quadrant q-business">
+            <div class="q-label">Business Issue</div>
+            <div class="q-name">Known Variables</div>
+            <div class="q-posture">→ Established process</div>
+            <ul>
+              <li>NWCCU / ABET accreditation cycle — learnable, high-stakes</li>
+              <li>10%+ enrollment decline triggering budget reallocation</li>
+              <li>Major lab infrastructure investment decisions (cloud vs. on-premise)</li>
+              <li>Faculty contract negotiations during enrollment pressure</li>
+            </ul>
+          </div>
+
+          <!-- Bottom-left: Emerging (low familiarity, low impact now) -->
+          <div class="quadrant q-emerging">
+            <div class="q-label">Emerging Issue</div>
+            <div class="q-name">Watching Brief</div>
+            <div class="q-posture">→ Delegate &amp; monitor</div>
+            <ul>
+              <li>Students adopting AI coding copilots (Copilot, Cursor, Claude) in coursework</li>
+              <li>Open-source LLM proliferation enabling low-cost student projects</li>
+              <li>New GenAI micro-credential providers (Coursera, Google, AWS) attracting STC prospects</li>
+              <li>AI-generated academic integrity edge cases multiplying</li>
+            </ul>
+          </div>
+
+          <!-- Bottom-right: Operational (high familiarity, low impact) -->
+          <div class="quadrant q-operational">
+            <div class="q-label">Operational Issue</div>
+            <div class="q-name">Business as Usual</div>
+            <div class="q-posture">→ Routine management</div>
+            <ul>
+              <li>Annual course scheduling and faculty load balancing</li>
+              <li>Lab software license renewals (Adobe, Microsoft, JetBrains)</li>
+              <li>Routine accreditation maintenance documentation</li>
+              <li>Standard student retention interventions (advising, early alerts)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- X-axis label -->
+        <div style="grid-column:2; grid-row:2; display:flex; justify-content:space-between; align-items:flex-start; padding-top:8px; font-size:0.68rem; color:var(--slate-light); font-weight:600; letter-spacing:.05em;">
+          <span>← LOW FAMILIARITY</span>
+          <span style="color:var(--slate); font-weight:700; letter-spacing:.06em; text-transform:uppercase; font-size:0.7rem; align-self:center;">FAMILIARITY</span>
+          <span>HIGH FAMILIARITY →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 2: 4 Cs of Survival               -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Framework 2</span>
+      <span class="section-title">The 4 Cs of Survival</span>
+    </div>
+    <p class="section-desc">
+      The basics of <em>Survive</em> mode — implemented proactively during steady-state and tightened when a market shock hits. For STC, a market shock could be a sudden enrollment drop, a major employer pulling back on hiring, or an accreditation challenge.
+    </p>
+
+    <div class="four-c-grid">
+
+      <!-- CASH -->
+      <div class="c-card c-cash">
+        <div class="c-top">
+          <div class="c-badge">$</div>
+          <div class="c-title">Cash</div>
+        </div>
+        <ul>
+          <li><strong>Enrollment runway:</strong> How many terms can STC operate at current cost base if enrollment drops 15%? 25%? Know the number.</li>
+          <li><strong>Revenue diversification:</strong> Map tuition, tech fees, grants, and corporate contracts — no single source &gt;60% of operating budget.</li>
+          <li><strong>Receivables discipline:</strong> Track outstanding student accounts and financial aid disbursement lag; tighten during enrollment dips.</li>
+          <li><strong>Grant pipeline:</strong> Maintain 1–2 active federal/state grant applications at all times (NSF, DoL, WA SBCTC) as buffer capital.</li>
+        </ul>
+        <div class="diag">Diagnostic: What is STC's current cash runway at flat enrollment? At −15%?</div>
+      </div>
+
+      <!-- COST -->
+      <div class="c-card c-cost">
+        <div class="c-top">
+          <div class="c-badge">%</div>
+          <div class="c-title">Cost</div>
+        </div>
+        <ul>
+          <li><strong>Fixed vs. variable faculty mix:</strong> Target a sustainable tenure/adjunct ratio that allows flex without layoffs; review annually.</li>
+          <li><strong>Cost-per-student:</strong> Track lab licensing, cloud infrastructure, and software costs per enrolled student — benchmark against peer SoTCs.</li>
+          <li><strong>Resist hiring to solve curriculum gaps:</strong> Default to course redesign, adjuncts, or industry partnerships before adding FTE.</li>
+          <li><strong>Unit economics:</strong> Know CAC (marketing spend per enrolled student), LTV (total tuition per completion), and gross margin per program.</li>
+        </ul>
+        <div class="diag">Diagnostic: Which programs have the highest cost-per-credit-hour? Are they also the highest-margin?</div>
+      </div>
+
+      <!-- CUSTOMERS -->
+      <div class="c-card c-customers">
+        <div class="c-top">
+          <div class="c-badge">◎</div>
+          <div class="c-title">Customers</div>
+        </div>
+        <ul>
+          <li><strong>Retention cohort tracking:</strong> Monitor term-to-term and year-to-year retention by program; flag cohorts below threshold early.</li>
+          <li><strong>Concentration limits:</strong> No single program should exceed 30% of total STC enrollment — concentration = fragility.</li>
+          <li><strong>Employer partner risk:</strong> Map top 10 employer hiring partners; build mitigation plans for loss of any top-3 relationship.</li>
+          <li><strong>At-risk student signals:</strong> Define and act on early-alert triggers (GPA drops, non-payment, attendance) within first 4 weeks of each term.</li>
+        </ul>
+        <div class="diag">Diagnostic: Which programs or student segments show declining retention trends over the last 3 terms?</div>
+      </div>
+
+      <!-- COMMUNICATION -->
+      <div class="c-card c-communication">
+        <div class="c-top">
+          <div class="c-badge">↔</div>
+          <div class="c-title">Communication</div>
+        </div>
+        <ul>
+          <li><strong>Faculty alignment:</strong> Share the honest narrative of STC's AI-first direction — what it means for curriculum, workload, and job security — before people fill the vacuum with fear.</li>
+          <li><strong>Student value story:</strong> Articulate clearly why an STC degree still matters in an AI world; embed it in advising, onboarding, and career services.</li>
+          <li><strong>Employer partner cadence:</strong> Quarterly touchpoint with top 10 hiring partners; annual co-design session for curriculum priorities.</li>
+          <li><strong>Crisis script:</strong> Pre-draft the communication plan for an accreditation challenge or major enrollment drop — don't write it under pressure.</li>
+        </ul>
+        <div class="diag">Diagnostic: If enrollment dropped 20% tomorrow, could you explain why and what you're doing about it — to faculty, students, and leadership — within 48 hours?</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 3: BLAST Framework                -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Framework 3</span>
+      <span class="section-title">The BLAST Framework</span>
+    </div>
+    <p class="section-desc">
+      The recipe for a <em>Thrive</em> organization — executing strategy with agility and learning during uncertain times. For STC, thriving means graduating AI-fluent technologists faster than the market can discount degrees, and doing it with distributed decisions, not bottlenecked committees.
+    </p>
+
+    <div class="blast-grid">
+
+      <!-- B -->
+      <div class="blast-card b-card">
+        <div class="blast-letter">B</div>
+        <div class="blast-name">Beliefs</div>
+        <div class="blast-def">Forward-looking bets STC is placing on the market</div>
+        <ul>
+          <li><strong>Bet 1:</strong> AI-fluent graduates will command a 20–30% salary premium by 2027 — and employers will pay for that signal.</li>
+          <li><strong>Bet 2:</strong> Hybrid human-AI teams become the standard hiring unit; pure coders without AI fluency become less hireable.</li>
+          <li><strong>Bet 3:</strong> Employers will increasingly co-design curriculum rather than just consume graduates.</li>
+          <li><em>Test these beliefs quarterly with employer data, salary surveys, and job posting analysis.</em></li>
+        </ul>
+      </div>
+
+      <!-- L -->
+      <div class="blast-card l-card">
+        <div class="blast-letter">L</div>
+        <div class="blast-name">Learning Velocity</div>
+        <div class="blast-def">The rate at which STC acquires and applies new knowledge</div>
+        <ul>
+          <li><strong>Curriculum cycle time:</strong> Measure months from "employer need identified" to "course updated." Target: under 6 months for module-level changes.</li>
+          <li><strong>Faculty PD cadence:</strong> Minimum one hands-on AI tool immersion per term for all STC faculty.</li>
+          <li><strong>Feedback loops:</strong> Employer advisory board meets each term with specific curriculum questions, not just updates.</li>
+          <li><strong>Fast experiments:</strong> Run at least 2 low-cost AI curriculum pilots per academic year before full rollout.</li>
+        </ul>
+      </div>
+
+      <!-- A -->
+      <div class="blast-card a-card">
+        <div class="blast-letter">A</div>
+        <div class="blast-name">Agility</div>
+        <div class="blast-def">Good decisions, made quickly, close to the action</div>
+        <ul>
+          <li><strong>Clarify decision rights:</strong> Program chairs should have authority to add AI modules to existing courses without full curriculum committee review.</li>
+          <li><strong>Fast-track certificates:</strong> Create an expedited approval path (&lt;30 days) for short AI credential programs responding to market signals.</li>
+          <li><strong>Resource follow decisions:</strong> When a program chair makes a curriculum pivot, budget realignment should happen within the same term — not the next fiscal year.</li>
+          <li><strong>Kill the bottleneck:</strong> Identify the one approval step that slows every curriculum change; eliminate or delegate it.</li>
+        </ul>
+      </div>
+
+      <!-- S -->
+      <div class="blast-card s-card">
+        <div class="blast-letter">S</div>
+        <div class="blast-name">Shared Context</div>
+        <div class="blast-def">Common understanding of what matters and why</div>
+        <ul>
+          <li><strong>STC identity narrative:</strong> Every faculty member should be able to answer "what makes an STC grad different in an AI world?" in 60 seconds.</li>
+          <li><strong>Strategy on one page:</strong> Distill STC's AI-first direction into a single reference artifact that chairs, advisors, and faculty all carry.</li>
+          <li><strong>Performance transparency:</strong> Share enrollment, retention, and employer placement data with all faculty — not just leadership.</li>
+          <li><strong>Student-facing clarity:</strong> Prospective students should understand STC's AI curriculum differentiation before they apply.</li>
+        </ul>
+      </div>
+
+      <!-- T -->
+      <div class="blast-card t-card">
+        <div class="blast-letter">T</div>
+        <div class="blast-name">Trust</div>
+        <div class="blast-def">High reliability — doing exactly what you say you will do</div>
+        <ul>
+          <li><strong>Commitment culture:</strong> Chairs and faculty make explicit, trackable commitments on curriculum updates — not aspirational timelines.</li>
+          <li><strong>Employer reliability:</strong> When STC promises a curriculum change to an employer partner, it ships on schedule or the partner is notified immediately.</li>
+          <li><strong>Accreditor trust:</strong> Treat accreditors as partners, not adversaries — proactive transparency builds the trust that creates flexibility in difficult cycles.</li>
+          <li><strong>Internal follow-through:</strong> Leadership commitments to faculty (on resources, timelines, workload) are honored — or renegotiated openly, not quietly dropped.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 4: Supporting Resources           -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Supporting Resources</span>
+      <span class="section-title">Evidence Base</span>
+    </div>
+    <p class="section-desc">
+      External research and data supporting the uncertainties, beliefs, and diagnostics in this document.
+    </p>
+
+    <div class="refs-grid">
+
+      <div class="ref-group">
+        <div class="ref-group-label">Framework Source</div>
+        <ul class="ref-list">
+          <li>
+            <a href="https://www.surviveresetthrive.com/book" target="_blank" rel="noopener">Survive, Reset, Thrive — Official Book Site</a>
+            <span class="ref-note">Rebecca Homkes · Kogan Page 2024 · Full framework overview, tools, and author resources</span>
+          </li>
+          <li>
+            <a href="https://www.leadershipnow.com/leadingblog/2024/08/how_to_survive_reset_and_thriv.html" target="_blank" rel="noopener">How to Survive, Reset and Thrive with Uncertainty — LeadershipNow</a>
+            <span class="ref-note">Accessible summary of the book's core ideas and the three-mode model</span>
+          </li>
+          <li>
+            <a href="https://outthinker.com/mastering-change-the-survive-reset-thrive-framework/" target="_blank" rel="noopener">Mastering Change — The Survive, Reset, Thrive Framework — Outthinker</a>
+            <span class="ref-note">Practitioner-focused breakdown of the framework applied to leadership teams</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ref-group">
+        <div class="ref-group-label">AI &amp; Entry-Level Tech Jobs</div>
+        <ul class="ref-list">
+          <li>
+            <a href="https://stackoverflow.blog/2025/12/26/ai-vs-gen-z/" target="_blank" rel="noopener">AI vs Gen Z: How AI Has Changed the Career Pathway for Junior Developers — Stack Overflow</a>
+            <span class="ref-note">Tech internship postings down 30% since 2023; entry-level hiring fell 25% YoY in 2024; only 7% of new tech hires are recent grads</span>
+          </li>
+          <li>
+            <a href="https://spectrum.ieee.org/ai-effect-entry-level-jobs" target="_blank" rel="noopener">AI Shifts Expectations for Entry-Level Jobs — IEEE Spectrum</a>
+            <span class="ref-note">Employment for software developers aged 22–25 declined nearly 20% from its 2022 peak by mid-2025</span>
+          </li>
+          <li>
+            <a href="https://www.index.dev/blog/will-ai-replace-software-developer-jobs" target="_blank" rel="noopener">Will AI Replace Developers? 2026 Job Market Reality — Index.dev</a>
+            <span class="ref-note">Analysis of which developer tasks AI is absorbing and what remains human-essential</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ref-group">
+        <div class="ref-group-label">Enrollment Cliff &amp; Demographic Decline</div>
+        <ul class="ref-list">
+          <li>
+            <a href="https://agb.org/blog-post/impacts-of-the-enrollment-cliff-in-2025-2026/" target="_blank" rel="noopener">Impacts of the Enrollment Cliff in 2025–2026 — AGB (Association of Governing Boards)</a>
+            <span class="ref-note">Institutions most at risk: small, tuition-dependent, limited endowments; Federal Reserve models project up to 80 closures by 2029</span>
+          </li>
+          <li>
+            <a href="https://goedmo.com/blog/enrollment-cliff-impact-on-higher-education/" target="_blank" rel="noopener">What Is the 2026 Enrollment Cliff? — Edmo</a>
+            <span class="ref-note">College-age population declines ~15% between 2025 and 2029; WICHE projects continued declines through 2041</span>
+          </li>
+          <li>
+            <a href="https://allaccess.collegeboard.org/enrollment-cliff-looming-heres-how-college-leaders-can-prepare" target="_blank" rel="noopener">The Enrollment Cliff Is Looming — College Board All Access</a>
+            <span class="ref-note">Practical preparation guide for college leaders; includes competitive positioning and financial scenario planning</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ref-group">
+        <div class="ref-group-label">GenAI &amp; CS Curriculum Disruption</div>
+        <ul class="ref-list">
+          <li>
+            <a href="https://arxiv.org/html/2606.07545v2" target="_blank" rel="noopener">Reshaping Undergraduate Computer Science Education in the Generative AI Era — arXiv</a>
+            <span class="ref-note">International faculty consortium (2025–2026) proposing strategic responses; shifts toward understanding and verifying AI-generated artifacts</span>
+          </li>
+          <li>
+            <a href="https://today.ucsd.edu/story/transforming-computer-science-education-in-the-age-of-ai" target="_blank" rel="noopener">Transforming Computer Science Education in the Age of AI — UC San Diego</a>
+            <span class="ref-note">$1.8M Google.org-funded GenAI in CS Education Consortium; practical curriculum redesign for faculty</span>
+          </li>
+          <li>
+            <a href="https://arxiv.org/pdf/2511.15768" target="_blank" rel="noopener">Navigating the Ethical and Societal Impacts of Generative AI in Higher Computing Education — arXiv</a>
+            <span class="ref-note">Systematic review of how GenAI is undermining traditional assessment approaches in CS programs</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ref-group">
+        <div class="ref-group-label">AI Salary Premium (BLAST Beliefs)</div>
+        <ul class="ref-list">
+          <li>
+            <a href="https://www.pwc.com/gx/en/services/ai/ai-jobs-barometer.html" target="_blank" rel="noopener">2026 Global AI Jobs Barometer — PwC</a>
+            <span class="ref-note">AI skills wage premium surged to 62% in 2026 (up from 56% in 2025); AI jobs growing 8× faster than overall market</span>
+          </li>
+          <li>
+            <a href="https://www.weforum.org/stories/2026/02/ai-improving-wages-job-quality/" target="_blank" rel="noopener">How AI Skills and Experience Are Transforming the Workplace — World Economic Forum</a>
+            <span class="ref-note">AI-adjacent roles significantly more likely to advertise remote work, parental leave, and higher compensation bands</span>
+          </li>
+          <li>
+            <a href="https://letsdatascience.com/blog/the-56-premium-what-ai-skills-actually-pay-in-2026" target="_blank" rel="noopener">The AI Salary Premium: What AI Skills Actually Pay in 2026 — Let's Data Science</a>
+            <span class="ref-note">Role-by-role breakdown of AI skill premiums; ML Engineers averaging $173K nationally with 90th-percentile at $270K</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ref-group">
+        <div class="ref-group-label">Micro-Credentials &amp; Credentialing Disruption</div>
+        <ul class="ref-list">
+          <li>
+            <a href="https://www.luminafoundation.org/wp-content/uploads/2025/05/Micro-Credentials-Impact-Report-25.pdf" target="_blank" rel="noopener">Micro-Credentials Impact Report 2025 — Lumina Foundation</a>
+            <span class="ref-note">90% of employers prefer candidates with micro-credentials; 89% report reduced training costs; 53% of employers now degree-optional</span>
+          </li>
+          <li>
+            <a href="https://www.coursera.org/enterprise/resources/ebooks/micro-credentials-report-2025" target="_blank" rel="noopener">2025 Micro-Credentials Impact Report — Coursera</a>
+            <span class="ref-note">GenAI micro-credentials among fastest growing; employer co-design trends and ROI data</span>
+          </li>
+          <li>
+            <a href="https://fortune.com/2025/12/28/2026-microcredential-hiring-trend-coursera-greg-hart/" target="_blank" rel="noopener">Getting Hired in 2026 Is All About Your Microcredentials — Fortune</a>
+            <span class="ref-note">CEO of $1.3B learning platform advises Gen Z on shifting to credential-first career strategy</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>Framework source: <em>Survive Reset Thrive</em> by Rebecca Homkes · Applied by STC Leadership · City University of Seattle</span>
+    <a href="index.html">← Back to STC Home</a>
+  </div>
+
+</div>
+</body>
+</html>

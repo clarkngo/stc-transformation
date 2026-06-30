@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Roundtable Prep — Blue Tech & AI for Frontline Workers</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    /* Nav */
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Header card */
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      margin: 0 0 8px; font-size: 1.7rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.2;
+    }
+    .doc-header .subtitle {
+      color: var(--slate); font-size: 0.95rem; margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .meta-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px; color: var(--slate);
+    }
+
+    /* Run-of-show */
+    .ros-grid {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 0;
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .ros-header {
+      display: contents;
+    }
+    .ros-header > div {
+      background: var(--ink); color: #fff;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 10px 16px;
+    }
+    .ros-row {
+      display: contents;
+    }
+    .ros-row > div {
+      padding: 13px 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      vertical-align: top;
+    }
+    .ros-row > div:first-child {
+      font-weight: 700; color: var(--slate); white-space: nowrap;
+      font-size: 0.8rem;
+    }
+    .ros-row > div:last-child {
+      font-size: 0.8rem; color: var(--slate); white-space: nowrap;
+    }
+    .highlight-row > div {
+      background: var(--blue-dim);
+    }
+    .highlight-row > div:first-child { color: var(--blue); }
+
+    /* Section blocks */
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .section-head {
+      padding: 20px 28px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-eyebrow {
+      font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .section-head h2 {
+      margin: 0 0 4px; font-size: 1.15rem; font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .section-head .sub {
+      color: var(--slate); font-size: 0.88rem; margin: 0;
+    }
+    .section-body { padding: 24px 28px; }
+
+    /* Narrative blocks */
+    .narrative {
+      border-left: 4px solid var(--blue);
+      background: var(--blue-dim);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .narrative.green { border-color: var(--green); background: var(--green-dim); }
+    .narrative.violet { border-color: var(--violet); background: var(--violet-dim); }
+    .narrative.teal { border-color: var(--teal); background: var(--teal-dim); }
+    .narrative.amber { border-color: var(--amber); background: var(--amber-dim); }
+    .narrative-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 8px; opacity: 0.7;
+    }
+    .narrative p { margin: 0 0 10px; }
+    .narrative p:last-child { margin: 0; }
+
+    /* Nav map */
+    .navmap {
+      display: grid;
+      gap: 12px;
+    }
+    .navmap-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: start;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+    .navmap-q {
+      font-size: 0.88rem; font-weight: 600; color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .navmap-dest {
+      font-size: 0.8rem; color: var(--slate);
+    }
+    .navmap-tag {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 3px 10px;
+      border-radius: 20px; white-space: nowrap; align-self: start;
+    }
+    .tag-blue { background: var(--blue-dim); color: var(--blue); }
+    .tag-green { background: var(--green-dim); color: var(--green); }
+    .tag-violet { background: var(--violet-dim); color: var(--violet); }
+    .tag-teal { background: var(--teal-dim); color: var(--teal); }
+
+    /* Reflection bullets */
+    .reflect-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    .reflect-list li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+      font-size: 0.92rem;
+    }
+    .reflect-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--ink); color: #fff;
+      font-size: 0.78rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .reflect-text strong { display: block; margin-bottom: 2px; }
+    .reflect-text span { color: var(--slate); font-size: 0.88rem; }
+
+    /* Closing */
+    .closing-script {
+      font-size: 0.95rem; line-height: 1.8;
+      border-left: 4px solid var(--teal);
+      background: var(--teal-dim);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 18px 20px;
+    }
+    .closing-script p { margin: 0 0 12px; }
+    .closing-script p:last-child { margin: 0; }
+
+    /* Maritime callout */
+    .maritime-box {
+      background: var(--violet-dim);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: var(--radius-sm);
+      padding: 18px 20px;
+    }
+    .maritime-box .mh {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--violet); margin-bottom: 8px;
+    }
+    .maritime-box p { margin: 0 0 8px; font-size: 0.92rem; }
+    .maritime-box p:last-child { margin: 0; }
+
+    /* Anticipated questions */
+    .qa-group { margin-bottom: 22px; }
+    .qa-group:last-child { margin-bottom: 0; }
+    .qa-group-label {
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; margin: 0 0 10px;
+    }
+    .qa-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .qa-item {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 12px 16px;
+    }
+    .qa-q { font-size: 0.9rem; font-weight: 600; margin: 0 0 4px; }
+    .qa-a { font-size: 0.85rem; color: var(--slate); margin: 0; }
+    .qa-item.flag { border-color: rgba(220,38,38,0.3); background: var(--red-dim); }
+    .qa-flag-tag {
+      display: inline-block; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--red); background: #fff; border: 1px solid rgba(220,38,38,0.3);
+      border-radius: 20px; padding: 2px 9px; margin-bottom: 6px;
+    }
+
+    @media print {
+      .nav-row { display: none !important; }
+      .shell { padding: 16px; }
+      .section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">← Home</a>
+    <span class="nav-sep">›</span>
+    <a href="ai-rollout-first-responders.html">AI for First Responders</a>
+    <span class="nav-sep">›</span>
+    <a href="cityu-spd-research-action-plan.html">CityU × SPD Action Plan</a>
+    <span class="nav-sep">›</span>
+    <span>Roundtable Prep</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="eyebrow">Speaker Prep</div>
+    <h1>Blue Tech &amp; AI for Frontline Workers<br>Strategic Leadership Roundtable</h1>
+    <p class="subtitle">Clark's reference guide — where we landed, how we got there, what comes next.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Audience: CityU President + Strategic Leadership Roundtable</span>
+      <span class="meta-chip">July · 11:00 AM · 1 hour</span>
+      <span class="meta-chip">Facilitated by: Suzanne</span>
+      <span class="meta-chip">Clark's segments: Summary · Open edX Demo · Reflections · Closing</span>
+    </div>
+  </div>
+
+  <!-- Run of show -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow" style="color:var(--slate);">Overview</div>
+      <h2>Run of Show</h2>
+      <p class="sub">1 hour total — 11:00 AM. Suzanne facilitates. Rough time targets below to avoid running long on early segments.</p>
+    </div>
+    <div class="section-body" style="padding:0;">
+      <div class="ros-grid">
+        <div class="ros-header">
+          <div>Segment</div>
+          <div>What happens</div>
+          <div>Who</div>
+        </div>
+        <div class="ros-row">
+          <div>1 · ~5 min</div>
+          <div>Opening comments</div>
+          <div>Suzanne</div>
+        </div>
+        <div class="ros-row highlight-row">
+          <div>2 · ~10 min</div>
+          <div><strong>Summary — where we landed in both projects</strong> (key insights + recommendations from end of presentations)</div>
+          <div>Sam &amp; Clark</div>
+        </div>
+        <div class="ros-row">
+          <div>3 · ~20 min</div>
+          <div>How we got there — Suzanne asks questions, drives to specific slides</div>
+          <div>Suzanne leads · Sam &amp; Clark respond</div>
+        </div>
+        <div class="ros-row highlight-row">
+          <div>4 · ~10 min</div>
+          <div><strong>Open edX micro-credential demo</strong> — first CityU STC Summer Program (13 Korean students); WGU platform example</div>
+          <div>Sam &amp; Clark</div>
+        </div>
+        <div class="ros-row">
+          <div>5 · ~5 min</div>
+          <div><strong>Reflections on the process</strong></div>
+          <div>Sam &amp; Clark</div>
+        </div>
+        <div class="ros-row highlight-row">
+          <div>6 · ~5 min</div>
+          <div>Q&amp;A and observations from the Roundtable</div>
+          <div>All</div>
+        </div>
+        <div class="ros-row">
+          <div>7 · ~5 min</div>
+          <div><strong>Closing comments</strong></div>
+          <div>Clark · Sam · Suzanne</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 1: Where we landed -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow" style="color:var(--blue);">Segment 2 — Clark's Summary</div>
+      <h2>Where We Landed</h2>
+      <p class="sub">Two narratives, ~90 seconds each. The same arc runs through both: we came in with one hypothesis, the evidence changed it, we landed somewhere more credible.</p>
+    </div>
+    <div class="section-body">
+
+      <!-- Project 1 -->
+      <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin:0 0 10px;">Project 1 — AI for First Responders</p>
+      <div class="narrative">
+        <div class="narrative-label">Spoken script (~90 sec)</div>
+        <p>We started where most people start — the efficiency pitch. Vendors are promising that AI can take a two-hour police report down to sixty seconds. We went looking for the evidence to back that up.</p>
+        <p>What we found instead was a pre-registered, independent randomized controlled trial — published in the Journal of Experimental Criminology — that tested Axon's Draft One on 85 officers across 755 real reports. No statistically significant reduction in writing time. The sixty-second claim doesn't hold up under scrutiny.</p>
+        <p>That changed everything. If we couldn't lead with efficiency, we had to find the framing that was actually defensible. We landed on accountability and quality assurance — AI as a consistency tool for supervisors, not a narrative shortcut for officers. And we built a governance framework around that: a three-tier traffic light — Green, Yellow, Red — that gives departments clear rules about what AI can do today, what requires a pilot, and what is strictly off-limits regardless of what a vendor promises.</p>
+        <p>The bottom line: the technology is already in the field. The policy isn't. That gap is the problem — and the opportunity for CityU.</p>
+      </div>
+
+      <!-- Project 2 -->
+      <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin:16px 0 10px;">Project 2 — CityU × SPD Partnership</p>
+      <div class="narrative green">
+        <div class="narrative-label">Spoken script (~90 sec)</div>
+        <p>We went into the SPD meeting expecting to pitch a training program. We left with something more interesting — and more important.</p>
+        <p>SPD's research team raised the same RCT study we'd found — unprompted. Their own senior research scientist is already skeptical of the vendor efficiency claims. And then we learned that their prior evaluation partner, PNNL, lost its funding last year. They don't have anyone to tell them whether the tools they're buying actually work.</p>
+        <p>That's the gap CityU can fill. Not as a training vendor — as a research partner, a third-party evaluator, and an education provider. Three roles SPD explicitly said they don't have covered.</p>
+        <p>We landed on a Year-1 roadmap built around four workstreams: research, evaluation, education, and advocacy. The immediate next step is an on-site visit and a draft MOU. The long-term play is that CityU becomes SPD's independent evaluator as they move from low-risk to medium-risk AI use cases — and potentially extends the same model to Seattle Fire and EMS.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Open edX Demo -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow" style="color:var(--green);">Segment 4 — Live Demo</div>
+      <h2>Open edX Micro-Credential Demo</h2>
+      <p class="sub">First CityU STC Summer Program — 13 Korean students. WGU uses the same platform. Demonstrate what a micro-credential looks like in practice before the room imagines something abstract.</p>
+    </div>
+    <div class="section-body">
+      <div class="narrative green">
+        <div class="narrative-label">What to show (~10 min)</div>
+        <p><strong>1. The platform itself.</strong> Open the Open edX instance and walk through one micro-credential course — show the structure: learning objectives, module sequence, assessments, and the credential issued on completion. Make it concrete before explaining why it matters.</p>
+        <p><strong>2. The Summer Program context.</strong> Frame it: this is the first CityU STC program, 13 Korean students, already running. Not a pilot proposal — a proof of execution. The platform is live.</p>
+        <p><strong>3. The WGU connection.</strong> WGU uses Open edX at scale. That's the credibility signal — this isn't an experimental platform, it's proven infrastructure being used by one of the most recognized competency-based institutions in the US.</p>
+        <p><strong>4. The Blue Tech application.</strong> The natural next question is: what micro-credentials make sense for first responders and maritime workers? That's the bridge back to the research — AI literacy, governance frameworks, evaluation skills. CityU can build and deliver these on the same platform.</p>
+      </div>
+      <div style="background:var(--amber-dim);border:1px solid rgba(217,119,6,0.2);border-radius:var(--radius-sm);padding:14px 16px;margin-top:12px;">
+        <p style="margin:0;font-size:0.85rem;"><strong>Pre-demo check:</strong> Confirm login credentials and the specific course to demo before the meeting. Have a backup screenshot if the live connection is unreliable in the room.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 2: Slide navigation map -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow" style="color:var(--violet);">Segment 3 — Reference</div>
+      <h2>Slide Navigation Map</h2>
+      <p class="sub">When Suzanne asks a question and wants to go to a specific slide, jump here.</p>
+    </div>
+    <div class="section-body">
+
+      <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin:0 0 10px;">AI for First Responders — <a href="ai-rollout-first-responders.html" style="color:var(--blue);">ai-rollout-first-responders.html</a></p>
+      <div class="navmap" style="margin-bottom:24px;">
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"What's the efficiency vs. risk case?"</div>
+            <div class="navmap-dest">Section 01 — The High Stakes: Efficiency vs. Legal Liability · KPIs That Move with AI</div>
+          </div>
+          <span class="navmap-tag tag-blue">Section 01</span>
+        </div>
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"Why now? What's the urgency?"</div>
+            <div class="navmap-dest">Section 02 — Why Action Is Required Now (active procurement, Seattle mandate, July 1 WA deadline)</div>
+          </div>
+          <span class="navmap-tag tag-blue">Section 02</span>
+        </div>
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"What's the Traffic Light Framework?"</div>
+            <div class="navmap-dest">Section 03 — Operational Guardrails: Green / Yellow / Red</div>
+          </div>
+          <span class="navmap-tag tag-blue">Section 03</span>
+        </div>
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"Does Seattle already have something like this?"</div>
+            <div class="navmap-dest">Section 04 — Does Seattle Already Have a Framework Like This?</div>
+          </div>
+          <span class="navmap-tag tag-blue">Section 04</span>
+        </div>
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"What are the policy gaps?" / "What needs to happen?"</div>
+            <div class="navmap-dest">Section 05 — Policy Gaps · Section 06 — Recommended Next Steps</div>
+          </div>
+          <span class="navmap-tag tag-blue">Sections 05–06</span>
+        </div>
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"What about the WA State AI Task Force?"</div>
+            <div class="navmap-dest"><a href="wa-ai-taskforce-first-responders.html" style="color:var(--blue);">wa-ai-taskforce-first-responders.html</a> — Recommendations 3, 4, and 7</div>
+          </div>
+          <span class="navmap-tag tag-blue">Separate doc</span>
+        </div>
+      </div>
+
+      <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin:0 0 10px;">CityU × SPD Action Plan — <a href="cityu-spd-research-action-plan.html" style="color:var(--green);">cityu-spd-research-action-plan.html</a></p>
+      <div class="navmap">
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"What changed after the SPD meeting?"</div>
+            <div class="navmap-dest">Working Thesis — don't lead with time savings; lead with QA/accountability framing + evaluator role</div>
+          </div>
+          <span class="navmap-tag tag-green">Thesis</span>
+        </div>
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"What is CityU's role exactly?"</div>
+            <div class="navmap-dest">Four Workstreams (Research, Evaluation, Education, Advocacy) · CityU's Evaluator Role — Scope</div>
+          </div>
+          <span class="navmap-tag tag-green">Workstreams</span>
+        </div>
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"What's the roadmap / timeline?"</div>
+            <div class="navmap-dest">Year-1 Roadmap — Q1 Crawl → Q2 Crawl/Walk → Q3 Walk → Q4 Walk/Run</div>
+          </div>
+          <span class="navmap-tag tag-green">Roadmap</span>
+        </div>
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"What are the immediate next steps?"</div>
+            <div class="navmap-dest">Immediate Next Steps (2–4 Weeks) — Adams study, on-site visit, working group, evaluator proposal</div>
+          </div>
+          <span class="navmap-tag tag-green">Next Steps</span>
+        </div>
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"What are the risks / what could go wrong?"</div>
+            <div class="navmap-dest">Open Risks &amp; Unresolved Questions — King County Prosecutor stance, CJIS data handling, union dynamics</div>
+          </div>
+          <span class="navmap-tag tag-green">Risks</span>
+        </div>
+        <div class="navmap-item">
+          <div>
+            <div class="navmap-q">"Could this extend to Fire / EMS / other agencies?"</div>
+            <div class="navmap-dest">Funding &amp; Scale-Out — SFD/EMS extension, multi-agency pitch</div>
+          </div>
+          <span class="navmap-tag tag-green">Scale-Out</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Uncertainty Matrix -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow" style="color:var(--violet);">Strategic Framing</div>
+      <h2>The Uncertainty Matrix</h2>
+      <p class="sub">From <em>Survive, Rest, and Thrive</em> — a tool for leadership teams to categorize unpredictable events by familiarity and potential impact. Both Blue Tech projects land in the same quadrant.</p>
+    </div>
+    <div class="section-body">
+
+      <!-- Matrix visual -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:2px;margin-bottom:24px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);">
+        <!-- Column headers -->
+        <div style="grid-column:1/-1;display:grid;grid-template-columns:80px 1fr 1fr;gap:2px;">
+          <div style="background:var(--ink);"></div>
+          <div style="background:var(--ink);color:#fff;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:10px 14px;text-align:center;">Low Impact</div>
+          <div style="background:var(--ink);color:#fff;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:10px 14px;text-align:center;">High Impact</div>
+        </div>
+        <!-- Row: High familiarity -->
+        <div style="display:contents;">
+          <div style="background:var(--slate);color:#fff;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:14px 10px;text-align:center;writing-mode:vertical-lr;transform:rotate(180deg);display:flex;align-items:center;justify-content:center;">High Familiarity</div>
+          <div style="background:#f8fafc;border:1px solid var(--border);padding:16px;font-size:0.85rem;">
+            <div style="font-weight:800;font-size:0.78rem;color:var(--slate);margin-bottom:4px;">OPERATIONAL ISSUE</div>
+            <div style="color:var(--slate);font-size:0.82rem;">Business as usual — manageable, routine uncertainties. Rarely serious consequences.</div>
+          </div>
+          <div style="background:#f0fdf4;border:1px solid rgba(22,163,74,0.2);padding:16px;font-size:0.85rem;">
+            <div style="font-weight:800;font-size:0.78rem;color:var(--green);margin-bottom:4px;">BUSINESS ISSUE</div>
+            <div style="color:var(--slate);font-size:0.82rem;">Known variables — requires learnable experience and established process.</div>
+          </div>
+        </div>
+        <!-- Row: Low familiarity -->
+        <div style="display:contents;">
+          <div style="background:var(--slate);color:#fff;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:14px 10px;text-align:center;writing-mode:vertical-lr;transform:rotate(180deg);display:flex;align-items:center;justify-content:center;">Low Familiarity</div>
+          <div style="background:#f8fafc;border:1px solid var(--border);padding:16px;font-size:0.85rem;">
+            <div style="font-weight:800;font-size:0.78rem;color:var(--amber);margin-bottom:4px;">EMERGING ISSUE</div>
+            <div style="color:var(--slate);font-size:0.82rem;">Watching brief — unfamiliar, low impact. Delegate, track, or watch list.</div>
+          </div>
+          <div style="background:var(--violet-dim);border:2px solid var(--violet);padding:16px;font-size:0.85rem;position:relative;">
+            <div style="font-weight:800;font-size:0.78rem;color:var(--violet);margin-bottom:6px;">EXECUTIVE ISSUE — GAME CHANGER</div>
+            <div style="color:var(--ink);font-size:0.82rem;font-weight:600;margin-bottom:8px;">Both projects land here.</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="background:#fff;border:1px solid rgba(124,58,237,0.2);border-radius:6px;padding:8px 10px;font-size:0.8rem;">
+                <strong style="color:var(--blue);">AI for First Responders</strong><br>
+                <span style="color:var(--slate);">No prior playbook, active legal exposure, July 1 WA deadline</span>
+              </div>
+              <div style="background:#fff;border:1px solid rgba(124,58,237,0.2);border-radius:6px;padding:8px 10px;font-size:0.8rem;">
+                <strong style="color:var(--teal);">Maritime / Port Security</strong><br>
+                <span style="color:var(--slate);">Port of Seattle Rhysida attack, AI-accelerated threat landscape</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Why both land in Executive Issue -->
+      <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin:0 0 12px;">Why both plot as Executive Issues</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+        <!-- First Responders -->
+        <div style="background:var(--blue-dim);border:1px solid rgba(29,78,216,0.2);border-radius:var(--radius-sm);padding:16px;">
+          <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;">AI for First Responders</div>
+          <ul style="margin:0;padding:0 0 0 16px;font-size:0.83rem;display:flex;flex-direction:column;gap:6px;color:var(--ink);">
+            <li><strong>Low familiarity:</strong> No department has a proven governance model; vendor claims are unverified; no standard evaluator exists</li>
+            <li><strong>High impact:</strong> Brady material exposure, officer liability, King County Prosecutor blocking AI-produced narratives</li>
+            <li><strong>Can't be delegated:</strong> Only 42.9% of organizations have formal AI policies despite 55.7% deploying AI tools <a href="https://granicus.com/blog/from-policy-to-practice-how-ai-is-quietly-reshaping-government-operations-in-2026/" target="_blank" rel="noopener" style="color:var(--blue);">[1]</a></li>
+            <li><strong>Deadline pressure:</strong> WA State AI Task Force Recommendation 3 — officer attestation requirements active</li>
+          </ul>
+        </div>
+        <!-- Maritime -->
+        <div style="background:var(--teal-dim);border:1px solid rgba(13,148,136,0.2);border-radius:var(--radius-sm);padding:16px;">
+          <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;">Maritime / Port Security</div>
+          <ul style="margin:0;padding:0 0 0 16px;font-size:0.83rem;display:flex;flex-direction:column;gap:6px;color:var(--ink);">
+            <li><strong>Low familiarity:</strong> Maritime AI adoption is outpacing cybersecurity measures — shipping companies deploying AI faster than defining cyber accountability <a href="https://smartmaritimenetwork.com/2026/03/02/ai-is-placing-maritime-industry-at-greater-risk-of-cyber-attack-report/" target="_blank" rel="noopener" style="color:var(--teal);">[2]</a></li>
+            <li><strong>High impact:</strong> Maritime cyberattacks doubled in 2025 <a href="https://maritime-executive.com/article/report-maritime-cyberattacks-doubled-in-2025" target="_blank" rel="noopener" style="color:var(--teal);">[3]</a>; Port of Seattle hit by Rhysida ransomware (Aug 2024, 90K individuals affected, 71K WA residents) <a href="https://www.cybersecuritydive.com/news/seattle-port-ransomware-attack/727098/" target="_blank" rel="noopener" style="color:var(--teal);">[4]</a></li>
+            <li><strong>Attack window collapsing:</strong> Time from vulnerability to exploit dropped from 63 days (2018) to under 15 minutes today <a href="https://saturnpartners.com/2026/01/maritime-cyber-risk-2026/" target="_blank" rel="noopener" style="color:var(--teal);">[5]</a></li>
+            <li><strong>Executive order:</strong> New federal EO strengthening cybersecurity of US ports, vessels, and waterfront facilities <a href="https://www.executivegov.com/articles/new-executive-order-seeks-to-strengthen-cybersecurity-of-us-ports-vessels-waterfront-facilities" target="_blank" rel="noopener" style="color:var(--teal);">[6]</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Talking point -->
+      <div class="narrative violet">
+        <div class="narrative-label">Talking point — why this framing matters for the Roundtable</div>
+        <p>The Uncertainty Matrix from <em>Survive, Rest, and Thrive</em> gives us a clean answer to "why is this on the president's agenda and not a department-level issue." Both the first responders work and the maritime signal plot in the same quadrant: low familiarity, high impact — Executive Issue. That's not a judgment call. It's what the variables show. No department has a proven playbook for AI governance in public safety. The legal exposure is real and active. The technology is moving faster than policy in both sectors. This is not business as usual, and it can't be delegated down.</p>
+        <p>The same matrix also answers "is maritime a distraction?" — it's not a new track we invented. It's another data point confirming the pattern.</p>
+      </div>
+
+      <!-- Sources -->
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+        <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate-light);margin:0 0 8px;">Sources</p>
+        <ol style="margin:0;padding:0 0 0 18px;font-size:0.78rem;color:var(--slate);display:flex;flex-direction:column;gap:4px;">
+          <li><a href="https://granicus.com/blog/from-policy-to-practice-how-ai-is-quietly-reshaping-government-operations-in-2026/" target="_blank" rel="noopener" style="color:var(--blue);">Granicus — How AI is quietly reshaping government operations in 2026</a></li>
+          <li><a href="https://smartmaritimenetwork.com/2026/03/02/ai-is-placing-maritime-industry-at-greater-risk-of-cyber-attack-report/" target="_blank" rel="noopener" style="color:var(--blue);">Smart Maritime Network — AI is placing maritime industry at greater risk of cyber-attack (Mar 2026)</a></li>
+          <li><a href="https://maritime-executive.com/article/report-maritime-cyberattacks-doubled-in-2025" target="_blank" rel="noopener" style="color:var(--blue);">Maritime Executive — Maritime Cyberattacks Doubled in 2025</a></li>
+          <li><a href="https://www.cybersecuritydive.com/news/seattle-port-ransomware-attack/727098/" target="_blank" rel="noopener" style="color:var(--blue);">Cybersecurity Dive — Port of Seattle officials pin attack to Rhysida ransomware group</a></li>
+          <li><a href="https://saturnpartners.com/2026/01/maritime-cyber-risk-2026/" target="_blank" rel="noopener" style="color:var(--blue);">Saturn Partners — Maritime Cyber Risk 2026: OT & Compliance</a></li>
+          <li><a href="https://www.executivegov.com/articles/new-executive-order-seeks-to-strengthen-cybersecurity-of-us-ports-vessels-waterfront-facilities" target="_blank" rel="noopener" style="color:var(--blue);">ExecutiveGov — New Executive Order: Cybersecurity of US Ports &amp; Waterfront Facilities</a></li>
+          <li><a href="https://link.springer.com/article/10.1007/s43681-025-00692-x" target="_blank" rel="noopener" style="color:var(--blue);">Springer — Transparency in AI for emergency management: building trust and accountability</a></li>
+          <li><a href="https://hai.stanford.edu/ai-index/2026-ai-index-report/responsible-ai" target="_blank" rel="noopener" style="color:var(--blue);">Stanford HAI — Responsible AI: 2026 AI Index Report</a></li>
+        </ol>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Anticipated Questions -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow" style="color:var(--red);">Prep — Anticipate</div>
+      <h2>Questions We Can Anticipate</h2>
+      <p class="sub">Grouped by who's likely asking. Two flagged items don't have strong answers yet — worth prepping before the Roundtable.</p>
+    </div>
+    <div class="section-body">
+
+      <div class="qa-group">
+        <p class="qa-group-label" style="color:var(--blue);">From Suzanne — driving toward specific slides</p>
+        <ul class="qa-list">
+          <li class="qa-item">
+            <p class="qa-q">"Walk me through how the efficiency claim fell apart — what did the data actually show?"</p>
+            <p class="qa-a">→ Adams et al. RCT (85 officers, 755 reports, no significant time reduction)</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"What made you pivot from a training pitch to an evaluator role with SPD?"</p>
+            <p class="qa-a">→ PNNL funding gap — SPD has no evaluation partner</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"What's actually banned vs. allowed? Walk me through Red."</p>
+            <p class="qa-a">→ Traffic Light Framework, Section 03</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"What's the realistic timeline here — when does CityU actually start doing something?"</p>
+            <p class="qa-a">→ Year-1 Roadmap, Immediate Next Steps (2–4 weeks)</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"What's the legal exposure if we get this wrong?"</p>
+            <p class="qa-a">→ Brady material / King County Prosecutor memo</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="qa-group">
+        <p class="qa-group-label" style="color:var(--green);">From the Roundtable — institutional/risk lens</p>
+        <ul class="qa-list">
+          <li class="qa-item flag">
+            <span class="qa-flag-tag">No strong answer yet</span>
+            <p class="qa-q">"What's our liability if we evaluate a tool and it fails in the field?"</p>
+            <p class="qa-a">Not addressed in current materials — needs a position before the Roundtable.</p>
+          </li>
+          <li class="qa-item flag">
+            <span class="qa-flag-tag">No strong answer yet</span>
+            <p class="qa-q">"Is SPD actually going to follow through, or is this one enthusiastic contact?"</p>
+            <p class="qa-a">Tests whether the working group / MOU is real commitment vs. goodwill from one call.</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"How does this make money / get funded?"</p>
+            <p class="qa-a">→ Funding &amp; Scale-Out section — thin, likely a follow-up push</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"Why CityU and not a bigger research university or PNNL's replacement?"</p>
+            <p class="qa-a">→ Applied-research model vs. peer-reviewed academic output; Lee Hunt named this differentiator directly</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"What happens if the union pushes back?"</p>
+            <p class="qa-a">→ Open Risks — collective bargaining, HB 1622</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"Is this scalable beyond SPD, or is it bespoke to one department?"</p>
+            <p class="qa-a">→ SFD/EMS extension, maritime signal</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="qa-group">
+        <p class="qa-group-label" style="color:var(--amber);">Skeptical / pressure-test</p>
+        <ul class="qa-list">
+          <li class="qa-item flag">
+            <span class="qa-flag-tag">No strong answer yet</span>
+            <p class="qa-q">"Haven't departments already tried external evaluators and had it go badly?"</p>
+            <p class="qa-a">No current answer — worth researching precedent before the Roundtable.</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"What's CityU's appetite for being the one who tells a police department their tool doesn't work?"</p>
+            <p class="qa-a">Tests institutional courage, not just capability — answer with conviction, not hedging.</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"Is this actually research, or are we just doing free consulting for SPD?"</p>
+            <p class="qa-a">Tests the academic legitimacy angle — point to the mixed technologist/social-scientist evaluation model.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="qa-group">
+        <p class="qa-group-label" style="color:var(--violet);">On the maritime thread</p>
+        <ul class="qa-list">
+          <li class="qa-item">
+            <p class="qa-q">"Is this distraction or focus? Should we be doing three things or one?"</p>
+            <p class="qa-a">The sharpest test of the maritime talking point — frame as evidence of a pattern, not scope creep.</p>
+          </li>
+          <li class="qa-item">
+            <p class="qa-q">"Who at the port actually called, and is it real demand or one person's interest?"</p>
+            <p class="qa-a">Same credibility question as the SPD follow-through item — be ready with specifics.</p>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Phase 4: Reflections -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow" style="color:var(--amber);">Segment 4 — Clark's Reflections</div>
+      <h2>Reflections on the Process</h2>
+      <p class="sub">Honest observations about how the research actually went — what changed your thinking, what surprised you.</p>
+    </div>
+    <div class="section-body">
+      <ul class="reflect-list">
+        <li>
+          <div class="reflect-num">1</div>
+          <div class="reflect-text">
+            <strong>The evidence broke our opening pitch — and that was the best thing that happened.</strong>
+            <span>We came in ready to argue efficiency. Finding the Adams et al. RCT before the SPD meeting — not after — meant we didn't walk into the room with a claim their own research scientist was going to knock down. The discipline of looking for disconfirming evidence before presenting is something we'd do again from the start.</span>
+          </div>
+        </li>
+        <li>
+          <div class="reflect-num">2</div>
+          <div class="reflect-text">
+            <strong>The policy gap is larger than the technology gap.</strong>
+            <span>We expected to spend most of our time understanding the AI tools. We ended up spending more time on procurement timelines, WA State deadlines, union bargaining rights, and King County Prosecutor memos. The technology is moving faster than anyone's governance can keep up with — and that's where the real work is.</span>
+          </div>
+        </li>
+        <li>
+          <div class="reflect-num">3</div>
+          <div class="reflect-text">
+            <strong>The conversation with SPD reframed CityU's role.</strong>
+            <span>We learned more in that one meeting than in weeks of desk research. The PNNL gap — SPD losing their evaluation partner with no replacement — wasn't in any document. It came out in conversation. That's a reminder that the most important context rarely survives into published reports.</span>
+          </div>
+        </li>
+        <li>
+          <div class="reflect-num">4</div>
+          <div class="reflect-text">
+            <strong>"Blue Tech" is bigger than we scoped it.</strong>
+            <span>We started with police and fire. By the end, the same dynamics — AI tools procured faster than policy, frontline workers without training, no independent evaluation — showed up in maritime and port operations too. The framework travels. That wasn't the plan; it's what the research showed us.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Phase 3: Maritime -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow" style="color:var(--violet);">Segment 6 — Closing Thread</div>
+      <h2>The Maritime Signal</h2>
+      <p class="sub">One talking point about trajectory — not a new project, a pattern emerging.</p>
+    </div>
+    <div class="section-body">
+      <div class="maritime-box">
+        <div class="mh">Talking point</div>
+        <p>We started with police and fire. The same AI governance gap — tools deployed faster than policy, frontline workers without training, no independent evaluator — shows up at the port too. And someone already called us: a maritime expert requested a briefing after a recent cyber attack at the Port. <a href="https://maritimeblue.org/" target="_blank" rel="noopener" style="color:var(--violet);">Maritime Blue</a> is the regional cluster that already has the industry relationships and the workforce mission. What they don't have is an academic partner running rigorous AI evaluation. That's the same gap SPD had.</p>
+        <p style="color:var(--slate);font-size:0.88rem;">Don't pitch this as a third workstream. Frame it as evidence that Blue Tech is a real and growing category — and that the work we did on first responders built the credibility to walk through that door.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Org Name -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow" style="color:var(--teal);">Suzanne's Ask</div>
+      <h2>Organization Name Recommendation</h2>
+      <p class="sub">Suzanne asked for a suggestion — avoid "Center." Come ready with a recommendation and the reasoning behind it.</p>
+    </div>
+    <div class="section-body">
+
+      <div style="display:grid;gap:10px;margin-bottom:20px;">
+
+        <div style="background:var(--teal-dim);border:2px solid var(--teal);border-radius:var(--radius-sm);padding:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+            <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);">Recommended</span>
+            <span style="font-size:0.72rem;font-weight:700;background:#fff;border:1px solid rgba(13,148,136,0.3);border-radius:20px;padding:2px 10px;color:var(--teal);">Top pick</span>
+          </div>
+          <p style="margin:0 0 4px;font-size:1.05rem;font-weight:800;">CityU Blue Tech Collaborative</p>
+          <p style="margin:0;font-size:0.85rem;color:var(--slate);">Signals multi-agency partnership (SPD, maritime, future sectors) rather than a single institution's output. "Collaborative" is honest about the model — CityU as convener and evaluator, not sole actor. "Blue Tech" is already your language and mirrors <em>Maritime Blue</em>'s ecosystem framing.</p>
+        </div>
+
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;">
+          <p style="margin:0 0 4px;font-size:1rem;font-weight:700;">CityU Applied Intelligence Lab</p>
+          <p style="margin:0;font-size:0.85rem;color:var(--slate);">Emphasizes hands-on evaluation and research. "Lab" signals rigor without implying permanent infrastructure. Works well if the primary identity is the evaluator role with SPD and future agencies.</p>
+        </div>
+
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;">
+          <p style="margin:0 0 4px;font-size:1rem;font-weight:700;">CityU Frontline AI Initiative</p>
+          <p style="margin:0;font-size:0.85rem;color:var(--slate);">Broadest framing — covers police, fire, EMS, maritime, and any other frontline sector. "Initiative" is lightweight and doesn't overcommit on structure. Better if you want flexibility to grow scope before formalizing.</p>
+        </div>
+
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;">
+          <p style="margin:0 0 4px;font-size:1rem;font-weight:700;">CityU Public Safety AI Institute</p>
+          <p style="margin:0;font-size:0.85rem;color:var(--slate);">Most formal and academically credible. "Institute" carries weight with funders and accreditors. Trade-off: implies more permanent staffing and infrastructure than currently exists — sets a higher expectation to meet.</p>
+        </div>
+
+      </div>
+
+      <div class="narrative teal">
+        <div class="narrative-label">Talking point if asked to explain the recommendation</div>
+        <p>"Collaborative" fits because it accurately describes what we're building — CityU at the center of a network of partners, not a standalone unit. The SPD model is already collaborative: technologists, social scientists, SPD's research team, potentially the union and the prosecutor's office. The maritime angle adds another partner. The name should reflect that from the start, so we're not renaming it in two years when it outgrows a single-sector identity.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Closing remarks -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-eyebrow" style="color:var(--teal);">Segment 6 — Clark's Closing</div>
+      <h2>Closing Remarks</h2>
+      <p class="sub">~60 seconds. End on the institutional opportunity, not the research summary.</p>
+    </div>
+    <div class="section-body">
+      <div class="closing-script">
+        <p>What I keep coming back to is that CityU is positioned in a way that very few institutions are. We're not a vendor, so we don't have a tool to sell. We're not a pure research university, so we're not waiting three years to publish findings. We're applied — which means we can sit across from SPD, or a port authority, or a fire department, and say: we'll evaluate what you're buying, we'll train your people, and we'll tell you the truth about what works.</p>
+        <p>That's rare. And the demand for it is only going up — because the technology is moving, the policy isn't, and the people doing the work on the ground are being asked to make decisions they're not equipped to make.</p>
+        <p>The research got us to the door. The question for this group is: how far do we want to walk through it?</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

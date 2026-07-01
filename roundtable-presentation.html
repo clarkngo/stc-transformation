@@ -642,10 +642,33 @@
     /* Group headers in sidenav */
     .sn-group {
       font-size: 0.5rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
-      color: rgba(255,255,255,0.22); padding: 8px 14px 2px 12px; margin-top: 2px;
+      padding: 8px 14px 2px 12px; margin-top: 2px;
       border-top: 1px solid rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.35);
     }
     .sn-group:first-child { border-top: none; margin-top: 0; }
+    .sn-group[data-color="violet"] { color: #a78bfa; }
+    .sn-group[data-color="red"]    { color: #f87171; }
+    .sn-group[data-color="blue"]   { color: #60a5fa; }
+    .sn-group[data-color="teal"]   { color: #2dd4bf; }
+    .sn-group[data-color="ink"]    { color: #94a3b8; }
+    .sn-group[data-color="amber"]  { color: #fbbf24; }
+
+    /* Tint item labels by group color */
+    .sn-item[data-color="violet"] .sn-label { color: rgba(167,139,250,0.7); }
+    .sn-item[data-color="blue"]   .sn-label { color: rgba(96,165,250,0.7); }
+    .sn-item[data-color="red"]    .sn-label { color: rgba(248,113,113,0.7); }
+    .sn-item[data-color="amber"]  .sn-label { color: rgba(251,191,36,0.7); }
+    .sn-item[data-color="green"]  .sn-label { color: rgba(52,211,153,0.7); }
+    .sn-item[data-color="teal"]   .sn-label { color: rgba(45,212,191,0.7); }
+    .sn-item[data-color="ink"]    .sn-label { color: rgba(148,163,184,0.7); }
+    .sn-item[data-color="violet"] .sn-num { color: rgba(167,139,250,0.4); }
+    .sn-item[data-color="blue"]   .sn-num { color: rgba(96,165,250,0.4); }
+    .sn-item[data-color="red"]    .sn-num { color: rgba(248,113,113,0.4); }
+    .sn-item[data-color="amber"]  .sn-num { color: rgba(251,191,36,0.4); }
+    .sn-item[data-color="green"]  .sn-num { color: rgba(52,211,153,0.4); }
+    .sn-item[data-color="teal"]   .sn-num { color: rgba(45,212,191,0.4); }
+    .sn-item[data-color="ink"]    .sn-num { color: rgba(148,163,184,0.4); }
 
     @media (max-width: 1100px) { #sidenav { display: none; } }
 
@@ -768,7 +791,7 @@
 
 <!-- Floating Side Nav -->
 <nav id="sidenav" aria-label="Quick navigation">
-  <div class="sn-group">Context</div>
+  <div class="sn-group" data-color="violet">Context</div>
   <a class="sn-item" href="#three-problems" data-color="violet">
     <span class="sn-num">1</span><span class="sn-label">Where We Landed</span>
   </a>
@@ -778,7 +801,7 @@
   <a class="sn-item" href="#how-we-got-here" data-color="blue">
     <span class="sn-num">3</span><span class="sn-label">How We Got Here</span>
   </a>
-  <div class="sn-group">First Responders</div>
+  <div class="sn-group" data-color="red">First Responders</div>
   <a class="sn-item" href="#high-stakes" data-color="red">
     <span class="sn-num">4</span><span class="sn-label">High Stakes</span>
   </a>
@@ -791,19 +814,19 @@
   <a class="sn-item" href="#traffic-light" data-color="green">
     <span class="sn-num">7</span><span class="sn-label">Traffic Light</span>
   </a>
-  <div class="sn-group">Blue Tech · Maritime</div>
+  <div class="sn-group" data-color="blue">Blue Tech · Maritime</div>
   <a class="sn-item" href="#maritime" data-color="violet">
     <span class="sn-num">8</span><span class="sn-label">Maritime</span>
   </a>
-  <div class="sn-group">CityUx · Open Ecosystem</div>
+  <div class="sn-group" data-color="teal">CityUx · Open Ecosystem</div>
   <a class="sn-item" href="#ecosystem" data-color="teal">
     <span class="sn-num">9</span><span class="sn-label">Ecosystem</span>
   </a>
-  <div class="sn-group">BSAI Degree</div>
+  <div class="sn-group" data-color="ink">BSAI Degree</div>
   <a class="sn-item" href="#bsai" data-color="ink">
     <span class="sn-num">10</span><span class="sn-label">BSAI Degree</span>
   </a>
-  <div class="sn-group">Close</div>
+  <div class="sn-group" data-color="teal">Close</div>
   <a class="sn-item" href="#proto-links" data-color="teal">
     <span class="sn-num">11</span><span class="sn-label">Reflections</span>
   </a>

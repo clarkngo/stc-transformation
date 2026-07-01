@@ -887,7 +887,11 @@
       <div class="section-head-left">
         <div class="section-eyebrow" style="color:var(--violet);">Institutional Context</div>
         <h2>The Three Problems — and a Proposed Answer</h2>
-        <p class="sub">The Blue Tech and first responders work responds to three specific asks from Suzanne and Melissa since Summer 2025. Sam will introduce a new institutional concept today. <em style="opacity:0.6;font-size:0.85em;">Three problems. Three forces. No stable orbit. <span style="font-size:0.8em;">(Liu Cixin readers will understand.)</span></em></p>
+        <p class="sub">The Blue Tech and first responders work responds to three specific asks from Suzanne and Melissa since Summer 2025. Sam will introduce a new institutional concept today.</p>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+          <canvas id="three-body-canvas" width="72" height="72" style="flex-shrink:0;opacity:0.75;"></canvas>
+          <em style="opacity:0.55;font-size:0.8em;line-height:1.4;">Three problems. Three forces. No stable orbit. <span style="font-size:0.9em;">(Liu Cixin readers will understand.)</span></em>
+        </div>
       </div>
       <a class="source-link" href="roundtable-prep-cityu-president.html#three-problems" target="_blank">Prep Notes ↗</a>
     </div>
@@ -2065,6 +2069,49 @@
   }, { threshold: 0.08 });
 
   document.querySelectorAll('.section').forEach(s => revealObserver.observe(s));
+
+  /* Three Body Problem animation */
+  (function() {
+    const canvas = document.getElementById('three-body-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = 72, H = 72, cx = W/2, cy = H/2;
+    const bodies = [
+      { color: '#a78bfa', r: 4.5, orbitR: 22, speed: 0.011, phase: 0,        wobble: 0.18, wobbleSpeed: 0.037 },
+      { color: '#60a5fa', r: 3.5, orbitR: 16, speed: 0.017, phase: 2.1,      wobble: 0.22, wobbleSpeed: 0.053 },
+      { color: '#2dd4bf', r: 3,   orbitR: 26, speed: 0.0073, phase: 4.3,     wobble: 0.15, wobbleSpeed: 0.029 },
+    ];
+    let t = 0;
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      bodies.forEach(b => {
+        const wobbleR = b.orbitR + Math.sin(t * b.wobbleSpeed + b.phase * 1.3) * b.orbitR * b.wobble;
+        const angle = b.phase + t * b.speed * 60;
+        const x = cx + Math.cos(angle) * wobbleR;
+        const y = cy + Math.sin(angle) * wobbleR * 0.72;
+        ctx.beginPath();
+        ctx.arc(x, y, b.r, 0, Math.PI * 2);
+        ctx.fillStyle = b.color;
+        ctx.fill();
+        /* faint trail */
+        for (let i = 1; i <= 6; i++) {
+          const ta = angle - i * 0.13;
+          const wr = b.orbitR + Math.sin((t - i*1.2) * b.wobbleSpeed + b.phase * 1.3) * b.orbitR * b.wobble;
+          const tx2 = cx + Math.cos(ta) * wr;
+          const ty2 = cy + Math.sin(ta) * wr * 0.72;
+          ctx.beginPath();
+          ctx.arc(tx2, ty2, b.r * (1 - i/8), 0, Math.PI * 2);
+          ctx.fillStyle = b.color;
+          ctx.globalAlpha = 0.12 - i * 0.015;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      });
+      t++;
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
 </script>
 
 </body>

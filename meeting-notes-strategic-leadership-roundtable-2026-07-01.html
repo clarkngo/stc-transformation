@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Summary — Strategic Leadership Roundtable, July 1 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--violet); margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      margin: 0 0 8px; font-size: 1.7rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.2;
+    }
+    .doc-header .subtitle {
+      color: var(--slate); font-size: 0.95rem; margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .meta-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px; color: var(--slate);
+    }
+
+    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+    .toc h2 {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--slate); margin: 0 0 12px;
+    }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .section-header h2 {
+      margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .section-body { padding: 20px 24px; }
+
+    .point {
+      display: flex; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label {
+      flex-shrink: 0;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      height: fit-content;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+
+    .callout {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      border: 1px solid transparent;
+      margin-top: 12px;
+    }
+    .callout-violet { background: var(--violet-dim); border-color: #ddd6fe; color: #4c1d95; }
+    .callout strong { font-weight: 700; }
+
+    /* Phrase glossary */
+    .partner-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media (max-width: 560px) { .partner-grid { grid-template-columns: 1fr; } }
+    .partner-card {
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      background: var(--bg);
+    }
+    .partner-card .partner-name {
+      font-size: 0.85rem; font-weight: 800; color: var(--ink); margin-bottom: 4px;
+    }
+    .partner-card p { margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--slate); }
+
+    /* Reception quotes */
+    .quote {
+      display: flex; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .quote:last-child { border-bottom: none; padding-bottom: 0; }
+    .quote:first-child { padding-top: 0; }
+    .quote-mark {
+      flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+      background: var(--violet-dim); color: var(--violet);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 900;
+    }
+    .quote-body { font-size: 0.92rem; }
+    .quote-who { font-size: 0.78rem; font-weight: 700; color: var(--slate); margin-top: 4px; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Summary — Strategic Leadership Roundtable, July 1 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Summary</div>
+    <h1>Strategic Leadership Roundtable — Blue Tech &amp; AI for Frontline Workers</h1>
+    <p class="subtitle">CityU President's Strategic Leadership Roundtable covering AI for first responders, the Maritime Blue Shift, the AI Lifelong Learning Institute (AILI), and program-discovery strategy for reaching prospective students.</p>
+    <div class="meta-row">
+      <span class="meta-chip">July 1, 2026</span>
+      <span class="meta-chip">Strategic Leadership Roundtable</span>
+      <span class="meta-chip">7 lessons learned</span>
+      <span class="meta-chip">11 key phrases</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#lessons">Lessons Learned</a></li>
+      <li><a href="#phrases">Important Phrases &amp; Quotes</a></li>
+      <li><a href="#reception">Audience Reception</a></li>
+      <li><a href="#related">Related Materials</a></li>
+    </ol>
+  </div>
+
+  <!-- Overview -->
+  <div class="section" id="overview">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🎯</div>
+      <h2>Overview</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Summary</span>
+        <div class="point-body">
+          The Roundtable synthesized several strategic themes for CityU's Blue Tech &amp; AI initiatives: how to weigh risk against opportunity in frontline-AI pilots (e.g., police report writing), how to ground new program discovery in real community and legislative need, and how to reach prospective students earlier through open, trust-building content rather than direct marketing.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lessons Learned -->
+  <div class="section" id="lessons">
+    <div class="section-header">
+      <div class="section-icon icon-amber">💡</div>
+      <h2>Lessons Learned</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Lesson 1</span>
+        <div class="point-body">
+          <strong>Embrace a "yes, and" mindset for risk mitigation.</strong> The university is shifting away from a culture where listing concerns leads to paralysis. Leaders are adopting a "yes, and" approach — acknowledging risks while simultaneously figuring out how to mitigate them so projects can move forward. Example: exploring AI for police report writing, the team identified severe risks (e.g., inaccurate audio transcription) but weighed them against the efficiency gains (reducing report writing from <strong>two hours to 60 seconds</strong>) to build a compelling case for a pilot program.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Lesson 2</span>
+        <div class="point-body">
+          <strong>Anchor innovation in community needs and legislative priorities.</strong> Program discovery shouldn't start with a list of available jobs — it should start with where an industry is heading and what the community requires. Research on AI applications for maritime and first responders was intentionally grounded in local mandates: the <strong>Seattle 2025–2026 AI plan</strong>, Washington state guidelines, and <strong>US Coast Guard cybersecurity mandates</strong>.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Lesson 3</span>
+        <div class="point-body">
+          <strong>Value the "discovery" phase, and move in the right direction.</strong> Gathering diverse ideas before fully defining a plan is a crucial part of the discovery, development, and delivery process. In periods of uncertainty, having a perfectly solid plan matters less than being prepared to move in the right direction — much like the 1850s directive to just <strong>"go west."</strong>
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Lesson 4</span>
+        <div class="point-body">
+          <strong>Adopt a "practitioner publisher" model for outreach.</strong> To reach prospective students <strong>pre-inquiry</strong>, the university can empower faculty and students to act as "practitioner publishers." Sharing helpful, free content (how-to tutorials on YouTube, GitHub, etc.) builds trust, demonstrates a caring attitude, and creates an organic funnel that introduces people to the brand before explicitly marketing degree programs.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-red">Lesson 5</span>
+        <div class="point-body">
+          <strong>Complement, don't disrupt, the core academic business.</strong> Experimental initiatives — the proposed <strong>AI Lifelong Learning Institute (AILI)</strong> or stackable micro-credentials — should serve as a testing ground that complements core degree programs rather than interrupting the current academic business model.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Lesson 6</span>
+        <div class="point-body">
+          <strong>Recycle old ideas for the modern era.</strong> Past successful initiatives shouldn't be discarded. Correspondence education once reached students on submarines or cargo ships; 50-minute <strong>"brown bag" lunch classes in 1972</strong> served the community. Old concepts can be repurposed and modernized to serve alumni and community members seeking continuing education.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Lesson 7</span>
+        <div class="point-body">
+          <strong>Maintain an international perspective.</strong> Technology and industries like maritime operate globally, so program development and academic discussions must always include international contexts — e.g., how AI impacts locations such as <strong>Korea, Vietnam, Canada, and Mexico</strong>.
+        </div>
+      </div>
+      <div class="callout callout-violet">
+        <strong>Throughline:</strong> across all seven lessons, the common thread is momentum with guardrails — move forward on real community/legislative need, mitigate rather than avoid risk, and build trust-first before selling.
+      </div>
+    </div>
+  </div>
+
+  <!-- Important phrases -->
+  <div class="section" id="phrases">
+    <div class="section-header">
+      <div class="section-icon icon-violet">💬</div>
+      <h2>Important Phrases &amp; Quotes</h2>
+    </div>
+    <div class="section-body">
+      <div class="partner-grid">
+        <div class="partner-card">
+          <div class="partner-name">"Yes, and"</div>
+          <p>Borrowed from classic improv — encourages teams to acknowledge risks while simultaneously finding ways to mitigate them, rather than letting concerns stall projects.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">"Discovery, development, and delivery"</div>
+          <p>The phased framework used to describe the approach for exploring and launching new initiatives.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">"Go west"</div>
+          <p>An 1850s analogy: during periods of uncertainty, having a perfectly solid plan is less important than simply moving in the right direction.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">"Practitioner publisher"</div>
+          <p>Industry professionals with their own brand or community who publish free content (how-to tutorials, etc.), serving as an organic funnel for the university.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">"Pre-inquiry" / "Pre-funnel"</div>
+          <p>Activities — workshops, micro-lessons, free content — that build academic credibility and reach prospective students before they ever formally inquire about a degree.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">"Blue tech" ("wet" vs. "dry")</div>
+          <p>Terms discovered during the discovery phase describing the maritime technology industry — distinguishing land-based tech ("dry") from tech out on the water ("wet").</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">"Blue wave"</div>
+          <p>A pun describing the incoming surge of opportunities and connections the university is experiencing in the maritime space.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">"Hidden in plain sight"</div>
+          <p>Used by a significant maritime figure to describe the maritime industry's presence in Seattle.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">"Earn your degree while at sea"</div>
+          <p>A marketing slogan pitched during the meeting to promote educational opportunities for those working on ships.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">"Traffic light framework"</div>
+          <p>A proposed green / yellow / red categorization system to help the police department safely navigate the risks of piloting AI technologies.</p>
+        </div>
+        <div class="partner-card" style="grid-column: 1 / -1;">
+          <div class="partner-name">"Forward deployed"</div>
+          <p>A military-style phrase highlighted from the meeting's chat, describing the university's proactive, on-the-ground approach to engaging with industries and communities.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audience reception -->
+  <div class="section" id="reception">
+    <div class="section-header">
+      <div class="section-icon icon-green">🙌</div>
+      <h2>Audience Reception</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-green">Overall</span>
+        <div class="point-body">
+          The reception was <strong>overwhelmingly positive and enthusiastic</strong>, with several team members eager to implement the ideas immediately.
+        </div>
+      </div>
+      <div class="quote">
+        <span class="quote-mark">"</span>
+        <div class="quote-body">
+          Praised the presentation as <strong>"phenomenal stuff"</strong> and <strong>"incredible,"</strong> calling the research thorough and noting it addressed an area the university was currently missing — he was so enthusiastic he immediately asked how soon they could launch and start collecting student inquiries.
+          <div class="quote-who">Ben Corser</div>
+        </div>
+      </div>
+      <div class="quote">
+        <span class="quote-mark">"</span>
+        <div class="quote-body">
+          Expressed appreciation for the <strong>"out of box thinking"</strong> and noted it was quite fun to hear "all of these iterative ideas just sprouting."
+          <div class="quote-who">Jackie</div>
+        </div>
+      </div>
+      <div class="quote">
+        <span class="quote-mark">"</span>
+        <div class="quote-body">
+          Described the material as <strong>"amazing content"</strong> and proposed a follow-up conversation with the university's new marketing manager to figure out how to use these concepts to cultivate curiosity and elevate the institution's reputation.
+          <div class="quote-who">Jen</div>
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Chat reactions</span>
+        <div class="point-body">
+          Other participants shared their excitement in the meeting chat, describing the ideas as <strong>"timely and forward thinking," "new thinking,"</strong> and <strong>"agile."</strong>
+        </div>
+      </div>
+      <div class="callout callout-violet">
+        <strong>Suzanne's close:</strong> the audience was so eager to move forward that Suzanne jokingly told attendees to <strong>"remain calm"</strong> and slow down, reminding them the project was still in the early <strong>"discovery meeting"</strong> phase rather than ready for immediate launch. She called the presentation <strong>"outstanding"</strong> and commended Sam and Clark for "doing the cool stuff."
+      </div>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Presentation</span>
+        <div class="point-body"><a href="roundtable-presentation.html">Blue Tech &amp; AI for Frontline Workers — Roundtable Presentation</a></div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Speaker prep</span>
+        <div class="point-body"><a href="roundtable-prep-cityu-president.html">Roundtable Prep — Blue Tech &amp; AI for Frontline Workers</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

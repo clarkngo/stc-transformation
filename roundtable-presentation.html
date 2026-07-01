@@ -345,6 +345,130 @@
     .curriculum-box p { margin: 0; font-size: 0.87rem; color: var(--ink); }
     .curriculum-box strong { color: var(--teal); }
 
+    /* ── Hub-and-spoke ecosystem diagram ── */
+    @keyframes eco-fade-up {
+      from { opacity: 0; transform: translateY(14px) translateX(-50%); }
+      to   { opacity: 1; transform: translateY(0)    translateX(-50%); }
+    }
+    @keyframes eco-fade-up-plain {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes eco-fade-in {
+      from { opacity: 0; transform: scale(0.88); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes eco-dash {
+      to { stroke-dashoffset: -28; }
+    }
+    @keyframes eco-pulse {
+      0%, 100% { box-shadow: 0 8px 40px rgba(29,78,216,0.45); }
+      50%       { box-shadow: 0 8px 60px rgba(29,78,216,0.75); }
+    }
+
+    .eco-diagram-wrap {
+      background: rgba(255,255,255,0.7);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 28px 20px 20px;
+    }
+    .eco-title {
+      text-align: center; font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .eco-sub {
+      text-align: center; font-size: 0.83rem; color: var(--slate);
+      margin-bottom: 24px;
+    }
+
+    .eco-radial {
+      position: relative; width: 100%; max-width: 560px;
+      margin: 0 auto; aspect-ratio: 1/1;
+    }
+    .eco-svg {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      overflow: visible;
+    }
+
+    /* Spoke animation — dashes march toward center */
+    .eco-spoke {
+      stroke-dasharray: 6 4;
+      animation: eco-dash 1.2s linear infinite;
+    }
+    .eco-spoke-yt { animation-delay: 0s; }
+    .eco-spoke-gh { animation-delay: 0.2s; }
+    .eco-spoke-ws { animation-delay: 0.4s; }
+    .eco-spoke-ox { animation-delay: 0.6s; }
+    .eco-spoke-sm { animation-delay: 0.8s; }
+    .eco-spoke-ch { animation-delay: 1.0s; }
+
+    /* Center globe */
+    .eco-center {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48%; text-align: center;
+      animation: eco-fade-in 0.6s ease both;
+    }
+    .eco-center-globe {
+      background: linear-gradient(135deg,#1e3a8a,#1d4ed8,#2563eb);
+      border-radius: 50%; width: 100%; aspect-ratio: 1/1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      box-shadow: 0 8px 40px rgba(29,78,216,0.45);
+      border: 3px solid rgba(255,255,255,0.25);
+      animation: eco-pulse 3s ease-in-out infinite;
+    }
+    .eco-center-icon   { font-size: clamp(1rem,4vw,1.8rem); margin-bottom: 3px; }
+    .eco-center-eyebrow { color:#fff; font-size:clamp(0.5rem,1.5vw,0.68rem); font-weight:700; letter-spacing:0.08em; text-transform:uppercase; opacity:0.75; margin-bottom:2px; }
+    .eco-center-name   { color:#fff; font-size:clamp(0.6rem,2vw,0.88rem); font-weight:800; line-height:1.3; padding:0 8px; }
+    .eco-center-sub    { color:rgba(255,255,255,0.65); font-size:clamp(0.45rem,1.4vw,0.62rem); margin-top:5px; line-height:1.4; padding:0 10px; }
+
+    /* Spoke node positions */
+    .eco-node { position: absolute; width: 22%; }
+    .eco-node-top { top: 0;   left: 50%; transform: translateX(-50%); animation: eco-fade-up 0.5s 0.1s ease both; }
+    .eco-node-tr  { top: 11%; right: 0;  animation: eco-fade-up-plain 0.5s 0.2s ease both; }
+    .eco-node-br  { bottom: 11%; right: 0; animation: eco-fade-up-plain 0.5s 0.4s ease both; }
+    .eco-node-bot { bottom: 0; left: 50%; transform: translateX(-50%); animation: eco-fade-up 0.5s 0.6s ease both; }
+    .eco-node-bl  { bottom: 11%; left: 0; animation: eco-fade-up-plain 0.5s 0.8s ease both; }
+    .eco-node-tl  { top: 11%; left: 0;   animation: eco-fade-up-plain 0.5s 1.0s ease both; }
+
+    .eco-card {
+      border-radius: 10px; border: 2px solid; padding: 8px 7px;
+      text-align: center; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .eco-card:hover { transform: scale(1.06); box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
+    .eco-card-yt { background:#fef2f2; border-color:#dc2626; }
+    .eco-card-gh { background:#f0fdf4; border-color:#16a34a; }
+    .eco-card-ch { background:#f5f3ff; border-color:#7c3aed; }
+    .eco-card-sm { background:#fffbeb; border-color:#b45309; }
+    .eco-card-ws { background:#fff7ed; border-color:#ea580c; }
+    .eco-card-ox { background:#eff6ff; border-color:#1d4ed8; }
+
+    .eco-icon {
+      color: #fff; border-radius: 6px; width: clamp(18px,4vw,26px); height: clamp(18px,4vw,26px);
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(0.55rem,2vw,0.8rem); font-weight: 700;
+      margin: 0 auto 4px;
+    }
+    .eco-nname { font-size: clamp(0.5rem,1.8vw,0.75rem); font-weight: 800; margin-bottom: 3px; }
+    .eco-ndesc { font-size: clamp(0.4rem,1.3vw,0.6rem); color: var(--slate); line-height: 1.4; }
+
+    /* Legend */
+    .eco-legend {
+      margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .eco-legend-title {
+      text-align: center; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--slate); margin-bottom: 12px;
+    }
+    .eco-legend-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 8px;
+    }
+    .eco-leg-item { display: flex; gap: 8px; align-items: flex-start; font-size: 0.78rem; }
+    .eco-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; margin-top:3px; }
+
     /* ── Floating side nav ── */
     #sidenav {
       position: fixed;
@@ -882,72 +1006,112 @@
         <p>Free micro-content (YouTube, GitHub) builds trust and audience at zero acquisition cost → seminars and workshops deepen engagement → Open edX delivers the formal credential. At every stage, community-driven instructors are the connective tissue. <strong>207K+ validated public views</strong> prove the top of funnel works before a single course is enrolled.</p>
       </div>
 
-      <div class="pipeline-wrap">
-        <div class="pipeline-title">Discovery → Lab → Community → Seminar → Workshop → Credential</div>
-        <div class="pipeline">
+      <!-- Hub-and-spoke radial diagram -->
+      <div class="eco-diagram-wrap">
+        <div class="eco-title">CONTENT ECOSYSTEM</div>
+        <div class="eco-sub">Every stage feeds directly into CityU's formal curriculum</div>
 
-          <div class="pipe-stage">
-            <div class="pipe-node youtube">
-              <span class="pipe-icon">▶</span>
-              <div class="pipe-name youtube">YouTube</div>
-              <div class="pipe-sub">Free micro-content — searchable, public. 175K views on a single 18-second clip.</div>
-              <span class="pipe-badge free">Free</span>
+        <div class="eco-radial">
+          <svg viewBox="0 0 660 660" xmlns="http://www.w3.org/2000/svg" class="eco-svg" aria-hidden="true">
+            <defs>
+              <marker id="arr-yt" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#dc2626"/></marker>
+              <marker id="arr-gh" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#16a34a"/></marker>
+              <marker id="arr-ch" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#7c3aed"/></marker>
+              <marker id="arr-sm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#b45309"/></marker>
+              <marker id="arr-ws" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#ea580c"/></marker>
+              <marker id="arr-ox" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1d4ed8"/></marker>
+            </defs>
+            <!-- Outer ring -->
+            <circle cx="330" cy="330" r="122" fill="none" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4 6"/>
+            <!-- Spoke lines — each gets animation class -->
+            <line class="eco-spoke eco-spoke-yt" x1="330" y1="130" x2="330" y2="208" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-yt)" opacity="0.85"/>
+            <line class="eco-spoke eco-spoke-gh" x1="490" y1="190" x2="412" y2="268" stroke="#16a34a" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-gh)" opacity="0.85"/>
+            <line class="eco-spoke eco-spoke-ws" x1="490" y1="470" x2="412" y2="392" stroke="#ea580c" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-ws)" opacity="0.85"/>
+            <line class="eco-spoke eco-spoke-ox" x1="330" y1="530" x2="330" y2="452" stroke="#1d4ed8" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-ox)" opacity="0.85"/>
+            <line class="eco-spoke eco-spoke-sm" x1="170" y1="470" x2="248" y2="392" stroke="#b45309" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-sm)" opacity="0.85"/>
+            <line class="eco-spoke eco-spoke-ch" x1="170" y1="190" x2="248" y2="268" stroke="#7c3aed" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-ch)" opacity="0.85"/>
+          </svg>
+
+          <!-- Center: CityU -->
+          <div class="eco-center">
+            <div class="eco-center-globe">
+              <div class="eco-center-icon">🏛️</div>
+              <div class="eco-center-eyebrow">Feeds Into</div>
+              <div class="eco-center-name">City University<br>of Seattle</div>
+              <div class="eco-center-sub">Courses · Programs<br>Syllabi · Faculty</div>
             </div>
           </div>
 
-          <div class="pipe-stage">
-            <div class="pipe-node github">
-              <span class="pipe-icon">🐙</span>
-              <div class="pipe-name github">GitHub</div>
-              <div class="pipe-sub">Open-source lab code — hands-on repo tied to every video.</div>
-              <span class="pipe-badge open">Open Source</span>
+          <!-- YouTube — top -->
+          <div class="eco-node eco-node-top eco-n-yt">
+            <div class="eco-card eco-card-yt">
+              <div class="eco-icon" style="background:#dc2626;">▶</div>
+              <div class="eco-nname" style="color:#dc2626;">YouTube</div>
+              <div class="eco-ndesc">Video lectures<br>Concept explainers</div>
             </div>
           </div>
 
-          <div class="pipe-stage">
-            <div class="pipe-node commhub">
-              <span class="pipe-icon">💬</span>
-              <div class="pipe-name commhub">Community</div>
-              <div class="pipe-sub">Peer retention — Teams / Slack / forums keep learners between stages.</div>
-              <span class="pipe-badge community">Community</span>
+          <!-- GitHub — top-right -->
+          <div class="eco-node eco-node-tr eco-n-gh">
+            <div class="eco-card eco-card-gh">
+              <div class="eco-icon" style="background:#16a34a;">⌥</div>
+              <div class="eco-nname" style="color:#16a34a;">GitHub</div>
+              <div class="eco-ndesc">Lab environments<br>Starter code</div>
             </div>
           </div>
 
-          <div class="pipe-stage">
-            <div class="pipe-node seminar">
-              <span class="pipe-icon">🎙</span>
-              <div class="pipe-name seminar">Seminar</div>
-              <div class="pipe-sub">Structured talks, guest speakers — the academic taste-test.</div>
-              <span class="pipe-badge academic">Academic</span>
+          <!-- Workshop — bottom-right -->
+          <div class="eco-node eco-node-br eco-n-ws">
+            <div class="eco-card eco-card-ws">
+              <div class="eco-icon" style="background:#ea580c;">🔧</div>
+              <div class="eco-nname" style="color:#ea580c;">Workshop</div>
+              <div class="eco-ndesc">Hands-on curricula<br>Cohort feedback</div>
             </div>
           </div>
 
-          <div class="pipe-stage">
-            <div class="pipe-node workshop">
-              <span class="pipe-icon">🧑‍💻</span>
-              <div class="pipe-name workshop">Workshop</div>
-              <div class="pipe-sub">Live, hands-on cohort building — STC has been running these consistently.</div>
-              <span class="pipe-badge live">Live / Cohort</span>
+          <!-- Open edX — bottom -->
+          <div class="eco-node eco-node-bot eco-n-ox">
+            <div class="eco-card eco-card-ox">
+              <div class="eco-icon" style="background:#1d4ed8;font-size:0.6rem;">edX</div>
+              <div class="eco-nname" style="color:#1d4ed8;">Open edX</div>
+              <div class="eco-ndesc">Course pilots<br>Completion analytics</div>
             </div>
           </div>
 
-          <div class="pipe-stage">
-            <div class="pipe-node opededx">
-              <span class="pipe-icon">🎓</span>
-              <div class="pipe-name opededx">Open edX</div>
-              <div class="pipe-sub">Formal assessments, credit, micro-credentials. <a href="https://learn.smartandsecurecomputing.com/" target="_blank" rel="noopener" style="color:var(--blue);">learn.smartandsecurecomputing.com ↗</a></div>
-              <span class="pipe-badge credit">Credit / Paid</span>
+          <!-- Seminar — bottom-left -->
+          <div class="eco-node eco-node-bl eco-n-sm">
+            <div class="eco-card eco-card-sm">
+              <div class="eco-icon" style="background:#b45309;font-size:0.7rem;">📢</div>
+              <div class="eco-nname" style="color:#b45309;">Seminar</div>
+              <div class="eco-ndesc">Guest lectures<br>Topic validation</div>
             </div>
           </div>
 
+          <!-- Community Hub — top-left -->
+          <div class="eco-node eco-node-tl eco-n-ch">
+            <div class="eco-card eco-card-ch">
+              <div class="eco-icon" style="background:#7c3aed;">◈</div>
+              <div class="eco-nname" style="color:#7c3aed;">Community Hub</div>
+              <div class="eco-ndesc">Demand signals<br>Pain points</div>
+            </div>
+          </div>
+
+        </div><!-- end eco-radial -->
+
+        <!-- Legend -->
+        <div class="eco-legend">
+          <div class="eco-legend-title">What Each Stage Feeds Into CityU</div>
+          <div class="eco-legend-grid">
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#dc2626;"></span><span><strong style="color:#dc2626;">YouTube</strong> — lecture library, student-facing demos</span></div>
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#16a34a;"></span><span><strong style="color:#16a34a;">GitHub</strong> — lab repos, battle-tested before students touch them</span></div>
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#7c3aed;"></span><span><strong style="color:#7c3aed;">Community Hub</strong> — real demand signals, syllabus priorities</span></div>
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#b45309;"></span><span><strong style="color:#b45309;">Seminar</strong> — guest lecturer pool, elective topic leads</span></div>
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#ea580c;"></span><span><strong style="color:#ea580c;">Workshop</strong> — project units, competency rubrics, grading standards</span></div>
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#1d4ed8;"></span><span><strong style="color:#1d4ed8;">Open edX</strong> — pilot course shells submitted as credit proposals</span></div>
+          </div>
         </div>
-        <div class="pipeline-note"><strong>Commitment escalates at every stage:</strong> watch → explore → discuss → attend a talk → build hands-on → enroll formally.</div>
-      </div>
 
-      <div class="curriculum-arrow">↓</div>
-      <div class="curriculum-label">Every stage feeds directly into CityU's formal curriculum</div>
-      <div class="curriculum-box">
-        <p><strong>CityU STC / AILI</strong> — Open edX live at <a href="https://learn.smartandsecurecomputing.com/" target="_blank" rel="noopener" style="color:var(--teal);">learn.smartandsecurecomputing.com ↗</a> · First cohort: 13 Korean students, Summer 2026</p>
+        <div class="pipeline-note" style="margin-top:16px;"><strong>Commitment escalates at every stage:</strong> watch → explore → discuss → attend a talk → build hands-on → enroll formally. · Open edX live at <a href="https://learn.smartandsecurecomputing.com/" target="_blank" rel="noopener" style="color:var(--blue);">learn.smartandsecurecomputing.com ↗</a> · First cohort: 13 Korean students, Summer 2026</div>
       </div>
     </div>
   </div>

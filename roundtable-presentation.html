@@ -639,6 +639,14 @@
     /* Hide the old dot element if still present */
     .sn-dot { display: none; }
 
+    /* Group headers in sidenav */
+    .sn-group {
+      font-size: 0.5rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.22); padding: 8px 14px 2px 12px; margin-top: 2px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .sn-group:first-child { border-top: none; margin-top: 0; }
+
     @media (max-width: 1100px) { #sidenav { display: none; } }
 
     /* ── Mobile bottom nav ── */
@@ -669,6 +677,12 @@
     }
     .mn-item .mn-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
     .mn-item:hover, .mn-item.active { color: #fff; border-bottom-color: #fff; }
+    .mn-group {
+      display: flex; align-items: flex-end; padding: 0 6px 4px;
+      font-size: 0.48rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.28); white-space: nowrap; border-left: 1px solid rgba(255,255,255,0.1);
+      margin-left: 4px; padding-left: 6px; flex-shrink: 0;
+    }
 
     @media (max-width: 768px) {
       #mobile-nav { display: block; }
@@ -732,22 +746,29 @@
 <!-- Mobile Bottom Nav -->
 <nav id="mobile-nav" aria-label="Quick navigation">
   <div class="mn-inner">
+    <span class="mn-group">Context</span>
     <a class="mn-item" href="#three-problems"><span class="mn-dot"></span><span>1 · Where We Landed</span></a>
-    <a class="mn-item" href="#uncertainty"><span class="mn-dot"></span><span>2 · Uncertainty Matrix</span></a>
+    <a class="mn-item" href="#uncertainty"><span class="mn-dot"></span><span>2 · Uncertainty</span></a>
     <a class="mn-item" href="#how-we-got-here"><span class="mn-dot"></span><span>3 · How We Got Here</span></a>
+    <span class="mn-group">First Responders</span>
     <a class="mn-item" href="#high-stakes"><span class="mn-dot"></span><span>4 · High Stakes</span></a>
     <a class="mn-item" href="#kpis"><span class="mn-dot"></span><span>5 · KPIs &amp; Risks</span></a>
     <a class="mn-item" href="#action-now"><span class="mn-dot"></span><span>6 · Why Act Now</span></a>
     <a class="mn-item" href="#traffic-light"><span class="mn-dot"></span><span>7 · Traffic Light</span></a>
+    <span class="mn-group">Blue Tech</span>
     <a class="mn-item" href="#maritime"><span class="mn-dot"></span><span>8 · Maritime</span></a>
+    <span class="mn-group">CityUx</span>
     <a class="mn-item" href="#ecosystem"><span class="mn-dot"></span><span>9 · Ecosystem</span></a>
+    <span class="mn-group">BSAI</span>
     <a class="mn-item" href="#bsai"><span class="mn-dot"></span><span>10 · BSAI Degree</span></a>
+    <span class="mn-group">Close</span>
     <a class="mn-item" href="#proto-links"><span class="mn-dot"></span><span>11 · Reflections</span></a>
   </div>
 </nav>
 
 <!-- Floating Side Nav -->
 <nav id="sidenav" aria-label="Quick navigation">
+  <div class="sn-group">Context</div>
   <a class="sn-item" href="#three-problems" data-color="violet">
     <span class="sn-num">1</span><span class="sn-label">Where We Landed</span>
   </a>
@@ -757,6 +778,7 @@
   <a class="sn-item" href="#how-we-got-here" data-color="blue">
     <span class="sn-num">3</span><span class="sn-label">How We Got Here</span>
   </a>
+  <div class="sn-group">First Responders</div>
   <a class="sn-item" href="#high-stakes" data-color="red">
     <span class="sn-num">4</span><span class="sn-label">High Stakes</span>
   </a>
@@ -769,15 +791,19 @@
   <a class="sn-item" href="#traffic-light" data-color="green">
     <span class="sn-num">7</span><span class="sn-label">Traffic Light</span>
   </a>
+  <div class="sn-group">Blue Tech · Maritime</div>
   <a class="sn-item" href="#maritime" data-color="violet">
     <span class="sn-num">8</span><span class="sn-label">Maritime</span>
   </a>
+  <div class="sn-group">CityUx · Open Ecosystem</div>
   <a class="sn-item" href="#ecosystem" data-color="teal">
     <span class="sn-num">9</span><span class="sn-label">Ecosystem</span>
   </a>
+  <div class="sn-group">BSAI Degree</div>
   <a class="sn-item" href="#bsai" data-color="ink">
     <span class="sn-num">10</span><span class="sn-label">BSAI Degree</span>
   </a>
+  <div class="sn-group">Close</div>
   <a class="sn-item" href="#proto-links" data-color="teal">
     <span class="sn-num">11</span><span class="sn-label">Reflections</span>
   </a>

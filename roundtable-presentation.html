@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Blue Tech & AI for Frontline Workers — Strategic Leadership Roundtable</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 900px; margin: 0 auto; padding: 28px 20px 120px; }
+
+    /* Nav */
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Header */
+    .doc-header {
+      background: var(--ink);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 32px 36px 28px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .doc-header::before {
+      content: '';
+      position: absolute; top: 0; right: 0; bottom: 0;
+      width: 300px;
+      background: linear-gradient(135deg, transparent, rgba(124,58,237,0.3));
+      pointer-events: none;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px;
+    }
+    .doc-header h1 {
+      margin: 0 0 10px; font-size: 1.9rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.15;
+    }
+    .doc-header .subtitle { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin: 0 0 20px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .meta-chip {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px; padding: 4px 12px; font-size: 0.78rem; font-weight: 600; color: #fff;
+    }
+
+    /* Section blocks */
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .section-head {
+      padding: 20px 28px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+    }
+    .section-head-left { flex: 1; }
+    .section-eyebrow {
+      font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .section-head h2 {
+      margin: 0 0 4px; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .section-head .sub { color: var(--slate); font-size: 0.87rem; margin: 0; }
+    .source-link {
+      font-size: 0.72rem; font-weight: 600; color: var(--slate);
+      text-decoration: none; border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 10px; white-space: nowrap;
+      flex-shrink: 0; align-self: start; margin-top: 2px;
+      transition: all 0.15s;
+    }
+    .source-link:hover { border-color: var(--blue); color: var(--blue); }
+    .section-body { padding: 24px 28px; }
+
+    /* Narrative callout */
+    .narrative {
+      border-left: 4px solid var(--blue);
+      background: var(--blue-dim);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 16px 20px; margin-bottom: 16px; font-size: 0.93rem; line-height: 1.7;
+    }
+    .narrative.green { border-color: var(--green); background: var(--green-dim); }
+    .narrative.violet { border-color: var(--violet); background: var(--violet-dim); }
+    .narrative.teal { border-color: var(--teal); background: var(--teal-dim); }
+    .narrative.amber { border-color: var(--amber); background: var(--amber-dim); }
+    .narrative.red { border-color: var(--red); background: var(--red-dim); }
+    .narrative-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 8px; opacity: 0.65;
+    }
+    .narrative p { margin: 0 0 10px; }
+    .narrative p:last-child { margin: 0; }
+
+    /* Card grids */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+    }
+    .card.blue-card { background: var(--blue-dim); border-color: rgba(29,78,216,0.2); }
+    .card.green-card { background: var(--green-dim); border-color: rgba(22,163,74,0.2); }
+    .card.violet-card { background: var(--violet-dim); border-color: rgba(124,58,237,0.2); }
+    .card.teal-card { background: var(--teal-dim); border-color: rgba(13,148,136,0.2); }
+    .card.red-card { background: var(--red-dim); border-color: rgba(220,38,38,0.2); }
+    .card.amber-card { background: var(--amber-dim); border-color: rgba(217,119,6,0.2); }
+    .card-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .card p { font-size: 0.85rem; margin: 0; color: var(--ink); }
+    .card ul { margin: 0; padding: 0 0 0 16px; font-size: 0.83rem; }
+    .card ul li { margin-bottom: 4px; }
+
+    /* Problem cards */
+    .problem-card {
+      display: grid; grid-template-columns: 36px 1fr; gap: 12px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 16px; align-items: start;
+    }
+    .problem-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      color: #fff; font-size: 0.85rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+
+    /* Traffic light */
+    .tl-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .tl-card { border-radius: var(--radius-sm); padding: 16px; }
+    .tl-card.green { background: var(--green-dim); border: 1px solid rgba(22,163,74,0.3); }
+    .tl-card.yellow { background: var(--amber-dim); border: 1px solid rgba(217,119,6,0.3); }
+    .tl-card.red { background: var(--red-dim); border: 1px solid rgba(220,38,38,0.3); }
+    .tl-dot {
+      width: 24px; height: 24px; border-radius: 50%; margin-bottom: 10px;
+      display: inline-block;
+    }
+    .tl-dot.g { background: var(--green); }
+    .tl-dot.y { background: var(--amber); }
+    .tl-dot.r { background: var(--red); }
+    .tl-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .tl-card ul { margin: 0; padding: 0 0 0 14px; font-size: 0.82rem; }
+    .tl-card ul li { margin-bottom: 5px; }
+
+    /* KPI table */
+    .kpi-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+    .kpi-table th {
+      background: var(--ink); color: #fff;
+      text-align: left; padding: 9px 12px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .kpi-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .kpi-table tr:last-child td { border-bottom: none; }
+    .kpi-table tr:nth-child(even) td { background: var(--bg); }
+    .badge { display: inline-block; font-size: 0.72rem; font-weight: 700; border-radius: 20px; padding: 2px 9px; }
+    .badge-up { background: var(--green-dim); color: var(--green); }
+    .badge-down { background: var(--red-dim); color: var(--red); }
+    .badge-dispute { background: var(--amber-dim); color: var(--amber); }
+
+    /* Funnel stages */
+    .funnel-stages { display: grid; gap: 8px; }
+    .funnel-stage {
+      display: grid; grid-template-columns: 36px 120px 1fr auto;
+      gap: 12px; align-items: center;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 10px 14px; font-size: 0.85rem;
+    }
+    .funnel-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--ink); color: #fff;
+      font-size: 0.75rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .funnel-name { font-weight: 700; }
+    .funnel-desc { color: var(--slate); font-size: 0.81rem; }
+    .funnel-tag {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* AILI hero */
+    .aili-hero {
+      background: linear-gradient(135deg, var(--violet-dim), var(--blue-dim));
+      border: 2px solid var(--violet); border-radius: var(--radius-sm);
+      padding: 22px; margin-bottom: 16px;
+    }
+    .aili-name { font-size: 2.2rem; font-weight: 900; letter-spacing: -0.03em; margin: 0 0 2px; }
+    .aili-sub { font-size: 0.82rem; color: var(--slate); margin: 0 0 16px; }
+
+    /* Uncertainty matrix */
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr;
+      gap: 2px; border-radius: var(--radius-sm);
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .matrix-header { background: var(--ink); color: #fff; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 14px; text-align: center; }
+    .matrix-row-label { background: var(--slate); color: #fff; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 14px 8px; text-align: center; writing-mode: vertical-lr; transform: rotate(180deg); display: flex; align-items: center; justify-content: center; }
+    .matrix-cell { background: #f8fafc; border: 1px solid var(--border); padding: 14px; font-size: 0.83rem; }
+    .matrix-cell.highlight { background: var(--violet-dim); border: 2px solid var(--violet); }
+
+    /* Maritime links */
+    .proto-links { display: grid; gap: 10px; }
+    .proto-link-card {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+      text-decoration: none; color: inherit; transition: all 0.15s;
+    }
+    .proto-link-card:hover { border-color: var(--violet); background: var(--violet-dim); }
+    .proto-link-card .plc-label { font-weight: 700; font-size: 0.9rem; color: var(--ink); margin-bottom: 2px; }
+    .proto-link-card .plc-url { font-size: 0.78rem; color: var(--slate); }
+    .proto-link-card .plc-arrow { font-size: 1.1rem; color: var(--violet); flex-shrink: 0; }
+
+    /* ── Floating side nav ── */
+    #sidenav {
+      position: fixed;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sn-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .sn-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--slate-light);
+      flex-shrink: 0;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    .sn-item:hover .sn-dot,
+    .sn-item.active .sn-dot {
+      background: var(--blue);
+      transform: scale(1.3);
+    }
+    .sn-label {
+      font-size: 0.72rem; font-weight: 600;
+      background: var(--ink); color: #fff;
+      padding: 3px 8px; border-radius: 4px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+      order: -1;
+    }
+    .sn-item:hover .sn-label { opacity: 1; }
+    /* Color dots per section */
+    .sn-item[data-color="blue"] .sn-dot { border-color: var(--blue); }
+    .sn-item[data-color="violet"] .sn-dot { border-color: var(--violet); }
+    .sn-item[data-color="green"] .sn-dot { border-color: var(--green); }
+    .sn-item[data-color="teal"] .sn-dot { border-color: var(--teal); }
+    .sn-item[data-color="red"] .sn-dot { border-color: var(--red); }
+    .sn-item[data-color="amber"] .sn-dot { border-color: var(--amber); }
+    .sn-item[data-color="ink"] .sn-dot { border-color: var(--ink); }
+    .sn-item.active[data-color="blue"] .sn-dot { background: var(--blue); }
+    .sn-item.active[data-color="violet"] .sn-dot { background: var(--violet); }
+    .sn-item.active[data-color="green"] .sn-dot { background: var(--green); }
+    .sn-item.active[data-color="teal"] .sn-dot { background: var(--teal); }
+    .sn-item.active[data-color="red"] .sn-dot { background: var(--red); }
+    .sn-item.active[data-color="amber"] .sn-dot { background: var(--amber); }
+    .sn-item.active[data-color="ink"] .sn-dot { background: var(--ink); }
+
+    @media (max-width: 1100px) { #sidenav { display: none; } }
+
+    @media print {
+      .nav-row, #sidenav { display: none !important; }
+      .shell { padding: 16px; }
+      .section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating Side Nav -->
+<nav id="sidenav" aria-label="Quick navigation">
+  <a class="sn-item" href="#how-we-got-here" data-color="blue">
+    <span class="sn-label">How We Got Here</span>
+    <span class="sn-dot"></span>
+  </a>
+  <a class="sn-item" href="#three-problems" data-color="violet">
+    <span class="sn-label">Three Problems + AILI</span>
+    <span class="sn-dot"></span>
+  </a>
+  <a class="sn-item" href="#high-stakes" data-color="red">
+    <span class="sn-label">High Stakes</span>
+    <span class="sn-dot"></span>
+  </a>
+  <a class="sn-item" href="#kpis" data-color="amber">
+    <span class="sn-label">KPIs That Move</span>
+    <span class="sn-dot"></span>
+  </a>
+  <a class="sn-item" href="#action-now" data-color="red">
+    <span class="sn-label">Why Act Now</span>
+    <span class="sn-dot"></span>
+  </a>
+  <a class="sn-item" href="#traffic-light" data-color="green">
+    <span class="sn-label">Traffic Light</span>
+    <span class="sn-dot"></span>
+  </a>
+  <a class="sn-item" href="#ecosystem" data-color="teal">
+    <span class="sn-label">Ecosystem Funnel</span>
+    <span class="sn-dot"></span>
+  </a>
+  <a class="sn-item" href="#bsai" data-color="ink">
+    <span class="sn-label">BSAI Overview</span>
+    <span class="sn-dot"></span>
+  </a>
+  <a class="sn-item" href="#maritime" data-color="violet">
+    <span class="sn-label">Maritime Blue Shift</span>
+    <span class="sn-dot"></span>
+  </a>
+  <a class="sn-item" href="#uncertainty" data-color="violet">
+    <span class="sn-label">Uncertainty Matrix</span>
+    <span class="sn-dot"></span>
+  </a>
+  <a class="sn-item" href="#proto-links" data-color="teal">
+    <span class="sn-label">Maritime Prototypes</span>
+    <span class="sn-dot"></span>
+  </a>
+</nav>
+
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">← Home</a>
+    <span class="nav-sep">›</span>
+    <a href="roundtable-prep-cityu-president.html">Roundtable Prep</a>
+    <span class="nav-sep">›</span>
+    <span>Presentation</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="eyebrow">Strategic Leadership Roundtable · July 2026 · 11:00 AM · 1 Hour</div>
+    <h1>Blue Tech &amp; AI<br>for Frontline Workers</h1>
+    <p class="subtitle">City University of Seattle — STC Research Group · Facilitated by Suzanne Walsh</p>
+    <div class="meta-row">
+      <span class="meta-chip">Sam Chung, Ph.D.</span>
+      <span class="meta-chip">Clark Ngo</span>
+      <span class="meta-chip">First Responders · Maritime · AILI</span>
+      <span class="meta-chip"><a href="roundtable-prep-cityu-president.html" style="color:#fff;">→ Speaker Prep Notes</a></span>
+    </div>
+  </div>
+
+  <!-- ─── 1. How We Got Here ─── -->
+  <div class="section" id="how-we-got-here">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--blue);">Origin Story</div>
+        <h2>How We Developed the Research &amp; Ideas</h2>
+        <p class="sub">Two parallel tracks, AI-assisted, iterative — driven by real-world events, not an academic calendar.</p>
+      </div>
+      <a class="source-link" href="roundtable-prep-cityu-president.html#how-we-got-here" target="_blank">Prep Notes ↗</a>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative">
+        <div class="narrative-label">Starting point</div>
+        <p>Suzanne asked us to explore what Blue Tech and AI mean for frontline workers in our region. That framing shaped everything: applied intelligence work, not academic literature review. Two tracks emerged based on where we each had footing.</p>
+      </div>
+
+      <div class="two-col" style="margin-bottom:20px;">
+        <div class="card violet-card">
+          <div class="card-label" style="color:var(--violet);">Sam — Blue Tech / Maritime</div>
+          <p>Maritime sector landscape, USCG mandate, Port's digital transformation, CityU STC as "Industrial Intelligence" partner. Direction from Suzanne — maritime was part of the original ask.</p>
+        </div>
+        <div class="card blue-card">
+          <div class="card-label" style="color:var(--blue);">Clark — AI for First Responders</div>
+          <p>Police, fire, EMS — what AI tools are being deployed, what WA State mandates require, and where the policy and governance gaps are. Entry points: public websites, vendor materials, WA Task Force documents, SPD policies.</p>
+        </div>
+      </div>
+
+      <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 10px;">Research Process</p>
+      <div style="display:grid;gap:8px;margin-bottom:16px;">
+        <div class="card" style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;">1</div>
+          <div><strong style="font-size:0.87rem;">Gemini AI search → primary source verification.</strong> <span style="font-size:0.83rem;color:var(--slate);">AI as a research accelerator, not a replacement for checking the actual document.</span></div>
+        </div>
+        <div class="card" style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;">2</div>
+          <div><strong style="font-size:0.87rem;">Claude to build the presentation sites.</strong> <span style="font-size:0.83rem;color:var(--slate);">Turning raw research into navigable, shareable documents — including this page.</span></div>
+        </div>
+        <div class="card" style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;">3</div>
+          <div><strong style="font-size:0.87rem;">Iterative rhythm — pause, develop, resume.</strong> <span style="font-size:0.83rem;color:var(--slate);">Real-world events drive the next iteration: a WA Task Force recommendation, the SPD meeting, a maritime expert calling us.</span></div>
+        </div>
+        <div class="card" style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;">4</div>
+          <div><strong style="font-size:0.87rem;">Meetings accelerate more than desk research.</strong> <span style="font-size:0.83rem;color:var(--slate);">The SPD meeting (June 16) surfaced the PNNL gap — not in any document. The Adams et al. study was a surprise that let us pivot cleanly, with no sunk cost to defend.</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── 2. Three Problems + AILI ─── -->
+  <div class="section" id="three-problems">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--violet);">Institutional Context</div>
+        <h2>The Three Problems — and AILI as the Answer</h2>
+        <p class="sub">The Blue Tech and first responders work responds to three specific asks from Suzanne and Melissa since Summer 2025.</p>
+      </div>
+      <a class="source-link" href="roundtable-prep-cityu-president.html#three-problems" target="_blank">Prep Notes ↗</a>
+    </div>
+    <div class="section-body">
+
+      <div style="display:grid;gap:10px;margin-bottom:24px;">
+        <div class="problem-card">
+          <div class="problem-num" style="background:var(--violet);">1</div>
+          <div>
+            <p style="font-size:0.88rem;font-weight:800;margin:0 0 3px;">Industry Leader — Maritime</p>
+            <p style="font-size:0.84rem;margin:0 0 4px;">Can STC and SBM become industry leaders for our graduates? Partner universities are closely located near the port — focus on maritime as the differentiator.</p>
+            <p style="font-size:0.76rem;color:var(--slate);margin:0;">Suzanne · Winter 2026</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-num" style="background:var(--blue);">2</div>
+          <div>
+            <p style="font-size:0.88rem;font-weight:800;margin:0 0 3px;">AI Impact — SPD</p>
+            <p style="font-size:0.84rem;margin:0 0 4px;">How can we help the Seattle Police Department with the AI movement?</p>
+            <p style="font-size:0.76rem;color:var(--slate);margin:0;">Suzanne · Spring 2026</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-num" style="background:var(--green);">3</div>
+          <div>
+            <p style="font-size:0.88rem;font-weight:800;margin:0 0 3px;">AI Degree — BSAI &amp; Curriculum</p>
+            <p style="font-size:0.84rem;margin:0 0 4px;">Can you develop a BS in AI degree? Based on the BSAI, can you improve all other degree courses?</p>
+            <p style="font-size:0.76rem;color:var(--slate);margin:0;">Melissa · Summer 2025 – Winter 2026</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="aili-hero">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <div>
+            <div class="aili-name">AILI</div>
+            <div class="aili-sub">Pronounced "AY-lee" · <em>Gaelic / Nordic: "Bright shining light" · "Defender / Shield"</em></div>
+          </div>
+          <div style="border-left:2px solid var(--border);padding-left:16px;">
+            <p style="font-size:0.9rem;font-weight:800;margin:0 0 2px;">AI Lifelong Learning Institute</p>
+            <p style="font-size:0.82rem;color:var(--slate);margin:0;">The umbrella institution — avoids "Center," signals permanence without over-committing on structure.</p>
+          </div>
+        </div>
+        <div class="two-col">
+          <div style="background:rgba(255,255,255,0.6);border-radius:var(--radius-sm);padding:12px;">
+            <div class="card-label" style="color:var(--violet);">The Light</div>
+            <p style="font-size:0.83rem;margin:0;">AI can feel overwhelming to non-STEM lifelong learners. AILI illuminates the path through practical, hands-on experience.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.6);border-radius:var(--radius-sm);padding:12px;">
+            <div class="card-label" style="color:var(--blue);">The Shield</div>
+            <p style="font-size:0.83rem;margin:0;">A shield against workforce displacement — providing immediate, relevant skills so learners aren't left behind by the AI shift.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="three-col">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center;">
+          <div style="font-size:1.5rem;font-weight:900;color:var(--violet);">2 Qtrs</div>
+          <div style="font-size:0.8rem;color:var(--slate);">Infrastructure buildout</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center;">
+          <div style="font-size:1.5rem;font-weight:900;color:var(--blue);">3 Courses</div>
+          <div style="font-size:0.8rem;color:var(--slate);">Demo courses to prove the model</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center;">
+          <div style="font-size:1.5rem;font-weight:900;color:var(--green);">Open edX</div>
+          <div style="font-size:0.8rem;color:var(--slate);"><a href="https://learn.smartandsecurecomputing.com/" target="_blank" rel="noopener" style="color:var(--green);">Live now ↗</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── 3. High Stakes ─── -->
+  <div class="section" id="high-stakes">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--red);">First Responders Research</div>
+        <h2>The High Stakes: Efficiency vs. Legal Liability</h2>
+        <p class="sub">AI is already in the field. The promise is real — and so is the exposure.</p>
+      </div>
+      <a class="source-link" href="ai-rollout-first-responders.html#section-01" target="_blank">Full Section ↗</a>
+    </div>
+    <div class="section-body">
+
+      <div class="two-col" style="margin-bottom:16px;">
+        <div class="card green-card">
+          <div class="card-label" style="color:var(--green);">✅ Efficiency Gains</div>
+          <ul>
+            <li>Vendors claim AI reduces report writing from 2 hours to under 60 seconds</li>
+            <li>Digital evidence processed up to 100× faster (Longeye, Redmond WA)</li>
+            <li>Cardiac arrest recognition at 95% accuracy (Corti)</li>
+            <li>Wildfire detection up to 25 min before first 911 call (Pano AI)</li>
+          </ul>
+        </div>
+        <div class="card red-card">
+          <div class="card-label" style="color:var(--red);">🚨 Legal &amp; Operational Risks</div>
+          <ul>
+            <li>AI-generated report included a non-existent officer — immediate Brady material</li>
+            <li>Heber City, UT: AI report claimed officer shapeshifted into a frog — unusable in court</li>
+            <li>AI-assisted translation dropped critical medical terms before they reached the crew</li>
+            <li>King County Prosecutor: formal memo refusing AI-produced narratives in charging documents</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="narrative red">
+        <div class="narrative-label">The evidence that changed our pitch</div>
+        <p>Adams et al. (2024) — a pre-registered, independent RCT testing Axon's Draft One on 85 officers across 755 real reports — found <strong>no statistically significant reduction in report-writing time.</strong> The 60-second vendor claim doesn't hold up under scrutiny. SPD's own senior research scientist raised this study at the June 16 meeting, unprompted. We pivoted from efficiency to accountability.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── 4. KPIs ─── -->
+  <div class="section" id="kpis">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--amber);">First Responders Research</div>
+        <h2>Corresponding Risks — KPIs That Move With AI</h2>
+        <p class="sub">Every efficiency gain has a corresponding risk moving in the opposite direction. Both require active management.</p>
+      </div>
+      <a class="source-link" href="ai-rollout-first-responders.html" target="_blank">Full Presentation ↗</a>
+    </div>
+    <div class="section-body">
+      <table class="kpi-table">
+        <thead>
+          <tr><th>KPI</th><th>AI Impact</th><th>Direction</th><th>Tool</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Report writing time</td><td>Vendor claims sub-minute; independent RCT found no significant change</td><td><span class="badge badge-dispute">▬ Disputed</span></td><td>Draft One</td></tr>
+          <tr><td>Report accuracy / Brady compliance</td><td>AI hallucinations introduced at scale; defense can impeach signed reports</td><td><span class="badge badge-down">▼ Risk</span></td><td>Draft One</td></tr>
+          <tr><td>Cardiac arrest recognition</td><td>Near-instant detection at 95% accuracy</td><td><span class="badge badge-up">▲ Positive</span></td><td>Corti</td></tr>
+          <tr><td>Clinical translation accuracy</td><td>AI drops anatomical &amp; symptom terms ("turning blue")</td><td><span class="badge badge-down">▼ Risk</span></td><td>Corti</td></tr>
+          <tr><td>Wildfire early detection</td><td>Up to 25 min earlier than first 911 call</td><td><span class="badge badge-up">▲ Positive</span></td><td>Pano AI</td></tr>
+          <tr><td>Racial disparity in enforcement</td><td>Predictive tools can amplify historical bias</td><td><span class="badge badge-down">▼ Risk</span></td><td>Predictive patrol</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─── 5. Why Act Now ─── -->
+  <div class="section" id="action-now">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--red);">First Responders Research</div>
+        <h2>Why Action Is Required Now</h2>
+        <p class="sub">Three converging pressures — procurement, unfulfilled mandates, and a state deadline — make this a now issue.</p>
+      </div>
+      <a class="source-link" href="ai-rollout-first-responders.html" target="_blank">Full Presentation ↗</a>
+    </div>
+    <div class="section-body">
+      <div class="three-col">
+        <div class="card red-card">
+          <div class="card-label" style="color:var(--red);">Now — Active Procurement</div>
+          <p>Code Four, Axon Draft One, and Longeye are being procured locally (Redmond, WA) and nationally — ahead of any governance policy.</p>
+        </div>
+        <div class="card amber-card">
+          <div class="card-label" style="color:var(--amber);">2025–26 — Unfulfilled Mandate</div>
+          <p>Seattle's 2025–2026 AI Plan Pillar 3 mandates workforce upskilling for public safety — it has not yet been implemented.</p>
+        </div>
+        <div class="card red-card">
+          <div class="card-label" style="color:var(--red);">July 1, 2026 — WA Deadline</div>
+          <p>WA State AI Task Force Recommendation 3: public disclosure of AI tool use by law enforcement + officer attestation of accuracy for all AI-assisted documents. Human oversight is non-negotiable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 6. Traffic Light ─── -->
+  <div class="section" id="traffic-light">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--green);">First Responders Research</div>
+        <h2>Operational Guardrails: The Traffic Light Framework</h2>
+        <p class="sub">A three-tier framework governing how first responders may use AI tools — from approved daily use to strictly banned.</p>
+      </div>
+      <a class="source-link" href="ai-rollout-first-responders.html" target="_blank">Full Presentation ↗</a>
+    </div>
+    <div class="section-body">
+      <div class="tl-grid">
+        <div class="tl-card green">
+          <span class="tl-dot g"></span>
+          <div class="tl-label" style="color:var(--green);">Green — Approved Use</div>
+          <ul>
+            <li>Fleet routing &amp; scheduling</li>
+            <li>Bulk evidence processing (with human verification)</li>
+            <li>Translated public safety announcements</li>
+            <li>Administrative scheduling &amp; resource allocation</li>
+          </ul>
+        </div>
+        <div class="tl-card yellow">
+          <span class="tl-dot y"></span>
+          <div class="tl-label" style="color:var(--amber);">Yellow — Pilot / Verified Only</div>
+          <ul>
+            <li>BWC summarization for training only</li>
+            <li>Draft incident reports with mandatory manual redlining</li>
+            <li>Requires supervisor sign-off before any official use</li>
+          </ul>
+        </div>
+        <div class="tl-card red">
+          <span class="tl-dot r"></span>
+          <div class="tl-label" style="color:var(--red);">Red — Strictly Banned</div>
+          <ul>
+            <li>AI-written charging documents</li>
+            <li>Signing anything under penalty of perjury without full human verification</li>
+            <li>Running unvetted consumer AI on CJIS or health data</li>
+          </ul>
+        </div>
+      </div>
+      <div class="narrative green" style="margin-top:16px;margin-bottom:0;">
+        <div class="narrative-label">State-endorsed framework</div>
+        <p>The WA State AI Task Force formally adopted the NIST AI Risk Management Framework. The Traffic Light maps directly to its risk tiers. Same structural logic as the EU AI Act (Unacceptable / High / Minimal Risk). CityU's first responders micro-credential curriculum teaches this framework — Module 4 of the AI for First Responders course.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 7. Ecosystem Funnel ─── -->
+  <div class="section" id="ecosystem">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--teal);">Enrollment &amp; Education Strategy</div>
+        <h2>From Ecosystem to CityU Curriculum</h2>
+        <p class="sub">A skills-first pipeline moving from internet-scale public discovery into formal, structured learning — the AILI delivery model.</p>
+      </div>
+      <a class="source-link" href="stc-open-ecosystem-funnel.html" target="_blank">Full Briefing ↗</a>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative teal" style="margin-bottom:16px;">
+        <div class="narrative-label">The model in one sentence</div>
+        <p>Free micro-content (YouTube, GitHub) builds trust and audience at zero acquisition cost → seminars and workshops deepen engagement → Open edX delivers the formal credential. At every stage, community-driven instructors are the connective tissue. <strong>207K+ validated public views</strong> prove the top of funnel works before a single course is enrolled.</p>
+      </div>
+
+      <div class="funnel-stages">
+        <div class="funnel-stage">
+          <div class="funnel-num">1</div>
+          <div class="funnel-name">▶ YouTube</div>
+          <div class="funnel-desc">Free micro-content — searchable, public. 175K views on a single 18-second clip.</div>
+          <span class="funnel-tag" style="background:var(--red-dim);color:var(--red);">Free</span>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-num">2</div>
+          <div class="funnel-name">🐙 GitHub</div>
+          <div class="funnel-desc">Open-source lab code — hands-on repo tied to every video.</div>
+          <span class="funnel-tag" style="background:var(--bg);color:var(--slate);">Open Source</span>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-num">3</div>
+          <div class="funnel-name">💬 Community</div>
+          <div class="funnel-desc">Peer retention — Teams / Slack / forums keep learners between stages.</div>
+          <span class="funnel-tag" style="background:var(--bg);color:var(--slate);">Community</span>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-num">4</div>
+          <div class="funnel-name">🎙 Seminar</div>
+          <div class="funnel-desc">Structured talks, guest speakers — the academic taste-test. Lower commitment than a workshop.</div>
+          <span class="funnel-tag" style="background:var(--blue-dim);color:var(--blue);">Academic</span>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-num">5</div>
+          <div class="funnel-name">🧑‍💻 Workshop</div>
+          <div class="funnel-desc">Live, hands-on cohort building — STC has been running these consistently.</div>
+          <span class="funnel-tag" style="background:var(--amber-dim);color:var(--amber);">Live / Cohort</span>
+        </div>
+        <div class="funnel-stage" style="border:1px solid rgba(13,148,136,0.3);background:var(--teal-dim);">
+          <div class="funnel-num" style="background:var(--teal);">6</div>
+          <div class="funnel-name" style="color:var(--teal);">🎓 Open edX</div>
+          <div class="funnel-desc">Formal assessments, credit, micro-credentials. <a href="https://learn.smartandsecurecomputing.com/" target="_blank" rel="noopener" style="color:var(--teal);">learn.smartandsecurecomputing.com ↗</a></div>
+          <span class="funnel-tag" style="background:var(--teal-dim);color:var(--teal);border:1px solid rgba(13,148,136,0.3);">Credit / Paid</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 8. BSAI Overview ─── -->
+  <div class="section" id="bsai">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--ink);">Degree Program</div>
+        <h2>Bachelor of Science in Artificial Intelligence (BSAI)</h2>
+        <p class="sub">AAC Approved — April 14, 2026. The credential anchor for the AILI lifelong learning pathway.</p>
+      </div>
+      <a class="source-link" href="bs-ai-aac-04142026.html" target="_blank">Full Program ↗</a>
+    </div>
+    <div class="section-body">
+
+      <div class="narrative" style="margin-bottom:16px;">
+        <div class="narrative-label">Why it exists</div>
+        <p>STC offers graduate AI but had no undergraduate AI degree. As of 2026, AI specialist demand is projected to grow 26% (BLS) — outpacing traditional software developers. ABET now has standalone criteria for AI programs. The BSAI is the institutional anchor; AILI is the lifelong learning layer that sits alongside it.</p>
+      </div>
+
+      <div class="two-col" style="margin-bottom:14px;">
+        <div class="card">
+          <div class="card-label">Program Focus</div>
+          <ul>
+            <li>NLP, Computer Vision, Deep Learning, Reinforcement Learning</li>
+            <li>MLOps and AgentOps — production-grade AI systems</li>
+            <li>Digital twins and Physical AI</li>
+            <li>"Spec-first" development — autonomous agents</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Key Outcomes</div>
+          <ul>
+            <li>Apply AI principles including generative AI and NLP</li>
+            <li>Deploy resilient, scalable AI-driven cyber-physical systems</li>
+            <li>Address ethical challenges: privacy, deepfakes, algorithmic accountability</li>
+            <li>Design and maintain MLOps / AgentOps pipelines</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="three-col">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.4rem;font-weight:900;color:var(--blue);">180</div>
+          <div style="font-size:0.8rem;color:var(--slate);">Total credits</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.4rem;font-weight:900;color:var(--green);">26%</div>
+          <div style="font-size:0.8rem;color:var(--slate);">Projected AI specialist job growth</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.4rem;font-weight:900;color:var(--violet);">ABET</div>
+          <div style="font-size:0.8rem;color:var(--slate);">Standalone AI program criteria (2024–25)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── 9. Maritime Blue Shift ─── -->
+  <div class="section" id="maritime">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--violet);">Blue Tech — Maritime Track</div>
+        <h2>The Maritime Blue Shift</h2>
+        <p class="sub">The same AI governance gap — tools deployed faster than policy — shows up at the port. With a live federal mandate and a $933M port budget, the timing is now.</p>
+      </div>
+      <a class="source-link" href="roundtable-prep-cityu-president.html#maritime" target="_blank">Prep Notes ↗</a>
+    </div>
+    <div class="section-body">
+
+      <div class="two-col" style="margin-bottom:16px;">
+        <div class="card blue-card">
+          <div class="card-label" style="color:var(--blue);">Wet Maritime</div>
+          <ul>
+            <li>Onboard vessel / subsea</li>
+            <li>Physical AI, Edge Computing</li>
+            <li>Challenge: connectivity &amp; harsh environments</li>
+            <li>Human role: autonomous navigation officer</li>
+          </ul>
+        </div>
+        <div class="card teal-card">
+          <div class="card-label" style="color:var(--teal);">Dry Maritime</div>
+          <ul>
+            <li>Ports, offices, data centers</li>
+            <li>Digital Twins, Agentic AI, RAG</li>
+            <li>Challenge: data integration &amp; optimization</li>
+            <li>Human role: automated logistics coordinator</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="three-col" style="margin-bottom:16px;">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.4rem;font-weight:900;color:var(--violet);">$933M</div>
+          <div style="font-size:0.8rem;color:var(--slate);">Port Budget 2026 — incl. Professional Development Scholarship</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.4rem;font-weight:900;color:var(--red);">Jan 12</div>
+          <div style="font-size:0.8rem;color:var(--slate);">USCG Cybersecurity Mandate — 33 CFR 101.650 active this month</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.4rem;font-weight:900;color:var(--teal);">MInC</div>
+          <div style="font-size:0.8rem;color:var(--slate);"><a href="https://maritimeblue.org/" target="_blank" rel="noopener" style="color:var(--teal);">Maritime Blue ↗</a> Living Lab — 2026 opening</div>
+        </div>
+      </div>
+
+      <div class="narrative red" style="margin-bottom:16px;">
+        <div class="narrative-label">The compliance pilot — immediate ask</div>
+        <p><strong>Every terminal operator in Seattle/Tacoma must prove role-specific cyber training under USCG 33 CFR 101.650 — effective this month.</strong> No regional provider is positioned to deliver this. CityU's solution: a 3-course professional certificate in Maritime OT Security, training Port "Key Personnel" to become designated Cybersecurity Officers (CySO). Funding via Port's 2026 Professional Development Scholarship. Contact: <strong>Port CIO Matt Breed.</strong></p>
+      </div>
+
+      <div class="narrative violet" style="margin-bottom:0;">
+        <div class="narrative-label">Port of Seattle context</div>
+        <p>Rhysida ransomware attack — August 2024. 90,000 individuals affected; 71,000 WA residents. Compromised: names, DOBs, SSNs, driver's license numbers. Port refused to pay ransom. A maritime expert subsequently requested a briefing on CityU's Blue Tech research. The door is open.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── 10. Uncertainty Matrix ─── -->
+  <div class="section" id="uncertainty">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--violet);">Strategic Framing</div>
+        <h2>The Uncertainty Matrix</h2>
+        <p class="sub">From <em>Survive, Rest, and Thrive</em> — both Blue Tech projects plot in the same quadrant: Executive Issue.</p>
+      </div>
+      <a class="source-link" href="roundtable-prep-cityu-president.html#uncertainty" target="_blank">Prep Notes ↗</a>
+    </div>
+    <div class="section-body">
+
+      <div class="matrix-grid" style="margin-bottom:20px;">
+        <div class="matrix-header" style="background:var(--ink);"></div>
+        <div class="matrix-header">Low Impact</div>
+        <div class="matrix-header">High Impact</div>
+        <div class="matrix-row-label">High Familiarity</div>
+        <div class="matrix-cell">
+          <div style="font-weight:800;font-size:0.76rem;color:var(--slate);margin-bottom:4px;">OPERATIONAL ISSUE</div>
+          <div style="font-size:0.81rem;color:var(--slate);">Business as usual — routine, manageable.</div>
+        </div>
+        <div class="matrix-cell">
+          <div style="font-weight:800;font-size:0.76rem;color:var(--green);margin-bottom:4px;">BUSINESS ISSUE</div>
+          <div style="font-size:0.81rem;color:var(--slate);">Known variables — learnable process required.</div>
+        </div>
+        <div class="matrix-row-label">Low Familiarity</div>
+        <div class="matrix-cell">
+          <div style="font-weight:800;font-size:0.76rem;color:var(--amber);margin-bottom:4px;">EMERGING ISSUE</div>
+          <div style="font-size:0.81rem;color:var(--slate);">Watching brief — delegate or track.</div>
+        </div>
+        <div class="matrix-cell highlight">
+          <div style="font-weight:800;font-size:0.76rem;color:var(--violet);margin-bottom:8px;">EXECUTIVE ISSUE — GAME CHANGER ★</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#fff;border:1px solid rgba(124,58,237,0.2);border-radius:6px;padding:8px 10px;font-size:0.79rem;">
+              <strong style="color:var(--blue);">AI for First Responders</strong><br>
+              <span style="color:var(--slate);">No prior playbook · active legal exposure · July 1 WA deadline</span>
+            </div>
+            <div style="background:#fff;border:1px solid rgba(124,58,237,0.2);border-radius:6px;padding:8px 10px;font-size:0.79rem;">
+              <strong style="color:var(--teal);">Maritime / Port Security</strong><br>
+              <span style="color:var(--slate);">Rhysida attack · USCG mandate active · cyberattacks doubled 2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="narrative violet" style="margin-bottom:0;">
+        <div class="narrative-label">Why this is on the president's agenda — not a department-level issue</div>
+        <p>Low familiarity + high impact = Executive Issue. No department has a proven playbook for AI governance in public safety or maritime OT security. The legal exposure is active. The technology is moving faster than policy in both sectors. This cannot be delegated down. And both tracks point to the same institutional opportunity for CityU.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── 11. Maritime Prototypes ─── -->
+  <div class="section" id="proto-links">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow" style="color:var(--teal);">Maritime Research Assets</div>
+        <h2>Maritime Prototypes &amp; Primers</h2>
+        <p class="sub">Live course and research assets developed for the maritime Blue Tech track.</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="proto-links">
+        <a class="proto-link-card" href="https://clarkngo.github.io/playground/primer/industry/maritime/index.html" target="_blank" rel="noopener">
+          <div>
+            <div class="plc-label">Maritime Industry Primer</div>
+            <div class="plc-url">clarkngo.github.io/playground/primer/industry/maritime/</div>
+            <div style="font-size:0.8rem;color:var(--slate);margin-top:3px;">Industry overview · key metrics · technology stack · failure modes · regulatory framework</div>
+          </div>
+          <span class="plc-arrow">↗</span>
+        </a>
+        <a class="proto-link-card" href="https://clarkngo.github.io/physical-ai/#/maritime" target="_blank" rel="noopener">
+          <div>
+            <div class="plc-label">Physical AI — Maritime</div>
+            <div class="plc-url">clarkngo.github.io/physical-ai/#/maritime</div>
+            <div style="font-size:0.8rem;color:var(--slate);margin-top:3px;">Edge computing · IT to OT transition · physical AI applications in the maritime sector</div>
+          </div>
+          <span class="plc-arrow">↗</span>
+        </a>
+        <a class="proto-link-card" href="https://clarkngo.github.io/courses/physical-ai-maritime/" target="_blank" rel="noopener">
+          <div>
+            <div class="plc-label">Physical AI with Maritime — Course</div>
+            <div class="plc-url">clarkngo.github.io/courses/physical-ai-maritime/</div>
+            <div style="font-size:0.8rem;color:var(--slate);margin-top:3px;">5 modules · 15 lessons · autonomous vessels · sensor fusion · port intelligence · OT security · compliance</div>
+          </div>
+          <span class="plc-arrow">↗</span>
+        </a>
+        <a class="proto-link-card" href="https://clarkngo.github.io/courses/ai-first-responders/" target="_blank" rel="noopener">
+          <div>
+            <div class="plc-label">AI for First Responders — Course</div>
+            <div class="plc-url">clarkngo.github.io/courses/ai-first-responders/</div>
+            <div style="font-size:0.8rem;color:var(--slate);margin-top:3px;">5 modules · 18 lessons · Traffic Light Framework · Compliance · beginner-friendly</div>
+          </div>
+          <span class="plc-arrow">↗</span>
+        </a>
+        <a class="proto-link-card" href="https://learn.smartandsecurecomputing.com/" target="_blank" rel="noopener" style="border-color:rgba(13,148,136,0.3);background:var(--teal-dim);">
+          <div>
+            <div class="plc-label" style="color:var(--teal);">Live Open edX Platform ★</div>
+            <div class="plc-url">learn.smartandsecurecomputing.com</div>
+            <div style="font-size:0.8rem;color:var(--slate);margin-top:3px;">Cloud-deployed · First CityU STC Summer Program · 13 Korean students enrolled</div>
+          </div>
+          <span class="plc-arrow" style="color:var(--teal);">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Active section tracking for side nav
+  const sections = document.querySelectorAll('.section[id]');
+  const navItems = document.querySelectorAll('#sidenav .sn-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

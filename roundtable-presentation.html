@@ -436,9 +436,11 @@
     .frog-body p { margin: 0; font-size: 0.87rem; line-height: 1.6; }
 
     /* ── CityUx grid ── */
+    .cityux-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius-sm); }
     .cityux-grid {
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
+      grid-template-columns: repeat(8, minmax(90px, 1fr));
+      min-width: 640px;
       border: 1.5px solid var(--border);
       border-radius: var(--radius-sm);
       overflow: hidden;
@@ -1443,7 +1445,7 @@
       <!-- CityUx New Frontiers matrix -->
       <div style="margin-top:28px;">
         <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);margin:0 0 12px;">New Frontiers — CityUx vs. CityU</p>
-        <div class="cityux-grid reveal-child">
+        <div class="cityux-scroll"><div class="cityux-grid reveal-child">
 
           <!-- Header row -->
           <div class="cux-cell cux-header cux-green" style="grid-column:1/6;">
@@ -1457,41 +1459,41 @@
           </div>
 
           <!-- Stage row -->
-          <div class="cux-cell cux-green-light cux-label">Preview</div>
-          <div class="cux-cell cux-green-light cux-label">Seminar</div>
-          <div class="cux-cell cux-green-light cux-label">Workshop</div>
+          <div class="cux-cell cux-green-light cux-label" style="grid-column:1;">Preview</div>
+          <div class="cux-cell cux-green-light cux-label" style="grid-column:2;">Seminar</div>
+          <div class="cux-cell cux-green-light cux-label" style="grid-column:3;">Workshop</div>
           <div class="cux-cell cux-blue-light cux-label" style="grid-column:4/6;">(Stackable) Micro Credential<br>with Digital Badges</div>
-          <div class="cux-cell" style="background:var(--red);"></div>
-          <div class="cux-cell cux-light cux-label">Stackable<br>Certificate</div>
-          <div class="cux-cell cux-light cux-label">Degree</div>
+          <div class="cux-cell" style="background:var(--red);grid-column:6;"></div>
+          <div class="cux-cell cux-light cux-label" style="grid-column:7;">Stackable<br>Certificate</div>
+          <div class="cux-cell cux-light cux-label" style="grid-column:8;">Degree</div>
 
           <!-- Pedagogy row -->
-          <div class="cux-cell cux-green-light cux-small" style="grid-column:1/5;">Student-led · Competency-based · Compliance-first · Skill-first · Self-paced · Short-term · Agile · <strong>100% asynchronous online</strong></div>
-          <div class="cux-cell" style="background:var(--red);font-size:0.65rem;color:#fff;font-weight:700;text-align:center;padding:8px 4px;">Non-<br>STEM</div>
+          <div class="cux-cell cux-green-light cux-small" style="grid-column:1/6;">Student-led · Competency-based · Compliance-first · Skill-first · Self-paced · Short-term · Agile · <strong>100% asynchronous online</strong></div>
+          <div class="cux-cell" style="background:var(--red);grid-column:6;font-size:0.65rem;color:#fff;font-weight:700;text-align:center;padding:8px 4px;">Non-<br>STEM</div>
           <div class="cux-cell cux-light cux-small" style="grid-column:7/9;">Instructor-led · Seat-time-based · Concept-first · Long-term · Rigid · In-person · Synchronous / Asynchronous</div>
 
           <!-- Distribution row -->
-          <div class="cux-cell cux-green-light cux-small">Social Media, CBP</div>
+          <div class="cux-cell cux-green-light cux-small" style="grid-column:1;">Social Media, CBP</div>
           <div class="cux-cell cux-green-light cux-small" style="grid-column:2/4;">Social Media, CBP, Web (GEO)</div>
           <div class="cux-cell cux-blue-light cux-small" style="grid-column:4/6;">MOOC Platform, CBP, Web (GEO)</div>
-          <div class="cux-cell" style="background:var(--red);"></div>
+          <div class="cux-cell" style="background:var(--red);grid-column:6;"></div>
           <div class="cux-cell cux-light cux-small" style="grid-column:7/9;">LMS · CBP (Cloud-Based Platform) · Web (SEO/GEO)</div>
 
           <!-- Tools row -->
-          <div class="cux-cell cux-green-light cux-small">YouTube, GitHub</div>
-          <div class="cux-cell cux-green-light cux-small">YouTube Live, GitHub, Website</div>
-          <div class="cux-cell cux-green-light cux-small">YouTube Premier, GitHub, GitHub Codespaces, Website</div>
+          <div class="cux-cell cux-green-light cux-small" style="grid-column:1;">YouTube, GitHub</div>
+          <div class="cux-cell cux-green-light cux-small" style="grid-column:2;">YouTube Live, GitHub, Website</div>
+          <div class="cux-cell cux-green-light cux-small" style="grid-column:3;">YouTube Premier, GitHub, GitHub Codespaces, Website</div>
           <div class="cux-cell cux-blue-light cux-small" style="grid-column:4/6;">Open edX Tutor, GitHub, GitHub Codespaces, Discord, Badgr, LinkedIn</div>
-          <div class="cux-cell" style="background:var(--red);"></div>
+          <div class="cux-cell" style="background:var(--red);grid-column:6;"></div>
           <div class="cux-cell cux-light cux-small" style="grid-column:7/9;">Bright Space, GitHub, GitHub Codespaces, MS Teams</div>
 
           <!-- Cost row -->
           <div class="cux-cell cux-green-light cux-label" style="grid-column:1/4;">Free, Open</div>
           <div class="cux-cell cux-blue-light cux-label" style="grid-column:4/6;">Free/Premium · Open/Close</div>
-          <div class="cux-cell" style="background:var(--red);"></div>
+          <div class="cux-cell" style="background:var(--red);grid-column:6;"></div>
           <div class="cux-cell" style="background:var(--amber);grid-column:7/9;text-align:center;font-weight:700;font-size:0.78rem;color:#fff;padding:10px 6px;">Tuition · Close</div>
 
-        </div><!-- end cityux-grid -->
+        </div></div><!-- end cityux-grid/scroll -->
         <p style="font-size:0.72rem;color:var(--slate);margin-top:8px;text-align:center;">VISIBILITY axis runs left → right: YouTube (zero barrier) → Formal Degree (highest barrier)</p>
       </div>
 

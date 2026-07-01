@@ -1006,97 +1006,137 @@
         <p>Free micro-content (YouTube, GitHub) builds trust and audience at zero acquisition cost → seminars and workshops deepen engagement → Open edX delivers the formal credential. At every stage, community-driven instructors are the connective tissue. <strong>207K+ validated public views</strong> prove the top of funnel works before a single course is enrolled.</p>
       </div>
 
-      <!-- Hub-and-spoke radial diagram -->
+      <!-- Hub-and-spoke radial diagram — pure SVG -->
       <div class="eco-diagram-wrap">
         <div class="eco-title">CONTENT ECOSYSTEM</div>
         <div class="eco-sub">Every stage feeds directly into CityU's formal curriculum</div>
 
-        <div class="eco-radial">
-          <svg viewBox="0 0 660 660" xmlns="http://www.w3.org/2000/svg" class="eco-svg" aria-hidden="true">
-            <defs>
-              <marker id="arr-yt" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#dc2626"/></marker>
-              <marker id="arr-gh" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#16a34a"/></marker>
-              <marker id="arr-ch" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#7c3aed"/></marker>
-              <marker id="arr-sm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#b45309"/></marker>
-              <marker id="arr-ws" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#ea580c"/></marker>
-              <marker id="arr-ox" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1d4ed8"/></marker>
-            </defs>
-            <!-- Outer ring -->
-            <circle cx="330" cy="330" r="122" fill="none" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4 6"/>
-            <!-- Spoke lines — each gets animation class -->
-            <line class="eco-spoke eco-spoke-yt" x1="330" y1="130" x2="330" y2="208" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-yt)" opacity="0.85"/>
-            <line class="eco-spoke eco-spoke-gh" x1="490" y1="190" x2="412" y2="268" stroke="#16a34a" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-gh)" opacity="0.85"/>
-            <line class="eco-spoke eco-spoke-ws" x1="490" y1="470" x2="412" y2="392" stroke="#ea580c" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-ws)" opacity="0.85"/>
-            <line class="eco-spoke eco-spoke-ox" x1="330" y1="530" x2="330" y2="452" stroke="#1d4ed8" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-ox)" opacity="0.85"/>
-            <line class="eco-spoke eco-spoke-sm" x1="170" y1="470" x2="248" y2="392" stroke="#b45309" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-sm)" opacity="0.85"/>
-            <line class="eco-spoke eco-spoke-ch" x1="170" y1="190" x2="248" y2="268" stroke="#7c3aed" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arr-ch)" opacity="0.85"/>
-          </svg>
+        <svg viewBox="0 0 660 700" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;display:block;margin:0 auto;" role="img" aria-label="Content Ecosystem hub-and-spoke diagram">
+          <defs>
+            <marker id="arr-yt" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#dc2626"/></marker>
+            <marker id="arr-gh" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#16a34a"/></marker>
+            <marker id="arr-ch" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#7c3aed"/></marker>
+            <marker id="arr-sm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#b45309"/></marker>
+            <marker id="arr-ws" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#ea580c"/></marker>
+            <marker id="arr-ox" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1d4ed8"/></marker>
+            <radialGradient id="center-grad" cx="40%" cy="35%">
+              <stop offset="0%" stop-color="#2563eb"/>
+              <stop offset="100%" stop-color="#1e3a8a"/>
+            </radialGradient>
+            <filter id="center-glow">
+              <feGaussianBlur stdDeviation="8" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <style>
+            .eco-spoke { stroke-dasharray: 6 4; animation: eco-dash 1.2s linear infinite; }
+            .eco-spoke-yt { animation-delay:0s; }
+            .eco-spoke-gh { animation-delay:0.2s; }
+            .eco-spoke-ws { animation-delay:0.4s; }
+            .eco-spoke-ox { animation-delay:0.6s; }
+            .eco-spoke-sm { animation-delay:0.8s; }
+            .eco-spoke-ch { animation-delay:1.0s; }
+            @keyframes eco-dash { to { stroke-dashoffset: -28; } }
+            .eco-globe { animation: eco-pulse-svg 3s ease-in-out infinite; }
+            @keyframes eco-pulse-svg {
+              0%,100% { filter: drop-shadow(0 0 12px rgba(37,99,235,0.5)); }
+              50%      { filter: drop-shadow(0 0 28px rgba(37,99,235,0.85)); }
+            }
+            .eco-node-g { animation: eco-pop 0.6s ease both; transform-box: fill-box; transform-origin: center; }
+            @keyframes eco-pop { from { opacity:0; } to { opacity:1; } }
+            .eco-node-g:nth-of-type(1)  { animation-delay:0.05s; }
+            .eco-node-g:nth-of-type(2)  { animation-delay:0.15s; }
+            .eco-node-g:nth-of-type(3)  { animation-delay:0.25s; }
+            .eco-node-g:nth-of-type(4)  { animation-delay:0.35s; }
+            .eco-node-g:nth-of-type(5)  { animation-delay:0.45s; }
+            .eco-node-g:nth-of-type(6)  { animation-delay:0.55s; }
+          </style>
 
-          <!-- Center: CityU -->
-          <div class="eco-center">
-            <div class="eco-center-globe">
-              <div class="eco-center-icon">🏛️</div>
-              <div class="eco-center-eyebrow">Feeds Into</div>
-              <div class="eco-center-name">City University<br>of Seattle</div>
-              <div class="eco-center-sub">Courses · Programs<br>Syllabi · Faculty</div>
-            </div>
-          </div>
+          <!-- Outer ring -->
+          <circle cx="330" cy="330" r="125" fill="none" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4 6"/>
 
-          <!-- YouTube — top -->
-          <div class="eco-node eco-node-top eco-n-yt">
-            <div class="eco-card eco-card-yt">
-              <div class="eco-icon" style="background:#dc2626;">▶</div>
-              <div class="eco-nname" style="color:#dc2626;">YouTube</div>
-              <div class="eco-ndesc">Video lectures<br>Concept explainers</div>
-            </div>
-          </div>
+          <!-- Spokes -->
+          <line class="eco-spoke eco-spoke-yt" x1="330" y1="128" x2="330" y2="205" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arr-yt)" opacity="0.85"/>
+          <line class="eco-spoke eco-spoke-gh" x1="492" y1="188" x2="414" y2="266" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr-gh)" opacity="0.85"/>
+          <line class="eco-spoke eco-spoke-ws" x1="492" y1="472" x2="414" y2="394" stroke="#ea580c" stroke-width="2.5" marker-end="url(#arr-ws)" opacity="0.85"/>
+          <line class="eco-spoke eco-spoke-ox" x1="330" y1="532" x2="330" y2="455" stroke="#1d4ed8" stroke-width="2.5" marker-end="url(#arr-ox)" opacity="0.85"/>
+          <line class="eco-spoke eco-spoke-sm" x1="168" y1="472" x2="246" y2="394" stroke="#b45309" stroke-width="2.5" marker-end="url(#arr-sm)" opacity="0.85"/>
+          <line class="eco-spoke eco-spoke-ch" x1="168" y1="188" x2="246" y2="266" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arr-ch)" opacity="0.85"/>
 
-          <!-- GitHub — top-right -->
-          <div class="eco-node eco-node-tr eco-n-gh">
-            <div class="eco-card eco-card-gh">
-              <div class="eco-icon" style="background:#16a34a;">⌥</div>
-              <div class="eco-nname" style="color:#16a34a;">GitHub</div>
-              <div class="eco-ndesc">Lab environments<br>Starter code</div>
-            </div>
-          </div>
+          <!-- Center globe -->
+          <g class="eco-globe">
+            <circle cx="330" cy="330" r="115" fill="url(#center-grad)" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+            <text x="330" y="302" text-anchor="middle" font-size="26" dy="0">🏛️</text>
+            <text x="330" y="322" text-anchor="middle" font-size="9.5" font-weight="700" fill="rgba(255,255,255,0.7)" letter-spacing="1.5" font-family="system-ui,sans-serif">FEEDS INTO</text>
+            <text x="330" y="341" text-anchor="middle" font-size="15" font-weight="800" fill="white" font-family="system-ui,sans-serif">City University</text>
+            <text x="330" y="358" text-anchor="middle" font-size="15" font-weight="800" fill="white" font-family="system-ui,sans-serif">of Seattle</text>
+            <text x="330" y="376" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,0.6)" font-family="system-ui,sans-serif">Courses · Programs</text>
+            <text x="330" y="390" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,0.6)" font-family="system-ui,sans-serif">Syllabi · Faculty</text>
+          </g>
+
+          <!-- ── Node helper macro (each node = g with rect + icon badge + name + desc) ── -->
+
+          <!-- YouTube — top (cx=330, top y=10) -->
+          <g class="eco-node-g" transform="translate(270,10)">
+            <rect width="120" height="82" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+            <rect x="46" y="8" width="28" height="28" rx="6" fill="#dc2626"/>
+            <text x="60" y="27" text-anchor="middle" font-size="13" fill="white" font-family="system-ui,sans-serif">▶</text>
+            <text x="60" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#dc2626" font-family="system-ui,sans-serif">YouTube</text>
+            <text x="60" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Video lectures</text>
+            <text x="60" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Concept explainers</text>
+          </g>
+
+          <!-- GitHub — top-right (cx=540, cy=128) -->
+          <g class="eco-node-g" transform="translate(532,88)">
+            <rect width="118" height="82" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+            <rect x="45" y="8" width="28" height="28" rx="6" fill="#16a34a"/>
+            <text x="59" y="27" text-anchor="middle" font-size="13" fill="white" font-family="system-ui,sans-serif">⌥</text>
+            <text x="59" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#16a34a" font-family="system-ui,sans-serif">GitHub</text>
+            <text x="59" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Lab environments</text>
+            <text x="59" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Starter code</text>
+          </g>
 
           <!-- Workshop — bottom-right -->
-          <div class="eco-node eco-node-br eco-n-ws">
-            <div class="eco-card eco-card-ws">
-              <div class="eco-icon" style="background:#ea580c;">🔧</div>
-              <div class="eco-nname" style="color:#ea580c;">Workshop</div>
-              <div class="eco-ndesc">Hands-on curricula<br>Cohort feedback</div>
-            </div>
-          </div>
+          <g class="eco-node-g" transform="translate(532,490)">
+            <rect width="118" height="82" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+            <rect x="45" y="8" width="28" height="28" rx="6" fill="#ea580c"/>
+            <text x="59" y="27" text-anchor="middle" font-size="13" fill="white" font-family="system-ui,sans-serif">🔧</text>
+            <text x="59" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#ea580c" font-family="system-ui,sans-serif">Workshop</text>
+            <text x="59" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Hands-on curricula</text>
+            <text x="59" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Cohort feedback</text>
+          </g>
 
           <!-- Open edX — bottom -->
-          <div class="eco-node eco-node-bot eco-n-ox">
-            <div class="eco-card eco-card-ox">
-              <div class="eco-icon" style="background:#1d4ed8;font-size:0.6rem;">edX</div>
-              <div class="eco-nname" style="color:#1d4ed8;">Open edX</div>
-              <div class="eco-ndesc">Course pilots<br>Completion analytics</div>
-            </div>
-          </div>
+          <g class="eco-node-g" transform="translate(270,568)">
+            <rect width="120" height="82" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+            <rect x="46" y="8" width="28" height="28" rx="6" fill="#1d4ed8"/>
+            <text x="60" y="27" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="system-ui,sans-serif">edX</text>
+            <text x="60" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#1d4ed8" font-family="system-ui,sans-serif">Open edX</text>
+            <text x="60" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Course pilots</text>
+            <text x="60" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Completion analytics</text>
+          </g>
 
           <!-- Seminar — bottom-left -->
-          <div class="eco-node eco-node-bl eco-n-sm">
-            <div class="eco-card eco-card-sm">
-              <div class="eco-icon" style="background:#b45309;font-size:0.7rem;">📢</div>
-              <div class="eco-nname" style="color:#b45309;">Seminar</div>
-              <div class="eco-ndesc">Guest lectures<br>Topic validation</div>
-            </div>
-          </div>
+          <g class="eco-node-g" transform="translate(10,490)">
+            <rect width="118" height="82" rx="10" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+            <rect x="45" y="8" width="28" height="28" rx="6" fill="#b45309"/>
+            <text x="59" y="27" text-anchor="middle" font-size="13" fill="white" font-family="system-ui,sans-serif">📢</text>
+            <text x="59" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#b45309" font-family="system-ui,sans-serif">Seminar</text>
+            <text x="59" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Guest lectures</text>
+            <text x="59" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Topic validation</text>
+          </g>
 
           <!-- Community Hub — top-left -->
-          <div class="eco-node eco-node-tl eco-n-ch">
-            <div class="eco-card eco-card-ch">
-              <div class="eco-icon" style="background:#7c3aed;">◈</div>
-              <div class="eco-nname" style="color:#7c3aed;">Community Hub</div>
-              <div class="eco-ndesc">Demand signals<br>Pain points</div>
-            </div>
-          </div>
+          <g class="eco-node-g" transform="translate(10,88)">
+            <rect width="118" height="82" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+            <rect x="45" y="8" width="28" height="28" rx="6" fill="#7c3aed"/>
+            <text x="59" y="27" text-anchor="middle" font-size="13" fill="white" font-family="system-ui,sans-serif">◈</text>
+            <text x="59" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#7c3aed" font-family="system-ui,sans-serif">Community Hub</text>
+            <text x="59" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Demand signals</text>
+            <text x="59" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Pain points</text>
+          </g>
 
-        </div><!-- end eco-radial -->
+        </svg>
 
         <!-- Legend -->
         <div class="eco-legend">

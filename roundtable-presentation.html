@@ -263,6 +263,88 @@
     .proto-link-card .plc-url { font-size: 0.78rem; color: var(--slate); }
     .proto-link-card .plc-arrow { font-size: 1.1rem; color: var(--violet); flex-shrink: 0; }
 
+    /* ── Ecosystem pipeline diagram ── */
+    .pipeline-wrap {
+      background: rgba(255,255,255,0.7);
+      border-radius: var(--radius-sm);
+      padding: 28px 24px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .pipeline-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--slate);
+      margin-bottom: 22px; text-align: center;
+    }
+    .pipeline {
+      display: flex; align-items: stretch; gap: 0;
+      min-width: 560px;
+    }
+    .pipe-stage {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; position: relative;
+    }
+    .pipe-stage + .pipe-stage::before {
+      content: "→"; position: absolute; left: -14px; top: 50%;
+      transform: translateY(-60%); font-size: 1.4rem;
+      color: var(--slate-light); font-weight: 700; z-index: 2;
+    }
+    .pipe-node {
+      width: 100%; padding: 14px 10px 12px;
+      border-radius: 10px; border: 2px solid; text-align: center;
+    }
+    .pipe-node.youtube  { background: #fef2f2; border-color: #fca5a5; }
+    .pipe-node.github   { background: #f0fdf4; border-color: #86efac; }
+    .pipe-node.commhub  { background: #f5f3ff; border-color: #c4b5fd; }
+    .pipe-node.seminar  { background: #fefce8; border-color: #fde047; }
+    .pipe-node.workshop { background: #fff7ed; border-color: #fdba74; }
+    .pipe-node.opededx  { background: #eff6ff; border-color: #93c5fd; }
+    .pipe-icon { font-size: 1.6rem; display: block; margin-bottom: 5px; }
+    .pipe-name { font-weight: 800; font-size: 0.88rem; margin-bottom: 3px; }
+    .pipe-name.youtube  { color: #dc2626; }
+    .pipe-name.github   { color: #15803d; }
+    .pipe-name.commhub  { color: #6d28d9; }
+    .pipe-name.seminar  { color: #a16207; }
+    .pipe-name.workshop { color: var(--orange); }
+    .pipe-name.opededx  { color: var(--blue); }
+    .pipe-sub { font-size: 0.72rem; color: var(--slate); line-height: 1.4; }
+    .pipe-badge {
+      margin-top: 8px; display: inline-block; font-size: 0.65rem;
+      font-weight: 700; padding: 2px 8px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .pipe-badge.free      { background: #dcfce7; color: #15803d; }
+    .pipe-badge.open      { background: #f0fdf4; color: #15803d; }
+    .pipe-badge.community { background: #f5f3ff; color: #6d28d9; }
+    .pipe-badge.academic  { background: #fefce8; color: #a16207; }
+    .pipe-badge.live      { background: #fff7ed; color: var(--orange); }
+    .pipe-badge.credit    { background: #eff6ff; color: var(--blue); }
+    .pipeline-note {
+      margin-top: 16px; text-align: center; font-size: 0.83rem;
+      color: var(--slate); background: #f8fafc;
+      border-radius: 8px; padding: 10px 16px; border: 1px solid var(--border);
+    }
+    .pipeline-note strong { color: var(--ink); }
+    /* curriculum arrow */
+    .curriculum-arrow {
+      text-align: center; padding: 12px 0; font-size: 1.8rem;
+      color: var(--teal); line-height: 1;
+    }
+    .curriculum-label {
+      text-align: center; font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 10px;
+    }
+    .curriculum-box {
+      background: var(--teal-dim); border: 2px solid var(--teal);
+      border-radius: var(--radius-sm); padding: 14px 18px;
+      text-align: center;
+    }
+    .curriculum-box p { margin: 0; font-size: 0.87rem; color: var(--ink); }
+    .curriculum-box strong { color: var(--teal); }
+
     /* ── Floating side nav ── */
     #sidenav {
       position: fixed;
@@ -790,43 +872,72 @@
         <p>Free micro-content (YouTube, GitHub) builds trust and audience at zero acquisition cost → seminars and workshops deepen engagement → Open edX delivers the formal credential. At every stage, community-driven instructors are the connective tissue. <strong>207K+ validated public views</strong> prove the top of funnel works before a single course is enrolled.</p>
       </div>
 
-      <div class="funnel-stages">
-        <div class="funnel-stage">
-          <div class="funnel-num">1</div>
-          <div class="funnel-name">▶ YouTube</div>
-          <div class="funnel-desc">Free micro-content — searchable, public. 175K views on a single 18-second clip.</div>
-          <span class="funnel-tag" style="background:var(--red-dim);color:var(--red);">Free</span>
+      <div class="pipeline-wrap">
+        <div class="pipeline-title">Discovery → Lab → Community → Seminar → Workshop → Credential</div>
+        <div class="pipeline">
+
+          <div class="pipe-stage">
+            <div class="pipe-node youtube">
+              <span class="pipe-icon">▶</span>
+              <div class="pipe-name youtube">YouTube</div>
+              <div class="pipe-sub">Free micro-content — searchable, public. 175K views on a single 18-second clip.</div>
+              <span class="pipe-badge free">Free</span>
+            </div>
+          </div>
+
+          <div class="pipe-stage">
+            <div class="pipe-node github">
+              <span class="pipe-icon">🐙</span>
+              <div class="pipe-name github">GitHub</div>
+              <div class="pipe-sub">Open-source lab code — hands-on repo tied to every video.</div>
+              <span class="pipe-badge open">Open Source</span>
+            </div>
+          </div>
+
+          <div class="pipe-stage">
+            <div class="pipe-node commhub">
+              <span class="pipe-icon">💬</span>
+              <div class="pipe-name commhub">Community</div>
+              <div class="pipe-sub">Peer retention — Teams / Slack / forums keep learners between stages.</div>
+              <span class="pipe-badge community">Community</span>
+            </div>
+          </div>
+
+          <div class="pipe-stage">
+            <div class="pipe-node seminar">
+              <span class="pipe-icon">🎙</span>
+              <div class="pipe-name seminar">Seminar</div>
+              <div class="pipe-sub">Structured talks, guest speakers — the academic taste-test.</div>
+              <span class="pipe-badge academic">Academic</span>
+            </div>
+          </div>
+
+          <div class="pipe-stage">
+            <div class="pipe-node workshop">
+              <span class="pipe-icon">🧑‍💻</span>
+              <div class="pipe-name workshop">Workshop</div>
+              <div class="pipe-sub">Live, hands-on cohort building — STC has been running these consistently.</div>
+              <span class="pipe-badge live">Live / Cohort</span>
+            </div>
+          </div>
+
+          <div class="pipe-stage">
+            <div class="pipe-node opededx">
+              <span class="pipe-icon">🎓</span>
+              <div class="pipe-name opededx">Open edX</div>
+              <div class="pipe-sub">Formal assessments, credit, micro-credentials. <a href="https://learn.smartandsecurecomputing.com/" target="_blank" rel="noopener" style="color:var(--blue);">learn.smartandsecurecomputing.com ↗</a></div>
+              <span class="pipe-badge credit">Credit / Paid</span>
+            </div>
+          </div>
+
         </div>
-        <div class="funnel-stage">
-          <div class="funnel-num">2</div>
-          <div class="funnel-name">🐙 GitHub</div>
-          <div class="funnel-desc">Open-source lab code — hands-on repo tied to every video.</div>
-          <span class="funnel-tag" style="background:var(--bg);color:var(--slate);">Open Source</span>
-        </div>
-        <div class="funnel-stage">
-          <div class="funnel-num">3</div>
-          <div class="funnel-name">💬 Community</div>
-          <div class="funnel-desc">Peer retention — Teams / Slack / forums keep learners between stages.</div>
-          <span class="funnel-tag" style="background:var(--bg);color:var(--slate);">Community</span>
-        </div>
-        <div class="funnel-stage">
-          <div class="funnel-num">4</div>
-          <div class="funnel-name">🎙 Seminar</div>
-          <div class="funnel-desc">Structured talks, guest speakers — the academic taste-test. Lower commitment than a workshop.</div>
-          <span class="funnel-tag" style="background:var(--blue-dim);color:var(--blue);">Academic</span>
-        </div>
-        <div class="funnel-stage">
-          <div class="funnel-num">5</div>
-          <div class="funnel-name">🧑‍💻 Workshop</div>
-          <div class="funnel-desc">Live, hands-on cohort building — STC has been running these consistently.</div>
-          <span class="funnel-tag" style="background:var(--amber-dim);color:var(--amber);">Live / Cohort</span>
-        </div>
-        <div class="funnel-stage" style="border:1px solid rgba(13,148,136,0.3);background:var(--teal-dim);">
-          <div class="funnel-num" style="background:var(--teal);">6</div>
-          <div class="funnel-name" style="color:var(--teal);">🎓 Open edX</div>
-          <div class="funnel-desc">Formal assessments, credit, micro-credentials. <a href="https://learn.smartandsecurecomputing.com/" target="_blank" rel="noopener" style="color:var(--teal);">learn.smartandsecurecomputing.com ↗</a></div>
-          <span class="funnel-tag" style="background:var(--teal-dim);color:var(--teal);border:1px solid rgba(13,148,136,0.3);">Credit / Paid</span>
-        </div>
+        <div class="pipeline-note"><strong>Commitment escalates at every stage:</strong> watch → explore → discuss → attend a talk → build hands-on → enroll formally.</div>
+      </div>
+
+      <div class="curriculum-arrow">↓</div>
+      <div class="curriculum-label">Every stage feeds directly into CityU's formal curriculum</div>
+      <div class="curriculum-box">
+        <p><strong>CityU STC / AILI</strong> — Open edX live at <a href="https://learn.smartandsecurecomputing.com/" target="_blank" rel="noopener" style="color:var(--teal);">learn.smartandsecurecomputing.com ↗</a> · First cohort: 13 Korean students, Summer 2026</p>
       </div>
     </div>
   </div>

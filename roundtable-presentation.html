@@ -249,6 +249,16 @@
     .matrix-row-label { background: var(--slate); color: #fff; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 14px 8px; text-align: center; writing-mode: vertical-lr; transform: rotate(180deg); display: flex; align-items: center; justify-content: center; }
     .matrix-cell { background: #f8fafc; border: 1px solid var(--border); padding: 14px; font-size: 0.83rem; }
     .matrix-cell.highlight { background: var(--violet-dim); border: 2px solid var(--violet); }
+    /* Deployment risk matrix */
+    .risk-matrix { background: var(--card); border-radius: var(--radius-sm); padding: 24px 28px; box-shadow: var(--shadow); border: 1px solid var(--border); overflow-x: auto; margin-bottom: 12px; }
+    .risk-matrix .matrix-grid { grid-template-columns: 140px repeat(3, 1fr); gap: 6px; min-width: 480px; }
+    .risk-matrix .matrix-header { background: #f8fafc; color: var(--slate); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 6px; padding: 10px; text-align: center; display: flex; align-items: center; justify-content: center; writing-mode: horizontal-tb; transform: none; }
+    .risk-matrix .matrix-row-label { background: #f8fafc; color: var(--ink); font-size: 0.83rem; font-weight: 600; border-radius: 6px; padding: 10px 12px; display: flex; align-items: center; writing-mode: horizontal-tb; transform: none; text-align: left; letter-spacing: 0; text-transform: none; }
+    .risk-matrix .matrix-cell { border-radius: 8px; padding: 12px 10px; font-size: 0.82rem; text-align: center; }
+    .cell-low  { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .cell-med  { background: #fefce8; color: #a16207; border: 1px solid #fde047; }
+    .cell-high { background: #fff1f2; color: #b91c1c; border: 1px solid #fca5a5; }
+    .cell-crit { background: #7f1d1d; color: #fff;    border: 1px solid #991b1b; font-weight: 700; }
 
     /* Maritime links */
     .proto-links { display: grid; gap: 10px; }
@@ -1082,23 +1092,25 @@
 
       <!-- Deployment Risk Matrix -->
       <p style="font-size:0.8rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin:24px 0 12px;">⚠️ Deployment Risk Matrix</p>
-      <div class="matrix-grid" style="margin-bottom:8px;">
-        <div class="matrix-header"></div>
-        <div class="matrix-header">Low Severity</div>
-        <div class="matrix-header">Med Severity</div>
-        <div class="matrix-header">High Severity</div>
-        <div class="matrix-row-label">Low Likelihood</div>
-        <div class="matrix-cell" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">✓ Monitor</div>
-        <div class="matrix-cell" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">✓ Monitor</div>
-        <div class="matrix-cell" style="background:#fefce8;color:#a16207;border:1px solid #fde047;">⚠ Review</div>
-        <div class="matrix-row-label">Med Likelihood</div>
-        <div class="matrix-cell" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;">✓ Monitor</div>
-        <div class="matrix-cell" style="background:#fefce8;color:#a16207;border:1px solid #fde047;">⚠ Review</div>
-        <div class="matrix-cell" style="background:#fff1f2;color:#b91c1c;border:1px solid #fca5a5;">🚫 Control</div>
-        <div class="matrix-row-label">High Likelihood</div>
-        <div class="matrix-cell" style="background:#fefce8;color:#a16207;border:1px solid #fde047;">⚠ Review</div>
-        <div class="matrix-cell" style="background:#fff1f2;color:#b91c1c;border:1px solid #fca5a5;">🚫 Control</div>
-        <div class="matrix-cell" style="background:#7f1d1d;color:#fff;border:1px solid #991b1b;font-weight:700;">🔴 BLOCK</div>
+      <div class="risk-matrix">
+        <div class="matrix-grid">
+          <div class="matrix-header" style="height:40px;"></div>
+          <div class="matrix-header" style="height:40px;">Low Severity</div>
+          <div class="matrix-header" style="height:40px;">Med Severity</div>
+          <div class="matrix-header" style="height:40px;">High Severity</div>
+          <div class="matrix-row-label">Low Likelihood</div>
+          <div class="matrix-cell cell-low">✓ Monitor</div>
+          <div class="matrix-cell cell-low">✓ Monitor</div>
+          <div class="matrix-cell cell-med">⚠ Review</div>
+          <div class="matrix-row-label">Med Likelihood</div>
+          <div class="matrix-cell cell-low">✓ Monitor</div>
+          <div class="matrix-cell cell-med">⚠ Review</div>
+          <div class="matrix-cell cell-high">🚫 Control</div>
+          <div class="matrix-row-label">High Likelihood</div>
+          <div class="matrix-cell cell-med">⚠ Review</div>
+          <div class="matrix-cell cell-high">🚫 Control</div>
+          <div class="matrix-cell cell-crit">🔴 BLOCK</div>
+        </div>
       </div>
       <p style="font-size:0.78rem;color:var(--slate);margin:0;">AI-generated charging documents and unverified BWC summaries fall in the <strong style="color:#7f1d1d;">BLOCK</strong> zone. Unsigned draft reports with human review fall in the <strong style="color:#a16207;">Review</strong> zone.</p>
     </div>

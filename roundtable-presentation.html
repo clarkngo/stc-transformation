@@ -314,14 +314,110 @@
 
     @media (max-width: 1100px) { #sidenav { display: none; } }
 
+    /* ── Mobile bottom nav ── */
+    #mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--ink);
+      z-index: 200;
+      padding: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    #mobile-nav::-webkit-scrollbar { display: none; }
+    .mn-inner {
+      display: flex; gap: 0;
+      padding: 0 4px;
+      min-width: max-content;
+    }
+    .mn-item {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 8px 12px; gap: 3px;
+      text-decoration: none; color: rgba(255,255,255,0.55);
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      white-space: nowrap; border-bottom: 3px solid transparent;
+      transition: all 0.15s; flex-shrink: 0;
+    }
+    .mn-item .mn-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .mn-item:hover, .mn-item.active { color: #fff; border-bottom-color: #fff; }
+
+    @media (max-width: 768px) {
+      #mobile-nav { display: block; }
+      .shell { padding: 16px 14px 90px; }
+
+      .doc-header { padding: 22px 20px 18px; }
+      .doc-header h1 { font-size: 1.35rem; }
+      .doc-header .subtitle { font-size: 0.85rem; }
+      .meta-chip { font-size: 0.72rem; padding: 3px 10px; }
+
+      .section-head { padding: 16px 18px 12px; flex-direction: column; gap: 8px; }
+      .section-head h2 { font-size: 1rem; }
+      .source-link { align-self: flex-start; }
+      .section-body { padding: 16px 18px; }
+
+      .two-col, .three-col, .tl-grid { grid-template-columns: 1fr; }
+
+      .funnel-stage {
+        grid-template-columns: 28px 1fr;
+        grid-template-rows: auto auto;
+      }
+      .funnel-name { grid-column: 2; }
+      .funnel-desc { grid-column: 2; }
+      .funnel-tag { grid-column: 2; justify-self: start; }
+
+      .matrix-grid {
+        grid-template-columns: 40px 1fr 1fr;
+        font-size: 0.75rem;
+      }
+      .matrix-row-label { font-size: 0.58rem; padding: 10px 4px; }
+      .matrix-header { font-size: 0.62rem; padding: 8px 8px; }
+      .matrix-cell { padding: 10px 8px; font-size: 0.78rem; }
+
+      .kpi-table { font-size: 0.75rem; }
+      .kpi-table th { font-size: 0.62rem; padding: 7px 8px; }
+      .kpi-table td { padding: 7px 8px; }
+
+      .aili-hero { padding: 16px; }
+      .aili-hero > div:first-child { flex-direction: column; gap: 10px; }
+      .aili-hero > div:first-child > div:last-child { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 10px; }
+      .aili-name { font-size: 1.7rem; }
+
+      .problem-card { grid-template-columns: 30px 1fr; gap: 10px; }
+      .problem-num { width: 30px; height: 30px; font-size: 0.78rem; }
+
+      .proto-link-card { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .plc-arrow { display: none; }
+
+      .narrative { padding: 13px 15px; font-size: 0.88rem; }
+    }
+
     @media print {
-      .nav-row, #sidenav { display: none !important; }
+      .nav-row, #sidenav, #mobile-nav { display: none !important; }
       .shell { padding: 16px; }
       .section { break-inside: avoid; }
     }
   </style>
 </head>
 <body>
+
+<!-- Mobile Bottom Nav -->
+<nav id="mobile-nav" aria-label="Quick navigation">
+  <div class="mn-inner">
+    <a class="mn-item" href="#how-we-got-here"><span class="mn-dot"></span>Origin</a>
+    <a class="mn-item" href="#three-problems"><span class="mn-dot"></span>AILI</a>
+    <a class="mn-item" href="#high-stakes"><span class="mn-dot"></span>Stakes</a>
+    <a class="mn-item" href="#kpis"><span class="mn-dot"></span>KPIs</a>
+    <a class="mn-item" href="#action-now"><span class="mn-dot"></span>Act Now</a>
+    <a class="mn-item" href="#traffic-light"><span class="mn-dot"></span>Traffic Light</a>
+    <a class="mn-item" href="#ecosystem"><span class="mn-dot"></span>Funnel</a>
+    <a class="mn-item" href="#bsai"><span class="mn-dot"></span>BSAI</a>
+    <a class="mn-item" href="#maritime"><span class="mn-dot"></span>Maritime</a>
+    <a class="mn-item" href="#uncertainty"><span class="mn-dot"></span>Matrix</a>
+    <a class="mn-item" href="#proto-links"><span class="mn-dot"></span>Prototypes</a>
+  </div>
+</nav>
 
 <!-- Floating Side Nav -->
 <nav id="sidenav" aria-label="Quick navigation">
@@ -959,12 +1055,20 @@
   const sections = document.querySelectorAll('.section[id]');
   const navItems = document.querySelectorAll('#sidenav .sn-item');
 
+  const mobileItems = document.querySelectorAll('#mobile-nav .mn-item');
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const id = entry.target.getAttribute('id');
-        navItems.forEach(item => {
-          item.classList.toggle('active', item.getAttribute('href') === `#${id}`);
+        const href = `#${id}`;
+        navItems.forEach(item => item.classList.toggle('active', item.getAttribute('href') === href));
+        mobileItems.forEach(item => {
+          const active = item.getAttribute('href') === href;
+          item.classList.toggle('active', active);
+          if (active) {
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
         });
       }
     });

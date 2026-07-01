@@ -435,6 +435,29 @@
     .frog-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); margin-bottom: 5px; }
     .frog-body p { margin: 0; font-size: 0.87rem; line-height: 1.6; }
 
+    /* ── CityUx grid ── */
+    .cityux-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      font-family: system-ui, sans-serif;
+    }
+    .cux-cell {
+      padding: 8px 10px;
+      border: 1px solid rgba(0,0,0,0.07);
+      font-size: 0.75rem;
+      line-height: 1.45;
+    }
+    .cux-header  { padding: 10px 12px; font-weight: 800; display: flex; align-items: center; }
+    .cux-label   { font-weight: 700; font-size: 0.75rem; text-align: center; display: flex; align-items: center; justify-content: center; }
+    .cux-small   { font-size: 0.68rem; color: var(--slate); }
+    .cux-green      { background: #2e7d32; color: #fff; }
+    .cux-green-light { background: #e8f5e9; color: #1b5e20; }
+    .cux-blue-light  { background: #e3f2fd; color: #0d47a1; }
+    .cux-light       { background: #f8fafc; color: var(--ink); }
+
     /* ── Hub-and-spoke ecosystem diagram ── */
     @keyframes eco-fade-up {
       from { opacity: 0; transform: translateY(14px) translateX(-50%); }
@@ -1391,6 +1414,87 @@
 
         <div class="pipeline-note" style="margin-top:16px;"><strong>Commitment escalates at every stage:</strong> watch → explore → discuss → attend a talk → build hands-on → enroll formally. · Open edX live at <a href="https://learn.smartandsecurecomputing.com/" target="_blank" rel="noopener" style="color:var(--blue);">learn.smartandsecurecomputing.com ↗</a> · First cohort: 13 Korean students, Summer 2026</div>
       </div>
+
+      <!-- OER Landscape -->
+      <div style="margin-top:28px;">
+        <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);margin:0 0 12px;">OER Platform Landscape — Where We Sit</p>
+        <div class="three-col">
+          <div class="card reveal-child" style="border-top:3px solid #16a34a;">
+            <div style="font-size:1.5rem;margin-bottom:6px;">🏛️</div>
+            <div class="card-label" style="color:#16a34a;">Open edX "Tutor"</div>
+            <div style="font-size:0.75rem;font-weight:700;color:#16a34a;margin-bottom:6px;">Sovereign Open-Source Software</div>
+            <p style="font-size:0.82rem;">We own the platform. No vendor lock-in, no revenue share. CityU hosts and controls all student data and course content.</p>
+          </div>
+          <div class="card reveal-child" style="border-top:3px solid var(--amber);">
+            <div style="font-size:1.5rem;margin-bottom:6px;">🛒</div>
+            <div class="card-label" style="color:var(--amber);">Coursera / Udemy</div>
+            <div style="font-size:0.75rem;font-weight:700;color:var(--amber);margin-bottom:6px;">Open Consumer Marketplace</div>
+            <p style="font-size:0.82rem;">High discoverability, massive audience — but instructors share revenue and compete in a commoditized marketplace. No institutional identity.</p>
+          </div>
+          <div class="card reveal-child" style="border-top:3px solid var(--red);">
+            <div style="font-size:1.5rem;margin-bottom:6px;">🔒</div>
+            <div class="card-label" style="color:var(--red);">Coursera for Universities</div>
+            <div style="font-size:0.75rem;font-weight:700;color:var(--red);margin-bottom:6px;">Gated University Marketplace</div>
+            <p style="font-size:0.82rem;">Institutional branding with platform control — but tuition-gated, closed ecosystem, and Coursera owns the student relationship.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CityUx New Frontiers matrix -->
+      <div style="margin-top:28px;">
+        <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);margin:0 0 12px;">New Frontiers — CityUx vs. CityU</p>
+        <div class="cityux-grid reveal-child">
+
+          <!-- Header row -->
+          <div class="cux-cell cux-header cux-green" style="grid-column:1/6;">
+            <span style="font-size:0.8rem;font-weight:800;">CityUx</span>
+            <a href="https://www.cityux.edu" target="_blank" rel="noopener" style="font-size:0.7rem;color:rgba(255,255,255,0.8);margin-left:6px;">www.cityux.edu ↗</a>
+          </div>
+          <div class="cux-cell cux-header" style="background:var(--red);grid-column:6;writing-mode:vertical-rl;text-align:center;font-size:0.7rem;font-weight:700;color:#fff;padding:6px 4px;">HOS</div>
+          <div class="cux-cell cux-header cux-light" style="grid-column:7/9;">
+            <span style="font-size:0.8rem;font-weight:800;color:var(--ink);">CityU</span>
+            <a href="https://www.cityu.edu" target="_blank" rel="noopener" style="font-size:0.7rem;color:var(--slate);margin-left:6px;">www.cityu.edu ↗</a>
+          </div>
+
+          <!-- Stage row -->
+          <div class="cux-cell cux-green-light cux-label">Preview</div>
+          <div class="cux-cell cux-green-light cux-label">Seminar</div>
+          <div class="cux-cell cux-green-light cux-label">Workshop</div>
+          <div class="cux-cell cux-blue-light cux-label" style="grid-column:4/6;">(Stackable) Micro Credential<br>with Digital Badges</div>
+          <div class="cux-cell" style="background:var(--red);"></div>
+          <div class="cux-cell cux-light cux-label">Stackable<br>Certificate</div>
+          <div class="cux-cell cux-light cux-label">Degree</div>
+
+          <!-- Pedagogy row -->
+          <div class="cux-cell cux-green-light cux-small" style="grid-column:1/5;">Student-led · Competency-based · Compliance-first · Skill-first · Self-paced · Short-term · Agile · <strong>100% asynchronous online</strong></div>
+          <div class="cux-cell" style="background:var(--red);font-size:0.65rem;color:#fff;font-weight:700;text-align:center;padding:8px 4px;">Non-<br>STEM</div>
+          <div class="cux-cell cux-light cux-small" style="grid-column:7/9;">Instructor-led · Seat-time-based · Concept-first · Long-term · Rigid · In-person · Synchronous / Asynchronous</div>
+
+          <!-- Distribution row -->
+          <div class="cux-cell cux-green-light cux-small">Social Media, CBP</div>
+          <div class="cux-cell cux-green-light cux-small" style="grid-column:2/4;">Social Media, CBP, Web (GEO)</div>
+          <div class="cux-cell cux-blue-light cux-small" style="grid-column:4/6;">MOOC Platform, CBP, Web (GEO)</div>
+          <div class="cux-cell" style="background:var(--red);"></div>
+          <div class="cux-cell cux-light cux-small" style="grid-column:7/9;">LMS · CBP (Cloud-Based Platform) · Web (SEO/GEO)</div>
+
+          <!-- Tools row -->
+          <div class="cux-cell cux-green-light cux-small">YouTube, GitHub</div>
+          <div class="cux-cell cux-green-light cux-small">YouTube Live, GitHub, Website</div>
+          <div class="cux-cell cux-green-light cux-small">YouTube Premier, GitHub, GitHub Codespaces, Website</div>
+          <div class="cux-cell cux-blue-light cux-small" style="grid-column:4/6;">Open edX Tutor, GitHub, GitHub Codespaces, Discord, Badgr, LinkedIn</div>
+          <div class="cux-cell" style="background:var(--red);"></div>
+          <div class="cux-cell cux-light cux-small" style="grid-column:7/9;">Bright Space, GitHub, GitHub Codespaces, MS Teams</div>
+
+          <!-- Cost row -->
+          <div class="cux-cell cux-green-light cux-label" style="grid-column:1/4;">Free, Open</div>
+          <div class="cux-cell cux-blue-light cux-label" style="grid-column:4/6;">Free/Premium · Open/Close</div>
+          <div class="cux-cell" style="background:var(--red);"></div>
+          <div class="cux-cell" style="background:var(--amber);grid-column:7/9;text-align:center;font-weight:700;font-size:0.78rem;color:#fff;padding:10px 6px;">Tuition · Close</div>
+
+        </div><!-- end cityux-grid -->
+        <p style="font-size:0.72rem;color:var(--slate);margin-top:8px;text-align:center;">VISIBILITY axis runs left → right: YouTube (zero barrier) → Formal Degree (highest barrier)</p>
+      </div>
+
     </div>
   </div>
 

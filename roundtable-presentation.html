@@ -345,6 +345,96 @@
     .curriculum-box p { margin: 0; font-size: 0.87rem; color: var(--ink); }
     .curriculum-box strong { color: var(--teal); }
 
+    /* ── Global scroll-reveal ── */
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes reveal-left {
+      from { opacity: 0; transform: translateX(-24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes reveal-scale {
+      from { opacity: 0; transform: scale(0.93); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes count-pop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+
+    /* Sections fade up when entering viewport */
+    .section { opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .section.in-view { opacity: 1; transform: translateY(0); }
+
+    /* Section header h2 slides from left */
+    .section.in-view h2 { animation: reveal-left 0.5s 0.1s ease both; }
+
+    /* Staggered children */
+    .reveal-stagger .reveal-child { opacity: 0; transform: translateY(20px); transition: opacity 0.45s ease, transform 0.45s ease; }
+    .reveal-stagger.in-view .reveal-child:nth-child(1) { opacity:1; transform:none; transition-delay:0.05s; }
+    .reveal-stagger.in-view .reveal-child:nth-child(2) { opacity:1; transform:none; transition-delay:0.15s; }
+    .reveal-stagger.in-view .reveal-child:nth-child(3) { opacity:1; transform:none; transition-delay:0.25s; }
+    .reveal-stagger.in-view .reveal-child:nth-child(4) { opacity:1; transform:none; transition-delay:0.35s; }
+    /* standalone reveal-child (outside stagger) */
+    .reveal-child { opacity: 0; transform: translateY(16px); transition: opacity 0.4s ease, transform 0.4s ease; }
+    .section.in-view > .section-body .reveal-child:nth-child(1) { opacity:1; transform:none; transition-delay:0.2s; }
+    .section.in-view > .section-body .reveal-child:nth-child(2) { opacity:1; transform:none; transition-delay:0.32s; }
+    .section.in-view > .section-body .reveal-child:nth-child(3) { opacity:1; transform:none; transition-delay:0.44s; }
+    .section.in-view > .section-body .reveal-child:nth-child(4) { opacity:1; transform:none; transition-delay:0.56s; }
+    .section.in-view > .section-body .reveal-child:nth-child(5) { opacity:1; transform:none; transition-delay:0.68s; }
+
+    /* ── High-Stakes stat strip ── */
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 640px) { .stat-strip { grid-template-columns: repeat(2, 1fr); } }
+
+    .stat-block {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px 12px 14px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-block:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.09); }
+    .stat-block-zero { border-color: rgba(220,38,38,0.35); background: #fff8f8; }
+
+    .stat-emoji { font-size: 1.8rem; margin-bottom: 6px; line-height: 1; }
+    .stat-num {
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      font-weight: 900;
+      line-height: 1;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .stat-num.stat-zero { color: var(--red); }
+    .stat-unit { font-size: 0.45em; font-weight: 700; color: var(--slate); vertical-align: super; }
+    .stat-desc { font-size: 0.75rem; color: var(--slate); line-height: 1.5; }
+    .stat-src  { font-size: 0.65rem; color: var(--slate-light); font-style: italic; }
+
+    /* pop animation when stat enters view */
+    .section.in-view .stat-num { animation: count-pop 0.5s 0.3s ease both; }
+
+    /* ── Frog callout ── */
+    .frog-callout {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: #fff8f8; border: 1.5px solid rgba(220,38,38,0.3);
+      border-left: 4px solid var(--red);
+      border-radius: var(--radius-sm); padding: 16px 18px;
+      margin-bottom: 4px;
+    }
+    .frog-icon { font-size: 2.4rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+    .frog-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); margin-bottom: 5px; }
+    .frog-body p { margin: 0; font-size: 0.87rem; line-height: 1.6; }
+
     /* ── Hub-and-spoke ecosystem diagram ── */
     @keyframes eco-fade-up {
       from { opacity: 0; transform: translateY(14px) translateX(-50%); }
@@ -857,8 +947,33 @@
     </div>
     <div class="section-body">
 
+      <!-- Big stat strip -->
+      <div class="stat-strip reveal-stagger">
+        <div class="stat-block reveal-child">
+          <div class="stat-emoji">⚡</div>
+          <div class="stat-num">100<span class="stat-unit">×</span></div>
+          <div class="stat-desc">Faster digital evidence processing<br><span class="stat-src">Longeye · Redmond WA</span></div>
+        </div>
+        <div class="stat-block reveal-child">
+          <div class="stat-emoji">❤️</div>
+          <div class="stat-num">95<span class="stat-unit">%</span></div>
+          <div class="stat-desc">Cardiac arrest recognition accuracy<br><span class="stat-src">Corti AI</span></div>
+        </div>
+        <div class="stat-block reveal-child">
+          <div class="stat-emoji">🔥</div>
+          <div class="stat-num">25<span class="stat-unit">min</span></div>
+          <div class="stat-desc">Earlier than first 911 call<br><span class="stat-src">Pano AI wildfire detection</span></div>
+        </div>
+        <div class="stat-block stat-block-zero reveal-child">
+          <div class="stat-emoji">🔬</div>
+          <div class="stat-num stat-zero">0</div>
+          <div class="stat-desc">Significant time reduction found<br><span class="stat-src">Adams et al. RCT · 85 officers · 755 reports</span></div>
+        </div>
+      </div>
+
+      <!-- Two panels -->
       <div class="two-col" style="margin-bottom:16px;">
-        <div class="card green-card">
+        <div class="card green-card reveal-child">
           <div class="card-label" style="color:var(--green);">✅ Efficiency Gains</div>
           <ul>
             <li>Vendors claim AI reduces report writing from 2 hours to under 60 seconds</li>
@@ -867,7 +982,7 @@
             <li>Wildfire detection up to 25 min before first 911 call (Pano AI)</li>
           </ul>
         </div>
-        <div class="card red-card">
+        <div class="card red-card reveal-child">
           <div class="card-label" style="color:var(--red);">🚨 Legal &amp; Operational Risks</div>
           <ul>
             <li>AI-generated report included a non-existent officer — immediate Brady material</li>
@@ -878,7 +993,16 @@
         </div>
       </div>
 
-      <div class="narrative red">
+      <!-- Frog callout -->
+      <div class="frog-callout reveal-child">
+        <div class="frog-icon">🐸</div>
+        <div class="frog-body">
+          <div class="frog-label">The Frog Incident — Heber City, UT</div>
+          <p>An AI-generated police report stated the officer <strong>"shapeshifted into a frog."</strong> The document was submitted, signed, and became unusable in court. This is what unreviewed AI output looks like in the legal record.</p>
+        </div>
+      </div>
+
+      <div class="narrative red reveal-child" style="margin-top:14px;">
         <div class="narrative-label">The evidence that changed our pitch</div>
         <p>Adams et al. (2024) — a pre-registered, independent RCT testing Axon's Draft One on 85 officers across 755 real reports — found <strong>no statistically significant reduction in report-writing time.</strong> The 60-second vendor claim doesn't hold up under scrutiny. SPD's own senior research scientist raised this study at the June 16 meeting, unprompted. We pivoted from efficiency to accountability.</p>
       </div>
@@ -1408,6 +1532,20 @@
   }, { rootMargin: '-20% 0px -60% 0px' });
 
   sections.forEach(s => observer.observe(s));
+
+  // Scroll-reveal: sections + stagger groups
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        // also trigger stagger groups inside this section
+        entry.target.querySelectorAll('.reveal-stagger').forEach(g => g.classList.add('in-view'));
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.section').forEach(s => revealObserver.observe(s));
 </script>
 
 </body>

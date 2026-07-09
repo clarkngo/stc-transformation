@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Ecosystem Playbook — Pluggable Framework &amp; the Cooking-Show Briefing Template</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0f766e;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 900px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--violet); margin-bottom: 8px;
+    }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.6rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.25; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .part-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 40px 0 20px;
+    }
+    .part-divider .part-num {
+      flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+      background: var(--violet); color: #fff; font-weight: 800; font-size: 0.95rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .part-divider h2 { margin: 0; font-size: 1.25rem; font-weight: 900; letter-spacing: -0.02em; }
+    .part-divider .part-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.05rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-body { padding: 20px 24px; }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label {
+      flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap;
+    }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+    .icon-teal { background: var(--teal-dim); }
+
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 16px; font-size: 0.88rem; border: 1px solid transparent; margin-top: 12px; }
+    .callout-violet { background: var(--violet-dim); border-color: #ddd6fe; color: #4c1d95; }
+    .callout-green { background: var(--green-dim); border-color: #bbf7d0; color: #14532d; }
+    .callout strong { font-weight: 700; }
+
+    /* Compare grid (framework vs platform) */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+    .compare-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 16px; background: var(--bg); }
+    .compare-card .compare-name { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 8px; }
+    .compare-card ul { margin: 0; padding-left: 18px; font-size: 0.88rem; }
+    .compare-card li { margin-bottom: 6px; }
+
+    /* Partner-style card grid (starter kit / recipe) */
+    .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 640px) { .partner-grid { grid-template-columns: 1fr; } }
+    .partner-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .partner-card .partner-name { font-size: 0.85rem; font-weight: 800; color: var(--ink); margin-bottom: 4px; }
+    .partner-card p { margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--slate); }
+
+    /* Numbered step list (adoption path / recipe steps) */
+    .step-list { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+    .step-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .step-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .step-item:first-child { padding-top: 0; }
+    .step-num {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 6px;
+      background: var(--violet-dim); color: var(--violet);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; margin-top: 1px;
+    }
+    .step-body { font-size: 0.92rem; }
+    .step-title { font-weight: 700; margin-bottom: 2px; }
+
+    /* Before/after comparison */
+    .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+    @media (max-width: 640px) { .ba-grid { grid-template-columns: 1fr; } }
+    .ba-card { border-radius: var(--radius-sm); padding: 14px 16px; }
+    .ba-before { background: var(--red-dim); border: 1px solid #fecaca; }
+    .ba-after { background: var(--green-dim); border: 1px solid #bbf7d0; }
+    .ba-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .ba-before .ba-label { color: var(--red); }
+    .ba-after .ba-label { color: var(--green); }
+    .ba-card ol { margin: 0; padding-left: 18px; font-size: 0.86rem; }
+    .ba-card li { margin-bottom: 5px; }
+
+    /* Checklist */
+    .check-list { margin: 0; padding: 0; list-style: none; }
+    .check-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .check-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .check-item:first-child { padding-top: 0; }
+    .check-box {
+      flex-shrink: 0; width: 18px; height: 18px; border-radius: 5px;
+      border: 2px solid var(--teal); margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <span>Ecosystem Playbook</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Playbook — Draft Proposal</div>
+    <h1>Ecosystem Playbook: A Pluggable Framework &amp; the Cooking-Show Briefing Template</h1>
+    <p class="subtitle">Developed from the July 9, 2026 follow-up with Jen Wells: (1) how to package the practitioner-publisher ecosystem model so other departments can adopt it, and (2) a reusable briefing structure built on her "cooking show" feedback — lead with the finished dish, then break down the ingredients.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Draft v1</span>
+      <span class="meta-chip">Source: Jen Wells follow-up, Jul 9 2026</span>
+      <span class="meta-chip">2 parts</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#part1">Part 1 — Making the Ecosystem Pluggable</a></li>
+      <li><a href="#part2">Part 2 — The Cooking-Show Briefing Template</a></li>
+      <li><a href="#related">Related Materials</a></li>
+    </ol>
+  </div>
+
+  <!-- ============ PART 1 ============ -->
+  <div class="part-divider" id="part1">
+    <div class="part-num">1</div>
+    <div>
+      <h2>Making the Ecosystem Pluggable</h2>
+      <div class="part-sub">Framework vs. platform — and a starter kit either way</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-red">❓</div>
+      <h2>The Problem</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Why this matters</span>
+        <div class="point-body">
+          The practitioner-publisher ecosystem model — faculty/industry experts sharing free content to build trust before marketing degrees — worked for STC's Blue Tech and First Responders tracks. But right now it only exists as something STC built for itself. Jen's question: how do we build it so <strong>other departments can plug in</strong>, instead of STC re-explaining and rebuilding it for every school that wants to try it?
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-violet">⚖️</div>
+      <h2>Framework vs. Platform</h2>
+    </div>
+    <div class="section-body">
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="compare-name" style="color: var(--blue);">Framework — a method</div>
+          <ul>
+            <li>Documented playbook, checklists, and templates another department follows on its own.</li>
+            <li>Low build cost — mostly writing and packaging what STC already learned.</li>
+            <li>Each department runs its own content, own channels, own cadence.</li>
+            <li>Risk: quality and consistency drift department to department with no shared infrastructure.</li>
+          </ul>
+        </div>
+        <div class="compare-card">
+          <div class="compare-name" style="color: var(--violet);">Platform — shared infrastructure</div>
+          <ul>
+            <li>Shared tooling: a content calendar, publishing hub, or analytics dashboard other schools use directly.</li>
+            <li>Higher build cost — needs product ownership, not just documentation.</li>
+            <li>Consistent measurement and branding across departments by construction.</li>
+            <li>Risk: over-building before demand is proven; becomes another IT project to maintain.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout callout-violet">
+        <strong>Recommendation:</strong> start as a <strong>framework</strong>, evolve pieces into a <strong>platform</strong> only where a second and third department hit the same bottleneck. This mirrors the "discovery, development, and delivery" phasing already used for AILI and the maritime research — don't build shared infrastructure before more than one department has proven the method works for them.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🧰</div>
+      <h2>Starter Kit — What Another Department Needs on Day One</h2>
+    </div>
+    <div class="section-body">
+      <div class="partner-grid">
+        <div class="partner-card">
+          <div class="partner-name">📋 Practitioner-Publisher Role Guide</div>
+          <p>One page: what the role is, why it works pre-inquiry, and 2-3 examples (e.g. the 18-second GitHub tutorial at ~180K views).</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">🧭 Community-Need Discovery Checklist</div>
+          <p>How to ground a new content track in real mandates — the same approach used for the Seattle AI plan and Coast Guard cybersecurity mandates in maritime research.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">🚦 Traffic-Light Risk Worksheet</div>
+          <p>The green/yellow/red framework from the SPD AI pilot, adapted as a generic "yes, and" risk-mitigation tool for any new department initiative.</p>
+        </div>
+        <div class="partner-card">
+          <div class="partner-name">📈 Minimum Measurement Template</div>
+          <p>A lightweight way to track whether content is actually building a pre-inquiry funnel (views, saves, inbound questions) without needing a full analytics platform.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🚧</div>
+      <h2>Open Question — Governance</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">Not yet resolved</span>
+        <div class="point-body">
+          Who owns the framework once more than one department is using it — STC (as the originator), Marketing (Jen's team, who owns institutional voice/reputation), or a small cross-department working group? This needs an answer before a second department is onboarded, so ownership isn't decided ad hoc under time pressure.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PART 2 ============ -->
+  <div class="part-divider" id="part2">
+    <div class="part-num">2</div>
+    <div>
+      <h2>The Cooking-Show Briefing Template</h2>
+      <div class="part-sub">Lead with the finished dish, then unpack the ingredients</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-green">🍳</div>
+      <h2>The Recipe</h2>
+    </div>
+    <div class="section-body">
+      <ol class="step-list">
+        <li class="step-item">
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">The finished dish</div>
+            Open with the outcome — a stat, demo, or claim the audience can react to immediately (e.g. "police reports: 2 hours to 60 seconds"). No setup, no agenda slide first.
+          </div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">The ingredients</div>
+            Now name the components that built it, one at a time — each one lands as "oh, that's how" instead of "wait, why are we talking about this."
+          </div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">The recipe</div>
+            Show how the ingredients combine — the method, sequencing, or tradeoffs (e.g. how the "yes, and" mindset and the traffic-light framework work together to manage risk).
+          </div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">4</span>
+          <div class="step-body">
+            <div class="step-title">Plating notes</div>
+            Close with what's next — the ask, the open question, or the decision needed from the room.
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔁</div>
+      <h2>Worked Example — Applying It to the July 1 Roundtable</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Section used</span>
+        <div class="point-body">AI for First Responders (SPD Pilot) — reworked below in cooking-show order.</div>
+      </div>
+      <div class="ba-grid">
+        <div class="ba-card ba-before">
+          <div class="ba-label">Traditional order (build-up)</div>
+          <ol>
+            <li>Background on SPD's report-writing burden</li>
+            <li>Risks: audio transcription accuracy</li>
+            <li>The "yes, and" mitigation approach</li>
+            <li>The traffic-light framework</li>
+            <li>Result: 2 hrs → 60 sec draft time</li>
+          </ol>
+        </div>
+        <div class="ba-card ba-after">
+          <div class="ba-label">Cooking-show order</div>
+          <ol>
+            <li><strong>Finished dish:</strong> 2 hrs → 60 sec draft time</li>
+            <li><strong>Ingredients:</strong> audio-transcription risk, "yes, and" mindset, traffic-light framework</li>
+            <li><strong>Recipe:</strong> how yes-and + traffic-light let the pilot move despite the risk</li>
+            <li><strong>Plating:</strong> ask — approve the pilot scope</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-teal">✅</div>
+      <h2>Checklist for the Next Briefing</h2>
+    </div>
+    <div class="section-body">
+      <ul class="check-list">
+        <li class="check-item"><span class="check-box"></span>First slide/sentence states the outcome, not the agenda.</li>
+        <li class="check-item"><span class="check-box"></span>Every "ingredient" introduced after the outcome ties visibly back to it.</li>
+        <li class="check-item"><span class="check-box"></span>The "recipe" step explains how the pieces combine — not just a list of parts.</li>
+        <li class="check-item"><span class="check-box"></span>Closing line is a specific ask or decision, not a summary recap.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Source meeting</span>
+        <div class="point-body"><a href="meeting-notes-jen-wells-2026-07-09.html">Meeting Notes — Follow-up with Jen Wells, July 9 2026</a></div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Roundtable context</span>
+        <div class="point-body"><a href="meeting-notes-strategic-leadership-roundtable-2026-07-01.html">Meeting Summary — Strategic Leadership Roundtable, July 1 2026</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

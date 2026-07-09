@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — Jen Wells, July 9 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--green);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--green); margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      margin: 0 0 8px; font-size: 1.7rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.2;
+    }
+    .doc-header .subtitle {
+      color: var(--slate); font-size: 0.95rem; margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .meta-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px; color: var(--slate);
+    }
+
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .section-header h2 {
+      margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .section-body { padding: 20px 24px; }
+
+    .point {
+      display: flex; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label {
+      flex-shrink: 0;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      height: fit-content;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+
+    .callout {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      border: 1px solid transparent;
+      margin-top: 12px;
+    }
+    .callout-green { background: var(--green-dim); border-color: #bbf7d0; color: #14532d; }
+    .callout strong { font-weight: 700; }
+
+    /* Action item list */
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+    }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px;
+      background: var(--blue-dim); color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; margin-top: 1px;
+    }
+    .action-body { font-size: 0.92rem; }
+    .action-owner {
+      display: inline-block; margin-top: 4px;
+      font-size: 0.74rem; font-weight: 700; color: var(--slate);
+      background: var(--bg); border-radius: 20px; padding: 2px 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — Jen Wells, July 9 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes</div>
+    <h1>Follow-up with Jen Wells</h1>
+    <p class="subtitle">Working session with Jen Wells, following up on her offer at the July 1 Strategic Leadership Roundtable to explore how to use the Blue Tech / practitioner-publisher concepts to cultivate curiosity and elevate the institution's reputation. Two threads: how to make the ecosystem model pluggable across departments, and feedback on how the Roundtable material itself was presented.</p>
+    <div class="meta-row">
+      <span class="meta-chip">July 9, 2026</span>
+      <span class="meta-chip">Jen Wells</span>
+      <span class="meta-chip">Follow-up to Roundtable</span>
+    </div>
+  </div>
+
+  <!-- Framework accessibility -->
+  <div class="section" id="framework">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🧩</div>
+      <h2>Making the Ecosystem Model Pluggable</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Open question</span>
+        <div class="point-body">
+          How do we build the way we brainstormed and constructed the briefing — and the practitioner-publisher ecosystem itself — so <strong>other departments can plug into it</strong>, rather than it staying a one-off STC exercise? Is the right shape a <strong>framework</strong> (a repeatable method other schools follow) or a <strong>platform</strong> (shared infrastructure/tooling other schools use directly)?
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Specific case</span>
+        <div class="point-body">
+          Applies directly to the <strong>staff/industry practitioner-publisher model</strong> — the mechanism only works institution-wide if other schools' faculty and staff can adopt it without needing STC to build it for them each time.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Underlying question</span>
+        <div class="point-body">
+          How do we make the change itself <strong>accessible</strong> — lowering the barrier for another department to try this, not just documenting that it worked once for STC.
+        </div>
+      </div>
+      <div class="callout callout-green">
+        <strong>Status:</strong> raised as an open design question, not yet resolved — flagged here for scoping in a follow-up (framework vs. platform decision, plus what a minimum "starter kit" for another department would need to contain).
+      </div>
+    </div>
+  </div>
+
+  <!-- Presentation feedback -->
+  <div class="section" id="feedback">
+    <div class="section-header">
+      <div class="section-icon icon-green">🍳</div>
+      <h2>Presentation Feedback: "Cooking Show" Structure</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-green">Core note</span>
+        <div class="point-body">
+          When explaining or briefing, structure it like a <strong>cooking show</strong>: show the finished dish first, then go back and divide it into its components/ingredients — rather than building up to the result step by step.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Why it lands</span>
+        <div class="point-body">
+          Leads with the payoff so the audience immediately sees what they're getting, then the breakdown of parts becomes context for something they've already bought into — instead of a list of ingredients whose purpose isn't clear until the end.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Apply going forward</span>
+        <div class="point-body">
+          Use this structure for future briefings and roundtable-style presentations: open with the finished outcome (the "plated dish"), then unpack the components that built it.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next steps -->
+  <div class="section" id="next-steps">
+    <div class="section-header">
+      <div class="section-icon icon-amber">✅</div>
+      <h2>Next Steps</h2>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check">1</span>
+          <div class="action-body">
+            Scope whether the ecosystem/practitioner-publisher model should be packaged as a framework (method) or a platform (shared tooling) for other departments to adopt.
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">2</span>
+          <div class="action-body">
+            Apply the "cooking show" structure — lead with the finished outcome, then break down components — to the next briefing or presentation draft.
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Roundtable summary</span>
+        <div class="point-body"><a href="meeting-notes-strategic-leadership-roundtable-2026-07-01.html">Meeting Summary — Strategic Leadership Roundtable, July 1 2026</a> (Jen's original offer to follow up is in the Audience Reception section)</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

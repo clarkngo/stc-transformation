@@ -713,6 +713,10 @@
           <p>GitHub Pages, same as the rest of the ecosystem's static assets — but GitHub Pages is static-only, so form submission needs an external handler (no built-in backend/database).</p>
         </li>
         <li class="feature-item">
+          <div class="feature-title">Promotion channels</div>
+          <p><strong>LinkedIn is the strongest fit</strong> of any social channel — its audience skews professional/B2B, matching the ebook's Corporate/Employer Partner and Educational/Community Partner segments far better than YouTube's general-audience skew. Post the ebook as a native LinkedIn post (not just a link) for reach, with a UTM-tagged link to the gated page. Secondary channels: YouTube video descriptions, seminar handouts, and workshop follow-up emails.</p>
+        </li>
+        <li class="feature-item">
           <div class="feature-title">Form mechanism — recommended</div>
           <p>Custom-branded HTML form on the page, submitted silently (via <code>fetch()</code>, <code>no-cors</code>) to a Google Form's <code>/formResponse</code> endpoint using its <code>entry.XXXXX</code> field IDs. Free, unlimited submissions, responses land in a Google Sheet in real time, and the visitor never sees Google's UI — matches the site's own design instead.</p>
         </li>
@@ -731,6 +735,16 @@
         <li class="feature-item">
           <div class="feature-title">Delivery</div>
           <p>Immediate on-screen download link in the confirmation message — matches the friction-reduction principle (don't make them check email for something they expect instantly). Email delivery works as a backup/re-engagement touchpoint, not the primary path.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Confirmation message — live</div>
+          <p>The BOFU nudge from <a href="#journeys">The Ebook-First Lead</a> journey is already implemented here, not deferred to a separate nurture email:</p>
+          <div class="callout callout-amber" style="margin-top: 8px; font-size: 0.85rem;">
+            "Thank you! Your resource access link is ready."<br><br>
+            💬 Want to connect with the CityU community?<br>
+            Join our official CityUX Community Discord to ask questions, chat with students and alumni, and stay updated on upcoming events!<br><br>
+            👉 discord.gg/PFQJNpS9A
+          </div>
         </li>
       </ul>
 
@@ -1026,6 +1040,8 @@
         </div>
         <div class="journey-path">
           <span class="journey-stage tofu">TOFU · Practitioner-published content</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage" style="background: var(--bg); color: var(--slate); border: 1px dashed var(--border);">Branches below ↓</span>
         </div>
         <p class="journey-note">A different axis from the other cards here: this describes <em>who published the content</em> (an individual practitioner building trust under their own name — see the <a href="ecosystem-playbook.html">Ecosystem Playbook's</a> practitioner-publisher model), not a new destination. What happens next depends entirely on whether that practitioner has adopted Open edX:</p>
         <div class="task-grid" style="margin-top: 10px;">
@@ -1078,6 +1094,26 @@
 
       <div class="journey-card">
         <div class="journey-header">
+          <div class="journey-avatar">📘</div>
+          <div>
+            <div class="journey-name">The Ebook-First Lead</div>
+            <div class="journey-desc">Discovers CityUX through a promoted ebook — a LinkedIn post, seminar handout, or workshop follow-up — before ever touching a course</div>
+          </div>
+        </div>
+        <div class="journey-path">
+          <span class="journey-stage tofu">TOFU · LinkedIn / social post</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage mofu">MOFU · Gated ebook download</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage bofu">BOFU · Nurture email + Community Hub invite</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage conversion">Conversion · Program registration or partnership conversation</span>
+        </div>
+        <p class="journey-note">The one journey where identity is captured at the <em>first</em> touchpoint, not the last — the gated form gives a real email immediately, unlike YouTube's aggregate-only TOFU. "Conversion" branches by the "I am a…" field on the form: a prospective student converts into program registration, a Corporate/Employer or Educational/Community Partner converts into a partnership conversation instead. See <a href="#ebook">Ebook / Gated Content</a> for the form design.</p>
+      </div>
+
+      <div class="journey-card">
+        <div class="journey-header">
           <div class="journey-avatar">🌏</div>
           <div>
             <div class="journey-name">The Prospective International Student</div>
@@ -1098,7 +1134,7 @@
 
       <div class="callout callout-violet" style="margin-top: 4px;">
         <span class="callout-label">Why this matters</span>
-        "Conversion" isn't one metric. A department partner converts into a compliance credential, a community-first learner converts into program interest, an international student converts into full enrollment. The analytics dashboard (Part 6) needs to track these as separate outcomes, not one blended conversion rate.
+        "Conversion" isn't one metric. A department partner converts into a compliance credential, a community-first learner converts into program interest, an international student converts into full enrollment, an ebook lead converts into a program registration or a partnership conversation. The analytics dashboard (Part 6) needs to track these as separate outcomes, not one blended conversion rate.
       </div>
 
     </div>

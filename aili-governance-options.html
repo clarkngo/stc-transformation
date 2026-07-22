@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AILI — Governance &amp; Org Chart Options (Workshop Draft)</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 980px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .meta-chip.draft { background: var(--amber-dim); color: var(--amber); border-color: #fde68a; }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    /* Option cards */
+    .option-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 860px) { .option-grid { grid-template-columns: 1fr; } }
+    .option-card { border-radius: var(--radius-sm); border: 2px solid var(--border); overflow: hidden; display: flex; flex-direction: column; }
+    .option-card.option-a { border-color: #c4b5fd; }
+    .option-card.option-b { border-color: #bfdbfe; }
+    .option-card.option-c { border-color: #99f6e4; }
+    .option-head { padding: 14px 16px 10px; }
+    .option-a .option-head { background: var(--violet-dim); }
+    .option-b .option-head { background: var(--blue-dim); }
+    .option-c .option-head { background: var(--teal-dim); }
+    .option-badge { display: inline-block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; background: rgba(255,255,255,0.6); }
+    .option-title { font-size: 0.98rem; font-weight: 800; margin: 0 0 3px; }
+    .option-sub { font-size: 0.78rem; color: var(--slate); }
+    .option-body { padding: 14px 16px; flex: 1; }
+
+    /* Mini org diagram */
+    .mini-org { display: flex; flex-direction: column; align-items: center; gap: 0; margin-bottom: 14px; }
+    .mini-node { border-radius: 8px; padding: 8px 12px; text-align: center; font-size: 0.76rem; font-weight: 700; width: 100%; border: 1px solid var(--border); background: var(--bg); }
+    .mini-node.root { background: #f8fafc; }
+    .mini-connector { width: 2px; height: 14px; background: var(--border); }
+    .mini-split { display: flex; width: 100%; gap: 8px; }
+    .mini-branch { display: flex; flex-direction: column; align-items: center; flex: 1; }
+    .mini-branch .mini-connector { height: 10px; }
+
+    .option-list { margin: 0; padding: 0; list-style: none; font-size: 0.83rem; }
+    .option-list li { padding: 5px 0; border-top: 1px solid var(--border); display: flex; gap: 6px; align-items: flex-start; }
+    .option-list li:first-child { border-top: none; }
+    .option-list li::before { flex-shrink: 0; font-weight: 700; }
+    .option-list.pros li::before { content: '+'; color: var(--green); }
+    .option-list.cons li::before { content: '−'; color: var(--red); }
+
+    /* Comparison table */
+    .table-wrap { overflow-x: auto; }
+    table.matrix { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 760px; }
+    table.matrix th, table.matrix td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.matrix th { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); background: var(--bg); white-space: nowrap; }
+    table.matrix td:first-child { font-weight: 700; color: var(--slate); white-space: nowrap; }
+    table.matrix th.col-a { color: var(--violet); }
+    table.matrix th.col-b { color: var(--blue); }
+    table.matrix th.col-c { color: var(--teal); }
+    table.matrix tr:last-child td { border-bottom: none; }
+
+    /* Workshop checklist */
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--amber-dim); color: var(--amber); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="meeting-notes-ai-institute-2026-07-21.html">AI Institute Meeting Notes</a>
+    <span class="nav-sep">›</span>
+    <span>AILI — Governance Options</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Brainstorm — Draft for Workshop</div>
+    <h1>AILI — Governance &amp; Org Chart Options</h1>
+    <p class="subtitle">Three shapes for where the AI Lifelong Learning Institute (AILI) reports and how it synergizes with STC and the School of Education &amp; Leadership — not a decision, a working comparison to workshop tomorrow.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Jul 22, 2026</span>
+      <span class="meta-chip draft">Draft — workshop tomorrow</span>
+      <span class="meta-chip">3 options compared</span>
+      <span class="meta-chip">STC Planning Team</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#context">Why This Needs Deciding</a></li>
+      <li><a href="#options">The Three Options</a></li>
+      <li><a href="#matrix">Comparison Matrix</a></li>
+      <li><a href="#recommendation">Working Recommendation</a></li>
+      <li><a href="#workshop">Open Questions for Tomorrow</a></li>
+    </ol>
+  </div>
+
+  <!-- Context -->
+  <div class="section" id="context">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🧭</div>
+      <div>
+        <h2>Why This Needs Deciding</h2>
+        <div class="section-sub">AILI has a name and a mission — it doesn't yet have a home</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">What AILI is</span>
+        <div class="point-body">
+          The <strong>AI Lifelong Learning Institute</strong> — the non-degree layer covering the Maritime OT Security certificate, SPD/first-responder AI-literacy workshops, and the on-ramp that stacks into the BSAI degree. Leadership asked for a name that avoids "Center."
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">The constraint</span>
+        <div class="point-body">
+          AILI must <strong>complement, not disrupt, STC's core academic business</strong> — it's a testing ground alongside the degree programs, not a replacement structure.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-red">The open question</span>
+        <div class="point-body">
+          The Dean of Education &amp; Leadership already asked: <strong>"Does AILI sit under our school, or under STC?"</strong> She sees AILI as adjacent to her school's adult-learning expertise and wants a role in instructional design — not STC building it alone.
+        </div>
+      </div>
+      <div class="callout callout-amber mt16">
+        <strong>Precedent to reuse carefully:</strong> the Applied Intelligence Center (AIC) already has a worked org chart — one liaison, single-school, consulting-revenue shaped. AILI's problem is different: two schools have a real claim, and the revenue model is workshops/certificates, not consulting. Copying the AIC shape verbatim would answer the Dean's question by ignoring it.
+      </div>
+    </div>
+  </div>
+
+  <!-- Options -->
+  <div class="section" id="options">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🏛️</div>
+      <div>
+        <h2>The Three Options</h2>
+        <div class="section-sub">Where AILI reports, and how STC + Education &amp; Leadership connect to it</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="option-grid">
+
+        <!-- Option A -->
+        <div class="option-card option-a">
+          <div class="option-head">
+            <span class="option-badge">Option A</span>
+            <div class="option-title">Institute-level, dual liaison</div>
+            <div class="option-sub">AILI reports to the Provost/President's Office directly</div>
+          </div>
+          <div class="option-body">
+            <div class="mini-org">
+              <div class="mini-node root">Provost / President's Office</div>
+              <div class="mini-connector"></div>
+              <div class="mini-node" style="background:var(--violet-dim);border-color:#c4b5fd;color:#4c1d95;">AILI</div>
+              <div class="mini-connector"></div>
+              <div class="mini-split">
+                <div class="mini-branch">
+                  <div class="mini-connector"></div>
+                  <div class="mini-node">STC Liaison</div>
+                </div>
+                <div class="mini-branch">
+                  <div class="mini-connector"></div>
+                  <div class="mini-node">Education &amp; Leadership Liaison</div>
+                </div>
+              </div>
+            </div>
+            <ul class="option-list pros">
+              <li>Directly answers the Dean's open question — neither school owns it</li>
+              <li>Best fit for leadership's "avoid Center" framing — reads as genuinely new</li>
+              <li>Lowest ongoing turf-conflict risk</li>
+            </ul>
+            <ul class="option-list cons">
+              <li>Slowest to charter — needs new budget line + President's-Office sponsorship</li>
+              <li>Degree-pathway handoff to BSAI needs an explicit bridge back into STC</li>
+              <li>No existing precedent to copy — chart has to be built from scratch</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Option B -->
+        <div class="option-card option-b">
+          <div class="option-head">
+            <span class="option-badge">Option B</span>
+            <div class="option-title">Anchored under STC</div>
+            <div class="option-sub">Mirrors the AIC precedent exactly</div>
+          </div>
+          <div class="option-body">
+            <div class="mini-org">
+              <div class="mini-node root">STC Dean</div>
+              <div class="mini-connector"></div>
+              <div class="mini-node" style="background:var(--blue-dim);border-color:#bfdbfe;color:#1e3a8a;">AILI</div>
+              <div class="mini-connector"></div>
+              <div class="mini-node">Education &amp; Leadership — advisory input</div>
+            </div>
+            <ul class="option-list pros">
+              <li>Fastest to stand up — reuses AIC's already-proposed governance shape</li>
+              <li>Cleanest for the BSAI feeder track — same-school handoff, no seam</li>
+              <li>Strong technical/AI content ownership from day one</li>
+            </ul>
+            <ul class="option-list cons">
+              <li>Doesn't answer the Dean's question — defers it, likely resurfaces</li>
+              <li>Reads as "STC's center wearing an Institute name tag"</li>
+              <li>Highest turf-conflict risk — confirms the Dean's stated fear</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Option C -->
+        <div class="option-card option-c">
+          <div class="option-head">
+            <span class="option-badge">Option C</span>
+            <div class="option-title">Anchored under Education &amp; Leadership</div>
+            <div class="option-sub">Leans into the "lifelong learning" identity</div>
+          </div>
+          <div class="option-body">
+            <div class="mini-org">
+              <div class="mini-node root">Dean, Education &amp; Leadership</div>
+              <div class="mini-connector"></div>
+              <div class="mini-node" style="background:var(--teal-dim);border-color:#99f6e4;color:#115e59;">AILI</div>
+              <div class="mini-connector"></div>
+              <div class="mini-node">STC — content liaison</div>
+            </div>
+            <ul class="option-list pros">
+              <li>Strong adult-learning pedagogy ownership from day one</li>
+              <li>Directly addresses the Dean's ask for a real role, not just advisory</li>
+              <li>Single-school ask — simpler charter than a cross-school one</li>
+            </ul>
+            <ul class="option-list cons">
+              <li>Resolves the question in STC's disfavor — new objection likely from STC</li>
+              <li>Weakest BSAI/degree-pathway coherence — extra seam back into STC</li>
+              <li>AI/technical content becomes a bolt-on, not owned</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Matrix -->
+  <div class="section" id="matrix">
+    <div class="section-header">
+      <div class="section-icon icon-amber">📊</div>
+      <div>
+        <h2>Comparison Matrix</h2>
+        <div class="section-sub">Same nine dimensions, side by side</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th class="col-a">A · Institute-level, dual liaison</th>
+              <th class="col-b">B · Anchored under STC</th>
+              <th class="col-c">C · Anchored under Education</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Reports to</td>
+              <td>Provost / President's Office</td>
+              <td>STC Dean (mirrors AIC)</td>
+              <td>Dean, Education &amp; Leadership</td>
+            </tr>
+            <tr>
+              <td>Answers Dean's question</td>
+              <td>Yes — directly, by putting it under neither</td>
+              <td>No — defers it, likely resurfaces</td>
+              <td>Yes, but resolves it in STC's disfavor</td>
+            </tr>
+            <tr>
+              <td>Speed to stand up</td>
+              <td>Slowest — new institute-level charter &amp; budget line</td>
+              <td>Fastest — reuses AIC's proposed structure</td>
+              <td>Medium — new territory, but single-school ask</td>
+            </tr>
+            <tr>
+              <td>Curriculum credibility</td>
+              <td>Balanced — technical + adult-pedagogy as equal inputs</td>
+              <td>Strong technical/AI; pedagogy is a bolt-on</td>
+              <td>Strong adult-pedagogy; AI content is a bolt-on</td>
+            </tr>
+            <tr>
+              <td>Turf-conflict risk</td>
+              <td>Lowest — neither school can claim ownership</td>
+              <td>Highest — confirms the Dean's stated fear</td>
+              <td>Moderate — STC may resist supplying "their" AI thread</td>
+            </tr>
+            <tr>
+              <td>Fits "avoid Center" ask</td>
+              <td>Best fit — reads as genuinely new</td>
+              <td>Weakest — reads as STC's center renamed</td>
+              <td>Reasonable, but reads as an Ed-school program</td>
+            </tr>
+            <tr>
+              <td>BSAI/degree-pathway coherence</td>
+              <td>Needs an explicit bridge back into STC</td>
+              <td>Cleanest — same-school handoff</td>
+              <td>Weakest — extra seam back into STC</td>
+            </tr>
+            <tr>
+              <td>Political cost with leadership/President</td>
+              <td>Lowest — matches her signaled direction</td>
+              <td>Some — may look like STC empire-building</td>
+              <td>Some — STC may push back on losing the AI thread</td>
+            </tr>
+            <tr>
+              <td>Precedent reuse (AIC template)</td>
+              <td>Least reusable — needs its own two-liaison chart</td>
+              <td>Most reusable — same shape, new label</td>
+              <td>Not reusable — inverse of the AIC shape</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommendation -->
+  <div class="section" id="recommendation">
+    <div class="section-header">
+      <div class="section-icon icon-teal">💡</div>
+      <div>
+        <h2>Working Recommendation</h2>
+        <div class="section-sub">A starting point for the workshop, not a decided position</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-teal">
+        <strong>Lean toward Option A.</strong> It's the only shape that resolves the tension already surfaced in our own meeting notes rather than moving it — neither Dean can say "the other school owns this." It's slower to charter, but that cost is mostly front-loaded (getting the President's Office to sponsor it), not recurring. B is the fastest path but reopens the exact objection the Education Dean raised; C fixes the pedagogy framing but creates a new objection from STC on the degree-pathway thread.
+      </div>
+    </div>
+  </div>
+
+  <!-- Workshop checklist -->
+  <div class="section" id="workshop">
+    <div class="section-header">
+      <div class="section-icon icon-green">✅</div>
+      <div>
+        <h2>Open Questions for Tomorrow's Workshop</h2>
+        <div class="section-sub">What we don't have visibility into yet — needs planning-team input</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check">1</span>
+          <div class="action-body">Where does the budget line actually sit right now — President's Office, STC, or Education &amp; Leadership? This may constrain the option regardless of preference.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">2</span>
+          <div class="action-body">How has leadership been leaning verbally, beyond "avoid the word Center"? Any signal on single-school vs. cross-school ownership?</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">3</span>
+          <div class="action-body">If Option A: who plays Director vs. the two Liaisons in Year 1 — internal hire, or split faculty release time from both schools?</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">4</span>
+          <div class="action-body">Does the Maritime/SPD track need its own governance seam (external partners, grant funding) separate from the AI-degree/BSAI feeder track — i.e., is this really one org chart or two?</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">5</span>
+          <div class="action-body">Timeline: does a charter decision need to land before the next President's Office touchpoint, or can this stay a working draft through one more cycle?</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-teal">Precedent</span>
+        <div class="point-body"><a href="aic-center-structure.html">Applied Intelligence Center — Structure &amp; Roadmap</a> — the worked single-school liaison template this brainstorm deliberately diverges from</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Origin</span>
+        <div class="point-body"><a href="roundtable-prep-cityu-president.html">CityU President Roundtable — Speaker Prep &amp; Notes</a> — where AILI was named and the Dean's governance question was first raised</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Context</span>
+        <div class="point-body"><a href="meeting-notes-ai-institute-2026-07-21.html">Meeting Notes — AI Institute, July 21 2026</a> — action item to draft an organizational structure and proposal</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -270,6 +270,7 @@
           <li><a href="#workshop">Workshop</a></li>
           <li><a href="#seminar">Seminar</a></li>
           <li><a href="#community">Community Hub</a></li>
+          <li><a href="#ebook">Ebook / Gated Content</a></li>
           <li><a href="#alt-path">Alternative Path (no Open edX yet)</a></li>
         </ol>
       </li>
@@ -686,6 +687,69 @@
             <li class="kpi-item">Bot-flagged trending issues</li>
           </ul>
           <p class="kpi-caveat">Ties an individual Discord member to a CityU learner record only once accounts are linked — see the Identity &amp; tracking layer breakdown in Next Steps.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ebook / Gated Content -->
+  <div class="section" id="ebook">
+    <div class="section-header">
+      <div class="section-icon icon-amber">📘</div>
+      <div>
+        <h2>Ebook / Gated Content</h2>
+        <div class="section-kicker">Lead-Generation Downloads</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">Strategy</span>
+        <div class="point-body">Trade a free, high-value asset (program guide, partnership overview, research brief) for an identified email — the one touchpoint in this ecosystem where the visitor volunteers their own identity, no account-linking required.</div>
+      </div>
+
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">Hosting</div>
+          <p>GitHub Pages, same as the rest of the ecosystem's static assets — but GitHub Pages is static-only, so form submission needs an external handler (no built-in backend/database).</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Form mechanism — recommended</div>
+          <p>Custom-branded HTML form on the page, submitted silently (via <code>fetch()</code>, <code>no-cors</code>) to a Google Form's <code>/formResponse</code> endpoint using its <code>entry.XXXXX</code> field IDs. Free, unlimited submissions, responses land in a Google Sheet in real time, and the visitor never sees Google's UI — matches the site's own design instead.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Simpler fallback</div>
+          <p>A third-party form endpoint (Formspree, Web3Forms, FormSubmit) if the team wants zero JavaScript — same custom-HTML styling, but with a monthly submission cap on most free tiers (FormSubmit is the one unlimited option).</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Fields — kept to 3–4, on purpose</div>
+          <p>Full Name, Email (required, validated), "I am a…" dropdown (Prospective Student, Current Student/Alumni, Corporate/Employer Partner, Educational/Community Partner, Other), Organization/Company (optional). Every extra field costs 5–10% conversion on gated content — this is not the place for a full RFI form.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Reusable across every ebook</div>
+          <p>Generic title ("Request Resource Access") and description, plus one "Resource Requested" dropdown field — one form serves every future ebook/whitepaper instead of building a new one each time. A pre-filled link per landing page can default that field automatically.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Delivery</div>
+          <p>Immediate on-screen download link in the confirmation message — matches the friction-reduction principle (don't make them check email for something they expect instantly). Email delivery works as a backup/re-engagement touchpoint, not the primary path.</p>
+        </li>
+      </ul>
+
+      <div class="callout callout-amber">
+        <span class="callout-label">Technical integration</span>
+        Hidden UTM fields (<code>utm_source</code>, <code>utm_campaign</code>) on the form, carried through to the Google Sheet / CRM — ties every download back to the touchpoint that drove it (a specific YouTube video, seminar, workshop), feeding the same Identity &amp; tracking layer as the rest of the funnel.
+      </div>
+
+      <div class="point" style="margin-top: 4px;">
+        <span class="point-label lbl-amber">Data &amp; KPIs available</span>
+        <div class="point-body">
+          <ul class="kpi-list">
+            <li class="kpi-item">Identified email (not aggregate)</li>
+            <li class="kpi-item">Persona segment</li>
+            <li class="kpi-item">Organization / partner type</li>
+            <li class="kpi-item">Download count per resource</li>
+            <li class="kpi-item">UTM source (if instrumented)</li>
+          </ul>
+          <p class="kpi-caveat">The strongest identity signal of any touchpoint in this ecosystem — unlike YouTube, the visitor volunteers a real, usable email address directly into the funnel.</p>
         </div>
       </div>
     </div>
@@ -1122,6 +1186,7 @@
             <li>UTM parameters on all outbound links (YouTube, practitioner content) — no infrastructure needed, immediate referral attribution</li>
             <li>Open edX certificate copy mentioning CityUX — configuration only <strong>(done)</strong></li>
             <li>Open edX OAuth2 client registration for CRM/dashboard — config-only, unlocks the profile-hub strategy</li>
+            <li>Gated ebook download form (branded HTML → Google Form silent submission) — a few hours of setup, and the strongest identity signal in the whole ecosystem</li>
           </ul>
         </div>
         <div class="matrix-quad quad-blue">

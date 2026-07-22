@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUX Open Ecosystem — Execution Plan</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0f766e;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 900px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--violet); margin-bottom: 8px;
+    }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.6rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.25; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+    .toc .toc-sub { margin: 4px 0 6px 20px; padding-left: 14px; border-left: 2px solid var(--border); }
+    .toc .toc-sub li { margin-bottom: 4px; font-size: 0.85rem; }
+
+    .part-divider { display: flex; align-items: center; gap: 12px; margin: 40px 0 20px; }
+    .part-divider .part-num {
+      flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+      background: var(--violet); color: #fff; font-weight: 800; font-size: 0.95rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .part-divider h2 { margin: 0; font-size: 1.25rem; font-weight: 900; letter-spacing: -0.02em; }
+    .part-divider .part-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.05rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-kicker { font-size: 0.72rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label {
+      flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap;
+    }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+    .icon-teal { background: var(--teal-dim); }
+
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 16px; font-size: 0.88rem; border: 1px solid transparent; margin-top: 12px; }
+    .callout-violet { background: var(--violet-dim); border-color: #ddd6fe; color: #4c1d95; }
+    .callout-green { background: var(--green-dim); border-color: #bbf7d0; color: #14532d; }
+    .callout-blue { background: var(--blue-dim); border-color: #bfdbfe; color: #1e3a8a; }
+    .callout-red { background: var(--red-dim); border-color: #fecaca; color: #7f1d1d; }
+    .callout-amber { background: var(--amber-dim); border-color: #fde68a; color: #78350f; }
+    .callout-teal { background: var(--teal-dim); border-color: #99f6e4; color: #134e4a; }
+    .callout strong { font-weight: 700; }
+    .callout .callout-label { display: block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; opacity: 0.85; }
+
+    /* Feature list — touchpoint items (title + description) */
+    .feature-list { margin: 0; padding: 0; list-style: none; }
+    .feature-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .feature-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .feature-item:first-child { padding-top: 0; }
+    .feature-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 3px; }
+    .feature-item p { margin: 0; font-size: 0.87rem; color: var(--slate); line-height: 1.55; }
+
+    /* Numbered step list */
+    .step-list { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+    .step-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .step-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .step-item:first-child { padding-top: 0; }
+    .step-num {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 6px;
+      background: var(--violet-dim); color: var(--violet);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; margin-top: 1px;
+    }
+    .step-body { font-size: 0.92rem; }
+    .step-title { font-weight: 700; margin-bottom: 2px; }
+
+    /* Flow pipeline (data flow diagram) */
+    .flow-pipeline { display: flex; flex-direction: column; }
+    .flow-stage {
+      background: var(--card); border: 1px solid var(--border); border-left-width: 5px; border-left-style: solid;
+      border-radius: var(--radius-sm); padding: 16px 20px; box-shadow: var(--shadow);
+    }
+    .flow-stage-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+    .flow-stage-title { font-weight: 800; font-size: 1rem; color: var(--ink); }
+    .flow-stage-desc { font-size: 0.85rem; color: var(--slate); margin-top: 4px; }
+    .flow-arrow { display: flex; justify-content: center; padding: 6px 0; color: var(--slate-light); font-size: 1.3rem; line-height: 1; }
+    .fs-violet { border-left-color: var(--violet); }
+    .fs-violet .flow-stage-label { color: var(--violet); }
+    .fs-red { border-left-color: var(--red); }
+    .fs-red .flow-stage-label { color: var(--red); }
+    .fs-blue { border-left-color: var(--blue); }
+    .fs-blue .flow-stage-label { color: var(--blue); }
+    .fs-green { border-left-color: var(--green); }
+    .fs-green .flow-stage-label { color: var(--green); }
+
+    /* Funnel diagram */
+    .funnel { display: flex; flex-direction: column; align-items: center; gap: 0; margin-bottom: 8px; }
+    .funnel-stage {
+      width: 100%; text-align: center; border-radius: var(--radius-sm);
+      padding: 16px 20px; box-shadow: var(--shadow); border: 1px solid;
+    }
+    .funnel-stage.tofu { width: 100%; background: var(--blue-dim); border-color: #bfdbfe; }
+    .funnel-stage.mofu { width: 84%; background: var(--violet-dim); border-color: #ddd6fe; }
+    .funnel-stage.bofu { width: 68%; background: var(--amber-dim); border-color: #fde68a; }
+    .funnel-stage.conversion { width: 52%; background: var(--green-dim); border-color: #bbf7d0; }
+    .funnel-eyebrow { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+    .tofu .funnel-eyebrow { color: var(--blue); }
+    .mofu .funnel-eyebrow { color: var(--violet); }
+    .bofu .funnel-eyebrow { color: var(--amber); }
+    .conversion .funnel-eyebrow { color: var(--green); }
+    .funnel-title { font-weight: 800; font-size: 0.95rem; color: var(--ink); }
+    @media (max-width: 560px) {
+      .funnel-stage.tofu, .funnel-stage.mofu, .funnel-stage.bofu, .funnel-stage.conversion { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <span>CityUX Open Ecosystem — Execution Plan</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Execution Plan — Draft Proposal</div>
+    <h1>CityUX Open Ecosystem — Execution Plan</h1>
+    <p class="subtitle">A continuous feedback loop: public content and community engagement capture market signals, which are refined through hands-on formats before feeding directly into City University of Seattle's core academic structure. This breaks the loop into touchpoints, technical hooks, and integration workflows for each node.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Draft v1</span>
+      <span class="meta-chip">6 touchpoint nodes</span>
+      <span class="meta-chip">1 core hub</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#hub">1. Core Integration Hub</a></li>
+      <li><a href="#matrix">2. Touchpoint Implementation Matrix</a>
+        <ol class="toc-sub">
+          <li><a href="#youtube">YouTube</a></li>
+          <li><a href="#github">GitHub</a></li>
+          <li><a href="#openedx">Open edX</a></li>
+          <li><a href="#workshop">Workshop</a></li>
+          <li><a href="#seminar">Seminar</a></li>
+          <li><a href="#community">Community Hub</a></li>
+        </ol>
+      </li>
+      <li><a href="#pipeline">3. Data Flow &amp; Execution Pipeline</a></li>
+      <li><a href="#funnel">4. Learner Conversion Funnel</a></li>
+      <li><a href="#next-steps">5. Next Steps for Deployment</a></li>
+    </ol>
+  </div>
+
+  <!-- ============ PART 1: CORE HUB ============ -->
+  <div class="part-divider" id="hub">
+    <div class="part-num">1</div>
+    <div>
+      <h2>Core Integration Hub</h2>
+      <div class="part-sub">Everything in the ecosystem points back to one destination</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Central destination</span>
+        <div class="point-body">
+          <strong>City University of Seattle</strong> — Courses, Programs, Syllabi, Faculty.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Primary objective</span>
+        <div class="point-body">
+          Convert open-learning engagement into formal enrollment, micro-credentials, or degree pursuit.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Core touchpoint</span>
+        <div class="point-body">
+          Unified <strong>SSO (Single Sign-On) / LTI</strong> integration across Open edX, LMS (Canvas/Blackboard), and GitHub Organization access management — one identity follows the learner across every node.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PART 2: TOUCHPOINT MATRIX ============ -->
+  <div class="part-divider" id="matrix">
+    <div class="part-num">2</div>
+    <div>
+      <h2>Touchpoint Implementation Matrix</h2>
+      <div class="part-sub">Six nodes — integration strategy, touchpoints, and the technical hook behind each</div>
+    </div>
+  </div>
+
+  <!-- YouTube -->
+  <div class="section" id="youtube">
+    <div class="section-header">
+      <div class="section-icon icon-red">🎥</div>
+      <div>
+        <h2>YouTube</h2>
+        <div class="section-kicker">Video Lectures &amp; Concept Explainers</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Strategy</span>
+        <div class="point-body">Inbound discovery &amp; top-of-funnel concept validation.</div>
+      </div>
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">Video description CTA hooks</div>
+          <p>Dynamic URL redirects pointing directly to matching GitHub starter repos or Open edX micro-courses.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Pinned comments &amp; QR codes</div>
+          <p>Embedded in slides to capture audience interest during specific timestamps.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Interactive cards / end screens</div>
+          <p>Directing viewers to the corresponding Open edX pilot or GitHub hands-on lab environment.</p>
+        </li>
+      </ul>
+      <div class="callout callout-red">
+        <span class="callout-label">Technical integration</span>
+        YouTube Data API — syncing video metadata/playlists directly to the Open edX course units or course web pages.
+      </div>
+    </div>
+  </div>
+
+  <!-- GitHub -->
+  <div class="section" id="github">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🐙</div>
+      <div>
+        <h2>GitHub</h2>
+        <div class="section-kicker">Lab Environments &amp; Starter Code</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-teal">Strategy</span>
+        <div class="point-body">Practical application &amp; technical asset distribution.</div>
+      </div>
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">Template repositories</div>
+          <p>One-click "Use this template" / GitHub Codespaces launcher buttons embedded directly in Open edX units and YouTube video descriptions.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Automated feedback</div>
+          <p>GitHub Actions running automated test suites on student submissions to provide instant code grading before official LMS submission.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Static redirection pages</div>
+          <p>Decoupled GitHub Pages routing layer to manage stable lab URLs across varying term setups.</p>
+        </li>
+      </ul>
+      <div class="callout callout-teal">
+        <span class="callout-label">Technical integration</span>
+        GitHub Webhooks &amp; OAuth / LTI links into Open edX / LMS to track student progress and lab completions.
+      </div>
+    </div>
+  </div>
+
+  <!-- Open edX -->
+  <div class="section" id="openedx">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🎓</div>
+      <div>
+        <h2>Open edX</h2>
+        <div class="section-kicker">Course Pilots &amp; Completion Analytics</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Strategy</span>
+        <div class="point-body">Asynchronous self-paced validation &amp; pilot testing ground.</div>
+      </div>
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">Modular XBlocks / LTI tools</div>
+          <p>Embed YouTube video embeds, embedded GitHub Codespaces/Gists, and live interactive widgets within course units.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Completion signals</div>
+          <p>Automated completion certificates triggering an automated email nurture sequence towards full degree enrollment or micro-credential registration.</p>
+        </li>
+      </ul>
+      <div class="callout callout-blue">
+        <span class="callout-label">Technical integration</span>
+        Open edX Analytics Pipeline / xAPI data streams feeding learner progression data into the university CRM/LMS.
+      </div>
+    </div>
+  </div>
+
+  <!-- Workshop -->
+  <div class="section" id="workshop">
+    <div class="section-header">
+      <div class="section-icon icon-green">🛠️</div>
+      <div>
+        <h2>Workshop</h2>
+        <div class="section-kicker">Hands-on Curricula &amp; Cohort Feedback</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-green">Strategy</span>
+        <div class="point-body">Synchronous, high-engagement cohort acceleration.</div>
+      </div>
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">Live coding &amp; interactive labs</div>
+          <p>Synchronous sessions built around GitHub template repos and pre-configured cloud environments.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Real-time surveying &amp; exit tickets</div>
+          <p>Post-workshop feedback loops captured via form embeds or Discord/Slack integration to evaluate topic viability.</p>
+        </li>
+      </ul>
+      <div class="callout callout-green">
+        <span class="callout-label">Technical integration</span>
+        Calendar event tracking, automated Zoom/Teams attendance logging linked to CRM leads.
+      </div>
+    </div>
+  </div>
+
+  <!-- Seminar -->
+  <div class="section" id="seminar">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🎤</div>
+      <div>
+        <h2>Seminar</h2>
+        <div class="section-kicker">Guest Lectures &amp; Topic Validation</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">Strategy</span>
+        <div class="point-body">Thought leadership, industry alignment, &amp; demand testing.</div>
+      </div>
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">Event registration &amp; lead capture</div>
+          <p>Public-facing landing page (e.g., Luma, Eventbrite, or native portal) linked to the ecosystem database.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Q&amp;A &amp; poll data</div>
+          <p>Gathering real-time audience questions to identify trending industry topics for future syllabus modules.</p>
+        </li>
+      </ul>
+      <div class="callout callout-amber">
+        <span class="callout-label">Technical integration</span>
+        Automated post-seminar content packaging (recording → YouTube upload, transcript → blog/syllabus update).
+      </div>
+    </div>
+  </div>
+
+  <!-- Community Hub -->
+  <div class="section" id="community">
+    <div class="section-header">
+      <div class="section-icon icon-violet">💬</div>
+      <div>
+        <h2>Community Hub</h2>
+        <div class="section-kicker">Demand Signals &amp; Pain Points</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Strategy</span>
+        <div class="point-body">Continuous feedback, community-led discovery, &amp; direct student support.</div>
+      </div>
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">Discussion channels</div>
+          <p>Discord, Slack, or GitHub Discussions — dedicated spaces categorized by topic, lab help, and career advice.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Feature request / topic upvoting</div>
+          <p>Upvote boards where community members post pain points or request specific technical deep dives.</p>
+        </li>
+      </ul>
+      <div class="callout callout-violet">
+        <span class="callout-label">Technical integration</span>
+        Bot integrations (e.g., Discord/GitHub webhooks) alerting faculty to trending community issues, feeding directly into syllabus backlog updates.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PART 3: DATA FLOW PIPELINE ============ -->
+  <div class="part-divider" id="pipeline">
+    <div class="part-num">3</div>
+    <div>
+      <h2>Data Flow &amp; Execution Pipeline</h2>
+      <div class="part-sub">How a signal becomes a credential</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="flow-pipeline">
+        <div class="flow-stage fs-violet">
+          <div class="flow-stage-label">Stage 1</div>
+          <div class="flow-stage-title">Community Signals &amp; Seminars</div>
+          <div class="flow-stage-desc">Identify skill gaps / industry demand.</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-stage fs-red">
+          <div class="flow-stage-label">Stage 2</div>
+          <div class="flow-stage-title">YouTube &amp; GitHub Starter Repos</div>
+          <div class="flow-stage-desc">Public content &amp; hands-on assets.</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-stage fs-blue">
+          <div class="flow-stage-label">Stage 3</div>
+          <div class="flow-stage-title">Open edX &amp; Workshops</div>
+          <div class="flow-stage-desc">Track completion &amp; learner mastery.</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-stage fs-green">
+          <div class="flow-stage-label">Stage 4</div>
+          <div class="flow-stage-title">CityU Formal Curriculum</div>
+          <div class="flow-stage-desc">Credit transfer, degrees &amp; micro-credentials.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PART 4: CONVERSION FUNNEL ============ -->
+  <div class="part-divider" id="funnel">
+    <div class="part-num">4</div>
+    <div>
+      <h2>Learner Conversion Funnel</h2>
+      <div class="part-sub">One learner's path, starting from a single YouTube video</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="funnel">
+        <div class="funnel-stage tofu">
+          <div class="funnel-eyebrow">1 · Top of Funnel</div>
+          <div class="funnel-title">Discovery &amp; Engagement (YouTube Native)</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="funnel-stage mofu">
+          <div class="funnel-eyebrow">2 · Middle of Funnel</div>
+          <div class="funnel-title">Hands-On Application &amp; Async Learning (GitHub &amp; Open edX)</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="funnel-stage bofu">
+          <div class="funnel-eyebrow">3 · Bottom of Funnel</div>
+          <div class="funnel-title">High-Touch Validation &amp; Cohort Conversion (Workshops, Seminars &amp; Hub)</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="funnel-stage conversion">
+          <div class="funnel-eyebrow">4 · Conversion</div>
+          <div class="funnel-title">CityU Formal Enrollment</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-blue">1</div>
+      <div>
+        <h2>Top of Funnel — Discovery &amp; Awareness</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">User state</span>
+        <div class="point-body">Viewer lands on a YouTube video lecture or concept explainer (via search, algorithm recommendation, or shared link).</div>
+      </div>
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">Video content</div>
+          <p>High-value, modular technical explainer addressing a specific concept or pain point.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">In-video on-ramps</div>
+          <p>On-screen QR codes, pinned comments, and description links prompting viewers to access the underlying hands-on assets.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Interactive end screens &amp; cards</div>
+          <p>Clickable cards driving traffic directly to a corresponding Open edX pilot module or GitHub starter code.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-violet">2</div>
+      <div>
+        <h2>Middle of Funnel — Engagement &amp; Skill Building</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">User state</span>
+        <div class="point-body">Learner moves from passive viewer to active practitioner by engaging with open resources.</div>
+      </div>
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">GitHub starter repositories</div>
+          <p>Click-to-launch GitHub Codespaces links (found in the YouTube description) allow learners to immediately run and test the lab code without local environment setup.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Open edX micro-courses</div>
+          <p>Free self-paced pilots hosting embedded YouTube lectures alongside auto-graded quizzes and interactive code blocks.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Automated feedback &amp; badging</div>
+          <p>GitHub Actions run test suites against learner commits, while Open edX tracks unit completions and issues digital completion badges.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-amber">3</div>
+      <div>
+        <h2>Bottom of Funnel — Consideration &amp; Cohort Validation</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">User state</span>
+        <div class="point-body">Highly engaged learner seeking structured feedback, community interaction, or live instruction.</div>
+      </div>
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">Community Hub invitations</div>
+          <p>Automated email or platform nudges inviting badge earners/repo forks into Discord, Slack, or GitHub Discussions to interact with peers and TAs.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Live workshops &amp; seminars</div>
+          <p>Targeted invites to attend live, cohort-based hands-on workshops or guest seminars for deeper topic validation.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Automated nurture sequences</div>
+          <p>Email workflows triggered by Open edX course completion, highlighting credit transfer options, certificate pathways, and micro-credentials.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon icon-green">4</div>
+      <div>
+        <h2>Conversion — Formal Academic Enrollment</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-green">User state</span>
+        <div class="point-body">Learner transitions from open ecosystem participant to matriculated City University of Seattle student.</div>
+      </div>
+      <ul class="feature-list" style="margin-top: 4px;">
+        <li class="feature-item">
+          <div class="feature-title">Credit articulation</div>
+          <p>Micro-credentials and Open edX pilot achievements map directly into prerequisite credits for degree programs.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Direct course &amp; program registration</div>
+          <p>Dedicated landing pages streamlining application and registration into official CityU syllabi, courses, and programs.</p>
+        </li>
+        <li class="feature-item">
+          <div class="feature-title">Faculty &amp; advisory touchpoint</div>
+          <p>TAs and faculty active in the Community Hub provide direct academic counseling and onboarding.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ PART 5: NEXT STEPS ============ -->
+  <div class="part-divider" id="next-steps">
+    <div class="part-num">5</div>
+    <div>
+      <h2>Next Steps for Deployment</h2>
+      <div class="part-sub">Three things to build before the loop can run end-to-end</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <ol class="step-list">
+        <li class="step-item">
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <div class="step-title">SSO &amp; tracking layer</div>
+            Set up unified tracking parameters (UTM parameters, shared auth tokens) so a user moving from YouTube → GitHub → Open edX maintains a single learner profile.
+          </div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <div class="step-title">Template pipeline</div>
+            Standardize the GitHub repository template structure (including README.md layouts, Codespace devcontainers, and feedback forms) across all workshops and labs.
+          </div>
+        </li>
+        <li class="step-item">
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <div class="step-title">Analytics dashboard</div>
+            Aggregate completion analytics from Open edX, engagement metrics from YouTube, and commit activity from GitHub to quantify conversion funnel health for institutional stakeholders.
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Institute plan</span>
+        <div class="point-body"><a href="meeting-notes-ai-institute-2026-07-21.html">Meeting Notes — AI Institute: Curriculum, Strategy &amp; Deliverables, July 21 2026</a> — the Open edX / 5-module / micro-credential curriculum this ecosystem feeds into</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Adoption model</span>
+        <div class="point-body"><a href="ecosystem-playbook.html">Ecosystem Playbook — Pluggable Framework &amp; the Cooking-Show Briefing Template</a> — how this model packages for other departments to adopt</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

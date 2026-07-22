@@ -949,8 +949,8 @@
         <li class="step-item">
           <span class="step-num">1</span>
           <div class="step-body">
-            <div class="step-title">SSO &amp; tracking layer</div>
-            Set up unified tracking parameters (UTM parameters, shared auth tokens) so a user moving from YouTube → GitHub → Open edX maintains a single learner profile.
+            <div class="step-title">Identity &amp; tracking layer</div>
+            Open edX as the profile hub for what can actually be linked (Open edX, GitHub, CRM); UTM-only referral tracking for YouTube. See feasibility breakdown below — this is not one uniform build.
           </div>
         </li>
         <li class="step-item">
@@ -968,6 +968,31 @@
           </div>
         </li>
       </ol>
+
+      <div class="point" style="margin-top: 16px;">
+        <span class="point-label lbl-blue">Feasibility breakdown — identity &amp; tracking layer</span>
+        <div class="point-body">"SSO &amp; tracking layer" is really three different problems wearing one label — worth splitting apart before scoping the work:</div>
+      </div>
+
+      <div class="task-grid" style="margin-top: 10px;">
+        <div class="task-card">
+          <div class="task-name">Open edX ↔ GitHub ↔ CRM</div>
+          <p><strong>Low-medium effort.</strong> Open edX already runs Django OAuth2 provider support — the same mechanism edX itself uses for its mobile app and internal microservices. Register the CRM/dashboard as OAuth2 clients and pull profile + completion data from Open edX's REST API. Mostly configuration, not new infrastructure.</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">GitHub account linking</div>
+          <p><strong>Medium effort (~1–2 weeks).</strong> A learner's personal GitHub account can't be SSO'd through Open edX — GitHub doesn't support swapping identity providers for individual accounts. Instead, build a "Connect your GitHub" OAuth linking flow in the learner's Open edX profile using the existing <code>third_party_auth</code> extension point, and store their GitHub username against their Open edX record.</p>
+        </div>
+        <div class="task-card" style="background: var(--red-dim); border-color: #fecaca;">
+          <div class="task-name" style="color: var(--red);">YouTube → downstream</div>
+          <p><strong>Hard ceiling, not a difficulty problem.</strong> YouTube never exposes individual viewer identity — by design, not something you can engineer around. The only trackable signal is a UTM-tagged link click (referral-level: "12% of signups came from Video X"), never identity-level ("this specific viewer enrolled").</p>
+        </div>
+      </div>
+
+      <div class="callout callout-blue" style="margin-top: 12px;">
+        <span class="callout-label">Bottom line</span>
+        Use Open edX as the identity/profile hub for everything that can actually be linked — Open edX, GitHub (via account-linking), and the CRM. Don't scope YouTube into "unified learner profile": track it as referral/click attribution only, via UTM parameters, and treat that as a separate, permanently aggregate-only metric rather than a gap to eventually close.
+      </div>
     </div>
   </div>
 

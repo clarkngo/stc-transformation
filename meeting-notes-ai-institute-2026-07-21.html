@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — AI Institute, July 21 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--violet); margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      margin: 0 0 8px; font-size: 1.7rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.2;
+    }
+    .doc-header .subtitle {
+      color: var(--slate); font-size: 0.95rem; margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .meta-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px; color: var(--slate);
+    }
+
+    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+    .toc h2 {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--slate); margin: 0 0 12px;
+    }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .section-header h2 {
+      margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .section-body { padding: 20px 24px; }
+
+    .point {
+      display: flex; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label {
+      flex-shrink: 0;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      height: fit-content;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+
+    .task-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media (max-width: 560px) { .task-grid { grid-template-columns: 1fr; } }
+    .task-card {
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 16px;
+      background: var(--bg);
+    }
+    .task-card .task-name {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--slate); margin-bottom: 6px;
+    }
+    .task-card p { margin: 0; font-size: 0.88rem; line-height: 1.5; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+
+    .callout {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      border: 1px solid transparent;
+      margin-top: 12px;
+    }
+    .callout-violet { background: var(--violet-dim); border-color: #ddd6fe; color: #4c1d95; }
+    .callout-green { background: var(--green-dim); border-color: #bbf7d0; color: #14532d; }
+    .callout strong { font-weight: 700; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+    }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px;
+      background: var(--blue-dim); color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; margin-top: 1px;
+    }
+    .action-body { font-size: 0.92rem; }
+    .action-owner {
+      display: inline-block; margin-top: 4px;
+      font-size: 0.74rem; font-weight: 700; color: var(--slate);
+      background: var(--bg); border-radius: 20px; padding: 2px 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — AI Institute, July 21 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes</div>
+    <h1>AI Institute — Curriculum, Strategy &amp; Deliverables</h1>
+    <p class="subtitle">Work-related summary from the pre-president-meeting planning session with Sam: launch timeline, course design and pedagogy, the law enforcement pilot program, marketplace/outreach strategy, and what's due before the next sync.</p>
+    <div class="meta-row">
+      <span class="meta-chip">July 21, 2026</span>
+      <span class="meta-chip">Sam</span>
+      <span class="meta-chip">Pre-President Meeting Planning</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#timeline">Timeline &amp; Milestones</a></li>
+      <li><a href="#course-design">Course Design &amp; Pedagogical Strategy</a></li>
+      <li><a href="#law-enforcement">Law Enforcement / Public Sector AI Program</a></li>
+      <li><a href="#marketplace">Marketplace &amp; Outreach Strategy</a></li>
+      <li><a href="#next-steps">Next Steps &amp; Deliverables</a></li>
+    </ol>
+  </div>
+
+  <!-- Timeline -->
+  <div class="section" id="timeline">
+    <div class="section-header">
+      <div class="section-icon icon-blue">📅</div>
+      <h2>Timeline &amp; Milestones</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Target launch</span>
+        <div class="point-body">
+          <strong>January 1, 2027</strong> is the final deadline/target for launching the new offerings.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Spring 2027</span>
+        <div class="point-body">
+          Initial preparations and course launches are planned for spring, ahead of the full January target.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Now</span>
+        <div class="point-body">
+          Environment setup, system testing, platform setup, and operational frameworks need to be established before January — this is the prerequisite work, not the launch itself.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Design -->
+  <div class="section" id="course-design">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🎓</div>
+      <h2>Course Design &amp; Pedagogical Strategy</h2>
+    </div>
+    <div class="section-body">
+      <div class="tag-row">
+        <span class="meta-chip">Open edX</span>
+        <span class="meta-chip">Open edX Tutor</span>
+        <span class="meta-chip">XBlocks</span>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-blue">Format</span>
+        <div class="point-body">
+          Self-paced digital credential courses, built as <strong>5 modules</strong> each.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Infrastructure</span>
+        <div class="point-body">
+          <strong>Open edX</strong> as the core platform, referenced alongside <strong>Open edX Tutor</strong> and <strong>XBlocks</strong> for the quiz/interactive layer.
+        </div>
+      </div>
+
+      <div class="callout callout-violet">
+        <strong>Pedagogical model:</strong> competency-based learning built on "learning by doing" and "learning by concept," applying a <strong>flipped Bloom's Taxonomy</strong> approach rather than the traditional bottom-up sequence.
+      </div>
+
+      <div class="task-grid" style="margin-top: 16px;">
+        <div class="task-card">
+          <div class="task-name">Instructional video</div>
+          <p>Short instructional / concept videos, roughly <strong>7 minutes</strong> each.</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">Assessment</div>
+          <p>Embedded video quizzes built directly into the viewing experience.</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">Hands-on</div>
+          <p>Paired hands-on exercises reinforcing each concept.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Law Enforcement Program -->
+  <div class="section" id="law-enforcement">
+    <div class="section-header">
+      <div class="section-icon icon-red">🚔</div>
+      <h2>Law Enforcement / Public Sector AI Program</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Partnership</span>
+        <div class="point-body">
+          A collaborative training initiative built jointly with a police department partner (e.g. <strong>SPD</strong>) as the launch collaborator.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Model</span>
+        <div class="point-body">
+          <strong>Asynchronous skill-up model</strong> focused on practical, AI-enabled tools and compliance — deliberately not complex AI engineering.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Participant structure</span>
+        <div class="point-body">
+          Industry leaders and chiefs serve as instructors in the asynchronous model, supported behind the scenes by instructional content developers.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marketplace & Outreach -->
+  <div class="section" id="marketplace">
+    <div class="section-header">
+      <div class="section-icon icon-green">📣</div>
+      <h2>Marketplace &amp; Outreach Strategy</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-green">Distribution</span>
+        <div class="point-body">
+          Publish and promote lightweight course content across external platforms — <strong>Udemy, YouTube, LinkedIn</strong> — to drive traffic back to the core institution offerings.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Community</span>
+        <div class="point-body">
+          Student discussion channels and support groups on platforms like <strong>LinkedIn</strong> or <strong>Discord</strong>, specifically to keep self-paced courses from becoming simple "click-through" exercises.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next Steps -->
+  <div class="section" id="next-steps">
+    <div class="section-header">
+      <div class="section-icon icon-amber">✅</div>
+      <h2>Next Steps &amp; Deliverables</h2>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check">1</span>
+          <div class="action-body">
+            Draft an organizational structure and proposal to formally define the AI Institute.
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">2</span>
+          <div class="action-body">
+            Prepare a tangible demonstration of the micro-credential ecosystem to present to leadership.
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">3</span>
+          <div class="action-body">
+            Follow-up session <strong>Thursday, 12:30–2:00 PM</strong>, to finalize the organizational framework and presentable deliverables.
+            <div><span class="action-owner">Next sync</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -197,6 +197,29 @@
     .channel-name { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight: 700; font-size: 0.86rem; color: var(--violet); }
     .channel-item p { margin: 4px 0 0; font-size: 0.82rem; color: var(--slate); line-height: 1.5; }
 
+    /* KPI tags */
+    .kpi-list { margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+    .kpi-item { font-size: 0.78rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: var(--bg); border: 1px solid var(--border); color: var(--slate); }
+    .kpi-caveat { margin: 8px 0 0; font-size: 0.82rem; color: var(--slate); font-style: italic; }
+
+    /* Effort / impact matrix */
+    .matrix-caption { font-size: 0.82rem; color: var(--slate); margin: 0 0 14px; }
+    .matrix-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .matrix-grid { grid-template-columns: 1fr; } }
+    .matrix-quad { border-radius: var(--radius-sm); border: 1px solid; padding: 16px 18px; }
+    .quad-title { font-weight: 800; font-size: 0.95rem; margin-bottom: 2px; }
+    .quad-sub { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+    .matrix-quad ul { margin: 0; padding-left: 18px; }
+    .matrix-quad li { margin-bottom: 6px; font-size: 0.85rem; color: var(--ink); line-height: 1.5; }
+    .quad-green { background: var(--green-dim); border-color: #bbf7d0; }
+    .quad-green .quad-sub { color: var(--green); }
+    .quad-blue { background: var(--blue-dim); border-color: #bfdbfe; }
+    .quad-blue .quad-sub { color: var(--blue); }
+    .quad-amber { background: var(--amber-dim); border-color: #fde68a; }
+    .quad-amber .quad-sub { color: var(--amber); }
+    .quad-red { background: var(--red-dim); border-color: #fecaca; }
+    .quad-red .quad-sub { color: var(--red); }
+
     /* User journey cards */
     .journey-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 20px; background: var(--card); box-shadow: var(--shadow); margin-bottom: 16px; }
     .journey-card:last-child { margin-bottom: 0; }
@@ -254,6 +277,7 @@
       <li><a href="#funnel">4. Learner Conversion Funnel</a></li>
       <li><a href="#journeys">5. User Stories &amp; Journeys</a></li>
       <li><a href="#next-steps">6. Next Steps for Deployment</a></li>
+      <li><a href="#priority-matrix">7. Prioritization — Effort vs. Impact</a></li>
     </ol>
   </div>
 
@@ -330,6 +354,21 @@
         <span class="callout-label">Technical integration</span>
         YouTube Data API — syncing video metadata/playlists directly to the Open edX course units or course web pages.
       </div>
+
+      <div class="point" style="margin-top: 4px;">
+        <span class="point-label lbl-red">Data &amp; KPIs available</span>
+        <div class="point-body">
+          <ul class="kpi-list">
+            <li class="kpi-item">Age / gender bands</li>
+            <li class="kpi-item">Geography</li>
+            <li class="kpi-item">Device type</li>
+            <li class="kpi-item">Traffic source</li>
+            <li class="kpi-item">Audience retention</li>
+            <li class="kpi-item">End-screen / card CTR</li>
+          </ul>
+          <p class="kpi-caveat">All aggregate, never individual — YouTube exposes no per-viewer identity by design. See the Identity &amp; tracking layer breakdown in Next Steps for the hard ceiling this creates.</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -364,6 +403,21 @@
       <div class="callout callout-teal">
         <span class="callout-label">Technical integration</span>
         GitHub Webhooks &amp; OAuth / LTI links into Open edX / LMS to track student progress and lab completions.
+      </div>
+
+      <div class="point" style="margin-top: 4px;">
+        <span class="point-label lbl-teal">Data &amp; KPIs available</span>
+        <div class="point-body">
+          <ul class="kpi-list">
+            <li class="kpi-item">Repo clones / forks</li>
+            <li class="kpi-item">"Use this template" clicks</li>
+            <li class="kpi-item">Codespace launches</li>
+            <li class="kpi-item">Commit activity</li>
+            <li class="kpi-item">Test-suite pass rate</li>
+            <li class="kpi-item">Stars / watchers</li>
+          </ul>
+          <p class="kpi-caveat">Requires Actions/Webhooks actually instrumented per repo — not automatic on a plain template repo.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -409,6 +463,21 @@
         <span class="callout-label">Technical integration</span>
         Open edX Analytics Pipeline / xAPI data streams feeding learner progression data into the university CRM/LMS.
       </div>
+
+      <div class="point" style="margin-top: 4px;">
+        <span class="point-label lbl-blue">Data &amp; KPIs available</span>
+        <div class="point-body">
+          <ul class="kpi-list">
+            <li class="kpi-item">Enrollment counts</li>
+            <li class="kpi-item">Module completion rate</li>
+            <li class="kpi-item">Quiz / assessment scores</li>
+            <li class="kpi-item">Time-on-task</li>
+            <li class="kpi-item">Certificate issuance</li>
+            <li class="kpi-item">Full xAPI event stream</li>
+          </ul>
+          <p class="kpi-caveat">The richest and most identity-linked data source of the six nodes — this is why it's the recommended profile hub in Next Steps.</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -440,6 +509,18 @@
         <span class="callout-label">Technical integration</span>
         Calendar event tracking, automated Zoom/Teams attendance logging linked to CRM leads.
       </div>
+
+      <div class="point" style="margin-top: 4px;">
+        <span class="point-label lbl-green">Data &amp; KPIs available</span>
+        <div class="point-body">
+          <ul class="kpi-list">
+            <li class="kpi-item">Registration count</li>
+            <li class="kpi-item">Attendance (Zoom/Teams logs)</li>
+            <li class="kpi-item">Exit-ticket responses</li>
+            <li class="kpi-item">CRM lead records</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -470,6 +551,18 @@
       <div class="callout callout-amber">
         <span class="callout-label">Technical integration</span>
         Automated post-seminar content packaging (recording → YouTube upload, transcript → blog/syllabus update).
+      </div>
+
+      <div class="point" style="margin-top: 4px;">
+        <span class="point-label lbl-amber">Data &amp; KPIs available</span>
+        <div class="point-body">
+          <ul class="kpi-list">
+            <li class="kpi-item">Registration count</li>
+            <li class="kpi-item">Attendance rate</li>
+            <li class="kpi-item">Poll / Q&amp;A responses</li>
+            <li class="kpi-item">Post-event content views</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -581,6 +674,19 @@
       <div class="callout callout-violet">
         <span class="callout-label">Technical integration</span>
         Bot integrations (e.g., Discord/GitHub webhooks) alerting faculty to trending community issues, feeding directly into syllabus backlog updates.
+      </div>
+
+      <div class="point" style="margin-top: 4px;">
+        <span class="point-label lbl-violet">Data &amp; KPIs available</span>
+        <div class="point-body">
+          <ul class="kpi-list">
+            <li class="kpi-item">Channel message volume</li>
+            <li class="kpi-item">#suggest-a-topic upvotes</li>
+            <li class="kpi-item">Member growth rate</li>
+            <li class="kpi-item">Bot-flagged trending issues</li>
+          </ul>
+          <p class="kpi-caveat">Ties an individual Discord member to a CityU learner record only once accounts are linked — see the Identity &amp; tracking layer breakdown in Next Steps.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -992,6 +1098,58 @@
       <div class="callout callout-blue" style="margin-top: 12px;">
         <span class="callout-label">Bottom line</span>
         Use Open edX as the identity/profile hub for everything that can actually be linked — Open edX, GitHub (via account-linking), and the CRM. Don't scope YouTube into "unified learner profile": track it as referral/click attribution only, via UTM parameters, and treat that as a separate, permanently aggregate-only metric rather than a gap to eventually close.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PART 7: PRIORITIZATION MATRIX ============ -->
+  <div class="part-divider" id="priority-matrix">
+    <div class="part-num">7</div>
+    <div>
+      <h2>Prioritization — Effort vs. Impact</h2>
+      <div class="part-sub">Everything from the sections above, sorted into what to build first</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <p class="matrix-caption">Columns: effort (low → high, left to right) · Rows: impact (high → low, top to bottom)</p>
+      <div class="matrix-grid">
+        <div class="matrix-quad quad-green">
+          <div class="quad-title">Quick Wins</div>
+          <div class="quad-sub">Low Effort · High Impact</div>
+          <ul>
+            <li>UTM parameters on all outbound links (YouTube, practitioner content) — no infrastructure needed, immediate referral attribution</li>
+            <li>Open edX certificate copy mentioning CityUX — configuration only <strong>(done)</strong></li>
+            <li>Open edX OAuth2 client registration for CRM/dashboard — config-only, unlocks the profile-hub strategy</li>
+          </ul>
+        </div>
+        <div class="matrix-quad quad-blue">
+          <div class="quad-title">Major Projects</div>
+          <div class="quad-sub">High Effort · High Impact</div>
+          <ul>
+            <li>Analytics dashboard — aggregates Open edX, YouTube, and GitHub data into one funnel-health view for stakeholders</li>
+            <li>GitHub account-linking OAuth flow (~1–2 weeks) — bridges the two richest data sources</li>
+            <li>Template pipeline standardization across all workshops/labs — needs faculty coordination, not just dev time</li>
+            <li>Automated certificate → nurture email sequence — directly drives Conversion</li>
+          </ul>
+        </div>
+        <div class="matrix-quad quad-amber">
+          <div class="quad-title">Fill-Ins</div>
+          <div class="quad-sub">Low Effort · Low Impact</div>
+          <ul>
+            <li>YouTube Data API metadata sync to Open edX units — convenience automation, doesn't move conversion</li>
+            <li>Seminar automated post-event content packaging — nice-to-have, not funnel-critical</li>
+            <li>Community Hub bot integrations (Discord/GitHub webhooks → faculty alerts) — low lift, low reach today</li>
+          </ul>
+        </div>
+        <div class="matrix-quad quad-red">
+          <div class="quad-title">Reconsider</div>
+          <div class="quad-sub">High Effort · Low Impact</div>
+          <ul>
+            <li>Full unified cross-platform SSO including YouTube — the identity ceiling is by platform design, not effort. No amount of engineering closes it; money and time here buys little beyond what UTM + OAuth linking already deliver.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

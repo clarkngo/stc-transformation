@@ -703,6 +703,11 @@
     </div>
     <div class="section-body">
       <div class="point">
+        <span class="point-label lbl-green">Live now</span>
+        <div class="point-body"><strong>CityU Guides</strong> — <a href="https://clarkngo.github.io/ebooks/" target="_blank" rel="noopener">clarkngo.github.io/ebooks</a> — a real resource library, not a mockup. Three guides published today, each tagged to a distinct persona: <em>AI Skills Every IT Professional Needs by 2027</em> (IT Professionals), <em>AI on the Front Line</em> (First Responders &amp; Partners), and <em>From Anxiety to Confidence</em> (Career Changers &amp; Students).</div>
+      </div>
+
+      <div class="point" style="margin-top: 4px;">
         <span class="point-label lbl-amber">Strategy</span>
         <div class="point-body">Trade a free, high-value asset (program guide, partnership overview, research brief) for an identified email — the one touchpoint in this ecosystem where the visitor volunteers their own identity, no account-linking required.</div>
       </div>
@@ -717,20 +722,20 @@
           <p><strong>LinkedIn is the strongest fit</strong> of any social channel — its audience skews professional/B2B, matching the ebook's Corporate/Employer Partner and Educational/Community Partner segments far better than YouTube's general-audience skew. Post the ebook as a native LinkedIn post (not just a link) for reach, with a UTM-tagged link to the gated page. Secondary channels: YouTube video descriptions, seminar handouts, and workshop follow-up emails.</p>
         </li>
         <li class="feature-item">
-          <div class="feature-title">Form mechanism — recommended</div>
-          <p>Custom-branded HTML form on the page, submitted silently (via <code>fetch()</code>, <code>no-cors</code>) to a Google Form's <code>/formResponse</code> endpoint using its <code>entry.XXXXX</code> field IDs. Free, unlimited submissions, responses land in a Google Sheet in real time, and the visitor never sees Google's UI — matches the site's own design instead.</p>
+          <div class="feature-title">Form mechanism — as built</div>
+          <p>Not the fully-silent version originally scoped below — the live site uses a <strong>custom-branded modal</strong> (book cover, title, and a personalized "Selected: [Book Title]" line — effectively the "Resource Requested" field, just shown instead of hidden) that opens on "Get free guide," wrapping an <strong>embedded Google Form iframe</strong> for the actual fields. Google's own field styling and a "Sign in to Google" prompt are visible inside the modal — a real but minor brand leak, not a blocker. Good pragmatic middle ground: far less build time than the silent-submission version, and the surrounding chrome is fully on-brand.</p>
         </li>
         <li class="feature-item">
-          <div class="feature-title">Simpler fallback</div>
-          <p>A third-party form endpoint (Formspree, Web3Forms, FormSubmit) if the team wants zero JavaScript — same custom-HTML styling, but with a monthly submission cap on most free tiers (FormSubmit is the one unlimited option).</p>
+          <div class="feature-title">Fully-silent version — still worth doing later</div>
+          <p>Custom HTML fields submitted via <code>fetch()</code> (<code>no-cors</code>) straight to the Google Form's <code>/formResponse</code> endpoint using its <code>entry.XXXXX</code> IDs — removes the Google UI from inside the modal entirely. Same free, unlimited, Sheets-backed backend; purely a polish pass on what's already live, not new infrastructure.</p>
         </li>
         <li class="feature-item">
           <div class="feature-title">Fields — kept to 3–4, on purpose</div>
-          <p>Full Name, Email (required, validated), "I am a…" dropdown (Prospective Student, Current Student/Alumni, Corporate/Employer Partner, Educational/Community Partner, Other), Organization/Company (optional). Every extra field costs 5–10% conversion on gated content — this is not the place for a full RFI form.</p>
+          <p>Live today: Full Name, Work or Personal Email Address. Room to add the "I am a…" segmentation dropdown (Prospective Student, Current Student/Alumni, Corporate/Employer Partner, Educational/Community Partner, Other) — every extra field costs 5–10% conversion on gated content, so add it deliberately, not by default.</p>
         </li>
         <li class="feature-item">
-          <div class="feature-title">Reusable across every ebook</div>
-          <p>Generic title ("Request Resource Access") and description, plus one "Resource Requested" dropdown field — one form serves every future ebook/whitepaper instead of building a new one each time. A pre-filled link per landing page can default that field automatically.</p>
+          <div class="feature-title">Reusable across every ebook — proven</div>
+          <p>Not just a plan — the live library page already serves three guides off one shared design, with per-book personalization ("Selected: [Book Title]") in the modal instead of a form field. Adding a fourth guide is a content update, not a new build.</p>
         </li>
         <li class="feature-item">
           <div class="feature-title">Delivery</div>
@@ -752,11 +757,14 @@
         <span class="point-label lbl-green">Status — live today</span>
         <div class="point-body">
           <ul class="kpi-list">
+            <li class="kpi-item">✅ CityU Guides library page live</li>
+            <li class="kpi-item">✅ 3 guides published</li>
+            <li class="kpi-item">✅ Custom-branded download modal</li>
             <li class="kpi-item">✅ Google Form created</li>
             <li class="kpi-item">✅ Confirmation message w/ Discord link</li>
             <li class="kpi-item">✅ Responses linked to Google Sheet</li>
           </ul>
-          <p class="kpi-caveat">The Sheet is functioning as the interim CRM for this touchpoint's identified leads. Remaining: custom-branded HTML wrapper (silent submission) and UTM instrumentation — see Part 7 for priority.</p>
+          <p class="kpi-caveat">The Sheet is functioning as the interim CRM for this touchpoint's identified leads. Remaining: the "I am a…" segmentation field, UTM instrumentation, and (optional polish) the fully-silent form submission — see Part 7 for priority.</p>
         </div>
       </div>
 
@@ -770,12 +778,12 @@
         <div class="point-body">
           <ul class="kpi-list">
             <li class="kpi-item">Identified email (not aggregate)</li>
-            <li class="kpi-item">Persona segment</li>
-            <li class="kpi-item">Organization / partner type</li>
             <li class="kpi-item">Download count per resource</li>
-            <li class="kpi-item">UTM source (if instrumented)</li>
+            <li class="kpi-item">Persona segment (not yet)</li>
+            <li class="kpi-item">Organization / partner type (not yet)</li>
+            <li class="kpi-item">UTM source (not yet)</li>
           </ul>
-          <p class="kpi-caveat">The strongest identity signal of any touchpoint in this ecosystem — unlike YouTube, the visitor volunteers a real, usable email address directly into the funnel.</p>
+          <p class="kpi-caveat">The strongest identity signal of any touchpoint in this ecosystem — unlike YouTube, the visitor volunteers a real, usable email address directly into the funnel. Name/email and per-guide download counts are live today; segmentation and attribution need the fields noted above.</p>
         </div>
       </div>
     </div>
@@ -1121,7 +1129,7 @@
           <span class="journey-arrow">→</span>
           <span class="journey-stage conversion">Conversion · Program registration or partnership conversation</span>
         </div>
-        <p class="journey-note">The one journey where identity is captured at the <em>first</em> touchpoint, not the last — the gated form gives a real email immediately, unlike YouTube's aggregate-only TOFU. "Conversion" branches by the "I am a…" field on the form: a prospective student converts into program registration, a Corporate/Employer or Educational/Community Partner converts into a partnership conversation instead. See <a href="#ebook">Ebook / Gated Content</a> for the form design.</p>
+        <p class="journey-note">The one journey where identity is captured at the <em>first</em> touchpoint, not the last — the gated form gives a real email immediately, unlike YouTube's aggregate-only TOFU. Real example, live today: <a href="https://clarkngo.github.io/ebooks/" target="_blank" rel="noopener">CityU Guides</a>, three gated guides already published. "Conversion" is meant to branch by an "I am a…" field on the form — not live yet, so today every lead looks the same regardless of whether they're a prospective student or a potential partner. See <a href="#ebook">Ebook / Gated Content</a> for the form design and what's still open.</p>
       </div>
 
       <div class="journey-card">
@@ -1234,7 +1242,7 @@
             <li>UTM parameters on all outbound links (YouTube, practitioner content) — no infrastructure needed, immediate referral attribution</li>
             <li>Open edX certificate copy mentioning CityUX — configuration only <strong>(done)</strong></li>
             <li>Open edX OAuth2 client registration for CRM/dashboard — config-only, unlocks the profile-hub strategy</li>
-            <li>Gated ebook download form (branded HTML → Google Form silent submission) — a few hours of setup, and the strongest identity signal in the whole ecosystem <strong>(form + Sheet live, HTML wrapper + UTM still open)</strong></li>
+            <li>Gated ebook library (clarkngo.github.io/ebooks, 3 guides) — the strongest identity signal in the whole ecosystem <strong>(live: library page, branded modal, form, Sheet, Discord confirmation — open: "I am a…" field, UTM, silent submission polish)</strong></li>
           </ul>
         </div>
         <div class="matrix-quad quad-blue">

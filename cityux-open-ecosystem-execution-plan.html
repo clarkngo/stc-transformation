@@ -75,6 +75,34 @@
     .toc .toc-sub { margin: 4px 0 6px 20px; padding-left: 14px; border-left: 2px solid var(--border); }
     .toc .toc-sub li { margin-bottom: 4px; font-size: 0.85rem; }
 
+    /* Sidebar nav (wide screens only) */
+    .side-nav {
+      position: fixed;
+      top: 32px;
+      left: calc(50% - 684px);
+      width: 210px;
+      max-height: calc(100vh - 64px);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      padding-right: 4px;
+    }
+    @media (max-width: 1400px) { .side-nav { display: none; } }
+    .side-nav .side-nav-label {
+      font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--slate-light); padding: 14px 12px 6px;
+    }
+    .side-nav .side-nav-label:first-child { padding-top: 0; }
+    .side-nav a {
+      display: block; padding: 7px 12px; border-radius: 8px;
+      font-size: 0.82rem; font-weight: 600; color: var(--slate);
+      text-decoration: none; border-left: 2px solid transparent;
+      transition: color .15s, border-color .15s, background-color .15s;
+    }
+    .side-nav a:hover { color: var(--ink); background: var(--bg); }
+    .side-nav a.active { color: var(--violet); border-left-color: var(--violet); background: var(--violet-dim); }
+
     .part-divider { display: flex; align-items: center; gap: 12px; margin: 40px 0 20px; }
     .part-divider .part-num {
       flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
@@ -239,6 +267,18 @@
   </style>
 </head>
 <body>
+<nav class="side-nav" id="sideNav" aria-label="Section navigation">
+  <span class="side-nav-label">CityUX Plan</span>
+  <a href="#hub" data-target="hub">1. Core Integration Hub</a>
+  <a href="#matrix" data-target="matrix">2. Touchpoint Matrix</a>
+  <a href="#pipeline" data-target="pipeline">3. Data Flow Pipeline</a>
+  <a href="#funnel" data-target="funnel">4. Conversion Funnel</a>
+  <a href="#journeys" data-target="journeys">5. Journeys</a>
+  <a href="#next-steps" data-target="next-steps">6. Next Steps</a>
+  <a href="#priority-matrix" data-target="priority-matrix">7. Prioritization</a>
+  <span class="side-nav-label">Reference</span>
+  <a href="#related" data-target="related">Related Materials</a>
+</nav>
 <div class="shell">
 
   <nav class="nav-row">
@@ -1383,5 +1423,28 @@
   </div>
 
 </div>
+<script>
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.side-nav a'));
+    if (!links.length) return;
+    var targets = links.map(function (a) {
+      return document.getElementById(a.getAttribute('data-target'));
+    }).filter(Boolean);
+    if (!targets.length) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = document.querySelector('.side-nav a[data-target="' + entry.target.id + '"]');
+        if (!link) return;
+        if (entry.isIntersecting) {
+          links.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+
+    targets.forEach(function (t) { observer.observe(t); });
+  })();
+</script>
 </body>
 </html>

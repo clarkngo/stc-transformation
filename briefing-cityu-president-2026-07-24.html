@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Briefing — CityU President — July 24, 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
+    }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    /* Agenda strip */
+    .agenda {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-bottom: 32px;
+    }
+    .agenda a {
+      display: block; text-decoration: none; color: inherit;
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 14px 16px; box-shadow: var(--shadow);
+      transition: transform 0.1s ease;
+    }
+    .agenda a:hover { transform: translateY(-1px); }
+    .agenda-num { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 4px; }
+    .agenda-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; }
+    .agenda-status { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 9px; border-radius: 20px; }
+    .status-wip { background: var(--amber-dim); color: var(--amber); }
+    .status-ready { background: var(--green-dim); color: var(--green); }
+
+    /* Section blocks */
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 28px; overflow: hidden; scroll-margin-top: 20px;
+    }
+    .section-head { padding: 20px 28px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .section-eyebrow { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+    .section-head h2 { margin: 0 0 4px; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-head .sub { color: var(--slate); font-size: 0.88rem; margin: 0; }
+    .section-body { padding: 24px 28px; }
+    .status-pill { flex-shrink: 0; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; white-space: nowrap; }
+
+    .narrative {
+      border-left: 4px solid var(--blue); background: var(--blue-dim);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 18px 20px; margin-bottom: 16px; font-size: 0.95rem; line-height: 1.7;
+    }
+    .narrative.violet { border-color: var(--violet); background: var(--violet-dim); }
+    .narrative.teal { border-color: var(--teal); background: var(--teal-dim); }
+    .narrative.amber { border-color: var(--amber); background: var(--amber-dim); }
+    .narrative-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; }
+    .narrative p { margin: 0 0 10px; }
+    .narrative p:last-child { margin: 0; }
+
+    .doc-link {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 14px 18px; text-decoration: none; color: inherit; margin-top: 12px;
+    }
+    .doc-link:hover { border-color: var(--slate-light); }
+    .doc-link-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin-bottom: 3px; }
+    .doc-link-title { font-size: 0.95rem; font-weight: 700; }
+    .doc-link-arrow { font-size: 1.1rem; color: var(--slate-light); flex-shrink: 0; }
+
+    .prep-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .prep-list li { display: grid; grid-template-columns: 20px 1fr; gap: 10px; font-size: 0.9rem; align-items: baseline; }
+    .prep-list li::before { content: "—"; color: var(--slate-light); }
+
+    .bg-list { display: grid; gap: 8px; margin-top: 14px; }
+    .bg-list a {
+      font-size: 0.85rem; color: var(--slate); text-decoration: none;
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 9px 14px; display: block;
+    }
+    .bg-list a:hover { color: var(--blue); border-color: var(--blue); }
+
+    /* Mini funnel strip */
+    .funnel-mini { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0 4px; }
+    .funnel-mini-stage { font-size: 0.76rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; white-space: nowrap; }
+    .fm-tofu { background: var(--blue-dim); color: var(--blue); }
+    .fm-mofu { background: var(--violet-dim); color: var(--violet); }
+    .fm-bofu { background: var(--amber-dim); color: var(--amber); }
+    .fm-conv { background: var(--green-dim); color: var(--green); }
+    .funnel-mini-arrow { color: var(--slate-light); font-size: 0.85rem; }
+
+    /* Touchpoint tag row */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+    .tag-chip { font-size: 0.8rem; font-weight: 600; padding: 5px 12px; border-radius: 20px; background: var(--bg); border: 1px solid var(--border); color: var(--ink); }
+
+    /* Mini journey list */
+    .mini-journey-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+    .mini-journey-list li {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 10px 14px; font-size: 0.85rem; line-height: 1.55;
+    }
+    .mini-journey-list strong { color: var(--ink); }
+
+    .status-inline { font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
+    .si-live { background: var(--green-dim); color: var(--green); }
+    .si-wip { background: var(--amber-dim); color: var(--amber); }
+
+    @media (max-width: 640px) {
+      .agenda { grid-template-columns: 1fr; }
+    }
+    @media print {
+      .nav-row, .agenda { display: none !important; }
+      .shell { padding: 16px; }
+      .section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">← Home</a>
+    <span class="nav-sep">›</span>
+    <span>Briefing — CityU President — Jul 24, 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">President Briefing</div>
+    <h1>Briefing for the CityU President</h1>
+    <p class="subtitle">Three-part update: AI &amp; first responders, the AI Lifelong Learning Institute (AILI), and the CityUX Open Ecosystem — with a planned demo of user stories and journeys.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Meeting: July 24, 2026</span>
+      <span class="meta-chip">Audience: CityU President</span>
+      <span class="meta-chip">Format: 3-part briefing</span>
+    </div>
+  </div>
+
+  <div class="agenda">
+    <a href="#first-responders">
+      <div class="agenda-num">Part 1</div>
+      <div class="agenda-title">AI &amp; First Responders</div>
+      <span class="agenda-status status-wip">Work in progress</span>
+    </a>
+    <a href="#aili">
+      <div class="agenda-num">Part 2</div>
+      <div class="agenda-title">AILI</div>
+      <span class="agenda-status status-wip">Work in progress</span>
+    </a>
+    <a href="#cityux">
+      <div class="agenda-num">Part 3</div>
+      <div class="agenda-title">CityUX Open Ecosystem</div>
+      <span class="agenda-status status-ready">Demo ready</span>
+    </a>
+  </div>
+
+  <!-- Part 1 -->
+  <div class="section" id="first-responders">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow" style="color:var(--blue);">Part 1</div>
+        <h2>Impact of AI on First Responders</h2>
+        <p class="sub">Update on the CityU × SPD research and evaluator-partner track.</p>
+      </div>
+      <span class="status-pill status-wip">Work in progress</span>
+    </div>
+    <div class="section-body">
+      <div class="narrative">
+        <div class="narrative-label">Status</div>
+        <p>Still being finalized ahead of the 24th — this section is a placeholder until the update is locked. Fill in the latest before the meeting: where the SPD partnership stands, any movement on the evaluator-role proposal, and next steps.</p>
+      </div>
+
+      <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);margin:20px 0 6px;">Background reading (already on file)</p>
+      <div class="bg-list">
+        <a href="ai-rollout-first-responders.html">AI Rollout — First Responders (research brief)</a>
+        <a href="cityu-spd-research-action-plan.html">CityU × SPD Research Action Plan</a>
+        <a href="ai-first-responders-talking-points.html">AI for First Responders — talking points</a>
+        <a href="meeting-notes-cityu-spd-2026-06-16.html">Meeting notes — CityU × SPD, Jun 16, 2026</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Part 2 -->
+  <div class="section" id="aili">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow" style="color:var(--violet);">Part 2</div>
+        <h2>AILI — AI Lifelong Learning Institute</h2>
+        <p class="sub">Governance and org-chart shape still being worked through.</p>
+      </div>
+      <span class="status-pill status-wip">Work in progress</span>
+    </div>
+    <div class="section-body">
+      <div class="narrative violet">
+        <div class="narrative-label">Status</div>
+        <p>Governance options are drafted but not decided — three shapes for where AILI reports and how it synergizes with STC and the School of Education &amp; Leadership. Use the draft below to walk the president through the tradeoffs rather than presenting a single recommendation.</p>
+      </div>
+
+      <a class="doc-link" href="aili-governance-options.html">
+        <div>
+          <div class="doc-link-label">Open</div>
+          <div class="doc-link-title">AILI — Governance &amp; Org Chart Options</div>
+        </div>
+        <span class="doc-link-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Part 3 -->
+  <div class="section" id="cityux">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow" style="color:var(--teal);">Part 3</div>
+        <h2>CityUX Open Ecosystem</h2>
+        <p class="sub">TOFU → MOFU → BOFU → Conversion funnel. Plan to demo several user stories and journeys live.</p>
+      </div>
+      <span class="status-pill status-ready">Demo ready</span>
+    </div>
+    <div class="section-body">
+      <div class="narrative teal">
+        <div class="narrative-label">What it is</div>
+        <p>A continuous feedback loop, not a one-way marketing funnel: public content and community engagement surface real market signals (what people are actually asking for), which get refined through hands-on formats, and feed directly into CityU's core academic structure. Everything in the ecosystem — YouTube, GitHub, Open edX, workshops, seminars, the community hub — points back to one core hub: <strong>CityU's courses, programs, syllabi, and faculty</strong>, tied together by a unified SSO/LTI identity so one learner profile follows a person across every node.</p>
+      </div>
+
+      <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);margin:20px 0 6px;">The funnel — four stages</p>
+      <div class="funnel-mini">
+        <span class="funnel-mini-stage fm-tofu">TOFU · Discovery (YouTube)</span>
+        <span class="funnel-mini-arrow">→</span>
+        <span class="funnel-mini-stage fm-mofu">MOFU · Hands-on (GitHub + Open edX)</span>
+        <span class="funnel-mini-arrow">→</span>
+        <span class="funnel-mini-stage fm-bofu">BOFU · High-touch (Workshops, Seminars, Community Hub)</span>
+        <span class="funnel-mini-arrow">→</span>
+        <span class="funnel-mini-stage fm-conv">Conversion · Formal CityU enrollment</span>
+      </div>
+
+      <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);margin:20px 0 6px;">Six touchpoint nodes, plus one supply-side piece</p>
+      <div class="tag-row">
+        <span class="tag-chip">🎥 YouTube</span>
+        <span class="tag-chip">🐙 GitHub</span>
+        <span class="tag-chip">🎓 Open edX</span>
+        <span class="tag-chip">🛠️ Workshop</span>
+        <span class="tag-chip">🎤 Seminar</span>
+        <span class="tag-chip">💬 Community Hub</span>
+        <span class="tag-chip">📘 Ebook / Gated Content <span class="status-inline si-live">live</span></span>
+        <span class="tag-chip">🎥 Instructor Enablement <span class="status-inline si-live">live</span></span>
+      </div>
+      <p style="font-size:0.83rem;color:var(--slate);margin:8px 0 0;">Each node has its own strategy, technical integration, and available KPIs in the full plan. Instructor Enablement is the odd one out — it's the <em>supply side</em>: training CityU faculty who are already industry professionals to publish content, which is what fuels the other six nodes in the first place.</p>
+
+      <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);margin:20px 0 6px;">Six user journeys — not one straight line</p>
+      <ul class="mini-journey-list">
+        <li>🎥 <strong>The Self-Directed Learner</strong> — the default path: organic YouTube discovery → GitHub/Open edX → Community Hub/Workshop → program registration.</li>
+        <li>🎙️ <strong>Discovered via Industry Practitioner Content</strong> — finds CityUX through a practitioner's own content, not an official channel; branches depending on whether that practitioner is on Open edX yet.</li>
+        <li>🚔 <strong>The Frontline Professional</strong> — e.g. an SPD officer, reached through an institutional partnership; skips discovery entirely, converts into a department-recognized credential, not a degree.</li>
+        <li>💬 <strong>The Community-First Explorer</strong> — enters through word of mouth or a Discord invite, "out of order" — proof every touchpoint has to work as its own entry point.</li>
+        <li>📘 <strong>The Ebook-First Lead</strong> — discovers CityUX via a gated ebook (LinkedIn, seminar handout); the one journey where identity is captured at the <em>first</em> touch, not the last.</li>
+        <li>🌏 <strong>The Prospective International Student</strong> — reached via an overseas partnership, culminating in an in-person Seattle visit; highest-value outcome (full enrollment), longest cycle. Real example: the iKW Korea Summer Program.</li>
+      </ul>
+
+      <a class="doc-link" href="cityux-open-ecosystem-execution-plan.html">
+        <div>
+          <div class="doc-link-label">Open</div>
+          <div class="doc-link-title">CityUX Open Ecosystem — Execution Plan</div>
+        </div>
+        <span class="doc-link-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <title>AILI — Governance &amp; Org Chart Options (Workshop Draft)</title>
+  <title>AILI — Governance, Scope &amp; Revenue Model</title>
   <style>
     :root {
       --ink: #0f172a;
@@ -55,6 +55,7 @@
     .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
     .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
     .meta-chip.draft { background: var(--amber-dim); color: var(--amber); border-color: #fde68a; }
+    .meta-chip.decided { background: var(--green-dim); color: var(--green); border-color: #bbf7d0; }
 
     .toc {
       background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
@@ -145,6 +146,44 @@
     table.matrix th.col-c { color: var(--teal); }
     table.matrix tr:last-child td { border-bottom: none; }
 
+    /* Role cards */
+    .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 620px) { .role-grid { grid-template-columns: 1fr; } }
+    .role-card { border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; }
+    .role-head { padding: 14px 16px 10px; }
+    .role-badge { display: inline-block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
+    .role-title { font-size: 0.96rem; font-weight: 800; margin: 0 0 3px; }
+    .role-sub { font-size: 0.78rem; color: var(--slate); }
+    .role-body { padding: 0 16px 14px; }
+    .role-item { display: flex; gap: 8px; padding: 6px 0; border-top: 1px solid var(--border); font-size: 0.83rem; align-items: flex-start; }
+    .role-item::before { content: '→'; color: var(--slate-light); flex-shrink: 0; font-weight: 700; }
+    .role-director { background: var(--violet-dim); }
+    .role-liaison  { background: var(--blue-dim); }
+    .role-track    { background: var(--teal-dim); }
+    .role-instructor { background: var(--amber-dim); }
+
+    /* Variable-by-option note */
+    .variant-note { font-size: 0.76rem; color: var(--slate); font-style: italic; margin-top: 6px; }
+
+    /* Three-way relationship grid */
+    .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 760px) { .flow-grid { grid-template-columns: 1fr; } }
+    .flow-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .flow-card .flow-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .flow-card ul { margin: 0; padding-left: 16px; font-size: 0.84rem; color: var(--slate); }
+    .flow-card ul li { margin-bottom: 5px; line-height: 1.4; }
+
+    /* Phase row */
+    .phase-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+    @media (max-width: 700px) { .phase-row { grid-template-columns: 1fr; } }
+    .phase { padding: 18px 20px; border-right: 1px solid var(--border); background: var(--card); }
+    .phase:last-child { border-right: none; }
+    @media (max-width: 700px) { .phase { border-right: none; border-bottom: 1px solid var(--border); } .phase:last-child { border-bottom: none; } }
+    .phase-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .phase h3 { font-size: 0.92rem; font-weight: 800; margin: 0 0 10px; }
+    .phase ul { margin: 0; padding-left: 18px; }
+    .phase ul li { font-size: 0.82rem; color: var(--slate); margin-bottom: 5px; line-height: 1.4; }
+
     /* Workshop checklist */
     .action-list { margin: 0; padding: 0; list-style: none; }
     .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
@@ -166,13 +205,13 @@
   </nav>
 
   <div class="doc-header">
-    <div class="eyebrow">Brainstorm — Draft for Workshop</div>
-    <h1>AILI — Governance &amp; Org Chart Options</h1>
-    <p class="subtitle">Three shapes for where the AI Lifelong Learning Institute (AILI) reports and how it synergizes with STC and the School of Education &amp; Leadership — not a decision, a working comparison to workshop tomorrow.</p>
+    <div class="eyebrow">Decided at Workshop — Option A Confirmed</div>
+    <h1>AILI — Governance, Scope &amp; Revenue Model</h1>
+    <p class="subtitle">The AI Lifelong Learning Institute reports to the President's Office, focuses on continuing education and non-degree programs across every CityU school, and runs on an open-content model with an internal service-fee layer for cross-school work.</p>
     <div class="meta-row">
-      <span class="meta-chip">Jul 22, 2026</span>
-      <span class="meta-chip draft">Draft — workshop tomorrow</span>
-      <span class="meta-chip">3 options compared</span>
+      <span class="meta-chip decided">Decided — Jul 23, 2026</span>
+      <span class="meta-chip">Option A · President's Office</span>
+      <span class="meta-chip">Cross-school scope</span>
       <span class="meta-chip">STC Planning Team</span>
     </div>
   </div>
@@ -180,11 +219,16 @@
   <div class="toc">
     <h2>Contents</h2>
     <ol>
-      <li><a href="#context">Why This Needs Deciding</a></li>
-      <li><a href="#options">The Three Options</a></li>
+      <li><a href="#context">Why This Needed Deciding</a></li>
+      <li><a href="#options">The Three Options Considered</a></li>
       <li><a href="#matrix">Comparison Matrix</a></li>
-      <li><a href="#recommendation">Working Recommendation</a></li>
-      <li><a href="#workshop">Open Questions for Tomorrow</a></li>
+      <li><a href="#recommendation">Decision — Option A Confirmed</a></li>
+      <li><a href="#roles">Roles &amp; Responsibilities</a></li>
+      <li><a href="#relationship">How Schools Connect to AILI</a></li>
+      <li><a href="#scope-content">Scope, Content &amp; Licensing Model</a></li>
+      <li><a href="#services">Services &amp; Revenue</a></li>
+      <li><a href="#phasing">Phasing — Discovery → Development → Delivery</a></li>
+      <li><a href="#workshop">Open Questions &amp; Next Steps</a></li>
     </ol>
   </div>
 
@@ -193,15 +237,21 @@
     <div class="section-header">
       <div class="section-icon icon-violet">🧭</div>
       <div>
-        <h2>Why This Needs Deciding</h2>
-        <div class="section-sub">AILI has a name and a mission — it doesn't yet have a home</div>
+        <h2>Why This Needed Deciding</h2>
+        <div class="section-sub">AILI had a name and a mission — it didn't yet have a home</div>
       </div>
     </div>
     <div class="section-body">
       <div class="point">
         <span class="point-label lbl-violet">What AILI is</span>
         <div class="point-body">
-          The <strong>AI Lifelong Learning Institute</strong> — the non-degree layer covering the Maritime OT Security certificate, SPD/first-responder AI-literacy workshops, and the on-ramp that stacks into the BSAI degree. Leadership asked for a name that avoids "Center."
+          The <strong>AI Lifelong Learning Institute</strong> — CityU's continuing-education and non-degree layer, covering the Maritime OT Security certificate, The Frontline Professional seminar series for first responders, and the on-ramp that stacks into the BSAI degree. Leadership asked for a name that avoids "Center."
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Scope</span>
+        <div class="point-body">
+          AILI is <strong>not limited to STC and Education &amp; Leadership</strong> — it's built to serve any CityU school. Those two are the founding partners because they're first in line, not because they're the boundary; the Track Lead model is designed so another school can plug in later without a fresh governance decision.
         </div>
       </div>
       <div class="point">
@@ -211,13 +261,13 @@
         </div>
       </div>
       <div class="point">
-        <span class="point-label lbl-red">The open question</span>
+        <span class="point-label lbl-green">Resolved</span>
         <div class="point-body">
-          The Dean of Education &amp; Leadership already asked: <strong>"Does AILI sit under our school, or under STC?"</strong> She sees AILI as adjacent to her school's adult-learning expertise and wants a role in instructional design — not STC building it alone.
+          The Dean of Education &amp; Leadership had asked: <strong>"Does AILI sit under our school, or under STC?"</strong> Resolved by choosing Option A — AILI reports to the <strong>President's Office</strong>, not the Provost and not either school. Both Deans get a Liaison seat instead of ownership.
         </div>
       </div>
       <div class="callout callout-amber mt16">
-        <strong>Precedent to reuse carefully:</strong> the Applied Intelligence Center (AIC) already has a worked org chart — one liaison, single-school, consulting-revenue shaped. AILI's problem is different: two schools have a real claim, and the revenue model is workshops/certificates, not consulting. Copying the AIC shape verbatim would answer the Dean's question by ignoring it.
+        <strong>Earlier draft, same lineage — not a separate real thing:</strong> "Applied Intelligence Center" (AIC) was an earlier brainstormed name and org shape for this same institutional question — never established or approved. It evolved into AILI once the framing broadened past consulting into cross-school lifelong learning. The AIC draft's org chart (one liaison, single-school, consulting-revenue shaped) is useful as a worked example of the shape we're moving away from — not a standing structure AILI needs to coexist with or defer to.
       </div>
     </div>
   </div>
@@ -227,23 +277,23 @@
     <div class="section-header">
       <div class="section-icon icon-blue">🏛️</div>
       <div>
-        <h2>The Three Options</h2>
-        <div class="section-sub">Where AILI reports, and how STC + Education &amp; Leadership connect to it</div>
+        <h2>The Three Options Considered</h2>
+        <div class="section-sub">Option A was chosen — B and C are kept here for the record</div>
       </div>
     </div>
     <div class="section-body">
       <div class="option-grid">
 
         <!-- Option A -->
-        <div class="option-card option-a">
+        <div class="option-card option-a" style="box-shadow:0 0 0 3px rgba(22,163,74,0.25);">
           <div class="option-head">
-            <span class="option-badge">Option A</span>
+            <span class="option-badge" style="background:var(--green);color:#fff;">✓ Selected</span>
             <div class="option-title">Institute-level, dual liaison</div>
-            <div class="option-sub">AILI reports to the Provost/President's Office directly</div>
+            <div class="option-sub">AILI reports to the President's Office directly — Provost removed from the chain</div>
           </div>
           <div class="option-body">
             <div class="mini-org">
-              <div class="mini-node root">Provost / President's Office</div>
+              <div class="mini-node root">President's Office</div>
               <div class="mini-connector"></div>
               <div class="mini-node" style="background:var(--violet-dim);border-color:#c4b5fd;color:#4c1d95;">AILI</div>
               <div class="mini-connector"></div>
@@ -274,9 +324,9 @@
         <!-- Option B -->
         <div class="option-card option-b">
           <div class="option-head">
-            <span class="option-badge">Option B</span>
+            <span class="option-badge">Option B — Not Selected</span>
             <div class="option-title">Anchored under STC</div>
-            <div class="option-sub">Mirrors the AIC precedent exactly</div>
+            <div class="option-sub">Mirrors the earlier AIC draft's shape exactly</div>
           </div>
           <div class="option-body">
             <div class="mini-org">
@@ -302,7 +352,7 @@
         <!-- Option C -->
         <div class="option-card option-c">
           <div class="option-head">
-            <span class="option-badge">Option C</span>
+            <span class="option-badge">Option C — Not Selected</span>
             <div class="option-title">Anchored under Education &amp; Leadership</div>
             <div class="option-sub">Leans into the "lifelong learning" identity</div>
           </div>
@@ -346,7 +396,7 @@
           <thead>
             <tr>
               <th>Dimension</th>
-              <th class="col-a">A · Institute-level, dual liaison</th>
+              <th class="col-a">A · Institute-level, dual liaison (Selected)</th>
               <th class="col-b">B · Anchored under STC</th>
               <th class="col-c">C · Anchored under Education</th>
             </tr>
@@ -354,7 +404,7 @@
           <tbody>
             <tr>
               <td>Reports to</td>
-              <td>Provost / President's Office</td>
+              <td>President's Office</td>
               <td>STC Dean (mirrors AIC)</td>
               <td>Dean, Education &amp; Leadership</td>
             </tr>
@@ -401,7 +451,7 @@
               <td>Some — STC may push back on losing the AI thread</td>
             </tr>
             <tr>
-              <td>Precedent reuse (AIC template)</td>
+              <td>Reuses the earlier AIC draft</td>
               <td>Least reusable — needs its own two-liaison chart</td>
               <td>Most reusable — same shape, new label</td>
               <td>Not reusable — inverse of the AIC shape</td>
@@ -412,18 +462,309 @@
     </div>
   </div>
 
-  <!-- Recommendation -->
+  <!-- Decision -->
   <div class="section" id="recommendation">
     <div class="section-header">
-      <div class="section-icon icon-teal">💡</div>
+      <div class="section-icon icon-green">✅</div>
       <div>
-        <h2>Working Recommendation</h2>
-        <div class="section-sub">A starting point for the workshop, not a decided position</div>
+        <h2>Decision — Option A Confirmed</h2>
+        <div class="section-sub">AILI reports to the President's Office — the Provost is out of the chain</div>
       </div>
     </div>
     <div class="section-body">
       <div class="callout callout-teal">
-        <strong>Lean toward Option A.</strong> It's the only shape that resolves the tension already surfaced in our own meeting notes rather than moving it — neither Dean can say "the other school owns this." It's slower to charter, but that cost is mostly front-loaded (getting the President's Office to sponsor it), not recurring. B is the fastest path but reopens the exact objection the Education Dean raised; C fixes the pedagogy framing but creates a new objection from STC on the degree-pathway thread.
+        <strong>Option A, President's Office only.</strong> It's the only shape that resolves the tension already surfaced in our own meeting notes rather than moving it — neither Dean can say "the other school owns this." The reporting line is the President's Office directly, not "Provost/President's Office" — a deliberate simplification so there's one accountable sponsor instead of two. B and C stay documented above for the record, but aren't the direction moving forward.
+      </div>
+    </div>
+  </div>
+
+  <!-- Roles & Responsibilities -->
+  <div class="section" id="roles">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🧑‍🤝‍🧑</div>
+      <div>
+        <h2>Roles &amp; Responsibilities</h2>
+        <div class="section-sub">Holds across all three options — only the Director's reporting line changes</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-teal mt16" style="margin-bottom:20px;">
+        <strong>Confirmed:</strong> the Director reports to the President's Office (Option A). Everything below — the Liaisons, Track Leads, and Instructor layer — was already designed to hold regardless of which option won, so none of it changes now that the decision is made.
+      </div>
+      <div class="role-grid">
+
+        <div class="role-card">
+          <div class="role-head role-director">
+            <span class="role-badge" style="background:rgba(255,255,255,0.6);color:#4c1d95;">Institute Lead</span>
+            <div class="role-title">AILI Director</div>
+            <div class="role-sub">Owns strategy, budget, and external partnerships</div>
+          </div>
+          <div class="role-body">
+            <div class="role-item">Owns the institute's budget ask and reports progress to whichever office AILI sits under</div>
+            <div class="role-item">Chairs a joint steering committee with the STC and Education &amp; Leadership Liaisons</div>
+            <div class="role-item">Represents AILI in external partnership conversations (Port, SPD, Maritime Blue, sports)</div>
+            <div class="role-item">Owns the Discovery → Development → Delivery timeline and reports slippage early</div>
+            <div class="role-item">Approves internal service-fee terms when another CityU school draws on AILI capacity (training, seminars, content)</div>
+            <div class="variant-note">Reports to the President's Office (confirmed) — not the Provost, and not either school's Dean.</div>
+          </div>
+        </div>
+
+        <div class="role-card">
+          <div class="role-head role-liaison">
+            <span class="role-badge" style="background:rgba(255,255,255,0.6);color:#1e3a8a;">Bridge Role</span>
+            <div class="role-title">STC Liaison</div>
+            <div class="role-sub">Technical content, faculty release time, degree-stacking bridge</div>
+          </div>
+          <div class="role-body">
+            <div class="role-item">Coordinates faculty release time for AI, cybersecurity, and data-science subject matter</div>
+            <div class="role-item">Sources practitioner-instructors for the Maritime OT and AI-literacy tracks</div>
+            <div class="role-item">Owns the BSAI degree-stacking bridge — which AILI credentials count toward the degree</div>
+            <div class="role-item">Protects STC faculty from over-commitment across AILI and degree-program duties</div>
+          </div>
+        </div>
+
+        <div class="role-card">
+          <div class="role-head" style="background:var(--teal-dim);">
+            <span class="role-badge" style="background:rgba(255,255,255,0.6);color:#115e59;">Bridge Role</span>
+            <div class="role-title">Education &amp; Leadership Liaison</div>
+            <div class="role-sub">Pedagogy standards for a non-degree, adult-learning audience</div>
+          </div>
+          <div class="role-body">
+            <div class="role-item">Owns the instructional model — flipped Bloom's Taxonomy, competency-based "learning by doing"</div>
+            <div class="role-item">Reviews course design (5-module format, ~7-min videos, embedded quizzes) for pedagogical rigor</div>
+            <div class="role-item">Trains practitioner-instructors — industry leaders and chiefs who aren't classroom-trained educators</div>
+            <div class="role-item">Defines the assessment/competency framework used across every track</div>
+          </div>
+        </div>
+
+        <div class="role-card">
+          <div class="role-head role-track">
+            <span class="role-badge" style="background:rgba(255,255,255,0.6);color:#115e59;">Vertical Owner</span>
+            <div class="role-title">Track Leads (×3)</div>
+            <div class="role-sub">Maritime OT Security · The Frontline Professional (SPD/first-responder seminars) · AI Degree Pathway</div>
+          </div>
+          <div class="role-body">
+            <div class="role-item">Each owns their vertical's curriculum, partner relationship, and cohort operations</div>
+            <div class="role-item">Maritime lead: Port Key Personnel compliance pilot with Maritime Blue's Living Lab</div>
+            <div class="role-item">Frontline Professional lead: asynchronous skill-up model delivered as seminars (not workshops), Traffic Light Framework micro-credential</div>
+            <div class="role-item">AI Degree Pathway lead: works closest with the STC Liaison on the BSAI stacking bridge</div>
+            <div class="role-item">Additional CityU schools adopting AILI plug in as a new track under this same model — no new governance layer required</div>
+          </div>
+        </div>
+
+        <div class="role-card">
+          <div class="role-head role-instructor">
+            <span class="role-badge" style="background:rgba(255,255,255,0.6);color:#92400e;">Delivery Layer</span>
+            <div class="role-title">Practitioner-Instructors &amp; Content Developers</div>
+            <div class="role-sub">Industry credibility in front of the camera, instructional support behind it</div>
+          </div>
+          <div class="role-body">
+            <div class="role-item">Industry leaders and chiefs serve as instructors in the asynchronous model</div>
+            <div class="role-item">Instructional content developers support behind the scenes — scripting, video, quiz design</div>
+            <div class="role-item">Sourced through STC's existing practitioner-publisher pipeline</div>
+            <div class="role-item">Open beyond CityU staff — outside practitioners pitching their own course idea, and partner nonprofits developing content, enter through this same pipeline</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Three-Way Relationship -->
+  <div class="section" id="relationship">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔗</div>
+      <div>
+        <h2>How Schools Connect to AILI</h2>
+        <div class="section-sub">STC and Education &amp; Leadership are the founding partners — the same pattern extends to any CityU school</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-amber mt16" style="margin-bottom:16px;">
+        <strong>Scope is cross-school, not two-school.</strong> STC and Education &amp; Leadership are first because they're first in line — the Maritime and Frontline Professional tracks need STC's technical depth, and every non-degree track needs Education &amp; Leadership's adult-pedagogy review. Any other CityU school that wants AILI's infrastructure or seminar-delivery capability plugs in the same way, billed through the internal service-fee model below.
+      </div>
+      <div class="flow-grid">
+        <div class="flow-card">
+          <div class="flow-name" style="color:var(--blue);">STC contributes</div>
+          <ul>
+            <li>Technical faculty fellows (AI, cybersecurity, data science) via release time</li>
+            <li>BSAI degree pathway &amp; credentialing infrastructure for stacking</li>
+            <li>Open edX / GitHub delivery infrastructure already live in production</li>
+            <li>Domain research feeding the Maritime OT and AI-literacy curriculum</li>
+          </ul>
+        </div>
+        <div class="flow-card">
+          <div class="flow-name" style="color:var(--teal);">Education &amp; Leadership contributes</div>
+          <ul>
+            <li>Adult-learning pedagogy design — flipped Bloom's, competency-based model</li>
+            <li>Instructional design review for every seminar and certificate</li>
+            <li>Training for practitioner-instructors who aren't classroom-trained educators</li>
+            <li>Assessment and competency-framework standards</li>
+          </ul>
+        </div>
+        <div class="flow-card">
+          <div class="flow-name" style="color:var(--violet);">AILI delivers back to both</div>
+          <ul>
+            <li>Real-world case studies (SPD pilot, Maritime OT engagements) for curriculum currency</li>
+            <li>Non-degree learner pipeline that can stack into BSAI or other CityU degrees</li>
+            <li>Seminar and certificate revenue share</li>
+            <li>External partner relationships (Port, SPD, sports orgs) both schools can draw on</li>
+            <li>Learner data passed to the marketing team for enrollment-funnel insight</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout callout-amber mt16">
+        <strong>The boundary that matters most:</strong> the AILI Director does not have unilateral authority over STC or Education &amp; Leadership faculty time. All faculty and instructor assignments go through the relevant Liaison — this is what keeps the "complement, don't disrupt" promise real instead of aspirational.
+      </div>
+    </div>
+  </div>
+
+  <!-- Scope, Content & Licensing -->
+  <div class="section" id="scope-content">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🌐</div>
+      <div>
+        <h2>Scope, Content &amp; Licensing Model</h2>
+        <div class="section-sub">Who can contribute, what tooling is used, and who owns what</div>
+      </div>
+    </div>
+    <div class="section-body">
+
+      <div class="point">
+        <span class="point-label lbl-blue">Who can contribute</span>
+        <div class="point-body">
+          Not limited to CityU faculty. <strong>Any CityU school</strong>, any outside practitioner with an idea worth teaching, and <strong>partner nonprofits</strong> can develop and pitch course content through the same Track Lead pipeline.
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-violet">Delivery &amp; assessment tooling</span>
+        <div class="point-body">
+          <strong>Open edX</strong> stays the core platform. Capstone projects are evaluated with an <strong>AI tool sourced from a vendor</strong> — vendor selection is still open (see Next Steps).
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-teal">Content ownership — open by default</span>
+        <div class="point-body">
+          <strong>Nobody owns AILI course content individually — it's open-source.</strong> Authors declare originality when they submit it; anyone downstream can reuse it as long as they give <strong>attribution</strong> back to the original author. The specific license (likely a Creative Commons Attribution variant) still needs to be selected — flagged in Next Steps.
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-amber">Compliance exception</span>
+        <div class="point-body">
+          Tracks with a genuine compliance need (e.g. law-enforcement or regulatory content) can <strong>declare ownership</strong> instead of releasing under the open license — the open-by-default rule isn't absolute where it would create legal exposure.
+        </div>
+      </div>
+
+      <div class="point">
+        <span class="point-label lbl-red">Internal service-fee model</span>
+        <div class="point-body">
+          When another CityU school wants AILI's training, seminar delivery, or infrastructure, it's billed as an <strong>internal service fee</strong> — not a grant or a favor. This is what lets AILI scale across schools without every request becoming a governance conversation.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Services & Revenue -->
+  <div class="section" id="services">
+    <div class="section-header">
+      <div class="section-icon icon-green">💵</div>
+      <div>
+        <h2>Services &amp; Revenue</h2>
+        <div class="section-sub">What AILI actually sells, to whom, and what it costs to run</div>
+      </div>
+    </div>
+    <div class="section-body">
+
+      <div class="flow-grid">
+        <div class="flow-card">
+          <div class="flow-name" style="color:var(--green);">External</div>
+          <ul>
+            <li>Continuing education</li>
+            <li>Industry certification</li>
+            <li>Industry license</li>
+            <li>Digital badge (per-seminar credential)</li>
+            <li>Long-term: eCommerce via WooCommerce — B2C first, then B2B</li>
+          </ul>
+        </div>
+        <div class="flow-card">
+          <div class="flow-name" style="color:var(--blue);">Internal</div>
+          <ul>
+            <li>Other schools buy/license an existing course rather than building their own</li>
+            <li>Learner data passed to the marketing team</li>
+            <li>Service-based — internal fee when another school draws on AILI capacity</li>
+          </ul>
+        </div>
+        <div class="flow-card">
+          <div class="flow-name" style="color:var(--amber);">To Support</div>
+          <ul>
+            <li>Infrastructure (Open edX hosting, tooling)</li>
+            <li>Training for instructors</li>
+            <li>Training for authors</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-amber mt16">
+        <strong>Naming: seminar, not workshop.</strong> The delivery format is branded a <strong>seminar</strong> going forward — "workshop" stays reserved for internal planning sessions like this one. The SPD and Maritime frontline tracks ship under one external brand, <strong>The Frontline Professional</strong>, so officers and port/maritime workers see a single, recognizable series rather than two disconnected offerings.
+      </div>
+
+      <div class="callout callout-teal mt16">
+        <strong>Top-of-funnel: YouTube to course.</strong> Short-form content on YouTube and social media is the entry point — anybody with an idea worth selling pitches a topic, it gets tested as a video first, and only the ones that land turn into a full seminar or course. This is the same TOFU → MOFU → BOFU logic as the <a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem</a> funnel — AILI is a content source feeding it, not a separate funnel.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Phasing -->
+  <div class="section" id="phasing">
+    <div class="section-header">
+      <div class="section-icon icon-amber">📈</div>
+      <div>
+        <h2>Phasing — Discovery → Development → Delivery</h2>
+        <div class="section-sub">AILI's own phasing language, not AIC's Year 1–3 consulting model</div>
+      </div>
+    </div>
+    <div class="section-body" style="padding:0;">
+      <div class="phase-row">
+        <div class="phase">
+          <div class="phase-label" style="color:var(--violet);">Discovery — Now</div>
+          <h3>Environment, Governance, Course Design</h3>
+          <ul>
+            <li>Platform setup — Open edX, Open edX Tutor, XBlocks quiz layer</li>
+            <li>Org structure &amp; governance proposal drafted (this workshop)</li>
+            <li>SPD partnership scoped — asynchronous skill-up model defined</li>
+            <li>First course design begins — 5 modules, ~7-min videos, embedded quizzes, hands-on pairing</li>
+            <li>Practitioner-instructor pipeline scoped (chiefs, maritime experts)</li>
+            <li>Content-licensing model drafted — open-source by default, attribution required, compliance exception carved out</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="phase-label" style="color:var(--blue);">Development — Fall 2026</div>
+          <h3>Build, Pilot, Charter</h3>
+          <ul>
+            <li>Build Maritime OT Security &amp; Frontline Professional seminar content with practitioner-instructors</li>
+            <li>Small pilot cohort tests content before public launch</li>
+            <li>Governance charter finalized; Director + both Liaisons formally appointed</li>
+            <li>Marketplace setup — Udemy, YouTube, LinkedIn distribution; Discord/LinkedIn learner community</li>
+            <li>BSAI degree-stacking pathway defined jointly with STC</li>
+            <li>Vendor selected for the AI capstone-evaluation tool</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="phase-label" style="color:var(--teal);">Delivery — Jan 2027 Target</div>
+          <h3>Launch &amp; Feedback Loop</h3>
+          <ul>
+            <li>Public launch of first seminars, certificates, and digital badges</li>
+            <li>First cohorts enrolled — officers, port/maritime workers, lifelong learners</li>
+            <li>Engagement findings feed back into curriculum on both sides</li>
+            <li>Stacking conversations begin for learners ready to enter the BSAI pathway</li>
+            <li>Growth track: additional verticals, grant applications (DOJ/DHS/NSF), WooCommerce storefront for direct B2C sales</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -433,31 +774,39 @@
     <div class="section-header">
       <div class="section-icon icon-green">✅</div>
       <div>
-        <h2>Open Questions for Tomorrow's Workshop</h2>
-        <div class="section-sub">What we don't have visibility into yet — needs planning-team input</div>
+        <h2>Open Questions &amp; Next Steps</h2>
+        <div class="section-sub">What's still unresolved after today's workshop decisions</div>
       </div>
     </div>
     <div class="section-body">
       <ul class="action-list">
         <li class="action-item">
           <span class="action-check">1</span>
-          <div class="action-body">Where does the budget line actually sit right now — President's Office, STC, or Education &amp; Leadership? This may constrain the option regardless of preference.</div>
+          <div class="action-body">Where does the budget line actually sit — fully inside the President's Office, or split with contributions from STC/Education &amp; Leadership? Needed to finalize the charter.</div>
         </li>
         <li class="action-item">
           <span class="action-check">2</span>
-          <div class="action-body">How has leadership been leaning verbally, beyond "avoid the word Center"? Any signal on single-school vs. cross-school ownership?</div>
+          <div class="action-body">Which open license covers AILI course content — Creative Commons Attribution (CC BY), CC BY-SA, or something else? Needs a decision before the first course ships.</div>
         </li>
         <li class="action-item">
           <span class="action-check">3</span>
-          <div class="action-body">If Option A: who plays Director vs. the two Liaisons in Year 1 — internal hire, or split faculty release time from both schools?</div>
+          <div class="action-body">Who plays Director vs. the two Liaisons in Year 1 — internal hire, or split faculty release time from STC and Education &amp; Leadership?</div>
         </li>
         <li class="action-item">
           <span class="action-check">4</span>
-          <div class="action-body">Does the Maritime/SPD track need its own governance seam (external partners, grant funding) separate from the AI-degree/BSAI feeder track — i.e., is this really one org chart or two?</div>
+          <div class="action-body">Which vendor supplies the AI capstone-evaluation tool, and what does it cost per cohort?</div>
         </li>
         <li class="action-item">
           <span class="action-check">5</span>
-          <div class="action-body">Timeline: does a charter decision need to land before the next President's Office touchpoint, or can this stay a working draft through one more cycle?</div>
+          <div class="action-body">What's the internal service-fee schedule when another CityU school draws on AILI capacity — flat rate, per-cohort, or negotiated per engagement?</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">6</span>
+          <div class="action-body">Who approves a track's request to declare compliance-driven ownership instead of the default open license?</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">7</span>
+          <div class="action-body">Timeline for the WooCommerce storefront — is B2C eCommerce a Year 1 build or a Year 2+ growth item?</div>
         </li>
       </ul>
     </div>
@@ -471,8 +820,8 @@
     </div>
     <div class="section-body">
       <div class="point">
-        <span class="point-label lbl-teal">Precedent</span>
-        <div class="point-body"><a href="aic-center-structure.html">Applied Intelligence Center — Structure &amp; Roadmap</a> — the worked single-school liaison template this brainstorm deliberately diverges from</div>
+        <span class="point-label lbl-teal">Earlier draft</span>
+        <div class="point-body"><a href="aic-center-structure.html">Applied Intelligence Center — Structure &amp; Roadmap</a> — the earlier brainstormed name/structure for this same question, never established, superseded by AILI once the framing broadened to cross-school lifelong learning</div>
       </div>
       <div class="point">
         <span class="point-label lbl-violet">Origin</span>
@@ -481,6 +830,10 @@
       <div class="point">
         <span class="point-label lbl-blue">Context</span>
         <div class="point-body"><a href="meeting-notes-ai-institute-2026-07-21.html">Meeting Notes — AI Institute, July 21 2026</a> — action item to draft an organizational structure and proposal</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Funnel</span>
+        <div class="point-body"><a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem — Execution Plan</a> — the TOFU → MOFU → BOFU funnel AILI's YouTube-to-course pipeline feeds into</div>
       </div>
     </div>
   </div>

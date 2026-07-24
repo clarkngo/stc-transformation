@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — AILI Prep, July 23 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    /* Revenue tiers */
+    .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .tier-grid { grid-template-columns: 1fr; } }
+    .tier-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .tier-card .tier-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .tier-card ul { margin: 0; padding-left: 16px; font-size: 0.84rem; color: var(--slate); }
+    .tier-card ul li { margin-bottom: 5px; line-height: 1.4; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="aili-governance-options.html">AILI — Governance Options</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — AILI Prep, July 23 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes</div>
+    <h1>AILI Prep — Meeting with Sam, July 23 2026</h1>
+    <p class="subtitle">Clark and Sam met to refine the proposal and presentation strategy ahead of the meeting with University President Suzanne Walsh. Goal: position AILI as a revenue-generating, community-building e-commerce and learning hub (<code>cityux.edu</code>) that complements STC without disrupting it.</p>
+    <div class="meta-row">
+      <span class="meta-chip">July 23, 2026</span>
+      <span class="meta-chip">Clark &amp; Sam</span>
+      <span class="meta-chip">Prep for President Walsh meeting</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#governance">AILI Governance &amp; Organizational Structure</a></li>
+      <li><a href="#ip">Open Source &amp; IP Model</a></li>
+      <li><a href="#platform">Platform Strategy — Open edX vs. LMS</a></li>
+      <li><a href="#revenue">Revenue Streams &amp; Offerings</a></li>
+      <li><a href="#spd">First Responders &amp; Police Department Initiative</a></li>
+      <li><a href="#actions">Action Items</a></li>
+    </ol>
+  </div>
+
+  <!-- Governance -->
+  <div class="section" id="governance">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🏛️</div>
+      <div>
+        <h2>AILI Governance &amp; Organizational Structure</h2>
+        <div class="section-sub">Scope, placement, and how it shares resources with STC</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Scope &amp; placement</span>
+        <div class="point-body">
+          AILI is a non-degree initiative designed to handle agile projects from the President. It should sit directly under the <strong>Chief of Staff / President's Office</strong> rather than the Provost — the Provost's role is primarily degree-granting academic accreditation.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Resource sharing</span>
+        <div class="point-body">
+          AILI complements STC rather than disrupting it. Sam proposed a shared-resource approach — e.g. borrowing 50% or 25% of Clark's capacity for AILI while he keeps his academic ties to STC.
+        </div>
+      </div>
+      <div class="callout callout-amber mt16">
+        <strong>Worth reconciling on review:</strong> this summary frames the reporting line as "Chief of Staff / President's Office," while <a href="aili-governance-options.html">the governance page</a> currently records the decision as President's Office only. The underlying transcript has Sam floating Chief of Staff as a live open question ("this organization may be placed under Chief of Staff, too... I don't know"), not a settled second option — so this is likely the same ambiguity restated, not a new decision. Flagging rather than resolving it here.
+      </div>
+    </div>
+  </div>
+
+  <!-- IP -->
+  <div class="section" id="ip">
+    <div class="section-header">
+      <div class="section-icon icon-blue">📜</div>
+      <div>
+        <h2>Open Source &amp; IP Model</h2>
+        <div class="section-sub">Licensing approach and the funnel mechanic it enables</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Open-source framework</span>
+        <div class="point-body">
+          Courses and materials generally follow an open-source licensing model (e.g. MIT or a cloud-adapted MIT variant) to ensure broad distribution, attribution, and legal clarity.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Gated downloads &amp; data capture</span>
+        <div class="point-body">
+          Free resources (like Clark's AI ebook) serve as top-of-funnel (TOFU) touchpoints. Users submit basic information — name, email, role — to download materials, generating marketing and prospect data for the university.
+        </div>
+      </div>
+      <div class="callout callout-teal mt16">
+        <strong>Already researched:</strong> the governance page's <a href="aili-governance-options.html#workshop">Open Questions section</a> resolves the specific license to <strong>Creative Commons Attribution (CC BY)</strong> — the right fit for course <em>content</em> (vs. MIT/AGPL, which are software licenses). Worth aligning this summary's "MIT or cloud-adapted MIT" language with that finding during review.
+      </div>
+    </div>
+  </div>
+
+  <!-- Platform -->
+  <div class="section" id="platform">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🎓</div>
+      <div>
+        <h2>Platform Strategy — Open edX vs. LMS</h2>
+        <div class="section-sub">Why Open edX, and the long-term marketplace vision</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">Flexibility of Open edX (OeX)</span>
+        <div class="point-body">
+          Highlighted for its accessibility and flexibility — custom course pages or external links can be embedded directly into the platform shell rather than forcing a full migration.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Marketplace / e-commerce vision</span>
+        <div class="point-body">
+          Long-term vision: turn <code>cityux.edu</code> into an e-commerce marketplace for non-degree offerings, digital badges, industry certifications, and continuing-education (CE) modules.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue -->
+  <div class="section" id="revenue">
+    <div class="section-header">
+      <div class="section-icon icon-green">💵</div>
+      <div>
+        <h2>Revenue Streams &amp; Offerings</h2>
+        <div class="section-sub">Tiered income model — short, mid, and long term</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="tier-grid">
+        <div class="tier-card">
+          <div class="tier-name" style="color:var(--slate);">Short-term / internal</div>
+          <ul>
+            <li>Service-based support</li>
+            <li>Data sharing with marketing</li>
+            <li>Training for instructors</li>
+          </ul>
+        </div>
+        <div class="tier-card">
+          <div class="tier-name" style="color:var(--amber);">Mid-term</div>
+          <ul>
+            <li>Non-degree workshops</li>
+            <li>Digital badges</li>
+            <li>Compliance training</li>
+            <li>Industry certifications/licenses (e.g. thermal energy control, healthcare, engineering)</li>
+          </ul>
+        </div>
+        <div class="tier-card">
+          <div class="tier-name" style="color:var(--green);">Long-term / external (B2C &amp; B2B)</div>
+          <ul>
+            <li>Premium courses</li>
+            <li>Marketplace content</li>
+            <li>External organizational partnerships</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPD -->
+  <div class="section" id="spd">
+    <div class="section-header">
+      <div class="section-icon icon-red">🚔</div>
+      <div>
+        <h2>First Responders &amp; Police Department Initiative</h2>
+        <div class="section-sub">Academic-partner framing, not a vendor pitch</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Academic &amp; research partner role</span>
+        <div class="point-body">
+          For first responders (e.g. Seattle PD), CityU's role is to act as an academic and research partner — framing AI integration through critical-thinking frameworks like Bloom's Taxonomy and flipped classrooms, rather than a software sale.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Workshop series</span>
+        <div class="point-body">
+          A 5-part workshop series paired with seminars, to train and upskill personnel on AI compliance and tools.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Items -->
+  <div class="section" id="actions">
+    <div class="section-header">
+      <div class="section-icon icon-blue">✅</div>
+      <div>
+        <h2>Action Items</h2>
+        <div class="section-sub">Owned by Clark unless noted otherwise</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check">1</span>
+          <div class="action-body">Refine pitch &amp; framing for President Walsh — prepare a clear user-journey/funnel demonstration showing how top-of-funnel content captures student/prospect data and leads to conversion (badges, enrollment).</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">2</span>
+          <div class="action-body">Formulate the First Responder (SPD) strategy — outline the specific plan for first-responder AI training, emphasizing an academic/research partnership and a 5-part workshop series.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">3</span>
+          <div class="action-body">Research continuing-education (CE) requirements — specific licensing and recognition requirements across target fields (nursing, legal, CPAs, engineering).</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">4</span>
+          <div class="action-body">Domain &amp; platform hosting setup — establish requirements for securing the <code>cityux.edu</code> domain and evaluate infrastructure hosting costs for scaling Open edX courses.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">5</span>
+          <div class="action-body">Formalize staffing &amp; budget request — present the request to transition Clark into a dedicated worker role under the President's Office / AILI initiative to execute the January demo.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Implementation plan</span>
+        <div class="point-body"><a href="aili-governance-options.html">AILI — Governance, Scope &amp; Revenue Model</a> — the fuller working plan this meeting's decisions feed into, including the resolved-vs-open research tracker</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">President briefing</span>
+        <div class="point-body"><a href="briefing-cityu-president-2026-07-24.html">Briefing — CityU President — July 24, 2026</a> — the three-part briefing this prep session feeds into</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

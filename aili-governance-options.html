@@ -190,7 +190,12 @@
     .action-item:last-child { border-bottom: none; padding-bottom: 0; }
     .action-item:first-child { padding-top: 0; }
     .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--amber-dim); color: var(--amber); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-check.resolved { background: var(--green-dim); color: var(--green); }
     .action-body { font-size: 0.92rem; }
+    .action-body .src { display: block; margin-top: 4px; font-size: 0.78rem; color: var(--slate); }
+    .action-body .src a { color: var(--slate); }
+    .subhead { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin: 20px 0 10px; }
+    .subhead:first-child { margin-top: 0; }
   </style>
 </head>
 <body>
@@ -775,10 +780,40 @@
       <div class="section-icon icon-green">✅</div>
       <div>
         <h2>Open Questions &amp; Next Steps</h2>
-        <div class="section-sub">What's still unresolved after today's workshop decisions</div>
+        <div class="section-sub">Some resolved by research this week — the rest still need a decision, not a search</div>
       </div>
     </div>
     <div class="section-body">
+
+      <div class="subhead">Resolved this week (research)</div>
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check resolved">✓</span>
+          <div class="action-body">
+            <strong>Content license: use Creative Commons Attribution (CC BY).</strong> It matches the "nobody owns it, declare originality, attribution required" model exactly — permits reuse and commercial use, requires credit back to the author. "An advanced version of MIT for cloud" was likely a reference to AGPL, which is real but solves a different problem (it closes the SaaS "cloud loophole" for software licensing) — it doesn't apply to course content.
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check resolved">✓</span>
+          <div class="action-body">
+            <strong>Digital badges: the blocker is instance-admin access, not course-author permissions.</strong> Open edX badges are off by default — enabling them requires <code>BADGES_ENABLED = True</code> on both the LMS and Credentials services plus a connected Credly organization. Needs someone with instance-admin rights, not more access on Clark's account.
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check resolved">✓</span>
+          <div class="action-body">
+            <strong>Partner subdomains don't need a separate ~$78/mo instance each.</strong> Open edX supports true multi-tenancy on one instance via the <code>eox-tenant</code> plugin — multiple partner domains (e.g. a company's own subdomain) can run off the same backend with separate branding.
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check resolved">✓</span>
+          <div class="action-body">
+            <strong>WooCommerce integration already exists — worth reconsidering the "Year 2+" timing.</strong> A maintained plugin (<code>openedx-wordpress-ecommerce</code>) already syncs WooCommerce purchases to Open edX enrollment. This isn't a from-scratch build, so it may not need to wait as long as the phasing currently assumes.
+          </div>
+        </li>
+      </ul>
+
+      <div class="subhead">Still open — needs a decision, not more research</div>
       <ul class="action-list">
         <li class="action-item">
           <span class="action-check">1</span>
@@ -786,29 +821,26 @@
         </li>
         <li class="action-item">
           <span class="action-check">2</span>
-          <div class="action-body">Which open license covers AILI course content — Creative Commons Attribution (CC BY), CC BY-SA, or something else? Needs a decision before the first course ships.</div>
-        </li>
-        <li class="action-item">
-          <span class="action-check">3</span>
           <div class="action-body">Who plays Director vs. the two Liaisons in Year 1 — internal hire, or split faculty release time from STC and Education &amp; Leadership?</div>
         </li>
         <li class="action-item">
-          <span class="action-check">4</span>
-          <div class="action-body">Which vendor supplies the AI capstone-evaluation tool, and what does it cost per cohort?</div>
+          <span class="action-check">3</span>
+          <div class="action-body">Which vendor supplies the AI capstone-evaluation tool, and what does it cost per cohort? Shortlist to bake off: Gradescope (most established in higher ed), Disco, Coursebox, CoGrader, Crowdmark, Akindi.</div>
         </li>
         <li class="action-item">
-          <span class="action-check">5</span>
+          <span class="action-check">4</span>
           <div class="action-body">What's the internal service-fee schedule when another CityU school draws on AILI capacity — flat rate, per-cohort, or negotiated per engagement?</div>
         </li>
         <li class="action-item">
-          <span class="action-check">6</span>
+          <span class="action-check">5</span>
           <div class="action-body">Who approves a track's request to declare compliance-driven ownership instead of the default open license?</div>
         </li>
         <li class="action-item">
-          <span class="action-check">7</span>
-          <div class="action-body">Timeline for the WooCommerce storefront — is B2C eCommerce a Year 1 build or a Year 2+ growth item?</div>
+          <span class="action-check">6</span>
+          <div class="action-body">CE/license-renewal recognition needs profession-by-profession research. IACET accreditation covers general CEUs (legally recognized entity, ≥1 year in business, documented QA process, participant transcripts on file) — but it does <strong>not</strong> automatically satisfy profession-specific renewal (nursing boards, state bar CLE, CPA boards, engineering PE boards, real estate commissions each have their own separate approval process).</div>
         </li>
       </ul>
+
     </div>
   </div>
 

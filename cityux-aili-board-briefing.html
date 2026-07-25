@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUX / AILI — Board Meeting Briefing</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 940px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 24px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; margin-bottom: 24px; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .part-divider { display: flex; align-items: center; gap: 12px; margin: 40px 0 20px; }
+    .part-divider .part-num {
+      flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+      background: var(--violet); color: #fff; font-weight: 800; font-size: 0.95rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .part-divider h2 { margin: 0; font-size: 1.25rem; font-weight: 900; letter-spacing: -0.02em; }
+    .part-divider .part-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    /* Funnel mini strip (TOFU/MOFU/BOFU quick view) */
+    .funnel-mini { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0 4px; }
+    .funnel-mini-stage { font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 20px; white-space: nowrap; }
+    .fm-tofu { background: var(--blue-dim); color: var(--blue); }
+    .fm-mofu { background: var(--violet-dim); color: var(--violet); }
+    .fm-bofu { background: var(--amber-dim); color: var(--amber); }
+    .fm-conv { background: var(--green-dim); color: var(--green); }
+    .funnel-mini-arrow { color: var(--slate-light); font-size: 0.95rem; }
+
+    /* Explainer cards for TOFU/MOFU/BOFU */
+    .explainer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+    @media (max-width: 800px) { .explainer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .explainer-grid { grid-template-columns: 1fr; } }
+    .explainer-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; }
+    .explainer-card .exp-tag { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .explainer-card .exp-title { font-weight: 700; font-size: 0.88rem; margin-bottom: 4px; }
+    .explainer-card p { margin: 0; font-size: 0.82rem; color: var(--slate); line-height: 1.5; }
+    .exp-tofu { background: var(--blue-dim); } .exp-tofu .exp-tag { color: var(--blue); }
+    .exp-mofu { background: var(--violet-dim); } .exp-mofu .exp-tag { color: var(--violet); }
+    .exp-bofu { background: var(--amber-dim); } .exp-bofu .exp-tag { color: var(--amber); }
+    .exp-conv { background: var(--green-dim); } .exp-conv .exp-tag { color: var(--green); }
+
+    /* Summarized touchpoint matrix table */
+    .table-wrap { overflow-x: auto; }
+    table.matrix-summary { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 640px; }
+    table.matrix-summary th, table.matrix-summary td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.matrix-summary th { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); background: var(--bg); white-space: nowrap; }
+    table.matrix-summary td:first-child { font-weight: 700; white-space: nowrap; }
+    table.matrix-summary tr:last-child td { border-bottom: none; }
+    .status-pill { font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+    .status-live { background: var(--green-dim); color: var(--green); }
+    .status-wip { background: var(--amber-dim); color: var(--amber); }
+    .status-supply { background: var(--violet-dim); color: var(--violet); }
+
+    /* Horizontal data-flow pipeline */
+    .flow-pipeline-h { display: flex; align-items: stretch; gap: 8px; }
+    .flow-stage-h {
+      flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border);
+      border-top-width: 5px; border-top-style: solid; border-radius: var(--radius-sm);
+      padding: 16px 16px; box-shadow: var(--shadow);
+    }
+    .flow-stage-h-label { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+    .flow-stage-h-title { font-weight: 800; font-size: 0.92rem; color: var(--ink); }
+    .flow-stage-h-desc { font-size: 0.8rem; color: var(--slate); margin-top: 4px; }
+    .flow-arrow-h { display: flex; align-items: center; justify-content: center; color: var(--slate-light); font-size: 1.3rem; flex-shrink: 0; }
+    .fsh-violet { border-top-color: var(--violet); } .fsh-violet .flow-stage-h-label { color: var(--violet); }
+    .fsh-red { border-top-color: var(--red); } .fsh-red .flow-stage-h-label { color: var(--red); }
+    .fsh-blue { border-top-color: var(--blue); } .fsh-blue .flow-stage-h-label { color: var(--blue); }
+    .fsh-green { border-top-color: var(--green); } .fsh-green .flow-stage-h-label { color: var(--green); }
+    @media (max-width: 760px) {
+      .flow-pipeline-h { flex-direction: column; }
+      .flow-arrow-h { transform: rotate(90deg); padding: 2px 0; }
+    }
+
+    /* Org diagram */
+    .mini-org { display: flex; flex-direction: column; align-items: center; gap: 0; margin-bottom: 8px; }
+    .mini-node { border-radius: 8px; padding: 10px 14px; text-align: center; font-size: 0.82rem; font-weight: 700; width: 100%; border: 1px solid var(--border); background: var(--bg); }
+    .mini-node.root { background: #f8fafc; }
+    .mini-node .mini-node-sub { display: block; font-size: 0.7rem; font-weight: 600; color: var(--slate); margin-top: 2px; }
+    .mini-connector { width: 2px; height: 16px; background: var(--border); }
+    .mini-split { display: flex; width: 100%; gap: 8px; }
+    .mini-branch { display: flex; flex-direction: column; align-items: center; flex: 1; }
+    .mini-branch .mini-connector { height: 12px; }
+    .mini-node.pending { background: var(--bg); border-style: dashed; color: var(--slate); font-weight: 600; }
+
+    /* Revenue flow grid (External / Internal / To Support) */
+    .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 760px) { .flow-grid { grid-template-columns: 1fr; } }
+    .flow-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .flow-card .flow-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .flow-card ul { margin: 0; padding-left: 16px; font-size: 0.84rem; color: var(--slate); }
+    .flow-card ul li { margin-bottom: 5px; line-height: 1.4; }
+
+    /* Role card (Practitioner-Instructors & Content Developers) */
+    .role-card { border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; }
+    .role-head { padding: 14px 16px 10px; background: var(--amber-dim); }
+    .role-badge { display: inline-block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; background: rgba(255,255,255,0.6); color: #92400e; }
+    .role-title { font-size: 0.96rem; font-weight: 800; margin: 0 0 3px; }
+    .role-sub { font-size: 0.78rem; color: var(--slate); }
+    .role-body { padding: 6px 16px 14px; }
+    .role-item { display: flex; gap: 8px; padding: 6px 0; border-top: 1px solid var(--border); font-size: 0.86rem; align-items: flex-start; }
+    .role-item::before { content: '→'; color: var(--slate-light); flex-shrink: 0; font-weight: 700; }
+
+    /* User journey cards */
+    .journey-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 20px; background: var(--card); box-shadow: var(--shadow); margin-bottom: 16px; }
+    .journey-card:last-child { margin-bottom: 0; }
+    .journey-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+    .journey-avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: var(--bg); flex-shrink: 0; }
+    .journey-name { font-weight: 800; font-size: 0.98rem; }
+    .journey-desc { font-size: 0.82rem; color: var(--slate); margin-top: 1px; }
+    .journey-path { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 12px 0; }
+    .journey-stage { font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+    .journey-stage.tofu { background: var(--blue-dim); color: var(--blue); }
+    .journey-stage.mofu { background: var(--violet-dim); color: var(--violet); }
+    .journey-stage.bofu { background: var(--amber-dim); color: var(--amber); }
+    .journey-stage.conversion { background: var(--green-dim); color: var(--green); }
+    .journey-arrow { color: var(--slate-light); font-size: 0.8rem; }
+    .journey-card .journey-note { margin: 0; font-size: 0.87rem; color: var(--ink); line-height: 1.6; }
+    .journey-card .journey-note strong { font-weight: 700; }
+
+    @media print {
+      .nav-row, .toc { display: none !important; }
+      .shell { padding: 16px; }
+      .section, .journey-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <span>CityUX / AILI — Board Meeting Briefing</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Board Meeting Leave-Behind</div>
+    <h1>CityUX / AILI — Board Meeting Briefing</h1>
+    <p class="subtitle">A single page the President can talk over at the board meeting. Every diagram and block of copy here is pulled directly from material already presented to her on July 23–24, so nothing on this page should be unfamiliar — it's organized for presenting, not for first-time reading.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Prepared for: Board Meeting, week of Jul 28, 2026</span>
+      <span class="meta-chip">Presenter: CityU President</span>
+      <span class="meta-chip">Prepared by: STC</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#journeys">1. User Stories &amp; Journeys</a></li>
+      <li><a href="#funnel">2. TOFU → MOFU → BOFU — Quick Explainer</a></li>
+      <li><a href="#matrix">3. Touchpoint Implementation Matrix (Summary)</a></li>
+      <li><a href="#pipeline">4. Data Flow &amp; Execution Pipeline</a></li>
+      <li><a href="#org">5. CityUX (Working Title) — Org Structure</a></li>
+      <li><a href="#ip">6. Open Source &amp; IP Model</a></li>
+      <li><a href="#practitioners">7. Practitioner-Instructors &amp; Content Developers</a></li>
+      <li><a href="#revenue">8. CityUX / AILI — Services &amp; Revenue</a></li>
+    </ol>
+  </div>
+
+  <!-- ============ 1: USER STORIES & JOURNEYS ============ -->
+  <div class="part-divider" id="journeys">
+    <div class="part-num">1</div>
+    <div>
+      <h2>User Stories &amp; Journeys</h2>
+      <div class="part-sub">The funnel isn't one path — six learners, six entry points, six different "wins"</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+
+      <div class="journey-card">
+        <div class="journey-header">
+          <div class="journey-avatar">🎥</div>
+          <div>
+            <div class="journey-name">The Self-Directed Learner</div>
+            <div class="journey-desc">Organic discovery via search or algorithm recommendation</div>
+          </div>
+        </div>
+        <div class="journey-path">
+          <span class="journey-stage tofu">TOFU · YouTube (official or practitioner-published)</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage mofu">MOFU · GitHub + Open edX</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage bofu">BOFU · Community Hub + Workshop</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage conversion">Conversion · Program registration</span>
+        </div>
+        <p class="journey-note">The "default" path the ecosystem is built around — most predictable journey to design touchpoints and nurture sequences around. Covers content from an official CityU channel <em>or</em> an individual practitioner-publisher, as long as that content routes into Open edX.</p>
+      </div>
+
+      <div class="journey-card">
+        <div class="journey-header">
+          <div class="journey-avatar">🎙️</div>
+          <div>
+            <div class="journey-name">Discovered via Industry Practitioner Content</div>
+            <div class="journey-desc">Finds CityUX indirectly — through a practitioner's own YouTube/blog/GitHub content, not an official CityU channel</div>
+          </div>
+        </div>
+        <div class="journey-path">
+          <span class="journey-stage tofu">TOFU · Practitioner-published content</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage" style="background: var(--bg); color: var(--slate); border: 1px dashed var(--border);">Branches by platform</span>
+        </div>
+        <p class="journey-note">An individual practitioner builds trust under their own name; if their content routes into Open edX it collapses into the Self-Directed Learner path above, and if it doesn't (yet), it follows a compressed path straight to Conversion — real example, today: <strong>STRIDE for AI Agents</strong>, a self-hosted GitHub Pages course.</p>
+      </div>
+
+      <div class="journey-card">
+        <div class="journey-header">
+          <div class="journey-avatar">🚔</div>
+          <div>
+            <div class="journey-name">The Frontline Professional</div>
+            <div class="journey-desc">e.g. an SPD officer or chief, reached through an institutional partnership</div>
+          </div>
+        </div>
+        <div class="journey-path">
+          <span class="journey-stage bofu">BOFU · Workshop (skill-up cohort)</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage mofu">MOFU · Open edX compliance modules</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage conversion">Conversion · Department-recognized credential</span>
+        </div>
+        <p class="journey-note">Skips TOFU discovery entirely — the department partnership <em>is</em> the entry point. "Conversion" here means a workplace-recognized micro-credential or compliance certificate, not CityU degree enrollment.</p>
+      </div>
+
+      <div class="journey-card">
+        <div class="journey-header">
+          <div class="journey-avatar">💬</div>
+          <div>
+            <div class="journey-name">The Community-First Explorer</div>
+            <div class="journey-desc">Finds CityUX through word of mouth, a starred GitHub repo, or a Discord invite from a peer</div>
+          </div>
+        </div>
+        <div class="journey-path">
+          <span class="journey-stage bofu">BOFU · Community Hub</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage mofu">MOFU · Open edX + GitHub (backfilled)</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage conversion">Conversion · Micro-credential or program interest</span>
+        </div>
+        <p class="journey-note">Enters "out of order" — proof the funnel isn't strictly linear. Real example, live today: the CityUX Discord has dedicated <code>#ebooks</code> and <code>#courses</code> channels routing members back into the ebook and course touchpoints.</p>
+      </div>
+
+      <div class="journey-card">
+        <div class="journey-header">
+          <div class="journey-avatar">📘</div>
+          <div>
+            <div class="journey-name">The Ebook-First Lead</div>
+            <div class="journey-desc">Discovers CityUX through a promoted ebook — a LinkedIn post, seminar handout, or workshop follow-up — before ever touching a course</div>
+          </div>
+        </div>
+        <div class="journey-path">
+          <span class="journey-stage tofu">TOFU · LinkedIn / social post</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage mofu">MOFU · Gated ebook download</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage bofu">BOFU · Nurture email + Community Hub invite</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage conversion">Conversion · Program registration or partnership conversation</span>
+        </div>
+        <p class="journey-note">The one journey where identity is captured at the <em>first</em> touchpoint, not the last — a real email, immediately. Real example, live today: <strong>CityU Guides</strong>, three gated ebooks already published (AI skills, first responders, career changers).</p>
+      </div>
+
+      <div class="journey-card">
+        <div class="journey-header">
+          <div class="journey-avatar">🌏</div>
+          <div>
+            <div class="journey-name">The Prospective International Student</div>
+            <div class="journey-desc">Reached via an institutional partnership abroad, culminating in an in-person visit — not just outreach</div>
+          </div>
+        </div>
+        <div class="journey-path">
+          <span class="journey-stage tofu">TOFU · Institutional partnership (e.g. iKW, Korea)</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage mofu">MOFU · Open edX pilot</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage bofu">BOFU · In-person Seattle visit</span>
+          <span class="journey-arrow">→</span>
+          <span class="journey-stage conversion">Conversion · Formal international enrollment</span>
+        </div>
+        <p class="journey-note">Highest-value outcome — full degree enrollment, not a micro-credential — but the longest cycle. Real example: the <strong>iKW Summer Program</strong> — Korean students traveled to Seattle for an in-person cohort, coursework delivered on the same Open edX instance used across this ecosystem.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ 2: TOFU/MOFU/BOFU QUICK EXPLAINER ============ -->
+  <div class="part-divider" id="funnel">
+    <div class="part-num">2</div>
+    <div>
+      <h2>TOFU → MOFU → BOFU — Quick Explainer</h2>
+      <div class="part-sub">In case a board member asks "what does that mean?"</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="funnel-mini">
+        <span class="funnel-mini-stage fm-tofu">TOFU · Discovery (YouTube)</span>
+        <span class="funnel-mini-arrow">→</span>
+        <span class="funnel-mini-stage fm-mofu">MOFU · Hands-on (GitHub + Open edX)</span>
+        <span class="funnel-mini-arrow">→</span>
+        <span class="funnel-mini-stage fm-bofu">BOFU · High-touch (Workshops, Seminars, Community Hub)</span>
+        <span class="funnel-mini-arrow">→</span>
+        <span class="funnel-mini-stage fm-conv">Conversion · Formal CityU enrollment</span>
+      </div>
+      <div class="explainer-grid">
+        <div class="explainer-card exp-tofu">
+          <div class="exp-tag">Top of Funnel</div>
+          <div class="exp-title">TOFU</div>
+          <p>Broad, low-commitment discovery — a YouTube video, a LinkedIn post, a gated ebook. The visitor doesn't know CityU yet.</p>
+        </div>
+        <div class="explainer-card exp-mofu">
+          <div class="exp-tag">Middle of Funnel</div>
+          <div class="exp-title">MOFU</div>
+          <p>Hands-on engagement — a GitHub repo, a self-paced Open edX pilot. The learner is now actively trying something, not just watching.</p>
+        </div>
+        <div class="explainer-card exp-bofu">
+          <div class="exp-tag">Bottom of Funnel</div>
+          <div class="exp-title">BOFU</div>
+          <p>High-touch validation — a live workshop, a seminar, the Community Hub. Real people, real feedback, real relationship.</p>
+        </div>
+        <div class="explainer-card exp-conv">
+          <div class="exp-tag">Conversion</div>
+          <div class="exp-title">Enrollment</div>
+          <p>Credit articulation, direct program registration, or a faculty/advisory touchpoint — the learner becomes a CityU student.</p>
+        </div>
+      </div>
+      <div class="callout callout-violet mt16">
+        <strong>Why it matters:</strong> this is a continuous feedback loop, not a one-way marketing funnel. Public content and community engagement surface real market signals — what people are actually asking for — which get refined through hands-on formats and feed directly back into CityU's core academic structure.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 3: TOUCHPOINT MATRIX SUMMARY ============ -->
+  <div class="part-divider" id="matrix">
+    <div class="part-num">3</div>
+    <div>
+      <h2>Touchpoint Implementation Matrix — Summary</h2>
+      <div class="part-sub">Six learner-facing nodes, plus the supply-side piece that fuels them</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="table-wrap">
+        <table class="matrix-summary">
+          <thead>
+            <tr>
+              <th>Touchpoint</th>
+              <th>Role in the funnel</th>
+              <th>Strategy</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>🎥 YouTube</td>
+              <td>TOFU</td>
+              <td>Inbound discovery &amp; top-of-funnel concept validation</td>
+              <td><span class="status-pill status-live">Live</span></td>
+            </tr>
+            <tr>
+              <td>🐙 GitHub</td>
+              <td>MOFU</td>
+              <td>Practical application &amp; technical asset distribution</td>
+              <td><span class="status-pill status-live">Live</span></td>
+            </tr>
+            <tr>
+              <td>🎓 Open edX</td>
+              <td>MOFU</td>
+              <td>Asynchronous self-paced validation &amp; pilot testing ground</td>
+              <td><span class="status-pill status-live">Live</span></td>
+            </tr>
+            <tr>
+              <td>🛠️ Workshop / 🎤 Seminar</td>
+              <td>BOFU</td>
+              <td>Synchronous, high-engagement cohort acceleration and demand testing</td>
+              <td><span class="status-pill status-live">Live</span></td>
+            </tr>
+            <tr>
+              <td>💬 Community Hub</td>
+              <td>BOFU</td>
+              <td>Continuous feedback, community-led discovery &amp; direct student support</td>
+              <td><span class="status-pill status-live">Live — pilot Discord</span></td>
+            </tr>
+            <tr>
+              <td>📘 Ebook / Gated Content</td>
+              <td>TOFU</td>
+              <td>Trade a free, high-value asset for an identified email — the strongest identity signal of any touchpoint</td>
+              <td><span class="status-pill status-live">Live — CityU Guides, 3 titles</span></td>
+            </tr>
+            <tr>
+              <td>🎥 Instructor Enablement</td>
+              <td>Supply-side</td>
+              <td>Trains CityU faculty who are already industry professionals to publish content — the fuel for every touchpoint above</td>
+              <td><span class="status-pill status-supply">Live — Industry Pro, Public Voice</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.83rem;color:var(--slate);margin:14px 0 0;">Full technical detail — integration hooks, KPIs per node, channel structure — lives in the <a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem Execution Plan</a>; this table is the boardroom-length version of the same six nodes.</p>
+    </div>
+  </div>
+
+  <!-- ============ 4: DATA FLOW PIPELINE (HORIZONTAL) ============ -->
+  <div class="part-divider" id="pipeline">
+    <div class="part-num">4</div>
+    <div>
+      <h2>Data Flow &amp; Execution Pipeline</h2>
+      <div class="part-sub">How a signal becomes a credential</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="flow-pipeline-h">
+        <div class="flow-stage-h fsh-violet">
+          <div class="flow-stage-h-label">Stage 1</div>
+          <div class="flow-stage-h-title">Community Signals &amp; Seminars</div>
+          <div class="flow-stage-h-desc">Identify skill gaps / industry demand.</div>
+        </div>
+        <div class="flow-arrow-h">→</div>
+        <div class="flow-stage-h fsh-red">
+          <div class="flow-stage-h-label">Stage 2</div>
+          <div class="flow-stage-h-title">YouTube &amp; GitHub Starter Repos</div>
+          <div class="flow-stage-h-desc">Public content &amp; hands-on assets.</div>
+        </div>
+        <div class="flow-arrow-h">→</div>
+        <div class="flow-stage-h fsh-blue">
+          <div class="flow-stage-h-label">Stage 3</div>
+          <div class="flow-stage-h-title">Open edX &amp; Workshops</div>
+          <div class="flow-stage-h-desc">Track completion &amp; learner mastery.</div>
+        </div>
+        <div class="flow-arrow-h">→</div>
+        <div class="flow-stage-h fsh-green">
+          <div class="flow-stage-h-label">Stage 4</div>
+          <div class="flow-stage-h-title">CityU Formal Curriculum</div>
+          <div class="flow-stage-h-desc">Credit transfer, degrees &amp; micro-credentials.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 5: CITYUX / AILI ORG STRUCTURE ============ -->
+  <div class="part-divider" id="org">
+    <div class="part-num">5</div>
+    <div>
+      <h2>CityUX (Working Title) — Org Structure</h2>
+      <div class="part-sub">AI is a specialty inside CityUX, not the name of the whole thing</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="callout callout-amber">
+        <strong>Naming is still open.</strong> "CityUX" is a working title for the umbrella Institute-Level Entity (ILE) — the alternative on the table is "Institute for Cyber &amp; Emerging Technologies." Either way, the shape is the same: the umbrella covers multiple specialties, and <strong>AILI (the AI Lifelong Institute) is one specialty underneath it</strong> — not the top-level name — so cybersecurity, quantum, and future tracks can join later without a rebrand.
+      </div>
+
+      <div class="point mt16">
+        <span class="point-label lbl-violet">Umbrella level</span>
+        <div class="point-body">The Institute-Level Entity reports to the President's Office directly, holds its own budget, and shares a joint steering committee with STC and other university leadership — not a "Chief of Staff" reporting line.</div>
+      </div>
+
+      <div class="mini-org mt16">
+        <div class="mini-node root">President's Office</div>
+        <div class="mini-connector"></div>
+        <div class="mini-node" style="background:var(--blue-dim);border-color:#bfdbfe;color:#1e3a8a;">CityUX <span class="mini-node-sub">(working title) — Institute-Level Entity</span></div>
+        <div class="mini-connector"></div>
+        <div class="mini-split">
+          <div class="mini-branch">
+            <div class="mini-connector"></div>
+            <div class="mini-node" style="background:var(--violet-dim);border-color:#c4b5fd;color:#4c1d95;">AILI <span class="mini-node-sub">AI Lifelong Institute — active</span></div>
+          </div>
+          <div class="mini-branch">
+            <div class="mini-connector"></div>
+            <div class="mini-node pending">Cybersecurity <span class="mini-node-sub">future specialty</span></div>
+          </div>
+          <div class="mini-branch">
+            <div class="mini-connector"></div>
+            <div class="mini-node pending">Quantum <span class="mini-node-sub">future specialty</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="point mt16">
+        <span class="point-label lbl-teal">Inside AILI — already confirmed</span>
+        <div class="point-body">This layer doesn't change with the naming decision above — it's the governance shape already agreed to STC and Education &amp; Leadership.</div>
+      </div>
+
+      <div class="mini-org mt16" style="max-width:420px;margin-left:auto;margin-right:auto;">
+        <div class="mini-node root" style="background:var(--violet-dim);border-color:#c4b5fd;color:#4c1d95;">AILI</div>
+        <div class="mini-connector"></div>
+        <div class="mini-split">
+          <div class="mini-branch">
+            <div class="mini-connector"></div>
+            <div class="mini-node">STC Liaison</div>
+          </div>
+          <div class="mini-branch">
+            <div class="mini-connector"></div>
+            <div class="mini-node">Education &amp; Leadership Liaison</div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:0.82rem;color:var(--slate);margin:10px 0 0;text-align:center;">Both Deans hold a <strong>Liaison</strong> seat, not ownership — this is what keeps AILI from becoming "one school's center wearing an Institute name tag."</p>
+    </div>
+  </div>
+
+  <!-- ============ 6: OPEN SOURCE & IP MODEL ============ -->
+  <div class="part-divider" id="ip">
+    <div class="part-num">6</div>
+    <div>
+      <h2>Open Source &amp; IP Model</h2>
+      <div class="part-sub">Who can contribute, what tooling is used, and who owns what</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Who can contribute</span>
+        <div class="point-body">Not limited to CityU faculty. <strong>Any CityU school</strong>, any outside practitioner with an idea worth teaching, and <strong>partner nonprofits</strong> can develop and pitch course content through the same pipeline.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Delivery &amp; assessment tooling</span>
+        <div class="point-body"><strong>Open edX</strong> stays the core platform — free, open-source, doesn't require a CityU email, and supports bring-your-own-course content.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Content ownership — open by default</span>
+        <div class="point-body"><strong>Nobody owns course content individually — it's open-source.</strong> Authors declare originality when they submit it; anyone downstream can reuse it as long as they give <strong>attribution</strong> back to the original author. License: <strong>Creative Commons Attribution (CC BY)</strong>.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Compliance exception</span>
+        <div class="point-body">Tracks with a genuine compliance need (e.g. law-enforcement or regulatory content) can <strong>declare ownership</strong> instead of releasing under the open license — the open-by-default rule isn't absolute where it would create legal exposure.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-red">Internal service-fee model</span>
+        <div class="point-body">When another CityU school wants training, seminar delivery, or infrastructure, it's billed as an <strong>internal service fee</strong> — not a grant or a favor. This is what lets the model scale across schools without every request becoming a governance conversation.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 7: PRACTITIONER-INSTRUCTORS & CONTENT DEVELOPERS ============ -->
+  <div class="part-divider" id="practitioners">
+    <div class="part-num">7</div>
+    <div>
+      <h2>Practitioner-Instructors &amp; Content Developers</h2>
+      <div class="part-sub">Industry credibility in front of the camera, instructional support behind it</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="role-card">
+        <div class="role-head">
+          <span class="role-badge">Delivery Layer</span>
+          <div class="role-title">Practitioner-Instructors &amp; Content Developers</div>
+          <div class="role-sub">How the content that fuels the funnel actually gets made</div>
+        </div>
+        <div class="role-body">
+          <div class="role-item">Industry leaders and chiefs serve as instructors in the asynchronous model</div>
+          <div class="role-item">Instructional content developers support behind the scenes — scripting, video, quiz design</div>
+          <div class="role-item">Sourced through STC's existing practitioner-publisher pipeline</div>
+          <div class="role-item">Open beyond CityU staff — outside practitioners pitching their own course idea, and partner nonprofits developing content, enter through this same pipeline</div>
+          <div class="role-item">The STC Liaison sources practitioner-instructors specifically for the Maritime OT and AI-literacy tracks</div>
+        </div>
+      </div>
+
+      <div class="callout callout-violet mt16">
+        <strong>The supply side is already running.</strong> <em>Industry Pro, Public Voice</em> is a live course that trains CityU instructors who are already industry professionals to turn what they already teach into public content — video, writing, talks — that builds their own reputation and CityU's visibility, on a time budget that respects their day job. This is the mechanism that produces the "Discovered via Industry Practitioner Content" journey from Part 1, rather than leaving it to chance.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 8: SERVICES & REVENUE ============ -->
+  <div class="part-divider" id="revenue">
+    <div class="part-num">8</div>
+    <div>
+      <h2>CityUX / AILI — Services &amp; Revenue</h2>
+      <div class="part-sub">What it actually sells, to whom, and what it costs to run</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="flow-grid">
+        <div class="flow-card">
+          <div class="flow-name" style="color:var(--green);">External</div>
+          <ul>
+            <li>Continuing education</li>
+            <li>Industry certification</li>
+            <li>Industry license</li>
+            <li>Digital badge (per-seminar credential)</li>
+            <li>Long-term: e-commerce marketplace — B2C first, then B2B</li>
+          </ul>
+        </div>
+        <div class="flow-card">
+          <div class="flow-name" style="color:var(--blue);">Internal</div>
+          <ul>
+            <li>Other schools buy/license an existing course rather than building their own</li>
+            <li>Learner data passed to the marketing team</li>
+            <li>Service-based — internal fee when another school draws on this capacity</li>
+          </ul>
+        </div>
+        <div class="flow-card">
+          <div class="flow-name" style="color:var(--amber);">To Support</div>
+          <ul>
+            <li>Infrastructure (Open edX hosting, tooling)</li>
+            <li>Training for instructors</li>
+            <li>Training for authors</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout-teal mt16">
+        <strong>Naming: seminar, not workshop.</strong> The delivery format is branded a <strong>seminar</strong> going forward — "workshop" stays reserved for internal planning sessions. The SPD and Maritime frontline tracks ship under one external brand, <strong>The Frontline Professional</strong>, so officers and port/maritime workers see a single, recognizable series.
+      </div>
+
+      <div class="callout callout-amber mt16">
+        <strong>Top-of-funnel: YouTube to course.</strong> Short-form content on YouTube and social media is the entry point — anybody with an idea worth selling pitches a topic, it gets tested as a video first, and only the ones that land turn into a full seminar or course. Same TOFU → MOFU → BOFU logic as Part 2 above — this is a content source feeding that funnel, not a separate one.
+      </div>
+
+      <div class="callout callout-violet mt16">
+        <strong>Owning the marketplace, not renting it.</strong> The long-term marketplace runs on <code>CDUX.edu</code> (official domain), with a <code>CDUX.com</code> floated for the paid marketplace phase — positioned so CityU owns the customer relationship directly, rather than depending on a Coursera-style platform that keeps it.
+      </div>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Full funnel detail</span>
+        <div class="point-body"><a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem — Execution Plan</a> — every touchpoint's KPIs, technical integration, and channel structure in full</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Full governance detail</span>
+        <div class="point-body"><a href="aili-governance-options.html">AILI — Governance, Scope &amp; Revenue Model</a> — roles, phasing, and open questions in full</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">What was decided Jul 24</span>
+        <div class="point-body"><a href="meeting-notes-aili-2026-07-24.html">Meeting Notes — AILI / CityU X, July 24 2026</a> — the naming pivot and action items this page is built from</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

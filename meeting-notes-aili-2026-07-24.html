@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — AILI / CityU X with the President, July 24 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    /* Revenue tiers */
+    .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .tier-grid { grid-template-columns: 1fr; } }
+    .tier-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .tier-card .tier-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .tier-card ul { margin: 0; padding-left: 16px; font-size: 0.84rem; color: var(--slate); }
+    .tier-card ul li { margin-bottom: 5px; line-height: 1.4; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+
+    .persona-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .persona-grid { grid-template-columns: 1fr; } }
+    .persona-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .persona-card .persona-name { font-size: 0.86rem; font-weight: 700; margin-bottom: 6px; }
+    .persona-card .persona-desc { font-size: 0.83rem; color: var(--slate); line-height: 1.5; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="briefing-cityu-president-2026-07-24.html">Briefing — CityU President — Jul 24, 2026</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — AILI / CityU X, July 24 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes</div>
+    <h1>AILI / CityU X — Meeting with the President, July 24 2026</h1>
+    <p class="subtitle">Clark and Sam presented the AILI briefing, governance options, and CityUX Open Ecosystem funnel to the President. She validated the funnel and touchpoint model, pushed back on full independence from STC, ruled out a Chief-of-Staff reporting line, and asked for the "AI" name to be broadened. This page captures what was actually decided in the room, as distinct from the <a href="briefing-cityu-president-2026-07-24.html">prep briefing</a> that walked in.</p>
+    <div class="meta-row">
+      <span class="meta-chip">July 24, 2026</span>
+      <span class="meta-chip">President, Sam &amp; Clark</span>
+      <span class="meta-chip">Follows the Jul 24 briefing</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#governance">Governance — Confirmed</a></li>
+      <li><a href="#naming">Naming &amp; Branding — Open</a></li>
+      <li><a href="#platform">Platform, IP &amp; Revenue Model</a></li>
+      <li><a href="#funnel">Funnel &amp; Ebooks — Validated</a></li>
+      <li><a href="#personas">Target Personas — Still Too Broad</a></li>
+      <li><a href="#actions">Action Items</a></li>
+    </ol>
+  </div>
+
+  <!-- Governance -->
+  <div class="section" id="governance">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🏛️</div>
+      <div>
+        <h2>Governance — Confirmed</h2>
+        <div class="section-sub">Institute-Level Entity (ILE), reporting line, and STC ownership</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Structure</span>
+        <div class="point-body">
+          The proposal is an <strong>Institute-Level Entity (ILE)</strong>: it reports directly to the <strong>President's Office</strong>, holds its own budget, and shares a joint steering committee with STC and other university leadership. Other departments hold a <strong>liaison</strong> relationship to it rather than ownership — this is deliberate, to avoid turf conflicts and let the ILE move across schools quickly.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-red">Not Chief of Staff</span>
+        <div class="point-body">
+          The President explicitly ruled out a Chief-of-Staff reporting line in this meeting — the line is the <strong>President's Office directly</strong>. This resolves the ambiguity flagged in the <a href="meeting-notes-aili-2026-07-23.html">July 23 prep notes</a>, where Chief of Staff was still floating as an open, unsettled option.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">STC ownership retained</span>
+        <div class="point-body">
+          The President pushed back on treating this as a spin-off independent of STC: <em>"if everyone owns it, no one owns it."</em> STC keeps substantive ownership and staffing through this soft-launch phase; the President's-Office reporting line is about agility and signaling, not about STC losing the initiative.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Framing note</span>
+        <div class="point-body">
+          Avoid calling this a <strong>"task force"</strong> in any internal or board-facing material — the President wants it described as an internal STC project/small dedicated team, since university audiences over-read signals coming out of the President's Office.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Naming -->
+  <div class="section" id="naming">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🏷️</div>
+      <div>
+        <h2>Naming &amp; Branding — Open</h2>
+        <div class="section-sub">"AI Lifelong Institute" (AILI) is too narrow; not yet finalized</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Why it's changing</span>
+        <div class="point-body">
+          The President felt <strong>"AI"</strong> as the top-level name is too narrow — she wants room to cover cybersecurity, quantum, and future specialties without a rebrand each time, and named underserved recruiting targets (TikTok, Nintendo, Pinterest cybersecurity/tech roles in Seattle) the current AI-only framing doesn't obviously speak to.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Direction</span>
+        <div class="point-body">
+          Keep <strong>"Institute"</strong> as the umbrella; push AI down to be one specialty/track underneath it, alongside siblings like cybersecurity and quantum. Two umbrella candidates surfaced: <strong>"CityU X" / "CDUX"</strong> (echoing edX, 10X) and <strong>"Institute for Cyber &amp; Emerging Technologies."</strong>
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Domains</span>
+        <div class="point-body">
+          <code>CDUX.edu</code> as the official, President-approved domain, plus a separate internal/practice domain for testing. A <code>CDUX.com</code> was also floated specifically for the later paid marketplace phase — owning the marketplace relationship rather than renting it from a Coursera-style platform.
+        </div>
+      </div>
+      <div class="callout callout-amber mt16">
+        <strong>Not decided:</strong> the umbrella name is explicitly unresolved as of this meeting. Don't treat "CityU X" as final in board materials — confirm with Clark/Sam before it's used as the public-facing name.
+      </div>
+    </div>
+  </div>
+
+  <!-- Platform / IP / Revenue -->
+  <div class="section" id="platform">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🎓</div>
+      <div>
+        <h2>Platform, IP &amp; Revenue Model</h2>
+        <div class="section-sub">Open edX, CC-BY licensing, and a tiered revenue plan</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">Platform</span>
+        <div class="point-body">
+          Self-hosted <strong>Open edX</strong> "core shell" (currently ~$78/mo on Sam's own hosting) — free/open-source, doesn't require a CityU email (lets outside audiences like the iKW Korean partnership in), and supports bring-your-own-course content.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Licensing</span>
+        <div class="point-body">
+          Open content uses <strong>Creative Commons Attribution (CC BY)</strong>. Watch for third-party copyright issues when importing outside courses.
+        </div>
+      </div>
+      <div class="tier-grid mt16">
+        <div class="tier-card">
+          <div class="tier-name" style="color:var(--slate);">Short-term / internal</div>
+          <ul>
+            <li>Service-based support</li>
+            <li>Data sharing with marketing</li>
+            <li>Instructor training/enablement</li>
+          </ul>
+        </div>
+        <div class="tier-card">
+          <div class="tier-name" style="color:var(--amber);">Mid-term</div>
+          <ul>
+            <li>Continuing-ed &amp; industry certification workshops</li>
+            <li>Contract/compliance training (e.g. a police department pays for a custom course; CityU also trains their staff to co-teach it)</li>
+            <li>Internal course licensing between CityU schools</li>
+          </ul>
+        </div>
+        <div class="tier-card">
+          <div class="tier-name" style="color:var(--green);">Long-term / external (B2C &amp; B2B)</div>
+          <ul>
+            <li>E-commerce marketplace, B2C first then B2B</li>
+            <li>Digital badges</li>
+            <li>External organizational partnerships</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Funnel -->
+  <div class="section" id="funnel">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🔁</div>
+      <div>
+        <h2>Funnel &amp; Ebooks — Validated</h2>
+        <div class="section-sub">TOFU → MOFU → BOFU → Conversion, confirmed as-is</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-green">
+        <strong>President's reaction:</strong> "really smart," "fantastic" — the TOFU→MOFU→BOFU→Conversion funnel and the six-touchpoint model (YouTube, GitHub, Open edX, Workshop, Seminar, Community Hub) were validated without changes. Full architecture lives in the <a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem Execution Plan</a>.
+      </div>
+      <div class="point mt16">
+        <span class="point-label lbl-teal">Gated ebooks confirmed as TOFU</span>
+        <div class="point-body">
+          Branded <strong>"CityU Guides"</strong> ebooks (e.g. "AI Skills Every IT Professional Needs by 2027," "Anxiety to Confidence") capture name/email/persona into a marketing Google Sheet alongside YouTube as a top-of-funnel node.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Persona options trimmed</span>
+        <div class="point-body">
+          Lead-capture persona choices are: prospective student, current student, corporate/employer, educational community. The standalone <strong>"partner"</strong> option was cut on the President's instruction as premature.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personas -->
+  <div class="section" id="personas">
+    <div class="section-header">
+      <div class="section-icon icon-red">🎯</div>
+      <div>
+        <h2>Target Personas — Still Too Broad</h2>
+        <div class="section-sub">Open action item, not finalized</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-amber">
+        The President rejected <strong>"everyone"</strong> as a target and asked for 2-3 concrete personas before the next round of materials. The candidates below were raised in discussion but not narrowed down or prioritized.
+      </div>
+      <div class="persona-grid mt16">
+        <div class="persona-card">
+          <div class="persona-name">AI-anxious degree-seekers</div>
+          <div class="persona-desc">Feel pressured into an AI-adjacent credential without being technical themselves.</div>
+        </div>
+        <div class="persona-card">
+          <div class="persona-name">Self-taught, uncredentialed</div>
+          <div class="persona-desc">Helpdesk workers, gamers, hobbyists who are informally skilled but have no formal credential to show for it.</div>
+        </div>
+        <div class="persona-card">
+          <div class="persona-name">"Second-chance" adult learners</div>
+          <div class="persona-desc">Career-interrupted or career-changing nontraditional students.</div>
+        </div>
+        <div class="persona-card">
+          <div class="persona-name">Budget-constrained nonprofits</div>
+          <div class="persona-desc">YMCA-style organizations with small but real professional-development budgets.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Items -->
+  <div class="section" id="actions">
+    <div class="section-header">
+      <div class="section-icon icon-blue">✅</div>
+      <div>
+        <h2>Action Items</h2>
+        <div class="section-sub">Owned by Clark/Sam unless noted otherwise</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check">1</span>
+          <div class="action-body">Review Jade's notes from the prior AI Institute meeting and reply.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">2</span>
+          <div class="action-body">Send the President an updated planning page/deck (including the governance/ILE section) by <strong>Tuesday, July 28</strong> — she's folding it into her board report; a voiceover-style walkthrough is acceptable given her schedule.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">3</span>
+          <div class="action-body">Register <code>CDUX.edu</code> and set up the Open edX instance; purchase the internal/practice domain separately.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">4</span>
+          <div class="action-body">Sam: build a simple demo (2-5 courses) plus Discord infrastructure, and produce the first YouTube intro video + gated ebook for lead capture — targeting a soft launch in January.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">5</span>
+          <div class="action-body">Budget decision pending: converting an existing open content-developer position into a PM position for this project — awaiting President's approval.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">6</span>
+          <div class="action-body">Sam continues as part-time project lead at roughly 20% of his time; identify a dedicated student/staff member to lead the website/content build (~19.5 hrs/wk if a student) — resourced from existing budget.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">7</span>
+          <div class="action-body">President is largely unavailable for ~2 weeks (board prep + board meeting the week of July 28); next major decision checkpoint is early August 2026.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Walked in with</span>
+        <div class="point-body"><a href="briefing-cityu-president-2026-07-24.html">Briefing — CityU President — July 24, 2026</a> — the three-part briefing prepared for this meeting</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Governance detail</span>
+        <div class="point-body"><a href="aili-governance-options.html">AILI — Governance, Scope &amp; Revenue Model</a> — the fuller working plan; update its naming section once "CityU X" vs. "Institute for Cyber &amp; Emerging Technologies" is settled</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Prep session</span>
+        <div class="point-body"><a href="meeting-notes-aili-2026-07-23.html">Meeting Notes — AILI Prep, July 23 2026</a> — the Clark/Sam session the day before; its Chief-of-Staff ambiguity is resolved by this meeting</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Funnel detail</span>
+        <div class="point-body"><a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem — Execution Plan</a> — the full funnel architecture validated in this meeting</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

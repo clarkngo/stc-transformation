@@ -112,27 +112,59 @@
     .lbl-violet { background: var(--violet-dim); color: var(--violet); }
     .lbl-teal { background: var(--teal-dim); color: var(--teal); }
 
-    /* Funnel mini strip (TOFU/MOFU/BOFU quick view) */
-    .funnel-mini { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0 4px; }
-    .funnel-mini-stage { font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 20px; white-space: nowrap; }
-    .fm-tofu { background: var(--blue-dim); color: var(--blue); }
-    .fm-mofu { background: var(--violet-dim); color: var(--violet); }
-    .fm-bofu { background: var(--amber-dim); color: var(--amber); }
-    .fm-conv { background: var(--green-dim); color: var(--green); }
-    .funnel-mini-arrow { color: var(--slate-light); font-size: 0.95rem; }
+    /* Hub-and-spoke ecosystem diagram (animated) */
+    .eco-diagram-wrap {
+      background: rgba(255,255,255,0.7);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 28px 20px 20px;
+    }
+    .eco-title {
+      text-align: center; font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .eco-sub {
+      text-align: center; font-size: 0.83rem; color: var(--slate);
+      margin-bottom: 24px;
+    }
+    .eco-legend {
+      margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .eco-legend-title {
+      text-align: center; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--slate); margin-bottom: 12px;
+    }
+    .eco-legend-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 8px;
+    }
+    .eco-leg-item { display: flex; gap: 8px; align-items: flex-start; font-size: 0.78rem; }
+    .eco-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; margin-top:3px; }
 
-    /* Explainer cards for TOFU/MOFU/BOFU */
+    /* Funnel mini strip (TOFU/MOFU/BOFU quick view) — animated */
+    @keyframes bfade-up { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes barrow-flow { 0%,100% { opacity:0.45; transform:translateX(0); } 50% { opacity:1; transform:translateX(4px); } }
+    .funnel-mini { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0 4px; }
+    .funnel-mini-stage { font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 20px; white-space: nowrap; animation: bfade-up 0.5s ease both; }
+    .fm-tofu { background: var(--blue-dim); color: var(--blue); animation-delay: 0.05s; }
+    .fm-mofu { background: var(--violet-dim); color: var(--violet); animation-delay: 0.2s; }
+    .fm-bofu { background: var(--amber-dim); color: var(--amber); animation-delay: 0.35s; }
+    .fm-conv { background: var(--green-dim); color: var(--green); animation-delay: 0.5s; }
+    .funnel-mini-arrow { color: var(--slate-light); font-size: 0.95rem; display: inline-block; animation: barrow-flow 1.4s ease-in-out infinite; }
+
+    /* Explainer cards for TOFU/MOFU/BOFU — animated */
     .explainer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
     @media (max-width: 800px) { .explainer-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 480px) { .explainer-grid { grid-template-columns: 1fr; } }
-    .explainer-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; }
+    .explainer-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; animation: bfade-up 0.5s ease both; }
     .explainer-card .exp-tag { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
     .explainer-card .exp-title { font-weight: 700; font-size: 0.88rem; margin-bottom: 4px; }
     .explainer-card p { margin: 0; font-size: 0.82rem; color: var(--slate); line-height: 1.5; }
-    .exp-tofu { background: var(--blue-dim); } .exp-tofu .exp-tag { color: var(--blue); }
-    .exp-mofu { background: var(--violet-dim); } .exp-mofu .exp-tag { color: var(--violet); }
-    .exp-bofu { background: var(--amber-dim); } .exp-bofu .exp-tag { color: var(--amber); }
-    .exp-conv { background: var(--green-dim); } .exp-conv .exp-tag { color: var(--green); }
+    .exp-tofu { background: var(--blue-dim); animation-delay: 0.1s; } .exp-tofu .exp-tag { color: var(--blue); }
+    .exp-mofu { background: var(--violet-dim); animation-delay: 0.25s; } .exp-mofu .exp-tag { color: var(--violet); }
+    .exp-bofu { background: var(--amber-dim); animation-delay: 0.4s; } .exp-bofu .exp-tag { color: var(--amber); }
+    .exp-conv { background: var(--green-dim); animation-delay: 0.55s; } .exp-conv .exp-tag { color: var(--green); }
 
     /* Summarized touchpoint matrix table */
     .table-wrap { overflow-x: auto; }
@@ -195,6 +227,20 @@
     .role-item { display: flex; gap: 8px; padding: 6px 0; border-top: 1px solid var(--border); font-size: 0.86rem; align-items: flex-start; }
     .role-item::before { content: '→'; color: var(--slate-light); flex-shrink: 0; font-weight: 700; }
 
+    /* Target persona cards */
+    .persona-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 800px) { .persona-grid { grid-template-columns: 1fr; } }
+    .persona-card { border-radius: var(--radius-sm); border: 1px solid var(--border); border-top-width: 4px; border-top-style: solid; background: var(--card); box-shadow: var(--shadow); padding: 18px 18px 16px; }
+    .persona-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .persona-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; background: var(--bg); flex-shrink: 0; }
+    .persona-name { font-weight: 800; font-size: 0.95rem; }
+    .persona-anchor { font-size: 0.78rem; color: var(--slate); margin-top: 1px; }
+    .persona-desc { font-size: 0.85rem; color: var(--ink); line-height: 1.6; margin: 0 0 12px; }
+    .persona-tag { display: inline-block; font-size: 0.76rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; text-decoration: none; }
+    .persona-amber { border-top-color: var(--amber); } .persona-amber .persona-tag { background: var(--amber-dim); color: var(--amber); }
+    .persona-green { border-top-color: var(--green); } .persona-green .persona-tag { background: var(--green-dim); color: var(--green); }
+    .persona-violet { border-top-color: var(--violet); } .persona-violet .persona-tag { background: var(--violet-dim); color: var(--violet); }
+
     /* User journey cards */
     .journey-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 20px; background: var(--card); box-shadow: var(--shadow); margin-bottom: 16px; }
     .journey-card:last-child { margin-bottom: 0; }
@@ -242,20 +288,77 @@
   <div class="toc">
     <h2>Contents</h2>
     <ol>
-      <li><a href="#journeys">1. User Stories &amp; Journeys</a></li>
-      <li><a href="#funnel">2. TOFU → MOFU → BOFU — Quick Explainer</a></li>
-      <li><a href="#matrix">3. Touchpoint Implementation Matrix (Summary)</a></li>
-      <li><a href="#pipeline">4. Data Flow &amp; Execution Pipeline</a></li>
-      <li><a href="#org">5. CityUX (Working Title) — Org Structure</a></li>
-      <li><a href="#ip">6. Open Source &amp; IP Model</a></li>
-      <li><a href="#practitioners">7. Practitioner-Instructors &amp; Content Developers</a></li>
-      <li><a href="#revenue">8. CityUX / AILI — Services &amp; Revenue</a></li>
+      <li><a href="#personas">1. Target Personas</a></li>
+      <li><a href="#journeys">2. User Stories &amp; Journeys</a></li>
+      <li><a href="#ecosystem">3. Content Ecosystem — CityUX / AILI</a></li>
+      <li><a href="#funnel">4. TOFU → MOFU → BOFU — Quick Explainer</a></li>
+      <li><a href="#matrix">5. Touchpoint Implementation Matrix (Summary)</a></li>
+      <li><a href="#pipeline">6. Data Flow &amp; Execution Pipeline</a></li>
+      <li><a href="#org">7. CityUX (Working Title) — Org Structure</a></li>
+      <li><a href="#ip">8. Open Source &amp; IP Model</a></li>
+      <li><a href="#practitioners">9. Practitioner-Instructors &amp; Content Developers</a></li>
+      <li><a href="#revenue">10. CityUX / AILI — Services &amp; Revenue</a></li>
     </ol>
   </div>
 
-  <!-- ============ 1: USER STORIES & JOURNEYS ============ -->
-  <div class="part-divider" id="journeys">
+  <!-- ============ 1: TARGET PERSONAS ============ -->
+  <div class="part-divider" id="personas">
     <div class="part-num">1</div>
+    <div>
+      <h2>Target Personas</h2>
+      <div class="part-sub">Not "everyone" — three concrete people the funnel is actually built for</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="callout callout-amber" style="margin-bottom:16px;">
+        <strong>Why three, and why these three:</strong> "everyone" isn't a target. Each persona below maps to a real touchpoint already live in the ecosystem — not a hypothetical audience we'd need to go build something new for.
+      </div>
+
+      <div class="persona-grid">
+        <div class="persona-card persona-amber">
+          <div class="persona-head">
+            <span class="persona-avatar">😟</span>
+            <div>
+              <div class="persona-name">The Anxious Achiever</div>
+              <div class="persona-anchor">Aisha, 31 — marketing associate</div>
+            </div>
+          </div>
+          <p class="persona-desc">Reads an AI headline every morning and isn't sure her job title survives five more years. Not technical, doesn't want to become an engineer — just wants enough fluency to not get left behind in her own field.</p>
+          <a class="persona-tag" href="#journeys">Typically enters via → The Ebook-First Lead</a>
+        </div>
+
+        <div class="persona-card persona-green">
+          <div class="persona-head">
+            <span class="persona-avatar">🛠️</span>
+            <div>
+              <div class="persona-name">The Self-Taught Fixer</div>
+              <div class="persona-anchor">Jordan, 24 — works the front desk</div>
+            </div>
+          </div>
+          <p class="persona-desc">The person everyone in the office asks to fix their laptop. Never thought of himself as "a tech person" because he never did well in school — a CS degree has never once occurred to him as something for people like him.</p>
+          <a class="persona-tag" href="#journeys">Typically enters via → Discovered via Industry Practitioner Content</a>
+        </div>
+
+        <div class="persona-card persona-violet">
+          <div class="persona-head">
+            <span class="persona-avatar">🌱</span>
+            <div>
+              <div class="persona-name">The Deferred-Dream Learner</div>
+              <div class="persona-anchor">Marisol, 49 — started an associate's degree at 19</div>
+            </div>
+          </div>
+          <p class="persona-desc">Work, then kids, then more work — the degree never got finished, but the door never fully closed either. Not intimidated by the material; tired of feeling like she missed her window. Needs the on-ramp to feel judgment-free.</p>
+          <a class="persona-tag" href="#journeys">Typically enters via → The Community-First Explorer</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 2: USER STORIES & JOURNEYS ============ -->
+  <div class="part-divider" id="journeys">
+    <div class="part-num">2</div>
     <div>
       <h2>User Stories &amp; Journeys</h2>
       <div class="part-sub">The funnel isn't one path — six learners, six entry points, six different "wins"</div>
@@ -299,6 +402,7 @@
           <span class="journey-stage" style="background: var(--bg); color: var(--slate); border: 1px dashed var(--border);">Branches by platform</span>
         </div>
         <p class="journey-note">An individual practitioner builds trust under their own name; if their content routes into Open edX it collapses into the Self-Directed Learner path above, and if it doesn't (yet), it follows a compressed path straight to Conversion — real example, today: <strong>STRIDE for AI Agents</strong>, a self-hosted GitHub Pages course.</p>
+        <a class="persona-tag" style="background:var(--green-dim);color:var(--green);margin-top:10px;" href="#personas">Persona fit → Jordan, The Self-Taught Fixer</a>
       </div>
 
       <div class="journey-card">
@@ -335,6 +439,7 @@
           <span class="journey-stage conversion">Conversion · Micro-credential or program interest</span>
         </div>
         <p class="journey-note">Enters "out of order" — proof the funnel isn't strictly linear. Real example, live today: the CityUX Discord has dedicated <code>#ebooks</code> and <code>#courses</code> channels routing members back into the ebook and course touchpoints.</p>
+        <a class="persona-tag" style="background:var(--violet-dim);color:var(--violet);margin-top:10px;" href="#personas">Persona fit → Marisol, The Deferred-Dream Learner</a>
       </div>
 
       <div class="journey-card">
@@ -355,6 +460,7 @@
           <span class="journey-stage conversion">Conversion · Program registration or partnership conversation</span>
         </div>
         <p class="journey-note">The one journey where identity is captured at the <em>first</em> touchpoint, not the last — a real email, immediately. Real example, live today: <strong>CityU Guides</strong>, three gated ebooks already published (AI skills, first responders, career changers).</p>
+        <a class="persona-tag" style="background:var(--amber-dim);color:var(--amber);margin-top:10px;" href="#personas">Persona fit → Aisha, The Anxious Achiever</a>
       </div>
 
       <div class="journey-card">
@@ -380,9 +486,170 @@
     </div>
   </div>
 
-  <!-- ============ 2: TOFU/MOFU/BOFU QUICK EXPLAINER ============ -->
+  <!-- ============ 3: CONTENT ECOSYSTEM ============ -->
+  <div class="part-divider" id="ecosystem">
+    <div class="part-num">3</div>
+    <div>
+      <h2>Content Ecosystem — CityUX / AILI</h2>
+      <div class="part-sub">Six components, one owner: CityUX / AILI designs, staffs, and runs every node below</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+
+      <div class="callout callout-violet" style="margin-bottom:16px;">
+        <strong>Who's responsible for this:</strong> YouTube, GitHub, Open edX, Workshops, Seminars, and the Community Hub aren't six separate efforts — they're all owned and operated by <strong>CityUX / AILI</strong>. One team runs the whole ecosystem end to end.
+      </div>
+
+      <!-- Hub-and-spoke radial diagram — pure SVG, animated -->
+      <div class="eco-diagram-wrap">
+        <div class="eco-title">CONTENT ECOSYSTEM · OWNED &amp; OPERATED BY CITYUX / AILI</div>
+        <div class="eco-sub">Every stage feeds directly into CityUX — delivered today by AILI</div>
+
+        <svg viewBox="0 0 660 700" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;display:block;margin:0 auto;" role="img" aria-label="Content Ecosystem hub-and-spoke diagram, feeding into CityUX via AILI">
+          <defs>
+            <marker id="barr-yt" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#dc2626"/></marker>
+            <marker id="barr-gh" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#16a34a"/></marker>
+            <marker id="barr-ch" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#7c3aed"/></marker>
+            <marker id="barr-sm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#b45309"/></marker>
+            <marker id="barr-ws" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#ea580c"/></marker>
+            <marker id="barr-ox" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1d4ed8"/></marker>
+            <radialGradient id="bcenter-grad" cx="40%" cy="35%">
+              <stop offset="0%" stop-color="#7c3aed"/>
+              <stop offset="100%" stop-color="#4c1d95"/>
+            </radialGradient>
+          </defs>
+          <style>
+            .beco-spoke { stroke-dasharray: 6 4; animation: beco-dash 1.2s linear infinite; }
+            .beco-spoke-yt { animation-delay:0s; }
+            .beco-spoke-gh { animation-delay:0.2s; }
+            .beco-spoke-ws { animation-delay:0.4s; }
+            .beco-spoke-ox { animation-delay:0.6s; }
+            .beco-spoke-sm { animation-delay:0.8s; }
+            .beco-spoke-ch { animation-delay:1.0s; }
+            @keyframes beco-dash { to { stroke-dashoffset: -28; } }
+            .beco-globe { animation: beco-pulse-svg 3s ease-in-out infinite; }
+            @keyframes beco-pulse-svg {
+              0%,100% { filter: drop-shadow(0 0 12px rgba(124,58,237,0.5)); }
+              50%      { filter: drop-shadow(0 0 28px rgba(124,58,237,0.85)); }
+            }
+            .beco-node-g { animation: beco-pop 0.6s ease both; transform-box: fill-box; transform-origin: center; }
+            @keyframes beco-pop { from { opacity:0; } to { opacity:1; } }
+            .beco-node-g:nth-of-type(1)  { animation-delay:0.05s; }
+            .beco-node-g:nth-of-type(2)  { animation-delay:0.15s; }
+            .beco-node-g:nth-of-type(3)  { animation-delay:0.25s; }
+            .beco-node-g:nth-of-type(4)  { animation-delay:0.35s; }
+            .beco-node-g:nth-of-type(5)  { animation-delay:0.45s; }
+            .beco-node-g:nth-of-type(6)  { animation-delay:0.55s; }
+          </style>
+
+          <!-- Outer ring -->
+          <circle cx="330" cy="330" r="125" fill="none" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4 6"/>
+
+          <!-- Spokes -->
+          <line class="beco-spoke beco-spoke-yt" x1="330" y1="128" x2="330" y2="205" stroke="#dc2626" stroke-width="2.5" marker-end="url(#barr-yt)" opacity="0.85"/>
+          <line class="beco-spoke beco-spoke-gh" x1="492" y1="188" x2="414" y2="266" stroke="#16a34a" stroke-width="2.5" marker-end="url(#barr-gh)" opacity="0.85"/>
+          <line class="beco-spoke beco-spoke-ws" x1="492" y1="472" x2="414" y2="394" stroke="#ea580c" stroke-width="2.5" marker-end="url(#barr-ws)" opacity="0.85"/>
+          <line class="beco-spoke beco-spoke-ox" x1="330" y1="532" x2="330" y2="455" stroke="#1d4ed8" stroke-width="2.5" marker-end="url(#barr-ox)" opacity="0.85"/>
+          <line class="beco-spoke beco-spoke-sm" x1="168" y1="472" x2="246" y2="394" stroke="#b45309" stroke-width="2.5" marker-end="url(#barr-sm)" opacity="0.85"/>
+          <line class="beco-spoke beco-spoke-ch" x1="168" y1="188" x2="246" y2="266" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#barr-ch)" opacity="0.85"/>
+
+          <!-- Center globe — CityUX brand, AILI as what's live -->
+          <g class="beco-globe">
+            <circle cx="330" cy="330" r="115" fill="url(#bcenter-grad)" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+            <text x="330" y="297" text-anchor="middle" font-size="9.5" font-weight="700" fill="rgba(255,255,255,0.7)" letter-spacing="1.5" font-family="system-ui,sans-serif">FEEDS INTO</text>
+            <text x="330" y="325" text-anchor="middle" font-size="22" font-weight="900" fill="white" font-family="system-ui,sans-serif">CityUX</text>
+            <text x="330" y="343" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.6)" font-family="system-ui,sans-serif">(working title)</text>
+            <text x="330" y="365" text-anchor="middle" font-size="11.5" font-weight="800" fill="white" font-family="system-ui,sans-serif">AILI — live</text>
+            <text x="330" y="382" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.6)" font-family="system-ui,sans-serif">first specialty to launch</text>
+          </g>
+
+          <!-- YouTube — top -->
+          <g class="beco-node-g" transform="translate(270,10)">
+            <rect width="120" height="82" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+            <rect x="46" y="8" width="28" height="28" rx="6" fill="#dc2626"/>
+            <text x="60" y="27" text-anchor="middle" font-size="13" fill="white" font-family="system-ui,sans-serif">▶</text>
+            <text x="60" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#dc2626" font-family="system-ui,sans-serif">YouTube</text>
+            <text x="60" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">TOFU · Video lectures</text>
+            <text x="60" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Concept explainers</text>
+          </g>
+
+          <!-- GitHub — top-right -->
+          <g class="beco-node-g" transform="translate(532,88)">
+            <rect width="118" height="82" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+            <rect x="45" y="8" width="28" height="28" rx="6" fill="#16a34a"/>
+            <text x="59" y="27" text-anchor="middle" font-size="13" fill="white" font-family="system-ui,sans-serif">⌥</text>
+            <text x="59" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#16a34a" font-family="system-ui,sans-serif">GitHub</text>
+            <text x="59" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">MOFU · Lab environments</text>
+            <text x="59" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Starter code</text>
+          </g>
+
+          <!-- Workshop — bottom-right -->
+          <g class="beco-node-g" transform="translate(532,490)">
+            <rect width="118" height="82" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+            <rect x="45" y="8" width="28" height="28" rx="6" fill="#ea580c"/>
+            <text x="59" y="27" text-anchor="middle" font-size="13" fill="white" font-family="system-ui,sans-serif">🔧</text>
+            <text x="59" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#ea580c" font-family="system-ui,sans-serif">Workshop</text>
+            <text x="59" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">BOFU · Hands-on curricula</text>
+            <text x="59" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Cohort feedback</text>
+          </g>
+
+          <!-- Open edX — bottom -->
+          <g class="beco-node-g" transform="translate(270,568)">
+            <rect width="120" height="82" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+            <rect x="46" y="8" width="28" height="28" rx="6" fill="#1d4ed8"/>
+            <text x="60" y="27" text-anchor="middle" font-size="8" font-weight="700" fill="white" font-family="system-ui,sans-serif">edX</text>
+            <text x="60" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#1d4ed8" font-family="system-ui,sans-serif">Open edX</text>
+            <text x="60" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">MOFU · Course pilots</text>
+            <text x="60" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Completion analytics</text>
+          </g>
+
+          <!-- Seminar — bottom-left -->
+          <g class="beco-node-g" transform="translate(10,490)">
+            <rect width="118" height="82" rx="10" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+            <rect x="45" y="8" width="28" height="28" rx="6" fill="#b45309"/>
+            <text x="59" y="27" text-anchor="middle" font-size="13" fill="white" font-family="system-ui,sans-serif">📢</text>
+            <text x="59" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#b45309" font-family="system-ui,sans-serif">Seminar</text>
+            <text x="59" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">BOFU · Guest lectures</text>
+            <text x="59" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Topic validation</text>
+          </g>
+
+          <!-- Community Hub — top-left -->
+          <g class="beco-node-g" transform="translate(10,88)">
+            <rect width="118" height="82" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+            <rect x="45" y="8" width="28" height="28" rx="6" fill="#7c3aed"/>
+            <text x="59" y="27" text-anchor="middle" font-size="13" fill="white" font-family="system-ui,sans-serif">◈</text>
+            <text x="59" y="52" text-anchor="middle" font-size="11" font-weight="800" fill="#7c3aed" font-family="system-ui,sans-serif">Community Hub</text>
+            <text x="59" y="65" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">BOFU · Demand signals</text>
+            <text x="59" y="76" text-anchor="middle" font-size="8.5" fill="#64748b" font-family="system-ui,sans-serif">Pain points</text>
+          </g>
+
+        </svg>
+
+        <!-- Legend -->
+        <div class="eco-legend">
+          <div class="eco-legend-title">What CityUX / AILI Runs at Each Stage</div>
+          <div class="eco-legend-grid">
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#dc2626;"></span><span><strong style="color:#dc2626;">YouTube</strong> — lecture library, student-facing demos</span></div>
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#16a34a;"></span><span><strong style="color:#16a34a;">GitHub</strong> — lab repos, battle-tested before students touch them</span></div>
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#7c3aed;"></span><span><strong style="color:#7c3aed;">Community Hub</strong> — real demand signals, syllabus priorities</span></div>
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#b45309;"></span><span><strong style="color:#b45309;">Seminar</strong> — guest lecturer pool, elective topic leads</span></div>
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#ea580c;"></span><span><strong style="color:#ea580c;">Workshop</strong> — project units, competency rubrics, grading standards</span></div>
+            <div class="eco-leg-item"><span class="eco-dot" style="background:#1d4ed8;"></span><span><strong style="color:#1d4ed8;">Open edX</strong> — pilot course shells submitted as credit proposals</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-violet mt16">
+        <strong>Why it matters:</strong> this is a continuous feedback loop, not a one-way marketing funnel. Public content and community engagement surface real market signals — what people are actually asking for — which get refined through hands-on formats and feed directly back into CityUX, delivered today by AILI.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 4: TOFU/MOFU/BOFU QUICK EXPLAINER ============ -->
   <div class="part-divider" id="funnel">
-    <div class="part-num">2</div>
+    <div class="part-num">4</div>
     <div>
       <h2>TOFU → MOFU → BOFU — Quick Explainer</h2>
       <div class="part-sub">In case a board member asks "what does that mean?"</div>
@@ -422,15 +689,12 @@
           <p>Credit articulation, direct program registration, or a faculty/advisory touchpoint — the learner becomes a CityU student.</p>
         </div>
       </div>
-      <div class="callout callout-violet mt16">
-        <strong>Why it matters:</strong> this is a continuous feedback loop, not a one-way marketing funnel. Public content and community engagement surface real market signals — what people are actually asking for — which get refined through hands-on formats and feed directly back into CityU's core academic structure.
-      </div>
     </div>
   </div>
 
-  <!-- ============ 3: TOUCHPOINT MATRIX SUMMARY ============ -->
+  <!-- ============ 5: TOUCHPOINT MATRIX SUMMARY ============ -->
   <div class="part-divider" id="matrix">
-    <div class="part-num">3</div>
+    <div class="part-num">5</div>
     <div>
       <h2>Touchpoint Implementation Matrix — Summary</h2>
       <div class="part-sub">Six learner-facing nodes, plus the supply-side piece that fuels them</div>
@@ -499,9 +763,9 @@
     </div>
   </div>
 
-  <!-- ============ 4: DATA FLOW PIPELINE (HORIZONTAL) ============ -->
+  <!-- ============ 6: DATA FLOW PIPELINE (HORIZONTAL) ============ -->
   <div class="part-divider" id="pipeline">
-    <div class="part-num">4</div>
+    <div class="part-num">6</div>
     <div>
       <h2>Data Flow &amp; Execution Pipeline</h2>
       <div class="part-sub">How a signal becomes a credential</div>
@@ -538,9 +802,9 @@
     </div>
   </div>
 
-  <!-- ============ 5: CITYUX / AILI ORG STRUCTURE ============ -->
+  <!-- ============ 7: CITYUX / AILI ORG STRUCTURE ============ -->
   <div class="part-divider" id="org">
-    <div class="part-num">5</div>
+    <div class="part-num">7</div>
     <div>
       <h2>CityUX (Working Title) — Org Structure</h2>
       <div class="part-sub">AI is a specialty inside CityUX, not the name of the whole thing</div>
@@ -566,7 +830,7 @@
         <div class="mini-split">
           <div class="mini-branch">
             <div class="mini-connector"></div>
-            <div class="mini-node" style="background:var(--violet-dim);border-color:#c4b5fd;color:#4c1d95;">AILI <span class="mini-node-sub">AI Lifelong Institute — active</span></div>
+            <div class="mini-node" style="background:var(--violet-dim);border-color:#c4b5fd;color:#4c1d95;">AILI <span class="mini-node-sub">AI Lifelong Institute — first to be implemented</span></div>
           </div>
           <div class="mini-branch">
             <div class="mini-connector"></div>
@@ -578,33 +842,12 @@
           </div>
         </div>
       </div>
-
-      <div class="point mt16">
-        <span class="point-label lbl-teal">Inside AILI — already confirmed</span>
-        <div class="point-body">This layer doesn't change with the naming decision above — it's the governance shape already agreed to STC and Education &amp; Leadership.</div>
-      </div>
-
-      <div class="mini-org mt16" style="max-width:420px;margin-left:auto;margin-right:auto;">
-        <div class="mini-node root" style="background:var(--violet-dim);border-color:#c4b5fd;color:#4c1d95;">AILI</div>
-        <div class="mini-connector"></div>
-        <div class="mini-split">
-          <div class="mini-branch">
-            <div class="mini-connector"></div>
-            <div class="mini-node">STC Liaison</div>
-          </div>
-          <div class="mini-branch">
-            <div class="mini-connector"></div>
-            <div class="mini-node">Education &amp; Leadership Liaison</div>
-          </div>
-        </div>
-      </div>
-      <p style="font-size:0.82rem;color:var(--slate);margin:10px 0 0;text-align:center;">Both Deans hold a <strong>Liaison</strong> seat, not ownership — this is what keeps AILI from becoming "one school's center wearing an Institute name tag."</p>
     </div>
   </div>
 
-  <!-- ============ 6: OPEN SOURCE & IP MODEL ============ -->
+  <!-- ============ 8: OPEN SOURCE & IP MODEL ============ -->
   <div class="part-divider" id="ip">
-    <div class="part-num">6</div>
+    <div class="part-num">8</div>
     <div>
       <h2>Open Source &amp; IP Model</h2>
       <div class="part-sub">Who can contribute, what tooling is used, and who owns what</div>
@@ -636,9 +879,9 @@
     </div>
   </div>
 
-  <!-- ============ 7: PRACTITIONER-INSTRUCTORS & CONTENT DEVELOPERS ============ -->
+  <!-- ============ 9: PRACTITIONER-INSTRUCTORS & CONTENT DEVELOPERS ============ -->
   <div class="part-divider" id="practitioners">
-    <div class="part-num">7</div>
+    <div class="part-num">9</div>
     <div>
       <h2>Practitioner-Instructors &amp; Content Developers</h2>
       <div class="part-sub">Industry credibility in front of the camera, instructional support behind it</div>
@@ -668,9 +911,9 @@
     </div>
   </div>
 
-  <!-- ============ 8: SERVICES & REVENUE ============ -->
+  <!-- ============ 10: SERVICES & REVENUE ============ -->
   <div class="part-divider" id="revenue">
-    <div class="part-num">8</div>
+    <div class="part-num">10</div>
     <div>
       <h2>CityUX / AILI — Services &amp; Revenue</h2>
       <div class="part-sub">What it actually sells, to whom, and what it costs to run</div>

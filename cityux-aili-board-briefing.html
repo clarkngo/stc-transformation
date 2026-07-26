@@ -178,26 +178,6 @@
     .status-wip { background: var(--amber-dim); color: var(--amber); }
     .status-supply { background: var(--violet-dim); color: var(--violet); }
 
-    /* Horizontal data-flow pipeline */
-    .flow-pipeline-h { display: flex; align-items: stretch; gap: 8px; }
-    .flow-stage-h {
-      flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border);
-      border-top-width: 5px; border-top-style: solid; border-radius: var(--radius-sm);
-      padding: 16px 16px; box-shadow: var(--shadow);
-    }
-    .flow-stage-h-label { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
-    .flow-stage-h-title { font-weight: 800; font-size: 0.92rem; color: var(--ink); }
-    .flow-stage-h-desc { font-size: 0.8rem; color: var(--slate); margin-top: 4px; }
-    .flow-arrow-h { display: flex; align-items: center; justify-content: center; color: var(--slate-light); font-size: 1.3rem; flex-shrink: 0; }
-    .fsh-violet { border-top-color: var(--violet); } .fsh-violet .flow-stage-h-label { color: var(--violet); }
-    .fsh-red { border-top-color: var(--red); } .fsh-red .flow-stage-h-label { color: var(--red); }
-    .fsh-blue { border-top-color: var(--blue); } .fsh-blue .flow-stage-h-label { color: var(--blue); }
-    .fsh-green { border-top-color: var(--green); } .fsh-green .flow-stage-h-label { color: var(--green); }
-    @media (max-width: 760px) {
-      .flow-pipeline-h { flex-direction: column; }
-      .flow-arrow-h { transform: rotate(90deg); padding: 2px 0; }
-    }
-
     /* Org diagram */
     .mini-org { display: flex; flex-direction: column; align-items: center; gap: 0; margin-bottom: 8px; }
     .mini-node { border-radius: 8px; padding: 10px 14px; text-align: center; font-size: 0.82rem; font-weight: 700; width: 100%; border: 1px solid var(--border); background: var(--bg); }
@@ -240,6 +220,18 @@
     .persona-amber { border-top-color: var(--amber); } .persona-amber .persona-tag { background: var(--amber-dim); color: var(--amber); }
     .persona-green { border-top-color: var(--green); } .persona-green .persona-tag { background: var(--green-dim); color: var(--green); }
     .persona-violet { border-top-color: var(--violet); } .persona-violet .persona-tag { background: var(--violet-dim); color: var(--violet); }
+
+    /* Research citations */
+    .cite { font-size: 0.68rem; font-weight: 700; color: var(--blue); text-decoration: none; vertical-align: super; margin-left: 2px; }
+    .cite:hover { text-decoration: underline; }
+    .sources-list { margin: 0; padding: 0; list-style: none; counter-reset: source; }
+    .source-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .source-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .source-item:first-child { padding-top: 0; }
+    .source-num { flex-shrink: 0; width: 20px; font-weight: 800; color: var(--slate-light); font-size: 0.8rem; }
+    .source-body a { color: var(--blue); font-weight: 600; text-decoration: none; }
+    .source-body a:hover { text-decoration: underline; }
+    .source-claim { color: var(--slate); font-size: 0.82rem; margin-top: 2px; }
 
     /* User journey cards */
     .journey-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 20px; background: var(--card); box-shadow: var(--shadow); margin-bottom: 16px; }
@@ -288,16 +280,15 @@
   <div class="toc">
     <h2>Contents</h2>
     <ol>
-      <li><a href="#personas">1. Target Personas</a></li>
-      <li><a href="#journeys">2. User Stories &amp; Journeys</a></li>
-      <li><a href="#ecosystem">3. Content Ecosystem — CityUX / AILI</a></li>
-      <li><a href="#funnel">4. TOFU → MOFU → BOFU — Quick Explainer</a></li>
-      <li><a href="#matrix">5. Touchpoint Implementation Matrix (Summary)</a></li>
-      <li><a href="#pipeline">6. Data Flow &amp; Execution Pipeline</a></li>
-      <li><a href="#org">7. CityUX (Working Title) — Org Structure</a></li>
-      <li><a href="#ip">8. Open Source &amp; IP Model</a></li>
-      <li><a href="#practitioners">9. Practitioner-Instructors &amp; Content Developers</a></li>
-      <li><a href="#revenue">10. CityUX / AILI — Services &amp; Revenue</a></li>
+      <li><a href="#personas">Target Personas</a></li>
+      <li><a href="#funnel">TOFU → MOFU → BOFU — Quick Explainer</a></li>
+      <li><a href="#journeys">User Stories &amp; Journeys</a></li>
+      <li><a href="#ecosystem">Content Ecosystem — CityUX / AILI</a></li>
+      <li><a href="#matrix">Touchpoint Implementation Matrix (Summary)</a></li>
+      <li><a href="#org">CityUX (Working Title) — Org Structure</a></li>
+      <li><a href="#ip">Open Source &amp; IP Model</a></li>
+      <li><a href="#practitioners">Practitioner-Instructors &amp; Content Developers</a></li>
+      <li><a href="#revenue">CityUX / AILI — Services &amp; Sustainability</a></li>
     </ol>
   </div>
 
@@ -325,7 +316,7 @@
               <div class="persona-anchor">Aisha, 31 — marketing associate</div>
             </div>
           </div>
-          <p class="persona-desc">Reads an AI headline every morning and isn't sure her job title survives five more years. Not technical, doesn't want to become an engineer — just wants enough fluency to not get left behind in her own field.</p>
+          <p class="persona-desc">Reads an AI headline every morning and isn't sure her job title survives five more years. Not technical, doesn't want to become an engineer — just wants enough fluency to not get left behind in her own field.<a class="cite" href="#sources">[1]</a></p>
           <a class="persona-tag" href="#journeys">Typically enters via → The Ebook-First Lead</a>
         </div>
 
@@ -337,7 +328,7 @@
               <div class="persona-anchor">Jordan, 24 — works the front desk</div>
             </div>
           </div>
-          <p class="persona-desc">The person everyone in the office asks to fix their laptop. Never thought of himself as "a tech person" because he never did well in school — a CS degree has never once occurred to him as something for people like him.</p>
+          <p class="persona-desc">The person everyone in the office asks to fix their laptop. Never thought of himself as "a tech person" because he never did well in school — a CS degree has never once occurred to him as something for people like him.<a class="cite" href="#sources">[2]</a></p>
           <a class="persona-tag" href="#journeys">Typically enters via → Discovered via Industry Practitioner Content</a>
         </div>
 
@@ -349,16 +340,61 @@
               <div class="persona-anchor">Marisol, 49 — started an associate's degree at 19</div>
             </div>
           </div>
-          <p class="persona-desc">Work, then kids, then more work — the degree never got finished, but the door never fully closed either. Not intimidated by the material; tired of feeling like she missed her window. Needs the on-ramp to feel judgment-free.</p>
+          <p class="persona-desc">Work, then kids, then more work — the degree never got finished, but the door never fully closed either. Not intimidated by the material; tired of feeling like she missed her window. Needs the on-ramp to feel judgment-free.<a class="cite" href="#sources">[3]</a></p>
           <a class="persona-tag" href="#journeys">Typically enters via → The Community-First Explorer</a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ============ 2: USER STORIES & JOURNEYS ============ -->
-  <div class="part-divider" id="journeys">
+  <!-- ============ 2: TOFU/MOFU/BOFU QUICK EXPLAINER ============ -->
+  <div class="part-divider" id="funnel">
     <div class="part-num">2</div>
+    <div>
+      <h2>TOFU → MOFU → BOFU — Quick Explainer</h2>
+      <div class="part-sub">In case a board member asks "what does that mean?" — a well-established marketing model, not something invented for this pitch<a class="cite" href="#sources">[4]</a></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-body">
+      <div class="funnel-mini">
+        <span class="funnel-mini-stage fm-tofu">TOFU · Discovery (YouTube)</span>
+        <span class="funnel-mini-arrow">→</span>
+        <span class="funnel-mini-stage fm-mofu">MOFU · Hands-on (GitHub + Open edX)</span>
+        <span class="funnel-mini-arrow">→</span>
+        <span class="funnel-mini-stage fm-bofu">BOFU · High-touch (Workshops, Seminars, Community Hub)</span>
+        <span class="funnel-mini-arrow">→</span>
+        <span class="funnel-mini-stage fm-conv">Conversion · Formal CityU enrollment</span>
+      </div>
+      <div class="explainer-grid">
+        <div class="explainer-card exp-tofu">
+          <div class="exp-tag">Top of Funnel</div>
+          <div class="exp-title">TOFU</div>
+          <p>Broad, low-commitment discovery — a YouTube video, a LinkedIn post, a gated ebook. The visitor doesn't know CityU yet.</p>
+        </div>
+        <div class="explainer-card exp-mofu">
+          <div class="exp-tag">Middle of Funnel</div>
+          <div class="exp-title">MOFU</div>
+          <p>Hands-on engagement — a GitHub repo, a self-paced Open edX pilot. The learner is now actively trying something, not just watching.</p>
+        </div>
+        <div class="explainer-card exp-bofu">
+          <div class="exp-tag">Bottom of Funnel</div>
+          <div class="exp-title">BOFU</div>
+          <p>High-touch validation — a live workshop, a seminar, the Community Hub. Real people, real feedback, real relationship.</p>
+        </div>
+        <div class="explainer-card exp-conv">
+          <div class="exp-tag">Conversion</div>
+          <div class="exp-title">Enrollment</div>
+          <p>Credit articulation, direct program registration, or a faculty/advisory touchpoint — the learner becomes a CityU student.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 3: USER STORIES & JOURNEYS ============ -->
+  <div class="part-divider" id="journeys">
+    <div class="part-num">3</div>
     <div>
       <h2>User Stories &amp; Journeys</h2>
       <div class="part-sub">The funnel isn't one path — six learners, six entry points, six different "wins"</div>
@@ -486,9 +522,9 @@
     </div>
   </div>
 
-  <!-- ============ 3: CONTENT ECOSYSTEM ============ -->
+  <!-- ============ 4: CONTENT ECOSYSTEM ============ -->
   <div class="part-divider" id="ecosystem">
-    <div class="part-num">3</div>
+    <div class="part-num">4</div>
     <div>
       <h2>Content Ecosystem — CityUX / AILI</h2>
       <div class="part-sub">Six components, one owner: CityUX / AILI designs, staffs, and runs every node below</div>
@@ -642,52 +678,7 @@
       </div>
 
       <div class="callout callout-violet mt16">
-        <strong>Why it matters:</strong> this is a continuous feedback loop, not a one-way marketing funnel. Public content and community engagement surface real market signals — what people are actually asking for — which get refined through hands-on formats and feed directly back into CityUX, delivered today by AILI.
-      </div>
-    </div>
-  </div>
-
-  <!-- ============ 4: TOFU/MOFU/BOFU QUICK EXPLAINER ============ -->
-  <div class="part-divider" id="funnel">
-    <div class="part-num">4</div>
-    <div>
-      <h2>TOFU → MOFU → BOFU — Quick Explainer</h2>
-      <div class="part-sub">In case a board member asks "what does that mean?"</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-body">
-      <div class="funnel-mini">
-        <span class="funnel-mini-stage fm-tofu">TOFU · Discovery (YouTube)</span>
-        <span class="funnel-mini-arrow">→</span>
-        <span class="funnel-mini-stage fm-mofu">MOFU · Hands-on (GitHub + Open edX)</span>
-        <span class="funnel-mini-arrow">→</span>
-        <span class="funnel-mini-stage fm-bofu">BOFU · High-touch (Workshops, Seminars, Community Hub)</span>
-        <span class="funnel-mini-arrow">→</span>
-        <span class="funnel-mini-stage fm-conv">Conversion · Formal CityU enrollment</span>
-      </div>
-      <div class="explainer-grid">
-        <div class="explainer-card exp-tofu">
-          <div class="exp-tag">Top of Funnel</div>
-          <div class="exp-title">TOFU</div>
-          <p>Broad, low-commitment discovery — a YouTube video, a LinkedIn post, a gated ebook. The visitor doesn't know CityU yet.</p>
-        </div>
-        <div class="explainer-card exp-mofu">
-          <div class="exp-tag">Middle of Funnel</div>
-          <div class="exp-title">MOFU</div>
-          <p>Hands-on engagement — a GitHub repo, a self-paced Open edX pilot. The learner is now actively trying something, not just watching.</p>
-        </div>
-        <div class="explainer-card exp-bofu">
-          <div class="exp-tag">Bottom of Funnel</div>
-          <div class="exp-title">BOFU</div>
-          <p>High-touch validation — a live workshop, a seminar, the Community Hub. Real people, real feedback, real relationship.</p>
-        </div>
-        <div class="explainer-card exp-conv">
-          <div class="exp-tag">Conversion</div>
-          <div class="exp-title">Enrollment</div>
-          <p>Credit articulation, direct program registration, or a faculty/advisory touchpoint — the learner becomes a CityU student.</p>
-        </div>
+        <strong>Why it matters:</strong> this is a continuous feedback loop, not a one-way marketing funnel. It starts with community signals and seminars surfacing real demand — what people are actually asking for — moves through public content and hands-on formats, and ends at <strong>CityU's formal curriculum</strong>: credit transfer, degrees, and micro-credentials. Everything above is owned end to end by CityUX, delivered today by AILI.
       </div>
     </div>
   </div>
@@ -763,48 +754,9 @@
     </div>
   </div>
 
-  <!-- ============ 6: DATA FLOW PIPELINE (HORIZONTAL) ============ -->
-  <div class="part-divider" id="pipeline">
-    <div class="part-num">6</div>
-    <div>
-      <h2>Data Flow &amp; Execution Pipeline</h2>
-      <div class="part-sub">How a signal becomes a credential</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-body">
-      <div class="flow-pipeline-h">
-        <div class="flow-stage-h fsh-violet">
-          <div class="flow-stage-h-label">Stage 1</div>
-          <div class="flow-stage-h-title">Community Signals &amp; Seminars</div>
-          <div class="flow-stage-h-desc">Identify skill gaps / industry demand.</div>
-        </div>
-        <div class="flow-arrow-h">→</div>
-        <div class="flow-stage-h fsh-red">
-          <div class="flow-stage-h-label">Stage 2</div>
-          <div class="flow-stage-h-title">YouTube &amp; GitHub Starter Repos</div>
-          <div class="flow-stage-h-desc">Public content &amp; hands-on assets.</div>
-        </div>
-        <div class="flow-arrow-h">→</div>
-        <div class="flow-stage-h fsh-blue">
-          <div class="flow-stage-h-label">Stage 3</div>
-          <div class="flow-stage-h-title">Open edX &amp; Workshops</div>
-          <div class="flow-stage-h-desc">Track completion &amp; learner mastery.</div>
-        </div>
-        <div class="flow-arrow-h">→</div>
-        <div class="flow-stage-h fsh-green">
-          <div class="flow-stage-h-label">Stage 4</div>
-          <div class="flow-stage-h-title">CityU Formal Curriculum</div>
-          <div class="flow-stage-h-desc">Credit transfer, degrees &amp; micro-credentials.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============ 7: CITYUX / AILI ORG STRUCTURE ============ -->
+  <!-- ============ 6: CITYUX / AILI ORG STRUCTURE ============ -->
   <div class="part-divider" id="org">
-    <div class="part-num">7</div>
+    <div class="part-num">6</div>
     <div>
       <h2>CityUX (Working Title) — Org Structure</h2>
       <div class="part-sub">AI is a specialty inside CityUX, not the name of the whole thing</div>
@@ -845,9 +797,9 @@
     </div>
   </div>
 
-  <!-- ============ 8: OPEN SOURCE & IP MODEL ============ -->
+  <!-- ============ 7: OPEN SOURCE & IP MODEL ============ -->
   <div class="part-divider" id="ip">
-    <div class="part-num">8</div>
+    <div class="part-num">7</div>
     <div>
       <h2>Open Source &amp; IP Model</h2>
       <div class="part-sub">Who can contribute, what tooling is used, and who owns what</div>
@@ -879,9 +831,9 @@
     </div>
   </div>
 
-  <!-- ============ 9: PRACTITIONER-INSTRUCTORS & CONTENT DEVELOPERS ============ -->
+  <!-- ============ 8: PRACTITIONER-INSTRUCTORS & CONTENT DEVELOPERS ============ -->
   <div class="part-divider" id="practitioners">
-    <div class="part-num">9</div>
+    <div class="part-num">8</div>
     <div>
       <h2>Practitioner-Instructors &amp; Content Developers</h2>
       <div class="part-sub">Industry credibility in front of the camera, instructional support behind it</div>
@@ -906,17 +858,17 @@
       </div>
 
       <div class="callout callout-violet mt16">
-        <strong>The supply side is already running.</strong> <em>Industry Pro, Public Voice</em> is a live course that trains CityU instructors who are already industry professionals to turn what they already teach into public content — video, writing, talks — that builds their own reputation and CityU's visibility, on a time budget that respects their day job. This is the mechanism that produces the "Discovered via Industry Practitioner Content" journey from Part 1, rather than leaving it to chance.
+        <strong>The supply side is already running.</strong> <em>Industry Pro, Public Voice</em> is a live course that trains CityU instructors who are already industry professionals to turn what they already teach into public content — video, writing, talks — that builds their own reputation and CityU's visibility, on a time budget that respects their day job. This is the mechanism that produces the "Discovered via Industry Practitioner Content" journey from Part 1, rather than leaving it to chance — riding a creator economy that's grown into a $250B+ market.<a class="cite" href="#sources">[5]</a>
       </div>
     </div>
   </div>
 
-  <!-- ============ 10: SERVICES & REVENUE ============ -->
+  <!-- ============ 9: SERVICES & SUSTAINABILITY ============ -->
   <div class="part-divider" id="revenue">
-    <div class="part-num">10</div>
+    <div class="part-num">9</div>
     <div>
-      <h2>CityUX / AILI — Services &amp; Revenue</h2>
-      <div class="part-sub">What it actually sells, to whom, and what it costs to run</div>
+      <h2>CityUX / AILI — Services &amp; Sustainability</h2>
+      <div class="part-sub">Funded to keep serving more people — not the other way around</div>
     </div>
   </div>
 
@@ -926,10 +878,10 @@
         <div class="flow-card">
           <div class="flow-name" style="color:var(--green);">External</div>
           <ul>
-            <li>Continuing education</li>
+            <li>Continuing education<a class="cite" href="#sources">[6]</a></li>
             <li>Industry certification</li>
             <li>Industry license</li>
-            <li>Digital badge (per-seminar credential)</li>
+            <li>Digital badge (per-seminar credential)<a class="cite" href="#sources">[7]</a></li>
             <li>Long-term: e-commerce marketplace — B2C first, then B2B</li>
           </ul>
         </div>
@@ -960,8 +912,76 @@
       </div>
 
       <div class="callout callout-violet mt16">
-        <strong>Owning the marketplace, not renting it.</strong> The long-term marketplace runs on <code>CDUX.edu</code> (official domain), with a <code>CDUX.com</code> floated for the paid marketplace phase — positioned so CityU owns the customer relationship directly, rather than depending on a Coursera-style platform that keeps it.
+        <strong>Owning the marketplace, not renting it.</strong> The long-term marketplace runs on <code>CDUX.edu</code> (official domain), with a <code>CDUX.com</code> floated for the paid marketplace phase — positioned so CityU owns the customer relationship directly, rather than depending on a Coursera-style platform that keeps it.<a class="cite" href="#sources">[8]</a>
       </div>
+    </div>
+  </div>
+
+  <!-- Sources -->
+  <div class="section" id="sources">
+    <div class="section-header">
+      <div class="section-icon icon-blue">📚</div>
+      <h2>Sources</h2>
+    </div>
+    <div class="section-body">
+      <ol class="sources-list">
+        <li class="source-item">
+          <span class="source-num">[1]</span>
+          <div class="source-body">
+            <a href="https://www.pewresearch.org/social-trends/2025/02/25/u-s-workers-are-more-worried-than-hopeful-about-future-ai-use-in-the-workplace/" target="_blank" rel="noopener">Pew Research Center — U.S. Workers Are More Worried Than Hopeful About Future AI Use in the Workplace (Feb 2025)</a>
+            <div class="source-claim">52% of workers are worried about AI's future impact on their jobs; 32% think it will mean fewer job opportunities for them long-term.</div>
+          </div>
+        </li>
+        <li class="source-item">
+          <span class="source-num">[2]</span>
+          <div class="source-body">
+            <a href="https://testlify.com/skills-based-hiring-statistics/" target="_blank" rel="noopener">Testlify — 65 Key Skills-Based Hiring Statistics for 2026</a>
+            <div class="source-claim">85% of employers now use skills-based hiring; roughly 20% of U.S. job postings have dropped degree requirements.</div>
+          </div>
+        </li>
+        <li class="source-item">
+          <span class="source-num">[3]</span>
+          <div class="source-body">
+            <a href="https://nscresearchcenter.org/" target="_blank" rel="noopener">National Student Clearinghouse Research Center — Some College, No Credential (June 2025)</a>
+            <div class="source-claim">37.6 million working-age U.S. adults have some college credit but no completed credential.</div>
+          </div>
+        </li>
+        <li class="source-item">
+          <span class="source-num">[4]</span>
+          <div class="source-body">
+            <a href="https://funnel.io/blog/tofu-mofu-bofu" target="_blank" rel="noopener">Funnel.io — Understanding the TOFU, MOFU, BOFU Funnel Model</a>
+            <div class="source-claim">TOFU/MOFU/BOFU descends from the AIDA framework (1898) — a well-established marketing model, not something invented for this pitch.</div>
+          </div>
+        </li>
+        <li class="source-item">
+          <span class="source-num">[5]</span>
+          <div class="source-body">
+            <a href="https://www.demandsage.com/creator-economy-statistics/" target="_blank" rel="noopener">DemandSage — Creator Economy Statistics 2026</a>
+            <div class="source-claim">The global creator economy is valued at $250B+ (2025), with YouTube as its dominant platform — the audience the practitioner-publisher model draws on.</div>
+          </div>
+        </li>
+        <li class="source-item">
+          <span class="source-num">[6]</span>
+          <div class="source-body">
+            <a href="https://www.businessresearchinsights.com/market-reports/alternative-credentials-market-110109" target="_blank" rel="noopener">Business Research Insights — Alternative Credentials Market Report</a>
+            <div class="source-claim">The global alternative-credentials market was $3.61B in 2024, projected to reach $14.78B by 2033 (16.94% CAGR).</div>
+          </div>
+        </li>
+        <li class="source-item">
+          <span class="source-num">[7]</span>
+          <div class="source-body">
+            <a href="https://www.thescla.org/blog/digital-badges-the-new-credential-employers-actually-value" target="_blank" rel="noopener">Accredible — 2025 State of Credentialing Report (via SCLA)</a>
+            <div class="source-claim">91% of employers actively look for digital credentials when reviewing candidates; 63% have hired someone at least partly because of one.</div>
+          </div>
+        </li>
+        <li class="source-item">
+          <span class="source-num">[8]</span>
+          <div class="source-body">
+            <a href="https://investor.coursera.com/news/news-details/2026/Coursera-Reports-Fourth-Quarter-and-Full-Year-2025-Financial-Results/default.aspx" target="_blank" rel="noopener">Coursera — Q4 &amp; Full Year 2025 Financial Results</a>
+            <div class="source-claim">$757M total 2025 revenue split across consumer (B2C, $502M) and enterprise (B2B) — the marketplace shape this section positions CityUX to own directly.</div>
+          </div>
+        </li>
+      </ol>
     </div>
   </div>
 

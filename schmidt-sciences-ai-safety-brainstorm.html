@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Brainstorm — Schmidt Sciences: Scaling AI Safety for a Multi-Agent World</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row {
+      display: flex; flex-wrap: wrap; gap: 8px 16px;
+      margin-bottom: 24px; font-size: 0.88rem;
+    }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .doc-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--violet); margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      margin: 0 0 8px; font-size: 1.7rem; font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.2;
+    }
+    .doc-header .subtitle {
+      color: var(--slate); font-size: 0.95rem; margin: 0 0 18px;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .meta-chip {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px; color: var(--slate);
+    }
+
+    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+    .toc h2 {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--slate); margin: 0 0 12px;
+    }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .section-header h2 {
+      margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .section-body { padding: 20px 24px; }
+
+    .point {
+      display: flex; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label {
+      flex-shrink: 0;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      height: fit-content;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+
+    .task-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media (max-width: 560px) { .task-grid { grid-template-columns: 1fr; } }
+    .task-card {
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 16px;
+      background: var(--bg);
+    }
+    .task-card .task-name {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--slate); margin-bottom: 6px;
+    }
+    .task-card p { margin: 0; font-size: 0.88rem; line-height: 1.5; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+    .icon-orange { background: var(--orange-dim); }
+
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-orange { background: var(--orange-dim); color: var(--orange); }
+
+    .callout {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      border: 1px solid transparent;
+      margin-top: 12px;
+    }
+    .callout-violet { background: var(--violet-dim); border-color: #ddd6fe; color: #4c1d95; }
+    .callout-green { background: var(--green-dim); border-color: #bbf7d0; color: #14532d; }
+    .callout-amber { background: var(--amber-dim); border-color: #fde68a; color: #78350f; }
+    .callout-red { background: var(--red-dim); border-color: #fecaca; color: #7f1d1d; }
+    .callout strong { font-weight: 700; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+    }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px;
+      background: var(--blue-dim); color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; margin-top: 1px;
+    }
+    .action-body { font-size: 0.92rem; }
+    .action-owner {
+      display: inline-block; margin-top: 4px;
+      font-size: 0.74rem; font-weight: 700; color: var(--slate);
+      background: var(--bg); border-radius: 20px; padding: 2px 10px;
+    }
+
+    table.cluster-table {
+      width: 100%; border-collapse: collapse; font-size: 0.86rem; margin-top: 8px;
+    }
+    table.cluster-table th, table.cluster-table td {
+      text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    table.cluster-table th {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--slate); font-weight: 700;
+    }
+    table.cluster-table tr:last-child td { border-bottom: none; }
+    .fit-strong { color: var(--green); font-weight: 700; }
+    .fit-secondary { color: var(--amber); font-weight: 700; }
+    .fit-weak { color: var(--slate-light); font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <span>Brainstorm — Schmidt Sciences Multi-Agent Safety Grant</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Brainstorm · Not Yet Decided</div>
+    <h1>Scaling AI Safety for a Multi-Agent World — Grant Brainstorm</h1>
+    <p class="subtitle">Working notes on whether/how an STC research effort could apply to the Schmidt Sciences / Google DeepMind / ARIA / Cooperative AI Foundation / Google.org joint funding program, prompted by the Dean's assigned reading (Kapoor et al., "Open-World Evaluations for Measuring Frontier AI Capabilities," May 2026).</p>
+    <div class="meta-row">
+      <span class="meta-chip">Status: exploratory</span>
+      <span class="meta-chip">Deadline: Aug 8, 2026 AoE</span>
+      <span class="meta-chip">Owner: TBD</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#program">The Program</a></li>
+      <li><a href="#clusters">The Four Clusters &amp; Fit</a></li>
+      <li><a href="#paper">The Dean's Reading — Kapoor et al. 2026</a></li>
+      <li><a href="#angle">Recommended Angle</a></li>
+      <li><a href="#resources">What It Would Take From Us</a></li>
+      <li><a href="#plan">Plan: Sprint vs. Prep</a></li>
+      <li><a href="#open-questions">Open Questions</a></li>
+    </ol>
+  </div>
+
+  <!-- Program -->
+  <div class="section" id="program">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🧭</div>
+      <h2>The Program</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Funders</span>
+        <div class="point-body">Schmidt Sciences, Google DeepMind, ARIA, Cooperative AI Foundation, and Google.org — joint initiative on safety for <strong>multi-principal, multi-agent</strong> AI systems, not single-model alignment.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Funding</span>
+        <div class="point-body"><strong>Tier 1:</strong> up to $300K (1–2 yrs), exploratory. <strong>Tier 2:</strong> $300K–$1M (1–2 yrs), ambitious/collaborative. Indirect costs capped at 10%.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-red">Deadline</span>
+        <div class="point-body">Proposal due <strong>August 8, 2026, 11:59 PM AoE</strong>. Decisions in autumn 2026. As of this brainstorm (July 28), that's ~11 days out.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Out of scope</span>
+        <div class="point-body">Single-agent alignment, toy/game-theoretic systems, pairwise-only cooperation studies, centralized-oversight-only solutions, naive ports of existing trust mechanisms, and commercial product development.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clusters -->
+  <div class="section" id="clusters">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🧩</div>
+      <h2>The Four Clusters &amp; Fit</h2>
+    </div>
+    <div class="section-body">
+      <table class="cluster-table">
+        <tr>
+          <th>Cluster</th>
+          <th>What it wants</th>
+          <th>Our fit</th>
+        </tr>
+        <tr>
+          <td><strong>1. Sandboxes &amp; Testbeds</strong></td>
+          <td>Realistic, reproducible multi-agent environments for empirical safety research.</td>
+          <td><span class="fit-strong">Strong</span> — but heavy build: infra, security review, sustained compute.</td>
+        </tr>
+        <tr>
+          <td><strong>2. Science of Agent Networks</strong></td>
+          <td>How individual-agent traits translate to population/system-level outcomes; emergent behavior, network vulnerabilities.</td>
+          <td><span class="fit-strong">Strong</span> — lighter build, can start from published data points.</td>
+        </tr>
+        <tr>
+          <td><strong>3. Strengthening Agent Infrastructure</strong></td>
+          <td>Identity, reputation, accountability, and commitment protocols for agent interaction.</td>
+          <td><span class="fit-weak">Weak</span> — no current angle into this.</td>
+        </tr>
+        <tr>
+          <td><strong>4. Multi-Agent Oversight &amp; Control</strong></td>
+          <td>Detection, attribution, collusion detection, oversight interfaces, mechanism design.</td>
+          <td><span class="fit-weak">Weak</span> — only glancing overlap (real-time monitoring recommendation).</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Paper -->
+  <div class="section" id="paper">
+    <div class="section-header">
+      <div class="section-icon icon-amber">📄</div>
+      <h2>The Dean's Reading — Kapoor et al. 2026</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">What it is</span>
+        <div class="point-body">"Open-World Evaluations for Measuring Frontier AI Capabilities" (Princeton, UK AI Security Institute, Johns Hopkins, ANU, Microsoft Research, Georgetown CSET, +others). Introduces <strong>CRUX</strong>, a methodology for evaluating AI agents on long-horizon, real-world tasks via small-sample qualitative log analysis — not multi-agent safety research itself. Flagship example: an agent autonomously built and published an iOS app through the full App Store review process.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">CRUX's 6 norms</span>
+        <div class="point-body">Specify the construct being measured &middot; document human interventions &middot; analyze &amp; release logs publicly &middot; add real-time monitoring &middot; run dry runs first &middot; report cost as a first-class metric. Directly transferable to how Cluster 1 testbeds should be built.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">The multi-agent data points buried inside it</span>
+        <div class="point-body">
+          <ul style="margin: 4px 0 0; padding-left: 18px;">
+            <li><strong>AI Village</strong> (April 2025–present): agents given shared goals + group chat, persistent hallucination and coordination failure over months.</li>
+            <li><strong>Cursor browser experiment</strong> (Jan 2026): hundreds of agents building a browser collapsed to <strong>2–3 effective agents</strong> after early hierarchical coordination broke down.</li>
+            <li><strong>CRUX #1 itself</strong>: the single agent spontaneously delegated status-checks to subagents mid-task to cut cost — an emergent, unprompted multi-agent behavior inside a nominally single-agent evaluation.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Angle -->
+  <div class="section" id="angle">
+    <div class="section-header">
+      <div class="section-icon icon-green">🎯</div>
+      <h2>Recommended Angle</h2>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-green">
+        <strong>Cluster 2 — Science of Agent Networks.</strong> Seed research question: <em>"When AI agents are organized into large, decentralized groups on real-world tasks, what causes coordination to collapse from many active agents down to a small effective core — and can we predict or prevent it?"</em> Directly generalizes the Cursor "hundreds → 2-3 effective agents" finding into a testable study, using CRUX's own methodology (log-driven, small-sample, qualitative) as the toolset.
+      </div>
+      <div class="task-grid" style="margin-top: 16px;">
+        <div class="task-card">
+          <div class="task-name">Why not Cluster 1</div>
+          <p>Building a real testbed is a bigger lift — sustained engineering headcount, ~$50K+/yr compute, security review. Harder sell without a track record.</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">Why Cluster 2</div>
+          <p>Lower infra bar, can lean on existing scaffolds (OpenClaw-class) and already-published data points as a starting point rather than building from zero.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resources -->
+  <div class="section" id="resources">
+    <div class="section-header">
+      <div class="section-icon icon-orange">🧰</div>
+      <h2>What It Would Take From Us</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">People — biggest gap</span>
+        <div class="point-body">A credible PI (existing faculty w/ research bandwidth, or an external co-PI) — <strong>not yet identified</strong>. Plus someone to run experiments and read logs day-to-day; this can't be automated.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Budget</span>
+        <div class="point-body">Low five figures ($5K–$20K) for a scoped pilot, based on comparable published experiments ($200–$50K/yr range depending on scale).</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Infrastructure</span>
+        <div class="point-body">An agent scaffold (e.g. OpenClaw-class), isolated compute/VM, logging pipeline. No new platform build needed for the Cluster 2 angle.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Security &amp; admin</span>
+        <div class="point-body">CityU IT/security sign-off on agent scaffold permissions; confirm whether CityU has any office able to administer a philanthropic award under a 10%-indirect-cost cap. <strong>Unconfirmed — check first.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plan -->
+  <div class="section" id="plan">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🗺️</div>
+      <h2>Plan: Sprint vs. Prep</h2>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-amber">
+        <strong>Reality check:</strong> 11 days from a standing start (no confirmed PI, no scoped question, no confirmed grants-admin capability) is not enough time to build a competitive proposal from scratch. Pick a track deliberately.
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 4px;">Track A — Sprint to submit by Aug 8</h3>
+      <ul class="action-list">
+        <li class="action-item"><span class="action-check">1</span><div class="action-body">Days 1–2: confirm a PI candidate; lock the one-sentence research question.<div><span class="action-owner">Days 1–2</span></div></div></li>
+        <li class="action-item"><span class="action-check">2</span><div class="action-body">Days 2–4: design a minimal CRUX-style pilot (10–20 agents, shared real task, full logging).<div><span class="action-owner">Days 2–4</span></div></div></li>
+        <li class="action-item"><span class="action-check">3</span><div class="action-body">Days 4–6: reach out to an external collaborator with a track record (e.g. from the Kapoor et al. author list) for co-PI or letter of support.<div><span class="action-owner">Days 4–6</span></div></div></li>
+        <li class="action-item"><span class="action-check">4</span><div class="action-body">Days 6–8: confirm CityU grants-admin capability; draft a bare-bones budget.<div><span class="action-owner">Days 6–8</span></div></div></li>
+        <li class="action-item"><span class="action-check">5</span><div class="action-body">Days 8–11: write and submit through the sMApply portal.<div><span class="action-owner">Days 8–11</span></div></div></li>
+      </ul>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 4px;">Track B — Treat this cycle as prep</h3>
+      <ul class="action-list">
+        <li class="action-item"><span class="action-check">1</span><div class="action-body">Run the question-scoping + pilot-design + outreach steps without the deadline pressure.</div></li>
+        <li class="action-item"><span class="action-check">2</span><div class="action-body">Ask Schmidt (multiagentsafety@schmidtsciences.org) about a future cycle or rolling submission.</div></li>
+        <li class="action-item"><span class="action-check">3</span><div class="action-body">Repurpose the pilot itself as STC content regardless of grant outcome — a small "how AI agent teams behave" study fits naturally into the AILI/CityU X content funnel.</div></li>
+      </ul>
+
+      <div class="callout callout-green" style="margin-top: 16px;">
+        <strong>Current lean: Track B.</strong> Confirm whether a PI and grants-admin capability exist before committing writing time to a proposal that may be structurally blocked regardless of the research angle.
+      </div>
+    </div>
+  </div>
+
+  <!-- Open Questions -->
+  <div class="section" id="open-questions">
+    <div class="section-header">
+      <div class="section-icon icon-red">❓</div>
+      <h2>Open Questions</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Who is the PI?</span>
+        <div class="point-body">Not yet identified. Blocks everything else.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Can CityU administer this award?</span>
+        <div class="point-body">Unknown whether an Office of Sponsored Programs (or equivalent) exists that can operate under a 10% indirect-cost cap and handle philanthropic (non-federal) reporting.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Is this separate from AILI/CityU X?</span>
+        <div class="point-body">Per the Dean's framing, yes — this is a distinct research-grant track, not a funnel/content initiative, though a pilot study could double as content for the Open Ecosystem funnel later.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Is Track A even worth attempting?</span>
+        <div class="point-body">Depends entirely on whether a PI surfaces in the next 1–2 days.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Ecosystem</span>
+        <div class="point-body"><a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem — Execution Plan</a> — the separate AILI/CityU X funnel initiative this grant track is not part of.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

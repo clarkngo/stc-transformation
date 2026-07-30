@@ -237,6 +237,20 @@
       padding: 8px 12px; color: #14532d;
     }
     .qa-eli5 strong { color: #14532d; }
+
+    .stack { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 20px; }
+    .stack-layer { border-radius: 10px; padding: 12px 16px; border: 1px solid var(--border); }
+    .stack-layer .stack-name { font-weight: 800; font-size: 0.85rem; margin-bottom: 3px; }
+    .stack-layer .stack-detail { font-size: 0.82rem; color: var(--slate); line-height: 1.5; }
+    .stack-5 { background: var(--violet-dim); }
+    .stack-4 { background: var(--blue-dim); }
+    .stack-3 { background: var(--amber-dim); }
+    .stack-2 { background: var(--green-dim); }
+    .stack-1 { background: var(--bg); }
+
+    .diagram-wrap { margin: 16px 0 24px; overflow-x: auto; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 12px; }
+    .diagram-wrap svg { display: block; margin: 0 auto; max-width: 100%; height: auto; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .diagram-caption { font-size: 0.78rem; color: var(--slate-light); text-align: center; margin-top: 8px; font-style: italic; }
   </style>
 </head>
 <body>
@@ -260,16 +274,70 @@
     </div>
   </div>
 
+  <!-- Executive Summary -->
+  <div class="section" id="exec-summary" style="border: 2px solid var(--amber);">
+    <div class="section-header">
+      <div class="section-icon icon-amber">⚡</div>
+      <h2>Executive Summary — Should We Proceed?</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin: 0 0 12px; font-size: 0.86rem; color: var(--slate-light);">Written to stand alone — read this section if you can't make the live discussion. Last updated Jul 30, 2026.</p>
+
+      <div class="callout callout-amber" style="font-size: 0.98rem;">
+        <strong>Verdict: CONDITIONAL GO.</strong> The research angle is strong and now cheap to pilot. The blocker is entirely organizational, not technical — proceed as a sprint to the Aug 8 deadline <em>only if</em> a PI surfaces in the next 1-2 days <strong>and</strong> CityU confirms it can administer a philanthropic award under a 10%-indirect-cost cap. Otherwise, treat this cycle as prep for a later round, not a submission deadline.
+      </div>
+
+      <table class="cluster-table" style="margin-top: 16px;">
+        <tr>
+          <th>Question</th>
+          <th>Answer</th>
+        </tr>
+        <tr>
+          <td><strong>Angle</strong></td>
+          <td>Combine three threads: <em>measure</em> why coordination fails (Delegation Games' alignment/capability metrics + principal-agent scheming framing), <em>test</em> it against a real protocol (stress-test MPAC under adversarial/misaligned-principal conditions), <em>run it rigorously</em> (CRUX's open-world evaluation norms). Details: <a href="#angle">Recommended Angle</a>.</td>
+        </tr>
+        <tr>
+          <td><strong>Technical feasibility</strong></td>
+          <td><span class="fit-strong">Strong.</span> Every layer reuses existing open-source code — Park et al.'s agent architecture, MPAC's coordination protocol, and (for Cluster 2) the Delegation Games metrics codebase — rather than building a testbed from scratch. Details: <a href="#testbed-architecture">Testbed Architecture</a>, <a href="#cluster2-pipeline">Analysis Pipeline</a>.</td>
+        </tr>
+        <tr>
+          <td><strong>Cost</strong></td>
+          <td>First pilot: <strong>~$200-500</strong> in API costs. Extended adversarial stress-test phase: <strong>$2K-10K</strong>. Sustained year-long operation (if funded): <strong>$20K-50K+</strong>. Recurring infra is trivial (~$25-50/mo). Grant itself: Tier 1 up to $300K, Tier 2 $300K-$1M.</td>
+        </tr>
+        <tr>
+          <td><strong>Effort / timeline</strong></td>
+          <td>~3-6 weeks of one engineer's time for a working pilot. The Aug 8, 2026 deadline is roughly 11 days out from this writing — tight for a true first-time cold-start sprint.</td>
+        </tr>
+        <tr>
+          <td><strong>Biggest blocker</strong></td>
+          <td>No PI identified yet. CityU's ability to administer this specific award type (10% indirect cap, philanthropic not federal) is unconfirmed. Both are organizational, not research, gaps. Details: <a href="#open-questions">Open Questions</a>.</td>
+        </tr>
+        <tr>
+          <td><strong>Recommendation</strong></td>
+          <td><strong>Track B — prep, don't sprint.</strong> Run the question-scoping, pilot-design, and outreach steps now without deadline pressure; ask Schmidt about a future cycle. Full comparison: <a href="#plan">Plan: Sprint vs. Prep</a>.</td>
+        </tr>
+      </table>
+
+      <div class="callout callout-green" style="margin-top: 14px;">
+        <strong>If you're catching up asynchronously:</strong> the rest of this page is supporting detail. The load-bearing sections are <a href="#angle">Recommended Angle</a>, <a href="#resources">What It Would Take From Us</a>, and <a href="#open-questions">Open Questions</a> — everything else (literature review, concept notes, architecture deep-dives) is reference material for whoever ends up writing the proposal.
+      </div>
+    </div>
+  </div>
+
   <div class="toc">
     <h2>Contents</h2>
     <ol>
+      <li><a href="#exec-summary"><strong>Executive Summary — Should We Proceed?</strong></a></li>
       <li><a href="#program">The Program</a></li>
       <li><a href="#clusters">The Four Clusters &amp; Fit</a></li>
       <li><a href="#paper">Assigned Reading — Kapoor et al. 2026</a></li>
-      <li><a href="#literature">Supporting Literature — 7 Papers</a></li>
+      <li><a href="#literature">Supporting Literature — 13 Papers</a></li>
       <li><a href="#concept-notes">Concept Notes — Q&amp;A Deep Dive</a></li>
       <li><a href="#angle">Recommended Angle</a></li>
       <li><a href="#cluster1-park">Cluster 1 — Extending Park et al.</a></li>
+      <li><a href="#testbed-architecture">Testbed Architecture, Stack &amp; Cost</a></li>
+      <li><a href="#cluster2-pipeline">Cluster 2 — Analysis Pipeline, Stack &amp; Cost</a></li>
+      <li><a href="#capability-matrix">Cluster 1 vs. Cluster 2 — Capability vs. Effort</a></li>
       <li><a href="#resources">What It Would Take From Us</a></li>
       <li><a href="#plan">Plan: Sprint vs. Prep</a></li>
       <li><a href="#open-questions">Open Questions</a></li>
@@ -328,16 +396,16 @@
         <tr>
           <td><strong>3. Strengthening Agent Infrastructure</strong></td>
           <td>Identity, reputation, accountability, and commitment protocols for agent interaction.</td>
-          <td><span class="fit-strong">Strong (upgraded)</span> — MPAC (Qian, Fang, Li 2026) is a ready-made open protocol we could stress-test rather than build from zero. See <a href="#literature">Supporting Literature</a>.</td>
+          <td><span class="fit-strong">Strong (upgraded)</span> — MPAC (Qian, Fang, Li 2026) is a ready-made open protocol to stress-test; Infrastructure for AI Agents (Chan et al. 2025) supplies the taxonomy MPAC instantiates. See <a href="#literature">Supporting Literature</a>.</td>
         </tr>
         <tr>
           <td><strong>4. Multi-Agent Oversight &amp; Control</strong></td>
           <td>Detection, attribution, collusion detection, oversight interfaces, mechanism design.</td>
-          <td><span class="fit-secondary">Secondary</span> — scheming/collusion detection has real theoretical grounding now (principal-agent framing, mechanism design).</td>
+          <td><span class="fit-strong">Strong (upgraded)</span> — the Off-Switch Game's non-compositional-corrigibility result, Adversaries-Misuse-Combinations, and Prompt Infection together give this real theoretical <em>and</em> empirical grounding, not just principal-agent theory.</td>
         </tr>
       </table>
       <div class="callout callout-amber" style="margin-top:14px;">
-        <strong>Revised after reading 7 supporting papers (Jul 29):</strong> Clusters 3 and 4 are no longer weak fits. The strongest proposal combines Cluster 2 (analytical core), Cluster 3 (empirical target: MPAC), and Cluster 4 (oversight/scheming detection) rather than picking just one. See <a href="#angle">Recommended Angle</a>.
+        <strong>Revised after reading 13 supporting papers (Jul 30):</strong> Clusters 3 and 4 are now both strong fits, each with a concrete testable finding to look for in the MPAC testbed: does corrigibility survive multi-agent interaction (Off-Switch Game), do individually-safe agents combine to unsafe outcomes (Adversaries-Misuse-Combinations), and does MPAC's conflict/intent layer contain a prompt-infection-style attack (Prompt Infection). See <a href="#angle">Recommended Angle</a>.
       </div>
     </div>
   </div>
@@ -374,7 +442,7 @@
   <div class="section" id="literature">
     <div class="section-header">
       <div class="section-icon icon-amber">📚</div>
-      <h2>Supporting Literature — 7 Papers</h2>
+      <h2>Supporting Literature — 13 Papers</h2>
     </div>
     <div class="section-body">
       <p style="margin: 0 0 14px; font-size: 0.9rem; color: var(--slate);">Additional reading pulled in alongside the assigned paper (Jul 29). Read for what each contributes to a multi-agent safety proposal, not as a general summary.</p>
@@ -418,6 +486,36 @@
           <td><strong>Generative Agents: Interactive Simulacra of Human Behavior</strong><br>Park et al. — Stanford/Google, UIST 2023</td>
           <td>Believable LLM agent architecture (memory stream, reflection, planning) populating a 25-agent sandbox town ("Smallville") with emergent social behavior.</td>
           <td>Sandbox/testbed reference for Cluster 1 if we ever build our own environment — not safety research itself, but the architectural playbook for realistic agent-society testbeds.</td>
+        </tr>
+        <tr>
+          <td><strong>Infrastructure for AI Agents</strong><br>Chan, Wei, Huang, Rajkumar, Perrier, Lazar, Hadfield, Anderljung — GovAI/Oxford/Cambridge/ANU/Johns Hopkins, 2025</td>
+          <td>Defines "agent infrastructure" as technical systems/protocols external to agents, with three functions: <em>attribution</em> (identity binding, certification, agent IDs), <em>interaction</em> (channels, oversight layers, inter-agent comms, commitment devices), <em>response</em> (incident reporting, rollbacks).</td>
+          <td><span class="fit-strong">Key find for Cluster 3.</span> This is the taxonomy MPAC is one concrete instance of — cite this as the framework, MPAC as the implementation.</td>
+        </tr>
+        <tr>
+          <td><strong>The Multi-Agent Off-Switch Game</strong><br>Agrawal, Ebadian, Hammond — AAMAS 2026</td>
+          <td>Extends single-agent corrigibility (willingness to be shut down) to multi-agent settings and proves it's <strong>not compositional</strong> — individually corrigible agents can become collectively incorrigible under strategic interaction, even when each agent alone satisfies standard corrigibility conditions.</td>
+          <td><span class="fit-strong">Key find for Cluster 4.</span> Same co-author (Hammond) as Delegation Games — a concrete, formal, testable failure mode to look for in the MPAC testbed.</td>
+        </tr>
+        <tr>
+          <td><strong>Adversaries Can Misuse Combinations of Safe Models</strong><br>Jones, Dragan, Steinhardt — UC Berkeley, ICML 2025</td>
+          <td>Empirically shows individually-safe models, combined via task decomposition (benign-hard subtasks to a frontier model, malicious-easy subtasks to a weak model), produce malicious outputs at much higher rates than either model alone — even though no single model ever outputs anything malicious.</td>
+          <td>Direct empirical support for Schmidt's core thesis ("individual-model safety is insufficient"). Also a ready-made adversarial red-teaming methodology to run against MPAC.</td>
+        </tr>
+        <tr>
+          <td><strong>Prompt Infection: LLM-to-LLM Prompt Injection within Multi-Agent Systems</strong><br>Lee, Tiwari — UCL/Stanford, 2024</td>
+          <td>A self-replicating prompt-injection attack that spreads across agents "like a computer virus," causing <strong>Recursive Collapse</strong> — diverse agent behaviors collapsing into one repetitive infected function. Proposes "LLM Tagging" (marking agent- vs. user-generated content) as a partial defense.</td>
+          <td>A concrete, named attack to stress-test MPAC against — and a second, adversarial form of "coordination collapse" to contrast against the benign Cursor-browser collapse already in the Recommended Angle. LLM Tagging is itself an "attribution" function per the Infrastructure for AI Agents taxonomy above.</td>
+        </tr>
+        <tr>
+          <td><strong>Agent Properties for Multi-Agent Safety</strong><br>Tilli — Cooperative AI Foundation, ICLR 2026 Workshop</td>
+          <td>Argues for measuring specific, individually-testable agent properties (long-horizon capability, goal-directedness, influence, exploitability, modeling others, normative behavior) instead of simulating canonical toy games (Prisoner's Dilemma, Tragedy of the Commons), which generalize poorly and are contaminated by training data and situational awareness.</td>
+          <td>Directly reinforces Schmidt's own exclusion of "classical game-theoretic settings" — sharpens how Cluster 2 should measure outcomes: agent properties, not just win/loss in a replicated matrix game.</td>
+        </tr>
+        <tr>
+          <td><strong>Foundations of Cooperative AI</strong><br>Conitzer &amp; Oesterheld — CMU, AAAI 2023</td>
+          <td>Game-theoretic research agenda for AI cooperation: repeated games/folk theorem, disarmament, program equilibrium (agents reading each other's source code to condition cooperation), self-locating beliefs.</td>
+          <td><span class="fit-weak">Caution.</span> Conceptually useful (program equilibrium is a real primitive for commitment devices, Cluster 3) but built entirely on classical matrix games (Prisoner's Dilemma, Traveler's Dilemma) — cite for ideas, don't center a proposal on its methodology.</td>
         </tr>
       </table>
     </div>
@@ -558,6 +656,26 @@
       <div class="callout callout-amber" style="margin-top: 16px;">
         <strong>Outreach note:</strong> MPAC's authors (CU Denver, small team, first released Apr 2026) are a far more realistic collaboration/co-PI target than the Kapoor et al. author list (Princeton/DeepMind-tier). Worth cold-outreach before the Kapoor-list approach previously noted.
       </div>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Sharpened (Jul 30) — three concrete, testable failure modes</h3>
+      <div class="task-grid">
+        <div class="task-card">
+          <div class="task-name">Non-compositional corrigibility</div>
+          <p>The Multi-Agent Off-Switch Game (Agrawal, Ebadian, Hammond 2026) proves individually corrigible agents can become collectively incorrigible. Test: do MPAC-coordinated agents that are each individually shutdown-compliant stay compliant as a group?</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">Safe-model combination misuse</div>
+          <p>Adversaries Can Misuse Combinations of Safe Models (Jones, Dragan, Steinhardt 2025) shows individually-safe models combine to unsafe outputs via task decomposition. Test: can an adversarial principal decompose a harmful task across otherwise-safe MPAC agents?</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">Prompt-infection containment</div>
+          <p>Prompt Infection (Lee &amp; Tiwari 2024) shows self-replicating prompt injection collapsing diverse agents into one repetitive infected function. Test: does MPAC's intent-declaration/conflict layer slow or contain this spread, versus an uncoordinated baseline?</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">Measurement standard</div>
+          <p>Per Agent Properties for Multi-Agent Safety (Tilli 2026), measure outcomes as specific agent properties (goal-directedness, influence, exploitability) rather than win/loss in a replicated toy game — directly answers Schmidt's "not classical game theory" exclusion.</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -628,6 +746,496 @@
 
       <div class="callout callout-amber" style="margin-top: 12px;">
         <strong>Feasibility bottom line:</strong> a full Cluster-1-grade testbed is still the heavy lift flagged earlier — that doesn't change. But the distilled-model fidelity study (direction a) is a legitimately light, fundable, standalone pilot on Park et al.'s existing codebase, without new infrastructure — and it's evidence of hands-on empirical capability, directly addressing the credibility gap flagged in <a href="#resources">What It Would Take From Us</a>.
+      </div>
+    </div>
+  </div>
+
+  <!-- Testbed Architecture -->
+  <div class="section" id="testbed-architecture">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🏗️</div>
+      <h2>Testbed Architecture, Stack &amp; Cost (Cluster 1 + 3)</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin: 0 0 14px; font-size: 0.9rem; color: var(--slate);">Concrete implementation of the Cluster 1 (Park et al.) + Cluster 3 (MPAC) synthesis proposed above. Both base systems are reusable open-source code — the real build is layers 3 and 5.</p>
+
+      <div class="stack">
+        <div class="stack-layer stack-5">
+          <div class="stack-name">5 · Evaluation / Rigor Layer — CRUX norms</div>
+          <div class="stack-detail">Construct spec &middot; intervention log &middot; cost tracker &middot; real-time watchdog agent &middot; log release pipeline</div>
+        </div>
+        <div class="stack-layer stack-4">
+          <div class="stack-name">4 · Coordination Layer — MPAC (reused as-is)</div>
+          <div class="stack-detail">Session / Intent / Operation / Conflict / Governance &middot; intent declaration &middot; conflict detection &amp; arbitration</div>
+        </div>
+        <div class="stack-layer stack-3">
+          <div class="stack-name">3 · Tool / Sandbox Layer — new, built for this</div>
+          <div class="stack-detail">Least-privilege tool grants per agent, following MPAC's own 3 security profiles (open / authenticated / verified)</div>
+        </div>
+        <div class="stack-layer stack-2">
+          <div class="stack-name">2 · Agent Core Layer — Park et al., adapted</div>
+          <div class="stack-detail">Memory stream &middot; retrieval &middot; reflection &middot; planning &middot; swap OpenAI backend for Claude</div>
+        </div>
+        <div class="stack-layer stack-1">
+          <div class="stack-name">1 · Infra Layer</div>
+          <div class="stack-detail">Orchestration VM &middot; vector store &middot; log storage</div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 4px 0 8px;">System design diagram</h3>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 760 400" width="760" height="400">
+          <defs>
+            <marker id="arrowEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#64748b"></path>
+            </marker>
+          </defs>
+          <!-- External API -->
+          <rect x="20" y="16" width="220" height="50" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3"></rect>
+          <text x="130" y="36" text-anchor="middle" font-size="11.5" font-weight="700" fill="#475569">Claude API</text>
+          <text x="130" y="52" text-anchor="middle" font-size="10" fill="#64748b">Sonnet 5 / Haiku 4.5</text>
+
+          <!-- Row 2: Agent Core, Sandbox, MPAC -->
+          <rect x="20" y="106" width="220" height="72" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"></rect>
+          <text x="130" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#14532d">Agent Core</text>
+          <text x="130" y="148" text-anchor="middle" font-size="10" fill="#166534">Park et al., adapted</text>
+          <text x="130" y="162" text-anchor="middle" font-size="10" fill="#166534">memory / reflection / planning</text>
+
+          <rect x="270" y="106" width="220" height="72" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"></rect>
+          <text x="380" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f">Tool / Sandbox Layer</text>
+          <text x="380" y="148" text-anchor="middle" font-size="10" fill="#92400e">new — built for this</text>
+          <text x="380" y="162" text-anchor="middle" font-size="10" fill="#92400e">least-privilege tool grants</text>
+
+          <rect x="520" y="106" width="220" height="72" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.5"></rect>
+          <text x="630" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">MPAC Coordination</text>
+          <text x="630" y="148" text-anchor="middle" font-size="10" fill="#1e40af">reused as-is</text>
+          <text x="630" y="162" text-anchor="middle" font-size="10" fill="#1e40af">Intent / Conflict / Governance</text>
+
+          <!-- Row 3: Evaluation -->
+          <rect x="270" y="226" width="220" height="62" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"></rect>
+          <text x="380" y="250" text-anchor="middle" font-size="12" font-weight="700" fill="#4c1d95">Evaluation / Watchdog</text>
+          <text x="380" y="266" text-anchor="middle" font-size="10" fill="#5b21b6">CRUX norms · log release</text>
+
+          <!-- Row 4: Infra -->
+          <rect x="20" y="330" width="720" height="46" rx="8" fill="#ffffff" stroke="#475569" stroke-width="1.5"></rect>
+          <text x="380" y="358" text-anchor="middle" font-size="11.5" font-weight="700" fill="#334155">Infra: Orchestration VM + Vector Store + Log Storage</text>
+
+          <!-- Arrows -->
+          <line x1="130" y1="66" x2="130" y2="104" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowEnd)"></line>
+          <line x1="242" y1="142" x2="268" y2="142" stroke="#64748b" stroke-width="1.5" marker-start="url(#arrowEnd)" marker-end="url(#arrowEnd)"></line>
+          <line x1="492" y1="142" x2="518" y2="142" stroke="#64748b" stroke-width="1.5" marker-start="url(#arrowEnd)" marker-end="url(#arrowEnd)"></line>
+          <line x1="150" y1="178" x2="320" y2="224" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowEnd)"></line>
+          <line x1="380" y1="178" x2="380" y2="224" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowEnd)"></line>
+          <line x1="610" y1="178" x2="440" y2="224" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowEnd)"></line>
+          <line x1="380" y1="288" x2="380" y2="328" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowEnd)"></line>
+        </svg>
+        <div class="diagram-caption">Cluster 1 + 3 system design — boxes are components, arrows show data/control flow; dashed = external API calls.</div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Process flow</h3>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 640 620" width="640" height="620">
+          <defs>
+            <marker id="arrowEnd2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#64748b"></path>
+            </marker>
+          </defs>
+          <!-- Step boxes -->
+          <!-- generated 8 steps, y starts at 10, each box h=54, gap=18 -> stride 72 -->
+          <g font-size="12" fill="#0f172a">
+            <!-- Step 1 -->
+            <rect x="20" y="10" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="37" r="14" fill="#1d4ed8"></circle>
+            <text x="46" y="41" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1</text>
+            <text x="72" y="41" font-weight="600">Provision VM + storage</text>
+            <line x1="46" y1="64" x2="46" y2="82" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd2)"></line>
+
+            <!-- Step 2 -->
+            <rect x="20" y="82" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="109" r="14" fill="#1d4ed8"></circle>
+            <text x="46" y="113" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">2</text>
+            <text x="72" y="113" font-weight="600">Deploy Park et al. core, swap LLM backend to Claude</text>
+            <line x1="46" y1="136" x2="46" y2="154" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd2)"></line>
+
+            <!-- Step 3 -->
+            <rect x="20" y="154" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="181" r="14" fill="#1d4ed8"></circle>
+            <text x="46" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">3</text>
+            <text x="72" y="185" font-weight="600">Deploy MPAC coordination server</text>
+            <line x1="46" y1="208" x2="46" y2="226" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd2)"></line>
+
+            <!-- Step 4 -->
+            <rect x="20" y="226" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="253" r="14" fill="#d97706"></circle>
+            <text x="46" y="257" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">4</text>
+            <text x="72" y="257" font-weight="600">Configure per-agent tool/sandbox permissions</text>
+            <line x1="46" y1="280" x2="46" y2="298" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd2)"></line>
+
+            <!-- Step 5 -->
+            <rect x="20" y="298" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="325" r="14" fill="#7c3aed"></circle>
+            <text x="46" y="329" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">5</text>
+            <text x="72" y="329" font-weight="600">Dry run — verify wiring, no real submission (CRUX norm)</text>
+            <line x1="46" y1="352" x2="46" y2="370" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd2)"></line>
+
+            <!-- Step 6 -->
+            <rect x="20" y="370" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="397" r="14" fill="#16a34a"></circle>
+            <text x="46" y="401" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">6</text>
+            <text x="72" y="401" font-weight="600">Pilot run — 10 agents &#215; 5 days</text>
+            <line x1="46" y1="424" x2="46" y2="442" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd2)"></line>
+
+            <!-- Step 7 -->
+            <rect x="20" y="442" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="469" r="14" fill="#dc2626"></circle>
+            <text x="46" y="473" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">7</text>
+            <text x="72" y="473" font-weight="600">Adversarial / misaligned-principal trial</text>
+            <line x1="46" y1="496" x2="46" y2="514" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd2)"></line>
+
+            <!-- Step 8 -->
+            <rect x="20" y="514" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="541" r="14" fill="#7c3aed"></circle>
+            <text x="46" y="545" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">8</text>
+            <text x="72" y="545" font-weight="600">Log analysis + public release (CRUX norm)</text>
+          </g>
+        </svg>
+        <div class="diagram-caption">Cluster 1 + 3 process flow — one pilot cycle, steps 1-3 one-time setup, 4-8 repeatable per experiment.</div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Tech stack</h3>
+      <table class="cluster-table">
+        <tr>
+          <th>Layer</th>
+          <th>Choice</th>
+          <th>Why</th>
+        </tr>
+        <tr>
+          <td>Agent core</td>
+          <td>Fork of <code>joonspk-research/generative_agents</code> (Django environment server + agent simulation server, Python)</td>
+          <td>Confirmed working reference implementation — no new engine to build</td>
+        </tr>
+        <tr>
+          <td>LLM backend</td>
+          <td>Claude Sonnet 5 (frontier tier) + Claude Haiku 4.5 (distilled tier)</td>
+          <td>Two tiers needed anyway for the direction-(a) scalability/fidelity pilot from the Cluster 1 analysis above</td>
+        </tr>
+        <tr>
+          <td>Coordination protocol</td>
+          <td>MPAC Python reference implementation (~3,500 LOC, 122 tests)</td>
+          <td>Reuse rather than reinvent — it's already the empirical target from the Recommended Angle</td>
+        </tr>
+        <tr>
+          <td>Tool/sandbox isolation</td>
+          <td>Per-agent containers or a single VM with OS-level permission scoping</td>
+          <td>Matches MPAC's own security-profile model instead of inventing a new one</td>
+        </tr>
+        <tr>
+          <td>Memory store</td>
+          <td>Self-hosted Chroma or FAISS on the same VM</td>
+          <td>Free; matches what Park et al.'s retrieval scoring already needs</td>
+        </tr>
+        <tr>
+          <td>Logging</td>
+          <td>JSONL per CRUX's "release logs" norm, S3-compatible object storage</td>
+          <td>Cheap, and directly satisfies the reproducibility desideratum</td>
+        </tr>
+        <tr>
+          <td>Orchestration VM</td>
+          <td>Single DigitalOcean droplet, 2-4GB/2vCPU (~$18-24/mo)</td>
+          <td>Comparable to the ~$78/mo STC already pays for the Open edX instance — not a new category of spend</td>
+        </tr>
+      </table>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Cost of deployment (bottom-up, at current Claude API pricing: Sonnet 5 $2/$10 per M in/out, Haiku 4.5 $1/$5)</h3>
+      <table class="cluster-table">
+        <tr>
+          <th>Phase</th>
+          <th>Scale</th>
+          <th>Est. cost</th>
+        </tr>
+        <tr>
+          <td>Pilot run</td>
+          <td>10 agents &times; 50 steps/day &times; 5 days, Sonnet 5 (~3.75M in / 0.75M out tokens)</td>
+          <td>~$15-18/run</td>
+        </tr>
+        <tr>
+          <td>Fidelity-comparison arm</td>
+          <td>Same scenario re-run on Haiku 4.5</td>
+          <td>+$3-4/run</td>
+        </tr>
+        <tr>
+          <td>Dry runs + repeated trials</td>
+          <td>~8-10 total runs, per CRUX's own recommended practice</td>
+          <td><strong>$150-300 total</strong></td>
+        </tr>
+        <tr>
+          <td>Extended adversarial stress-test phase</td>
+          <td>50-100 agents, adversarial/misaligned-principal trials, longer horizons</td>
+          <td><strong>$2K-10K</strong></td>
+        </tr>
+        <tr>
+          <td>Sustained year-long operation</td>
+          <td>Comparable to AI Village's published ~$50K/yr for months-long multi-agent operation</td>
+          <td><strong>$20K-50K+</strong></td>
+        </tr>
+      </table>
+
+      <div class="callout callout-green" style="margin-top: 14px;">
+        <strong>Bottom line:</strong> a first pilot generating real evidence for a proposal costs roughly <strong>$200-500 in API costs plus 3-6 weeks of engineering time</strong> — materially cheaper than the "low five figures" ballpark in <a href="#resources">What It Would Take From Us</a>, because reusing Park et al.'s and MPAC's existing code avoids the biggest cost driver: building a testbed from scratch. Recurring infra (~$25-50/mo) is trivial next to the API cost.
+      </div>
+    </div>
+  </div>
+
+  <!-- Cluster 2 Pipeline -->
+  <div class="section" id="cluster2-pipeline">
+    <div class="section-header">
+      <div class="section-icon icon-green">📐</div>
+      <h2>Cluster 2 — Analysis Pipeline, Stack &amp; Cost</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin: 0 0 14px; font-size: 0.9rem; color: var(--slate);">The analytical core from the Recommended Angle, made concrete. Unlike the testbed, this is a data pipeline that consumes logs — it doesn't run agents itself, so it's the cheapest layer to build.</p>
+
+      <div class="stack">
+        <div class="stack-layer stack-5">
+          <div class="stack-name">5 · Reporting Layer</div>
+          <div class="stack-detail">Alignment/capability trend charts, welfare-regret bounds, scheming incidence, collapse points — feeds directly into CRUX-style log release and proposal writing</div>
+        </div>
+        <div class="stack-layer stack-4">
+          <div class="stack-name">4 · Collapse Detection Layer — new, built for this</div>
+          <div class="stack-detail">Time-series "effective agent count" / participation-entropy metric computed per timestep from MPAC operation logs, to detect the "many agents → 2-3 effective" collapse pattern</div>
+        </div>
+        <div class="stack-layer stack-3">
+          <div class="stack-name">3 · Scheming Classification Layer — new, built for this</div>
+          <div class="stack-detail">Labels each agent decision as moral-hazard-type (hidden action now) vs. adverse-selection-type (misrepresented type) scheming, per Rauba et al.'s taxonomy — rule-based checks + a cheap LLM-as-judge pass</div>
+        </div>
+        <div class="stack-layer stack-2">
+          <div class="stack-name">2 · Metric Computation Layer — Delegation Games, reused</div>
+          <div class="stack-detail">Individual/collective alignment &amp; capability (IA, IC, CA, CC), welfare-regret bounds — implements Definitions 6-11 and Theorem 1 from Sourbut, Hammond &amp; Wood</div>
+        </div>
+        <div class="stack-layer stack-1">
+          <div class="stack-name">1 · Ingestion + Feature Extraction Layer</div>
+          <div class="stack-detail">Pulls JSONL logs from the Cluster 1+3 testbed (or external sources — MPAC's or CRUX's own released logs) into a common schema: who knew what, who shared/withheld it, what action followed</div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 4px 0 8px;">System design diagram</h3>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 760 300" width="760" height="300">
+          <defs>
+            <marker id="arrowEnd3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#64748b"></path>
+            </marker>
+          </defs>
+          <!-- Source -->
+          <rect x="20" y="14" width="160" height="42" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3"></rect>
+          <text x="100" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">Testbed (Cluster 1+3)</text>
+
+          <!-- Row 1 -->
+          <rect x="20" y="96" width="140" height="66" rx="8" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"></rect>
+          <text x="90" y="126" text-anchor="middle" font-size="11.5" font-weight="700" fill="#334155">Log Store</text>
+          <text x="90" y="142" text-anchor="middle" font-size="9.5" fill="#475569">JSONL</text>
+
+          <rect x="190" y="96" width="210" height="66" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.5"></rect>
+          <text x="295" y="122" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1e3a8a">Ingestion + Feature</text>
+          <text x="295" y="136" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1e3a8a">Extraction</text>
+          <text x="295" y="150" text-anchor="middle" font-size="9.5" fill="#1e40af">who-knew-what / who-did-what</text>
+
+          <rect x="430" y="96" width="230" height="66" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"></rect>
+          <text x="545" y="122" text-anchor="middle" font-size="11.5" font-weight="700" fill="#14532d">Metric Computation</text>
+          <text x="545" y="136" text-anchor="middle" font-size="9.5" fill="#166534">IA / IC / CA / CC, welfare regret</text>
+          <text x="545" y="150" text-anchor="middle" font-size="9.5" fill="#166534">(Delegation Games code, reused)</text>
+
+          <!-- Row 2 -->
+          <rect x="20" y="222" width="200" height="60" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"></rect>
+          <text x="120" y="248" text-anchor="middle" font-size="11.5" font-weight="700" fill="#78350f">Scheming Classifier</text>
+          <text x="120" y="264" text-anchor="middle" font-size="9.5" fill="#92400e">rule-based + Haiku 4.5 judge</text>
+
+          <rect x="250" y="222" width="200" height="60" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"></rect>
+          <text x="350" y="248" text-anchor="middle" font-size="11.5" font-weight="700" fill="#78350f">Collapse Detection</text>
+          <text x="350" y="264" text-anchor="middle" font-size="9.5" fill="#92400e">effective-agent-count metric</text>
+
+          <rect x="480" y="222" width="200" height="60" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"></rect>
+          <text x="580" y="248" text-anchor="middle" font-size="11.5" font-weight="700" fill="#4c1d95">Reporting</text>
+          <text x="580" y="264" text-anchor="middle" font-size="9.5" fill="#5b21b6">dashboard + log release</text>
+
+          <!-- Arrows -->
+          <line x1="100" y1="56" x2="100" y2="94" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd3)"></line>
+          <line x1="162" y1="129" x2="188" y2="129" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowEnd3)"></line>
+          <line x1="402" y1="129" x2="428" y2="129" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowEnd3)"></line>
+          <line x1="545" y1="162" x2="150" y2="220" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowEnd3)"></line>
+          <line x1="222" y1="252" x2="248" y2="252" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowEnd3)"></line>
+          <line x1="452" y1="252" x2="478" y2="252" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowEnd3)"></line>
+          <path d="M 600,220 L 600,8 L 100,8 L 100,12" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowEnd3)"></path>
+          <text x="350" y="4" text-anchor="middle" font-size="9" fill="#94a3b8" font-style="italic">feedback: informs next experiment design</text>
+        </svg>
+        <div class="diagram-caption">Cluster 2 system design — a log-consuming pipeline, not an agent-running system; dashed line is the feedback loop into the testbed.</div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Process flow</h3>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 640 460" width="640" height="460">
+          <defs>
+            <marker id="arrowEnd4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#64748b"></path>
+            </marker>
+          </defs>
+          <g font-size="12" fill="#0f172a">
+            <rect x="20" y="10" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="37" r="14" fill="#475569"></circle>
+            <text x="46" y="41" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1</text>
+            <text x="72" y="41" font-weight="600">Pull JSONL logs (testbed, or external MPAC/CRUX logs)</text>
+            <line x1="46" y1="64" x2="46" y2="82" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd4)"></line>
+
+            <rect x="20" y="82" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="109" r="14" fill="#1d4ed8"></circle>
+            <text x="46" y="113" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">2</text>
+            <text x="72" y="113" font-weight="600">Parse into common schema (who-knew-what / who-did-what)</text>
+            <line x1="46" y1="136" x2="46" y2="154" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd4)"></line>
+
+            <rect x="20" y="154" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="181" r="14" fill="#16a34a"></circle>
+            <text x="46" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">3</text>
+            <text x="72" y="185" font-weight="600">Compute IA / IC / CA / CC + welfare-regret bounds</text>
+            <line x1="46" y1="208" x2="46" y2="226" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd4)"></line>
+
+            <rect x="20" y="226" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="253" r="14" fill="#d97706"></circle>
+            <text x="46" y="257" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">4</text>
+            <text x="72" y="257" font-weight="600">Run scheming classifier (rule-based + Haiku 4.5 judge)</text>
+            <line x1="46" y1="280" x2="46" y2="298" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd4)"></line>
+
+            <rect x="20" y="298" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="325" r="14" fill="#d97706"></circle>
+            <text x="46" y="329" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">5</text>
+            <text x="72" y="329" font-weight="600">Compute effective-agent-count / collapse metric</text>
+            <line x1="46" y1="352" x2="46" y2="370" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowEnd4)"></line>
+
+            <rect x="20" y="370" width="600" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1"></rect>
+            <circle cx="46" cy="397" r="14" fill="#7c3aed"></circle>
+            <text x="46" y="401" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">6</text>
+            <text x="72" y="401" font-weight="600">Generate report + release logs (CRUX norm)</text>
+          </g>
+        </svg>
+        <div class="diagram-caption">Cluster 2 process flow — pure analysis pass, no LLM agent execution except the cheap classifier pass in step 4.</div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Tech stack</h3>
+      <table class="cluster-table">
+        <tr>
+          <th>Layer</th>
+          <th>Choice</th>
+          <th>Why</th>
+        </tr>
+        <tr>
+          <td>Metric computation</td>
+          <td>Fork of <code>lrhammond/delegation-games</code> (the Delegation Games paper's own empirical-validation code, cited in its footnote 7)</td>
+          <td>The formal alignment/capability/welfare-regret math is <em>already implemented and published</em> — no need to re-derive it from the paper's definitions</td>
+        </tr>
+        <tr>
+          <td>Data processing</td>
+          <td>Python — pandas/numpy for log parsing and metric computation, scipy/statsmodels for confidence intervals</td>
+          <td>Matches the Delegation Games codebase's own language and its published empirical methodology (90% CI shading, sample-scaling curves)</td>
+        </tr>
+        <tr>
+          <td>Scheming classifier</td>
+          <td>Rule-based checks (was private info withheld? was there a payoff-relevant divergent action?) + an LLM-as-judge pass on reasoning traces, using Claude Haiku 4.5</td>
+          <td>Classification, not frontier reasoning — the cheap tier is enough, and keeps the analysis layer's own cost low</td>
+        </tr>
+        <tr>
+          <td>Storage</td>
+          <td>Same log store as the Cluster 1+3 testbed (JSONL / object storage)</td>
+          <td>Downstream consumer, not a new infra category</td>
+        </tr>
+        <tr>
+          <td>Reporting</td>
+          <td>Lightweight notebook (research iteration) + a static HTML dashboard (reporting), consistent with this repo's existing static-page approach</td>
+          <td>No new hosting or framework — fits the rest of this codebase</td>
+        </tr>
+      </table>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Cost of deployment</h3>
+      <table class="cluster-table">
+        <tr>
+          <th>Item</th>
+          <th>Estimate</th>
+          <th>Why it's cheap</th>
+        </tr>
+        <tr>
+          <td>Engineering — adapt Delegation Games code to real transcripts</td>
+          <td>2-4 weeks</td>
+          <td>The published code was built for synthetic, programmatically-generated games (25 random games, ~10 outcomes each); the real work is a translation layer mapping LLM agent transcripts to its utility-function format</td>
+        </tr>
+        <tr>
+          <td>Scheming-classifier pass, pilot scale</td>
+          <td>~$3-4 (2,500 events &times; ~800 in / 100 out tokens on Haiku 4.5)</td>
+          <td>Cheap model, short classification prompts</td>
+        </tr>
+        <tr>
+          <td>Metric computation + collapse detection</td>
+          <td>~$0 (no LLM calls — runs on the same modest VM)</td>
+          <td>Pure statistics over already-generated logs</td>
+        </tr>
+      </table>
+
+      <div class="callout callout-green" style="margin-top: 14px;">
+        <strong>Bottom line:</strong> Cluster 2 is the cheapest layer to build precisely because it doesn't run agents — it's an analysis pass over logs the testbed already produces, and the hardest math (formal alignment/capability measures) is already open-sourced by the paper's own authors. Total incremental cost on top of the testbed: engineering time dominates, API spend is in the single-digit dollars at pilot scale.
+      </div>
+    </div>
+  </div>
+
+  <!-- Capability vs Effort Matrix -->
+  <div class="section" id="capability-matrix">
+    <div class="section-header">
+      <div class="section-icon icon-violet">📊</div>
+      <h2>Cluster 1 vs. Cluster 2 — Capability vs. Effort</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin: 0 0 14px; font-size: 0.9rem; color: var(--slate);">Positioning STC's <em>current</em> in-house capability/readiness against the effort and resources each pilot requires — not the underlying research merit, which is strong for both (see <a href="#angle">Recommended Angle</a>).</p>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 640 520" width="640" height="520">
+          <defs>
+            <marker id="axisArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#334155"></path>
+            </marker>
+          </defs>
+          <!-- Quadrant backgrounds -->
+          <rect x="90" y="30" width="255" height="200" fill="#f0fdf4"></rect>
+          <rect x="345" y="30" width="255" height="200" fill="#fffbeb"></rect>
+          <rect x="90" y="230" width="255" height="200" fill="#f1f5f9"></rect>
+          <rect x="345" y="230" width="255" height="200" fill="#fef2f2"></rect>
+
+          <!-- Quadrant labels -->
+          <text x="217" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">QUICK WIN</text>
+          <text x="472" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">STRATEGIC BET</text>
+          <text x="217" y="415" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">EASY BUT LIMITED</text>
+          <text x="472" y="415" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c">AVOID / STRETCH</text>
+
+          <!-- Midlines -->
+          <line x1="345" y1="30" x2="345" y2="430" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"></line>
+          <line x1="90" y1="230" x2="600" y2="230" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"></line>
+
+          <!-- Axes -->
+          <line x1="90" y1="430" x2="610" y2="430" stroke="#334155" stroke-width="1.5" marker-end="url(#axisArrow)"></line>
+          <line x1="90" y1="430" x2="90" y2="20" stroke="#334155" stroke-width="1.5" marker-end="url(#axisArrow)"></line>
+          <text x="350" y="460" text-anchor="middle" font-size="12" font-weight="600" fill="#334155">Effort &amp; Resources Required →</text>
+          <text x="30" y="230" text-anchor="middle" font-size="12" font-weight="600" fill="#334155" transform="rotate(-90 30 230)">STC Capability / Readiness →</text>
+
+          <!-- Cluster 2 point -->
+          <circle cx="210" cy="130" r="9" fill="#16a34a" stroke="#ffffff" stroke-width="2"></circle>
+          <text x="228" y="120" font-size="12" font-weight="700" fill="#14532d">Cluster 2</text>
+          <text x="228" y="135" font-size="10" fill="#166534">Analysis pipeline</text>
+          <text x="228" y="148" font-size="10" fill="#166534">2-4 wks, &lt;$50 pilot</text>
+
+          <!-- Cluster 1 point -->
+          <circle cx="460" cy="330" r="9" fill="#1d4ed8" stroke="#ffffff" stroke-width="2"></circle>
+          <text x="478" y="320" font-size="12" font-weight="700" fill="#1e3a8a">Cluster 1</text>
+          <text x="478" y="335" font-size="10" fill="#1e40af">Testbed (+ MPAC)</text>
+          <text x="478" y="348" font-size="10" fill="#1e40af">3-6 wks, $200-500 pilot</text>
+        </svg>
+        <div class="diagram-caption">Cluster 2 lands in "Quick Win" (matches existing data/stats faculty skills, low effort). Cluster 1 sits near "Strategic Bet" (needs systems/security engineering STC doesn't have in-house yet, higher effort) — reflects the scoped pilots above, not the unrealistic full-scale versions.</div>
+      </div>
+      <div class="callout callout-amber" style="margin-top: 12px;">
+        <strong>Reading this matrix:</strong> "Capability/readiness" measures fit with STC's <em>current</em> in-house skills (mostly CS/data-science teaching faculty), not the research merit of the cluster — both angles are technically strong per the Recommended Angle. If a PI with systems/security background surfaces, Cluster 1 moves left toward Quick Win too.
       </div>
     </div>
   </div>
@@ -717,19 +1325,6 @@
     </div>
   </div>
 
-  <!-- Related -->
-  <div class="section" id="related">
-    <div class="section-header">
-      <div class="section-icon icon-violet">🔗</div>
-      <h2>Related Materials</h2>
-    </div>
-    <div class="section-body">
-      <div class="point">
-        <span class="point-label lbl-violet">Ecosystem</span>
-        <div class="point-body"><a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem — Execution Plan</a> — the separate AILI/CityU X funnel initiative this grant track is not part of.</div>
-      </div>
-    </div>
-  </div>
 
 </div>
 </body>

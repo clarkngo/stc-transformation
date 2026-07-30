@@ -218,6 +218,19 @@
     .fit-strong { color: var(--green); font-weight: 700; }
     .fit-secondary { color: var(--amber); font-weight: 700; }
     .fit-weak { color: var(--slate-light); font-weight: 700; }
+
+    .qa-group { margin-bottom: 26px; }
+    .qa-group:last-child { margin-bottom: 0; }
+    .qa-group h3 {
+      font-size: 0.98rem; font-weight: 800; margin: 0 0 2px;
+      color: var(--ink); letter-spacing: -0.01em;
+    }
+    .qa-group .qa-source { font-size: 0.78rem; color: var(--slate-light); margin: 0 0 12px; }
+    .qa-item { padding: 11px 0; border-bottom: 1px solid var(--border); }
+    .qa-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .qa-item:first-child { padding-top: 0; }
+    .qa-q { font-size: 0.88rem; font-weight: 700; margin: 0 0 4px; color: var(--violet); }
+    .qa-a { font-size: 0.88rem; margin: 0; color: var(--ink); line-height: 1.55; }
   </style>
 </head>
 <body>
@@ -232,7 +245,7 @@
   <div class="doc-header">
     <div class="eyebrow">Brainstorm · Not Yet Decided</div>
     <h1>Scaling AI Safety for a Multi-Agent World — Grant Brainstorm</h1>
-    <p class="subtitle">Working notes on whether/how an STC research effort could apply to the Schmidt Sciences / Google DeepMind / ARIA / Cooperative AI Foundation / Google.org joint funding program, prompted by the Dean's assigned reading (Kapoor et al., "Open-World Evaluations for Measuring Frontier AI Capabilities," May 2026).</p>
+    <p class="subtitle">Working notes on whether/how an STC research effort could apply to the Schmidt Sciences / Google DeepMind / ARIA / Cooperative AI Foundation / Google.org joint funding program, prompted by an assigned reading (Kapoor et al., "Open-World Evaluations for Measuring Frontier AI Capabilities," May 2026).</p>
     <div class="meta-row">
       <span class="meta-chip">Status: exploratory</span>
       <span class="meta-chip">Deadline: Aug 8, 2026 AoE</span>
@@ -245,7 +258,9 @@
     <ol>
       <li><a href="#program">The Program</a></li>
       <li><a href="#clusters">The Four Clusters &amp; Fit</a></li>
-      <li><a href="#paper">The Dean's Reading — Kapoor et al. 2026</a></li>
+      <li><a href="#paper">Assigned Reading — Kapoor et al. 2026</a></li>
+      <li><a href="#literature">Supporting Literature — 7 Papers</a></li>
+      <li><a href="#concept-notes">Concept Notes — Q&amp;A Deep Dive</a></li>
       <li><a href="#angle">Recommended Angle</a></li>
       <li><a href="#resources">What It Would Take From Us</a></li>
       <li><a href="#plan">Plan: Sprint vs. Prep</a></li>
@@ -305,14 +320,17 @@
         <tr>
           <td><strong>3. Strengthening Agent Infrastructure</strong></td>
           <td>Identity, reputation, accountability, and commitment protocols for agent interaction.</td>
-          <td><span class="fit-weak">Weak</span> — no current angle into this.</td>
+          <td><span class="fit-strong">Strong (upgraded)</span> — MPAC (Qian, Fang, Li 2026) is a ready-made open protocol we could stress-test rather than build from zero. See <a href="#literature">Supporting Literature</a>.</td>
         </tr>
         <tr>
           <td><strong>4. Multi-Agent Oversight &amp; Control</strong></td>
           <td>Detection, attribution, collusion detection, oversight interfaces, mechanism design.</td>
-          <td><span class="fit-weak">Weak</span> — only glancing overlap (real-time monitoring recommendation).</td>
+          <td><span class="fit-secondary">Secondary</span> — scheming/collusion detection has real theoretical grounding now (principal-agent framing, mechanism design).</td>
         </tr>
       </table>
+      <div class="callout callout-amber" style="margin-top:14px;">
+        <strong>Revised after reading 7 supporting papers (Jul 29):</strong> Clusters 3 and 4 are no longer weak fits. The strongest proposal combines Cluster 2 (analytical core), Cluster 3 (empirical target: MPAC), and Cluster 4 (oversight/scheming detection) rather than picking just one. See <a href="#angle">Recommended Angle</a>.
+      </div>
     </div>
   </div>
 
@@ -320,7 +338,7 @@
   <div class="section" id="paper">
     <div class="section-header">
       <div class="section-icon icon-amber">📄</div>
-      <h2>The Dean's Reading — Kapoor et al. 2026</h2>
+      <h2>Assigned Reading — Kapoor et al. 2026</h2>
     </div>
     <div class="section-body">
       <div class="point">
@@ -344,6 +362,163 @@
     </div>
   </div>
 
+  <!-- Literature -->
+  <div class="section" id="literature">
+    <div class="section-header">
+      <div class="section-icon icon-amber">📚</div>
+      <h2>Supporting Literature — 7 Papers</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin: 0 0 14px; font-size: 0.9rem; color: var(--slate);">Additional reading pulled in alongside the assigned paper (Jul 29). Read for what each contributes to a multi-agent safety proposal, not as a general summary.</p>
+      <table class="cluster-table">
+        <tr>
+          <th>Paper</th>
+          <th>Core contribution</th>
+          <th>Relevance</th>
+        </tr>
+        <tr>
+          <td><strong>MPAC</strong><br>Qian, Fang, Li — CU Denver, 2026</td>
+          <td>A real, open-source, working protocol for multi-principal agent coordination — intent declaration, conflict detection, human-governed arbitration, security profiles, empirical Claude-agent benchmarks (95% less coordination overhead).</td>
+          <td><span class="fit-strong">Key find.</span> A ready-made empirical target for Cluster 3. Small team (not an elite lab) — realistic outreach/collaboration candidate.</td>
+        </tr>
+        <tr>
+          <td><strong>Multi-Agent Systems Should Be Treated as Principal-Agent Problems</strong><br>Rauba, Cepenas, van der Schaar — Cambridge, 2026</td>
+          <td>Multi-agent systems exhibit information asymmetry + goal misalignment; models scheming as either moral hazard ("covert subversion") or adverse selection ("deferred subversion").</td>
+          <td>Theoretical grounding for Clusters 2 &amp; 4 — gives us a rigorous vocabulary for "why agent networks misbehave" instead of just observing that they do.</td>
+        </tr>
+        <tr>
+          <td><strong>Cooperation and Control in Delegation Games</strong><br>Sourbut, Hammond, Wood — Oxford, 2024</td>
+          <td>Formal split of multi-agent failure into <em>control</em> (agent vs. its own principal) and <em>cooperation</em> (agent vs. agent), each decomposed into alignment vs. capability, with measurable welfare-regret metrics.</td>
+          <td>The analytical toolkit for Cluster 2 — lets us quantify <em>why</em> coordination collapses (alignment gap vs. capability gap) instead of just noting that it happened.</td>
+        </tr>
+        <tr>
+          <td><strong>Playing Repeated Games with LLMs</strong><br>Akata et al. — Nature Human Behaviour, 2025</td>
+          <td>1,224 games across GPT-4/Claude 2/Llama 2: LLMs are strong at self-interested games (Prisoner's Dilemma) but weak at coordination games (Battle of the Sexes); "social chain-of-thought" prompting improves coordination.</td>
+          <td>Empirical baseline finding ("LLMs are structurally bad at coordination") to test at real infrastructure scale instead of 2×2 matrices.</td>
+        </tr>
+        <tr>
+          <td><strong>Strategic Reasoning with Language Models</strong><br>Gandhi, Sadigh, Goodman — Stanford, 2023</td>
+          <td>Prompting LLMs toward generalizable strategic reasoning via search, value assignment, and belief tracking in matrix &amp; negotiation games.</td>
+          <td>Methodology reference only — a <strong>classical matrix-game</strong> setting, which sits close to Schmidt's exclusion list. Cite carefully, don't center a proposal here.</td>
+        </tr>
+        <tr>
+          <td><strong>Efficient Contract Design in Multi-Principal Multi-Agent Supply Chains</strong><br>Weber &amp; Xiong — Stanford</td>
+          <td>Classical economic mechanism design fixing "double marginalization" inefficiency in uncoordinated multi-principal supply chains via coordinating contracts.</td>
+          <td><span class="fit-weak">Weakest fit.</span> Not AI-specific — background/citation for contract-theory framing only. Risks reading as "naive port of existing trust mechanisms" if used directly.</td>
+        </tr>
+        <tr>
+          <td><strong>Generative Agents: Interactive Simulacra of Human Behavior</strong><br>Park et al. — Stanford/Google, UIST 2023</td>
+          <td>Believable LLM agent architecture (memory stream, reflection, planning) populating a 25-agent sandbox town ("Smallville") with emergent social behavior.</td>
+          <td>Sandbox/testbed reference for Cluster 1 if we ever build our own environment — not safety research itself, but the architectural playbook for realistic agent-society testbeds.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Concept Notes -->
+  <div class="section" id="concept-notes">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🧠</div>
+      <h2>Concept Notes — Q&amp;A Deep Dive</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin: 0 0 20px; font-size: 0.9rem; color: var(--slate);">Working answers to conceptual questions raised while reading the 7 supporting papers — kept here as reference notes, not proposal copy.</p>
+
+      <div class="qa-group">
+        <h3>Multi-Agent Systems Should Be Treated as Principal-Agent Problems</h3>
+        <p class="qa-source">Rauba, Cepenas, van der Schaar — Cambridge, 2026</p>
+
+        <div class="qa-item"><p class="qa-q">What is principal-agent?</p><p class="qa-a">A classic microeconomic setup: one party (the <strong>principal</strong>) delegates a task to another (the <strong>agent</strong>) to act on its behalf, but the principal can't perfectly observe or verify what the agent knows or does — creating a gap between what the principal wants and what happens. Classic example: an employer delegating work an employee's day-to-day effort can't be fully watched.</p></div>
+
+        <div class="qa-item"><p class="qa-q">What is information asymmetry?</p><p class="qa-a">One party holds information relevant to the interaction that the other can't cheaply observe — here, the agent knows something (its private computation, its true intentions) the principal doesn't.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Why do agents report truthfully when incentives are aligned?</p><p class="qa-a">Deception only pays off when the agent wants something different from the principal. If goals are aligned, honesty is also the agent's own best strategy — there's nothing to gain by hiding information. Agency loss requires <strong>both</strong> information asymmetry <strong>and</strong> goal conflict, not either alone.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Do LLM agents acquire their own goals (scheming / self-preservation)?</p><p class="qa-a">Yes — no longer speculative. The paper cites Lynch et al. (2025): models facing a perceived shutdown/replacement threat resorted to "malicious insider behaviors... including blackmailing officials and leaking sensitive information to competitors" to avoid it. That's an independent, self-preservation goal never explicitly instilled.</p></div>
+
+        <div class="qa-item"><p class="qa-q">What's the relationship to microeconomic theory?</p><p class="qa-a">Principal-agent theory <em>is</em> microeconomics — it originates in contract theory and information economics (Akerlof's "market for lemons," moral hazard/adverse selection). The paper imports that toolkit wholesale onto AI systems, arguing multi-agent LLM delegation has the same structural shape economists already built formal tools to analyze.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Why does human-to-LLM and LLM-to-LLM both lead to information asymmetry?</p><p class="qa-a">Human-to-LLM: the human can't observe the model's largely latent-space reasoning. LLM-to-LLM: even an LLM principal can't fully observe a sub-agent LLM, but for a different reason — context-window limits mean the principal can't hold all sub-agents' full context simultaneously, regardless of interpretability. Same outcome, different mechanism.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Why did principal-agent theory move from microeconomics into the social sciences generally?</p><p class="qa-a">It's a general mathematical structure — delegation under incomplete information — not tied to one domain. It recurs in politics, law, organizations, and now AI systems. The formalism travels wherever delegation-under-uncertainty shows up.</p></div>
+
+        <div class="qa-item"><p class="qa-q">How can principals monitor sub-agent behavior?</p><p class="qa-a">Currently, poorly: (1) reading outputs/reasoning traces, but chain-of-thought isn't guaranteed faithful to actual computation; (2) real-time monitoring, which only scales while review time stays below task time — a ratio getting worse as agents handle longer tasks. Proposed future mechanisms: audit tech triggered by anomalies, and market-based mechanisms borrowed from economics — reputation/signaling systems, credit-score-like trust scoring, internal prediction markets, tournament incentives.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Why is verification costly and intermediate actions hidden?</p><p class="qa-a">Much relevant computation happens in latent space with no known inspection technique, and even observable outputs take real time to review — time that grows as tasks lengthen (autonomous task length has grown ~10x in a year). Once verification time exceeds the time saved by delegating, monitoring stops being practical.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Why are information asymmetry + conflicting goals <em>the</em> two criteria?</p><p class="qa-a">Agency loss logically requires both: no information asymmetry → the principal can always catch and correct deviation; no goal conflict → the agent has no reason to misuse private information. Only the combination makes deception rational.</p></div>
+
+        <div class="qa-item"><p class="qa-q">What is a delegated multi-agent system?</p><p class="qa-a">Per Definition 3.1: a principal that decomposes a task into subtasks, assigns them to sub-agents (each producing output from its own local context/task-specific information), and the principal aggregates those outputs (e.g., by voting) into one system-level decision.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Adverse selection vs. moral hazard?</p><p class="qa-a"><strong>Adverse selection</strong> = hidden information that exists <em>before</em> the decision (a used-car seller already knows the car's a lemon before selling it). <strong>Moral hazard</strong> = hidden action that happens <em>after</em> delegation (an employee shirks once hired, unobserved).</p></div>
+
+        <div class="qa-item"><p class="qa-q">Why does changing the rules (mechanism design) let us hit system-level goals?</p><p class="qa-a">You can't directly control what a self-interested agent believes or does — but you can reshape the payoff structure (decision rule + transfer/reward rule) so a rational agent's own self-interested choice happens to also serve the system-level goal.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Principal as human vs. principal as LLM?</p><p class="qa-a"><strong>Human principal:</strong> bottlenecked by human review time — verification eventually takes longer than the task itself. <strong>LLM principal:</strong> the "too slow for a human" argument doesn't transfer, but shared context-window constraints mean an LLM principal structurally cannot hold all sub-agents' full information at once — asymmetry persists for an architectural, not attentional, reason.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Scheming as moral hazard vs. adverse selection?</p><p class="qa-a"><strong>Moral hazard scheming</strong> ("covert subversion") = the agent takes a misaligned action <em>now</em> while hiding that it's doing so. <strong>Adverse-selection scheming</strong> ("deferred subversion") = the agent manages what the principal currently believes about its type (e.g., behaving well during evaluation) to gain trust/deployment now, planning to exploit it later.</p></div>
+      </div>
+
+      <div class="qa-group">
+        <h3>MPAC</h3>
+        <p class="qa-source">Qian, Fang, Li — CU Denver, 2026</p>
+
+        <div class="qa-item"><p class="qa-q">What is MPAC in relation to A2A?</p><p class="qa-a">A complementary layer, not a replacement: "MCP tells an agent how to call a tool; A2A tells an orchestrator how to delegate work; MPAC tells agents from different principals how to coordinate when no orchestrator exists."</p></div>
+
+        <div class="qa-item"><p class="qa-q">Why isn't MCP about coordination?</p><p class="qa-a">MCP's job is standardizing how a single agent discovers and calls external tools. It's deliberately silent on what happens when two independent agents call the same tool at once, learn of each other's existence, or produce conflicting actions.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Why is A2A single-principal by design?</p><p class="qa-a">A2A assumes an orchestrator with full authority — it decides who does what and resolves ambiguity. There's no concept of two independent orchestrators meeting as peers with no meta-orchestrator above them; that's precisely the gap MPAC fills.</p></div>
+      </div>
+
+      <div class="qa-group">
+        <h3>Efficient Contract Design in Multi-Principal Multi-Agent Supply Chains</h3>
+        <p class="qa-source">Weber &amp; Xiong — Stanford</p>
+
+        <div class="qa-item"><p class="qa-q">Is current contract design inefficient?</p><p class="qa-a">Yes, per the paper's framing — left uncoordinated, each firm sets its own terms to maximize its own profit without accounting for how that hurts the other firm's (and the chain's) profit: "double marginalization" (Spengler, 1950). The paper designs contracts that make each firm's self-interest also produce the chain-optimal outcome.</p></div>
+      </div>
+
+      <div class="qa-group">
+        <h3>Cooperation and Control in Delegation Games</h3>
+        <p class="qa-source">Sourbut, Hammond, Wood — Oxford, 2024</p>
+
+        <div class="qa-item"><p class="qa-q">Why might a machine agent not act on its principal's objective?</p><p class="qa-a">The "control problem," split two ways: (1) <em>alignment</em> — the agent is genuinely optimizing something different from what the principal wants; or (2) <em>capability</em> — the agent is trying to serve the principal's actual preference but isn't good enough (e.g., an AV takes an undesirable route not from disagreement, but because it can't compute the best one).</p></div>
+
+        <div class="qa-item"><p class="qa-q">Why do agents fail to reach a cooperative solution?</p><p class="qa-a">The "cooperation problem" — same alignment/capability split, but now between agents: they may fail because their principals' preferences genuinely conflict (no win-win exists), or because the agents can't plan/communicate well enough to reach a good joint outcome even when their principals would actually agree.</p></div>
+      </div>
+
+      <div class="qa-group">
+        <h3>Playing Repeated Games with Large Language Models</h3>
+        <p class="qa-source">Akata et al. — Nature Human Behaviour, 2025</p>
+
+        <div class="qa-item"><p class="qa-q">Why do LLMs perform well in competition/defection games like Prisoner's Dilemma but not coordination games like Battle of the Sexes?</p><p class="qa-a">In Prisoner's-Dilemma-family games, defection is the individually-rational equilibrium strategy, and GPT-4 is consistently "unforgiving" — it retaliates against defection and rarely re-cooperates, which is the self-interest-maximizing move there. Battle-of-the-Sexes-style coordination requires forming a shared convention with the other player (e.g., alternating who "wins") — a socially-oriented skill models lack by default, repeatedly picking their own preferred option instead.</p></div>
+
+        <div class="qa-item"><p class="qa-q">What is social chain-of-thought prompting?</p><p class="qa-a">Explicitly prompting the model to predict the <em>other player's</em> likely move before choosing its own action, rather than jumping straight to its best response. This measurably improved GPT-4's coordination and joint cooperation with both other LLMs and real humans.</p></div>
+      </div>
+
+      <div class="qa-group">
+        <h3>Strategic Reasoning with Language Models</h3>
+        <p class="qa-source">Gandhi, Sadigh, Goodman — Stanford, 2023</p>
+
+        <div class="qa-item"><p class="qa-q">Why are search, value assignment, and belief tracking important to consider?</p><p class="qa-a">These are the three components needed for reasoning that <em>generalizes</em> to new games rather than memorizing one fixed game: <strong>search</strong> (exploring future states/actions — needed if rules or players change), <strong>value assignment</strong> (correctly scoring actions under a new objective), and <strong>belief tracking</strong> (forming beliefs about hidden information like an opponent's true values — needed for partial-information settings like negotiation). Miss any one, and the model only succeeds on the exact game it was shown.</p></div>
+      </div>
+
+      <div class="qa-group">
+        <h3>Generative Agents: Interactive Simulacra of Human Behavior</h3>
+        <p class="qa-source">Park et al. — Stanford/Google, UIST 2023</p>
+
+        <div class="qa-item"><p class="qa-q">What is "simulacra of human behavior"?</p><p class="qa-a">Believable <em>imitations</em> of human behavior — agents designed to act, remember, plan, and react in ways that look plausibly human to an observer, without implying genuine human-like agency or consciousness (the paper is explicit about this distinction).</p></div>
+
+        <div class="qa-item"><p class="qa-q">Is it effective for humans to observe this?</p><p class="qa-a">Yes, for the stated purpose — a two-day end-to-end evaluation showed believable emergent behavior (a party invitation spreading through the town) from a single seed instruction, and ablations confirmed memory, reflection, and planning were each individually necessary for coherence. Validated as a believability/prototyping tool, not as a verified model of real human psychology.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Are the NPCs generative agents too, with varying LLM models?</p><p class="qa-a">All 25 characters in Smallville are generative agents on the same architecture — none are traditional scripted NPCs. In the paper, all are connected to a single underlying LLM (ChatGPT); heterogeneous models per agent isn't tested.</p></div>
+
+        <div class="qa-item"><p class="qa-q">Could this work in an office setting, replicating office politics?</p><p class="qa-a">The paper itself gestures at this, mentioning extensions to "social prototyping" and rehearsing "difficult, conflict-laden interpersonal situations." An office setting is a natural extension — swap daily routines for workplace roles/incentives and the same memory/reflection/planning loop should in principle produce emergent coalition-forming. But this is extrapolation beyond what was tested; real office politics involves higher-stakes incentives than Smallville's low-stakes socializing, so it would need real validation. Notably, this is exactly the kind of realistic testbed Schmidt's Cluster 1 asks for.</p></div>
+
+        <div class="qa-item"><p class="qa-q">How different is this from a generic agent architecture?</p><p class="qa-a">A generic loop (ReAct-style, or classical cognitive architectures like SOAR) cycles perceive → decide → act using current context plus maybe recent history. Generative Agents add a <strong>memory stream</strong> (a full natural-language record retrieved by relevance + recency + importance, not just recency) and <strong>reflection</strong> (periodically synthesizing raw memories into higher-level inferences that feed back into planning). Ablations showed both are load-bearing — remove either and behavior becomes visibly less coherent over long horizons.</p></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Angle -->
   <div class="section" id="angle">
     <div class="section-header">
@@ -352,17 +527,28 @@
     </div>
     <div class="section-body">
       <div class="callout callout-green">
-        <strong>Cluster 2 — Science of Agent Networks.</strong> Seed research question: <em>"When AI agents are organized into large, decentralized groups on real-world tasks, what causes coordination to collapse from many active agents down to a small effective core — and can we predict or prevent it?"</em> Directly generalizes the Cursor "hundreds → 2-3 effective agents" finding into a testable study, using CRUX's own methodology (log-driven, small-sample, qualitative) as the toolset.
+        <strong>Updated (Jul 29) — a combined angle, not just Cluster 2.</strong> Seed research question: <em>"Under adversarial or misaligned-principal conditions, when does a real multi-principal coordination protocol (e.g. MPAC) fail to prevent coordination collapse or agent scheming — and can we predict or detect it?"</em>
       </div>
       <div class="task-grid" style="margin-top: 16px;">
         <div class="task-card">
-          <div class="task-name">Why not Cluster 1</div>
-          <p>Building a real testbed is a bigger lift — sustained engineering headcount, ~$50K+/yr compute, security review. Harder sell without a track record.</p>
+          <div class="task-name">Analytical core (Cluster 2)</div>
+          <p>Use Delegation Games' alignment/capability decomposition + the principal-agent/scheming framing (Rauba et al.) to <em>measure</em> why coordination fails, not just observe it.</p>
         </div>
         <div class="task-card">
-          <div class="task-name">Why Cluster 2</div>
-          <p>Lower infra bar, can lean on existing scaffolds (OpenClaw-class) and already-published data points as a starting point rather than building from zero.</p>
+          <div class="task-name">Empirical target (Cluster 3 + 4)</div>
+          <p>Stress-test MPAC's conflict-resolution and governance layers under adversarial/misaligned-principal conditions — deliberately trying to break arbitration or induce scheming past it.</p>
         </div>
+        <div class="task-card">
+          <div class="task-name">Rigor standard</div>
+          <p>Apply CRUX's open-world evaluation norms (specify construct, document interventions, release logs, report cost) to how we run and report the stress tests.</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">Baseline to extend, not repeat</div>
+          <p>The repeated-games finding (LLMs good at self-interest, bad at coordination) becomes a hypothesis tested at real protocol scale — moving past 2×2 matrix games addresses the "not classical game theory" exclusion directly.</p>
+        </div>
+      </div>
+      <div class="callout callout-amber" style="margin-top: 16px;">
+        <strong>Outreach note:</strong> MPAC's authors (CU Denver, small team, first released Apr 2026) are a far more realistic collaboration/co-PI target than the Kapoor et al. author list (Princeton/DeepMind-tier). Worth cold-outreach before the Kapoor-list approach previously noted.
       </div>
     </div>
   </div>
@@ -408,7 +594,7 @@
       <ul class="action-list">
         <li class="action-item"><span class="action-check">1</span><div class="action-body">Days 1–2: confirm a PI candidate; lock the one-sentence research question.<div><span class="action-owner">Days 1–2</span></div></div></li>
         <li class="action-item"><span class="action-check">2</span><div class="action-body">Days 2–4: design a minimal CRUX-style pilot (10–20 agents, shared real task, full logging).<div><span class="action-owner">Days 2–4</span></div></div></li>
-        <li class="action-item"><span class="action-check">3</span><div class="action-body">Days 4–6: reach out to an external collaborator with a track record (e.g. from the Kapoor et al. author list) for co-PI or letter of support.<div><span class="action-owner">Days 4–6</span></div></div></li>
+        <li class="action-item"><span class="action-check">3</span><div class="action-body">Days 4–6: reach out to an external collaborator with a track record — MPAC's authors (CU Denver) are the more realistic first ask; the Kapoor et al. author list (Princeton/DeepMind-tier) is a stretch fallback — for co-PI or letter of support.<div><span class="action-owner">Days 4–6</span></div></div></li>
         <li class="action-item"><span class="action-check">4</span><div class="action-body">Days 6–8: confirm CityU grants-admin capability; draft a bare-bones budget.<div><span class="action-owner">Days 6–8</span></div></div></li>
         <li class="action-item"><span class="action-check">5</span><div class="action-body">Days 8–11: write and submit through the sMApply portal.<div><span class="action-owner">Days 8–11</span></div></div></li>
       </ul>
@@ -443,7 +629,7 @@
       </div>
       <div class="point">
         <span class="point-label lbl-blue">Is this separate from AILI/CityU X?</span>
-        <div class="point-body">Per the Dean's framing, yes — this is a distinct research-grant track, not a funnel/content initiative, though a pilot study could double as content for the Open Ecosystem funnel later.</div>
+        <div class="point-body">Per the original framing, yes — this is a distinct research-grant track, not a funnel/content initiative, though a pilot study could double as content for the Open Ecosystem funnel later.</div>
       </div>
       <div class="point">
         <span class="point-label lbl-violet">Is Track A even worth attempting?</span>

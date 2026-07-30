@@ -269,6 +269,7 @@
       <li><a href="#literature">Supporting Literature — 7 Papers</a></li>
       <li><a href="#concept-notes">Concept Notes — Q&amp;A Deep Dive</a></li>
       <li><a href="#angle">Recommended Angle</a></li>
+      <li><a href="#cluster1-park">Cluster 1 — Extending Park et al.</a></li>
       <li><a href="#resources">What It Would Take From Us</a></li>
       <li><a href="#plan">Plan: Sprint vs. Prep</a></li>
       <li><a href="#open-questions">Open Questions</a></li>
@@ -556,6 +557,77 @@
       </div>
       <div class="callout callout-amber" style="margin-top: 16px;">
         <strong>Outreach note:</strong> MPAC's authors (CU Denver, small team, first released Apr 2026) are a far more realistic collaboration/co-PI target than the Kapoor et al. author list (Princeton/DeepMind-tier). Worth cold-outreach before the Kapoor-list approach previously noted.
+      </div>
+    </div>
+  </div>
+
+  <!-- Cluster 1 -->
+  <div class="section" id="cluster1-park">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🏙️</div>
+      <h2>Cluster 1 — Extending Park et al. (Generative Agents)</h2>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-amber">
+        <strong>Verdict: partial fit.</strong> Park et al.'s memory/reflection/planning architecture (Smallville, 2023) is a genuinely reusable, open-source starting substrate — but it was built to solve <em>believability</em>, not Schmidt's <em>safety-at-scale</em> bar. Extending it closes real gaps rather than repackaging an existing result. One specific slice of it — the scalability/fidelity trade-off — is a strong, cheap, standalone pilot; the rest of Cluster 1 (a full testbed satisfying all five desiderata) remains the heavy build flagged earlier.
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Against Schmidt's 5 desiderata</h3>
+      <table class="cluster-table">
+        <tr>
+          <th>Desideratum</th>
+          <th>Verdict</th>
+          <th>Why</th>
+        </tr>
+        <tr>
+          <td><strong>Scalable</strong></td>
+          <td><span class="fit-weak">Weak</span></td>
+          <td>25 agents was already expensive (heavy per-agent, per-step LLM calls). Zero tool/knowledge-base diversity — agents don't call APIs, run code, or touch external systems at all.</td>
+        </tr>
+        <tr>
+          <td><strong>High-fidelity</strong></td>
+          <td><span class="fit-weak">Weak</span></td>
+          <td>Optimized for believability, not capability fidelity. A 2023 ChatGPT-backed agent walking a game world doesn't resemble a frontier tool-using agent's real failure modes.</td>
+        </tr>
+        <tr>
+          <td><strong>Externally valid</strong></td>
+          <td><span class="fit-weak">Not addressed</span></td>
+          <td>Smallville is explicitly synthetic; the paper makes no claim about transfer to real deployment conditions. Would be new research layered on top.</td>
+        </tr>
+        <tr>
+          <td><strong>Safe &amp; secure</strong></td>
+          <td><span class="fit-strong">Genuine asset</span></td>
+          <td>Agents are sandboxed by default — no real tool access unless deliberately added. Gate any added tools behind least-privilege sandboxing (MPAC-style security profiles) and this becomes a naturally safe substrate for studying dangerous collective behavior.</td>
+        </tr>
+        <tr>
+          <td><strong>Reproducible</strong></td>
+          <td><span class="fit-secondary">Partial</span></td>
+          <td>Open-sourced and documented — better than most open-world evals here — but genuine method-comparison rigor still needs CRUX's norms layered on top.</td>
+        </tr>
+      </table>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Against the 3 priority research directions</h3>
+      <div class="task-grid">
+        <div class="task-card">
+          <div class="task-name">(a) Scalability/fidelity trade-off — strongest angle</div>
+          <p>Run the same architecture with a frontier model vs. a distilled/smaller model side by side; empirically measure where and how much behavior diverges. Well-scoped, reuses existing open-source code, directly answers a named Schmidt priority, cheap enough to pilot.</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">(b) Grounding in real deployment data</div>
+          <p>Hard without a data partner — STC has no real deployment logs of its own. Would need a partnership (e.g. MPAC's authors) rather than being bootstrapped from Park et al. alone.</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">(c) Environment-agnostic cross-testbed infrastructure</div>
+          <p>Not really a Park et al. extension — closer to what MPAC or CRUX's "release logs" norm already gesture at. A separate infrastructure/interop project, not this one.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-green" style="margin-top: 16px;">
+        <strong>Domain-agnostic or domain-specific?</strong> The memory/reflection/planning core is domain-agnostic — Smallville is just one instantiation. Closing the fidelity/tool-diversity gaps needs a domain-<em>specific</em> action/tool layer bolted on. Rather than a generic "any domain" testbed, the natural synthesis with the rest of this brainstorm: wire Park et al.'s memory/reflection/planning core onto <strong>MPAC's</strong> agents — MPAC supplies the real multi-principal coordination protocol and tool-calling surface, Park et al. supplies long-horizon coherent (and deliberately misalignable) agent personalities for red-teaming, CRUX supplies the evaluation rigor. Reuses all three papers already reviewed instead of a fourth, disconnected direction.
+      </div>
+
+      <div class="callout callout-amber" style="margin-top: 12px;">
+        <strong>Feasibility bottom line:</strong> a full Cluster-1-grade testbed is still the heavy lift flagged earlier — that doesn't change. But the distilled-model fidelity study (direction a) is a legitimately light, fundable, standalone pilot on Park et al.'s existing codebase, without new infrastructure — and it's evidence of hands-on empirical capability, directly addressing the credibility gap flagged in <a href="#resources">What It Would Take From Us</a>.
       </div>
     </div>
   </div>

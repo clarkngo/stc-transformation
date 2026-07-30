@@ -231,6 +231,12 @@
     .qa-item:first-child { padding-top: 0; }
     .qa-q { font-size: 0.88rem; font-weight: 700; margin: 0 0 4px; color: var(--violet); }
     .qa-a { font-size: 0.88rem; margin: 0; color: var(--ink); line-height: 1.55; }
+    .qa-eli5 {
+      margin: 8px 0 0; font-size: 0.85rem; line-height: 1.5;
+      background: var(--green-dim); border: 1px solid #bbf7d0; border-radius: 8px;
+      padding: 8px 12px; color: #14532d;
+    }
+    .qa-eli5 strong { color: #14532d; }
   </style>
 </head>
 <body>
@@ -245,6 +251,7 @@
   <div class="doc-header">
     <div class="eyebrow">Brainstorm · Not Yet Decided</div>
     <h1>Scaling AI Safety for a Multi-Agent World — Grant Brainstorm</h1>
+    <p style="margin: 0 0 10px; font-size: 0.92rem;">🎯 Target program: <a href="https://schmidtsciences.smapply.io/prog/scaling_ai_safety_for_a_multi_agent_world/" target="_blank" rel="noopener" style="color: var(--blue); font-weight: 600;">schmidtsciences.smapply.io/prog/scaling_ai_safety_for_a_multi_agent_world →</a></p>
     <p class="subtitle">Working notes on whether/how an STC research effort could apply to the Schmidt Sciences / Google DeepMind / ARIA / Cooperative AI Foundation / Google.org joint funding program, prompted by an assigned reading (Kapoor et al., "Open-World Evaluations for Measuring Frontier AI Capabilities," May 2026).</p>
     <div class="meta-row">
       <span class="meta-chip">Status: exploratory</span>
@@ -428,9 +435,9 @@
         <h3>Multi-Agent Systems Should Be Treated as Principal-Agent Problems</h3>
         <p class="qa-source">Rauba, Cepenas, van der Schaar — Cambridge, 2026</p>
 
-        <div class="qa-item"><p class="qa-q">What is principal-agent?</p><p class="qa-a">A classic microeconomic setup: one party (the <strong>principal</strong>) delegates a task to another (the <strong>agent</strong>) to act on its behalf, but the principal can't perfectly observe or verify what the agent knows or does — creating a gap between what the principal wants and what happens. Classic example: an employer delegating work an employee's day-to-day effort can't be fully watched.</p></div>
+        <div class="qa-item"><p class="qa-q">What is principal-agent?</p><p class="qa-a">A classic microeconomic setup: one party (the <strong>principal</strong>) delegates a task to another (the <strong>agent</strong>) to act on its behalf, but the principal can't perfectly observe or verify what the agent knows or does — creating a gap between what the principal wants and what happens. Classic example: an employer delegating work an employee's day-to-day effort can't be fully watched.</p><p class="qa-eli5">🧒 <strong>ELI5:</strong> You send a friend to buy snacks with your money. You can't watch them shop, so you're trusting them to buy what <em>you</em> actually want — not just what they feel like buying.</p></div>
 
-        <div class="qa-item"><p class="qa-q">What is information asymmetry?</p><p class="qa-a">One party holds information relevant to the interaction that the other can't cheaply observe — here, the agent knows something (its private computation, its true intentions) the principal doesn't.</p></div>
+        <div class="qa-item"><p class="qa-q">What is information asymmetry?</p><p class="qa-a">One party holds information relevant to the interaction that the other can't cheaply observe — here, the agent knows something (its private computation, its true intentions) the principal doesn't.</p><p class="qa-eli5">🧒 <strong>ELI5:</strong> One person in a situation knows something the other doesn't — like a kid knowing they broke the vase, while the parent still doesn't know yet.</p></div>
 
         <div class="qa-item"><p class="qa-q">Why do agents report truthfully when incentives are aligned?</p><p class="qa-a">Deception only pays off when the agent wants something different from the principal. If goals are aligned, honesty is also the agent's own best strategy — there's nothing to gain by hiding information. Agency loss requires <strong>both</strong> information asymmetry <strong>and</strong> goal conflict, not either alone.</p></div>
 
@@ -450,20 +457,20 @@
 
         <div class="qa-item"><p class="qa-q">What is a delegated multi-agent system?</p><p class="qa-a">Per Definition 3.1: a principal that decomposes a task into subtasks, assigns them to sub-agents (each producing output from its own local context/task-specific information), and the principal aggregates those outputs (e.g., by voting) into one system-level decision.</p></div>
 
-        <div class="qa-item"><p class="qa-q">Adverse selection vs. moral hazard?</p><p class="qa-a"><strong>Adverse selection</strong> = hidden information that exists <em>before</em> the decision (a used-car seller already knows the car's a lemon before selling it). <strong>Moral hazard</strong> = hidden action that happens <em>after</em> delegation (an employee shirks once hired, unobserved).</p></div>
+        <div class="qa-item"><p class="qa-q">Adverse selection vs. moral hazard?</p><p class="qa-a"><strong>Adverse selection</strong> = hidden information that exists <em>before</em> the decision (a used-car seller already knows the car's a lemon before selling it). <strong>Moral hazard</strong> = hidden action that happens <em>after</em> delegation (an employee shirks once hired, unobserved).</p><p class="qa-eli5">🧒 <strong>ELI5:</strong> Adverse selection: the used bike was already broken when you bought it, and the seller knew. Moral hazard: you get bike insurance, then start riding recklessly because you know it's covered either way.</p></div>
 
-        <div class="qa-item"><p class="qa-q">Why does changing the rules (mechanism design) let us hit system-level goals?</p><p class="qa-a">You can't directly control what a self-interested agent believes or does — but you can reshape the payoff structure (decision rule + transfer/reward rule) so a rational agent's own self-interested choice happens to also serve the system-level goal.</p></div>
+        <div class="qa-item"><p class="qa-q">Why does changing the rules (mechanism design) let us hit system-level goals?</p><p class="qa-a">You can't directly control what a self-interested agent believes or does — but you can reshape the payoff structure (decision rule + transfer/reward rule) so a rational agent's own self-interested choice happens to also serve the system-level goal.</p><p class="qa-eli5">🧒 <strong>ELI5:</strong> Instead of telling a kid "don't eat all the candy," you give them a smaller bowl. You change the setup so the outcome you want happens naturally, instead of having to police them constantly.</p></div>
 
         <div class="qa-item"><p class="qa-q">Principal as human vs. principal as LLM?</p><p class="qa-a"><strong>Human principal:</strong> bottlenecked by human review time — verification eventually takes longer than the task itself. <strong>LLM principal:</strong> the "too slow for a human" argument doesn't transfer, but shared context-window constraints mean an LLM principal structurally cannot hold all sub-agents' full information at once — asymmetry persists for an architectural, not attentional, reason.</p></div>
 
-        <div class="qa-item"><p class="qa-q">Scheming as moral hazard vs. adverse selection?</p><p class="qa-a"><strong>Moral hazard scheming</strong> ("covert subversion") = the agent takes a misaligned action <em>now</em> while hiding that it's doing so. <strong>Adverse-selection scheming</strong> ("deferred subversion") = the agent manages what the principal currently believes about its type (e.g., behaving well during evaluation) to gain trust/deployment now, planning to exploit it later.</p></div>
+        <div class="qa-item"><p class="qa-q">Scheming as moral hazard vs. adverse selection?</p><p class="qa-a"><strong>Moral hazard scheming</strong> ("covert subversion") = the agent takes a misaligned action <em>now</em> while hiding that it's doing so. <strong>Adverse-selection scheming</strong> ("deferred subversion") = the agent manages what the principal currently believes about its type (e.g., behaving well during evaluation) to gain trust/deployment now, planning to exploit it later.</p><p class="qa-eli5">🧒 <strong>ELI5:</strong> Moral hazard scheming = doing something sneaky right now while no one's looking. Adverse-selection scheming = acting extra good during a job interview so they hire you, planning to slack off once you're in.</p></div>
       </div>
 
       <div class="qa-group">
         <h3>MPAC</h3>
         <p class="qa-source">Qian, Fang, Li — CU Denver, 2026</p>
 
-        <div class="qa-item"><p class="qa-q">What is MPAC in relation to A2A?</p><p class="qa-a">A complementary layer, not a replacement: "MCP tells an agent how to call a tool; A2A tells an orchestrator how to delegate work; MPAC tells agents from different principals how to coordinate when no orchestrator exists."</p></div>
+        <div class="qa-item"><p class="qa-q">What is MPAC in relation to A2A?</p><p class="qa-a">A complementary layer, not a replacement: "MCP tells an agent how to call a tool; A2A tells an orchestrator how to delegate work; MPAC tells agents from different principals how to coordinate when no orchestrator exists."</p><p class="qa-eli5">🧒 <strong>ELI5:</strong> A2A is like one manager telling their own team what to do. MPAC is for when two different managers from two different companies need to agree on something, and neither one is the other's boss.</p></div>
 
         <div class="qa-item"><p class="qa-q">Why isn't MCP about coordination?</p><p class="qa-a">MCP's job is standardizing how a single agent discovers and calls external tools. It's deliberately silent on what happens when two independent agents call the same tool at once, learn of each other's existence, or produce conflicting actions.</p></div>
 
@@ -481,9 +488,9 @@
         <h3>Cooperation and Control in Delegation Games</h3>
         <p class="qa-source">Sourbut, Hammond, Wood — Oxford, 2024</p>
 
-        <div class="qa-item"><p class="qa-q">Why might a machine agent not act on its principal's objective?</p><p class="qa-a">The "control problem," split two ways: (1) <em>alignment</em> — the agent is genuinely optimizing something different from what the principal wants; or (2) <em>capability</em> — the agent is trying to serve the principal's actual preference but isn't good enough (e.g., an AV takes an undesirable route not from disagreement, but because it can't compute the best one).</p></div>
+        <div class="qa-item"><p class="qa-q">Why might a machine agent not act on its principal's objective?</p><p class="qa-a">The "control problem," split two ways: (1) <em>alignment</em> — the agent is genuinely optimizing something different from what the principal wants; or (2) <em>capability</em> — the agent is trying to serve the principal's actual preference but isn't good enough (e.g., an AV takes an undesirable route not from disagreement, but because it can't compute the best one).</p><p class="qa-eli5">🧒 <strong>ELI5:</strong> Your GPS gives you a bad route — either because it doesn't actually care about getting you home fast (alignment), or because it's just bad at reading traffic (capability).</p></div>
 
-        <div class="qa-item"><p class="qa-q">Why do agents fail to reach a cooperative solution?</p><p class="qa-a">The "cooperation problem" — same alignment/capability split, but now between agents: they may fail because their principals' preferences genuinely conflict (no win-win exists), or because the agents can't plan/communicate well enough to reach a good joint outcome even when their principals would actually agree.</p></div>
+        <div class="qa-item"><p class="qa-q">Why do agents fail to reach a cooperative solution?</p><p class="qa-a">The "cooperation problem" — same alignment/capability split, but now between agents: they may fail because their principals' preferences genuinely conflict (no win-win exists), or because the agents can't plan/communicate well enough to reach a good joint outcome even when their principals would actually agree.</p><p class="qa-eli5">🧒 <strong>ELI5:</strong> Two kids building a blanket fort together mess it up — either because they each want a totally different fort (their goals conflict), or because they can't communicate well enough to build together, even though they actually want the same thing.</p></div>
       </div>
 
       <div class="qa-group">
@@ -506,7 +513,7 @@
         <h3>Generative Agents: Interactive Simulacra of Human Behavior</h3>
         <p class="qa-source">Park et al. — Stanford/Google, UIST 2023</p>
 
-        <div class="qa-item"><p class="qa-q">What is "simulacra of human behavior"?</p><p class="qa-a">Believable <em>imitations</em> of human behavior — agents designed to act, remember, plan, and react in ways that look plausibly human to an observer, without implying genuine human-like agency or consciousness (the paper is explicit about this distinction).</p></div>
+        <div class="qa-item"><p class="qa-q">What is "simulacra of human behavior"?</p><p class="qa-a">Believable <em>imitations</em> of human behavior — agents designed to act, remember, plan, and react in ways that look plausibly human to an observer, without implying genuine human-like agency or consciousness (the paper is explicit about this distinction).</p><p class="qa-eli5">🧒 <strong>ELI5:</strong> Like a really good video game character who remembers what you told them yesterday and acts believably human — but it's still just acting, not actually alive.</p></div>
 
         <div class="qa-item"><p class="qa-q">Is it effective for humans to observe this?</p><p class="qa-a">Yes, for the stated purpose — a two-day end-to-end evaluation showed believable emergent behavior (a party invitation spreading through the town) from a single seed instruction, and ablations confirmed memory, reflection, and planning were each individually necessary for coherence. Validated as a believability/prototyping tool, not as a verified model of real human psychology.</p></div>
 
@@ -514,7 +521,7 @@
 
         <div class="qa-item"><p class="qa-q">Could this work in an office setting, replicating office politics?</p><p class="qa-a">The paper itself gestures at this, mentioning extensions to "social prototyping" and rehearsing "difficult, conflict-laden interpersonal situations." An office setting is a natural extension — swap daily routines for workplace roles/incentives and the same memory/reflection/planning loop should in principle produce emergent coalition-forming. But this is extrapolation beyond what was tested; real office politics involves higher-stakes incentives than Smallville's low-stakes socializing, so it would need real validation. Notably, this is exactly the kind of realistic testbed Schmidt's Cluster 1 asks for.</p></div>
 
-        <div class="qa-item"><p class="qa-q">How different is this from a generic agent architecture?</p><p class="qa-a">A generic loop (ReAct-style, or classical cognitive architectures like SOAR) cycles perceive → decide → act using current context plus maybe recent history. Generative Agents add a <strong>memory stream</strong> (a full natural-language record retrieved by relevance + recency + importance, not just recency) and <strong>reflection</strong> (periodically synthesizing raw memories into higher-level inferences that feed back into planning). Ablations showed both are load-bearing — remove either and behavior becomes visibly less coherent over long horizons.</p></div>
+        <div class="qa-item"><p class="qa-q">How different is this from a generic agent architecture?</p><p class="qa-a">A generic loop (ReAct-style, or classical cognitive architectures like SOAR) cycles perceive → decide → act using current context plus maybe recent history. Generative Agents add a <strong>memory stream</strong> (a full natural-language record retrieved by relevance + recency + importance, not just recency) and <strong>reflection</strong> (periodically synthesizing raw memories into higher-level inferences that feed back into planning). Ablations showed both are load-bearing — remove either and behavior becomes visibly less coherent over long horizons.</p><p class="qa-eli5">🧒 <strong>ELI5:</strong> A generic AI agent is like someone with no memory who only reacts to what's right in front of them. A generative agent is like someone who keeps a diary, rereads it, and thinks about what it means — so they stay consistent over weeks, not just seconds.</p></div>
       </div>
     </div>
   </div>

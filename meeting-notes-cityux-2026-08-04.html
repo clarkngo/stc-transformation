@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — CityUx Naming &amp; Curriculum, August 4 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="meeting-notes-aili-2026-07-24.html">Meeting Notes — AILI / CityU X — Jul 24, 2026</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — CityUx Naming &amp; Curriculum, Aug 4 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes — Working Session</div>
+    <h1>CityUx — Naming, Interface &amp; Curriculum, August 4 2026</h1>
+    <p class="subtitle">Working session continuing the naming decision from the <a href="meeting-notes-aili-2026-07-24.html">July 24 President meeting</a>, plus an update on curriculum build-out and the IKW Korea demo. Naming remains undecided going into the next President meeting; the team also flagged an open interface-ownership question and pedagogy details for the site build. This page is a cleanup of raw notes/transcript — flagged items below are ambiguous in the source and need confirmation.</p>
+    <div class="meta-row">
+      <span class="meta-chip">August 4, 2026</span>
+      <span class="meta-chip">Internal working session</span>
+      <span class="meta-chip">Prep for next President meeting</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#naming">Umbrella Naming — Still Open</a></li>
+      <li><a href="#interface">Interface Ownership — Unclear</a></li>
+      <li><a href="#audience">Target Audience &amp; Partner Groups</a></li>
+      <li><a href="#project">First Project Scope</a></li>
+      <li><a href="#curriculum">Curriculum &amp; Pedagogy</a></li>
+      <li><a href="#ikw">IKW Korea Demo — Proof Point</a></li>
+      <li><a href="#website">Website Build</a></li>
+      <li><a href="#actions">Action Items</a></li>
+    </ol>
+  </div>
+
+  <!-- Naming -->
+  <div class="section" id="naming">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🏷️</div>
+      <div>
+        <h2>Umbrella Naming — Still Open</h2>
+        <div class="section-sub">"CityUx" floated as a working name; President has not decided</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Why a high-level name matters</span>
+        <div class="point-body">
+          The team revisited whether the initiative needs a top-level name at all — concluding it does, and that it should <strong>convey ownership</strong> rather than being purely descriptive. This continues the naming thread from the <a href="meeting-notes-aili-2026-07-24.html">July 24 meeting</a>, where "CityU X" / "CDUX" and "Institute for Cyber &amp; Emerging Technologies" were the two candidates on the table.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">"CityUx" as a candidate</span>
+        <div class="point-body">
+          <strong>"CityUx"</strong> was discussed as working well specifically because it's <strong>broad and generic</strong> — the President wants a name broad enough to cover future specialties (echoes the July 24 direction of keeping AI as one specialty under a wider umbrella, not the umbrella itself).
+        </div>
+      </div>
+      <div class="callout callout-amber mt16">
+        <strong>Not decided:</strong> the President has not confirmed "CityUx" or any other option. Plan is to present naming options at the next meeting and check her reaction.
+      </div>
+    </div>
+  </div>
+
+  <!-- Interface -->
+  <div class="section" id="interface">
+    <div class="section-header">
+      <div class="section-icon icon-amber">❓</div>
+      <div>
+        <h2>Interface Ownership — Unclear</h2>
+        <div class="section-sub">Flagged as ambiguous in the source notes — needs confirmation</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-amber">
+        The notes reference deciding on a name for "the interface" and mention <strong>"SPD"</strong> as a possible reference point, with the President asking which department or person would be responsible for it. This is <strong>ambiguous in the raw transcript</strong> — it's unclear whether "SPD" refers to the <a href="meeting-notes-cityu-spd-2026-06-16.html">Seattle PD partnership</a> already in motion, a different acronym, or a mis-transcription. Recommend clarifying with the group before this goes into any external-facing material.
+      </div>
+      <div class="point mt16">
+        <span class="point-label lbl-amber">Naming bar for the interface</span>
+        <div class="point-body">
+          Whatever name is chosen, it should be <strong>generic yet specific enough to convey knowledge</strong> — for the audience of people trying to reskill, not just a vague label.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audience -->
+  <div class="section" id="audience">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🎯</div>
+      <div>
+        <h2>Target Audience &amp; Partner Groups</h2>
+        <div class="section-sub">Community/club targets macro-level credential seekers outside CityU</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Audience</span>
+        <div class="point-body">
+          The community/club is aimed at <strong>students and professionals outside CityU</strong> who want a macro-level credential. Team flagged the need for a concrete example/use case that resonates with this audience — not yet defined.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Two feeder groups</span>
+        <div class="point-body">
+          <strong>STC</strong> (Students in the City) and <strong>CityU</strong> (formerly CTU) — both groups can attend sessions. An existing partnership lets the team invite people into <strong>Open edX</strong> to host both CityU's own content and partner content, consistent with the platform direction from <a href="meeting-notes-aili-2026-07-24.html">July 24</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- First project -->
+  <div class="section" id="project">
+    <div class="section-header">
+      <div class="section-icon icon-green">🚀</div>
+      <div>
+        <h2>First Project Scope</h2>
+        <div class="section-sub">Self-contained, no external help needed</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-green">Scope</span>
+        <div class="point-body">
+          The first project is meant to be <strong>self-contained</strong> — buildable without external help. It targets technical people who want to develop their skills; many of them come in with <strong>only a computer-science background</strong>.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Deliverable</span>
+        <div class="point-body">
+          A <strong>single-principle, multi-agent framework</strong> — the concrete artifact this first cohort/project builds toward.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Curriculum -->
+  <div class="section" id="curriculum">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📚</div>
+      <div>
+        <h2>Curriculum &amp; Pedagogy</h2>
+        <div class="section-sub">Three tracks, flipped-classroom delivery</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="module-grid">
+        <div class="module-card">
+          <div class="module-name" style="color:var(--blue);">Web Design</div>
+          <div class="module-desc">5 major modules</div>
+        </div>
+        <div class="module-card">
+          <div class="module-name" style="color:var(--teal);">Coding</div>
+          <div class="module-desc">5 major modules</div>
+        </div>
+        <div class="module-card">
+          <div class="module-name" style="color:var(--violet);">AI Programming / AI Engineering</div>
+          <div class="module-desc">Track structure not yet detailed</div>
+        </div>
+      </div>
+      <div class="point mt16">
+        <span class="point-label lbl-teal">Delivery model</span>
+        <div class="point-body">
+          <strong>"Learning by doing" first, then "learning by lecture"</strong> — a flipped classroom applying <strong>Bloom's Taxonomy</strong>. Each module uses <strong>pre-testing and post-testing</strong>, and opens with a <strong>"rejoice" concept</strong> that serves as the module's guiding philosophy.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Terminology update</span>
+        <div class="point-body">
+          <strong>"Vibe coding"</strong> is now the term of record, replacing the earlier "Bible coding" reference used in prior sessions.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IKW -->
+  <div class="section" id="ikw">
+    <div class="section-header">
+      <div class="section-icon icon-green">🌏</div>
+      <div>
+        <h2>IKW Korea Demo — Proof Point</h2>
+        <div class="section-sub">Strong reception, useful evidence for the President pitch</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-green">
+        The <strong>IKW summer camp in Korea</strong> gave a 30-minute demo that drew roughly <strong>180 attendees</strong>, including Korean students, with high participant satisfaction. This is the same iKW Korean-student partnership referenced in the <a href="meeting-notes-aili-2026-07-24.html">July 24 platform notes</a> as a reason Open edX (no CityU email required) matters. Worth citing as evidence when presenting audience demand.
+      </div>
+    </div>
+  </div>
+
+  <!-- Website -->
+  <div class="section" id="website">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🖥️</div>
+      <div>
+        <h2>Website Build</h2>
+        <div class="section-sub">Community playground, five modules across three tracks</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Purpose</span>
+        <div class="point-body">
+          A website covering the web design, coding, and AI modules above, positioned as a <strong>playground for the community</strong> — a place to showcase projects and host content, not just deliver courses.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="section" id="actions">
+    <div class="section-header">
+      <div class="section-icon icon-red">✅</div>
+      <div>
+        <h2>Action Items</h2>
+        <div class="section-sub">Before the next President meeting</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check">1</span>
+          <div class="action-body">Refine messaging so it's aligned with what the President wants to hear, building on the direction confirmed on <a href="meeting-notes-aili-2026-07-24.html">July 24</a>.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">2</span>
+          <div class="action-body">Present naming options — including "CityUx" — and the overall strategy at the upcoming meeting with the President.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">3</span>
+          <div class="action-body">Clarify the "SPD" / interface-ownership reference (see <a href="#interface">Interface Ownership</a>) before it appears in any external material.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">4</span>
+          <div class="action-body">Define a concrete example/use case that resonates with the target audience (students/professionals outside CityU seeking a macro-level credential).</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">5</span>
+          <div class="action-body">Continue building out the single-principle, multi-agent framework as the first self-contained project deliverable.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">6</span>
+          <div class="action-body">Continue the website build (web design / coding / AI modules) as the community playground.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Naming thread</span>
+        <div class="point-body"><a href="meeting-notes-aili-2026-07-24.html">Meeting Notes — AILI / CityU X, July 24 2026</a> — where "CityU X"/"CDUX" and "Institute for Cyber &amp; Emerging Technologies" first surfaced as umbrella candidates</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Funnel this feeds</span>
+        <div class="point-body"><a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem — Execution Plan</a> — the TOFU→MOFU→BOFU→Conversion funnel this community/curriculum work sits inside</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Curriculum precedent</span>
+        <div class="point-body"><a href="meeting-notes-ai-institute-2026-07-21.html">Meeting Notes — AI Institute: Curriculum, Strategy &amp; Deliverables</a> — earlier detail on the 5-module self-paced course structure and flipped Bloom's Taxonomy approach</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Possible SPD reference</span>
+        <div class="point-body"><a href="meeting-notes-cityu-spd-2026-06-16.html">Meeting Minutes — CityU × Seattle PD, June 16 2026</a> — flagged as a possible (unconfirmed) match for the "SPD" mention above</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

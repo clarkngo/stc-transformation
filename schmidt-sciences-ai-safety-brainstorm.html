@@ -324,10 +324,71 @@
     </div>
   </div>
 
+  <!-- Meeting Summary 8/4/2026 -->
+  <div class="section" id="meeting-8-4" style="border: 2px solid var(--violet);">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🗓️</div>
+      <h2>Meeting Summary — Aug 4, 2026: "Evaluating Multi-Agent AI Protocols"</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin: 0 0 14px; font-size: 0.86rem; color: var(--slate-light);">Notes from the Aug 4, 2026 team discussion — 4 days out from the Aug 8 Schmidt Sciences deadline.</p>
+
+      <div class="point">
+        <span class="point-label lbl-violet">Goal</span>
+        <div class="point-body">Develop and evaluate protocols for multi-agent AI systems, building on existing single-agent and multi-agent pool architectures — e.g. the Kapoor et al. <a href="#paper">assigned reading</a>.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Funding &amp; grants</span>
+        <div class="point-body">Emphasis on securing grant money (NSF, corporate sponsorship) to support research, prototype development, and a test-bed for error detection — broader than, and in parallel to, the Schmidt Sciences program tracked on this page.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Compliance &amp; governance</span>
+        <div class="point-body">Need for human-in-the-loop review (SOC compliance) to maintain accountability for AI decisions.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Collaboration &amp; workflow</span>
+        <div class="point-body">Leverage internal teams and external partners for idea generation, prototyping, and grant writing. Use tools like Claude, Cursor, and OWASP for diagram generation, code scaffolding, and security testing.</div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Technical focus</h3>
+      <div class="task-grid">
+        <div class="task-card">
+          <div class="task-name">Compare architectures</div>
+          <p>Single-agent vs. multi-agent setups — single-principal/single-agent, multi-principal, vertical agents, etc.</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">Evaluation tooling</div>
+          <p>Build tools that ingest JSON logs, generate metrics, and visualize performance. Cluster 1 = bug-generation tests; Cluster 2 = alignment &amp; capability tracking.</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">Hallucination reduction</div>
+          <p>Research models that reduce hallucination rates and explore self-correction mechanisms.</p>
+        </div>
+        <div class="task-card">
+          <div class="task-name">Product &amp; education angle</div>
+          <p>Build short, marketable AI-engineer micro-credential apps and training material; publish results (papers, YouTube demos) to raise visibility and attract funding.</p>
+        </div>
+      </div>
+
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Next steps</h3>
+      <ul class="action-list">
+        <li class="action-item"><span class="action-check">1</span><div class="action-body">Identify and test papers claiming low hallucination rates.</div></li>
+        <li class="action-item"><span class="action-check">2</span><div class="action-body">Develop a prototype evaluation framework (JSON-driven metrics).</div></li>
+        <li class="action-item"><span class="action-check">3</span><div class="action-body">Draft a grant proposal targeting NSF/industry funding.</div></li>
+        <li class="action-item"><span class="action-check">4</span><div class="action-body">Create micro-credential app prototypes and associated publicity material.</div></li>
+      </ul>
+
+      <div class="callout callout-violet" style="margin-top: 14px;">
+        <strong>Implementation:</strong> this meeting's "Cluster 1" (bug-generation tests) and "Cluster 2" (alignment &amp; capability tracking) evaluation tooling are being built out in a companion repo, <a href="https://github.com/clarkngo/scaling-for-ai-safety" target="_blank" rel="noopener">github.com/clarkngo/scaling-for-ai-safety →</a> — browser-based prototypes extending this brainstorm: <code>cluster-1.html</code> is a simulated multi-agent testbed (paired frontier-vs-distilled runs, exportable <code>stc.mas.v1</code> JSONL logs), <code>cluster-2.html</code> is the analysis pipeline that scores those logs for alignment/capability gaps, scheming, and participation collapse. Agent behavior is currently simulated, not live LLM calls. Its "Cluster 1 / Cluster 2" naming is its own scheme (testbed vs. analysis pipeline) — distinct from the Schmidt program's four clusters in <a href="#clusters">The Four Clusters &amp; Fit</a>, though it lines up with the <a href="#testbed-architecture">Testbed Architecture</a> and <a href="#cluster2-pipeline">Cluster 2 — Analysis Pipeline</a> sections below.
+      </div>
+    </div>
+  </div>
+
   <div class="toc">
     <h2>Contents</h2>
     <ol>
       <li><a href="#exec-summary"><strong>Executive Summary — Should We Proceed?</strong></a></li>
+      <li><a href="#meeting-8-4"><strong>Meeting Summary — Aug 4, 2026</strong></a></li>
       <li><a href="#program">The Program</a></li>
       <li><a href="#clusters">The Four Clusters &amp; Fit</a></li>
       <li><a href="#paper">Assigned Reading — Kapoor et al. 2026</a></li>

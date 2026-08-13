@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUX — The Learner Journey (TOFU · MOFU · BOFU · Conversion)</title>
+  <style>
+    :root {
+      /* CityU official brand */
+      --marine: #002D5C;
+      --marine-soft: #0a4a8f;
+      --blood: #F63E02;
+      --tangerine: #FF9206;
+      --teal: #3BBABD;
+      --amaranth: #E23850;
+
+      --ink: #10233b;
+      --slate: #4a5a6e;
+      --slate-light: #8496a8;
+      --card: #ffffff;
+      --bg: #eef3f8;
+      --border: rgba(0,45,92,0.10);
+      --shadow: 0 1px 3px rgba(0,45,92,0.07), 0 10px 34px rgba(0,45,92,0.09);
+      --radius: 16px;
+      --radius-sm: 10px;
+
+      /* funnel stage colors: cool -> warm progression toward conversion */
+      --tofu: var(--teal);      --tofu-dim: #ecfbfb;   --tofu-line:#b5eaeb;
+      --mofu: var(--marine);    --mofu-dim: #eaf1f9;   --mofu-line:#c3d6ec;
+      --bofu: var(--tangerine); --bofu-dim: #fff6e8;   --bofu-line:#ffddab;
+      --conv: var(--blood);     --conv-dim: #fdeee9;   --conv-line:#fbc4b2;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(1200px 500px at 80% -10%, rgba(59,186,189,0.10), transparent 60%),
+        var(--bg);
+      color: var(--ink);
+      line-height: 1.62;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .shell { max-width: 940px; margin: 0 auto; padding: 26px 20px 96px; }
+    a { color: var(--marine-soft); }
+
+    /* ---------- Masthead ---------- */
+    .masthead {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap; margin-bottom: 22px;
+    }
+    .masthead img { height: 34px; width: auto; }
+    .masthead .tag {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--slate-light);
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--marine) 0%, #063a72 55%, #0a4a8f 100%);
+      color: #fff; border-radius: var(--radius);
+      padding: 40px 40px 36px; box-shadow: var(--shadow);
+      margin-bottom: 34px;
+    }
+    .hero::after {
+      content: ""; position: absolute; right: -80px; top: -80px;
+      width: 320px; height: 320px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,186,189,0.35), transparent 70%);
+    }
+    .hero .eyebrow {
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 12px;
+    }
+    .hero h1 { margin: 0 0 14px; font-size: 2.15rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.12; max-width: 20ch; }
+    .hero h1 .accent { color: var(--tangerine); }
+    .hero p { margin: 0; font-size: 1.02rem; color: rgba(255,255,255,0.86); max-width: 62ch; position: relative; z-index: 1; }
+    .hero .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; position: relative; z-index: 1; }
+    .hero .chip {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 40px; padding: 5px 14px; font-size: 0.8rem; font-weight: 600;
+    }
+
+    /* ---------- Section scaffolding ---------- */
+    .section-label {
+      display: flex; align-items: baseline; gap: 12px; margin: 44px 0 18px;
+    }
+    .section-label .n {
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; color: var(--blood);
+      text-transform: uppercase;
+    }
+    .section-label h2 { margin: 0; font-size: 1.4rem; font-weight: 800; color: var(--marine); letter-spacing: -0.02em; }
+    .section-label .sub { color: var(--slate); font-size: 0.9rem; margin-top: 3px; }
+    .lead { color: var(--slate); font-size: 1rem; max-width: 70ch; margin: 0 0 8px; }
+
+    /* ---------- Funnel diagram ---------- */
+    .funnel { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 8px 0 6px; }
+    .stage {
+      position: relative; border-radius: 14px; border: 1px solid var(--border);
+      padding: 18px 22px; box-shadow: var(--shadow); background: var(--card);
+      transition: transform .15s ease;
+    }
+    .stage:hover { transform: translateY(-2px); }
+    .stage.tofu { width: 100%;  border-top: 4px solid var(--tofu); }
+    .stage.mofu { width: 87%;   border-top: 4px solid var(--mofu); }
+    .stage.bofu { width: 74%;   border-top: 4px solid var(--bofu); }
+    .stage.conv { width: 61%;   border-top: 4px solid var(--conv); }
+    @media (max-width: 640px) { .stage.tofu,.stage.mofu,.stage.bofu,.stage.conv { width: 100%; } }
+    .stage .st-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .stage .st-badge {
+      font-size: 0.66rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 30px;
+    }
+    .tofu .st-badge { background: var(--tofu-dim); color: #167e80; }
+    .mofu .st-badge { background: var(--mofu-dim); color: var(--marine); }
+    .bofu .st-badge { background: var(--bofu-dim); color: #b06400; }
+    .conv .st-badge { background: var(--conv-dim); color: var(--blood); }
+    .stage .st-name { font-weight: 800; font-size: 1.02rem; color: var(--marine); }
+    .stage .st-goal { margin-left: auto; font-size: 0.78rem; font-weight: 700; color: var(--slate-light); }
+    .stage .st-nodes { margin: 9px 0 0; color: var(--slate); font-size: 0.9rem; }
+    .stage .st-nodes b { color: var(--ink); font-weight: 700; }
+    .funnel-arrow { color: var(--slate-light); font-size: 1.1rem; line-height: 1; }
+
+    /* ---------- Stage legend cards ---------- */
+    .legend { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; }
+    @media (max-width: 760px) { .legend { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 420px) { .legend { grid-template-columns: 1fr; } }
+    .leg {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 14px 16px; box-shadow: var(--shadow);
+    }
+    .leg .leg-h { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .leg.tofu .leg-h { color: #167e80; } .leg.mofu .leg-h { color: var(--marine); }
+    .leg.bofu .leg-h { color: #b06400; } .leg.conv .leg-h { color: var(--blood); }
+    .leg p { margin: 0; font-size: 0.85rem; color: var(--slate); }
+    .leg .k { font-size: 0.74rem; color: var(--slate-light); margin-top: 8px; font-weight: 600; }
+
+    /* ---------- Journey cards ---------- */
+    .journey {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 22px 24px; margin-bottom: 16px;
+    }
+    .journey .j-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .journey .j-ava {
+      flex-shrink: 0; width: 46px; height: 46px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+      background: var(--mofu-dim);
+    }
+    .journey .j-name { font-weight: 800; font-size: 1.08rem; color: var(--marine); }
+    .journey .j-desc { font-size: 0.86rem; color: var(--slate); }
+    .journey .j-bd {
+      margin-left: auto; flex-shrink: 0; font-size: 0.64rem; font-weight: 800; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--blood); background: var(--conv-dim);
+      border: 1px solid var(--conv-line); padding: 4px 9px; border-radius: 30px;
+    }
+    .path { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-bottom: 12px; }
+    .step {
+      font-size: 0.76rem; font-weight: 700; border-radius: 8px; padding: 6px 11px; line-height: 1.3;
+    }
+    .step.tofu { background: var(--tofu-dim); color: #167e80; }
+    .step.mofu { background: var(--mofu-dim); color: var(--marine); }
+    .step.bofu { background: var(--bofu-dim); color: #b06400; }
+    .step.conv { background: var(--conv-dim); color: var(--blood); }
+    .arrow { color: var(--slate-light); font-weight: 700; }
+    .j-note { font-size: 0.87rem; color: var(--slate); margin: 0; }
+    .j-note b { color: var(--ink); }
+
+    /* ---------- Callout ---------- */
+    .callout {
+      border-radius: var(--radius); padding: 20px 24px; margin: 20px 0 8px;
+      background: linear-gradient(135deg, #ecfbfb, #f4fbfc);
+      border: 1px solid var(--tofu-line); border-left: 5px solid var(--teal);
+    }
+    .callout.warm { background: linear-gradient(135deg, #fff6e8, #fdeee9); border-color: var(--bofu-line); border-left-color: var(--blood); }
+    .callout .c-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--marine); display: block; margin-bottom: 6px; }
+    .callout p { margin: 0; font-size: 0.92rem; color: var(--ink); }
+
+    /* ---------- Conversion-meaning strip ---------- */
+    .conv-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-top: 6px; }
+    @media (max-width: 640px) { .conv-grid { grid-template-columns: 1fr; } }
+    .conv-item {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 14px 16px; box-shadow: var(--shadow); border-left: 4px solid var(--conv);
+    }
+    .conv-item .ci-who { font-weight: 800; color: var(--marine); font-size: 0.92rem; }
+    .conv-item .ci-out { font-size: 0.85rem; color: var(--slate); margin-top: 2px; }
+
+    /* ---------- Footer ---------- */
+    .foot { margin-top: 46px; padding-top: 22px; border-top: 1px solid var(--border); color: var(--slate-light); font-size: 0.82rem; }
+    .foot b { color: var(--slate); }
+    .live { color: var(--teal); font-weight: 800; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="masthead">
+    <img src="assets/cityu-logo.png" alt="City University of Seattle">
+    <span class="tag">CityUX Open Ecosystem</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">The Learner Journey</div>
+    <h1>How a stranger becomes a <span class="accent">CityU learner, partner, or graduate</span></h1>
+    <p>CityUX is City University of Seattle's open ecosystem — a staged path that meets people where they already are (YouTube, GitHub, LinkedIn, a Discord invite) and moves them, at their own pace, toward a credential, a program, or a partnership. This is the map: four stages, one continuous funnel, and the six real journeys that flow through it.</p>
+    <div class="chips">
+      <span class="chip">TOFU → MOFU → BOFU → Conversion</span>
+      <span class="chip">6 real learner journeys</span>
+      <span class="chip">Live pilots today</span>
+    </div>
+  </div>
+
+  <!-- STAGE MODEL -->
+  <div class="section-label">
+    <span class="n">01</span>
+    <div>
+      <h2>The funnel, top to bottom</h2>
+      <div class="sub">Every stage is a lighter, lower-commitment ask than a degree — designed so someone can say "yes" long before they're ready to enroll.</div>
+    </div>
+  </div>
+  <p class="lead">"TOFU / MOFU / BOFU" are marketing shorthand for <b>Top</b>, <b>Middle</b>, and <b>Bottom of Funnel</b> — how close someone is to a decision. The funnel narrows on purpose: broad, free discovery at the top; a smaller, more committed group converting at the bottom.</p>
+
+  <div class="funnel">
+    <div class="stage tofu">
+      <div class="st-top">
+        <span class="st-badge">TOFU</span>
+        <span class="st-name">Discover</span>
+        <span class="st-goal">Goal: attention</span>
+      </div>
+      <p class="st-nodes"><b>YouTube</b> · <b>Gated ebooks / CityU Guides</b> · <b>LinkedIn</b> · practitioner content — free, public, no strings. First contact with a name they can trust.</p>
+    </div>
+    <div class="funnel-arrow">▼</div>
+    <div class="stage mofu">
+      <div class="st-top">
+        <span class="st-badge">MOFU</span>
+        <span class="st-name">Try</span>
+        <span class="st-goal">Goal: hands-on</span>
+      </div>
+      <p class="st-nodes"><b>GitHub labs</b> · <b>Open edX self-paced pilots</b> — CityU's micro-credential / workshop layer. They do real work and feel a first win.</p>
+    </div>
+    <div class="funnel-arrow">▼</div>
+    <div class="stage bofu">
+      <div class="st-top">
+        <span class="st-badge">BOFU</span>
+        <span class="st-name">Commit</span>
+        <span class="st-goal">Goal: relationship</span>
+      </div>
+      <p class="st-nodes"><b>Workshops</b> · <b>Seminars</b> · <b>Community Hub (Discord)</b> — live, human touchpoints. They join a community and raise their hand.</p>
+    </div>
+    <div class="funnel-arrow">▼</div>
+    <div class="stage conv">
+      <div class="st-top">
+        <span class="st-badge">Conversion</span>
+        <span class="st-name">Enroll / Partner</span>
+        <span class="st-goal">Goal: outcome</span>
+      </div>
+      <p class="st-nodes"><b>Program registration</b> · <b>micro-credential</b> · <b>partnership conversation</b> — the formal CityU relationship the whole funnel was building toward.</p>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="leg tofu"><div class="leg-h">TOFU · Top</div><p>The widest net. Free public content — no account, no commitment. Most people you'll ever reach live here.</p><div class="k">Signal: reach &amp; clicks</div></div>
+    <div class="leg mofu"><div class="leg-h">MOFU · Middle</div><p>Curiosity turns into action. They try a lab or a self-paced course and get a taste of the real thing.</p><div class="k">Signal: completions</div></div>
+    <div class="leg bofu"><div class="leg-h">BOFU · Bottom</div><p>Warm and human. Live sessions and community — where trust and intent become visible.</p><div class="k">Signal: participation</div></div>
+    <div class="leg conv"><div class="leg-h">Conversion</div><p>The decision. Enrollment, a recognized credential, or a partnership — and it doesn't mean the same thing for everyone.</p><div class="k">Signal: outcomes</div></div>
+  </div>
+
+  <div class="callout">
+    <span class="c-label">The one idea to hold onto</span>
+    <p>You don't ask a stranger to enroll in a degree. You offer a free video, then a free lab, then a friendly workshop — each step a smaller "yes" than the last one earned. By the time enrollment or a partnership comes up, they already know you, and they've already succeeded with you once.</p>
+  </div>
+
+  <!-- JOURNEYS -->
+  <div class="section-label">
+    <span class="n">02</span>
+    <div>
+      <h2>The funnel isn't one path — it's six</h2>
+      <div class="sub">Six real people, six entry points, six different definitions of a "win." Some skip stages. Some enter in the middle. Every touchpoint has to work as a front door on its own.</div>
+    </div>
+  </div>
+
+  <div class="journey">
+    <div class="j-head">
+      <div class="j-ava">🎥</div>
+      <div><div class="j-name">The Self-Directed Learner</div><div class="j-desc">Finds CityU on their own — a search, a YouTube recommendation</div></div>
+    </div>
+    <div class="path">
+      <span class="step tofu">TOFU · YouTube</span><span class="arrow">→</span>
+      <span class="step mofu">MOFU · GitHub + Open edX</span><span class="arrow">→</span>
+      <span class="step bofu">BOFU · Community + Workshop</span><span class="arrow">→</span>
+      <span class="step conv">Conversion · Program registration</span>
+    </div>
+    <p class="j-note">The <b>default path</b> the ecosystem is built around — the most predictable journey to design nurture around. Watches a video, tries a lab, joins the community, enrolls.</p>
+  </div>
+
+  <div class="journey">
+    <div class="j-head">
+      <div class="j-ava">📘</div>
+      <div><div class="j-name">The Ebook-First Lead</div><div class="j-desc">Discovers CityU through a promoted guide — a LinkedIn post, seminar handout, or workshop follow-up</div></div>
+      <span class="j-bd">Partnership-relevant</span>
+    </div>
+    <div class="path">
+      <span class="step tofu">TOFU · LinkedIn / social</span><span class="arrow">→</span>
+      <span class="step mofu">MOFU · Gated ebook download</span><span class="arrow">→</span>
+      <span class="step bofu">BOFU · Nurture + Community invite</span><span class="arrow">→</span>
+      <span class="step conv">Conversion · Registration or partnership talk</span>
+    </div>
+    <p class="j-note">The one journey where you get a <b>real name and email at the very first touch</b> — the gated form captures identity immediately, unlike YouTube's anonymous reach. <b>Live today:</b> <a href="https://clarkngo.github.io/ebooks/" target="_blank" rel="noopener">CityU Guides</a> — three gated guides published, feeding a marketing sheet. An "I am a…" field is meant to branch students from potential partners.</p>
+  </div>
+
+  <div class="journey">
+    <div class="j-head">
+      <div class="j-ava">🚔</div>
+      <div><div class="j-name">The Frontline Professional</div><div class="j-desc">e.g. a police officer or chief, reached through an institutional partnership</div></div>
+      <span class="j-bd">Partnership-relevant</span>
+    </div>
+    <div class="path">
+      <span class="step bofu">BOFU · Workshop (skill-up cohort)</span><span class="arrow">→</span>
+      <span class="step mofu">MOFU · Open edX compliance modules</span><span class="arrow">→</span>
+      <span class="step conv">Conversion · Department-recognized credential</span>
+    </div>
+    <p class="j-note"><b>Skips discovery entirely</b> — the department partnership <em>is</em> the entry point. "Conversion" here is a workplace-recognized credential, not a degree. This is the model where an organization pays CityU to design and deliver a custom course for its people.</p>
+  </div>
+
+  <div class="journey">
+    <div class="j-head">
+      <div class="j-ava">🌏</div>
+      <div><div class="j-name">The Prospective International Student</div><div class="j-desc">Reached via a partner institution abroad, culminating in an in-person Seattle visit</div></div>
+      <span class="j-bd">Partnership-relevant</span>
+    </div>
+    <div class="path">
+      <span class="step tofu">TOFU · Institutional partnership</span><span class="arrow">→</span>
+      <span class="step mofu">MOFU · Open edX pilot</span><span class="arrow">→</span>
+      <span class="step bofu">BOFU · In-person Seattle visit</span><span class="arrow">→</span>
+      <span class="step conv">Conversion · Formal international enrollment</span>
+    </div>
+    <p class="j-note"><b>Highest-value outcome</b> (full degree enrollment) but the longest cycle. <b>Real example:</b> the iKW Summer Program — Korean students traveled to Seattle for an in-person cohort, with coursework on the same Open edX instance used across the ecosystem. Here, MOFU and BOFU compress into one physical visit.</p>
+  </div>
+
+  <div class="journey">
+    <div class="j-head">
+      <div class="j-ava">💬</div>
+      <div><div class="j-name">The Community-First Explorer</div><div class="j-desc">Word of mouth — a starred GitHub repo, a Discord invite from a peer</div></div>
+    </div>
+    <div class="path">
+      <span class="step bofu">BOFU · Community Hub</span><span class="arrow">→</span>
+      <span class="step mofu">MOFU · Open edX + GitHub (backfilled)</span><span class="arrow">→</span>
+      <span class="step conv">Conversion · Micro-credential or program interest</span>
+    </div>
+    <p class="j-note">Enters <b>"out of order"</b> — proof the funnel isn't strictly linear. <b>Live today:</b> the CityUX Discord runs an <code>#ebooks</code> channel and a <code>#courses</code> channel that route members back into the earlier stages — the backfill is real, not hypothetical.</p>
+  </div>
+
+  <div class="journey">
+    <div class="j-head">
+      <div class="j-ava">🎙️</div>
+      <div><div class="j-name">Discovered via a Practitioner</div><div class="j-desc">Finds CityU indirectly — through an instructor's own content, not an official channel</div></div>
+    </div>
+    <div class="path">
+      <span class="step tofu">TOFU · Practitioner-published content</span><span class="arrow">→</span>
+      <span class="step" style="background:var(--bg);color:var(--slate);border:1px dashed var(--border);">then joins a path above</span>
+    </div>
+    <p class="j-note">A different axis: this is about <b>who published the content</b> — an individual instructor building trust under their own name. If their content routes into Open edX, it folds into the Self-Directed Learner path; if not, it's a faster, compressed route straight to a course. CityU trains faculty to become these practitioner-publishers.</p>
+  </div>
+
+  <!-- WHAT CONVERSION MEANS -->
+  <div class="section-label">
+    <span class="n">03</span>
+    <div>
+      <h2>"Conversion" is not one number</h2>
+      <div class="sub">Different people convert into different outcomes — which is exactly why the partnership side of this matters.</div>
+    </div>
+  </div>
+  <div class="conv-grid">
+    <div class="conv-item"><div class="ci-who">A frontline department</div><div class="ci-out">→ a workplace-recognized compliance credential</div></div>
+    <div class="conv-item"><div class="ci-who">A community-first learner</div><div class="ci-out">→ program interest and a first micro-credential</div></div>
+    <div class="conv-item"><div class="ci-who">An international partner cohort</div><div class="ci-out">→ full degree enrollment</div></div>
+    <div class="conv-item"><div class="ci-who">An ebook lead / employer</div><div class="ci-out">→ a program registration <em>or a partnership conversation</em></div></div>
+  </div>
+
+  <div class="callout warm">
+    <span class="c-label">Where the partnership hub plugs in</span>
+    <p>Three of these six journeys — the ebook lead, the frontline professional, and the international student — are <b>partnership-driven</b>. They don't start with an anonymous video view; they start with an organization or a relationship. A Corporate &amp; Community Partnership Hub is the front door for exactly those journeys: it's how employers, agencies, and partner institutions enter the funnel and route their people into CityU's courses and credentials.</p>
+  </div>
+
+  <div class="foot">
+    <p><b>City University of Seattle · CityUX Open Ecosystem.</b> Prepared as a walkthrough of the learner-journey model. Items marked <span class="live">live today</span> are running pilots, not proposals. Full technical detail — touchpoint integrations, data pipeline, and prioritization — lives in the CityUX Open Ecosystem Execution Plan.</p>
+  </div>
+
+</div>
+</body>
+</html>

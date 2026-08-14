@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — Corporate Partnership &amp; AI Enablement (Leo &amp; Ann), August 13 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .chip { font-size: 0.78rem; font-weight: 600; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; color: var(--slate); }
+
+    .action-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .action-table th { text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); padding: 0 12px 10px; border-bottom: 2px solid var(--border); }
+    .action-table td { padding: 14px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .action-table tr:last-child td { border-bottom: none; }
+    .action-table td.owner { font-weight: 700; color: var(--ink); white-space: nowrap; }
+    .action-table td.item { font-weight: 700; color: var(--blue); }
+    @media (max-width: 640px) {
+      .action-table, .action-table thead, .action-table tbody, .action-table tr, .action-table td, .action-table th { display: block; }
+      .action-table thead { display: none; }
+      .action-table tr { border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 8px 4px; }
+      .action-table td { border-bottom: none; padding: 6px 12px; }
+      .action-table td.owner { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="meeting-notes-cityux-2026-08-04.html">Meeting Notes — CityUx, Aug 4 2026</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — Corporate Partnership &amp; AI Enablement, Aug 13 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes — Working Session with Leo &amp; Ann</div>
+    <h1>Corporate Partnership Rebuild &amp; AI Enablement — August 13, 2026</h1>
+    <p class="subtitle">Working session covering a role transition into Enrollment/Business Development, a narrowed mandate to rebuild CityU's corporate partnership process, the front-end/back-end AI tooling needed to support it, and the licensing and integration blockers in the way. Closes with owners and next steps ahead of a follow-up next Tuesday.</p>
+    <div class="meta-row">
+      <span class="meta-chip">August 13, 2026</span>
+      <span class="meta-chip">With Leo &amp; Ann</span>
+      <span class="meta-chip">Enrollment / Business Development</span>
+      <span class="meta-chip">Follow-up: Tue 10:30 AM</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#context">Context &amp; Scope Changes</a></li>
+      <li><a href="#strategy">Strategy &amp; Core Needs</a></li>
+      <li><a href="#constraints">Technical &amp; Resource Constraints</a></li>
+      <li><a href="#actions">Next Steps &amp; Action Items</a></li>
+    </ol>
+  </div>
+
+  <!-- Context -->
+  <div class="section" id="context">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🧭</div>
+      <div>
+        <h2>1. Context &amp; Scope Changes</h2>
+        <div class="section-sub">From a broad "Innovation Hub" to a focused corporate-partnership rebuild</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Role transition</span>
+        <div class="point-body">
+          The primary speaker recently moved from the <strong>School of Business Management (SBM)</strong> to <strong>Enrollment / Business Development</strong>.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Scope realignment</span>
+        <div class="point-body">
+          The original directive to build a broad <strong>"Innovation Hub"</strong> was narrowed to rebuilding, revitalizing, and scaling CityU's <strong>Corporate Partnership Process</strong>.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Target accounts &amp; metrics</span>
+        <div class="point-body">
+          Outreach targets companies with dedicated professional-development budgets — specifically <strong>$5,000–$10,000 per employee per year</strong>. Initial priority accounts:
+          <div class="chip-row">
+            <span class="chip">Boeing</span>
+            <span class="chip">Amazon</span>
+            <span class="chip">Alaska Airlines</span>
+            <span class="chip">King County</span>
+            <span class="chip">City of Seattle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Strategy -->
+  <div class="section" id="strategy">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🎯</div>
+      <div>
+        <h2>2. Strategy &amp; Core Needs</h2>
+        <div class="section-sub">Front-end portal, back-end AI support, and governance guardrails</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Front-end strategy</span>
+        <div class="point-body">
+          <strong>Corporate Partnership Hub</strong> — a front-facing portal outlining tailored workforce upskilling/reskilling programs, employer benefits, and direct consultation booking for corporate VPs and directors.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Back-end / AI support</span>
+        <div class="point-body">
+          An <strong>executive-assistant-style AI tool/dashboard</strong> to streamline corporate contact tracking, prevent dropped leads, and manage automated outreach workflows. Future-state goal is to synthesize data across the systems below.
+          <div class="module-grid mt16">
+            <div class="module-card">
+              <div class="module-name" style="color:var(--blue);">CRM</div>
+              <div class="module-desc">Microsoft Dynamics 365</div>
+            </div>
+            <div class="module-card">
+              <div class="module-name" style="color:var(--teal);">Analytics</div>
+              <div class="module-desc">Power BI</div>
+            </div>
+            <div class="module-card">
+              <div class="module-name" style="color:var(--violet);">Comms &amp; Contacts</div>
+              <div class="module-desc">Outlook / Email &amp; LinkedIn contact lists</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-amber mt16">
+        <strong>Governance &amp; risk:</strong> establish clear guardrails, policy frameworks, data safeguards, and compliance structures — addressing regulations such as the <strong>EU AI Act</strong> and state-level guidelines — <em>before</em> scaling enterprise AI deployments.
+      </div>
+    </div>
+  </div>
+
+  <!-- Constraints -->
+  <div class="section" id="constraints">
+    <div class="section-header">
+      <div class="section-icon icon-amber">⚙️</div>
+      <div>
+        <h2>3. Technical &amp; Resource Constraints</h2>
+        <div class="section-sub">Licensing, integration blockers, and available budget</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Platform licensing</span>
+        <div class="point-body">
+          Standard accounts hit feature and token limits in <strong>Copilot Studio / Claude</strong>. Advanced enterprise features require specific administrative provisioning and seating assignments via IT/Leadership (e.g., <strong>Ben Farrer</strong> or <strong>Brian Mear</strong>).
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Integration blockers</span>
+        <div class="point-body">
+          Attempted <strong>Copilot Studio</strong> workflows currently lack native integration with the active CRM setup.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Budget</span>
+        <div class="point-body">
+          Business Development holds a flexible operating budget of <strong>~$1,000/month</strong> that can be targeted at technology/innovation tools when tied directly to enrollment and partnership goals.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="section" id="actions">
+    <div class="section-header">
+      <div class="section-icon icon-red">✅</div>
+      <div>
+        <h2>4. Next Steps &amp; Action Items</h2>
+        <div class="section-sub">Owners and details ahead of the follow-up meeting</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table class="action-table">
+        <thead>
+          <tr>
+            <th>Action Item</th>
+            <th>Responsible Party</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="item">IT &amp; seating requests</td>
+            <td class="owner">Business Development Lead</td>
+            <td>Check with Ben Farrer / Brian Mear on enterprise licensing, seating allocations, and Copilot Studio admin privileges for team members.</td>
+          </tr>
+          <tr>
+            <td class="item">System framework mapping</td>
+            <td class="owner">Project Team</td>
+            <td>Draft a formal flowchart/diagram of the corporate-partnership workflow, governance guardrails, and required data integrations (CRM, Power BI, Email) before building.</td>
+          </tr>
+          <tr>
+            <td class="item">Podcast launch planning</td>
+            <td class="owner">Project Team</td>
+            <td>Schedule time in CityU's podcasting studio (recording <em>ReForge CityU Podcast</em> / AI-focused media) to build visibility and engage corporate partners.</td>
+          </tr>
+          <tr>
+            <td class="item">Follow-up meeting</td>
+            <td class="owner">All Collaborators</td>
+            <td><strong>Next Tuesday at 10:30 AM</strong> — City University (Podcasting Room / Studio area).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-teal">Ecosystem context</span>
+        <div class="point-body"><a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem — Execution Plan</a> — the TOFU→MOFU→BOFU→Conversion funnel this corporate-partnership work feeds</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Prior working session</span>
+        <div class="point-body"><a href="meeting-notes-cityux-2026-08-04.html">Meeting Notes — CityUx Naming &amp; Curriculum, Aug 4 2026</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Assessment Infrastructure Playbook — CityU Micro-Credentials</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --cyan: #0891b2;
+      --cyan-dim: #ecfeff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 920px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    /* Nav */
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Header */
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--cyan);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    /* TOC */
+    .toc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow); }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 24px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+    @media (max-width: 560px) { .toc ol { columns: 1; } }
+
+    /* Section */
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-num { font-size: 0.7rem; font-weight: 800; color: var(--slate-light); letter-spacing: 0.08em; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { margin: 2px 0 0; font-size: 0.85rem; color: var(--slate); }
+    .section-body { padding: 20px 24px; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+    .icon-cyan { background: var(--cyan-dim); }
+
+    /* Prose */
+    .prose p { font-size: 0.92rem; margin: 0 0 12px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose h3 { font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); margin: 20px 0 8px; }
+    .prose h3:first-child { margin-top: 0; }
+    .prose ul { margin: 6px 0 12px; padding-left: 20px; font-size: 0.92rem; }
+    .prose li { margin-bottom: 6px; }
+    .prose strong { font-weight: 700; }
+    .prose code { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-size: 0.85em; }
+
+    .lede { font-size: 1rem; font-weight: 600; color: var(--ink); margin: 0 0 16px; line-height: 1.55; }
+
+    /* good/bad inline example */
+    .example-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+    @media (max-width: 560px) { .example-pair { grid-template-columns: 1fr; } }
+    .ex-card { border-radius: var(--radius-sm); padding: 12px 14px; border: 1.5px solid; font-size: 0.86rem; }
+    .ex-bad { background: var(--red-dim); border-color: #fecaca; }
+    .ex-good { background: var(--green-dim); border-color: #bbf7d0; }
+    .ex-card .ex-tag { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 5px; display: block; }
+    .ex-bad .ex-tag { color: var(--red); }
+    .ex-good .ex-tag { color: var(--green); }
+
+    /* Tables */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    .data-table th { text-align: left; padding: 10px 12px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate); background: var(--bg); border-bottom: 2px solid var(--border); vertical-align: bottom; }
+    .data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--ink); }
+    .data-table tr:last-child td { border-bottom: none; }
+    .table-scroll { overflow-x: auto; }
+    .data-table .rubric-crit { font-weight: 700; background: var(--bg); }
+    .lvl-1 { background: #fef2f2; }
+    .lvl-2 { background: #fff7ed; }
+    .lvl-3 { background: #f0fdf4; }
+    .lvl-4 { background: #eff6ff; }
+    .comp-id { font-weight: 800; color: var(--cyan); white-space: nowrap; }
+
+    /* Callout */
+    .callout { border-radius: var(--radius-sm); padding: 14px 16px; font-size: 0.88rem; border: 1px solid transparent; margin-top: 14px; }
+    .callout-amber { background: var(--amber-dim); border-color: #fde68a; color: #92400e; }
+    .callout-blue { background: var(--blue-dim); border-color: #bfdbfe; color: #1e3a8a; }
+    .callout-green { background: var(--green-dim); border-color: #bbf7d0; color: #14532d; }
+    .callout-cyan { background: var(--cyan-dim); border-color: #a5f3fc; color: #155e75; }
+    .callout strong { font-weight: 700; }
+
+    /* Integrity tiers */
+    .tier-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    @media (max-width: 620px) { .tier-grid { grid-template-columns: 1fr; } }
+    .tier-card { border-radius: var(--radius-sm); border: 1.5px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .tier-card .tier-stakes { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .tier-card .tier-method { font-size: 0.9rem; font-weight: 800; margin-bottom: 6px; }
+    .tier-card p { margin: 0; font-size: 0.82rem; color: var(--slate); line-height: 1.5; }
+    .tier-low .tier-stakes { color: var(--green); }
+    .tier-med .tier-stakes { color: var(--amber); }
+    .tier-high .tier-stakes { color: var(--red); }
+
+    /* Agenda timeline */
+    .agenda-item { display: flex; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .agenda-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .agenda-item:first-child { padding-top: 0; }
+    .agenda-time { flex-shrink: 0; width: 74px; font-size: 0.76rem; font-weight: 800; color: var(--cyan); background: var(--cyan-dim); border-radius: 8px; padding: 4px 8px; height: fit-content; text-align: center; }
+    .agenda-body { font-size: 0.9rem; }
+    .agenda-body strong { font-weight: 700; display: block; margin-bottom: 2px; }
+    .agenda-body span { color: var(--slate); font-size: 0.85rem; }
+
+    /* Step checklist */
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 11px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--cyan-dim); color: var(--cyan); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.9rem; }
+    .action-body strong { font-weight: 700; }
+
+    .def-done { font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="microcredentialing-relevance-research.html">Micro-Credentialing Evidence Review</a>
+    <span class="nav-sep">›</span>
+    <span>Assessment Infrastructure Playbook</span>
+    <span class="nav-sep">|</span>
+    <a href="cityu-spd-research-action-plan.html">SPD Research Plan →</a>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Operational Playbook</div>
+    <h1>Assessment Infrastructure Playbook</h1>
+    <p class="subtitle">How to build authentic, competency-based assessment for CityU micro-credentials — performance tasks tied to job competencies, rubrics validated by employer SMEs, and verifiable delivery. The companion "how" to the evidence review's recommendation, worked through on the AI-for-First-Responders credential.</p>
+    <div class="meta-row">
+      <span class="meta-chip">August 2026</span>
+      <span class="meta-chip">For: CityUX · STC · Open edX credential team</span>
+      <span class="meta-chip">Worked example: AI for First Responders</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#why">Why: Content Teaches, Assessment Proves</a></li>
+      <li><a href="#step1">1 · Map Competencies from the Job</a></li>
+      <li><a href="#step2">2 · Design Performance Tasks</a></li>
+      <li><a href="#step3">3 · Build &amp; Validate Rubrics</a></li>
+      <li><a href="#step4">4 · Make Scoring Reliable</a></li>
+      <li><a href="#step5">5 · Identity &amp; Integrity</a></li>
+      <li><a href="#step6">6 · Wire Into the Platform</a></li>
+      <li><a href="#mvp">Minimum Viable Version</a></li>
+      <li><a href="#agenda">SPD Job-Analysis Session Agenda</a></li>
+    </ol>
+  </div>
+
+  <!-- Why -->
+  <div class="section" id="why">
+    <div class="section-header">
+      <div class="section-icon icon-cyan">🎯</div>
+      <div>
+        <h2>Why: Content Teaches, Assessment Proves</h2>
+        <p class="section-sub">The feature employers say they cannot find elsewhere</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <p class="lede">"Assessment infrastructure" is the systems, people, and processes that let CityU <strong>prove</strong> a learner is competent — as opposed to content, which only <strong>teaches</strong>. A credential is worth what its assessment is worth. Everything below turns "we taught them AI literacy" into "we can show, with evidence an employer trusts, that this officer can do X."</p>
+      <p>The evidence review found that employers value credentials that are <strong>transcripted, competency-based, and verifiable</strong> — and that a certificate of attendance is dismissed. Assessment is what moves a CityU credential from the second category into the first. It is also the binding constraint: it takes longer to build than content and is the reason "three rigorous credentials beat fifteen shallow ones."</p>
+      <div class="callout callout-cyan">
+        <strong>Definition of done for any credential:</strong> not shippable until its competencies, performance tasks, validated rubric, and rater calibration all exist. Content without this is a workshop, not a credential.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="section" id="step1">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🧭</div>
+      <div>
+        <span class="section-num">STEP 1</span>
+        <h2>Map Competencies from the Job</h2>
+        <p class="section-sub">You cannot assess competence you have not defined observably</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <p>Run a <strong>job/task analysis with employer SMEs</strong> — for this credential, SPD supervisors and command staff, not CityU faculty. The <strong>DACUM</strong> method (a facilitated session where practitioners enumerate the actual tasks of the role) is the standard tool; the agenda for exactly this session is at the bottom of this page.</p>
+      <p>Write each competency as an <strong>observable performance statement</strong> — a performance verb + a condition/context + a standard. Knowledge statements ("understands X") are not assessable.</p>
+      <div class="example-pair">
+        <div class="ex-card ex-bad">
+          <span class="ex-tag">✕ Not assessable</span>
+          Understands the risk of AI hallucination in report writing.
+        </div>
+        <div class="ex-card ex-good">
+          <span class="ex-tag">✓ Assessable</span>
+          Given an AI-drafted incident report, identifies hallucinated or unsupported content and corrects it in line with SPD policy.
+        </div>
+      </div>
+
+      <h3>Worked example — competency map (AI for First Responders)</h3>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>ID</th><th>Competency (observable performance)</th><th>Assessed by</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="comp-id">FR-1</td><td>Given a set of tools, distinguishes transcription from AI from generative AI and states what each does and does not do.</td><td>Scenario sort + short defense</td></tr>
+            <tr><td class="comp-id">FR-2</td><td>Given an AI-drafted report, identifies hallucinated/unsupported content and corrects it per SPD policy.</td><td>Performance task (work sample)</td></tr>
+            <tr><td class="comp-id">FR-3</td><td>Classifies a proposed AI use case by risk using the Traffic Light / AI-governance framework and justifies the call.</td><td>Case task + rubric</td></tr>
+            <tr><td class="comp-id">FR-4</td><td>Documents AI-assisted work so it meets evidentiary and disclosure standards (e.g., prosecutor requirements).</td><td>Portfolio artifact</td></tr>
+            <tr><td class="comp-id">FR-5</td><td>Identifies situations where AI output must not enter a signed narrative and explains why.</td><td>Scenario decision + rationale</td></tr>
+            <tr><td class="comp-id">FR-6</td><td>Evaluates a vendor accuracy / time-savings claim against independent evidence and states the limits of the claim.</td><td>Critique task</td></tr>
+            <tr><td class="comp-id">FR-7</td><td>Escalates a suspected AI error or bias concern through the correct supervisory channel.</td><td>Capstone / oral defense</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-blue">
+        <strong>Target 6–12 competencies per credential</strong> — enough to be meaningful, few enough to actually assess and calibrate. FR-6 ties directly to the June 16 vendor-stat incident: the credential teaches officers to do to vendor claims what Loren Atherley did to ours.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="section" id="step2">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🛠️</div>
+      <div>
+        <span class="section-num">STEP 2</span>
+        <h2>Design Performance Tasks</h2>
+        <p class="section-sub">Authentic work, not multiple-choice recall</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <p>For each competency, build a task that mirrors the real job — a <strong>work-sample</strong>, a <strong>case simulation</strong>, a <strong>portfolio artifact</strong>, or a <strong>capstone</strong> with a real deliverable. The realism <em>is</em> the differentiator; a quiz on AI facts is exactly what Coursera already sells.</p>
+      <ul>
+        <li><strong>Anchor in real, redacted artifacts</strong> from the partner — actual (de-identified) report drafts, real policy edge cases, real vendor one-pagers to critique.</li>
+        <li><strong>One task can cover several competencies.</strong> A single "review this AI-drafted report" task can hit FR-2, FR-4, and FR-5 at once — don't build one task per competency mechanically.</li>
+        <li><strong>Make the deliverable the kind of thing the job produces</strong> — a corrected report with a change log, a risk classification memo, a one-paragraph escalation note.</li>
+      </ul>
+      <div class="callout callout-amber">
+        <strong>Watch the confidentiality line:</strong> real SPD artifacts must be redacted/de-identified before use, cleared with the partner. Build a small library of reusable, cleared scenarios so you are not sourcing fresh material every cohort.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="section" id="step3">
+    <div class="section-header">
+      <div class="section-icon icon-green">📐</div>
+      <div>
+        <span class="section-num">STEP 3</span>
+        <h2>Build &amp; Validate Rubrics</h2>
+        <p class="section-sub">This step produces the "employer-validated" claim</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <p>Write an <strong>analytic rubric</strong> per task: criteria rows × performance levels, each cell with a concrete behavioral descriptor. Then run a <strong>calibration (range-finding) session</strong> where several raters independently score the same sample responses, compare, and rewrite fuzzy descriptors until they converge. Capture the SMEs' <strong>sign-off</strong> — it validates the rubric, is evidence for accreditors, and is the receipt behind the marketing claim.</p>
+
+      <h3>Worked example — rubric for FR-2 (correct AI-hallucinated content)</h3>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Criterion</th>
+              <th class="lvl-1">1 · Not yet</th>
+              <th class="lvl-2">2 · Approaching</th>
+              <th class="lvl-3">3 · Competent</th>
+              <th class="lvl-4">4 · Exemplary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rubric-crit">Detection</td>
+              <td class="lvl-1">Misses most fabricated/unsupported claims.</td>
+              <td class="lvl-2">Flags some; misses subtle or plausible-sounding fabrications.</td>
+              <td class="lvl-3">Flags all material hallucinations and unsupported claims.</td>
+              <td class="lvl-4">Flags all, and distinguishes hallucination from ambiguity vs. genuine gaps in source.</td>
+            </tr>
+            <tr>
+              <td class="rubric-crit">Correction</td>
+              <td class="lvl-1">Edits introduce new errors or remove valid content.</td>
+              <td class="lvl-2">Corrects flagged items but leaves some inaccuracies.</td>
+              <td class="lvl-3">Corrections are accurate and grounded in the source record.</td>
+              <td class="lvl-4">Corrections are accurate, minimal, and preserve the officer's own voice/intent.</td>
+            </tr>
+            <tr>
+              <td class="rubric-crit">Policy alignment</td>
+              <td class="lvl-1">Ignores or contradicts SPD policy.</td>
+              <td class="lvl-2">Partially applies policy; misapplies at least one requirement.</td>
+              <td class="lvl-3">Applies the relevant SPD policy correctly throughout.</td>
+              <td class="lvl-4">Applies policy and cites the specific provision for each correction.</td>
+            </tr>
+            <tr>
+              <td class="rubric-crit">Documentation</td>
+              <td class="lvl-1">No record of what was changed or why.</td>
+              <td class="lvl-2">Notes changes but not rationale or source.</td>
+              <td class="lvl-3">Change log records what changed, why, and the source basis.</td>
+              <td class="lvl-4">Change log is disclosure-ready and would withstand prosecutor scrutiny.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:12px;"><strong>Passing standard:</strong> set it explicitly with the SMEs — e.g., "Competent (3) or higher on every criterion; Detection may not fall below 3." Record the standard, not just the rubric.</p>
+      <div class="callout callout-green">
+        <strong>The sign-off artifact is the deliverable.</strong> A one-page memo — "SPD SMEs reviewed and approved these competencies, tasks, rubrics, and passing standards on [date]" — is simultaneously your quality evidence, your accreditation evidence, and your license to say "employer-validated" in marketing.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="section" id="step4">
+    <div class="section-header">
+      <div class="section-icon icon-amber">⚖️</div>
+      <div>
+        <span class="section-num">STEP 4</span>
+        <h2>Make Scoring Reliable</h2>
+        <p class="section-sub">A rubric means nothing if two assessors disagree</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <ul>
+        <li><strong>Anchor papers.</strong> Pick real sample responses that exemplify each performance level; assessors train against them.</li>
+        <li><strong>Double-scoring.</strong> Two assessors independently score a sample (e.g., 20%) of submissions.</li>
+        <li><strong>Adjudication.</strong> Where scores differ by more than one level, a third rater resolves it — and that disagreement tells you which descriptor is still fuzzy.</li>
+        <li><strong>Track inter-rater reliability</strong> over time; if it drifts, re-calibrate. This is the difference between "competency-based" and vibes with a rubric attached.</li>
+      </ul>
+      <div class="callout callout-blue">
+        <strong>Reuse across credentials.</strong> The rater-training pattern, anchor-paper format, and adjudication rule are credential-agnostic — build them once and every future credential inherits them.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="section" id="step5">
+    <div class="section-header">
+      <div class="section-icon icon-red">🔐</div>
+      <div>
+        <span class="section-num">STEP 5</span>
+        <h2>Identity &amp; Integrity — "Verifiable Delivery"</h2>
+        <p class="section-sub">Match the integrity method to the stakes; don't over-engineer</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="tier-grid">
+        <div class="tier-card tier-low">
+          <div class="tier-stakes">Low stakes</div>
+          <div class="tier-method">Formative practice</div>
+          <p>Auto-graded practice, self-check, peer review. No proctoring needed — these build skill, they don't certify it.</p>
+        </div>
+        <div class="tier-card tier-med">
+          <div class="tier-stakes">Medium stakes</div>
+          <div class="tier-method">Performance tasks</div>
+          <p>Verified-track identity at enrollment. Authorship confirmed by a short <strong>oral defense / viva</strong> of the submitted work — better proof than lockdown software.</p>
+        </div>
+        <div class="tier-card tier-high">
+          <div class="tier-stakes">High stakes</div>
+          <div class="tier-method">Capstone / knowledge exam</div>
+          <p>Live capstone presentation (authorship + competence in one) and/or proctored exam where a timed knowledge check genuinely warrants it.</p>
+        </div>
+      </div>
+      <div class="prose">
+        <h3>Verifiable issuance</h3>
+        <p>Issue the credential as an <strong>Open Badge 3.0 / verifiable credential</strong> carrying metadata: issuer, the specific competencies demonstrated, assessment type, date, and credit value. That metadata is what lets an employer actually <em>check</em> the credential — which is the entire point of "verifiable."</p>
+        <div class="callout callout-cyan">
+          <strong>For performance-based credentials, authorship is the real concern — not exam-room lockdown.</strong> A live defense verifies both that the learner did the work and that they understand it. Reserve heavy proctoring for the narrow case of a high-stakes timed knowledge test.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="section" id="step6">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔌</div>
+      <div>
+        <span class="section-num">STEP 6</span>
+        <h2>Wire Into the Platform &amp; Governance</h2>
+        <p class="section-sub">Open edX features + registrar sign-off</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <ul>
+        <li><strong>Open Response Assessments (ORA)</strong> — Open edX's rubric-scored, staff/peer/self-graded task type. This is where the performance tasks and analytic rubrics live.</li>
+        <li><strong>Verified certificates</strong> — identity verification for medium/high-stakes assessment.</li>
+        <li><strong>Proctoring integration</strong> — enable only for the narrow high-stakes exam case.</li>
+        <li><strong>Transcripting &amp; articulation</strong> — the registrar and faculty governance must approve credit and the articulation agreement, or the credential is not stackable and CityU loses its differentiator. Start this in parallel, not after.</li>
+      </ul>
+      <div class="callout callout-amber">
+        <strong>Sequencing trap:</strong> teams build all the content, then discover the credential can't be transcripted. Get the articulation path approved <em>before</em> launch, alongside assessment design.
+      </div>
+    </div>
+  </div>
+
+  <!-- MVP -->
+  <div class="section" id="mvp">
+    <div class="section-header">
+      <div class="section-icon icon-green">🚀</div>
+      <div>
+        <h2>Minimum Viable Version</h2>
+        <p class="section-sub">For AI for First Responders — shippable in weeks, not quarters</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item"><span class="action-check">1</span><div class="action-body"><strong>6–10 competencies</strong> from one SPD job-analysis session (agenda below).</div></li>
+        <li class="action-item"><span class="action-check">2</span><div class="action-body"><strong>2–3 performance tasks + 1 capstone</strong>, built on redacted real scenarios.</div></li>
+        <li class="action-item"><span class="action-check">3</span><div class="action-body"><strong>Analytic rubrics</strong> validated in <strong>one calibration session</strong> with SPD SMEs — with the sign-off memo captured.</div></li>
+        <li class="action-item"><span class="action-check">4</span><div class="action-body"><strong>Capstone defended live</strong> — that is your authorship check; no proctoring software required.</div></li>
+        <li class="action-item"><span class="action-check">5</span><div class="action-body"><strong>Issued as a verifiable credential</strong> listing the demonstrated competencies, with the credit/articulation path approved.</div></li>
+      </ul>
+      <div class="callout callout-green">
+        Every piece here is reusable: the rater-training pattern, rubric format, integrity tiers, and issuance setup carry straight into the next credential (maritime OT security, healthcare AI governance). You build the infrastructure once and amortize it.
+      </div>
+    </div>
+  </div>
+
+  <!-- Agenda -->
+  <div class="section" id="agenda">
+    <div class="section-header">
+      <div class="section-icon icon-cyan">🗓️</div>
+      <div>
+        <h2>SPD Job-Analysis Session Agenda</h2>
+        <p class="section-sub">The concrete first step — a half-day DACUM-style workshop to produce the competency map</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="prose">
+        <h3>Before the session</h3>
+        <ul>
+          <li><strong>Room:</strong> 5–8 SPD practitioners across levels (officers, supervisors, command), 1 facilitator (CityU), 1 scribe. Practitioners, not just leadership — the people who do the work.</li>
+          <li><strong>Pre-work:</strong> ask each to bring 2–3 recent real situations where AI touched their work (report drafting, review, a vendor pitch). De-identify in advance.</li>
+          <li><strong>Frame it honestly:</strong> "We're defining what an officer should be able to <em>do</em> with AI, so we can build a credential that proves it — not selling you a tool."</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:16px;">
+        <div class="agenda-item">
+          <div class="agenda-time">0:00<br>0:15</div>
+          <div class="agenda-body"><strong>Framing &amp; ground rules</strong><span>Purpose, what a competency is (observable, on-the-job), and what we'll walk out with. Set the "no vendor pitch" tone.</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">0:15<br>1:00</div>
+          <div class="agenda-body"><strong>Task brainstorm (DACUM)</strong><span>Practitioners call out every AI-touching task in the role; scribe captures verbatim on the wall. Quantity first, no filtering. Prompt with the pre-work situations.</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">1:00<br>1:30</div>
+          <div class="agenda-body"><strong>Cluster &amp; prioritize</strong><span>Group tasks into themes; dot-vote the ones that are highest-stakes and most common. Aim to surface the 6–12 that matter most.</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">1:30<br>1:40</div>
+          <div class="agenda-body"><strong>Break</strong><span></span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">1:40<br>2:40</div>
+          <div class="agenda-body"><strong>Write performance statements</strong><span>For each priority task, draft a verb + condition + standard statement. SMEs push on "what does good actually look like here?" — capture the standard while they're in the room.</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">2:40<br>3:10</div>
+          <div class="agenda-body"><strong>Set the bar &amp; edge cases</strong><span>For the top 3–4, agree what separates competent from not-yet, and the situations where AI must <em>not</em> be used. This seeds the rubrics.</span></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">3:10<br>3:30</div>
+          <div class="agenda-body"><strong>Confirm &amp; next steps</strong><span>Read back the competency list for agreement. Name who will review the drafted rubrics (the calibration session) and by when. Get verbal sign-off to proceed.</span></div>
+        </div>
+      </div>
+
+      <div class="callout callout-cyan">
+        <strong>Output of the session:</strong> a validated draft competency map (like the FR-1…FR-7 table above) plus notes on standards and edge cases. That feeds Step 2 (task design) immediately, and the same SMEs return for the Step 3 rubric calibration.
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -90,6 +90,8 @@
         .recent-item:hover{box-shadow:0 4px 12px rgba(15,23,42,0.08);border-color:#a7c8b8}
         .recent-item .ri-date{font-size:0.75rem;color:var(--muted);white-space:nowrap}
         .recent-item .ri-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+        .recent-more{margin-top:10px;border-top:1px solid #e2e8f0;padding-top:10px}
+        .recent-more .recent-list{margin-top:10px}
 
         /* First responder band label */
         .band-label.firstresponder { background: #fde8e8; color: #b91c1c; }
@@ -308,6 +310,10 @@
                     <span>🧠 Scaling AI Safety for a Multi-Agent World — Grant Brainstorm</span>
                     <span class="ri-date">Jul 29, 2026</span>
                 </a>
+            </div>
+            <details class="recent-more">
+                <summary>Show 27 more</summary>
+            <div class="recent-list">
                 <a class="recent-item" href="cityux-aili-board-briefing.html">
                     <span class="ri-dot" style="background:#7c3aed"></span>
                     <span>📋 CityUX / AILI — Board Meeting Briefing</span>
@@ -444,6 +450,7 @@
                     <span class="ri-date">Apr 15, 2026</span>
                 </a>
             </div>
+            </details>
         </section>
 
         <!-- ── GRANT PROPOSAL RESEARCH ───────────────────────────── -->
@@ -907,6 +914,7 @@
         var hubCards = Array.prototype.slice.call(document.querySelectorAll('.hub-flip'));
         var recentStrip = document.querySelector('.recent-strip');
         var recentItems = Array.prototype.slice.call(document.querySelectorAll('.recent-item'));
+        var recentMoreDetails = document.querySelector('.recent-more');
         var bands = Array.prototype.slice.call(document.querySelectorAll('.audience-band'));
         var archiveSection = document.querySelector('.archive-section');
         var archiveDetails = archiveSection ? archiveSection.querySelector('details') : null;
@@ -919,6 +927,7 @@
             if(hubSection) hubSection.classList.remove('search-hidden');
             recentItems.forEach(function(el){ el.classList.remove('search-hidden'); });
             if(recentStrip) recentStrip.classList.remove('search-hidden');
+            if(recentMoreDetails) recentMoreDetails.open = false;
             bands.forEach(function(band){
                 band.classList.remove('search-hidden');
                 Array.prototype.slice.call(band.querySelectorAll('.card')).forEach(function(c){ c.classList.remove('search-hidden'); });
@@ -947,12 +956,17 @@
             totalMatches += hubMatches;
 
             var recentMatches = 0;
+            var recentMoreMatches = 0;
             recentItems.forEach(function(el){
                 var hit = norm(el.textContent).indexOf(term) !== -1;
                 el.classList.toggle('search-hidden', !hit);
-                if(hit) recentMatches++;
+                if(hit){
+                    recentMatches++;
+                    if(recentMoreDetails && recentMoreDetails.contains(el)) recentMoreMatches++;
+                }
             });
             if(recentStrip) recentStrip.classList.toggle('search-hidden', recentMatches === 0);
+            if(recentMoreDetails && recentMoreMatches > 0) recentMoreDetails.open = true;
             totalMatches += recentMatches;
 
             bands.forEach(function(band){

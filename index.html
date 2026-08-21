@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/styles.css">
-    <title>STC Transformation — Curriculum &amp; AI Strategy</title>
+    <title>STC Transformation — Initiative Hubs &amp; Strategy</title>
     <style>
         :root{--accent:#1e8449;--muted:#6b7280;--card:#ffffff;--bg:#f6f8fb}
         abbr[title]{cursor:help;text-decoration:underline dotted;text-underline-offset:0.12em;text-decoration-color:rgba(71,85,105,0.4)}
@@ -17,12 +17,13 @@
         h1{margin:0;font-size:1.45rem}
         .tagline{color:var(--muted);font-size:0.95rem}
 
-        .hero{display:flex;align-items:center;justify-content:space-between;margin-top:20px;background:linear-gradient(180deg,#ffffff,#fbfeff);padding:22px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.06)}
-        .hero-left{max-width:66%}
-        .hero-left p{margin:10px 0;color:var(--muted)}
-        .cta-row{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px}
-        .btn{background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.9rem}
-        .secondary{background:transparent;border:1px solid #d1d5db;color:var(--muted);padding:8px 14px;border-radius:8px;text-decoration:none;font-size:0.9rem}
+        .hero{display:flex;align-items:center;justify-content:space-between;margin-top:16px;background:linear-gradient(180deg,#ffffff,#fbfeff);padding:16px 20px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.06)}
+        .hero-left{max-width:70%}
+        .hero-left h2{font-size:1.2rem}
+        .hero-left p{margin:4px 0 0;color:var(--muted);font-size:0.86rem;line-height:1.4}
+        .cta-row{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+        .btn{background:var(--accent);color:#fff;padding:6px 12px;border-radius:7px;text-decoration:none;font-weight:600;font-size:0.82rem}
+        .secondary{background:transparent;border:1px solid #d1d5db;color:var(--muted);padding:6px 12px;border-radius:7px;text-decoration:none;font-size:0.82rem}
 
         /* Audience bands */
         .audience-band{margin-top:36px;padding-top:24px;border-top:2px solid #e2e8f0}
@@ -47,6 +48,25 @@
         .card .cta.primary{background:var(--accent);color:#fff}
         .card .cta.ghost{background:transparent;border:1px solid #e6eef0;color:var(--muted)}
         .cta-stack{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+
+        /* Initiative Hubs */
+        .hub-section{margin-top:28px}
+        .hub-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+        .hub-flip{position:relative;flex:1 1 148px;max-width:172px;height:118px;perspective:900px}
+        .hub-flip-inner{position:relative;width:100%;height:100%;transition:transform .5s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+        .hub-flip.flipped .hub-flip-inner{transform:rotateY(180deg)}
+        .hub-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:12px;padding:12px 13px;box-shadow:0 6px 14px rgba(15,23,42,0.05);border:1px solid rgba(15,23,42,0.05);border-top:4px solid var(--hub-accent,#1e8449);background:var(--card);display:flex;flex-direction:column;text-decoration:none;color:#0f1724;box-sizing:border-box}
+        .hub-face-front{transition:box-shadow .15s ease}
+        .hub-face-front:hover{box-shadow:0 12px 24px rgba(15,23,42,0.1)}
+        .hub-icon{font-size:20px;margin-bottom:4px;display:block}
+        .hub-face-front h3{margin:0;font-size:0.84rem;line-height:1.25;font-weight:700}
+        .hub-count{display:block;margin-top:auto;font-size:0.68rem;font-weight:700;color:var(--hub-accent,#1e8449)}
+        .hub-face-back{transform:rotateY(180deg);background:var(--bg);justify-content:space-between}
+        .hub-face-back p{margin:0;font-size:0.72rem;color:var(--muted);line-height:1.35}
+        .hub-face-back .hub-open-link{font-size:0.7rem;font-weight:700;color:var(--hub-accent,#1e8449);text-decoration:none}
+        .hub-flip-btn{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:50%;border:1px solid rgba(15,23,42,0.1);background:rgba(255,255,255,0.9);color:var(--muted);font-size:0.68rem;font-weight:700;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;padding:0}
+        .hub-flip-btn:hover{background:#fff;color:#0f1724}
+        .hub-flip.flipped .hub-flip-btn{transform:scaleX(-1)}
 
         /* Search */
         .search-wrap{margin-top:20px;position:relative}
@@ -105,19 +125,126 @@
 
         <section class="hero">
             <div class="hero-left">
-                <h2 style="margin:0">Curriculum models &amp; <abbr title="Artificial intelligence">AI</abbr> strategy</h2>
-                <p>Strategic documentation hub for the <abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> — <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> program approval, curriculum models, course specs, and growth strategy.</p>
+                <h2 style="margin:0"><abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr>'s living initiative archive</h2>
+                <p>Documentation across STC's active initiatives, kept current as new work lands.</p>
                 <div class="cta-row">
-                    <a class="btn" href="bs-ai-aac-04142026.html">🎓 <abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr> — <abbr title="Academic Affairs Committee">AAC</abbr> Approved</a>
+                    <a class="btn" href="#hubs">🧭 Browse Initiative Hubs</a>
                     <a class="btn" href="stc-strategic-alignment.html">🗺️ Strategic Alignment</a>
-                    <a class="btn" href="strategy/index.html">📊 2026 Strategy Hub</a>
-                    <a class="secondary" href="courses/index.html">📚 Course Catalog</a>
+                    <a class="secondary" href="#recent-added">🆕 Recently Added</a>
                 </div>
             </div>
-            <div style="text-align:right;min-width:160px">
-                <div style="background:#f3f9f6;border-radius:10px;padding:14px;display:inline-block;box-shadow:0 4px 10px rgba(16,24,40,0.03)">
-                    <div style="font-size:14px;color:var(--muted)">Last updated</div>
-                    <div style="font-weight:700;font-size:18px">Jul 21, 2026</div>
+            <div style="text-align:right;min-width:110px">
+                <div style="background:#f3f9f6;border-radius:8px;padding:8px 12px;display:inline-block;box-shadow:0 4px 10px rgba(16,24,40,0.03)">
+                    <div style="font-size:11px;color:var(--muted)">Last updated</div>
+                    <div style="font-weight:700;font-size:14px">Aug 20, 2026</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── INITIATIVE HUBS ─────────────────────────────────────── -->
+        <section class="hub-section" id="hubs" aria-label="Initiative hubs">
+            <div class="band-header">
+                <h2 class="band-title">Initiative Hubs</h2>
+            </div>
+            <p class="band-lead">Dedicated landing pages for STC's active initiatives. Each one is a curated, growing index — new meeting notes and pages get added and linked back here as they're created.</p>
+            <div class="hub-grid">
+                <div class="hub-flip" style="--hub-accent:#5b21b6">
+                    <div class="hub-flip-inner">
+                        <a class="hub-face hub-face-front" href="blue-tech-maritime-hub.html">
+                            <span class="hub-icon" aria-hidden="true">🌊</span>
+                            <h3>Blue Tech &amp; Maritime</h3>
+                            <span class="hub-count">10 documents</span>
+                        </a>
+                        <div class="hub-face hub-face-back">
+                            <p>AI for maritime, port operations, and the practitioner-publisher content model.</p>
+                            <a class="hub-open-link" href="blue-tech-maritime-hub.html">Open hub →</a>
+                        </div>
+                    </div>
+                    <button type="button" class="hub-flip-btn" aria-label="Show description for Blue Tech &amp; Maritime" aria-pressed="false">ⓘ</button>
+                </div>
+                <div class="hub-flip" style="--hub-accent:#b91c1c">
+                    <div class="hub-flip-inner">
+                        <a class="hub-face hub-face-front" href="frontline-spd-hub.html">
+                            <span class="hub-icon" aria-hidden="true">🚔</span>
+                            <h3>Frontline Workers &amp; SPD</h3>
+                            <span class="hub-count">8 documents</span>
+                        </a>
+                        <div class="hub-face hub-face-back">
+                            <p>The CityU × Seattle PD AI partnership — research, pilots, and policy.</p>
+                            <a class="hub-open-link" href="frontline-spd-hub.html">Open hub →</a>
+                        </div>
+                    </div>
+                    <button type="button" class="hub-flip-btn" aria-label="Show description for Frontline Workers &amp; SPD" aria-pressed="false">ⓘ</button>
+                </div>
+                <div class="hub-flip" style="--hub-accent:#7c3aed">
+                    <div class="hub-flip-inner">
+                        <a class="hub-face hub-face-front" href="cityux-hub.html">
+                            <span class="hub-icon" aria-hidden="true">🔁</span>
+                            <h3>CityUX</h3>
+                            <span class="hub-count">18 documents</span>
+                        </a>
+                        <div class="hub-face hub-face-back">
+                            <p>The open-ecosystem funnel and Open edX platform — formerly AILI / Applied Intelligence Center.</p>
+                            <a class="hub-open-link" href="cityux-hub.html">Open hub →</a>
+                        </div>
+                    </div>
+                    <button type="button" class="hub-flip-btn" aria-label="Show description for CityUX" aria-pressed="false">ⓘ</button>
+                </div>
+                <div class="hub-flip" style="--hub-accent:#0f766e">
+                    <div class="hub-flip-inner">
+                        <a class="hub-face hub-face-front" href="digital-twins-hub.html">
+                            <span class="hub-icon" aria-hidden="true">🔬</span>
+                            <h3>Digital Twins</h3>
+                            <span class="hub-count">1 document</span>
+                        </a>
+                        <div class="hub-face hub-face-back">
+                            <p>Feasibility and planning for a Digital Twins / Physical AI lab.</p>
+                            <a class="hub-open-link" href="digital-twins-hub.html">Open hub →</a>
+                        </div>
+                    </div>
+                    <button type="button" class="hub-flip-btn" aria-label="Show description for Digital Twins" aria-pressed="false">ⓘ</button>
+                </div>
+                <div class="hub-flip" style="--hub-accent:#1e8449">
+                    <div class="hub-flip-inner">
+                        <a class="hub-face hub-face-front" href="bsai-hub.html">
+                            <span class="hub-icon" aria-hidden="true">🎓</span>
+                            <h3><abbr title="Bachelor of Science in Artificial Intelligence">BSAI</abbr></h3>
+                            <span class="hub-count">10 documents</span>
+                        </a>
+                        <div class="hub-face hub-face-back">
+                            <p>The AAC-approved degree program, strategy hub, and course catalog.</p>
+                            <a class="hub-open-link" href="bsai-hub.html">Open hub →</a>
+                        </div>
+                    </div>
+                    <button type="button" class="hub-flip-btn" aria-label="Show description for BSAI" aria-pressed="false">ⓘ</button>
+                </div>
+                <div class="hub-flip" style="--hub-accent:#15803d">
+                    <div class="hub-flip-inner">
+                        <a class="hub-face hub-face-front" href="teaching-framework-hub.html">
+                            <span class="hub-icon" aria-hidden="true">🧩</span>
+                            <h3><abbr title="School of Technology and Computing (City University of Seattle)">STC</abbr> Teaching Framework</h3>
+                            <span class="hub-count">22 documents</span>
+                        </a>
+                        <div class="hub-face hub-face-back">
+                            <p>Assessment design, grading models, student engagement, and faculty tooling.</p>
+                            <a class="hub-open-link" href="teaching-framework-hub.html">Open hub →</a>
+                        </div>
+                    </div>
+                    <button type="button" class="hub-flip-btn" aria-label="Show description for STC Teaching Framework" aria-pressed="false">ⓘ</button>
+                </div>
+                <div class="hub-flip" style="--hub-accent:#1d4ed8">
+                    <div class="hub-flip-inner">
+                        <a class="hub-face hub-face-front" href="corporate-partnerships-hub.html">
+                            <span class="hub-icon" aria-hidden="true">🤝</span>
+                            <h3>Corporate Partnerships &amp; <abbr title="Artificial intelligence">AI</abbr> Enablement</h3>
+                            <span class="hub-count">1 document</span>
+                        </a>
+                        <div class="hub-face hub-face-back">
+                            <p>Employer-facing AI adoption and contract-training engagements.</p>
+                            <a class="hub-open-link" href="corporate-partnerships-hub.html">Open hub →</a>
+                        </div>
+                    </div>
+                    <button type="button" class="hub-flip-btn" aria-label="Show description for Corporate Partnerships &amp; AI Enablement" aria-pressed="false">ⓘ</button>
                 </div>
             </div>
         </section>
@@ -135,7 +262,7 @@
         </div>
 
         <!-- ── RECENTLY ADDED ─────────────────────────────────────── -->
-        <section class="recent-strip" aria-label="Recently added">
+        <section class="recent-strip" id="recent-added" aria-label="Recently added">
             <div class="recent-strip-header">
                 <span class="new-badge">New</span>
                 <h2>Recently added</h2>
@@ -776,6 +903,8 @@
         var emptyTerm = document.getElementById('site-search-empty-term');
         if(!input) return;
 
+        var hubSection = document.querySelector('.hub-section');
+        var hubCards = Array.prototype.slice.call(document.querySelectorAll('.hub-flip'));
         var recentStrip = document.querySelector('.recent-strip');
         var recentItems = Array.prototype.slice.call(document.querySelectorAll('.recent-item'));
         var bands = Array.prototype.slice.call(document.querySelectorAll('.audience-band'));
@@ -786,6 +915,8 @@
         function norm(s){ return (s || '').toLowerCase(); }
 
         function resetAll(){
+            hubCards.forEach(function(el){ el.classList.remove('search-hidden'); });
+            if(hubSection) hubSection.classList.remove('search-hidden');
             recentItems.forEach(function(el){ el.classList.remove('search-hidden'); });
             if(recentStrip) recentStrip.classList.remove('search-hidden');
             bands.forEach(function(band){
@@ -805,6 +936,15 @@
             if(!term){ resetAll(); return; }
 
             var totalMatches = 0;
+
+            var hubMatches = 0;
+            hubCards.forEach(function(el){
+                var hit = norm(el.textContent).indexOf(term) !== -1;
+                el.classList.toggle('search-hidden', !hit);
+                if(hit) hubMatches++;
+            });
+            if(hubSection) hubSection.classList.toggle('search-hidden', hubMatches === 0);
+            totalMatches += hubMatches;
 
             var recentMatches = 0;
             recentItems.forEach(function(el){
@@ -857,6 +997,19 @@
                 e.preventDefault();
                 input.focus();
             }
+        });
+    })();
+    </script>
+    <script>
+    (function(){
+        Array.prototype.slice.call(document.querySelectorAll('.hub-flip-btn')).forEach(function(btn){
+            btn.addEventListener('click', function(e){
+                e.preventDefault();
+                var card = btn.closest('.hub-flip');
+                if(!card) return;
+                var flipped = card.classList.toggle('flipped');
+                btn.setAttribute('aria-pressed', flipped ? 'true' : 'false');
+            });
         });
     })();
     </script>

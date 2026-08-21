@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Teaching Operational Technologies — Briefing for the STC Dean</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --cyan: #0891b2;
+      --cyan-dim: #ecfeff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 920px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .draft-banner { background: var(--amber-dim); border: 1.5px solid #fde68a; border-radius: var(--radius-sm); padding: 12px 18px; margin-bottom: 20px; font-size: 0.86rem; color: #92400e; }
+    .draft-banner strong { font-weight: 800; }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow); }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 24px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+    @media (max-width: 560px) { .toc ol { columns: 1; } }
+
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { margin: 2px 0 0; font-size: 0.85rem; color: var(--slate); }
+    .section-body { padding: 20px 24px; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+    .icon-cyan { background: var(--cyan-dim); }
+
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-cyan { background: var(--cyan-dim); color: var(--cyan); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .point-body ul { margin: 6px 0 0; padding-left: 18px; }
+    .point-body li { margin-bottom: 4px; }
+
+    .prose p { font-size: 0.92rem; margin: 0 0 12px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose h3 { font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); margin: 20px 0 8px; }
+    .prose h3:first-child { margin-top: 0; }
+    .prose strong { font-weight: 700; }
+
+    .claim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 580px) { .claim-grid { grid-template-columns: 1fr; } }
+    .claim-card { border-radius: var(--radius-sm); padding: 14px 16px; border: 1.5px solid; }
+    .claim-card .claim-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .claim-card p { margin: 0; font-size: 0.86rem; line-height: 1.55; }
+    .claim-dont { background: var(--red-dim); border-color: #fecaca; }
+    .claim-dont .claim-label { color: var(--red); }
+    .claim-do { background: var(--green-dim); border-color: #bbf7d0; }
+    .claim-do .claim-label { color: var(--green); }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .chk-green { background: var(--green-dim); color: var(--green); }
+    .chk-amber { background: var(--amber-dim); color: var(--amber); }
+    .chk-red { background: var(--red-dim); color: var(--red); }
+    .action-body { font-size: 0.92rem; }
+    .action-body strong { font-weight: 700; }
+    .action-when { display: inline-block; margin-top: 6px; font-size: 0.74rem; font-weight: 700; color: var(--blue); background: var(--blue-dim); border-radius: 20px; padding: 2px 10px; }
+
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    .data-table th { text-align: left; padding: 10px 12px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate); background: var(--bg); border-bottom: 2px solid var(--border); }
+    .data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--ink); }
+    .data-table tr:last-child td { border-bottom: none; }
+    .table-scroll { overflow-x: auto; }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 16px; font-size: 0.88rem; border: 1px solid transparent; margin-top: 12px; }
+    .callout-amber { background: var(--amber-dim); border-color: #fde68a; color: #92400e; }
+    .callout-blue { background: var(--blue-dim); border-color: #bfdbfe; color: #1e3a8a; }
+    .callout-green { background: var(--green-dim); border-color: #bbf7d0; color: #14532d; }
+    .callout-violet { background: var(--violet-dim); border-color: #ddd6fe; color: #5b21b6; }
+    .callout strong { font-weight: 700; }
+
+    .implications { background: var(--violet-dim); border: 1px solid #ddd6fe; border-radius: var(--radius-sm); padding: 16px 18px; margin-top: 18px; }
+    .implications .imp-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--violet); margin-bottom: 6px; }
+    .implications p { margin: 0; font-size: 0.88rem; color: var(--ink); line-height: 1.6; }
+    .implications strong { font-weight: 700; }
+
+    .src-group { margin-bottom: 20px; }
+    .src-group:last-child { margin-bottom: 0; }
+    .src-group h3 { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); margin: 0 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+    .src-list { margin: 0; padding-left: 18px; }
+    .src-list li { font-size: 0.85rem; margin-bottom: 8px; line-height: 1.5; color: var(--ink); }
+    .src-list li .src-method { color: var(--slate); }
+
+    .example-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; margin-bottom: 14px; background: var(--bg); }
+    .example-card:last-child { margin-bottom: 0; }
+    .example-card h4 { margin: 0 0 6px; font-size: 0.94rem; font-weight: 800; }
+    .example-card h4 a { color: var(--ink); text-decoration: none; }
+    .example-card h4 a:hover { text-decoration: underline; color: var(--blue); }
+    .example-card p { margin: 0; font-size: 0.87rem; color: var(--slate); }
+
+    .lede { font-size: 1rem; font-weight: 600; color: var(--ink); margin: 0 0 16px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="assessment-infrastructure-playbook.html">Assessment Infrastructure Playbook</a>
+    <span class="nav-sep">›</span>
+    <span>OT Academy Briefing</span>
+    <span class="nav-sep">|</span>
+    <a href="microcredentialing-relevance-research.html">Micro-Credentialing Evidence Review →</a>
+  </nav>
+
+  <div class="draft-banner">
+    <strong>Draft — updated with Day 4 material.</strong> This briefing now incorporates the CISA advisory feeds, the NSF-funded general-security module, "chatting with a document," and the evaluation survey link from later notes. If more comes out of the Academy, send it over and this gets revised again before it goes to the dean.
+  </div>
+
+  <div class="doc-header">
+    <div class="eyebrow">Briefing for the Dean · STC</div>
+    <h1>Teaching Operational Technologies: What STC Should Take From the Faculty Development Academy</h1>
+    <p class="subtitle">A 4-day community-college faculty academy on teaching OT/ICS security produced a reusable, evidence-grounded lesson-design pattern — not just OT content. This briefing separates what's specific to operational technology from what's a portable teaching model STC can apply broadly, and maps both onto the micro-credentialing work already underway.</p>
+    <div class="meta-row">
+      <span class="meta-chip">August 2026</span>
+      <span class="meta-chip">Source: Faculty Development Academy — Teaching Operational Technologies for Community College Faculty</span>
+      <span class="meta-chip">Prepared for: Dean, STC</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#summary">Executive Summary</a></li>
+      <li><a href="#model">The Teaching Model, As Run</a></li>
+      <li><a href="#examples">Three Concrete Walkthroughs</a></li>
+      <li><a href="#stc">Why This Matters Beyond OT</a></li>
+      <li><a href="#credentialing">The Micro-Credentialing Connection</a></li>
+      <li><a href="#promptbuilder">The Real Prize: AI-Assisted Authoring at Scale</a></li>
+      <li><a href="#risks">Gaps, Risks &amp; What Not to Overclaim</a></li>
+      <li><a href="#recommendations">Recommendations</a></li>
+      <li><a href="#resources">Resources</a></li>
+    </ol>
+  </div>
+
+  <!-- Executive Summary -->
+  <div class="section" id="summary">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🎯</div>
+      <div>
+        <h2>Executive Summary</h2>
+        <p class="section-sub">What's worth the dean's attention in two minutes</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <p class="lede">The Academy's subject — operational technology (OT/ICS) security — is not an STC teaching area today. Its <strong>teaching model is the actual find</strong>, and it's directly reusable.</p>
+
+      <div class="point">
+        <span class="point-label lbl-violet">1</span>
+        <div class="point-body">
+          <strong>It's a repeatable lesson pattern, not a one-off course.</strong> Every lesson follows the same skeleton: anchoring analogy → worked examples → interactive simulator or matching activity → knowledge check → reflection, with parallel guidance for self-learners and for instructors teaching it live. That skeleton is subject-agnostic.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">2</span>
+        <div class="point-body">
+          <strong>It's built the same way STC already builds things.</strong> The lessons are self-contained, single-file HTML pages with no login and no backend — the same authoring pattern this repo already uses for every planning doc and course page. One of the Academy's tools is literally a prompt builder that generates the AI instructions to produce these modules. That's a near-zero-cost adoption.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">3</span>
+        <div class="point-body">
+          <strong>It validates work already in motion, it doesn't start new work.</strong> The lesson skeleton maps cleanly onto <a href="assessment-infrastructure-playbook.html">the assessment infrastructure playbook</a>'s competency → task → rubric → scoring pipeline, and the delivery format maps onto the Open edX self-paced module design already planned for CityU X (see <a href="meeting-notes-ai-institute-2026-07-21.html">the AI Institute meeting notes</a>). This is a second, independent institution arriving at a similar design — useful external validation, not a new direction.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-red">4</span>
+        <div class="point-body">
+          <strong>No case for an OT/ICS credential yet.</strong> Nothing in these notes is market evidence that STC students or employers want OT security specifically. Per <a href="microcredentialing-relevance-research.html">the micro-credentialing evidence review</a>'s own discipline, don't let an interesting teaching format become a justification for a new credential without a demand signal.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Teaching Model -->
+  <div class="section" id="model">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🧩</div>
+      <div>
+        <h2>The Teaching Model, As Run</h2>
+        <p class="section-sub">From the Academy notes — how each lesson was actually taught</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <p class="prose"><strong>Delivery layers, per lesson:</strong></p>
+      <ul class="point-body" style="margin: 0 0 16px; padding-left: 18px;">
+        <li>Lesson overview, framing what the lesson covers and how long it takes</li>
+        <li>Core lecture as a page hosted on GitHub Pages (no LMS login required to read it)</li>
+        <li>A NotebookLM-generated podcast version of the same content, for audio/on-the-go learners</li>
+        <li>Interactive simulators with built-in scenarios, run live with the instructor narrating over them</li>
+        <li>A dual guide: one path for self-directed learners, a separate path for instructors planning to teach it</li>
+        <li>An "interactive book" format that stands alone as a complete lesson with no external scaffolding needed</li>
+      </ul>
+      <p class="prose"><strong>Inside each lesson or sub-lesson, the same components recur:</strong></p>
+      <ul class="point-body" style="margin: 0; padding-left: 18px;">
+        <li>An instructor-facing teaching note (what to emphasize, common misconceptions, physical props to bring)</li>
+        <li>An anchoring analogy — a concrete, real-world hook the technical content is grounded in</li>
+        <li>Worked examples using named, real-world scenarios</li>
+        <li>An interactive simulator the learner can manipulate ("builder" style — click, break something, observe)</li>
+        <li>A matching quiz</li>
+        <li>A knowledge check, auto-graded with per-item explanations</li>
+        <li>A reflection step, done on the GitHub Pages side and then pasted into the LMS for instructor grading</li>
+      </ul>
+      <p class="prose"><strong>Two more techniques surfaced later in the Academy:</strong></p>
+      <ul class="point-body" style="margin: 0 0 16px; padding-left: 18px;">
+        <li>"Chatting with a document" — learners bring a primary source into Claude, Gemini, or ChatGPT and interrogate it conversationally instead of reading passively, as a distinct comprehension exercise alongside the interactive-book format</li>
+        <li>Live regulatory advisories as current-events curriculum — pulling directly from <a href="https://www.cisa.gov/news-events/ics-advisories" target="_blank" rel="noopener">CISA's ICS advisories feed</a> (e.g. a Siemens S7-series PLC advisory) so the course stays anchored to this week's real vulnerabilities instead of only historical case studies</li>
+      </ul>
+      <div class="callout callout-blue">
+        <strong>The pattern in one line:</strong> open content teaches and lets learners self-serve; the LMS only enters the picture at the very end, for the graded reflection. That's the same boundary already established for Open edX in <a href="cityux-open-ecosystem-execution-plan.html">the CityUX funnel</a> — open layer teaches, formal layer certifies.
+      </div>
+    </div>
+  </div>
+
+  <!-- Concrete walkthroughs -->
+  <div class="section" id="examples">
+    <div class="section-header">
+      <div class="section-icon icon-cyan">🔍</div>
+      <div>
+        <h2>Three Concrete Walkthroughs</h2>
+        <p class="section-sub">What the pattern looks like when you actually open the pages</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="example-card">
+        <h4><a href="https://sands-mvcc.github.io/ot/lesson01.html" target="_blank" rel="noopener">Lesson 01 — Relay Logic to Industrial Convergence</a></h4>
+        <p>Two-part structure (foundations lecture, then applied practice) walking from 1960s relay logic to today's IT/OT convergence. The anchoring analogy: two family branches that emigrated in 1968, stopped speaking, developed separate languages, and had to learn to share a house again by 2010 — used to explain why today's IT/OT security friction exists. Includes a "match the technology to its network reality" activity, a clickable air-gap-erosion simulation that shows isolation eroding as pressures accumulate, and a five-question auto-graded knowledge check. Instructor teaching notes are inline (e.g., "bring a physical decommissioned relay" ), separate from the self-learner path (time estimates, worked examples, a further-reading list).</p>
+      </div>
+      <div class="example-card">
+        <h4><a href="https://mqaissaunee-bcc.github.io/ot-sims/" target="_blank" rel="noopener">OT-SIM — nine browser-based security training benches</a></h4>
+        <p>Nine standalone HTML simulators (plus a notation primer), no install, no account, no internet dependency, covering mechanical failure, misconfiguration, and adversarial tampering scenarios — sensor reliability, stale controller data, protection-layer bypass, log correlation, evidence preservation. Each bench has a fault-injection control, a classification exercise, an instructor guide, and discussion questions. Explicitly supports three uses: 90-second classroom demos, full workshop sessions, or standalone self-paced assessment.</p>
+      </div>
+      <div class="example-card">
+        <h4><a href="https://mqaissaunee-bcc.github.io/ot-sims/lesson-interactive-book-engagement.html" target="_blank" rel="noopener">Interactive book engagement — reading companion for <em>Countdown to Zero Day</em></a></h4>
+        <p>A structured companion to a Stuxnet investigative book: eight tabs (timeline builder, attack-chain visualization, close reading, evidence sorting) mapped explicitly to six learning outcomes, all stored client-side in the browser so nothing is transmitted externally. Ends in a capstone: design a detection plan using only 2009-era technology and defend the spending priorities. This is the "self-contained lesson" format from the notes — it needs no LMS, no server, and no companion materials to function as a complete unit.</p>
+      </div>
+      <div class="example-card">
+        <h4><a href="https://d2hie3dpn9wvbb.cloudfront.net/controls/cybersecurity_controls.html" target="_blank" rel="noopener">Cybersecurity Controls — general-security module</a></h4>
+        <p>An 8-slide, NSF-funded tutorial teaching physical/administrative/technical controls and the six functional categories (preventative, detective, corrective, deterrent, recovery, compensating), ending in two categorization challenges (28 controls, then 20 controls). Worth noting: this module is <strong>general IT/cybersecurity content, not OT-specific</strong> — direct evidence the Academy's own team is already reusing its lesson skeleton for a broader security topic, which is exactly the transferability argument this briefing is making for STC.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Why this matters beyond OT -->
+  <div class="section" id="stc">
+    <div class="section-header">
+      <div class="section-icon icon-green">🎓</div>
+      <div>
+        <h2>Why This Matters Beyond OT</h2>
+        <p class="section-sub">STC doesn't teach OT/ICS security — the transferable part is the design pattern</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <p class="prose">The specific subject matter (relay logic, SCADA, industrial protocols) has no obvious home in STC's current program mix. What's portable is the lesson architecture itself, and it maps onto content STC already builds or is planning:</p>
+      <div class="point">
+        <span class="point-label lbl-green">"Chat with the document"</span>
+        <div class="point-body">This is the single most STC-native technique in the whole Academy — it's an AI-literacy exercise, not an OT exercise. It requires no simulator to build and no subject-matter adaptation: any STC course with a primary source (a case study, a regulation, a research paper) can pilot this next class session by asking students to interrogate the reading in Claude, Gemini, or ChatGPT before discussion. Zero build cost, immediate fit with STC's AI-forward identity.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">AI &amp; safety content</span>
+        <div class="point-body">STC's existing AI-safety and public-safety work (first-responder AI rollout, the SPD pilot) is exactly the kind of high-stakes, scenario-heavy subject the OT-SIM "fault injection + classification + instructor guide" format was built for. A simulator where learners inject a bad AI recommendation into a first-responder workflow and have to classify the failure mode is a direct port of the bench pattern.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">AI-assisted development credential</span>
+        <div class="point-body">The lesson skeleton (anchoring analogy → worked example → builder-style simulator → knowledge check → reflection) is a ready-made module template for <a href="ai-assisted-development-credential.html">the AI-assisted development ("vibe coding") credential</a> already being designed — it fills in exactly the gap between "content" and "assessment" that credential's spec leaves open.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Any self-paced Open edX unit</span>
+        <div class="point-body">The dual self-learner / instructor guidance, the reflect-on-open-page-then-paste-into-LMS handoff, and the "interactive book" self-contained format all match the flipped-Bloom's-Taxonomy, self-paced module design already scoped for CityU X's Open edX instance.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Micro-credentialing connection -->
+  <div class="section" id="credentialing">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🏷️</div>
+      <div>
+        <h2>The Micro-Credentialing Connection</h2>
+        <p class="section-sub">This is a second data point for work already underway, not a new direction</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>Academy pattern</th><th>Already-planned STC / CityU X equivalent</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Worked example → matching quiz → knowledge check → 1-paragraph "assessment artifact"</td>
+              <td>Competency → performance task → rubric pipeline in the <a href="assessment-infrastructure-playbook.html">assessment infrastructure playbook</a></td>
+            </tr>
+            <tr>
+              <td>GitHub Pages lecture + NotebookLM podcast, open and login-free</td>
+              <td>TOFU/MOFU open content nodes in the <a href="cityux-open-ecosystem-execution-plan.html">CityUX funnel</a></td>
+            </tr>
+            <tr>
+              <td>Reflect on the open page, then paste into the LMS for grading</td>
+              <td>Open edX as the micro-credential / workshop layer, distinct from CityU's core enrollment system</td>
+            </tr>
+            <tr>
+              <td>Interactive simulator, instructor-narrated, workshop-style</td>
+              <td>BOFU workshop/seminar touchpoints in the funnel</td>
+            </tr>
+            <tr>
+              <td>Module prompt builder (AI-generates the lesson from instructor answers)</td>
+              <td>No current STC equivalent — see next section</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-amber">
+        <strong>Read this as confirmation, not permission.</strong> A community-college consortium independently landing on a near-identical open-content → workshop → LMS-graded-reflection structure is a useful signal that the funnel design is sound. It is not evidence that OT security itself has demand at CityU — keep those two conclusions separate when this goes to the dean.
+      </div>
+    </div>
+  </div>
+
+  <!-- Prompt builder / real prize -->
+  <div class="section" id="promptbuilder">
+    <div class="section-header">
+      <div class="section-icon icon-violet">⚡</div>
+      <div>
+        <h2>The Real Prize: AI-Assisted Authoring at Scale</h2>
+        <p class="section-sub">The most exportable artifact from the Academy isn't a lesson — it's how the lessons get made</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <p class="prose">The Academy's <a href="https://mqaissaunee-bcc.github.io/AI_Examples/module_prompt_builder.html" target="_blank" rel="noopener">module prompt builder</a> is a form: an instructor answers questions about module type, audience (course level, multilingual learners, "likely reading on a phone"), desired structure (timeline, glossary, quiz, comparison table), and technical requirements (accessibility, output format), and the tool assembles a complete AI prompt that generates a finished, self-contained HTML lesson — ready to drop into a sandbox Canvas page for a quick check before assigning it.</p>
+      <p class="prose">This is worth flagging to the dean specifically because <strong>STC is already doing the manual version of this</strong> — every planning doc, playbook, and course page in this repo is a self-contained, AI-authored HTML file. The Academy's contribution is turning that ad hoc process into a repeatable instructor-facing form. Building an equivalent internal tool for STC/CityU X faculty is low-cost (it's a form plus a prompt template, no new infrastructure) and directly multiplies the output of the small team currently building CityU X content by hand.</p>
+      <div class="implications">
+        <div class="imp-label">Why this is the highest-leverage recommendation in this briefing</div>
+        <p>Everything else here is "borrow a good lesson template." This is "borrow the thing that lets one instructor produce ten of those templates without STC's content team touching each one." Given the CityU X build is currently resourced by one part-time lead plus one student/staff content builder, an authoring accelerant matters more than any single piece of content.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risks -->
+  <div class="section" id="risks">
+    <div class="section-header">
+      <div class="section-icon icon-red">⚠️</div>
+      <div>
+        <h2>Gaps, Risks &amp; What Not to Overclaim</h2>
+        <p class="section-sub">Guardrails for how this gets presented</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="claim-grid">
+        <div class="claim-card claim-dont">
+          <div class="claim-label">Don't say</div>
+          <p>"STC should offer an OT/ICS security micro-credential."</p>
+        </div>
+        <div class="claim-card claim-do">
+          <div class="claim-label">Do say</div>
+          <p>"STC should adopt this lesson-authoring pattern for content we already plan to build."</p>
+        </div>
+        <div class="claim-card claim-dont">
+          <div class="claim-label">Don't say</div>
+          <p>"This proves demand for CityU X's model."</p>
+        </div>
+        <div class="claim-card claim-do">
+          <div class="claim-label">Do say</div>
+          <p>"This is a second institution's independent design landing near ours — useful triangulation, not market evidence."</p>
+        </div>
+      </div>
+      <p class="prose" style="margin-top:16px;"><strong>Still open:</strong> licensing terms for reusing the OT-SIM simulator shells or lesson content directly (rather than just the structural pattern) haven't surfaced in the notes yet — CISA's advisory pages block automated access, so a person needs to open them directly to confirm details. There's also an external evaluator in the picture (a Qualtrics instrument from Redwood Consulting), which suggests the Academy has formal outcome tracking — worth asking the organizers whether that evaluation data or methodology is shareable, since it would be directly useful for CityU X's own completion/impact metrics.</p>
+    </div>
+  </div>
+
+  <!-- Recommendations -->
+  <div class="section" id="recommendations">
+    <div class="section-header">
+      <div class="section-icon icon-blue">✅</div>
+      <div>
+        <h2>Recommendations</h2>
+        <p class="section-sub">Ranked by cost to try</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check chk-green">✓</span>
+          <div class="action-body">
+            <strong>Pilot "chat with the document"</strong> in one existing STC course — students bring a reading into Claude/Gemini/ChatGPT and interrogate it before discussion. No build, no vendor, no new tooling.
+            <div class="action-when">Pilot now — next class session</div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check chk-green">✓</span>
+          <div class="action-body">
+            <strong>Adopt the lesson skeleton as the standard template</strong> for the next CityU X / Open edX module: anchoring analogy → worked example → interactive element → knowledge check → reflection, with parallel self-learner and instructor tracks.
+            <div class="action-when">Pilot now — next module in progress</div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check chk-green">✓</span>
+          <div class="action-body">
+            <strong>Build an internal module prompt builder</strong> for STC/CityU X faculty, modeled on the Academy's tool — a short form (audience, structure, accessibility needs) that outputs a ready-to-use AI authoring prompt.
+            <div class="action-when">Pilot now — low cost, no new infrastructure</div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check chk-amber">~</span>
+          <div class="action-body">
+            <strong>Port the fault-injection simulator pattern</strong> to one STC scenario outside OT — an AI-safety or first-responder decision simulator is the closest fit to existing STC work.
+            <div class="action-when">Evaluate next term — needs a content owner</div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check chk-amber">~</span>
+          <div class="action-body">
+            <strong>Check licensing</strong> on the OT-SIM and lesson content before reusing anything beyond the structural pattern — confirm whether it's openly licensed or would need permission/attribution.
+            <div class="action-when">Evaluate — before any direct content reuse</div>
+          </div>
+        </li>
+        <li class="action-item">
+          <span class="action-check chk-red">✗</span>
+          <div class="action-body">
+            <strong>Don't treat this as a case for a new OT/ICS credential.</strong> No demand evidence exists for it; it would also dilute focus from the CityU X tracks already scoped.
+            <div class="action-when">Not now</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Resources -->
+  <div class="section" id="resources">
+    <div class="section-header">
+      <div class="section-icon icon-cyan">📚</div>
+      <div>
+        <h2>Resources</h2>
+        <p class="section-sub">Primary sources from the Academy</p>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="src-group">
+        <h3>Content &amp; Tools</h3>
+        <ul class="src-list">
+          <li><a href="https://github.com/sands-mvcc/ot" target="_blank" rel="noopener">github.com/sands-mvcc/ot</a> <span class="src-method">— source repo for the lesson pages</span></li>
+          <li><a href="https://sands-mvcc.github.io/ot/lesson01.html" target="_blank" rel="noopener">sands-mvcc.github.io/ot/lesson01.html</a> <span class="src-method">— Lesson 01, walked through above</span></li>
+          <li><a href="https://mqaissaunee-bcc.github.io/ot-sims/" target="_blank" rel="noopener">mqaissaunee-bcc.github.io/ot-sims</a> <span class="src-method">— the nine-bench simulator suite</span></li>
+          <li><a href="https://mqaissaunee-bcc.github.io/ot-sims/lesson-interactive-book-engagement.html" target="_blank" rel="noopener">ot-sims/lesson-interactive-book-engagement.html</a> <span class="src-method">— self-contained interactive book format</span></li>
+          <li><a href="https://mqaissaunee-bcc.github.io/AI_Examples/module_prompt_builder.html" target="_blank" rel="noopener">AI_Examples/module_prompt_builder.html</a> <span class="src-method">— the instructor-facing prompt builder</span></li>
+          <li><a href="https://d2hie3dpn9wvbb.cloudfront.net/controls/cybersecurity_controls.html" target="_blank" rel="noopener">Cybersecurity Controls module</a> <span class="src-method">— NSF-funded, general (non-OT) security content in the same skeleton</span></li>
+        </ul>
+      </div>
+      <div class="src-group">
+        <h3>Live &amp; Current-Events Feeds</h3>
+        <ul class="src-list">
+          <li><a href="https://www.cisa.gov/news-events/ics-advisories" target="_blank" rel="noopener">CISA ICS Advisories</a> <span class="src-method">— rolling feed used to keep the course anchored to this week's real vulnerabilities; blocks automated fetching, open directly</span></li>
+          <li><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-231a" target="_blank" rel="noopener">CISA AA26-231A</a> <span class="src-method">— example advisory cited (Siemens S7-series PLC); blocks automated fetching, open directly</span></li>
+        </ul>
+      </div>
+      <div class="src-group">
+        <h3>Recordings &amp; Evaluation</h3>
+        <ul class="src-list">
+          <li><a href="https://drive.google.com/drive/folders/1XowjBM7CliO8qqbvVWgY71JPaJC3QVoM" target="_blank" rel="noopener">Google Drive — Academy session recordings</a></li>
+          <li><a href="https://redwoodconsulting.qualtrics.com/jfe/form/SV_egETY1rYEXQbDVQ" target="_blank" rel="noopener">Redwood Consulting evaluation survey</a> <span class="src-method">— appears to be the Academy's external-evaluator instrument; contents not accessible without opening it directly, worth asking organizers whether the methodology is shareable</span></li>
+        </ul>
+      </div>
+      <div class="src-group">
+        <h3>Related STC / CityU X Docs</h3>
+        <ul class="src-list">
+          <li><a href="assessment-infrastructure-playbook.html">Assessment Infrastructure Playbook — CityU Micro-Credentials</a></li>
+          <li><a href="ai-assisted-development-credential.html">AI-Assisted (Spec-First) Development Credential</a></li>
+          <li><a href="microcredentialing-relevance-research.html">Micro-Credentialing as a Relevance Strategy — Evidence Review</a></li>
+          <li><a href="cityux-open-ecosystem-execution-plan.html">CityUX Open Ecosystem Execution Plan</a></li>
+          <li><a href="meeting-notes-ai-institute-2026-07-21.html">Meeting Notes — AI Institute, Jul 21 2026</a></li>
+        </ul>
+      </div>
+      <div class="callout callout-violet">
+        <strong>Next update:</strong> this briefing will be revised again if more notes come out of the Academy — particularly anything on licensing terms, the external evaluator's methodology, or direct assessment/credentialing outcomes.
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

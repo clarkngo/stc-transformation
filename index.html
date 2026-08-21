@@ -48,6 +48,18 @@
         .card .cta.ghost{background:transparent;border:1px solid #e6eef0;color:var(--muted)}
         .cta-stack{display:flex;flex-direction:column;gap:6px;margin-top:10px}
 
+        /* Search */
+        .search-wrap{margin-top:20px;position:relative}
+        .search-input{width:100%;box-sizing:border-box;padding:12px 44px;border-radius:10px;border:1px solid #d1d5db;font-size:0.95rem;font-family:inherit;background:#fff;box-shadow:0 2px 8px rgba(15,23,42,0.04)}
+        .search-input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+        .search-icon{position:absolute;left:14px;top:14px;color:var(--muted);pointer-events:none;font-size:1rem}
+        .search-clear{position:absolute;right:8px;top:7px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1.05rem;padding:6px 8px;border-radius:6px;display:none}
+        .search-clear:hover{background:#f1f5f9;color:#0f1724}
+        .search-meta{margin-top:8px;font-size:0.82rem;color:var(--muted);min-height:1.2em}
+        .search-hidden{display:none !important}
+        .no-results{margin-top:20px;text-align:center;color:var(--muted);padding:40px 20px;background:#fff;border-radius:12px;border:1px dashed #d1d5db}
+        .no-results .nr-icon{font-size:2rem;margin-bottom:8px}
+
         /* Recently added strip */
         .recent-strip{margin-top:28px;padding:18px 22px;background:#fff;border-radius:12px;box-shadow:0 4px 14px rgba(15,23,42,0.05);border:1px solid #e2e8f0}
         .recent-strip-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
@@ -110,6 +122,18 @@
             </div>
         </section>
 
+        <!-- ── SEARCH ──────────────────────────────────────────────── -->
+        <section class="search-wrap" aria-label="Search documents">
+            <span class="search-icon" aria-hidden="true">🔎</span>
+            <input type="search" id="site-search" class="search-input" placeholder="Search titles — e.g. &ldquo;micro-credential&rdquo;, &ldquo;SPD&rdquo;, &ldquo;BSAI&rdquo;&hellip;" aria-label="Search document titles and descriptions on this page" autocomplete="off">
+            <button type="button" id="site-search-clear" class="search-clear" aria-label="Clear search">✕</button>
+            <div class="search-meta" id="site-search-meta" aria-live="polite"></div>
+        </section>
+        <div class="no-results search-hidden" id="site-search-empty">
+            <div class="nr-icon">🗂️</div>
+            <div>No documents match &ldquo;<span id="site-search-empty-term"></span>&rdquo;.</div>
+        </div>
+
         <!-- ── RECENTLY ADDED ─────────────────────────────────────── -->
         <section class="recent-strip" aria-label="Recently added">
             <div class="recent-strip-header">
@@ -119,7 +143,7 @@
             <div class="recent-list">
                 <a class="recent-item" href="briefing-ot-academy-stc-2026-08-19.html">
                     <span class="ri-dot" style="background:#d97706"></span>
-                    <span>🧩 Teaching Operational Technologies — Briefing for the STC Dean (Draft)</span>
+                    <span>🧩 Teaching Operational Technologies — Briefing for the STC Dean</span>
                     <span class="ri-date">Aug 19, 2026</span>
                 </a>
                 <a class="recent-item" href="ai-assisted-development-credential.html">
@@ -743,5 +767,98 @@
         </footer>
     </div>
     <script src="assets/nav.js"></script>
+    <script>
+    (function(){
+        var input = document.getElementById('site-search');
+        var clearBtn = document.getElementById('site-search-clear');
+        var meta = document.getElementById('site-search-meta');
+        var emptyState = document.getElementById('site-search-empty');
+        var emptyTerm = document.getElementById('site-search-empty-term');
+        if(!input) return;
+
+        var recentStrip = document.querySelector('.recent-strip');
+        var recentItems = Array.prototype.slice.call(document.querySelectorAll('.recent-item'));
+        var bands = Array.prototype.slice.call(document.querySelectorAll('.audience-band'));
+        var archiveSection = document.querySelector('.archive-section');
+        var archiveDetails = archiveSection ? archiveSection.querySelector('details') : null;
+        var archiveCards = Array.prototype.slice.call(document.querySelectorAll('.archive-card'));
+
+        function norm(s){ return (s || '').toLowerCase(); }
+
+        function resetAll(){
+            recentItems.forEach(function(el){ el.classList.remove('search-hidden'); });
+            if(recentStrip) recentStrip.classList.remove('search-hidden');
+            bands.forEach(function(band){
+                band.classList.remove('search-hidden');
+                Array.prototype.slice.call(band.querySelectorAll('.card')).forEach(function(c){ c.classList.remove('search-hidden'); });
+            });
+            archiveCards.forEach(function(el){ el.classList.remove('search-hidden'); });
+            if(archiveSection) archiveSection.classList.remove('search-hidden');
+            meta.textContent = '';
+            emptyState.classList.add('search-hidden');
+        }
+
+        function runSearch(){
+            var term = norm(input.value.trim());
+            clearBtn.style.display = term ? 'block' : 'none';
+
+            if(!term){ resetAll(); return; }
+
+            var totalMatches = 0;
+
+            var recentMatches = 0;
+            recentItems.forEach(function(el){
+                var hit = norm(el.textContent).indexOf(term) !== -1;
+                el.classList.toggle('search-hidden', !hit);
+                if(hit) recentMatches++;
+            });
+            if(recentStrip) recentStrip.classList.toggle('search-hidden', recentMatches === 0);
+            totalMatches += recentMatches;
+
+            bands.forEach(function(band){
+                var cards = Array.prototype.slice.call(band.querySelectorAll('.card'));
+                var bandMatches = 0;
+                cards.forEach(function(card){
+                    var hit = norm(card.textContent).indexOf(term) !== -1;
+                    card.classList.toggle('search-hidden', !hit);
+                    if(hit) bandMatches++;
+                });
+                band.classList.toggle('search-hidden', cards.length > 0 && bandMatches === 0);
+                totalMatches += bandMatches;
+            });
+
+            var archiveMatches = 0;
+            archiveCards.forEach(function(el){
+                var hit = norm(el.textContent).indexOf(term) !== -1;
+                el.classList.toggle('search-hidden', !hit);
+                if(hit) archiveMatches++;
+            });
+            if(archiveSection){
+                archiveSection.classList.toggle('search-hidden', archiveMatches === 0);
+                if(archiveMatches > 0 && archiveDetails) archiveDetails.open = true;
+            }
+            totalMatches += archiveMatches;
+
+            meta.textContent = totalMatches === 0 ? '' : (totalMatches + (totalMatches === 1 ? ' match' : ' matches'));
+            emptyTerm.textContent = input.value.trim();
+            emptyState.classList.toggle('search-hidden', totalMatches !== 0);
+        }
+
+        input.addEventListener('input', runSearch);
+        input.addEventListener('keydown', function(e){
+            if(e.key === 'Escape'){ input.value = ''; runSearch(); input.blur(); }
+        });
+        clearBtn.addEventListener('click', function(){ input.value = ''; runSearch(); input.focus(); });
+
+        document.addEventListener('keydown', function(e){
+            var active = document.activeElement;
+            var typing = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable);
+            if(e.key === '/' && !typing){
+                e.preventDefault();
+                input.focus();
+            }
+        });
+    })();
+    </script>
 </body>
 </html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Week 1 Hands-On Guide: Foundations of Full-Stack AI Systems</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>Week 1 — Foundations of Full-Stack AI Systems</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 3–4 hrs</span>
+            <span class="meta-pill">Outcome 1</span>
+            <span class="meta-pill">Starts the app you'll build all term</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Get the starter chat app running end to end, then replace its hardcoded reply with a real call to Claude. By the end you'll have one working request/response loop — the base every later week extends.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>Python 3.11+ and a terminal</li>
+            <li>The Week 1 starter repo (from your instructor) — it already contains a <code>/backend</code> FastAPI app with a stubbed <code>/chat</code> endpoint, and a <code>/frontend</code> folder with a single working chat page wired to call it</li>
+            <li>A Claude API key from <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a></li>
+        </ul>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Read the stub before touching it</h4>Open <code>backend/main.py</code>. Find the <code>/chat</code> handler — right now it just returns a hardcoded string. Note the shape: it receives a JSON body with a <code>message</code> field and returns JSON with a <code>reply</code> field. That shape doesn't change all term; only what happens inside the handler does.</li>
+            <li><h4>Set your API key as an environment variable</h4>Never paste it directly into a file you might commit.
+<pre>export ANTHROPIC_API_KEY="your-key-here"</pre></li>
+            <li><h4>Install dependencies</h4>
+<pre>cd backend
+pip install -r requirements.txt   # fastapi, uvicorn, anthropic</pre></li>
+            <li><h4>Replace the stub with a real Claude call</h4>
+<pre>from anthropic import Anthropic
+client = Anthropic()
+
+@app.post("/chat")
+def chat(body: ChatRequest):
+    response = client.messages.create(
+        model="claude-sonnet-5",
+        max_tokens=1024,
+        messages=[{"role": "user", "content": body.message}],
+    )
+    return {"reply": response.content[0].text}</pre></li>
+            <li><h4>Run it</h4>
+<pre>uvicorn main:app --reload</pre>Open <code>frontend/index.html</code> in your browser and send a message. You should get back a real, coherent answer — not the placeholder text.</li>
+            <li><h4>Understand what just happened</h4>Look at the raw API response object (print it before extracting <code>.text</code>). Note <code>usage.input_tokens</code> / <code>usage.output_tokens</code> — this is the token budget you'll be thinking about all term, and the context window is simply the ceiling on how much of that budget one request can use.</li>
+        </ol>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>You type a question in the chat UI and get a real, on-topic Claude-generated answer back.</li>
+                <li>You can point to the exact line of code that makes the LLM call and explain what's in the request and what's in the response.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>"invalid API key"</strong> — check the environment variable name matches exactly, and that you restarted the terminal/server after setting it.</li>
+                <li><strong>CORS errors in the browser console</strong> — the starter repo's CORS middleware already handles this; don't remove or "simplify" it.</li>
+                <li><strong>Reply looks empty or broken</strong> — confirm you're reading <code>response.content[0].text</code> and not the whole response object.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <span></span>
+            <a href="week-02-agentic-loop.html">Week 2 — Structured Outputs &amp; the Agentic Loop →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

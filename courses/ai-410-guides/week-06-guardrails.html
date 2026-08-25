@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Week 6 Hands-On Guide: Probabilistic Logic & Guardrails</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>Week 6 — Probabilistic Logic &amp; Guardrails</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 3–4 hrs</span>
+            <span class="meta-pill">Outcome 3</span>
+            <span class="meta-pill">Acts on your Week 5 review</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Take the malformed-output failure point from your Week 5 review and actually fix it: add a validation layer that catches bad or hallucinated model output, retries with a corrective instruction, and fails safely if it still can't recover.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>Your Week 5 Architecture &amp; Bottleneck Review</li>
+            <li>The validation/retry middleware template (instructor-provided)</li>
+        </ul>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Pick your target from Week 5</h4>Most students will have flagged something like "malformed tool-call arguments" or "the model answers even when it shouldn't have enough context." Pick one concrete spot in your code.</li>
+            <li><h4>Define an expected schema</h4>Even a simple one counts. Using Pydantic:
+<pre>from pydantic import BaseModel
+
+class ToolArgs(BaseModel):
+    city: str
+    units: str = "metric"</pre></li>
+            <li><h4>Wrap the call with validate-then-retry</h4>
+<pre>def call_with_guardrail(fn, schema, *args, max_retries=2):
+    for attempt in range(max_retries + 1):
+        result = fn(*args)
+        try:
+            return schema.model_validate(result)
+        except ValidationError as e:
+            if attempt == max_retries:
+                return {"error": "could not get a valid response"}
+            args = add_correction_hint(args, str(e))  # tell the model what was wrong</pre>The key part beginners skip: the retry has to actually tell the model what was wrong, not just repeat the same prompt and hope.</li>
+            <li><h4>Set a hard ceiling</h4>Never let this loop run unbounded — cap it (2 retries is plenty) and always have a graceful fallback message ready for when it's exhausted.</li>
+            <li><h4>Break it on purpose</h4>Feed the model a prompt likely to produce malformed output (a trick question, an ambiguous request) and confirm your guardrail catches it — either self-correcting on retry, or failing with a clear message instead of crashing.</li>
+            <li><h4>Log every validation failure</h4>Even a plain <code>print()</code> for now — you'll want this data for Week 9's observability work.</li>
+        </ol>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>You can point to a specific request that would have crashed or returned garbage without the guardrail.</li>
+                <li>With the guardrail in place, that same request now either self-corrects or fails with a clear, safe message — never a raw crash.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Over-strict schemas</strong> — rejecting valid answers just because they're worded differently than expected. Validate the shape, not the exact wording.</li>
+                <li><strong>Retries that don't correct anything</strong> — sending the identical prompt again rarely fixes a structural problem; the retry needs to include what specifically failed.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="week-05-checkpoint-architecture-review.html">← Week 5 — Checkpoint</a>
+            <a href="week-07-async-processing.html">Week 7 — Asynchronous Data Processing →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

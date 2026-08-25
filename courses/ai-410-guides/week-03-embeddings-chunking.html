@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Week 3 Hands-On Guide: Embeddings & Chunking</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>Week 3 — Embeddings &amp; Chunking</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 3–4 hrs</span>
+            <span class="meta-pill">Outcome 1</span>
+            <span class="meta-pill">Sandbox — not wired to the live app yet</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Build intuition for embeddings and chunking in isolation, in a sandbox script, before connecting anything to your live app next week. Confirm — with a real similarity score, not just a hunch — that your chunking choices actually group related content together.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>The sandbox notebook/script from your instructor</li>
+            <li>A folder of 5–10 short sample documents (text or markdown)</li>
+            <li>A Voyage AI API key for embeddings (Anthropic's recommended embeddings partner — Claude itself doesn't serve embeddings)</li>
+        </ul>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Skim the sample docs first</h4>Open 2–3 of them so you know what content you're about to chunk — you'll need this context to judge whether your results look right later.</li>
+            <li><h4>Write a chunking function</h4>Split each document into roughly 300–500 token pieces, with a little overlap between consecutive chunks so you don't cut a sentence's meaning in half at a boundary. Start by splitting on paragraphs, then fall back to a character-count split for any paragraph that's too long on its own.</li>
+            <li><h4>Embed each chunk</h4>
+<pre>import voyageai
+vo = voyageai.Client()
+
+result = vo.embed(chunks, model="voyage-3", input_type="document")
+vectors = result.embeddings   # one vector per chunk, same order</pre>Keep the vectors and their original chunk text together in a plain Python list — no database yet, that's Week 4.</li>
+            <li><h4>Sanity-check with cosine similarity</h4>Pick two chunks you'd expect to be related and two you'd expect to be unrelated. Compute cosine similarity between their vectors and confirm the related pair scores meaningfully higher.
+<pre>import numpy as np
+
+def cosine_sim(a, b):
+    a, b = np.array(a), np.array(b)
+    return a.dot(b) / (np.linalg.norm(a) * np.linalg.norm(b))</pre></li>
+            <li><h4>Run a mini retrieval test</h4>Embed a short query the same way, compute its similarity against every chunk, and print the top 3 by score. By eye, is the top result genuinely the most relevant chunk to that query?</li>
+            <li><h4>Record your settings</h4>Note your chunk size, overlap amount, and total chunk count somewhere — you'll load these same chunks into a real vector database next week.</li>
+        </ol>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>Your similarity scores clearly separate related from unrelated chunks — not a coin flip.</li>
+                <li>A ranked-by-similarity list for a sample query puts the genuinely relevant chunk at or near the top.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Chunks too large</strong> — everything starts looking similarly related because each chunk covers too many topics at once.</li>
+                <li><strong>Chunks too small</strong> — individual chunks lose the surrounding context needed to make sense on their own.</li>
+                <li><strong>Hitting the embeddings API's per-request token limit</strong> — batch your chunks into smaller groups per call if you have a large sample set.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="week-02-agentic-loop.html">← Week 2 — Agentic Loop</a>
+            <a href="week-04-vector-db-rag.html">Week 4 — Vector Databases &amp; RAG →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410: AI Engineering - 10-Week Course Schedule</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; }
+        h2 { color: #27ae60; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-10px 0 24px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .outcomes-list li { margin-bottom:10px; }
+        .principle-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin-bottom:14px; border-radius:4px; }
+        .principle-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .principle-box p { margin:0; font-size:0.92rem; }
+        table.schedule { width:100%; border-collapse:collapse; margin:20px 0 30px; font-size:0.88rem; }
+        table.schedule th, table.schedule td { border:1px solid #e2e8f0; padding:10px 12px; text-align:left; vertical-align:top; }
+        table.schedule th { background:#f8fafc; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#475569; }
+        table.schedule td.wk { font-weight:700; color:#1e8449; white-space:nowrap; }
+        .outcome-tag { display:inline-block; background:#dcfce7; color:#15803d; font-size:0.72rem; font-weight:700; padding:2px 7px; border-radius:6px; margin-top:4px; }
+        .week-block { border:1px solid #e2e8f0; border-radius:8px; padding:18px 20px; margin-bottom:16px; }
+        .week-block h3 { margin-top:0; }
+        .checkpoint { border-color:#fbbf24; background:#fffbeb; }
+        .checkpoint h3 { color:#b45309; }
+        .scaffold-note { font-size:0.85rem; color:#475569; margin:6px 0 12px; }
+        .scaffold-note strong { color:#334155; }
+        .research-card { border:1px solid #e2e8f0; border-radius:8px; padding:16px 18px; margin-bottom:14px; }
+        .research-card h4 { margin:0 0 6px; font-size:0.98rem; }
+        .research-card .tag { display:inline-block; font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; padding:2px 8px; border-radius:6px; margin-bottom:8px; }
+        .tag.notech { background:#ede9fe; color:#6d28d9; }
+        .tag.tech { background:#fee2e2; color:#b91c1c; }
+        .tag.beginner { background:#dcfce7; color:#15803d; }
+        .takeaway-list li { margin-bottom:6px; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+    </nav>
+
+        <h1>AI 410: AI Engineering — 10-Week Course Schedule</h1>
+
+        <div class="meta-strip">
+            <span class="meta-pill">5 Credits</span>
+            <span class="meta-pill">Prerequisites: CS 352, DS 479</span>
+            <span class="meta-pill">10 Weeks</span>
+            <span class="meta-pill">Capstone: Agent-Driven Mobile App</span>
+        </div>
+
+        <p><strong>Course Description:</strong> AI Engineering applies rigorous software engineering principles to the development and deployment of autonomous, learning-based systems. This course emphasizes leveraging Large Language Models (LLMs) within purpose-built software solutions to address real-world business challenges. Students will explore system architecture for agent development and integration, context engineering through Retrieval-Augmented Generation (RAG) and vector databases, and best practices for deploying and monitoring AI models in production environments. The curriculum also covers probabilistic logic for handling nondeterministic outputs. Learners gain hands-on experience building a full-stack AI solution, focusing on asynchronous data processing, push-based AI notifications, and seamless integration of vector stores for dynamic RAG applications. Mastery of these concepts will equip students to design and implement robust AI-powered applications using full-stack AI.</p>
+
+        <h2>Outcomes</h2>
+        <p>As a result of this course, students will know or be able to do the following:</p>
+        <ol class="outcomes-list">
+            <li><strong>O1 —</strong> Define and explain the essential components of full-stack AI systems, such as LLM architecture, agentic loops, and the differences between prompt engineering and context engineering.</li>
+            <li><strong>O2 —</strong> Design and implement a Retrieval-Augmented Generation (RAG) pipeline using vector databases to deliver context to autonomous agents.</li>
+            <li><strong>O3 —</strong> Analyze and break down the multi-layered architecture of agent-driven applications to identify and address potential bottlenecks in asynchronous data processing and nondeterministic reasoning.</li>
+            <li><strong>O4 —</strong> Evaluate and critique the performance and reliability of production AI models using appropriate observability tools and metrics for assessing probabilistic outputs.</li>
+            <li><strong>O5 —</strong> Develop a fully functional, agent-driven mobile application that seamlessly integrates real-time notifications and persistent vector storage into a comprehensive full-stack solution.</li>
+        </ol>
+
+        <h2>Who This Schedule Is Designed For</h2>
+        <p>STC's AI Engineering cohort skews toward students who are new to production software concepts — many arrive via CS 352 and DS 479 with programming fundamentals but limited exposure to backend infrastructure like queues, vector databases, or observability tooling. The schedule below is built around four scaffolding principles, drawn from research into how other hands-on AI programs teach non-technical and beginner audiences (see <a href="#research">Research &amp; Design Rationale</a> below).</p>
+
+        <div class="principle-box">
+            <h4>1. One running app, not ten disposable ones</h4>
+            <p>Every week extends the same app rather than starting a new project from scratch. Students always know what they're building toward, and each week's work is visibly load-bearing for the capstone.</p>
+        </div>
+        <div class="principle-box">
+            <h4>2. A starter scaffold every week</h4>
+            <p>Students never face a blank repo. Each week ships with working boilerplate for everything <em>except</em> that week's new concept, so effort goes into the one skill being taught, not re-deriving plumbing.</p>
+        </div>
+        <div class="principle-box">
+            <h4>3. Managed, low-code infrastructure for the hard backend pieces</h4>
+            <p>Vector databases, queues, and observability run on pre-provisioned free/managed tiers (e.g. Supabase pgvector, Upstash Redis, Langfuse, Expo Go) so students engineer at the application layer instead of standing up infrastructure — the same reason no-code AI programs keep infra out of the learner's hands.</p>
+        </div>
+        <div class="principle-box">
+            <h4>4. A mid-course checkpoint before the hardest weeks</h4>
+            <p>Week 5 pauses new material entirely for an architecture review, so students consolidate what they've built before the course's two most infrastructure-heavy weeks (async processing, mobile + push).</p>
+        </div>
+
+        <h2>Schedule at a Glance</h2>
+        <table class="schedule">
+            <tr><th>Wk</th><th>Concept (one per week)</th><th>Scaffold Provided</th><th>App Milestone</th><th>Outcome</th></tr>
+            <tr><td class="wk">1</td><td>Foundations of full-stack AI systems; LLM architecture</td><td>Pre-wired chat UI + backend stub, deployed to a free host</td><td>Swap in your own LLM call — first working request/response</td><td>O1</td></tr>
+            <tr><td class="wk">2</td><td>Agentic loops, tool calling, structured outputs</td><td>Agent-loop skeleton with one dummy tool stubbed in</td><td>Add a real tool call the agent can decide to invoke</td><td>O1</td></tr>
+            <tr><td class="wk">3</td><td>Embeddings &amp; chunking (context engineering I)</td><td>Sandbox notebook + sample document set, managed embeddings API</td><td>Ingestion script that chunks/embeds docs and inspects similarity</td><td>O1</td></tr>
+            <tr><td class="wk">4</td><td>Vector databases &amp; RAG pipelines (context engineering II)</td><td>Pre-provisioned managed vector DB (connection string only)</td><td>Wire retrieval into the agent — RAG goes live in the app</td><td>O2</td></tr>
+            <tr><td class="wk">5</td><td><strong>Checkpoint —</strong> no new build; architecture &amp; bottleneck review</td><td>Shared diagramming template + instructor review rubric</td><td>Written/diagrammed Architecture &amp; Bottleneck Review</td><td>O3</td></tr>
+            <tr><td class="wk">6</td><td>Probabilistic logic &amp; guardrails</td><td>Pre-built validation/retry middleware template</td><td>Add a guardrail layer that catches and retries bad output</td><td>O3</td></tr>
+            <tr><td class="wk">7</td><td>Asynchronous data processing</td><td>Queue + worker boilerplate wired to a managed Redis instance</td><td>Move ingestion to a background job with a status endpoint</td><td>O3</td></tr>
+            <tr><td class="wk">8</td><td>Mobile client &amp; real-time push notifications</td><td>Pre-built Expo Go mobile shell wired to the backend API</td><td>Run the app on your phone, receive a push when a job finishes</td><td>O5</td></tr>
+            <tr><td class="wk">9</td><td>Observability &amp; evaluation</td><td>Pre-provisioned Langfuse project, add instrumentation lines</td><td>Instrument the pipeline; critique one real failure it surfaces</td><td>O4</td></tr>
+            <tr><td class="wk">10</td><td>Capstone integration, deployment &amp; demo</td><td>One-click deploy template (Docker + free-tier host)</td><td>Deploy and live-demo the finished agent-driven mobile app</td><td>O5</td></tr>
+        </table>
+
+        <h2>Weekly Breakdown</h2>
+
+        <div class="week-block">
+            <h3>Week 1 — Foundations of Full-Stack AI Systems</h3>
+            <p class="scaffold-note"><strong>Scaffold:</strong> a working chat UI + backend stub, already deployed to a free host — nothing to configure before class.</p>
+            <p>Introduces LLM architecture at the level a full-stack engineer needs (context windows, tokens, API shape) and draws the line between prompt engineering (what you ask) and context engineering (what the model can see).</p>
+            <div class="example-box"><p><strong>App milestone:</strong> Replace the stub LLM call in the starter repo with your own — the app answers its first real question. This becomes the base every later week builds on.</p></div>
+            <span class="outcome-tag">Outcome 1</span>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 2 — Structured Outputs &amp; the Agentic Loop</h3>
+            <p class="scaffold-note"><strong>Scaffold:</strong> agent-loop skeleton with one dummy tool already stubbed in, so the plumbing for "model decides, tool executes, result returns to model" is visible before students write their own.</p>
+            <p>Covers the ReAct-style agentic loop, function/tool calling, and structured JSON outputs — the core pattern behind every agent students will build for the rest of the course.</p>
+            <div class="example-box"><p><strong>App milestone:</strong> Add a real tool (e.g. a calculator or lookup call) to the loop, so the agent can choose to use it mid-conversation.</p></div>
+            <span class="outcome-tag">Outcome 1</span>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 3 — Embeddings &amp; Chunking (Context Engineering I)</h3>
+            <p class="scaffold-note"><strong>Scaffold:</strong> a sandbox notebook pre-loaded with a small sample document set and a managed embeddings API key — no self-hosted embedding model to configure.</p>
+            <p>Builds intuition for embeddings and chunking strategies in isolation, before they're wired into the live app next week — matching how beginner-friendly programs introduce one new idea at a time rather than stacking RAG's full pipeline in a single sitting.</p>
+            <div class="example-box"><p><strong>App milestone:</strong> Write an ingestion script that chunks and embeds the sample documents, and inspect similarity scores directly — not yet connected to the running app.</p></div>
+            <span class="outcome-tag">Outcome 1</span>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 4 — Vector Databases &amp; RAG Pipelines (Context Engineering II)</h3>
+            <p class="scaffold-note"><strong>Scaffold:</strong> a managed vector database project (Supabase pgvector or Pinecone free tier) is pre-provisioned per student — they receive a connection string, not an infrastructure setup task.</p>
+            <p>Connects Week 3's embeddings to a persistent vector store and a retrieval step, completing a first working RAG pipeline.</p>
+            <div class="example-box"><p><strong>App milestone:</strong> Wire retrieval into the Week 2 agent. The app now answers questions grounded in the documents embedded last week — RAG is live.</p></div>
+            <span class="outcome-tag">Outcome 2</span>
+        </div>
+
+        <div class="week-block checkpoint">
+            <h3>Week 5 — Checkpoint: Architecture &amp; Bottleneck Review</h3>
+            <p class="scaffold-note"><strong>Scaffold:</strong> a shared diagramming template and an instructor-led review rubric. No new API or build task this week.</p>
+            <p>No new material is introduced. Students step back and diagram their app's current architecture — LLM call → agent loop → tool calls → RAG → vector store — and identify, in writing, where nondeterminism or latency could break the system before it gets harder to reason about. This directly targets the analytical half of Outcome 3, which the build-only weeks around it don't exercise on their own, and mirrors the consolidation break other programs use before their most infrastructure-heavy modules.</p>
+            <div class="example-box"><p><strong>Deliverable:</strong> a short written/diagrammed Architecture &amp; Bottleneck Review, reviewed live with the instructor.</p></div>
+            <span class="outcome-tag">Outcome 3</span>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 6 — Probabilistic Logic &amp; Guardrails</h3>
+            <p class="scaffold-note"><strong>Scaffold:</strong> a pre-built validation/retry middleware template — students plug in their own output schema rather than writing retry logic from scratch.</p>
+            <p>Covers handling nondeterministic LLM output: schema validation, retries, and fallback routing — directly informed by the bottlenecks each student flagged in Week 5.</p>
+            <div class="example-box"><p><strong>App milestone:</strong> Add a guardrail layer to the RAG agent so malformed or hallucinated responses are caught and retried instead of surfacing to the user.</p></div>
+            <span class="outcome-tag">Outcome 3</span>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 7 — Asynchronous Data Processing</h3>
+            <p class="scaffold-note"><strong>Scaffold:</strong> queue and worker boilerplate pre-wired to a managed, serverless Redis instance (Upstash free tier) — students write job logic, not queue infrastructure.</p>
+            <p>Introduces event-driven, background processing so long-running work (like document ingestion) stops blocking the app — the layer most students without backend experience haven't touched before.</p>
+            <div class="example-box"><p><strong>App milestone:</strong> Move document ingestion to a background job and add a job-status endpoint, so uploading new documents no longer freezes the app.</p></div>
+            <span class="outcome-tag">Outcome 3</span>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 8 — Mobile Client &amp; Real-Time Push Notifications</h3>
+            <p class="scaffold-note"><strong>Scaffold:</strong> a pre-built Expo Go mobile shell already wired to the student's backend API — no Xcode or Android Studio required. Students test on their own phone by scanning a QR code.</p>
+            <p>Connects the backend to a real mobile client and adds push notifications tied to backend events, using Expo's push service over FCM/APNs.</p>
+            <div class="example-box"><p><strong>App milestone:</strong> Run the app on your own phone and receive a real push notification the moment a Week 7 background job finishes.</p></div>
+            <span class="outcome-tag">Outcome 5</span>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 9 — Observability &amp; Evaluation</h3>
+            <p class="scaffold-note"><strong>Scaffold:</strong> a Langfuse (or equivalent) project pre-provisioned per student — instrumentation is a handful of added lines, not a dashboard built from scratch.</p>
+            <p>Covers tracing, latency/cost tracking, and RAG-specific evaluation metrics (faithfulness, retrieval precision) for judging probabilistic output in production.</p>
+            <div class="example-box"><p><strong>App milestone:</strong> Instrument the full pipeline — agent, RAG, async job, push — with tracing, and write a short critique of one real failure the dashboard surfaces.</p></div>
+            <span class="outcome-tag">Outcome 4</span>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 10 — Capstone Integration, Deployment &amp; Demo</h3>
+            <p class="scaffold-note"><strong>Scaffold:</strong> a one-click deploy template (Docker + free-tier host) prepared in advance so deployment mechanics don't compete with final debugging time.</p>
+            <p>Final integration, hardening, and a live demo of the complete system built week over week.</p>
+            <div class="example-box"><p><strong>App milestone:</strong> Deploy the finished agent-driven mobile app — RAG, guardrails, async processing, push notifications, and observability, all in one running product — and demo it live for instructor and peer critique.</p></div>
+            <span class="outcome-tag">Outcome 5</span>
+        </div>
+
+        <h2 id="research">Research &amp; Design Rationale</h2>
+        <p>To calibrate pacing for an audience newer to production software concepts, three representative hands-on AI programs were reviewed. None is a direct template — AI 410's outcomes require real full-stack engineering (async processing, a real mobile app, production observability), which rules out going fully no-code — but each contributed a specific scaffolding technique used above.</p>
+
+        <div class="research-card">
+            <span class="tag notech">Non-Technical Audience</span>
+            <h4><a href="https://professionalonline2.mit.edu/no-code-artificial-intelligence-machine-learning-program" target="_blank" rel="noopener">MIT No-Code AI and Agentic AI Program</a></h4>
+            <p>14 weeks, explicitly targets "professionals from technical and non-technical backgrounds" (PMs, business leaders, non-CS founders). Six weeks of core concepts, then a dedicated consolidation/break week, before advancing into RAG (week 9) and agents (weeks 12–13). Three capstone projects, each scoped to one new capability rather than integrating everything at once. Keeps the entire curriculum no-code (KNIME, n8n) — no mobile app — precisely because the audience is non-technical.</p>
+            <ul class="takeaway-list">
+                <li><strong>Borrowed:</strong> the mid-course consolidation checkpoint (→ AI 410 Week 5) and gating each capstone project to a single new capability.</li>
+            </ul>
+        </div>
+
+        <div class="research-card">
+            <span class="tag tech">Technical Audience</span>
+            <h4><a href="https://datasciencedojo.com/agentic-ai-bootcamp/" target="_blank" rel="noopener">Data Science Dojo — Agentic AI Bootcamp</a></h4>
+            <p>The closest structural match in length and topic sequence: 10 weeks, vector databases, RAG, agentic design patterns, protocols (MCP/A2A), and a multi-agent capstone in week 10. But prerequisites are "basic Python" plus prior LLM/transformer/embeddings knowledge, and it targets ML engineers, backend engineers, and solutions architects — the pacing assumes a technical audience and moves faster than appropriate here.</p>
+            <ul class="takeaway-list">
+                <li><strong>Borrowed:</strong> the overall 10-week length and topic ordering (vector DBs/RAG → agent patterns → evaluation → capstone).</li>
+                <li><strong>Not borrowed:</strong> its pacing — most weeks introduce 3–4 new concepts simultaneously, which AI 410 deliberately avoids.</li>
+            </ul>
+        </div>
+
+        <div class="research-card">
+            <span class="tag beginner">Beginner-First</span>
+            <h4><a href="https://www.nocode.mba/tracks/building-apps-with-ai" target="_blank" rel="noopener">No Code MBA — Building Apps with AI</a></h4>
+            <p>Genuinely beginner-first: the only stated prerequisite is "a willingness to learn." Rather than one compounding capstone, it teaches through 11 small, standalone apps (a chatbot, a PDF-chat app using embeddings and Pinecone, an image generator), each built in under two hours, introducing one new API or concept at a time before anything is combined.</p>
+            <ul class="takeaway-list">
+                <li><strong>Borrowed:</strong> the "one new concept per week, everything else pre-wired" scaffolding pattern, adapted so each week extends one running app instead of starting a new one.</li>
+            </ul>
+        </div>
+
+        <p style="color:#6b7280;font-size:0.85rem;margin-top:20px">Research conducted August 2026 to inform this schedule's pacing and scaffolding decisions; not a formal literature review.</p>
+    </div>
+    <script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Week 9 Hands-On Guide: Observability & Evaluation</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>Week 9 — Observability &amp; Evaluation</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 3–4 hrs</span>
+            <span class="meta-pill">Outcome 4</span>
+            <span class="meta-pill">Instrument, don't guess</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Instrument the full pipeline you've built so far with tracing, then use real trace data — not guesswork — to explain exactly why one specific request was slow, expensive, or wrong.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>A <a href="https://langfuse.com/docs" target="_blank" rel="noopener">Langfuse</a> project pre-provisioned by your instructor (public/secret key pair)</li>
+            <li>Your working app through Week 8</li>
+        </ul>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Install and configure the SDK</h4>
+<pre>pip install langfuse
+export LANGFUSE_PUBLIC_KEY="..."
+export LANGFUSE_SECRET_KEY="..."</pre>Set these in <strong>both</strong> your API process and your Week 7 worker process — they're separate programs with separate environments.</li>
+            <li><h4>Trace your main Claude call</h4>
+<pre>from langfuse.decorators import observe
+
+@observe()
+def chat(message):
+    context = retrieve(message)
+    return client.messages.create(...)</pre></li>
+            <li><h4>Trace retrieval separately</h4>Wrap your Week 4 <code>retrieve()</code> function the same way, so it shows up as its own linked step inside the trace — not folded into the LLM call.</li>
+            <li><h4>Run some real traffic through it</h4>Send a handful of chat requests, then open the Langfuse dashboard and find those traces. Look at latency per step, token counts, and estimated cost for each one.</li>
+            <li><h4>Add one RAG-specific evaluation</h4>Even a basic heuristic counts — for example, a simple check (or a second, cheap LLM call) that scores whether the final answer actually used the retrieved context, versus ignoring it.</li>
+            <li><h4>Deliberately break something</h4>Ask a question outside your document set, or one you know trips your Week 6 guardrail. Find that specific trace in the dashboard.</li>
+            <li><h4>Write the critique</h4>A few sentences: what exactly went wrong, what the trace data shows about why (which step was slow, what the retrieved context actually contained, whether the guardrail fired), and one concrete change you'd make.</li>
+        </ol>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>You can pull up one specific real trace in the dashboard and point to the exact step that explains the outcome.</li>
+                <li>Your written critique cites the trace data itself, not a guess about what probably happened.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Forgetting to instrument the worker</strong> — it's a separate process from your API and needs the same environment variables set independently.</li>
+                <li><strong>Tracing too broadly</strong> — wrapping your entire request handler in one giant trace makes it unreadable. Trace at the level of individual meaningful steps (retrieval, generation, tool calls) instead.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="week-08-mobile-push.html">← Week 8 — Mobile &amp; Push</a>
+            <a href="week-10-capstone-deploy.html">Week 10 — Capstone &amp; Deployment →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

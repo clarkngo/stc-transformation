@@ -19,6 +19,7 @@
         table.schedule th { background:#f8fafc; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#475569; }
         table.schedule td.wk { font-weight:700; color:#1e8449; white-space:nowrap; }
         .outcome-tag { display:inline-block; background:#dcfce7; color:#15803d; font-size:0.72rem; font-weight:700; padding:2px 7px; border-radius:6px; margin-top:4px; }
+        .guide-link { display:inline-block; font-size:0.78rem; font-weight:600; margin-top:4px; margin-left:10px; }
         .week-block { border:1px solid #e2e8f0; border-radius:8px; padding:18px 20px; margin-bottom:16px; }
         .week-block h3 { margin-top:0; }
         .checkpoint { border-color:#fbbf24; background:#fffbeb; }
@@ -84,18 +85,19 @@
         </div>
 
         <h2>Schedule at a Glance</h2>
+        <p>Every row links to a step-by-step hands-on guide — <a href="ai-410-guides/index.html">see all 10 guides</a>.</p>
         <table class="schedule">
-            <tr><th>Wk</th><th>Concept (one per week)</th><th>Scaffold Provided</th><th>App Milestone</th><th>Outcome</th></tr>
-            <tr><td class="wk">1</td><td>Foundations of full-stack AI systems; LLM architecture</td><td>Pre-wired chat UI + backend stub, deployed to a free host</td><td>Swap in your own LLM call — first working request/response</td><td>O1</td></tr>
-            <tr><td class="wk">2</td><td>Agentic loops, tool calling, structured outputs</td><td>Agent-loop skeleton with one dummy tool stubbed in</td><td>Add a real tool call the agent can decide to invoke</td><td>O1</td></tr>
-            <tr><td class="wk">3</td><td>Embeddings &amp; chunking (context engineering I)</td><td>Sandbox notebook + sample document set, managed embeddings API</td><td>Ingestion script that chunks/embeds docs and inspects similarity</td><td>O1</td></tr>
-            <tr><td class="wk">4</td><td>Vector databases &amp; RAG pipelines (context engineering II)</td><td>Pre-provisioned managed vector DB (connection string only)</td><td>Wire retrieval into the agent — RAG goes live in the app</td><td>O2</td></tr>
-            <tr><td class="wk">5</td><td><strong>Checkpoint —</strong> no new build; architecture &amp; bottleneck review</td><td>Shared diagramming template + instructor review rubric</td><td>Written/diagrammed Architecture &amp; Bottleneck Review</td><td>O3</td></tr>
-            <tr><td class="wk">6</td><td>Probabilistic logic &amp; guardrails</td><td>Pre-built validation/retry middleware template</td><td>Add a guardrail layer that catches and retries bad output</td><td>O3</td></tr>
-            <tr><td class="wk">7</td><td>Asynchronous data processing</td><td>Queue + worker boilerplate wired to a managed Redis instance</td><td>Move ingestion to a background job with a status endpoint</td><td>O3</td></tr>
-            <tr><td class="wk">8</td><td>Mobile client &amp; real-time push notifications</td><td>Pre-built Expo Go mobile shell wired to the backend API</td><td>Run the app on your phone, receive a push when a job finishes</td><td>O5</td></tr>
-            <tr><td class="wk">9</td><td>Observability &amp; evaluation</td><td>Pre-provisioned Langfuse project, add instrumentation lines</td><td>Instrument the pipeline; critique one real failure it surfaces</td><td>O4</td></tr>
-            <tr><td class="wk">10</td><td>Capstone integration, deployment &amp; demo</td><td>One-click deploy template (Docker + free-tier host)</td><td>Deploy and live-demo the finished agent-driven mobile app</td><td>O5</td></tr>
+            <tr><th>Wk</th><th>Concept (one per week)</th><th>Scaffold Provided</th><th>App Milestone</th><th>Outcome</th><th>Guide</th></tr>
+            <tr><td class="wk">1</td><td>Foundations of full-stack AI systems; LLM architecture</td><td>Pre-wired chat UI + backend stub, deployed to a free host</td><td>Swap in your own LLM call — first working request/response</td><td>O1</td><td><a href="ai-410-guides/week-01-foundations.html">Guide →</a></td></tr>
+            <tr><td class="wk">2</td><td>Agentic loops, tool calling, structured outputs</td><td>Agent-loop skeleton with one dummy tool stubbed in</td><td>Add a real tool call the agent can decide to invoke</td><td>O1</td><td><a href="ai-410-guides/week-02-agentic-loop.html">Guide →</a></td></tr>
+            <tr><td class="wk">3</td><td>Embeddings &amp; chunking (context engineering I)</td><td>Sandbox notebook + sample document set, managed embeddings API</td><td>Ingestion script that chunks/embeds docs and inspects similarity</td><td>O1</td><td><a href="ai-410-guides/week-03-embeddings-chunking.html">Guide →</a></td></tr>
+            <tr><td class="wk">4</td><td>Vector databases &amp; RAG pipelines (context engineering II)</td><td>Pre-provisioned managed vector DB (connection string only)</td><td>Wire retrieval into the agent — RAG goes live in the app</td><td>O2</td><td><a href="ai-410-guides/week-04-vector-db-rag.html">Guide →</a></td></tr>
+            <tr><td class="wk">5</td><td><strong>Checkpoint —</strong> no new build; architecture &amp; bottleneck review</td><td>Shared diagramming template + instructor review rubric</td><td>Written/diagrammed Architecture &amp; Bottleneck Review</td><td>O3</td><td><a href="ai-410-guides/week-05-checkpoint-architecture-review.html">Guide →</a></td></tr>
+            <tr><td class="wk">6</td><td>Probabilistic logic &amp; guardrails</td><td>Pre-built validation/retry middleware template</td><td>Add a guardrail layer that catches and retries bad output</td><td>O3</td><td><a href="ai-410-guides/week-06-guardrails.html">Guide →</a></td></tr>
+            <tr><td class="wk">7</td><td>Asynchronous data processing</td><td>Queue + worker boilerplate wired to a managed Redis instance</td><td>Move ingestion to a background job with a status endpoint</td><td>O3</td><td><a href="ai-410-guides/week-07-async-processing.html">Guide →</a></td></tr>
+            <tr><td class="wk">8</td><td>Mobile client &amp; real-time push notifications</td><td>Pre-built Expo Go mobile shell wired to the backend API</td><td>Run the app on your phone, receive a push when a job finishes</td><td>O5</td><td><a href="ai-410-guides/week-08-mobile-push.html">Guide →</a></td></tr>
+            <tr><td class="wk">9</td><td>Observability &amp; evaluation</td><td>Pre-provisioned Langfuse project, add instrumentation lines</td><td>Instrument the pipeline; critique one real failure it surfaces</td><td>O4</td><td><a href="ai-410-guides/week-09-observability.html">Guide →</a></td></tr>
+            <tr><td class="wk">10</td><td>Capstone integration, deployment &amp; demo</td><td>One-click deploy template (Docker + free-tier host)</td><td>Deploy and live-demo the finished agent-driven mobile app</td><td>O5</td><td><a href="ai-410-guides/week-10-capstone-deploy.html">Guide →</a></td></tr>
         </table>
 
         <h2>Weekly Breakdown</h2>
@@ -106,6 +108,7 @@
             <p>Introduces LLM architecture at the level a full-stack engineer needs (context windows, tokens, API shape) and draws the line between prompt engineering (what you ask) and context engineering (what the model can see).</p>
             <div class="example-box"><p><strong>App milestone:</strong> Replace the stub LLM call in the starter repo with your own — the app answers its first real question. This becomes the base every later week builds on.</p></div>
             <span class="outcome-tag">Outcome 1</span>
+            <a class="guide-link" href="ai-410-guides/week-01-foundations.html">Open hands-on guide →</a>
         </div>
 
         <div class="week-block">
@@ -114,6 +117,7 @@
             <p>Covers the ReAct-style agentic loop, function/tool calling, and structured JSON outputs — the core pattern behind every agent students will build for the rest of the course.</p>
             <div class="example-box"><p><strong>App milestone:</strong> Add a real tool (e.g. a calculator or lookup call) to the loop, so the agent can choose to use it mid-conversation.</p></div>
             <span class="outcome-tag">Outcome 1</span>
+            <a class="guide-link" href="ai-410-guides/week-02-agentic-loop.html">Open hands-on guide →</a>
         </div>
 
         <div class="week-block">
@@ -122,6 +126,7 @@
             <p>Builds intuition for embeddings and chunking strategies in isolation, before they're wired into the live app next week — matching how beginner-friendly programs introduce one new idea at a time rather than stacking RAG's full pipeline in a single sitting.</p>
             <div class="example-box"><p><strong>App milestone:</strong> Write an ingestion script that chunks and embeds the sample documents, and inspect similarity scores directly — not yet connected to the running app.</p></div>
             <span class="outcome-tag">Outcome 1</span>
+            <a class="guide-link" href="ai-410-guides/week-03-embeddings-chunking.html">Open hands-on guide →</a>
         </div>
 
         <div class="week-block">
@@ -130,6 +135,7 @@
             <p>Connects Week 3's embeddings to a persistent vector store and a retrieval step, completing a first working RAG pipeline.</p>
             <div class="example-box"><p><strong>App milestone:</strong> Wire retrieval into the Week 2 agent. The app now answers questions grounded in the documents embedded last week — RAG is live.</p></div>
             <span class="outcome-tag">Outcome 2</span>
+            <a class="guide-link" href="ai-410-guides/week-04-vector-db-rag.html">Open hands-on guide →</a>
         </div>
 
         <div class="week-block checkpoint">
@@ -138,6 +144,7 @@
             <p>No new material is introduced. Students step back and diagram their app's current architecture — LLM call → agent loop → tool calls → RAG → vector store — and identify, in writing, where nondeterminism or latency could break the system before it gets harder to reason about. This directly targets the analytical half of Outcome 3, which the build-only weeks around it don't exercise on their own, and mirrors the consolidation break other programs use before their most infrastructure-heavy modules.</p>
             <div class="example-box"><p><strong>Deliverable:</strong> a short written/diagrammed Architecture &amp; Bottleneck Review, reviewed live with the instructor.</p></div>
             <span class="outcome-tag">Outcome 3</span>
+            <a class="guide-link" href="ai-410-guides/week-05-checkpoint-architecture-review.html">Open hands-on guide →</a>
         </div>
 
         <div class="week-block">
@@ -146,6 +153,7 @@
             <p>Covers handling nondeterministic LLM output: schema validation, retries, and fallback routing — directly informed by the bottlenecks each student flagged in Week 5.</p>
             <div class="example-box"><p><strong>App milestone:</strong> Add a guardrail layer to the RAG agent so malformed or hallucinated responses are caught and retried instead of surfacing to the user.</p></div>
             <span class="outcome-tag">Outcome 3</span>
+            <a class="guide-link" href="ai-410-guides/week-06-guardrails.html">Open hands-on guide →</a>
         </div>
 
         <div class="week-block">
@@ -154,6 +162,7 @@
             <p>Introduces event-driven, background processing so long-running work (like document ingestion) stops blocking the app — the layer most students without backend experience haven't touched before.</p>
             <div class="example-box"><p><strong>App milestone:</strong> Move document ingestion to a background job and add a job-status endpoint, so uploading new documents no longer freezes the app.</p></div>
             <span class="outcome-tag">Outcome 3</span>
+            <a class="guide-link" href="ai-410-guides/week-07-async-processing.html">Open hands-on guide →</a>
         </div>
 
         <div class="week-block">
@@ -162,6 +171,7 @@
             <p>Connects the backend to a real mobile client and adds push notifications tied to backend events, using Expo's push service over FCM/APNs.</p>
             <div class="example-box"><p><strong>App milestone:</strong> Run the app on your own phone and receive a real push notification the moment a Week 7 background job finishes.</p></div>
             <span class="outcome-tag">Outcome 5</span>
+            <a class="guide-link" href="ai-410-guides/week-08-mobile-push.html">Open hands-on guide →</a>
         </div>
 
         <div class="week-block">
@@ -170,6 +180,7 @@
             <p>Covers tracing, latency/cost tracking, and RAG-specific evaluation metrics (faithfulness, retrieval precision) for judging probabilistic output in production.</p>
             <div class="example-box"><p><strong>App milestone:</strong> Instrument the full pipeline — agent, RAG, async job, push — with tracing, and write a short critique of one real failure the dashboard surfaces.</p></div>
             <span class="outcome-tag">Outcome 4</span>
+            <a class="guide-link" href="ai-410-guides/week-09-observability.html">Open hands-on guide →</a>
         </div>
 
         <div class="week-block">
@@ -178,6 +189,7 @@
             <p>Final integration, hardening, and a live demo of the complete system built week over week.</p>
             <div class="example-box"><p><strong>App milestone:</strong> Deploy the finished agent-driven mobile app — RAG, guardrails, async processing, push notifications, and observability, all in one running product — and demo it live for instructor and peer critique.</p></div>
             <span class="outcome-tag">Outcome 5</span>
+            <a class="guide-link" href="ai-410-guides/week-10-capstone-deploy.html">Open hands-on guide →</a>
         </div>
 
         <h2 id="research">Research &amp; Design Rationale</h2>

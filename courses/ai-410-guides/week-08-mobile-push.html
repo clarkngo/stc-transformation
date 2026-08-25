@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Week 8 Hands-On Guide: Mobile Client & Push Notifications</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>Week 8 — Mobile Client &amp; Real-Time Push Notifications</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 3–4 hrs</span>
+            <span class="meta-pill">Outcome 5</span>
+            <span class="meta-pill">Runs on your own phone</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Get your app running on your own physical phone, and receive a real push notification the moment a Week 7 background job finishes — no Xcode, no Android Studio, no emulator.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>The <a href="https://expo.dev/go" target="_blank" rel="noopener">Expo Go</a> app installed on your personal phone</li>
+            <li>Node.js on your laptop</li>
+            <li>The pre-wired Expo starter project (instructor-provided), already pointed at your backend's URL</li>
+        </ul>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Start the Expo dev server</h4>
+<pre>cd mobile
+npm install
+npx expo start</pre>A QR code appears in your terminal.</li>
+            <li><h4>Open the app on your phone</h4>Scan the QR code — with your Camera app on iOS, or directly in Expo Go on Android. The app opens live on your phone, running your actual code, not a build.</li>
+            <li><h4>Confirm the basics work first</h4>The starter's mobile chat screen is already wired to your backend. Send a message and confirm you get a reply — the same backend you've been building since Week 1, just a different client.</li>
+            <li><h4>Request notification permission</h4>The starter includes the <code>expo-notifications</code> setup already; run the app and accept the permission prompt when it appears.</li>
+            <li><h4>Register your device's push token</h4>The starter's <code>POST /register-device</code> endpoint stores the token your phone generates — confirm it's actually landing in your backend (check your logs or database).</li>
+            <li><h4>Trigger a push from a backend event</h4>In your Week 7 job function, after ingestion finishes, add one call to Expo's push API using the stored token:
+<pre>import requests
+
+requests.post("https://exp.host/--/api/v2/push/send", json={
+    "to": push_token,
+    "title": "Document ready",
+    "body": "Your document has finished processing.",
+})</pre></li>
+            <li><h4>Test it for real</h4>Upload a document from the mobile app, then lock your phone or switch to another app. When the Week 7 background job finishes, a real push notification should appear on your lock screen.</li>
+        </ol>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>You get an actual push notification on your own physical phone.</li>
+                <li>You can trace it back to the exact backend event (a finished job) that triggered it.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Push notifications don't fire in a simulator/emulator</strong> — this has to be a real physical device for the free Expo Go flow.</li>
+                <li><strong>Phone can't reach your laptop's backend</strong> — make sure both are on the same Wi-Fi network, or use Expo's tunnel mode if they're not.</li>
+                <li><strong>Permission denied</strong> — if you accidentally declined the notification prompt, you'll need to re-enable it in your phone's system settings for Expo Go.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="week-07-async-processing.html">← Week 7 — Asynchronous Data Processing</a>
+            <a href="week-09-observability.html">Week 9 — Observability &amp; Evaluation →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

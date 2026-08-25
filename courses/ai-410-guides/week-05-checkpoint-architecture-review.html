@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Week 5 Hands-On Guide: Checkpoint — Architecture & Bottleneck Review</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #b45309; border-bottom: 2px solid #fbbf24; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .meta-pill.warn { background:#fef3c7; color:#b45309; }
+        .goal-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#b45309; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#1d4ed8; }
+        .example-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:0.85rem; }
+        .example-table th, .example-table td { border:1px solid #e2e8f0; padding:8px 10px; text-align:left; vertical-align:top; }
+        .example-table th { background:#f8fafc; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>Week 5 — Checkpoint: Architecture &amp; Bottleneck Review</h1>
+        <div class="meta-strip">
+            <span class="meta-pill warn">No new build this week</span>
+            <span class="meta-pill">Est. 2–3 hrs</span>
+            <span class="meta-pill">Outcome 3</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Step back before the two hardest weeks of the course. Diagram the app exactly as it stands after Weeks 1–4, and name — in writing, with specifics — where it can actually break.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>The shared diagramming template from your instructor</li>
+            <li>Your working app from Weeks 1–4 (running locally is enough — you're observing it, not changing it)</li>
+        </ul>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Draw the request path end to end</h4>User message → frontend → backend → embed query → vector search → inject context → call Claude → (maybe) tool call → response → frontend. Draw it as it actually is in your code, not as it's "supposed to" work.</li>
+            <li><h4>Interrogate every arrow</h4>For each step in the diagram, ask two questions: <em>what happens if this is slow?</em> and <em>what happens if this returns something malformed or unexpected?</em> Write one sentence per arrow.</li>
+            <li><h4>Name at least 3 concrete failure points</h4>Not generic risks — specific ones tied to your diagram. See the worked examples below.</li>
+            <li><h4>Propose a mitigation for each</h4>One sentence per failure point. You're not building the fix yet (that starts next week) — just committing to a direction.</li>
+            <li><h4>Present it live</h4>Walk the instructor through your diagram and findings out loud. Saying it aloud surfaces gaps that re-reading your own notes doesn't.</li>
+        </ol>
+
+        <table class="example-table">
+            <tr><th>Failure point (specific, not generic)</th><th>What a user would actually see</th><th>Proposed mitigation</th></tr>
+            <tr><td>Vector search is slow under load</td><td>The whole chat reply hangs, with no indication anything is happening</td><td>Add a loading state; consider timing out retrieval and answering without context rather than blocking indefinitely</td></tr>
+            <tr><td>Claude returns malformed tool-call JSON</td><td>The app crashes mid-conversation with a raw stack trace</td><td>Validate tool arguments against a schema before executing; catch and retry (this is Week 6)</td></tr>
+            <tr><td>Embeddings API is down or rate-limited</td><td>Every chat request fails, not just retrieval — the whole feature looks broken</td><td>Fall back to answering without retrieval and say so, rather than failing the whole request</td></tr>
+        </table>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>You have a written Architecture &amp; Bottleneck Review with a diagram and at least 3 named failure points, each tied to a specific place in your own app and a specific proposed mitigation.</li>
+                <li>You've reviewed it live with the instructor, not just submitted it.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Tips</h4>
+            <ul>
+                <li>"The API could go down" is not specific enough. "If the embeddings API is down, retrieve() throws and the whole /chat request 500s instead of just skipping context" is.</li>
+                <li>You'll use this list directly in Week 6 (guardrails) and Week 7 (async processing) — don't treat it as a one-off assignment.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="week-04-vector-db-rag.html">← Week 4 — Vector Databases &amp; RAG</a>
+            <a href="week-06-guardrails.html">Week 6 — Probabilistic Logic &amp; Guardrails →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

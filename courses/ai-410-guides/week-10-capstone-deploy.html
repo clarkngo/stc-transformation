@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Week 10 Hands-On Guide: Capstone Integration, Deployment & Demo</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>Week 10 — Capstone Integration, Deployment &amp; Demo</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 5–6 hrs</span>
+            <span class="meta-pill">Outcome 5</span>
+            <span class="meta-pill">Everything, together, live</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Deploy the app you've built week over week — RAG, guardrails, async processing, push notifications, and observability — and demo the whole pipeline live, working, on infrastructure that isn't your own laptop.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>The one-click deploy template (Docker + a free-tier host, e.g. Render)</li>
+            <li>Everything from Weeks 1–9 working locally</li>
+        </ul>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Full local run-through first</h4>Before touching deployment, walk the entire pipeline end to end on your laptop: web/mobile client → chat → RAG → guardrails → async ingestion → push notification → traced in Langfuse. Fix anything that regressed since Week 9 now, while it's still easy to debug locally.</li>
+            <li><h4>Review the Dockerfile</h4>It packages your FastAPI backend. Confirm <code>requirements.txt</code> is current — a dependency you installed in Week 7 or 9 but never added to the file is the most common deploy-time surprise.</li>
+            <li><h4>Set every environment variable on the host</h4>Claude API key, Supabase connection string, Upstash Redis URL, Langfuse keys, Expo credentials — set each one in the host's dashboard. Never commit them to the repo, even at this final stage.</li>
+            <li><h4>Deploy two services, not one</h4>Same lesson as Week 7: your API and your worker are separate processes. Deploy them as two services from the template, both pointed at the same managed Redis and database.</li>
+            <li><h4>Point the mobile app at the deployed backend</h4>Swap the API URL in your Expo project from your laptop's local address to the deployed one, and re-confirm push notifications still work against the live server.</li>
+            <li><h4>Re-run your Week 5 bottleneck list</h4>Against the deployed version this time. Did anything on that list only show up now that it's running somewhere other than your own machine (e.g. cold-start latency, a missing env var, a timeout that was fine locally)?</li>
+            <li><h4>Prepare a 5-minute live demo</h4>Upload a document and show it processing asynchronously (job status endpoint), ask a RAG-grounded question, trigger a push notification, and pull up the corresponding Langfuse trace — the whole pipeline, live, in front of the class.</li>
+            <li><h4>Present for critique</h4>Be ready to explain any part of the architecture — this is also where your Week 5 review and Week 9 critique get tested in front of an audience.</li>
+        </ol>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>A stranger could install Expo Go, scan your QR code (or open your deployed app), use it for real, and receive a real push notification — with zero setup on your laptop involved.</li>
+                <li>You can answer "why did that happen?" for any step in the live demo, backed by a trace, not a guess.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Works locally, fails deployed</strong> — almost always a missing or mistyped environment variable on the host; check the host's logs first.</li>
+                <li><strong>Free-tier hosts spin down when idle</strong> — the first request after idle time can be noticeably slow. Mention this honestly during your demo rather than being caught off guard by it live.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="week-09-observability.html">← Week 9 — Observability &amp; Evaluation</a>
+            <a href="../AI-410.html">Back to the full schedule →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

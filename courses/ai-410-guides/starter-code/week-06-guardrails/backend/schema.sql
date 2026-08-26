@@ -1,6 +1,7 @@
 -- Run this in the Supabase SQL editor before running ingest.py.
--- The vector size (1024) must match voyage-3's output dimensions —
--- if you switch embedding models, update this to match.
+-- The vector size (1024) must match the output_dimensionality you
+-- request from gemini-embedding-001 in ingest.py/retrieval.py — if
+-- you change one, change the other.
 
 create extension if not exists vector;
 

@@ -2,9 +2,9 @@
 Tool definitions for the agentic loop.
 
 Each tool has two parts:
-  1. A schema (what Claude sees) — name, description, and input_schema.
-     The description is what Claude reads to decide WHEN to call it,
-     so be specific.
+  1. A schema (what Gemini sees) — name, description, and a JSON-schema
+     `parameters` object. The description is what the model reads to
+     decide WHEN to call it, so be specific.
   2. A Python function (what actually runs) — registered in TOOL_FUNCTIONS
      under the same name as the schema.
 """
@@ -15,13 +15,14 @@ def _ping(**kwargs):
     return "pong"
 
 
-# --- Schemas Claude sees -----------------------------------------------
+# --- Schemas Gemini sees -----------------------------------------------
 
 TOOLS = [
     {
+        "type": "function",
         "name": "ping",
         "description": "A no-op test tool that always returns 'pong'. Useful only for verifying the tool-calling loop is wired correctly.",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {},
         },
@@ -29,9 +30,10 @@ TOOLS = [
     # TODO(week2): add your own tool here. For example, a calculator:
     #
     # {
+    #     "type": "function",
     #     "name": "calculate",
     #     "description": "Evaluate a basic arithmetic expression, e.g. '342 * 87'.",
-    #     "input_schema": {
+    #     "parameters": {
     #         "type": "object",
     #         "properties": {
     #             "expression": {"type": "string"},

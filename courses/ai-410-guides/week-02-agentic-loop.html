@@ -59,34 +59,35 @@
 
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Trace the loop before adding anything</h4>Follow the dummy tool through the skeleton: (1) the tool's schema is passed to Claude alongside the message, (2) if Claude's reply has <code>stop_reason == "tool_use"</code>, the loop runs the matching Python function locally, (3) the result is sent back to Claude as a <code>tool_result</code> message, (4) Claude replies again — this time with a normal text answer.</li>
-            <li><h4>Define your own tool's schema</h4>Pick something simple and deterministic — a calculator or a lookup function. Every tool needs a name, a description (this is what the model reads to decide when to use it), and an input schema:
+            <li><h4>Trace the loop before adding anything</h4>Follow the dummy tool through the skeleton: (1) the tool's schema is passed to Gemini alongside the message, (2) if the resulting interaction has a <code>function_call</code> step, the loop runs the matching Python function locally, (3) the result is sent back to Gemini as a <code>function_result</code> input, chained via <code>previous_interaction_id</code>, (4) Gemini replies again — this time with a normal text answer.</li>
+            <li><h4>Define your own tool's schema</h4>Pick something simple and deterministic — a calculator or a lookup function. Every tool needs a name, a description (this is what the model reads to decide when to use it), and a parameters schema:
 <pre>tools = [{
+    "type": "function",
     "name": "calculate",
     "description": "Evaluate a basic arithmetic expression.",
-    "input_schema": {
+    "parameters": {
         "type": "object",
         "properties": {"expression": {"type": "string"}},
         "required": ["expression"],
     },
 }]</pre></li>
             <li><h4>Write the function the tool actually runs</h4>Keep it small and safe (don't use a raw <code>eval</code> on untrusted input in anything beyond this exercise — use a proper expression parser).</li>
-            <li><h4>Register it and complete the loop</h4>Pass <code>tools=tools</code> in your <code>messages.create()</code> call. When the response contains a tool_use block, run your function, then send a follow-up message with a <code>tool_result</code> block containing the <code>tool_use_id</code> and your function's output.</li>
-            <li><h4>Test the "decides" part, not just the "uses" part</h4>Ask something that needs the tool ("what's 342 × 87?") and confirm it's actually called — print the tool_use block so you can see it. Then ask something unrelated ("what's the capital of France?") and confirm the agent answers directly, without calling the tool.</li>
+            <li><h4>Register it and complete the loop</h4>Pass <code>tools=tools</code> in your <code>interactions.create()</code> call. When a step in the response has <code>type == "function_call"</code>, run your function, then start a follow-up call with <code>previous_interaction_id</code> and a <code>function_result</code> input containing the <code>call_id</code> and your function's output.</li>
+            <li><h4>Test the "decides" part, not just the "uses" part</h4>Ask something that needs the tool ("what's 342 × 87?") and confirm it's actually called — print the function_call step so you can see it. Then ask something unrelated ("what's the capital of France?") and confirm the agent answers directly, without calling the tool.</li>
         </ol>
 
         <div class="done-box">
             <h4>You'll know it worked when…</h4>
             <ul>
                 <li>The agent calls your tool for questions that need it, and skips it for questions that don't.</li>
-                <li>You can show the raw <code>tool_use</code> block in the API response as proof the model — not your code — made the decision.</li>
+                <li>You can show the raw <code>function_call</code> step in the interaction as proof the model — not your code — made the decision.</li>
             </ul>
         </div>
 
         <div class="snag-box">
             <h4>Common snags</h4>
             <ul>
-                <li><strong>Mismatched <code>tool_use_id</code></strong> — the follow-up <code>tool_result</code> must reference the exact ID from the tool_use block, or Claude will error.</li>
+                <li><strong>Mismatched <code>call_id</code></strong> — the follow-up <code>function_result</code> must reference the exact ID from the function_call step, or Gemini will error.</li>
                 <li><strong>Infinite loop</strong> — always add a max-turns guard; don't assume the model will stop calling tools on its own.</li>
                 <li><strong>Vague tool description</strong> — if the model calls the tool when it shouldn't (or doesn't when it should), tighten the description first before changing anything else.</li>
             </ul>

@@ -2,9 +2,9 @@
 # same Dockerfile — same lesson as Week 7: they're different
 # processes and need to run (and scale) independently.
 #
-# Set the actual secret values (ANTHROPIC_API_KEY, VOYAGE_API_KEY,
-# DATABASE_URL, REDIS_URL, LANGFUSE_*) in the Render dashboard for
-# each service — never commit them here.
+# Set the actual secret values (GEMINI_API_KEY, DATABASE_URL,
+# REDIS_URL, LANGFUSE_*) in the Render dashboard for each service —
+# never commit them here.
 
 services:
   - type: web
@@ -12,9 +12,7 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     envVars:
-      - key: ANTHROPIC_API_KEY
-        sync: false
-      - key: VOYAGE_API_KEY
+      - key: GEMINI_API_KEY
         sync: false
       - key: DATABASE_URL
         sync: false
@@ -33,9 +31,7 @@ services:
     dockerfilePath: ./Dockerfile
     dockerCommand: python worker.py
     envVars:
-      - key: ANTHROPIC_API_KEY
-        sync: false
-      - key: VOYAGE_API_KEY
+      - key: GEMINI_API_KEY
         sync: false
       - key: DATABASE_URL
         sync: false

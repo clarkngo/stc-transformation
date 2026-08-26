@@ -48,7 +48,7 @@
 
         <div class="goal-box">
             <h4>Goal</h4>
-            <p>Get the starter chat app running end to end, then replace its hardcoded reply with a real call to Claude. By the end you'll have one working request/response loop — the base every later week extends.</p>
+            <p>Get the starter chat app running end to end, then replace its hardcoded reply with a real call to Gemini. By the end you'll have one working request/response loop — the base every later week extends.</p>
         </div>
 
         <h4>What you'll need</h4>
@@ -56,38 +56,37 @@
             <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/week-01-foundations" target="_blank" rel="noopener">this week's starter-code folder</a> — copy it into your own project and follow its README</li>
             <li>Python 3.11+ and a terminal</li>
             <li>It already contains a <code>/backend</code> FastAPI app with a stubbed <code>/chat</code> endpoint, and a <code>/frontend</code> folder with a single working chat page wired to call it</li>
-            <li>A Claude API key from <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a></li>
+            <li>A free Gemini API key (no credit card required) from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></li>
         </ul>
 
         <h2>Steps</h2>
         <ol class="steps">
             <li><h4>Read the stub before touching it</h4>Open <code>backend/main.py</code>. Find the <code>/chat</code> handler — right now it just returns a hardcoded string. Note the shape: it receives a JSON body with a <code>message</code> field and returns JSON with a <code>reply</code> field. That shape doesn't change all term; only what happens inside the handler does.</li>
             <li><h4>Set your API key as an environment variable</h4>Never paste it directly into a file you might commit.
-<pre>export ANTHROPIC_API_KEY="your-key-here"</pre></li>
+<pre>export GEMINI_API_KEY="your-key-here"</pre></li>
             <li><h4>Install dependencies</h4>
 <pre>cd backend
-pip install -r requirements.txt   # fastapi, uvicorn, anthropic</pre></li>
-            <li><h4>Replace the stub with a real Claude call</h4>
-<pre>from anthropic import Anthropic
-client = Anthropic()
+pip install -r requirements.txt   # fastapi, uvicorn, google-genai</pre></li>
+            <li><h4>Replace the stub with a real Gemini call</h4>
+<pre>from google import genai
+client = genai.Client()
 
 @app.post("/chat")
 def chat(body: ChatRequest):
-    response = client.messages.create(
-        model="claude-sonnet-5",
-        max_tokens=1024,
-        messages=[{"role": "user", "content": body.message}],
+    interaction = client.interactions.create(
+        model="gemini-flash-latest",
+        input=body.message,
     )
-    return {"reply": response.content[0].text}</pre></li>
+    return {"reply": interaction.output_text}</pre></li>
             <li><h4>Run it</h4>
 <pre>uvicorn main:app --reload</pre>Open <code>frontend/index.html</code> in your browser and send a message. You should get back a real, coherent answer — not the placeholder text.</li>
-            <li><h4>Understand what just happened</h4>Look at the raw API response object (print it before extracting <code>.text</code>). Note <code>usage.input_tokens</code> / <code>usage.output_tokens</code> — this is the token budget you'll be thinking about all term, and the context window is simply the ceiling on how much of that budget one request can use.</li>
+            <li><h4>Understand what just happened</h4>Look at the raw <code>interaction</code> object (print it before reading <code>.output_text</code>) — it's built from a list of <code>steps</code>, which is the same structure you'll use for tool calls starting next week. Note the usage/token fields on the response — this is the token budget you'll be thinking about all term, and the context window is simply the ceiling on how much of that budget one request can use.</li>
         </ol>
 
         <div class="done-box">
             <h4>You'll know it worked when…</h4>
             <ul>
-                <li>You type a question in the chat UI and get a real, on-topic Claude-generated answer back.</li>
+                <li>You type a question in the chat UI and get a real, on-topic Gemini-generated answer back.</li>
                 <li>You can point to the exact line of code that makes the LLM call and explain what's in the request and what's in the response.</li>
             </ul>
         </div>
@@ -97,7 +96,7 @@ def chat(body: ChatRequest):
             <ul>
                 <li><strong>"invalid API key"</strong> — check the environment variable name matches exactly, and that you restarted the terminal/server after setting it.</li>
                 <li><strong>CORS errors in the browser console</strong> — the starter repo's CORS middleware already handles this; don't remove or "simplify" it.</li>
-                <li><strong>Reply looks empty or broken</strong> — confirm you're reading <code>response.content[0].text</code> and not the whole response object.</li>
+                <li><strong>Reply looks empty or broken</strong> — confirm you're reading <code>interaction.output_text</code> and not the whole interaction object.</li>
             </ul>
         </div>
 

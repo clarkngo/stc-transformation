@@ -18,10 +18,10 @@ Guide: [`../../week-08-mobile-push.html`](../../week-08-mobile-push.html)
 
 ```bash
 # Terminal 1 — API (see Week 7 for setup)
-cd backend && uvicorn main:app --reload
+cd backend && ./venv/bin/uvicorn main:app --reload
 
 # Terminal 2 — worker
-python worker.py
+cd backend && ./venv/bin/python worker.py
 
 # Terminal 3 — mobile
 cd mobile

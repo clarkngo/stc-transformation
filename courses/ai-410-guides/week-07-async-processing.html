@@ -76,7 +76,7 @@ def job_status(job_id: str):
     job = queue.fetch_job(job_id)
     return {"status": job.get_status()}   # queued / started / finished / failed</pre></li>
             <li><h4>Run the worker as its own process</h4>Keep <code>uvicorn</code> running in one terminal for your API, and in a <strong>second terminal</strong> start the worker:
-<pre>python worker.py</pre>This is the core new idea this week: the worker is not started by your API — it's a separate program you have to remember to run.</li>
+<pre>./venv/bin/python worker.py</pre>This is the core new idea this week: the worker is not started by your API — it's a separate program you have to remember to run. Use the venv's own binary here too, for the same reason as <code>uvicorn</code> in Week 1.</li>
             <li><h4>Prove it end to end</h4>Upload a document, confirm you get a job ID back instantly (not after ingestion finishes), then poll <code>/jobs/{id}</code> until it flips to "finished." While it's still running, send a normal chat message and confirm the app stays responsive.</li>
         </ol>
 

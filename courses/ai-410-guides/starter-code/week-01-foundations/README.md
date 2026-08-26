@@ -21,7 +21,9 @@ cd backend
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # add your GEMINI_API_KEY
-uvicorn main:app --reload
+./venv/bin/uvicorn main:app --reload
 ```
+
+Using `./venv/bin/uvicorn` (not just `uvicorn`) matters — if your system already has a `uvicorn`/`google-genai` installed globally, an unactivated shell will silently run those instead of the ones in this project's venv.
 
 Then open `frontend/index.html` directly in your browser (double-click it, or `open frontend/index.html` on macOS).

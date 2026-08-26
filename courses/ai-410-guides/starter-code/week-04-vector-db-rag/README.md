@@ -24,10 +24,10 @@ cd backend
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # add your keys + DATABASE_URL
-python ingest.py
+./venv/bin/python ingest.py
 
 # 3. Start the server
-uvicorn main:app --reload
+./venv/bin/uvicorn main:app --reload
 ```
 
 Ask something that can only be answered from the sample docs (e.g. "how long do I have to return an item?") and confirm the agent gets it right using retrieved context. Then comment out the retrieval call and ask again — it should get noticeably worse.

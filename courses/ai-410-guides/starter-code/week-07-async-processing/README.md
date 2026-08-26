@@ -24,11 +24,11 @@ cd backend
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # add your keys + REDIS_URL
-uvicorn main:app --reload
+./venv/bin/uvicorn main:app --reload
 
 # Terminal 2 — the worker (separate process!)
-source venv/bin/activate
-python worker.py
+cd backend
+./venv/bin/python worker.py
 ```
 
 Upload a document, confirm you get a job ID back instantly, then poll `/jobs/{id}` until it's "finished" — while sending normal chat messages the whole time to prove the app stayed responsive.

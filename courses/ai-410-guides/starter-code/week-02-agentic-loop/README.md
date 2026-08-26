@@ -20,7 +20,7 @@ cd backend
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # add your GEMINI_API_KEY
-uvicorn main:app --reload
+./venv/bin/uvicorn main:app --reload
 ```
 
 Try asking something that needs your new tool, and something that doesn't — confirm the agent only calls the tool when it actually needs to.

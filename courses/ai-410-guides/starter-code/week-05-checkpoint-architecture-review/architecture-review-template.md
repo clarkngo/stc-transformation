@@ -8,7 +8,7 @@
 Draw (or paste an image of) the request path exactly as it exists in your code today:
 
 ```
-User message → frontend → backend → embed query → vector search → inject context → call Claude → (maybe) tool call → response → frontend
+User message → frontend → backend → embed query → vector search → inject context → call Gemini → (maybe) tool call → response → frontend
 ```
 
 Redraw the arrows above to match what your app *actually* does — add or remove steps as needed.

@@ -12,7 +12,7 @@ Guide: [`../../week-04-vector-db-rag.html`](../../week-04-vector-db-rag.html)
 ## What you'll build this week
 
 1. `backend/retrieval.py` — implement `retrieve()` (embed the query, run a similarity search, return the matching chunks). Follow the `# TODO(week4)` comment.
-2. `backend/agent.py` — wire `retrieve()` into the loop so its results are injected as context before the first call to Claude. Follow the `# TODO(week4)` comment.
+2. `backend/agent.py` — wire `retrieve()` into the loop so its results are injected as context before the first call to Gemini. Follow the `# TODO(week4)` comment.
 
 ## Run it
 

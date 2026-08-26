@@ -63,7 +63,7 @@
 
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Draw the request path end to end</h4>User message → frontend → backend → embed query → vector search → inject context → call Claude → (maybe) tool call → response → frontend. Draw it as it actually is in your code, not as it's "supposed to" work.</li>
+            <li><h4>Draw the request path end to end</h4>User message → frontend → backend → embed query → vector search → inject context → call Gemini → (maybe) tool call → response → frontend. Draw it as it actually is in your code, not as it's "supposed to" work.</li>
             <li><h4>Interrogate every arrow</h4>For each step in the diagram, ask two questions: <em>what happens if this is slow?</em> and <em>what happens if this returns something malformed or unexpected?</em> Write one sentence per arrow.</li>
             <li><h4>Name at least 3 concrete failure points</h4>Not generic risks — specific ones tied to your diagram. See the worked examples below.</li>
             <li><h4>Propose a mitigation for each</h4>One sentence per failure point. You're not building the fix yet (that starts next week) — just committing to a direction.</li>
@@ -73,7 +73,7 @@
         <table class="example-table">
             <tr><th>Failure point (specific, not generic)</th><th>What a user would actually see</th><th>Proposed mitigation</th></tr>
             <tr><td>Vector search is slow under load</td><td>The whole chat reply hangs, with no indication anything is happening</td><td>Add a loading state; consider timing out retrieval and answering without context rather than blocking indefinitely</td></tr>
-            <tr><td>Claude returns malformed tool-call JSON</td><td>The app crashes mid-conversation with a raw stack trace</td><td>Validate tool arguments against a schema before executing; catch and retry (this is Week 6)</td></tr>
+            <tr><td>Gemini returns malformed tool-call arguments</td><td>The app crashes mid-conversation with a raw stack trace</td><td>Validate tool arguments against a schema before executing; catch and retry (this is Week 6)</td></tr>
             <tr><td>Embeddings API is down or rate-limited</td><td>Every chat request fails, not just retrieval — the whole feature looks broken</td><td>Fall back to answering without retrieval and say so, rather than failing the whole request</td></tr>
         </table>
 

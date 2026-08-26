@@ -76,7 +76,7 @@ create table documents (
         "select content from documents order by embedding <-> %s limit %s",
         (q_vec, k),
     ).fetchall()</pre></li>
-            <li><h4>Wire it into the agent loop</h4>Before calling Claude, call <code>retrieve()</code> on the user's message and inject the top chunks as context — either in the system prompt or as a prepended message ("Use the following context to answer the question...").</li>
+            <li><h4>Wire it into the agent loop</h4>Before calling Gemini, call <code>retrieve()</code> on the user's message and inject the top chunks as context — via <code>system_instruction</code> ("Use the following context to answer the question...").</li>
             <li><h4>Prove it's working — both ways</h4>Ask a question that can only be answered from your sample docs, and confirm the agent gets it right. Then temporarily disable retrieval and ask the same question again — the agent should now guess wrong or admit it doesn't know. That contrast is the proof RAG is actually doing something.</li>
         </ol>
 

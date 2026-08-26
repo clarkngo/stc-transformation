@@ -4,7 +4,7 @@ AI 410 — Week 1 starter: Foundations of Full-Stack AI Systems
 This is the stub. The /chat endpoint returns a hardcoded reply so you
 can confirm the frontend <-> backend wiring works before touching the
 LLM call itself. Your job this week: replace the stub with a real
-call to Claude. See the TODO below.
+call to Gemini. See the TODO below.
 """
 
 import os
@@ -38,17 +38,16 @@ class ChatResponse(BaseModel):
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(body: ChatRequest) -> ChatResponse:
-    # TODO(week1): replace this stub with a real call to Claude.
+    # TODO(week1): replace this stub with a real call to Gemini.
     #
-    # from anthropic import Anthropic
-    # client = Anthropic()  # reads ANTHROPIC_API_KEY from the environment
+    # from google import genai
+    # client = genai.Client()  # reads GEMINI_API_KEY from the environment
     #
-    # response = client.messages.create(
-    #     model="claude-sonnet-5",
-    #     max_tokens=1024,
-    #     messages=[{"role": "user", "content": body.message}],
+    # interaction = client.interactions.create(
+    #     model="gemini-flash-latest",
+    #     input=body.message,
     # )
-    # return ChatResponse(reply=response.content[0].text)
+    # return ChatResponse(reply=interaction.output_text)
 
     return ChatResponse(reply=f"(stub reply) You said: {body.message!r}")
 

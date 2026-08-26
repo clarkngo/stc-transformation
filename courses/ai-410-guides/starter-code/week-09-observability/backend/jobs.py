@@ -6,12 +6,15 @@ notification on completion (Week 8) are both solved below.
 import os
 
 import psycopg
-import voyageai
+from google import genai
+from google.genai import types
 
 from devices import get_push_token
 from push import send_push_notification
 
-vo = voyageai.Client()
+client = genai.Client()
+EMBED_MODEL = "gemini-embedding-001"
+EMBED_DIM = 1024
 
 
 def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> list[str]:
@@ -30,7 +33,15 @@ def ingest_document_job(doc_path: str, device_id: str | None = None) -> dict:
         text = f.read()
 
     chunks = chunk_text(text)
-    vectors = vo.embed(chunks, model="voyage-3", input_type="document").embeddings
+    result = client.models.embed_content(
+        model=EMBED_MODEL,
+        contents=chunks,
+        config=types.EmbedContentConfig(
+            task_type="RETRIEVAL_DOCUMENT",
+            output_dimensionality=EMBED_DIM,
+        ),
+    )
+    vectors = [e.values for e in result.embeddings]
 
     conn = psycopg.connect(os.environ["DATABASE_URL"])
     cur = conn.cursor()

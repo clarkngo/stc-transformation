@@ -55,7 +55,7 @@
         <ul class="needs-list">
             <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/week-03-embeddings-chunking" target="_blank" rel="noopener">this week's starter-code folder</a> — includes the sandbox script and 5 sample documents</li>
             <li>A folder of 5–10 short sample documents (text or markdown) — already included in the starter code</li>
-            <li>A Voyage AI API key for embeddings (Anthropic's recommended embeddings partner — Claude itself doesn't serve embeddings)</li>
+            <li>The same free Gemini API key from Week 1 — Gemini serves embeddings from the same key as chat, via a separate model (<code>gemini-embedding-001</code>)</li>
         </ul>
 
         <h2>Steps</h2>
@@ -63,11 +63,19 @@
             <li><h4>Skim the sample docs first</h4>Open 2–3 of them so you know what content you're about to chunk — you'll need this context to judge whether your results look right later.</li>
             <li><h4>Write a chunking function</h4>Split each document into roughly 300–500 token pieces, with a little overlap between consecutive chunks so you don't cut a sentence's meaning in half at a boundary. Start by splitting on paragraphs, then fall back to a character-count split for any paragraph that's too long on its own.</li>
             <li><h4>Embed each chunk</h4>
-<pre>import voyageai
-vo = voyageai.Client()
+<pre>from google import genai
+from google.genai import types
 
-result = vo.embed(chunks, model="voyage-3", input_type="document")
-vectors = result.embeddings   # one vector per chunk, same order</pre>Keep the vectors and their original chunk text together in a plain Python list — no database yet, that's Week 4.</li>
+client = genai.Client()
+result = client.models.embed_content(
+    model="gemini-embedding-001",
+    contents=chunks,
+    config=types.EmbedContentConfig(
+        task_type="RETRIEVAL_DOCUMENT",
+        output_dimensionality=1024,
+    ),
+)
+vectors = [e.values for e in result.embeddings]   # one vector per chunk, same order</pre>Keep the vectors and their original chunk text together in a plain Python list — no database yet, that's Week 4.</li>
             <li><h4>Sanity-check with cosine similarity</h4>Pick two chunks you'd expect to be related and two you'd expect to be unrelated. Compute cosine similarity between their vectors and confirm the related pair scores meaningfully higher.
 <pre>import numpy as np
 

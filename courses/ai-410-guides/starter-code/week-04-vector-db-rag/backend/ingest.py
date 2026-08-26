@@ -11,12 +11,15 @@ import glob
 import os
 
 import psycopg
-import voyageai
 from dotenv import load_dotenv
+from google import genai
+from google.genai import types
 
 load_dotenv()
 
-vo = voyageai.Client()
+client = genai.Client()
+EMBED_MODEL = "gemini-embedding-001"
+EMBED_DIM = 1024  # must match the vector(1024) column in schema.sql
 SAMPLE_DOCS_DIR = os.path.join(os.path.dirname(__file__), "sample_docs")
 
 
@@ -32,8 +35,15 @@ def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> list[str]
 
 
 def embed_chunks(chunks: list[str]) -> list[list[float]]:
-    result = vo.embed(chunks, model="voyage-3", input_type="document")
-    return result.embeddings
+    result = client.models.embed_content(
+        model=EMBED_MODEL,
+        contents=chunks,
+        config=types.EmbedContentConfig(
+            task_type="RETRIEVAL_DOCUMENT",
+            output_dimensionality=EMBED_DIM,
+        ),
+    )
+    return [e.values for e in result.embeddings]
 
 
 def main():

@@ -13,7 +13,7 @@ This week is a **standalone sandbox** — it isn't wired into the chat app. You'
 
 Follow the `# TODO(week3)` comments in `ingest_sandbox.py`:
 1. `chunk_text()` — split a document into ~300–500 token pieces with a little overlap
-2. `embed_chunks()` — call the Voyage AI embeddings API on your chunks
+2. `embed_chunks()` — call the Gemini embeddings API on your chunks
 
 ## Run it
 
@@ -21,7 +21,7 @@ Follow the `# TODO(week3)` comments in `ingest_sandbox.py`:
 cd sandbox
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # add your VOYAGE_API_KEY
+cp .env.example .env   # add your GEMINI_API_KEY (free — aistudio.google.com/apikey)
 python ingest_sandbox.py
 ```
 

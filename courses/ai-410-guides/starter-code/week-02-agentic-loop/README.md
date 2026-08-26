@@ -4,8 +4,8 @@ Guide: [`../../week-02-agentic-loop.html`](../../week-02-agentic-loop.html)
 
 ## What's already working
 
-- Week 1's real Claude call (`backend/main.py`)
-- A complete agentic loop in `backend/agent.py`: send message + tools → check for `tool_use` → run the matching Python function → send the result back → get a final answer
+- Week 1's real Gemini call (`backend/main.py`)
+- A complete agentic loop in `backend/agent.py`: send message + tools → check for a `function_call` step → run the matching Python function → send the result back → get a final answer
 - One dummy tool already registered in `backend/tools.py` (`ping`) so you can see the whole loop fire before writing your own tool
 
 ## What you'll build this week
@@ -19,7 +19,7 @@ Same as Week 1:
 cd backend
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # add your ANTHROPIC_API_KEY
+cp .env.example .env   # add your GEMINI_API_KEY
 uvicorn main:app --reload
 ```
 

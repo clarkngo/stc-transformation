@@ -10,12 +10,15 @@ import glob
 import os
 
 import numpy as np
-import voyageai
 from dotenv import load_dotenv
+from google import genai
+from google.genai import types
 
 load_dotenv()
 
-vo = voyageai.Client()  # reads VOYAGE_API_KEY from the environment
+client = genai.Client()  # reads GEMINI_API_KEY from the environment
+EMBED_MODEL = "gemini-embedding-001"
+EMBED_DIM = 1024  # gemini-embedding-001 defaults to 3072; we ask for a smaller size
 SAMPLE_DOCS_DIR = os.path.join(os.path.dirname(__file__), "sample_docs")
 
 
@@ -45,21 +48,35 @@ def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> list[str]
 
 def embed_chunks(chunks: list[str]) -> list[list[float]]:
     """
-    Call the Voyage AI embeddings endpoint on a list of chunks and
+    Call the Gemini embeddings endpoint on a list of chunks and
     return one vector per chunk, in the same order.
 
-    TODO(week3): implement this using the voyageai client, e.g.:
+    TODO(week3): implement this using the genai client, e.g.:
 
-        result = vo.embed(chunks, model="voyage-3", input_type="document")
-        return result.embeddings
+        result = client.models.embed_content(
+            model=EMBED_MODEL,
+            contents=chunks,
+            config=types.EmbedContentConfig(
+                task_type="RETRIEVAL_DOCUMENT",
+                output_dimensionality=EMBED_DIM,
+            ),
+        )
+        return [e.values for e in result.embeddings]
     """
     raise NotImplementedError("implement embed_chunks() — see the TODO above")
 
 
 def embed_query(query: str) -> list[float]:
     """Same embedding call, but for a single query string at search time."""
-    result = vo.embed([query], model="voyage-3", input_type="query")
-    return result.embeddings[0]
+    result = client.models.embed_content(
+        model=EMBED_MODEL,
+        contents=query,
+        config=types.EmbedContentConfig(
+            task_type="RETRIEVAL_QUERY",
+            output_dimensionality=EMBED_DIM,
+        ),
+    )
+    return result.embeddings[0].values
 
 
 def cosine_sim(a, b) -> float:

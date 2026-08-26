@@ -6,9 +6,12 @@ they don't return an HTTP response, they just do the work.
 import os
 
 import psycopg
-import voyageai
+from google import genai
+from google.genai import types
 
-vo = voyageai.Client()
+client = genai.Client()
+EMBED_MODEL = "gemini-embedding-001"
+EMBED_DIM = 1024  # must match the vector(1024) column in schema.sql
 
 
 def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> list[str]:
@@ -32,7 +35,15 @@ def ingest_document_job(doc_path: str) -> dict:
             text = f.read()
 
         chunks = chunk_text(text)
-        vectors = vo.embed(chunks, model="voyage-3", input_type="document").embeddings
+        result = client.models.embed_content(
+            model=EMBED_MODEL,
+            contents=chunks,
+            config=types.EmbedContentConfig(
+                task_type="RETRIEVAL_DOCUMENT",
+                output_dimensionality=EMBED_DIM,
+            ),
+        )
+        vectors = [e.values for e in result.embeddings]
 
         conn = psycopg.connect(os.environ["DATABASE_URL"])
         cur = conn.cursor()

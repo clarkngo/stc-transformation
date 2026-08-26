@@ -10,7 +10,9 @@ Guide: [`../../week-01-foundations.html`](../../week-01-foundations.html)
 
 ## What you'll build this week
 
-The `/chat` endpoint currently returns a **hardcoded stub reply**. Your job is to replace it with a real call to the Claude API. Look for the `# TODO(week1)` comment in `backend/main.py`.
+The `/chat` endpoint currently returns a **hardcoded stub reply**. Your job is to replace it with a real call to the Gemini API. Look for the `# TODO(week1)` comment in `backend/main.py`.
+
+Get a free API key (no credit card required) at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
 
 ## Run it
 
@@ -18,7 +20,7 @@ The `/chat` endpoint currently returns a **hardcoded stub reply**. Your job is t
 cd backend
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # add your ANTHROPIC_API_KEY
+cp .env.example .env   # add your GEMINI_API_KEY
 uvicorn main:app --reload
 ```
 

@@ -14,6 +14,6 @@ Guide: [`../../week-06-guardrails.html`](../../week-06-guardrails.html)
 
 ## Run it
 
-Same setup as Week 4 (run `schema.sql`, then `ingest.py`, then `uvicorn main:app --reload`).
+Same setup as Week 4 (run `schema.sql`, then `./venv/bin/python ingest.py`, then `./venv/bin/uvicorn main:app --reload`).
 
 Test it on purpose: feed the agent a prompt likely to produce malformed tool arguments and confirm the guardrail catches it — either self-correcting on retry, or failing with a clear message instead of crashing.

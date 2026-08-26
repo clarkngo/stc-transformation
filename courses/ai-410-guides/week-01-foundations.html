@@ -79,7 +79,7 @@ def chat(body: ChatRequest):
     )
     return {"reply": interaction.output_text}</pre></li>
             <li><h4>Run it</h4>
-<pre>uvicorn main:app --reload</pre>Open <code>frontend/index.html</code> in your browser and send a message. You should get back a real, coherent answer — not the placeholder text.</li>
+<pre>./venv/bin/uvicorn main:app --reload</pre>Use the venv's own <code>uvicorn</code> binary (not just <code>uvicorn</code>) — if your system already has a global <code>uvicorn</code> or <code>google-genai</code> install, an unactivated shell will silently run those instead of the ones in this project's venv. Open <code>frontend/index.html</code> in your browser and send a message. You should get back a real, coherent answer — not the placeholder text.</li>
             <li><h4>Understand what just happened</h4>Look at the raw <code>interaction</code> object (print it before reading <code>.output_text</code>) — it's built from a list of <code>steps</code>, which is the same structure you'll use for tool calls starting next week. Note the usage/token fields on the response — this is the token budget you'll be thinking about all term, and the context window is simply the ceiling on how much of that budget one request can use.</li>
         </ol>
 

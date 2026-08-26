@@ -22,7 +22,7 @@ cd sandbox
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # add your GEMINI_API_KEY (free — aistudio.google.com/apikey)
-python ingest_sandbox.py
+./venv/bin/python ingest_sandbox.py
 ```
 
 It will print a ranked list of chunks by similarity to a sample query — check that the top result is genuinely the most relevant one.

@@ -1,0 +1,49 @@
+# Deploys the API and the worker as two SEPARATE services from the
+# same Dockerfile — same lesson as Week 7: they're different
+# processes and need to run (and scale) independently.
+#
+# Set the actual secret values (ANTHROPIC_API_KEY, VOYAGE_API_KEY,
+# DATABASE_URL, REDIS_URL, LANGFUSE_*) in the Render dashboard for
+# each service — never commit them here.
+
+services:
+  - type: web
+    name: ai410-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: VOYAGE_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: LANGFUSE_PUBLIC_KEY
+        sync: false
+      - key: LANGFUSE_SECRET_KEY
+        sync: false
+      - key: LANGFUSE_HOST
+        sync: false
+
+  - type: worker
+    name: ai410-worker
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerCommand: python worker.py
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: VOYAGE_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: LANGFUSE_PUBLIC_KEY
+        sync: false
+      - key: LANGFUSE_SECRET_KEY
+        sync: false
+      - key: LANGFUSE_HOST
+        sync: false

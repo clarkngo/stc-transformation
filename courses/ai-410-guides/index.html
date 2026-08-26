@@ -8,15 +8,18 @@
     <style>
         h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
         .guide-grid { display:flex; flex-direction:column; gap:0; margin-top:20px; }
-        .guide-row { display:flex; align-items:center; gap:16px; padding:14px 12px; border-bottom:1px solid #e2e8f0; text-decoration:none; color:inherit; }
+        .guide-row { display:flex; align-items:center; gap:16px; padding:14px 12px; border-bottom:1px solid #e2e8f0; }
         .guide-row:last-child { border-bottom:none; }
         .guide-row:hover { background:#f8fafc; border-radius:6px; }
         .guide-row.checkpoint { background:#fffbeb; }
+        .guide-row-link { display:flex; align-items:center; gap:16px; flex:1 1 auto; min-width:0; text-decoration:none; color:inherit; }
         .guide-wk { flex-shrink:0; width:56px; height:56px; border-radius:50%; background:#dcfce7; color:#15803d; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1rem; }
         .checkpoint .guide-wk { background:#fef3c7; color:#b45309; }
         .guide-title { font-weight:700; font-size:0.98rem; flex:1 1 auto; }
         .guide-desc { display:block; font-weight:400; color:#6b7280; font-size:0.85rem; margin-top:3px; }
-        .guide-arrow { color:#1e8449; font-weight:600; font-size:0.85rem; flex-shrink:0; }
+        .guide-links { display:flex; flex-direction:column; gap:6px; align-items:flex-end; flex-shrink:0; }
+        .guide-arrow { color:#1e8449; font-weight:600; font-size:0.85rem; text-decoration:none; }
+        .guide-arrow.code { color:#1d4ed8; }
     </style>
 </head>
 <body class="course-page">
@@ -31,58 +34,109 @@
 
         <h1>AI 410: Hands-On Guides — Week by Week</h1>
         <p>Ten step-by-step guides, one per week of the <a href="../AI-410.html">AI 410 schedule</a>. Each guide expands that week's "App Milestone" into concrete steps: what you're starting from, what to build, and how to know it worked. They build on each other — the app you extend in Week 8 is the same one you started in Week 1.</p>
+        <p>Each week also has real <a href="starter-code/README.md">starter code</a> — a self-contained folder you can copy straight into your own project. See the code column in the table below, or <code>starter-code/</code> for all ten at once.</p>
 
         <div class="guide-grid">
-            <a class="guide-row" href="week-01-foundations.html">
-                <span class="guide-wk">W1</span>
-                <span class="guide-title">Foundations of Full-Stack AI Systems<span class="guide-desc">Get the starter chat app running and make your first real LLM call.</span></span>
-                <span class="guide-arrow">Open →</span>
-            </a>
-            <a class="guide-row" href="week-02-agentic-loop.html">
-                <span class="guide-wk">W2</span>
-                <span class="guide-title">Structured Outputs &amp; the Agentic Loop<span class="guide-desc">Give the agent a real tool it can decide to call.</span></span>
-                <span class="guide-arrow">Open →</span>
-            </a>
-            <a class="guide-row" href="week-03-embeddings-chunking.html">
-                <span class="guide-wk">W3</span>
-                <span class="guide-title">Embeddings &amp; Chunking<span class="guide-desc">Chunk and embed a small document set in a sandbox.</span></span>
-                <span class="guide-arrow">Open →</span>
-            </a>
-            <a class="guide-row" href="week-04-vector-db-rag.html">
-                <span class="guide-wk">W4</span>
-                <span class="guide-title">Vector Databases &amp; RAG Pipelines<span class="guide-desc">Wire retrieval into the agent — RAG goes live.</span></span>
-                <span class="guide-arrow">Open →</span>
-            </a>
-            <a class="guide-row checkpoint" href="week-05-checkpoint-architecture-review.html">
-                <span class="guide-wk">W5</span>
-                <span class="guide-title">Checkpoint: Architecture &amp; Bottleneck Review<span class="guide-desc">No new build — diagram what you have and flag where it can break.</span></span>
-                <span class="guide-arrow">Open →</span>
-            </a>
-            <a class="guide-row" href="week-06-guardrails.html">
-                <span class="guide-wk">W6</span>
-                <span class="guide-title">Probabilistic Logic &amp; Guardrails<span class="guide-desc">Catch and retry bad or hallucinated output.</span></span>
-                <span class="guide-arrow">Open →</span>
-            </a>
-            <a class="guide-row" href="week-07-async-processing.html">
-                <span class="guide-wk">W7</span>
-                <span class="guide-title">Asynchronous Data Processing<span class="guide-desc">Move ingestion to a background job with a status endpoint.</span></span>
-                <span class="guide-arrow">Open →</span>
-            </a>
-            <a class="guide-row" href="week-08-mobile-push.html">
-                <span class="guide-wk">W8</span>
-                <span class="guide-title">Mobile Client &amp; Push Notifications<span class="guide-desc">Run the app on your phone and receive a real push notification.</span></span>
-                <span class="guide-arrow">Open →</span>
-            </a>
-            <a class="guide-row" href="week-09-observability.html">
-                <span class="guide-wk">W9</span>
-                <span class="guide-title">Observability &amp; Evaluation<span class="guide-desc">Instrument the pipeline and critique a real failure.</span></span>
-                <span class="guide-arrow">Open →</span>
-            </a>
-            <a class="guide-row" href="week-10-capstone-deploy.html">
-                <span class="guide-wk">W10</span>
-                <span class="guide-title">Capstone Integration, Deployment &amp; Demo<span class="guide-desc">Deploy the finished app and demo it live.</span></span>
-                <span class="guide-arrow">Open →</span>
-            </a>
+            <div class="guide-row">
+                <a class="guide-row-link" href="week-01-foundations.html">
+                    <span class="guide-wk">W1</span>
+                    <span class="guide-title">Foundations of Full-Stack AI Systems<span class="guide-desc">Get the starter chat app running and make your first real LLM call.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="week-01-foundations.html">Guide →</a>
+                    <a class="guide-arrow code" href="starter-code/week-01-foundations/README.md">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="week-02-agentic-loop.html">
+                    <span class="guide-wk">W2</span>
+                    <span class="guide-title">Structured Outputs &amp; the Agentic Loop<span class="guide-desc">Give the agent a real tool it can decide to call.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="week-02-agentic-loop.html">Guide →</a>
+                    <a class="guide-arrow code" href="starter-code/week-02-agentic-loop/README.md">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="week-03-embeddings-chunking.html">
+                    <span class="guide-wk">W3</span>
+                    <span class="guide-title">Embeddings &amp; Chunking<span class="guide-desc">Chunk and embed a small document set in a sandbox.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="week-03-embeddings-chunking.html">Guide →</a>
+                    <a class="guide-arrow code" href="starter-code/week-03-embeddings-chunking/README.md">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="week-04-vector-db-rag.html">
+                    <span class="guide-wk">W4</span>
+                    <span class="guide-title">Vector Databases &amp; RAG Pipelines<span class="guide-desc">Wire retrieval into the agent — RAG goes live.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="week-04-vector-db-rag.html">Guide →</a>
+                    <a class="guide-arrow code" href="starter-code/week-04-vector-db-rag/README.md">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row checkpoint">
+                <a class="guide-row-link" href="week-05-checkpoint-architecture-review.html">
+                    <span class="guide-wk">W5</span>
+                    <span class="guide-title">Checkpoint: Architecture &amp; Bottleneck Review<span class="guide-desc">No new build — diagram what you have and flag where it can break.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="week-05-checkpoint-architecture-review.html">Guide →</a>
+                    <a class="guide-arrow code" href="starter-code/week-05-checkpoint-architecture-review/README.md">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="week-06-guardrails.html">
+                    <span class="guide-wk">W6</span>
+                    <span class="guide-title">Probabilistic Logic &amp; Guardrails<span class="guide-desc">Catch and retry bad or hallucinated output.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="week-06-guardrails.html">Guide →</a>
+                    <a class="guide-arrow code" href="starter-code/week-06-guardrails/README.md">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="week-07-async-processing.html">
+                    <span class="guide-wk">W7</span>
+                    <span class="guide-title">Asynchronous Data Processing<span class="guide-desc">Move ingestion to a background job with a status endpoint.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="week-07-async-processing.html">Guide →</a>
+                    <a class="guide-arrow code" href="starter-code/week-07-async-processing/README.md">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="week-08-mobile-push.html">
+                    <span class="guide-wk">W8</span>
+                    <span class="guide-title">Mobile Client &amp; Push Notifications<span class="guide-desc">Run the app on your phone and receive a real push notification.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="week-08-mobile-push.html">Guide →</a>
+                    <a class="guide-arrow code" href="starter-code/week-08-mobile-push/README.md">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="week-09-observability.html">
+                    <span class="guide-wk">W9</span>
+                    <span class="guide-title">Observability &amp; Evaluation<span class="guide-desc">Instrument the pipeline and critique a real failure.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="week-09-observability.html">Guide →</a>
+                    <a class="guide-arrow code" href="starter-code/week-09-observability/README.md">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="week-10-capstone-deploy.html">
+                    <span class="guide-wk">W10</span>
+                    <span class="guide-title">Capstone Integration, Deployment &amp; Demo<span class="guide-desc">Deploy the finished app and demo it live.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="week-10-capstone-deploy.html">Guide →</a>
+                    <a class="guide-arrow code" href="starter-code/week-10-capstone-deploy/README.md">Code →</a>
+                </span>
+            </div>
         </div>
     </div>
     <script src="../../assets/nav.js"></script>

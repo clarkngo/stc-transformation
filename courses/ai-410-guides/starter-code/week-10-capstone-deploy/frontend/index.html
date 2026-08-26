@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Chat</title>
+    <style>
+        body { font-family: -apple-system, system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; background: #f7fafc; }
+        h1 { font-size: 1.2rem; color: #1e8449; }
+        #messages { border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 16px; height: 420px; overflow-y: auto; margin-bottom: 12px; }
+        .msg { margin-bottom: 12px; line-height: 1.4; }
+        .msg .role { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; display: block; margin-bottom: 2px; }
+        .msg.user .role { color: #2563eb; }
+        .msg.assistant .role { color: #15803d; }
+        form { display: flex; gap: 8px; }
+        input { flex: 1; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.95rem; }
+        button { padding: 10px 18px; border: none; border-radius: 6px; background: #1e8449; color: #fff; font-weight: 600; cursor: pointer; }
+        button:disabled { opacity: 0.6; cursor: default; }
+    </style>
+</head>
+<body>
+    <h1>AI 410 — Chat</h1>
+    <div id="messages"></div>
+    <form id="chat-form">
+        <input id="chat-input" type="text" placeholder="Ask something…" autocomplete="off" autofocus />
+        <button type="submit" id="chat-submit">Send</button>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+</html>

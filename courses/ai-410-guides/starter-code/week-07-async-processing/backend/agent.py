@@ -4,12 +4,16 @@ solved and wired in below. No changes needed here this week; your
 Week 7 work is in queue_setup.py, jobs.py, worker.py, and main.py.
 """
 
+from dotenv import load_dotenv
 from google import genai
 
 from guardrails import ToolArgs, call_with_guardrail
 from retrieval import retrieve
 from tools import TOOLS, TOOL_FUNCTIONS
 
+load_dotenv()  # main.py also calls this, but agent.py is imported before
+                # that runs — this module needs its own env vars loaded
+                # before constructing the client below.
 client = genai.Client()
 MODEL = "gemini-flash-latest"
 MAX_TURNS = 5

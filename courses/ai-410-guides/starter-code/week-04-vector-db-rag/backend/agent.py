@@ -4,11 +4,15 @@ unchanged except the TODO block below, where you'll inject retrieved
 context before the first call to Gemini.
 """
 
+from dotenv import load_dotenv
 from google import genai
 
 from retrieval import retrieve
 from tools import TOOLS, TOOL_FUNCTIONS
 
+load_dotenv()  # main.py also calls this, but agent.py is imported before
+                # that runs — this module needs its own env vars loaded
+                # before constructing the client below.
 client = genai.Client()
 MODEL = "gemini-flash-latest"
 MAX_TURNS = 5

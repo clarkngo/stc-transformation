@@ -4,6 +4,7 @@ tracing (Week 9) are all solved and wired in below. Nothing new to
 build here this week; Week 10 is about deployment, not new features.
 """
 
+from dotenv import load_dotenv
 from google import genai
 from langfuse.decorators import observe
 
@@ -11,6 +12,9 @@ from guardrails import ToolArgs, call_with_guardrail
 from retrieval import retrieve
 from tools import TOOLS, TOOL_FUNCTIONS
 
+load_dotenv()  # main.py also calls this, but agent.py is imported before
+                # that runs — this module needs its own env vars loaded
+                # before constructing the client below.
 client = genai.Client()
 MODEL = "gemini-flash-latest"
 MAX_TURNS = 5

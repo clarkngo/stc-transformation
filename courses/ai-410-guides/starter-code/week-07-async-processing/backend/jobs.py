@@ -6,9 +6,13 @@ they don't return an HTTP response, they just do the work.
 import os
 
 import psycopg
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
+load_dotenv()  # main.py imports this module before calling load_dotenv()
+                # itself, so this module needs to load its own env vars
+                # before constructing the client below.
 client = genai.Client()
 EMBED_MODEL = "gemini-embedding-001"
 EMBED_DIM = 1024  # must match the vector(1024) column in schema.sql

@@ -3,7 +3,7 @@ Tool definitions for the agentic loop.
 
 Carried over from Week 2, already solved: a small "calculate" tool
 alongside the original "ping" dummy tool. Nothing to do here this
-week — your Week 4 work is in retrieval.py and agent.py.
+week.
 """
 
 import ast
@@ -43,14 +43,16 @@ def _calculate(expression: str, **kwargs):
 
 TOOLS = [
     {
+        "type": "function",
         "name": "ping",
         "description": "A no-op test tool that always returns 'pong'.",
-        "input_schema": {"type": "object", "properties": {}},
+        "parameters": {"type": "object", "properties": {}},
     },
     {
+        "type": "function",
         "name": "calculate",
         "description": "Evaluate a basic arithmetic expression, e.g. '342 * 87'. Supports +, -, *, /.",
-        "input_schema": {
+        "parameters": {
             "type": "object",
             "properties": {"expression": {"type": "string"}},
             "required": ["expression"],

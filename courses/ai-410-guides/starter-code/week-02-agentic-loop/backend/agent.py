@@ -14,10 +14,14 @@ model wants to run a tool; you run it locally and send a
 same interaction.
 """
 
+from dotenv import load_dotenv
 from google import genai
 
 from tools import TOOLS, TOOL_FUNCTIONS
 
+load_dotenv()  # main.py also calls this, but agent.py is imported before
+                # that runs — this module needs its own env vars loaded
+                # before constructing the client below.
 client = genai.Client()
 MODEL = "gemini-flash-latest"
 MAX_TURNS = 5  # hard ceiling so a misbehaving loop can't run forever

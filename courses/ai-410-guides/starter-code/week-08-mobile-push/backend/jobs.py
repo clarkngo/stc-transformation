@@ -7,12 +7,16 @@ See the TODO near the bottom of ingest_document_job().
 import os
 
 import psycopg
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
 from devices import get_push_token
 from push import send_push_notification
 
+load_dotenv()  # main.py imports this module before calling load_dotenv()
+                # itself, so this module needs to load its own env vars
+                # before constructing the client below.
 client = genai.Client()
 EMBED_MODEL = "gemini-embedding-001"
 EMBED_DIM = 1024

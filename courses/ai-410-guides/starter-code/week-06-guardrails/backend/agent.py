@@ -4,6 +4,7 @@ Week 6 job: apply the guardrail from guardrails.py around the tool
 call, using the schema you defined there.
 """
 
+from dotenv import load_dotenv
 from google import genai
 
 from retrieval import retrieve
@@ -12,6 +13,9 @@ from tools import TOOLS, TOOL_FUNCTIONS
 # TODO(week6): import your schema and call_with_guardrail once defined
 # from guardrails import call_with_guardrail, ToolArgs
 
+load_dotenv()  # main.py also calls this, but agent.py is imported before
+                # that runs — this module needs its own env vars loaded
+                # before constructing the client below.
 client = genai.Client()
 MODEL = "gemini-flash-latest"
 MAX_TURNS = 5

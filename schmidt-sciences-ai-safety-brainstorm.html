@@ -302,7 +302,7 @@
         </tr>
         <tr>
           <td><strong>Cost</strong></td>
-          <td>First pilot: <strong>~$200-500</strong> in API costs. Extended adversarial stress-test phase: <strong>$2K-10K</strong>. Sustained year-long operation (if funded): <strong>$20K-50K+</strong>. Recurring infra is trivial (~$25-50/mo). Grant itself: Tier 1 up to $300K, Tier 2 $300K-$1M.</td>
+          <td>A first pilot is low-cost in API terms; a sustained year-long operation, if funded, scales up from there. Recurring infra is trivial. Grant itself (Schmidt Sciences' published tiers): Tier 1 up to $300K, Tier 2 $300K-$1M.</td>
         </tr>
         <tr>
           <td><strong>Effort / timeline</strong></td>
@@ -1002,12 +1002,12 @@
         </tr>
         <tr>
           <td>Orchestration VM</td>
-          <td>Single DigitalOcean droplet, 2-4GB/2vCPU (~$18-24/mo)</td>
-          <td>Comparable to the ~$78/mo STC already pays for the Open edX instance — not a new category of spend</td>
+          <td>Single small DigitalOcean droplet, 2-4GB/2vCPU</td>
+          <td>Comparable to STC's existing Open edX hosting cost — not a new category of spend</td>
         </tr>
       </table>
 
-      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Cost of deployment (bottom-up, at current Claude API pricing: Sonnet 5 $2/$10 per M in/out, Haiku 4.5 $1/$5)</h3>
+      <h3 style="font-size: 0.95rem; margin: 20px 0 8px;">Cost of deployment (bottom-up, at current Claude API pricing)</h3>
       <table class="cluster-table">
         <tr>
           <th>Phase</th>
@@ -1016,33 +1016,33 @@
         </tr>
         <tr>
           <td>Pilot run</td>
-          <td>10 agents &times; 50 steps/day &times; 5 days, Sonnet 5 (~3.75M in / 0.75M out tokens)</td>
-          <td>~$15-18/run</td>
+          <td>10 agents &times; 50 steps/day &times; 5 days, Sonnet 5</td>
+          <td>Low, single-digit dollars per run</td>
         </tr>
         <tr>
           <td>Fidelity-comparison arm</td>
           <td>Same scenario re-run on Haiku 4.5</td>
-          <td>+$3-4/run</td>
+          <td>Marginal addition per run</td>
         </tr>
         <tr>
           <td>Dry runs + repeated trials</td>
           <td>~8-10 total runs, per CRUX's own recommended practice</td>
-          <td><strong>$150-300 total</strong></td>
+          <td><strong>Low hundreds of dollars total</strong></td>
         </tr>
         <tr>
           <td>Extended adversarial stress-test phase</td>
           <td>50-100 agents, adversarial/misaligned-principal trials, longer horizons</td>
-          <td><strong>$2K-10K</strong></td>
+          <td><strong>Low thousands</strong></td>
         </tr>
         <tr>
           <td>Sustained year-long operation</td>
-          <td>Comparable to AI Village's published ~$50K/yr for months-long multi-agent operation</td>
-          <td><strong>$20K-50K+</strong></td>
+          <td>Comparable to AI Village's published range for months-long multi-agent operation</td>
+          <td><strong>Tens of thousands</strong></td>
         </tr>
       </table>
 
       <div class="callout callout-green" style="margin-top: 14px;">
-        <strong>Bottom line:</strong> a first pilot generating real evidence for a proposal costs roughly <strong>$200-500 in API costs plus 3-6 weeks of engineering time</strong> — materially cheaper than the "low five figures" ballpark in <a href="#resources">What It Would Take From Us</a>, because reusing Park et al.'s and MPAC's existing code avoids the biggest cost driver: building a testbed from scratch. Recurring infra (~$25-50/mo) is trivial next to the API cost.
+        <strong>Bottom line:</strong> a first pilot generating real evidence for a proposal is low-cost in API terms plus 3-6 weeks of engineering time — materially cheaper than the "low five figures" ballpark in <a href="#resources">What It Would Take From Us</a>, because reusing Park et al.'s and MPAC's existing code avoids the biggest cost driver: building a testbed from scratch. Recurring infra is trivial next to the API cost.
       </div>
     </div>
   </div>
@@ -1228,12 +1228,12 @@
         </tr>
         <tr>
           <td>Scheming-classifier pass, pilot scale</td>
-          <td>~$3-4 (2,500 events &times; ~800 in / 100 out tokens on Haiku 4.5)</td>
+          <td>A few dollars, at pilot scale on Haiku 4.5</td>
           <td>Cheap model, short classification prompts</td>
         </tr>
         <tr>
           <td>Metric computation + collapse detection</td>
-          <td>~$0 (no LLM calls — runs on the same modest VM)</td>
+          <td>Negligible (no LLM calls — runs on the same modest VM)</td>
           <td>Pure statistics over already-generated logs</td>
         </tr>
       </table>
@@ -1285,13 +1285,13 @@
           <circle cx="210" cy="130" r="9" fill="#16a34a" stroke="#ffffff" stroke-width="2"></circle>
           <text x="228" y="120" font-size="12" font-weight="700" fill="#14532d">Cluster 2</text>
           <text x="228" y="135" font-size="10" fill="#166534">Analysis pipeline</text>
-          <text x="228" y="148" font-size="10" fill="#166534">2-4 wks, &lt;$50 pilot</text>
+          <text x="228" y="148" font-size="10" fill="#166534">2-4 wks, low-cost pilot</text>
 
           <!-- Cluster 1 point -->
           <circle cx="460" cy="330" r="9" fill="#1d4ed8" stroke="#ffffff" stroke-width="2"></circle>
           <text x="478" y="320" font-size="12" font-weight="700" fill="#1e3a8a">Cluster 1</text>
           <text x="478" y="335" font-size="10" fill="#1e40af">Testbed (+ MPAC)</text>
-          <text x="478" y="348" font-size="10" fill="#1e40af">3-6 wks, $200-500 pilot</text>
+          <text x="478" y="348" font-size="10" fill="#1e40af">3-6 wks, low-cost pilot</text>
         </svg>
         <div class="diagram-caption">Cluster 2 lands in "Quick Win" (matches existing data/stats faculty skills, low effort). Cluster 1 sits near "Strategic Bet" (needs systems/security engineering STC doesn't have in-house yet, higher effort) — reflects the scoped pilots above, not the unrealistic full-scale versions.</div>
       </div>
@@ -1314,7 +1314,7 @@
       </div>
       <div class="point">
         <span class="point-label lbl-green">Budget</span>
-        <div class="point-body">Low five figures ($5K–$20K) for a scoped pilot, based on comparable published experiments ($200–$50K/yr range depending on scale).</div>
+        <div class="point-body">Low five figures for a scoped pilot, based on comparable published experiments at similar scale.</div>
       </div>
       <div class="point">
         <span class="point-label lbl-blue">Infrastructure</span>

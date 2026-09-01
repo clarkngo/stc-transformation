@@ -23,6 +23,13 @@
         .done-box ul { margin:0; padding-left:20px; }
         .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -54,30 +61,130 @@
         <h4>What you'll need</h4>
         <ul class="needs-list">
             <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/week-04-vector-db-rag" target="_blank" rel="noopener">this week's starter-code folder</a> — includes the Week 2 agent, a working <code>ingest.py</code>, and a <code>retrieve()</code> stub to fill in</li>
-            <li>A Supabase project (connection string) with the <code>pgvector</code> extension already enabled</li>
+            <li>A free <a href="https://supabase.com" target="_blank" rel="noopener">Supabase</a> account — this is where your document chunks and their vectors will actually live</li>
         </ul>
+
+        <div class="diagram-box">
+            <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="w4arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker>
+                </defs>
+
+                <rect x="10" y="80" width="130" height="50" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="75" y="109" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">User message</text>
+
+                <line x1="140" y1="105" x2="196" y2="105" stroke="#334155" stroke-width="1.5" marker-end="url(#w4arrow)"/>
+
+                <rect x="200" y="80" width="130" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="265" y="102" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">retrieve()</text>
+                <text x="265" y="118" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">embed + search Supabase</text>
+
+                <line x1="330" y1="105" x2="386" y2="105" stroke="#334155" stroke-width="1.5" marker-end="url(#w4arrow)"/>
+                <text x="358" y="95" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">top chunks</text>
+
+                <rect x="390" y="80" width="150" height="50" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="465" y="102" text-anchor="middle" font-size="12" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">system_instruction</text>
+                <text x="465" y="118" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">"use this context..."</text>
+
+                <line x1="540" y1="105" x2="596" y2="105" stroke="#334155" stroke-width="1.5" marker-end="url(#w4arrow)"/>
+
+                <rect x="600" y="80" width="90" height="50" rx="8" fill="#ede9fe" stroke="#7c3aed"/>
+                <text x="645" y="109" text-anchor="middle" font-size="12" font-weight="700" fill="#6d28d9" font-family="Inter,system-ui,sans-serif">Gemini</text>
+
+                <rect x="200" y="10" width="130" height="45" rx="8" fill="#fff" stroke="#94a3b8" stroke-dasharray="3,3"/>
+                <text x="265" y="27" text-anchor="middle" font-size="11" font-weight="700" fill="#334155" font-family="Inter,system-ui,sans-serif">Supabase</text>
+                <text x="265" y="42" text-anchor="middle" font-size="9" fill="#64748b" font-family="Inter,system-ui,sans-serif">documents table (pgvector)</text>
+                <line x1="265" y1="55" x2="265" y2="76" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#w4arrow)"/>
+
+                <text x="350" y="180" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Inter,system-ui,sans-serif">Without retrieve(), Gemini only knows general knowledge — with it, it's grounded in YOUR documents.</text>
+            </svg>
+            <div class="diagram-caption">Retrieval-Augmented Generation: retrieve first, then let the model answer using what it found.</div>
+        </div>
 
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Create the table</h4>In the Supabase SQL editor, run the provided schema — a <code>documents</code> table with a <code>vector</code> column sized to match your embedding model's dimensions exactly:
+            <li><h4>Create a free Supabase project</h4>
+                <ol type="a">
+                    <li>Go to <a href="https://supabase.com" target="_blank" rel="noopener">supabase.com</a>, sign up, and click <strong>New project</strong>.</li>
+                    <li>Give it any name, set a database password (save it somewhere — you'll need it in a moment), and pick the region closest to you.</li>
+                    <li>Wait a minute or two for it to finish provisioning.</li>
+                    <li>Once it's ready, go to <strong>Project Settings → Database</strong> and copy the <strong>Connection string</strong> (URI format). It looks like <code>postgresql://postgres:[YOUR-PASSWORD]@db.xxxx.supabase.co:5432/postgres</code>.</li>
+                </ol>
+                <div class="explain"><strong>What is Supabase, really?</strong> Underneath, it's just a regular Postgres database (the same kind of database used all over the software industry) that Supabase hosts for you for free, plus a nice web dashboard. You're going to use one special feature of it: the <code>pgvector</code> extension, which teaches Postgres how to store embedding vectors and search them by similarity — turning it into the "vector database" this week is named after.</div>
+                Copy your project's connection string into <code>backend/.env</code> as <code>DATABASE_URL</code>, alongside the <code>GEMINI_API_KEY</code> you already have from Week 1.
+            </li>
+            <li><h4>Create the table</h4>In your Supabase project's dashboard, click <strong>SQL Editor</strong> in the left sidebar, paste in the contents of this week's <code>backend/schema.sql</code>, and click <strong>Run</strong>:
 <pre>create extension if not exists vector;
 
-create table documents (
-  id bigserial primary key,
-  content text,
-  embedding vector(1024)  -- must match your embedding model's output size
-);</pre></li>
-            <li><h4>Load your chunks</h4>Re-run your Week 3 ingestion script, but this time <code>INSERT</code> each chunk and its vector into the table instead of holding it in a Python list.</li>
-            <li><h4>Verify the load</h4>Run <code>select count(*) from documents;</code> and spot-check one row in Supabase's table editor.</li>
-            <li><h4>Write a retrieve() function</h4>Embed the incoming query the same way you embedded documents, then use pgvector's distance operator to find the closest matches:
-<pre>def retrieve(query, k=5):
-    q_vec = embed(query)
-    return db.execute(
+create table if not exists documents (
+    id bigserial primary key,
+    content text not null,
+    embedding vector(1024) not null,
+    source text
+);</pre>
+                <div class="explain">
+                <strong>Line by line:</strong>
+                <ul>
+                    <li><code>create extension if not exists vector;</code> — turns on the pgvector extension for this database. Without this line, Postgres has no idea what a <code>vector</code> column type even is.</li>
+                    <li><code>embedding vector(1024)</code> — a column that stores exactly 1024 numbers per row. This <strong>must</strong> match the <code>output_dimensionality</code> you asked for from Gemini's embedding model in Week 3 — if they don't match, inserting a row will fail with an error.</li>
+                    <li><code>content text</code> — the actual chunk text, stored right alongside its vector, so a search can return the readable text, not just numbers.</li>
+                    <li><code>source text</code> — which original file this chunk came from, handy for debugging later.</li>
+                </ul>
+                </div>
+            </li>
+            <li><h4>Load your chunks into the table</h4>Run the provided ingestion script, which chunks and embeds the same 5 sample documents from Week 3, then inserts every chunk into your new table:
+<pre>./venv/bin/python ingest.py</pre>
+                It should print a line per document showing how many chunks were inserted. Open your Supabase dashboard's <strong>Table Editor</strong>, click on <code>documents</code>, and confirm you see rows with real text in <code>content</code> and a long list of numbers in <code>embedding</code>.
+            </li>
+            <li><h4>Implement <code>retrieve()</code></h4>Open <code>backend/retrieval.py</code> — the function currently just raises <code>NotImplementedError</code>. Replace its body with:
+<pre>def retrieve(query: str, k: int = 5) -> list[str]:
+    result = client.models.embed_content(
+        model=EMBED_MODEL,
+        contents=query,
+        config=types.EmbedContentConfig(
+            task_type="RETRIEVAL_QUERY",
+            output_dimensionality=EMBED_DIM,
+        ),
+    )
+    q_vec = result.embeddings[0].values
+
+    conn = psycopg.connect(os.environ["DATABASE_URL"])
+    rows = conn.execute(
         "select content from documents order by embedding <-> %s limit %s",
         (q_vec, k),
-    ).fetchall()</pre></li>
-            <li><h4>Wire it into the agent loop</h4>Before calling Gemini, call <code>retrieve()</code> on the user's message and inject the top chunks as context — via <code>system_instruction</code> ("Use the following context to answer the question...").</li>
-            <li><h4>Prove it's working — both ways</h4>Ask a question that can only be answered from your sample docs, and confirm the agent gets it right. Then temporarily disable retrieval and ask the same question again — the agent should now guess wrong or admit it doesn't know. That contrast is the proof RAG is actually doing something.</li>
+    ).fetchall()
+    conn.close()
+    return [row[0] for row in rows]</pre>
+                <div class="explain">
+                <strong>Line by line:</strong>
+                <ul>
+                    <li><code>task_type="RETRIEVAL_QUERY"</code> — notice this is different from <code>ingest.py</code>, which uses <code>"RETRIEVAL_DOCUMENT"</code>. Same embedding model, but told which side of the search this text is on, which changes how it optimizes the resulting vector slightly.</li>
+                    <li><code>psycopg.connect(os.environ["DATABASE_URL"])</code> — opens a connection to your Supabase Postgres database using the connection string you saved in <code>.env</code>. <code>psycopg</code> is the Python library for talking to Postgres.</li>
+                    <li><code>order by embedding &lt;-&gt; %s limit %s</code> — this is pgvector's distance operator. <code>&lt;-&gt;</code> computes how "far apart" two vectors are; ordering by it ascending puts the closest (most similar) chunks first. <code>%s</code> are placeholders, safely filled in with <code>q_vec</code> and <code>k</code> — never build this SQL string with Python f-strings or <code>+</code>, which would open you up to SQL injection.</li>
+                    <li><code>[row[0] for row in rows]</code> — each row comes back as a tuple like <code>("some chunk text",)</code>; this pulls out just the text.</li>
+                </ul>
+                </div>
+            </li>
+            <li><h4>Wire retrieval into the agent</h4>Open <code>backend/agent.py</code>. Find the commented-out <code>TODO(week4)</code> block at the top of <code>run_agent()</code> and uncomment/complete it so the function starts like this:
+<pre>def run_agent(user_message: str) -> str:
+    chunks = retrieve(user_message, k=5)
+    context = "\n\n".join(chunks)
+    system_instruction = (
+        "Use the following context to answer the user's question. "
+        "If the answer isn't in the context, say you don't know.\n\n"
+        f"{context}"
+    )
+
+    interaction = client.interactions.create(
+        model=MODEL,
+        input=user_message,
+        tools=TOOLS,
+        system_instruction=system_instruction,
+    )</pre>
+                Then find the <strong>second</strong> <code>interactions.create()</code> call further down (inside the tool-calling loop) and add <code>system_instruction=system_instruction</code> there too — the model needs that context on every turn of the conversation, not just the first one.
+                <div class="explain"><strong>Why <code>system_instruction</code> and not just adding it to the user's message?</strong> A system instruction is treated as background guidance for the model's behavior, separate from what the user actually said — this keeps the user's question clean (useful for logging/debugging) and is the mechanism Gemini expects for "here's context, use it" instructions.</div>
+            </li>
+            <li><h4>Prove it's working — both ways</h4>Restart the server, then in the chat UI ask something that can <em>only</em> be answered from your sample documents (they're a fictional outdoor-gear company's policies) — for example, <strong>"How long do I have to return an item?"</strong> It should answer correctly, citing the 30-day window from the sample <code>return-policy.md</code> doc. Now temporarily comment out the <code>chunks = retrieve(...)</code> line (and just set <code>context = ""</code>) and ask the exact same question again — the model should now guess incorrectly or say it doesn't have enough information. That contrast — right answer with retrieval, wrong or vague answer without it — is your proof that RAG is actually doing something, not just adding overhead.</li>
         </ol>
 
         <div class="done-box">

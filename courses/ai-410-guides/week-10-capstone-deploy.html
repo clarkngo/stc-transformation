@@ -23,6 +23,13 @@
         .done-box ul { margin:0; padding-left:20px; }
         .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -57,16 +64,90 @@
             <li>Everything from Weeks 1–9 working locally</li>
         </ul>
 
+        <div class="diagram-box">
+            <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="w10arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker>
+                </defs>
+                <rect x="10" y="15" width="140" height="45" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="80" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">Your phone (Expo Go)</text>
+
+                <line x1="150" y1="37" x2="196" y2="37" stroke="#334155" stroke-width="1.5" marker-end="url(#w10arrow)"/>
+
+                <rect x="200" y="15" width="150" height="45" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="275" y="35" text-anchor="middle" font-size="10" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">ai410-api (Render)</text>
+                <text x="275" y="49" text-anchor="middle" font-size="8" fill="#334155" font-family="Inter,system-ui,sans-serif">from Dockerfile</text>
+
+                <rect x="200" y="90" width="150" height="45" rx="8" fill="#ede9fe" stroke="#7c3aed"/>
+                <text x="275" y="110" text-anchor="middle" font-size="10" font-weight="700" fill="#6d28d9" font-family="Inter,system-ui,sans-serif">ai410-worker (Render)</text>
+                <text x="275" y="124" text-anchor="middle" font-size="8" fill="#334155" font-family="Inter,system-ui,sans-serif">SAME Dockerfile, diff. command</text>
+
+                <text x="180" y="80" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Inter,system-ui,sans-serif" transform="rotate(-90 180 80)">two separate services</text>
+                <path d="M 155 37 C 165 37, 165 112, 196 112" fill="none" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+
+                <rect x="400" y="15" width="120" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="460" y="37" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Gemini API</text>
+                <rect x="400" y="58" width="120" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="460" y="80" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Supabase</text>
+                <rect x="400" y="101" width="120" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="460" y="123" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Upstash Redis</text>
+                <rect x="400" y="144" width="120" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="460" y="166" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Langfuse</text>
+
+                <line x1="350" y1="37" x2="396" y2="30" stroke="#94a3b8" stroke-width="1" marker-end="url(#w10arrow)"/>
+                <line x1="350" y1="37" x2="396" y2="75" stroke="#94a3b8" stroke-width="1" marker-end="url(#w10arrow)"/>
+                <line x1="350" y1="112" x2="396" y2="75" stroke="#94a3b8" stroke-width="1" marker-end="url(#w10arrow)"/>
+                <line x1="350" y1="112" x2="396" y2="118" stroke="#94a3b8" stroke-width="1" marker-end="url(#w10arrow)"/>
+                <line x1="350" y1="37" x2="396" y2="161" stroke="#94a3b8" stroke-width="1" marker-end="url(#w10arrow)"/>
+                <line x1="350" y1="112" x2="396" y2="161" stroke="#94a3b8" stroke-width="1" marker-end="url(#w10arrow)"/>
+
+                <text x="320" y="210" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Inter,system-ui,sans-serif">Nothing runs on your laptop anymore — every piece is a hosted, always-on (or spin-up-on-request) service.</text>
+            </svg>
+            <div class="diagram-caption">The finished, deployed shape of everything you've built since Week 1.</div>
+        </div>
+
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Full local run-through first</h4>Before touching deployment, walk the entire pipeline end to end on your laptop: web/mobile client → chat → RAG → guardrails → async ingestion → push notification → traced in Langfuse. Fix anything that regressed since Week 9 now, while it's still easy to debug locally.</li>
-            <li><h4>Review the Dockerfile</h4>It packages your FastAPI backend. Confirm <code>requirements.txt</code> is current — a dependency you installed in Week 7 or 9 but never added to the file is the most common deploy-time surprise.</li>
-            <li><h4>Set every environment variable on the host</h4>Gemini API key, Supabase connection string, Upstash Redis URL, Langfuse keys, Expo credentials — set each one in the host's dashboard. Never commit them to the repo, even at this final stage.</li>
-            <li><h4>Deploy two services, not one</h4>Same lesson as Week 7: your API and your worker are separate processes. Deploy them as two services from the template, both pointed at the same managed Redis and database.</li>
-            <li><h4>Point the mobile app at the deployed backend</h4>Swap the API URL in your Expo project from your laptop's local address to the deployed one, and re-confirm push notifications still work against the live server.</li>
-            <li><h4>Re-run your Week 5 bottleneck list</h4>Against the deployed version this time. Did anything on that list only show up now that it's running somewhere other than your own machine (e.g. cold-start latency, a missing env var, a timeout that was fine locally)?</li>
-            <li><h4>Prepare a 5-minute live demo</h4>Upload a document and show it processing asynchronously (job status endpoint), ask a RAG-grounded question, trigger a push notification, and pull up the corresponding Langfuse trace — the whole pipeline, live, in front of the class.</li>
-            <li><h4>Present for critique</h4>Be ready to explain any part of the architecture — this is also where your Week 5 review and Week 9 critique get tested in front of an audience.</li>
+            <li><h4>Full local run-through first</h4>Before touching deployment, walk the entire pipeline end to end on your laptop: web/mobile client → chat → RAG → guardrails → async ingestion → push notification → traced in Langfuse. Fix anything that regressed since Week 9 now, while it's still easy to debug locally with full error messages in your own terminal.</li>
+            <li><h4>Push your code to GitHub</h4>Render deploys from a Git repository, so if your project isn't already on GitHub, create a new (private is fine) repository and push it now:
+<pre>git init
+git add .
+git commit -m "AI 410 capstone"
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO.git
+git push -u origin main</pre>
+                <div class="explain"><strong>Double-check before pushing:</strong> confirm your project has a <code>.gitignore</code> that excludes <code>venv/</code> and <code>.env</code> — you never want your real API keys ending up in a GitHub repo, even a private one. The starter code already includes one; if you copied files around manually, verify it's still there.</div>
+            </li>
+            <li><h4>Review the Dockerfile</h4>Open <code>backend/Dockerfile</code>:
+<pre>FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</pre>
+                <div class="explain">This describes, step by step, how to build a fresh container image containing your app: start from a base image with Python 3.12 already installed, install your dependencies from <code>requirements.txt</code>, copy in the rest of your code, and finally define the command that starts the server. Confirm <code>requirements.txt</code> is current — a package you installed in Week 7 or 9 but forgot to add to that file is the single most common deploy-time surprise, since it works fine on your laptop (where it's already installed) but fails on a brand-new container that's never seen it.</div>
+            </li>
+            <li><h4>Create a Render account and deploy via Blueprint</h4>
+                <ol type="a">
+                    <li>Go to <a href="https://render.com" target="_blank" rel="noopener">render.com</a>, sign up, and connect your GitHub account when prompted.</li>
+                    <li>Click <strong>New +</strong> → <strong>Blueprint</strong>.</li>
+                    <li>Select your repository, and point Render at the <code>backend/</code> folder (where <code>render.yaml</code> lives).</li>
+                    <li>Render reads <code>render.yaml</code> and shows you it's about to create <strong>two</strong> services — <code>ai410-api</code> and <code>ai410-worker</code> — both built from the same Dockerfile, matching the diagram above.</li>
+                    <li>Before clicking deploy, you'll be prompted to fill in the environment variables listed in <code>render.yaml</code> (they're marked <code>sync: false</code>, which means Render doesn't auto-fill them — you provide the real values). Fill in <code>GEMINI_API_KEY</code>, <code>DATABASE_URL</code>, <code>REDIS_URL</code>, and the <code>LANGFUSE_*</code> keys for <strong>both</strong> services, using the exact same real values from your local <code>.env</code>.</li>
+                </ol>
+                <div class="explain"><strong>Why two services from one file?</strong> This is the same lesson as Week 7, just at deploy time now: your API and your worker are separate running processes with separate jobs. <code>render.yaml</code> defines them as two entries under <code>services:</code> — the worker one overrides the Dockerfile's default startup command with <code>dockerCommand: python worker.py</code> instead of running <code>uvicorn</code>.</div>
+            </li>
+            <li><h4>Wait for both to deploy, then verify</h4>Render will build and start both services — this can take a few minutes the first time. Once both show a green "Live" status, copy your API service's public URL (something like <code>https://ai410-api.onrender.com</code>) and test it:
+<pre>curl https://ai410-api-YOUR-URL.onrender.com/health</pre>
+                You should get back <code>{"status": "ok"}</code>. If it fails, check that service's <strong>Logs</strong> tab in the Render dashboard first — almost every deploy failure at this stage is a missing or mistyped environment variable, and the logs will usually name exactly which one.
+            </li>
+            <li><h4>Point the mobile app at the deployed backend</h4>Open <code>mobile/src/api.js</code> and update <code>API_BASE</code> from your laptop's local IP to your new Render URL:
+<pre>export const API_BASE = "https://ai410-api-YOUR-URL.onrender.com";</pre>
+                Restart the Expo app on your phone and re-confirm chat and push notifications both still work — this time talking to your deployed server instead of your laptop.
+            </li>
+            <li><h4>Re-run your Week 5 bottleneck list</h4>Pull out your Week 5 Architecture & Bottleneck Review and go through it again, this time against the deployed version. Did anything on that list only show up now that it's running somewhere other than your own machine — cold-start latency after the free tier spins down, a timeout that was generous enough locally but not over the network, a missing environment variable you never noticed because your local <code>.env</code> papered over it?</li>
+            <li><h4>Prepare and give a 5-minute live demo</h4>Upload a document from your phone and show it processing asynchronously (poll the job status endpoint), ask a question that requires the RAG pipeline, wait for the push notification to arrive, and pull up the corresponding trace in Langfuse — the entire pipeline you've built since Week 1, live, running on infrastructure you don't have to keep your laptop open for.</li>
+            <li><h4>Present for critique</h4>Be ready to explain any part of the architecture, not just the happy path you rehearsed — this is where your Week 5 bottleneck review and Week 9 trace-based critique get tested in front of an audience. "I'm not sure, let me check the trace" is a perfectly good answer; guessing is not.</li>
         </ol>
 
         <div class="done-box">

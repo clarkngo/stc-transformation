@@ -23,6 +23,13 @@
         .done-box ul { margin:0; padding-left:20px; }
         .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -54,28 +61,79 @@
         <h4>What you'll need</h4>
         <ul class="needs-list">
             <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/week-09-observability" target="_blank" rel="noopener">this week's starter-code folder</a></li>
-            <li>A <a href="https://langfuse.com/docs" target="_blank" rel="noopener">Langfuse</a> project (public/secret key pair)</li>
+            <li>A free <a href="https://langfuse.com" target="_blank" rel="noopener">Langfuse</a> account</li>
             <li>Your working app through Week 8</li>
         </ul>
 
+        <div class="diagram-box">
+            <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="20" width="600" height="180" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="3,3"/>
+                <text x="40" y="42" font-size="11" font-weight="700" fill="#334155" font-family="Inter,system-ui,sans-serif">One trace = one call to run_agent()</text>
+
+                <rect x="40" y="55" width="560" height="35" rx="6" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="55" y="77" font-size="10" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">run_agent() — @observe()</text>
+                <text x="580" y="77" text-anchor="end" font-size="9" fill="#64748b" font-family="Inter,system-ui,sans-serif">total: 1.8s</text>
+
+                <rect x="60" y="100" width="260" height="32" rx="6" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="75" y="120" font-size="10" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">↳ retrieve() — @observe()</text>
+                <text x="305" y="120" text-anchor="end" font-size="9" fill="#64748b" font-family="Inter,system-ui,sans-serif">0.4s</text>
+
+                <rect x="60" y="140" width="260" height="32" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="75" y="160" font-size="10" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">↳ Gemini call</text>
+                <text x="305" y="160" text-anchor="end" font-size="9" fill="#64748b" font-family="Inter,system-ui,sans-serif">1.3s, 640 tokens</text>
+
+                <text x="340" y="120" font-size="9" fill="#94a3b8" font-family="Inter,system-ui,sans-serif">← each nested box is a "span" inside the trace</text>
+            </svg>
+            <div class="diagram-caption">What the Langfuse dashboard shows once both functions are decorated with @observe().</div>
+        </div>
+
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Install and configure the SDK</h4>
-<pre>pip install langfuse
-export LANGFUSE_PUBLIC_KEY="..."
-export LANGFUSE_SECRET_KEY="..."</pre>Set these in <strong>both</strong> your API process and your Week 7 worker process — they're separate programs with separate environments.</li>
-            <li><h4>Trace your main Gemini call</h4>
-<pre>from langfuse.decorators import observe
-
-@observe()
-def chat(message):
-    context = retrieve(message)
-    return client.messages.create(...)</pre></li>
-            <li><h4>Trace retrieval separately</h4>Wrap your Week 4 <code>retrieve()</code> function the same way, so it shows up as its own linked step inside the trace — not folded into the LLM call.</li>
-            <li><h4>Run some real traffic through it</h4>Send a handful of chat requests, then open the Langfuse dashboard and find those traces. Look at latency per step, token counts, and estimated cost for each one.</li>
-            <li><h4>Add one RAG-specific evaluation</h4>Even a basic heuristic counts — for example, a simple check (or a second, cheap LLM call) that scores whether the final answer actually used the retrieved context, versus ignoring it.</li>
-            <li><h4>Deliberately break something</h4>Ask a question outside your document set, or one you know trips your Week 6 guardrail. Find that specific trace in the dashboard.</li>
-            <li><h4>Write the critique</h4>A few sentences: what exactly went wrong, what the trace data shows about why (which step was slow, what the retrieved context actually contained, whether the guardrail fired), and one concrete change you'd make.</li>
+            <li><h4>Create a free Langfuse project</h4>
+                <ol type="a">
+                    <li>Go to <a href="https://cloud.langfuse.com" target="_blank" rel="noopener">cloud.langfuse.com</a> and sign up.</li>
+                    <li>Create a new project (any name).</li>
+                    <li>Go to <strong>Settings → API Keys</strong> and create a new key pair — you'll get a <strong>Public Key</strong> (starts with <code>pk-lf-...</code>) and a <strong>Secret Key</strong> (starts with <code>sk-lf-...</code>).</li>
+                </ol>
+                Add all three to <code>backend/.env</code>:
+<pre>LANGFUSE_PUBLIC_KEY=pk-lf-...
+LANGFUSE_SECRET_KEY=sk-lf-...
+LANGFUSE_HOST=https://cloud.langfuse.com</pre>
+                <div class="explain"><strong>Why do we need this at all?</strong> Right now, if a request is slow or wrong, your only way to find out why is guessing, or scattering <code>print()</code> statements everywhere and rerunning. Observability tools like Langfuse record what actually happened on every real request — timing, inputs, outputs, cost — automatically, so you can look at data instead of guessing after the fact.</div>
+                <strong>Important:</strong> set these same three variables in <strong>both</strong> your API's <code>.env</code> and make sure your Week 7 worker process picks them up too (it reads the same <code>.env</code> file via <code>load_dotenv()</code>, but if you ever set env vars a different way for the worker, don't forget this set).
+            </li>
+            <li><h4>Add tracing to the agent</h4>Open <code>backend/agent.py</code>. Uncomment the import at the top:
+<pre>from langfuse.decorators import observe</pre>
+                Then add <code>@observe()</code> directly above the <code>run_agent</code> function definition:
+<pre>@observe()
+def run_agent(user_message: str) -> str:
+    ...</pre>
+                <div class="explain"><strong>What <code>@observe()</code> actually does:</strong> it's a <em>decorator</em> — a wrapper that Python applies around your function without you having to change the function's own code. Every time <code>run_agent</code> runs, Langfuse automatically records when it started, when it ended, what arguments it received, and what it returned, and packages all of that up as a "trace" it sends to your Langfuse project.</div>
+            </li>
+            <li><h4>Trace retrieval as its own step</h4>Open <code>backend/retrieval.py</code>, uncomment the same import, and add <code>@observe()</code> above the <code>retrieve</code> function too:
+<pre>@observe()
+def retrieve(query: str, k: int = 5) -> list[str]:
+    ...</pre>
+                <div class="explain">Because <code>retrieve()</code> is called <em>from inside</em> <code>run_agent()</code>, Langfuse automatically nests it as a "span" inside the outer trace, rather than as a separate, disconnected trace — that's what produces the nested view in the diagram above. This distinction — one call to <code>retrieve()</code> vs. one call to Gemini, each timed separately — is exactly what lets you answer "which part was actually slow?" instead of only knowing the whole request took 1.8 seconds.</div>
+            </li>
+            <li><h4>Send some real traffic and find it in the dashboard</h4>Restart your server, send 4-5 different chat messages through the frontend, then go to your Langfuse project's <strong>Traces</strong> tab in the browser. Click into one. You should see the nested structure from the diagram above, with real numbers: latency for each step, the exact input and output text, and token/cost estimates for the Gemini call.</li>
+            <li><h4>Add one simple RAG evaluation</h4>Add this function to <code>agent.py</code> (a heuristic is enough — you don't need a second LLM call for this exercise, though that's a valid stretch goal):
+<pre>def score_faithfulness(answer: str, context: str) -> float:
+    """Rough heuristic: what fraction of the context's distinct words
+    show up in the answer? Not rigorous, but enough to spot when the
+    model is clearly ignoring the retrieved context."""
+    context_words = set(context.lower().split())
+    answer_words = set(answer.lower().split())
+    if not context_words:
+        return 0.0
+    overlap = context_words & answer_words
+    return len(overlap) / len(context_words)</pre>
+                Call it at the end of <code>run_agent()</code> right before returning, and log the score (a <code>print()</code> is fine for this exercise):
+<pre>score = score_faithfulness(answer, context)
+print(f"[eval] faithfulness score: {score:.2f}")</pre>
+            </li>
+            <li><h4>Deliberately break something</h4>Ask a question that's clearly outside your sample documents (something with no relation to a fictional outdoor-gear company's policies), or one you know trips your Week 6 guardrail. Go back to the Langfuse dashboard and find that exact trace.</li>
+            <li><h4>Write a short critique using the trace, not a guess</h4>A few sentences is enough: what exactly went wrong, what the trace data shows about <em>why</em> (which specific step was slow, what the retrieved context actually contained, whether your Week 6 guardrail fired), and one concrete change you'd make. The point of this step is that every claim in your critique should be something you can point to in the trace — not something you're inferring from memory.</li>
         </ol>
 
         <div class="done-box">

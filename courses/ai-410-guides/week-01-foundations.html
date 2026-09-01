@@ -23,6 +23,13 @@
         .done-box ul { margin:0; padding-left:20px; }
         .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -59,28 +66,116 @@
             <li>A free Gemini API key (no credit card required) from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></li>
         </ul>
 
+        <div class="diagram-box">
+            <svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="w1arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker>
+                </defs>
+                <rect x="10" y="55" width="180" height="60" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="100" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">Browser</text>
+                <text x="100" y="98" text-anchor="middle" font-size="11" fill="#334155" font-family="Inter,system-ui,sans-serif">frontend/index.html</text>
+
+                <rect x="270" y="55" width="180" height="60" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="360" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">Your Backend</text>
+                <text x="360" y="98" text-anchor="middle" font-size="11" fill="#334155" font-family="Inter,system-ui,sans-serif">FastAPI /chat</text>
+
+                <rect x="530" y="55" width="180" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="620" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Gemini API</text>
+                <text x="620" y="98" text-anchor="middle" font-size="11" fill="#334155" font-family="Inter,system-ui,sans-serif">Google's servers</text>
+
+                <line x1="190" y1="70" x2="266" y2="70" stroke="#334155" stroke-width="1.5" marker-end="url(#w1arrow)"/>
+                <text x="228" y="60" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">1. POST /chat</text>
+
+                <line x1="450" y1="70" x2="526" y2="70" stroke="#334155" stroke-width="1.5" marker-end="url(#w1arrow)"/>
+                <text x="488" y="60" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">2. interactions.create()</text>
+
+                <line x1="526" y1="105" x2="450" y2="105" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#w1arrow)"/>
+                <text x="488" y="122" text-anchor="middle" font-size="10" fill="#64748b" font-family="Inter,system-ui,sans-serif">3. reply text</text>
+
+                <line x1="266" y1="105" x2="190" y2="105" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#w1arrow)"/>
+                <text x="228" y="122" text-anchor="middle" font-size="10" fill="#64748b" font-family="Inter,system-ui,sans-serif">4. {reply}</text>
+
+                <text x="360" y="155" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Inter,system-ui,sans-serif">The frontend never talks to Gemini directly — only your backend holds the API key.</text>
+            </svg>
+            <div class="diagram-caption">The request/response path you're building this week.</div>
+        </div>
+
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Read the stub before touching it</h4>Open <code>backend/main.py</code>. Find the <code>/chat</code> handler — right now it just returns a hardcoded string. Note the shape: it receives a JSON body with a <code>message</code> field and returns JSON with a <code>reply</code> field. That shape doesn't change all term; only what happens inside the handler does.</li>
-            <li><h4>Set your API key as an environment variable</h4>Never paste it directly into a file you might commit.
-<pre>export GEMINI_API_KEY="your-key-here"</pre></li>
-            <li><h4>Install dependencies</h4>
+            <li><h4>Get your bearings</h4>Open the starter-code folder in your code editor (VS Code, or whatever you're using) and open a terminal in that same folder. You should see two subfolders:
+                <ol type="a">
+                    <li><code>backend/</code> — a small Python web server (using a framework called <strong>FastAPI</strong>) that will do the actual talking to Gemini.</li>
+                    <li><code>frontend/</code> — a plain HTML page with some JavaScript that gives you a chat box in the browser, and sends whatever you type to the backend.</li>
+                </ol>
+                <div class="explain"><strong>Why two folders?</strong> This is the "full-stack" in "full-stack AI systems" — a <em>frontend</em> (what the user sees and clicks) talking over the network to a <em>backend</em> (the server that holds your API key and does the real work). The frontend never talks to Gemini directly; it only ever talks to your own backend. You'll keep this same two-part shape for the rest of the course.</div>
+            </li>
+            <li><h4>Create a Python virtual environment</h4>In your terminal, move into the <code>backend</code> folder and create a "venv":
 <pre>cd backend
-pip install -r requirements.txt   # fastapi, uvicorn, google-genai</pre></li>
-            <li><h4>Replace the stub with a real Gemini call</h4>
+python3 -m venv venv</pre>
+                <div class="explain"><strong>What this does:</strong> <code>python3 -m venv venv</code> creates a new folder called <code>venv</code> containing a private, self-contained copy of Python just for this project. Any packages you install next go inside that folder, not onto your whole computer. This matters because different projects (and different weeks of this course) can need different, sometimes conflicting, package versions — a venv keeps them from stepping on each other.</div>
+            </li>
+            <li><h4>Activate the virtual environment</h4>
+<pre>source venv/bin/activate</pre>
+                <div class="explain"><strong>What this does:</strong> tells your <em>current terminal window</em> to use the Python and packages inside <code>venv/</code> instead of whatever Python is installed system-wide. You'll know it worked if your terminal prompt now starts with <code>(venv)</code>. You have to do this again every time you open a <strong>new</strong> terminal window or tab for this project — it doesn't stay on permanently.</div>
+            </li>
+            <li><h4>Install the project's dependencies</h4>
+<pre>pip install -r requirements.txt</pre>
+                <div class="explain"><strong>What this does:</strong> <code>requirements.txt</code> is a plain text list of the exact packages (and versions) this project needs — <code>fastapi</code> (the web framework), <code>uvicorn</code> (the program that actually runs a FastAPI server), and <code>google-genai</code> (Google's Python library for calling Gemini). <code>pip</code> is Python's package installer; this command reads the list and installs everything into your activated venv.</div>
+            </li>
+            <li><h4>Get a free Gemini API key</h4>An API key is like a password that identifies you (or your app) to Google's Gemini service, so it knows who's making requests and can apply your free usage limits.
+                <ol type="a">
+                    <li>Go to <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with any Google account.</li>
+                    <li>Click <strong>Create API key</strong>.</li>
+                    <li>Copy the long string it gives you (it starts with something like <code>AIza...</code>). Keep this tab open — you'll paste it in the next step.</li>
+                </ol>
+                <div class="explain">No credit card is required for this. Treat this key like a password: anyone who has it can make Gemini requests billed to your account. Never paste it into a file you commit to Git, or share it in a chat/screenshot.</div>
+            </li>
+            <li><h4>Store your API key in a <code>.env</code> file</h4>The starter code includes a file called <code>.env.example</code> — a template showing what environment variables the project expects, with fake placeholder values. Copy it to a real <code>.env</code> file and fill in your real key:
+<pre>cp .env.example .env</pre>
+                Now open the new <code>.env</code> file in your editor and replace the placeholder so it looks like this (using your own key, not this example one):
+<pre>GEMINI_API_KEY=AIzaSyD-your-real-key-goes-right-here</pre>
+                <div class="explain"><strong>Why a <code>.env</code> file instead of pasting the key into the code?</strong> Two reasons. First, it keeps secrets out of your source code, so you can safely share or commit your code without leaking the key. Second, this project already has a <code>.gitignore</code> rule that excludes <code>.env</code> from Git, so it's very hard to accidentally commit it by mistake. A small Python library called <code>python-dotenv</code> (already installed via <code>requirements.txt</code>) reads this file at startup and makes <code>GEMINI_API_KEY</code> available to your code as if it were a normal environment variable.</div>
+            </li>
+            <li><h4>Read the stub before touching it</h4>Open <code>backend/main.py</code> in your editor. Find the function that looks like this:
+<pre>@app.post("/chat", response_model=ChatResponse)
+def chat(body: ChatRequest) -> ChatResponse:
+    # TODO(week1): replace this stub with a real call to Gemini.
+    ...
+    return ChatResponse(reply=f"(stub reply) You said: {body.message!r}")</pre>
+                <div class="explain"><strong>What this already does:</strong> <code>@app.post("/chat", ...)</code> tells FastAPI "when a POST request arrives at the web address <code>/chat</code>, run this function." <code>body: ChatRequest</code> means FastAPI automatically reads the incoming JSON (like <code>{"message": "hi"}</code>) and hands it to you as a typed Python object with a <code>.message</code> field — you don't have to parse JSON by hand. Whatever this function <code>return</code>s gets automatically converted back into JSON and sent to whoever asked (in this case, the frontend chat page). Right now it just echoes your message back with "(stub reply)" in front — that's the placeholder you're about to replace.</div>
+            </li>
+            <li><h4>Replace the stub with a real Gemini call</h4>Delete the body of the <code>chat</code> function (everything between the <code>def chat(...):</code> line and the final <code>return</code>) and replace it with this:
 <pre>from google import genai
-client = genai.Client()
 
-@app.post("/chat")
-def chat(body: ChatRequest):
+client = genai.Client()  # reads GEMINI_API_KEY from the environment automatically
+
+
+@app.post("/chat", response_model=ChatResponse)
+def chat(body: ChatRequest) -> ChatResponse:
     interaction = client.interactions.create(
         model="gemini-flash-latest",
         input=body.message,
     )
-    return {"reply": interaction.output_text}</pre></li>
-            <li><h4>Run it</h4>
-<pre>./venv/bin/uvicorn main:app --reload</pre>Use the venv's own <code>uvicorn</code> binary (not just <code>uvicorn</code>) — if your system already has a global <code>uvicorn</code> or <code>google-genai</code> install, an unactivated shell will silently run those instead of the ones in this project's venv. Open <code>frontend/index.html</code> in your browser and send a message. You should get back a real, coherent answer — not the placeholder text.</li>
-            <li><h4>Understand what just happened</h4>Look at the raw <code>interaction</code> object (print it before reading <code>.output_text</code>) — it's built from a list of <code>steps</code>, which is the same structure you'll use for tool calls starting next week. Note the usage/token fields on the response — this is the token budget you'll be thinking about all term, and the context window is simply the ceiling on how much of that budget one request can use.</li>
+    return ChatResponse(reply=interaction.output_text)</pre>
+                <div class="explain">
+                <strong>Line by line:</strong>
+                <ul>
+                    <li><code>from google import genai</code> — imports Google's Gemini library (installed in step 4).</li>
+                    <li><code>client = genai.Client()</code> — creates one reusable connection object. Calling <code>genai.Client()</code> with no arguments makes it look for <code>GEMINI_API_KEY</code> in your environment — the value you put in <code>.env</code> in step 6. Put this line <strong>outside</strong> the function (at the top level of the file) so it only runs once when the server starts, not on every single chat message.</li>
+                    <li><code>client.interactions.create(...)</code> — this is the actual network call to Google's servers. <code>model="gemini-flash-latest"</code> picks which Gemini model answers; <code>input=body.message</code> is the text the user typed.</li>
+                    <li><code>interaction.output_text</code> — the model's plain-text answer, pulled out of the larger response object (more on that object's shape in the last step below).</li>
+                </ul>
+                </div>
+            </li>
+            <li><h4>Run the server</h4>
+<pre>./venv/bin/uvicorn main:app --reload</pre>
+                <div class="explain"><strong>Why <code>./venv/bin/uvicorn</code> and not just <code>uvicorn</code>?</strong> If your computer already has a <code>uvicorn</code> or <code>google-genai</code> installed somewhere else (a different project, a different Python version), typing the bare word <code>uvicorn</code> can accidentally run <em>that</em> one instead of the one you just installed in your venv — even if you activated it. Calling the file directly by its path (<code>./venv/bin/uvicorn</code>) removes all doubt about which one runs. <code>--reload</code> makes the server automatically restart every time you save a change to <code>main.py</code>, which you'll do a lot this term.</div>
+                You should see output ending in a line like <code>Uvicorn running on http://127.0.0.1:8000</code>. Leave this terminal window open and running — closing it stops your server.
+            </li>
+            <li><h4>Open the frontend and test it</h4>In Finder/Explorer, double-click <code>frontend/index.html</code> (or run <code>open frontend/index.html</code> on macOS). It opens in your browser as a simple chat page. Type a question and hit Send.
+                <div class="explain">Behind the scenes: the page's JavaScript sends your message to <code>http://127.0.0.1:8000/chat</code> (your running backend), which calls Gemini and sends the reply back, which the page then displays. If nothing happens, check your terminal — errors from the backend show up there, not in the browser.</div>
+            </li>
+            <li><h4>Understand what just happened</h4>Temporarily add <code>print(interaction)</code> right before the <code>return</code> line in <code>main.py</code>, save, and send another message. Look at your terminal output. You'll see the full <code>interaction</code> object — it's built from a list called <code>steps</code> (right now just one text step), plus token-usage numbers. That same <code>steps</code> list is what you'll inspect starting next week to detect when the model wants to use a tool. The token-usage numbers matter too: every request has a limited "context window" — a ceiling on how much text (your message + the model's reply, measured in tokens) one request can contain. You can remove the <code>print()</code> line once you've looked at it.</li>
         </ol>
 
         <div class="done-box">
@@ -94,7 +189,7 @@ def chat(body: ChatRequest):
         <div class="snag-box">
             <h4>Common snags</h4>
             <ul>
-                <li><strong>"invalid API key"</strong> — check the environment variable name matches exactly, and that you restarted the terminal/server after setting it.</li>
+                <li><strong>"No API key was provided" or "invalid API key"</strong> — check that your <code>.env</code> file (not <code>.env.example</code>) contains the real key under the exact name <code>GEMINI_API_KEY</code>, with no quotes or extra spaces, and that you stopped and restarted <code>uvicorn</code> after editing <code>.env</code> — it's only read once, at startup.</li>
                 <li><strong>CORS errors in the browser console</strong> — the starter repo's CORS middleware already handles this; don't remove or "simplify" it.</li>
                 <li><strong>Reply looks empty or broken</strong> — confirm you're reading <code>interaction.output_text</code> and not the whole interaction object.</li>
             </ul>

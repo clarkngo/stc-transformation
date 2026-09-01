@@ -23,6 +23,13 @@
         .done-box ul { margin:0; padding-left:20px; }
         .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -54,30 +61,135 @@
         <h4>What you'll need</h4>
         <ul class="needs-list">
             <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/week-07-async-processing" target="_blank" rel="noopener">this week's starter-code folder</a> — includes working queue/worker boilerplate</li>
-            <li>A managed Redis instance (Upstash free tier) connection URL</li>
+            <li>A free <a href="https://upstash.com" target="_blank" rel="noopener">Upstash</a> account — this gives you a managed Redis database, which is what the job queue runs on</li>
         </ul>
+
+        <div class="diagram-box">
+            <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="w7arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker>
+                </defs>
+
+                <rect x="10" y="20" width="130" height="50" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="75" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">POST /documents</text>
+                <text x="75" y="58" text-anchor="middle" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">(your API process)</text>
+
+                <line x1="140" y1="45" x2="196" y2="45" stroke="#334155" stroke-width="1.5" marker-end="url(#w7arrow)"/>
+                <text x="168" y="35" text-anchor="middle" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">enqueue()</text>
+
+                <rect x="200" y="20" width="130" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="265" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Redis queue</text>
+                <text x="265" y="58" text-anchor="middle" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">(Upstash)</text>
+
+                <line x1="140" y1="60" x2="140" y2="90" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#w7arrow)"/>
+                <rect x="10" y="90" width="130" height="45" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="75" y="117" text-anchor="middle" font-size="11" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">{"job_id": ...}</text>
+                <text x="75" y="150" text-anchor="middle" font-size="9" fill="#64748b" font-family="Inter,system-ui,sans-serif">returned instantly</text>
+
+                <line x1="330" y1="45" x2="386" y2="45" stroke="#334155" stroke-width="1.5" marker-end="url(#w7arrow)"/>
+                <text x="358" y="35" text-anchor="middle" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">pulls jobs</text>
+
+                <rect x="390" y="20" width="150" height="50" rx="8" fill="#ede9fe" stroke="#7c3aed"/>
+                <text x="465" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9" font-family="Inter,system-ui,sans-serif">worker.py</text>
+                <text x="465" y="58" text-anchor="middle" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">a SEPARATE process</text>
+
+                <line x1="465" y1="70" x2="465" y2="100" stroke="#334155" stroke-width="1.5" marker-end="url(#w7arrow)"/>
+                <rect x="390" y="100" width="150" height="50" rx="8" fill="#fee2e2" stroke="#ef4444"/>
+                <text x="465" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c" font-family="Inter,system-ui,sans-serif">ingest_document_job()</text>
+                <text x="465" y="138" text-anchor="middle" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">chunk → embed → insert</text>
+
+                <text x="320" y="190" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Inter,system-ui,sans-serif">Meanwhile, /chat requests keep flowing through your API — ingestion runs somewhere else entirely.</text>
+            </svg>
+            <div class="diagram-caption">The API and the worker are two separate running programs, connected only through the Redis queue.</div>
+        </div>
 
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Understand the two pieces before writing code</h4>The boilerplate has two files: an <code>enqueue()</code> helper that adds a job to the Redis queue, and a <code>worker.py</code> — a separate long-running process that pulls jobs off the queue and runs them, one at a time, outside your API's request/response cycle.</li>
-            <li><h4>Turn ingestion into a job function</h4>Take your existing chunk → embed → insert logic and move it into a plain function the worker can call — it no longer needs to return an HTTP response, just do the work.
-<pre>def ingest_job(doc_path):
-    chunks = chunk_document(doc_path)
-    vectors = embed(chunks)
-    insert_into_db(chunks, vectors)</pre></li>
-            <li><h4>Change the upload endpoint</h4>Instead of running ingestion inline, enqueue it and return immediately:
+            <li><h4>Create a free Upstash Redis database</h4>
+                <ol type="a">
+                    <li>Go to <a href="https://upstash.com" target="_blank" rel="noopener">upstash.com</a>, sign up, and click <strong>Create database</strong>.</li>
+                    <li>Choose the Redis type, give it any name, and pick a region close to you.</li>
+                    <li>On the database's page, find the <strong>Redis connection string / URL</strong> — it looks like <code>rediss://default:xxxxx@your-instance.upstash.io:6379</code> — and copy it.</li>
+                </ol>
+                Paste it into <code>backend/.env</code> as <code>REDIS_URL</code>, alongside your existing <code>GEMINI_API_KEY</code> and <code>DATABASE_URL</code>.
+                <div class="explain"><strong>What is Redis, and why do we need it here?</strong> Redis is a very fast, simple database, commonly used as a message queue — a to-do list that one program (your API) can add tasks to, and a different program (your worker) can pick tasks off of, one at a time. That's exactly the job here: hand off "please ingest this document" without making the person who asked wait for it to finish.</div>
+            </li>
+            <li><h4>Understand the two pieces that are already written for you</h4>Open <code>backend/queue_setup.py</code> — this is complete, you shouldn't need to change it:
+<pre>from redis import Redis
+from rq import Queue
+
+redis_conn = Redis.from_url(os.environ["REDIS_URL"])
+queue = Queue("ai410-ingestion", connection=redis_conn)</pre>
+                <div class="explain"><code>rq</code> ("Redis Queue") is a small Python library that turns Redis into a job queue with almost no boilerplate. <code>redis_conn</code> is the raw connection; <code>queue</code> is the actual to-do list you'll add jobs to and that your worker will pull from.</div>
+                Now open <code>backend/worker.py</code>:
+<pre>from rq import Worker
+from queue_setup import queue, redis_conn
+
+if __name__ == "__main__":
+    worker = Worker([queue], connection=redis_conn)
+    worker.work()</pre>
+                <div class="explain"><code>worker.work()</code> starts an infinite loop: check the queue for a job, run it, check again, forever — until you stop the process. This file is meant to run as its <strong>own, separate program</strong>, not something your API starts automatically.</div>
+            </li>
+            <li><h4>Implement the job function</h4>Open <code>backend/jobs.py</code> — you'll see this raises <code>NotImplementedError</code>. Move your Week 4 ingestion logic in here, reading from a file path instead of the fixed sample-docs folder:
+<pre>def ingest_document_job(doc_path: str) -> dict:
+    with open(doc_path) as f:
+        text = f.read()
+
+    chunks = chunk_text(text)
+    result = client.models.embed_content(
+        model=EMBED_MODEL,
+        contents=chunks,
+        config=types.EmbedContentConfig(
+            task_type="RETRIEVAL_DOCUMENT",
+            output_dimensionality=EMBED_DIM,
+        ),
+    )
+    vectors = [e.values for e in result.embeddings]
+
+    conn = psycopg.connect(os.environ["DATABASE_URL"])
+    cur = conn.cursor()
+    for chunk, vector in zip(chunks, vectors):
+        cur.execute(
+            "insert into documents (content, embedding, source) values (%s, %s, %s)",
+            (chunk, vector, os.path.basename(doc_path)),
+        )
+    conn.commit()
+    conn.close()
+
+    return {"chunks_inserted": len(chunks)}</pre>
+                <div class="explain">This should look familiar — it's the same chunk → embed → insert steps from Week 4's <code>ingest.py</code>, just packaged as one function that a worker can call on any file path, instead of a script that only knows about the fixed sample-docs folder. <strong>Always <code>return</code> a plain dict here</strong> (not a custom object) — <code>rq</code> stores whatever you return as the job's result, and the status endpoint you write next needs to read it back.</div>
+            </li>
+            <li><h4>Make the upload endpoint asynchronous</h4>In <code>backend/main.py</code>, find the <code>/documents</code> endpoint. It currently calls <code>ingest_document_job</code> directly, which blocks the request until ingestion finishes. Replace that with:
 <pre>@app.post("/documents")
-def upload(doc: UploadedDoc):
-    job = queue.enqueue(ingest_job, doc.path)
-    return {"job_id": job.id}</pre></li>
-            <li><h4>Add a status endpoint</h4>
-<pre>@app.get("/jobs/{job_id}")
+def upload_document(body: UploadRequest):
+    job = queue.enqueue(ingest_document_job, body.doc_path)
+    return {"job_id": job.id}</pre>
+                <div class="explain"><code>queue.enqueue(...)</code> doesn't run <code>ingest_document_job</code> itself — it just drops a note on the Redis queue saying "someone please run this function, with these arguments, eventually." It returns instantly with a <code>job</code> object containing an <code>id</code>, regardless of how long the actual work takes.</div>
+            </li>
+            <li><h4>Add the job-status endpoint</h4>
+<pre>from rq.job import Job
+from queue_setup import redis_conn
+
+@app.get("/jobs/{job_id}")
 def job_status(job_id: str):
-    job = queue.fetch_job(job_id)
-    return {"status": job.get_status()}   # queued / started / finished / failed</pre></li>
-            <li><h4>Run the worker as its own process</h4>Keep <code>uvicorn</code> running in one terminal for your API, and in a <strong>second terminal</strong> start the worker:
-<pre>./venv/bin/python worker.py</pre>This is the core new idea this week: the worker is not started by your API — it's a separate program you have to remember to run. Use the venv's own binary here too, for the same reason as <code>uvicorn</code> in Week 1.</li>
-            <li><h4>Prove it end to end</h4>Upload a document, confirm you get a job ID back instantly (not after ingestion finishes), then poll <code>/jobs/{id}</code> until it flips to "finished." While it's still running, send a normal chat message and confirm the app stays responsive.</li>
+    job = Job.fetch(job_id, connection=redis_conn)
+    return {"status": job.get_status(), "result": job.result}</pre>
+                <div class="explain"><code>Job.fetch(job_id, ...)</code> looks up that same job by the ID you returned in the previous step. <code>job.get_status()</code> returns one of <code>"queued"</code>, <code>"started"</code>, <code>"finished"</code>, or <code>"failed"</code>; <code>job.result</code> is whatever dict your job function returned, once it's finished.</div>
+            </li>
+            <li><h4>Run both processes and prove it end to end</h4>You need <strong>two terminals</strong> open at once, both with the venv activated:
+<pre># Terminal 1 — the API
+./venv/bin/uvicorn main:app --reload
+
+# Terminal 2 — the worker
+./venv/bin/python worker.py</pre>
+                Then, from a third terminal (or a tool like <code>curl</code>), upload a document:
+<pre>curl -X POST http://127.0.0.1:8000/documents \
+  -H "Content-Type: application/json" \
+  -d '{"doc_path": "sample_docs/return-policy.md"}'</pre>
+                You should get a <code>job_id</code> back <strong>immediately</strong>. Copy it and poll the status endpoint:
+<pre>curl http://127.0.0.1:8000/jobs/YOUR-JOB-ID-HERE</pre>
+                Run that a few times — you should see <code>"queued"</code>, then <code>"started"</code>, then <code>"finished"</code>. While it's still processing, send a normal chat message through the frontend at the same time and confirm it responds instantly — that's the proof the two are running independently.
+            </li>
         </ol>
 
         <div class="done-box">

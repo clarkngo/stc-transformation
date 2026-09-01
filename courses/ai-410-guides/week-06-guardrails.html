@@ -23,6 +23,13 @@
         .done-box ul { margin:0; padding-left:20px; }
         .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -57,28 +64,95 @@
             <li>Your Week 5 Architecture &amp; Bottleneck Review</li>
         </ul>
 
+        <div class="diagram-box">
+            <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="w6arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker>
+                </defs>
+                <rect x="220" y="10" width="200" height="50" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="320" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">Gemini returns tool arguments</text>
+
+                <line x1="320" y1="60" x2="320" y2="95" stroke="#334155" stroke-width="1.5" marker-end="url(#w6arrow)"/>
+
+                <rect x="200" y="95" width="240" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="320" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">ToolArgs.model_validate(args)</text>
+
+                <line x1="200" y1="120" x2="70" y2="120" stroke="#334155" stroke-width="1.5" marker-end="url(#w6arrow)"/>
+                <text x="130" y="110" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">valid</text>
+                <rect x="10" y="145" width="120" height="45" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="70" y="172" text-anchor="middle" font-size="11" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">Run the tool</text>
+
+                <line x1="320" y1="145" x2="320" y2="180" stroke="#334155" stroke-width="1.5" marker-end="url(#w6arrow)"/>
+                <text x="355" y="165" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">invalid</text>
+
+                <rect x="220" y="180" width="200" height="50" rx="8" fill="#fee2e2" stroke="#ef4444"/>
+                <text x="320" y="200" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c" font-family="Inter,system-ui,sans-serif">Retry (up to max_retries)</text>
+                <text x="320" y="215" text-anchor="middle" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">or return {"error": ...} if exhausted</text>
+
+                <path d="M 420 205 C 480 205, 480 120, 442 120" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#w6arrow)"/>
+            </svg>
+            <div class="diagram-caption">call_with_guardrail() wraps every tool call: validate, and only run the tool if the shape is right.</div>
+        </div>
+
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Pick your target from Week 5</h4>Most students will have flagged something like "malformed tool-call arguments" or "the model answers even when it shouldn't have enough context." Pick one concrete spot in your code.</li>
-            <li><h4>Define an expected schema</h4>Even a simple one counts. Using Pydantic:
+            <li><h4>Set up this week's project and pick your target</h4>Copy this week's starter code (it already has Weeks 1–4 solved for you). Reread your Week 5 review: most students flagged something like "malformed tool-call arguments" or "the model answers even without enough context." Pick one concrete spot — this guide walks through the tool-arguments case, since it's the one nearly everyone has.</li>
+            <li><h4>Read the guardrail template that's already written for you</h4>Open <code>backend/guardrails.py</code>. The hard part — retry logic — is already done:
+<pre>def call_with_guardrail(
+    fn: Callable[..., dict],
+    schema: Type[T],
+    *args,
+    max_retries: int = 2,
+    **kwargs,
+) -> T | dict:
+    last_error = None
+    for attempt in range(max_retries + 1):
+        try:
+            raw = fn(*args, **kwargs)
+            return schema.model_validate(raw)
+        except ValidationError as e:
+            last_error = e
+            print(f"[guardrail] validation failed on attempt {attempt + 1}: {e}")
+
+    return {"error": "could not get a valid response", "last_error": str(last_error)}</pre>
+                <div class="explain">
+                <strong>Line by line:</strong>
+                <ul>
+                    <li><code>fn: Callable[..., dict]</code> — a type hint meaning "a function that returns a dict." This is generic on purpose: <code>call_with_guardrail</code> doesn't know or care what it's validating, only that it produces a dict-like thing to check.</li>
+                    <li><code>schema.model_validate(raw)</code> — asks Pydantic "does <code>raw</code> match this schema's shape?" If yes, it returns a real Python object with typed fields. If no, it raises <code>ValidationError</code>, caught right below.</li>
+                    <li><code>for attempt in range(max_retries + 1):</code> — tries up to <code>max_retries + 1</code> times total (the <code>+1</code> is the original attempt, then the retries).</li>
+                    <li><code>return {"error": ..., "last_error": ...}</code> — if every attempt fails, this returns a plain dict instead of raising an exception. That matters: whatever calls <code>call_with_guardrail</code> can check <code>isinstance(result, YourSchema)</code> and always has a safe fallback to handle, instead of needing a <code>try/except</code> of its own.</li>
+                </ul>
+                </div>
+            </li>
+            <li><h4>Define a schema for your tool's arguments</h4>At the bottom of <code>guardrails.py</code>, add a Pydantic model describing exactly what valid arguments for your <code>calculate</code> tool look like:
 <pre>from pydantic import BaseModel
 
+
 class ToolArgs(BaseModel):
-    city: str
-    units: str = "metric"</pre></li>
-            <li><h4>Wrap the call with validate-then-retry</h4>
-<pre>def call_with_guardrail(fn, schema, *args, max_retries=2):
-    for attempt in range(max_retries + 1):
-        result = fn(*args)
-        try:
-            return schema.model_validate(result)
-        except ValidationError as e:
-            if attempt == max_retries:
-                return {"error": "could not get a valid response"}
-            args = add_correction_hint(args, str(e))  # tell the model what was wrong</pre>The key part beginners skip: the retry has to actually tell the model what was wrong, not just repeat the same prompt and hope.</li>
-            <li><h4>Set a hard ceiling</h4>Never let this loop run unbounded — cap it (2 retries is plenty) and always have a graceful fallback message ready for when it's exhausted.</li>
-            <li><h4>Break it on purpose</h4>Feed the model a prompt likely to produce malformed output (a trick question, an ambiguous request) and confirm your guardrail catches it — either self-correcting on retry, or failing with a clear message instead of crashing.</li>
-            <li><h4>Log every validation failure</h4>Even a plain <code>print()</code> for now — you'll want this data for Week 9's observability work.</li>
+    expression: str</pre>
+                <div class="explain">This one field, <code>expression: str</code>, matches the single argument your <code>calculate</code> tool's schema declares in <code>tools.py</code>. If Gemini ever returns arguments missing that field, or with the wrong type, <code>model_validate</code> will raise <code>ValidationError</code> — that's the "malformed output" your guardrail exists to catch.</div>
+            </li>
+            <li><h4>Wrap the tool call in <code>agent.py</code></h4>Open <code>backend/agent.py</code>. First, import what you just wrote:
+<pre>from guardrails import call_with_guardrail, ToolArgs</pre>
+                Then find the line inside the loop that directly calls the tool function (<code>result = fn(**call.arguments)</code>) and replace it with:
+<pre>validated = call_with_guardrail(lambda: call.arguments, ToolArgs)
+result = (
+    fn(**validated.model_dump())
+    if isinstance(validated, ToolArgs)
+    else validated  # the {"error": ...} dict from the guardrail
+)</pre>
+                <div class="explain">
+                <strong>Line by line:</strong>
+                <ul>
+                    <li><code>lambda: call.arguments</code> — <code>call_with_guardrail</code> expects a <em>function</em> it can call (possibly more than once, on retries), not a value. Since <code>call.arguments</code> is already just a dict sitting there, wrapping it in a zero-argument lambda turns it into something callable that returns that dict each time.</li>
+                    <li><code>isinstance(validated, ToolArgs)</code> — checks which of the two possible return types you got back: a real validated <code>ToolArgs</code> object (success), or the plain error dict (all retries failed).</li>
+                    <li><code>fn(**validated.model_dump())</code> — <code>.model_dump()</code> converts the validated Pydantic object back into a plain dict so it can be unpacked as keyword arguments into your tool function, the same way <code>call.arguments</code> was before.</li>
+                </ul>
+                </div>
+            </li>
+            <li><h4>Break it on purpose</h4>Restart the server and ask something designed to confuse the calculator, like <strong>"calculate the color blue"</strong> or <strong>"what's the square root of a banana?"</strong> — something that might make the model send a weird or missing <code>expression</code> value. Watch your terminal: you should see the <code>[guardrail] validation failed...</code> print line if it ever produces something that doesn't validate, and the app should keep responding instead of crashing with a raw error page.</li>
+            <li><h4>Log every validation failure</h4>The <code>print()</code> already inside <code>call_with_guardrail</code> is your logging for now — that's intentional, not a shortcut you need to fix. You'll replace it with real observability tooling in Week 9, using exactly this same signal.</li>
         </ol>
 
         <div class="done-box">

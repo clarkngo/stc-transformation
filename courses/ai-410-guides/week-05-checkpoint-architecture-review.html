@@ -27,6 +27,11 @@
         .example-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:0.85rem; }
         .example-table th, .example-table td { border:1px solid #e2e8f0; padding:8px 10px; text-align:left; vertical-align:top; }
         .example-table th { background:#f8fafc; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -61,13 +66,53 @@
             <li>Your working app from Weeks 1–4 (running locally is enough — you're observing it, not changing it)</li>
         </ul>
 
+        <div class="diagram-box">
+            <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="w5arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker>
+                </defs>
+                <g font-family="Inter,system-ui,sans-serif">
+                    <rect x="0" y="35" width="90" height="45" rx="6" fill="#eff6ff" stroke="#3b82f6"/>
+                    <text x="45" y="61" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8">Frontend</text>
+
+                    <line x1="90" y1="57" x2="118" y2="57" stroke="#334155" stroke-width="1.2" marker-end="url(#w5arrow)"/>
+                    <rect x="122" y="35" width="90" height="45" rx="6" fill="#ecfdf5" stroke="#10b981"/>
+                    <text x="167" y="61" text-anchor="middle" font-size="10" font-weight="700" fill="#047857">Backend</text>
+
+                    <line x1="212" y1="57" x2="240" y2="57" stroke="#334155" stroke-width="1.2" marker-end="url(#w5arrow)"/>
+                    <rect x="244" y="35" width="90" height="45" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+                    <text x="289" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309">Embed</text>
+                    <text x="289" y="67" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309">query</text>
+
+                    <line x1="334" y1="57" x2="362" y2="57" stroke="#334155" stroke-width="1.2" marker-end="url(#w5arrow)"/>
+                    <rect x="366" y="35" width="90" height="45" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+                    <text x="411" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309">Vector</text>
+                    <text x="411" y="67" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309">search</text>
+
+                    <line x1="456" y1="57" x2="484" y2="57" stroke="#334155" stroke-width="1.2" marker-end="url(#w5arrow)"/>
+                    <rect x="488" y="35" width="90" height="45" rx="6" fill="#ede9fe" stroke="#7c3aed"/>
+                    <text x="533" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#6d28d9">Call</text>
+                    <text x="533" y="67" text-anchor="middle" font-size="9" font-weight="700" fill="#6d28d9">Gemini</text>
+
+                    <line x1="578" y1="57" x2="606" y2="57" stroke="#334155" stroke-width="1.2" marker-end="url(#w5arrow)"/>
+                    <rect x="610" y="35" width="90" height="45" rx="6" fill="#eff6ff" stroke="#3b82f6"/>
+                    <text x="655" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#1d4ed8">Response</text>
+                    <text x="655" y="67" text-anchor="middle" font-size="9" font-weight="700" fill="#1d4ed8">→ user</text>
+                </g>
+                <text x="350" y="110" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Inter,system-ui,sans-serif">This is a generic example — draw YOUR app's actual path. If Week 4's TODOs aren't done yet, "embed query" and "vector search" may not exist yet.</text>
+            </svg>
+            <div class="diagram-caption">Example only — the point of Step 1 is drawing your own version of this.</div>
+        </div>
+
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Draw the request path end to end</h4>User message → frontend → backend → embed query → vector search → inject context → call Gemini → (maybe) tool call → response → frontend. Draw it as it actually is in your code, not as it's "supposed to" work.</li>
-            <li><h4>Interrogate every arrow</h4>For each step in the diagram, ask two questions: <em>what happens if this is slow?</em> and <em>what happens if this returns something malformed or unexpected?</em> Write one sentence per arrow.</li>
-            <li><h4>Name at least 3 concrete failure points</h4>Not generic risks — specific ones tied to your diagram. See the worked examples below.</li>
-            <li><h4>Propose a mitigation for each</h4>One sentence per failure point. You're not building the fix yet (that starts next week) — just committing to a direction.</li>
-            <li><h4>Present it live</h4>Walk the instructor through your diagram and findings out loud. Saying it aloud surfaces gaps that re-reading your own notes doesn't.</li>
+            <li><h4>Draw the request path end to end</h4>The diagram above is a generic example of the shape — your job is to draw the same kind of thing for <em>your own</em> code, as it actually exists today (not how you wish it worked). You don't need any special software: a piece of paper and a pencil is completely fine, or a free tool like <a href="https://excalidraw.com" target="_blank" rel="noopener">excalidraw.com</a> if you'd rather do it digitally. Boxes for each step, arrows for what calls what.
+                <div class="explain"><strong>How to figure out your actual path:</strong> open <code>backend/agent.py</code> and read it top to bottom, in the order the code actually executes. Every function call you see (<code>retrieve()</code>, <code>client.interactions.create()</code>, your tool functions) is a box; the order they happen in is your arrows.</div>
+            </li>
+            <li><h4>Interrogate every arrow</h4>For each arrow in your diagram, ask two questions and write one sentence each: <em>what happens if this step is slow?</em> and <em>what happens if this step returns something malformed or unexpected?</em> Don't skip steps that feel "boring" (like the frontend sending the message) — bugs hide in the steps nobody thinks to question.</li>
+            <li><h4>Name at least 3 concrete failure points</h4>Not generic risks like "the API could be down" — specific ones tied to an exact place in <em>your</em> code. See the worked examples in the table below for what "specific" looks like.</li>
+            <li><h4>Propose a mitigation for each</h4>One sentence per failure point. You're not building the fix yet (Week 6 is where the guardrails one gets built) — just committing to a direction, so you have something concrete to act on later.</li>
+            <li><h4>Present it live</h4>Walk the instructor through your diagram and findings out loud. Saying it aloud surfaces gaps that re-reading your own notes doesn't — you'll often catch yourself mid-sentence realizing a "mitigation" doesn't actually address the failure you named.</li>
         </ol>
 
         <table class="example-table">

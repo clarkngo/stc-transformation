@@ -23,6 +23,13 @@
         .done-box ul { margin:0; padding-left:20px; }
         .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -57,23 +64,191 @@
             <li>Your working Week 1 app (or just use this week's starter code, which already includes it)</li>
         </ul>
 
+        <div class="diagram-box">
+            <svg viewBox="0 0 620 420" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="w2arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker>
+                </defs>
+
+                <rect x="170" y="10" width="280" height="55" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="310" y="33" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">Send message + tools list</text>
+                <text x="310" y="50" text-anchor="middle" font-size="11" fill="#334155" font-family="Inter,system-ui,sans-serif">client.interactions.create()</text>
+
+                <line x1="310" y1="65" x2="310" y2="100" stroke="#334155" stroke-width="1.5" marker-end="url(#w2arrow)"/>
+
+                <rect x="150" y="100" width="320" height="55" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="310" y="123" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Gemini decides</text>
+                <text x="310" y="140" text-anchor="middle" font-size="11" fill="#334155" font-family="Inter,system-ui,sans-serif">is there a function_call step?</text>
+
+                <line x1="150" y1="127" x2="40" y2="127" stroke="#334155" stroke-width="1.5" marker-end="url(#w2arrow)"/>
+                <text x="95" y="117" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">No</text>
+                <rect x="10" y="150" width="180" height="55" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="100" y="173" text-anchor="middle" font-size="11" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">Return final answer</text>
+                <text x="100" y="190" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">interaction.output_text</text>
+
+                <line x1="310" y1="155" x2="310" y2="200" stroke="#334155" stroke-width="1.5" marker-end="url(#w2arrow)"/>
+                <text x="345" y="180" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">Yes</text>
+
+                <rect x="150" y="200" width="320" height="55" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="310" y="223" text-anchor="middle" font-size="12" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">Run the matching Python function</text>
+                <text x="310" y="240" text-anchor="middle" font-size="11" fill="#334155" font-family="Inter,system-ui,sans-serif">TOOL_FUNCTIONS[call.name](**call.arguments)</text>
+
+                <line x1="310" y1="255" x2="310" y2="290" stroke="#334155" stroke-width="1.5" marker-end="url(#w2arrow)"/>
+
+                <rect x="150" y="290" width="320" height="55" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="310" y="313" text-anchor="middle" font-size="12" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">Send the result back to Gemini</text>
+                <text x="310" y="330" text-anchor="middle" font-size="11" fill="#334155" font-family="Inter,system-ui,sans-serif">function_result + previous_interaction_id</text>
+
+                <path d="M 480 317 C 570 317, 570 30, 452 30" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#w2arrow)"/>
+                <text x="565" y="175" text-anchor="middle" font-size="10" fill="#64748b" font-family="Inter,system-ui,sans-serif" transform="rotate(90 565 175)">loop back (up to MAX_TURNS times)</text>
+
+                <text x="310" y="395" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Inter,system-ui,sans-serif">Only your backend ever runs real code — Gemini only ever names which tool it wants.</text>
+            </svg>
+            <div class="diagram-caption">The agentic loop you're tracing and extending this week.</div>
+        </div>
+
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Trace the loop before adding anything</h4>Follow the dummy tool through the skeleton: (1) the tool's schema is passed to Gemini alongside the message, (2) if the resulting interaction has a <code>function_call</code> step, the loop runs the matching Python function locally, (3) the result is sent back to Gemini as a <code>function_result</code> input, chained via <code>previous_interaction_id</code>, (4) Gemini replies again — this time with a normal text answer.</li>
-            <li><h4>Define your own tool's schema</h4>Pick something simple and deterministic — a calculator or a lookup function. Every tool needs a name, a description (this is what the model reads to decide when to use it), and a parameters schema:
-<pre>tools = [{
+            <li><h4>Set up this week's project</h4>Copy this week's starter-code folder to a new location (it already includes a working Week 1 backend, so you don't need to redo last week's setup). In a terminal, inside the new <code>backend/</code> folder:
+<pre>python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env</pre>
+                Open <code>.env</code> and paste in the same <code>GEMINI_API_KEY</code> you got last week (it works across all weeks — you don't need a new one).
+            </li>
+            <li><h4>Understand the new idea: an "agentic loop"</h4>So far, the model only ever produces text. A <strong>tool</strong> (also called a "function") is a piece of <em>your own</em> code that the model can ask to run — for example, a calculator, a database lookup, or a weather API call. The model can't run Python itself; instead, it tells your backend <em>which</em> tool it wants and with <em>what arguments</em>, your backend actually runs it, and sends the result back so the model can use it in its final answer. That back-and-forth is the "agentic loop":
+                <ol type="a">
+                    <li>You send the user's message <strong>and</strong> a list of tools the model is allowed to use.</li>
+                    <li>The model decides: does it need a tool, or can it just answer directly?</li>
+                    <li>If it needs a tool, it doesn't run any code — it replies with a <code>function_call</code> step naming the tool and the arguments it wants to use.</li>
+                    <li>Your backend runs the matching Python function itself, and sends the result back to the model as a <code>function_result</code>.</li>
+                    <li>The model reads that result and produces its final, plain-text answer.</li>
+                </ol>
+            </li>
+            <li><h4>Trace the dummy tool through the code that's already there</h4>Open <code>backend/tools.py</code>. You'll see a fake tool called <code>ping</code> already fully wired up:
+<pre>def _ping(**kwargs):
+    """Dummy tool — proves the loop works before you add a real one."""
+    return "pong"
+
+
+TOOLS = [
+    {
+        "type": "function",
+        "name": "ping",
+        "description": "A no-op test tool that always returns 'pong'. Useful only for verifying the tool-calling loop is wired correctly.",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+        },
+    },
+]
+
+TOOL_FUNCTIONS = {
+    "ping": _ping,
+}</pre>
+                <div class="explain"><strong>Two separate things, one name:</strong> <code>TOOLS</code> is what the <em>model</em> sees — just a description in JSON, no real code. <code>TOOL_FUNCTIONS</code> is what <em>your backend</em> uses to look up the real Python function to run once the model asks for <code>"ping"</code> by name. They're linked only by that shared string <code>"ping"</code> — get the name wrong in one place and the lookup silently fails.</div>
+                Now open <code>backend/agent.py</code> and find the loop itself:
+<pre>def run_agent(user_message: str) -> str:
+    interaction = client.interactions.create(
+        model=MODEL,
+        input=user_message,
+        tools=TOOLS,
+    )
+
+    for _ in range(MAX_TURNS):
+        function_calls = [step for step in interaction.steps if step.type == "function_call"]
+
+        if not function_calls:
+            # Plain text answer — the model didn't need a tool.
+            return interaction.output_text
+
+        results = []
+        for call in function_calls:
+            fn = TOOL_FUNCTIONS.get(call.name)
+            result = fn(**call.arguments) if fn else f"Error: no tool registered named '{call.name}'"
+            results.append({
+                "type": "function_result",
+                "name": call.name,
+                "call_id": call.id,
+                "result": [{"type": "text", "text": str(result)}],
+            })
+
+        interaction = client.interactions.create(
+            model=MODEL,
+            input=results,
+            tools=TOOLS,
+            previous_interaction_id=interaction.id,
+        )
+
+    return "I couldn't finish that within the allowed number of steps."</pre>
+                <div class="explain">
+                <strong>Walking through it:</strong>
+                <ul>
+                    <li><code>tools=TOOLS</code> on the first call — this is how the model even learns these tools exist.</li>
+                    <li><code>[step for step in interaction.steps if step.type == "function_call"]</code> — after every call, we check: did the model ask for a tool? <code>interaction.steps</code> is a list because a reply can contain more than one thing (a thought, a tool call, text); we only care about the <code>function_call</code> ones here.</li>
+                    <li><code>if not function_calls: return interaction.output_text</code> — no tool requested means the model already has its final answer, so we're done.</li>
+                    <li><code>fn = TOOL_FUNCTIONS.get(call.name)</code> then <code>fn(**call.arguments)</code> — look up the real Python function by the name the model gave us, and call it with whatever arguments the model supplied. <code>**call.arguments</code> unpacks a dict like <code>{"expression": "5+3"}</code> into a real keyword argument, <code>expression="5+3"</code>.</li>
+                    <li><code>previous_interaction_id=interaction.id</code> — this is what tells Gemini "continue that same conversation," so it remembers what it originally asked and can use your <code>function_result</code> to write a final answer.</li>
+                    <li><code>for _ in range(MAX_TURNS):</code> — a safety limit. Without it, a model that keeps calling tools forever (or your code has a bug that never satisfies it) would loop forever too.</li>
+                </ul>
+                </div>
+                Run the server (<code>./venv/bin/uvicorn main:app --reload</code>) and open <code>frontend/index.html</code>. Ask something like "call your ping tool" and watch it work before you've written a single line yourself.
+            </li>
+            <li><h4>Define your own tool's schema</h4>You'll add a <code>calculate</code> tool. In <code>backend/tools.py</code>, add this to the <code>TOOLS</code> list, right after the <code>ping</code> entry (don't remove <code>ping</code> — keep both):
+<pre>{
     "type": "function",
     "name": "calculate",
-    "description": "Evaluate a basic arithmetic expression.",
+    "description": "Evaluate a basic arithmetic expression, e.g. '342 * 87'.",
     "parameters": {
         "type": "object",
-        "properties": {"expression": {"type": "string"}},
+        "properties": {
+            "expression": {"type": "string"},
+        },
         "required": ["expression"],
     },
-}]</pre></li>
-            <li><h4>Write the function the tool actually runs</h4>Keep it small and safe (don't use a raw <code>eval</code> on untrusted input in anything beyond this exercise — use a proper expression parser).</li>
-            <li><h4>Register it and complete the loop</h4>Pass <code>tools=tools</code> in your <code>interactions.create()</code> call. When a step in the response has <code>type == "function_call"</code>, run your function, then start a follow-up call with <code>previous_interaction_id</code> and a <code>function_result</code> input containing the <code>call_id</code> and your function's output.</li>
-            <li><h4>Test the "decides" part, not just the "uses" part</h4>Ask something that needs the tool ("what's 342 × 87?") and confirm it's actually called — print the function_call step so you can see it. Then ask something unrelated ("what's the capital of France?") and confirm the agent answers directly, without calling the tool.</li>
+},</pre>
+                <div class="explain">The <code>description</code> field is more important than it looks — it's the <em>only</em> thing the model reads to decide when to use this tool. Be specific. A vague description ("does math") gets called at the wrong times or ignored; a clear one with an example gets used correctly.</div>
+            </li>
+            <li><h4>Write the function that actually runs</h4>Add this function above your <code>TOOLS</code> list (near the existing <code>_ping</code> function):
+<pre>import ast
+import operator
+
+_OPS = {
+    ast.Add: operator.add,
+    ast.Sub: operator.sub,
+    ast.Mult: operator.mul,
+    ast.Div: operator.truediv,
+    ast.USub: operator.neg,
+}
+
+
+def _safe_eval(node):
+    if isinstance(node, ast.Constant):
+        return node.value
+    if isinstance(node, ast.BinOp) and type(node.op) in _OPS:
+        return _OPS[type(node.op)](_safe_eval(node.left), _safe_eval(node.right))
+    if isinstance(node, ast.UnaryOp) and type(node.op) in _OPS:
+        return _OPS[type(node.op)](_safe_eval(node.operand))
+    raise ValueError("unsupported expression")
+
+
+def _calculate(expression: str, **kwargs):
+    try:
+        tree = ast.parse(expression, mode="eval")
+        return _safe_eval(tree.body)
+    except Exception as e:
+        return f"Could not evaluate '{expression}': {e}"</pre>
+                <div class="explain"><strong>Why not just <code>eval(expression)</code>?</strong> Python's built-in <code>eval()</code> will run <em>any</em> Python code inside that string — including things like deleting files — and the model is the one generating that string. Since we can't fully trust what a model produces, <code>_safe_eval</code> instead reads the expression as a syntax tree (<code>ast.parse</code>) and only ever performs the specific math operations listed in <code>_OPS</code>, rejecting anything else. This is the same "don't trust model output blindly" instinct you'll build on for real in Week 6 (guardrails).</div>
+                The function's argument name — <code>expression</code> — must exactly match the property name you wrote in the tool's <code>parameters</code> schema in the previous step. That's how <code>fn(**call.arguments)</code> in <code>agent.py</code> knows what to pass in.
+            </li>
+            <li><h4>Register the function and the tool together</h4>Add <code>"calculate": _calculate,</code> to the <code>TOOL_FUNCTIONS</code> dict, next to <code>"ping": _ping,</code>. Your <code>tools.py</code> should now define two tools and two matching functions. Nothing in <code>agent.py</code> needs to change — the loop you traced in step 3 already handles any tool you add here, as long as the names match between <code>TOOLS</code> and <code>TOOL_FUNCTIONS</code>.</li>
+            <li><h4>Test the "decides" part, not just the "uses" part</h4>Restart the server if it isn't still running with <code>--reload</code>, then in the chat UI try two very different questions:
+                <ol type="a">
+                    <li><strong>"What's 342 times 87?"</strong> — this should trigger the calculate tool. Add a temporary <code>print(function_calls)</code> right after that line in <code>agent.py</code> to see the tool call Gemini generated, with its name and arguments.</li>
+                    <li><strong>"What's the capital of France?"</strong> — this should <em>not</em> call any tool; the model already knows the answer and should skip straight to text.</li>
+                </ol>
+                If the model calls the tool when it shouldn't, or refuses to when it should, that's almost always a wording problem in the <code>description</code> field — tighten it before changing any code.
+            </li>
         </ol>
 
         <div class="done-box">

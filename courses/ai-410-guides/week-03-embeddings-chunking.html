@@ -23,6 +23,13 @@
         .done-box ul { margin:0; padding-left:20px; }
         .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -58,32 +65,115 @@
             <li>The same free Gemini API key from Week 1 — Gemini serves embeddings from the same key as chat, via a separate model (<code>gemini-embedding-001</code>)</li>
         </ul>
 
+        <div class="diagram-box">
+            <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="w3arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker>
+                </defs>
+
+                <rect x="10" y="20" width="150" height="50" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="85" y="49" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">Documents</text>
+
+                <line x1="160" y1="45" x2="216" y2="45" stroke="#334155" stroke-width="1.5" marker-end="url(#w3arrow)"/>
+                <text x="188" y="35" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">chunk_text()</text>
+
+                <rect x="220" y="20" width="150" height="50" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="295" y="49" text-anchor="middle" font-size="12" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">Chunks</text>
+
+                <line x1="370" y1="45" x2="426" y2="45" stroke="#334155" stroke-width="1.5" marker-end="url(#w3arrow)"/>
+                <text x="398" y="35" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">embed_chunks()</text>
+
+                <rect x="430" y="20" width="180" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="520" y="42" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Document vectors</text>
+                <text x="520" y="58" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">one per chunk</text>
+
+                <rect x="10" y="130" width="150" height="50" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="85" y="159" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">Search query</text>
+
+                <line x1="160" y1="155" x2="426" y2="155" stroke="#334155" stroke-width="1.5" marker-end="url(#w3arrow)"/>
+                <text x="293" y="145" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">embed_query()</text>
+
+                <rect x="430" y="130" width="180" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="520" y="159" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Query vector</text>
+
+                <rect x="330" y="205" width="270" height="45" rx="8" fill="#f1f5f9" stroke="#94a3b8"/>
+                <text x="465" y="223" text-anchor="middle" font-size="12" font-weight="700" fill="#334155" font-family="Inter,system-ui,sans-serif">cosine_sim(query, each chunk)</text>
+                <text x="465" y="239" text-anchor="middle" font-size="10" fill="#334155" font-family="Inter,system-ui,sans-serif">→ ranked list, best match first</text>
+
+                <path d="M 500 70 L 500 205" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#w3arrow)"/>
+                <path d="M 500 180 L 440 180 L 440 205" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#w3arrow)"/>
+            </svg>
+            <div class="diagram-caption">Documents get embedded once (up front); the query gets embedded the same way at search time, then compared to every chunk.</div>
+        </div>
+
         <h2>Steps</h2>
         <ol class="steps">
-            <li><h4>Skim the sample docs first</h4>Open 2–3 of them so you know what content you're about to chunk — you'll need this context to judge whether your results look right later.</li>
-            <li><h4>Write a chunking function</h4>Split each document into roughly 300–500 token pieces, with a little overlap between consecutive chunks so you don't cut a sentence's meaning in half at a boundary. Start by splitting on paragraphs, then fall back to a character-count split for any paragraph that's too long on its own.</li>
-            <li><h4>Embed each chunk</h4>
-<pre>from google import genai
-from google.genai import types
-
-client = genai.Client()
-result = client.models.embed_content(
-    model="gemini-embedding-001",
-    contents=chunks,
-    config=types.EmbedContentConfig(
-        task_type="RETRIEVAL_DOCUMENT",
-        output_dimensionality=1024,
-    ),
-)
-vectors = [e.values for e in result.embeddings]   # one vector per chunk, same order</pre>Keep the vectors and their original chunk text together in a plain Python list — no database yet, that's Week 4.</li>
-            <li><h4>Sanity-check with cosine similarity</h4>Pick two chunks you'd expect to be related and two you'd expect to be unrelated. Compute cosine similarity between their vectors and confirm the related pair scores meaningfully higher.
-<pre>import numpy as np
-
-def cosine_sim(a, b):
+            <li><h4>Set up this week's project</h4>This week's starter code is a <code>sandbox/</code> folder, not a <code>backend/</code> — it's a standalone script, not part of the running chat app.
+<pre>cd sandbox
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env</pre>
+                Paste your Gemini API key into <code>.env</code> (same one from Week 1). Then open <code>ingest_sandbox.py</code> and skim the 5 sample documents in <code>sample_docs/</code> — knowing roughly what's in them will help you judge whether your results make sense later.
+            </li>
+            <li><h4>Understand embeddings, conceptually, before writing code</h4>An <strong>embedding</strong> is a list of a few thousand numbers (a "vector") that represents the <em>meaning</em> of a piece of text. Two pieces of text with similar meaning get vectors that point in similar directions; unrelated text gets vectors pointing in very different directions. This is what lets a computer measure "how related are these two paragraphs?" without any human labeling — it's pure math on the numbers.
+                <div class="explain"><strong>Why not just search for matching words?</strong> A keyword search for "return policy" would miss a document that talks about "sending an item back within 30 days" without ever using the word "return." Embeddings capture meaning, not exact wording, which is exactly what you want for a question-answering system where users won't phrase things the way your documents do.</div>
+            </li>
+            <li><h4>Understand chunking, conceptually</h4><strong>Chunking</strong> means splitting a long document into smaller pieces before embedding them. You do this because embedding an entire multi-page document into one vector would blur together everything it talks about — a document covering both shipping and returns would produce a single vector that's a vague mix of both topics, matching neither well. Splitting into focused, single-topic chunks (a paragraph or two each) gives you vectors that represent one clear idea, which is what makes retrieval actually work in Week 4.</li>
+            <li><h4>Read the chunking function that's already there</h4>Open <code>ingest_sandbox.py</code> and find <code>chunk_text()</code> — a basic version is already written for you:
+<pre>def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> list[str]:
+    words = text.split()
+    chunks = []
+    start = 0
+    while start < len(words):
+        end = start + chunk_size
+        chunks.append(" ".join(words[start:end]))
+        start = end - overlap  # step back by `overlap` words
+    return chunks</pre>
+                <div class="explain">
+                <strong>Line by line:</strong>
+                <ul>
+                    <li><code>text.split()</code> — breaks the document into a plain list of words (splitting on whitespace).</li>
+                    <li><code>while start < len(words):</code> — keep slicing out chunks until we've covered the whole document.</li>
+                    <li><code>chunks.append(" ".join(words[start:end]))</code> — take words <code>start</code> through <code>end</code>, glue them back into a string, and save that as one chunk.</li>
+                    <li><code>start = end - overlap</code> — this is the key trick. Instead of jumping straight to where the last chunk ended, we step back by <code>overlap</code> words (50, by default) so consecutive chunks share a little text. Without this, a sentence that happens to fall exactly on a chunk boundary would get cut in half, and neither half alone would make sense.</li>
+                </ul>
+                This word-count approach is intentionally simple — it doesn't know or care about sentence or paragraph boundaries, so it can still occasionally cut mid-sentence. A stretch goal, if you want one: try splitting on paragraphs first (Python's <code>text.split("\n\n")</code>), and only fall back to this word-count approach for any single paragraph that's still too long. You don't need to do this to finish the exercise — the version above is good enough to move on.
+                </div>
+            </li>
+            <li><h4>Implement <code>embed_chunks()</code></h4>This one is left for you to write. Find the function (it currently just raises <code>NotImplementedError</code>) and replace its body with:
+<pre>def embed_chunks(chunks: list[str]) -> list[list[float]]:
+    result = client.models.embed_content(
+        model=EMBED_MODEL,
+        contents=chunks,
+        config=types.EmbedContentConfig(
+            task_type="RETRIEVAL_DOCUMENT",
+            output_dimensionality=EMBED_DIM,
+        ),
+    )
+    return [e.values for e in result.embeddings]</pre>
+                <div class="explain">
+                <strong>Line by line:</strong>
+                <ul>
+                    <li><code>client.models.embed_content(...)</code> — the actual network call to Google that turns text into vectors. Note this uses <code>client.models</code>, not <code>client.interactions</code> like Weeks 1–2 — embeddings are a different kind of request than chat.</li>
+                    <li><code>contents=chunks</code> — you can pass a whole list of strings at once; you get back one vector per string, in the same order. Much faster than one request per chunk.</li>
+                    <li><code>task_type="RETRIEVAL_DOCUMENT"</code> — tells the model "these are documents that will be searched later," which makes it optimize the vectors slightly differently than it would for a search query. You'll use <code>"RETRIEVAL_QUERY"</code> instead when embedding the user's question, in the next step.</li>
+                    <li><code>output_dimensionality=EMBED_DIM</code> — this model can produce very long vectors (3072 numbers) by default; asking for 1024 keeps them smaller and faster to compare, which is plenty precise for this course.</li>
+                    <li><code>[e.values for e in result.embeddings]</code> — unwraps the response into a plain list of number-lists, matching the order of the <code>chunks</code> you passed in.</li>
+                </ul>
+                </div>
+            </li>
+            <li><h4>Understand cosine similarity</h4>Look at the already-written <code>cosine_sim()</code> function:
+<pre>def cosine_sim(a, b) -> float:
     a, b = np.array(a), np.array(b)
-    return a.dot(b) / (np.linalg.norm(a) * np.linalg.norm(b))</pre></li>
-            <li><h4>Run a mini retrieval test</h4>Embed a short query the same way, compute its similarity against every chunk, and print the top 3 by score. By eye, is the top result genuinely the most relevant chunk to that query?</li>
-            <li><h4>Record your settings</h4>Note your chunk size, overlap amount, and total chunk count somewhere — you'll load these same chunks into a real vector database next week.</li>
+    return float(a.dot(b) / (np.linalg.norm(a) * np.linalg.norm(b)))</pre>
+                <div class="explain">This measures the <em>angle</em> between two vectors, ignoring their length — it returns a number from -1 (completely opposite meaning) to 1 (identical meaning), with 0 meaning unrelated. It's the standard way to compare embeddings: <code>a.dot(b)</code> (the "dot product") combines the two vectors into one number that's larger when they point the same direction, and dividing by both vectors' lengths (<code>np.linalg.norm</code>) makes the result independent of how "long" either vector happens to be — only the direction (meaning) matters.</div>
+            </li>
+            <li><h4>Run the whole script</h4>
+<pre>./venv/bin/python ingest_sandbox.py</pre>
+                It will load the 5 sample documents, chunk them, embed every chunk, embed one sample query ("How long do I have to return an item?"), and print the top 3 chunks ranked by similarity to that query. Read the printed chunk text — does the #1 result actually look like the best answer to that question? For the included sample documents (a fictional outfitter's policies), it should be the return-policy chunk.
+            </li>
+            <li><h4>Record your settings</h4>Note your chunk size (400 words), overlap (50 words), and how many chunks you ended up with (5 documents → 5 chunks with these settings, since none of the sample docs are long enough to split further). You'll load these exact same chunks into a real database next week, so it's worth remembering what you used.</li>
         </ol>
 
         <div class="done-box">

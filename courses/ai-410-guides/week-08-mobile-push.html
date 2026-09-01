@@ -23,6 +23,13 @@
         .done-box ul { margin:0; padding-left:20px; }
         .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -58,25 +65,92 @@
             <li>Node.js on your laptop</li>
         </ul>
 
+        <div class="diagram-box">
+            <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="w8arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker>
+                </defs>
+                <rect x="10" y="15" width="140" height="50" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="80" y="37" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">Your phone</text>
+                <text x="80" y="53" text-anchor="middle" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">gets a push token</text>
+
+                <line x1="150" y1="40" x2="206" y2="40" stroke="#334155" stroke-width="1.5" marker-end="url(#w8arrow)"/>
+                <text x="178" y="30" text-anchor="middle" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">1. register</text>
+
+                <rect x="210" y="15" width="150" height="50" rx="8" fill="#ecfdf5" stroke="#10b981"/>
+                <text x="285" y="37" text-anchor="middle" font-size="11" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">Your backend</text>
+                <text x="285" y="53" text-anchor="middle" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">stores token by device_id</text>
+
+                <line x1="80" y1="65" x2="80" y2="95" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#w8arrow)"/>
+                <text x="115" y="83" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">2. upload doc</text>
+                <rect x="10" y="95" width="140" height="45" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
+                <text x="80" y="122" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">POST /documents</text>
+
+                <line x1="150" y1="118" x2="206" y2="118" stroke="#334155" stroke-width="1.5" marker-end="url(#w8arrow)"/>
+                <rect x="210" y="95" width="150" height="45" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+                <text x="285" y="122" text-anchor="middle" font-size="10" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">enqueue job (Wk 7)</text>
+
+                <line x1="360" y1="118" x2="416" y2="118" stroke="#334155" stroke-width="1.5" marker-end="url(#w8arrow)"/>
+                <rect x="420" y="95" width="150" height="45" rx="8" fill="#ede9fe" stroke="#7c3aed"/>
+                <text x="495" y="122" text-anchor="middle" font-size="10" font-weight="700" fill="#6d28d9" font-family="Inter,system-ui,sans-serif">worker finishes</text>
+
+                <line x1="495" y1="140" x2="495" y2="170" stroke="#334155" stroke-width="1.5" marker-end="url(#w8arrow)"/>
+                <text x="530" y="158" font-size="9" fill="#334155" font-family="Inter,system-ui,sans-serif">3. send push</text>
+                <rect x="420" y="170" width="150" height="45" rx="8" fill="#fee2e2" stroke="#ef4444"/>
+                <text x="495" y="192" text-anchor="middle" font-size="10" font-weight="700" fill="#b91c1c" font-family="Inter,system-ui,sans-serif">Expo push API</text>
+                <text x="495" y="205" text-anchor="middle" font-size="8" fill="#334155" font-family="Inter,system-ui,sans-serif">exp.host/.../push/send</text>
+
+                <path d="M 420 192 C 250 192, 100 192, 80 145" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#w8arrow)"/>
+                <text x="220" y="207" text-anchor="middle" font-size="9" fill="#64748b" font-family="Inter,system-ui,sans-serif">4. notification appears, even if the app is backgrounded</text>
+            </svg>
+            <div class="diagram-caption">Push notifications flow through Expo's own servers — your backend never talks to your phone directly.</div>
+        </div>
+
         <h2>Steps</h2>
         <ol class="steps">
             <li><h4>Start the Expo dev server</h4>
 <pre>cd mobile
 npm install
-npx expo start</pre>A QR code appears in your terminal.</li>
-            <li><h4>Open the app on your phone</h4>Scan the QR code — with your Camera app on iOS, or directly in Expo Go on Android. The app opens live on your phone, running your actual code, not a build.</li>
-            <li><h4>Confirm the basics work first</h4>The starter's mobile chat screen is already wired to your backend. Send a message and confirm you get a reply — the same backend you've been building since Week 1, just a different client.</li>
-            <li><h4>Request notification permission</h4>The starter includes the <code>expo-notifications</code> setup already; run the app and accept the permission prompt when it appears.</li>
-            <li><h4>Register your device's push token</h4>The starter's <code>POST /register-device</code> endpoint stores the token your phone generates — confirm it's actually landing in your backend (check your logs or database).</li>
-            <li><h4>Trigger a push from a backend event</h4>In your Week 7 job function, after ingestion finishes, add one call to Expo's push API using the stored token:
-<pre>import requests
+npx expo start</pre>A QR code appears in your terminal.
+                <div class="explain"><strong>What just happened?</strong> <code>npm install</code> downloads this mobile app's JavaScript dependencies (React Native, Expo, the notifications library), similar to what <code>pip install -r requirements.txt</code> does for Python. <code>npx expo start</code> runs a local development server that streams your app's code to whatever device scans the QR code — there's no app-store submission or build step involved for development like this.</div>
+            </li>
+            <li><h4>Open the app on your phone</h4>Install <strong>Expo Go</strong> from your phone's app store first if you haven't already. Then scan the QR code from the previous step — with your Camera app on iOS, or directly inside Expo Go on Android. The app opens live on your phone, running your actual project code, not a pre-built app.</li>
+            <li><h4>Confirm the basics work first</h4>Open <code>mobile/src/api.js</code> and check the <code>API_BASE</code> constant — it needs to point at your laptop's address on your local network, not <code>localhost</code> (your phone has no idea what "localhost" means on your laptop). Find your laptop's local IP (on macOS: <strong>System Settings → Wi-Fi → Details</strong>, or run <code>ipconfig getifaddr en0</code> in a terminal) and update it:
+<pre>export const API_BASE = "http://192.168.1.23:8000";  // use YOUR laptop's IP</pre>
+                With your Week 7 backend still running, send a message in the mobile chat screen and confirm you get a reply — the same backend you've been building since Week 1, just a different client talking to it.
+            </li>
+            <li><h4>Read the permission-request code that's already written</h4>Open <code>mobile/App.js</code> and find <code>registerForPushNotificationsAsync()</code> — most of it is already implemented:
+<pre>const { status: existingStatus } = await Notifications.getPermissionsAsync();
+let finalStatus = existingStatus;
+if (existingStatus !== "granted") {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+}
+if (finalStatus !== "granted") {
+    console.warn("Notification permission not granted.");
+    return;
+}
 
-requests.post("https://exp.host/--/api/v2/push/send", json={
-    "to": push_token,
-    "title": "Document ready",
-    "body": "Your document has finished processing.",
-})</pre></li>
-            <li><h4>Test it for real</h4>Upload a document from the mobile app, then lock your phone or switch to another app. When the Week 7 background job finishes, a real push notification should appear on your lock screen.</li>
+const { data: pushToken } = await Notifications.getExpoPushTokenAsync();</pre>
+                <div class="explain">This checks whether you've already granted notification permission; if not, it asks (which is the system popup you'll see on your phone). Once granted, <code>getExpoPushTokenAsync()</code> asks Expo's servers for a unique token identifying <em>this specific phone, running this specific app</em> — that token is what your backend will use later to say "send a notification to that one device."</div>
+                Run the app and accept the permission prompt when it appears.
+            </li>
+            <li><h4>Send the push token to your backend</h4>Right below where <code>pushToken</code> is logged, you'll find a commented-out <code>TODO(week8)</code> line. Uncomment it:
+<pre>await registerDevice(deviceId, pushToken);</pre>
+                <code>registerDevice</code> is already written for you in <code>mobile/src/api.js</code> — it just does a normal <code>fetch()</code> POST to your backend's <code>/register-device</code> endpoint, which is also already complete on the backend side. Restart the app (shake your phone or press <code>r</code> in the terminal running <code>expo start</code>) and confirm — by adding a temporary <code>print()</code> in the backend's <code>register_device</code> function, or checking the terminal running <code>uvicorn</code> — that a token actually arrives.</li>
+            <li><h4>Trigger a push when a job finishes</h4>Open <code>backend/jobs.py</code>. Near the bottom of <code>ingest_document_job()</code>, find the commented <code>TODO(week8)</code> block and uncomment/complete it:
+<pre>if device_id:
+    token = get_push_token(device_id)
+    if token:
+        send_push_notification(
+            token,
+            title="Document ready",
+            body=f"Finished processing {os.path.basename(doc_path)}.",
+        )</pre>
+                <code>get_push_token</code> and <code>send_push_notification</code> are already written for you in <code>devices.py</code> and <code>push.py</code> — <code>send_push_notification</code> just makes an HTTP POST to <code>https://exp.host/--/api/v2/push/send</code> with your stored token, exactly like the Expo push API expects.
+                <div class="explain">Notice this function now accepts a <code>device_id</code> parameter that has to travel all the way from the mobile app's upload request, through <code>main.py</code>'s <code>/documents</code> endpoint, through <code>queue.enqueue(...)</code>, to finally reach this job function when the worker runs it. If you're missing the notification, check that <code>device_id</code> is actually being passed at every one of those steps — a very common bug here is silently dropping it in the middle.</div>
+            </li>
+            <li><h4>Test it for real</h4>From the mobile app, upload a document (you can point it at one of the sample docs' paths on your machine). Then lock your phone or switch to a different app entirely — this proves the notification arrives even when the app isn't open. When the Week 7 worker finishes processing, you should see a real push notification appear on your lock screen.</li>
         </ol>
 
         <div class="done-box">

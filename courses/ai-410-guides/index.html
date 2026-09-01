@@ -20,6 +20,14 @@
         .guide-links { display:flex; flex-direction:column; gap:6px; align-items:flex-end; flex-shrink:0; }
         .guide-arrow { color:#1e8449; font-weight:600; font-size:0.85rem; text-decoration:none; }
         .guide-arrow.code { color:#1d4ed8; }
+        h2 { margin-top:36px; }
+        .why-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:16px 20px; margin:18px 0; border-radius:0 6px 6px 0; }
+        .why-box h4 { margin:0 0 8px; color:#1d4ed8; font-size:0.98rem; }
+        .why-box p:last-child { margin-bottom:0; }
+        .relevance-table { width:100%; border-collapse:collapse; margin:16px 0 8px; font-size:0.85rem; }
+        .relevance-table th, .relevance-table td { border:1px solid #e2e8f0; padding:9px 12px; text-align:left; vertical-align:top; }
+        .relevance-table th { background:#f8fafc; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        .relevance-table td.wk { font-weight:700; color:#1e8449; white-space:nowrap; }
     </style>
 </head>
 <body class="course-page">
@@ -35,6 +43,32 @@
         <h1>AI 410: Hands-On Guides — Week by Week</h1>
         <p>Ten step-by-step guides, one per week of the <a href="../AI-410.html">AI 410 schedule</a>. Each guide expands that week's "App Milestone" into concrete steps: what you're starting from, what to build, and how to know it worked. They build on each other — the app you extend in Week 8 is the same one you started in Week 1.</p>
         <p>Each week also has real <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code" target="_blank" rel="noopener">starter code</a> on GitHub — a self-contained folder you can copy straight into your own project. See the "Code →" link on each row below, or browse <code>starter-code/</code> for all ten at once.</p>
+
+        <h2>Why This Matters</h2>
+
+        <div class="why-box">
+            <h4>This isn't a tutorial project — it's the job</h4>
+            <p>"AI Engineer" is one of the fastest-growing job titles in software right now, and it means something specific: not prompting ChatGPT well, but building the systems <em>around</em> a model that make it reliable enough to put in front of real users — retrieval so it answers from real data instead of guessing, guardrails so bad output doesn't crash the app, background processing so it doesn't freeze under load, and monitoring so someone finds out about a problem before a customer does. Every one of those is a separate week in this schedule, because every one of them is a separate skill companies are hiring for.</p>
+        </div>
+
+        <div class="why-box">
+            <h4>By Week 10, you have something to show, not just something to submit</h4>
+            <p>Most course projects live and die on a grader's screen. This one doesn't: it's a live, deployed, agent-driven mobile app you can hand someone a link to, and a GitHub repo with real commit history showing how it was built, one working piece at a time. In an interview, "I followed a tutorial" and "I built this, here's why I made this specific tradeoff in Week 6" are very different answers — this schedule is built to get you to the second one.</p>
+        </div>
+
+        <table class="relevance-table">
+            <tr><th>Week</th><th>Skill</th><th>Where it shows up outside this course</th></tr>
+            <tr><td class="wk">1</td><td>Full-stack LLM request/response</td><td>The base pattern behind literally every AI product with a chat interface — ChatGPT, Claude.ai, every "AI-powered" feature bolted onto an existing app.</td></tr>
+            <tr><td class="wk">2</td><td>Agentic loops &amp; tool calling</td><td>How customer-support bots check a real order status, how scheduling assistants read a real calendar, how coding agents (including the one you might be using to build this) actually run commands instead of just describing them.</td></tr>
+            <tr><td class="wk">3</td><td>Embeddings &amp; chunking</td><td>The foundation under every "search," "chat with your documents," or "find similar items" feature — this is what makes meaning-based search possible instead of exact keyword matching.</td></tr>
+            <tr><td class="wk">4</td><td>RAG pipelines</td><td>The single most common pattern companies use to make an LLM answer accurately about <em>their own</em> data — internal wikis, support docs, product catalogs — instead of hallucinating.</td></tr>
+            <tr><td class="wk">5</td><td>Architecture &amp; failure analysis</td><td>What separates a junior engineer from a senior one in almost every technical interview: "walk me through what happens if this fails" is one of the most common questions asked, at any level.</td></tr>
+            <tr><td class="wk">6</td><td>Guardrails for nondeterministic output</td><td>The exact gap between a demo that works when you type the happy-path question, and a product that survives real users typing whatever they want.</td></tr>
+            <tr><td class="wk">7</td><td>Asynchronous processing</td><td>A core backend skill that has nothing to do with AI specifically — any app that uploads files, sends emails, or does anything slow uses this same queue/worker pattern.</td></tr>
+            <tr><td class="wk">8</td><td>Mobile client &amp; push notifications</td><td>Proof you can work across the whole stack, not just one layer of it — most teams want engineers who aren't siloed to "just backend" or "just frontend."</td></tr>
+            <tr><td class="wk">9</td><td>Observability &amp; evaluation</td><td>What companies mean by "AI evals" — a newly emerging, actively-hiring specialization built on one simple idea: you can't improve a system you can't measure.</td></tr>
+            <tr><td class="wk">10</td><td>Deployment</td><td>The single biggest gap between "I can code" and "I can ship" — code that only runs on your own laptop isn't a product yet, and most student projects never cross that line.</td></tr>
+        </table>
 
         <div class="guide-grid">
             <div class="guide-row">

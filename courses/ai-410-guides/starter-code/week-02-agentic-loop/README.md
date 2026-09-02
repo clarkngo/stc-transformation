@@ -14,7 +14,13 @@ Add a **real** tool. Open `backend/tools.py` and follow the `# TODO(week2)` comm
 
 ## Run it
 
-Same as Week 1:
+**Recommended: GitHub Codespaces.** Push this folder to its own repo, then **Code → Codespaces → Create codespace on main** — setup (installing `backend/requirements.txt`, creating `backend/.env`) happens automatically via `.devcontainer/devcontainer.json`. Add your `GEMINI_API_KEY` to `backend/.env`, then:
+```bash
+cd backend
+uvicorn main:app --reload
+```
+
+**Running locally instead?**
 ```bash
 cd backend
 python3 -m venv venv && source venv/bin/activate

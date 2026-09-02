@@ -17,6 +17,13 @@ Follow the `# TODO(week3)` comments in `ingest_sandbox.py`:
 
 ## Run it
 
+**Recommended: GitHub Codespaces.** Push this folder to its own repo, then **Code → Codespaces → Create codespace on main** — `.devcontainer/devcontainer.json` installs `sandbox/requirements.txt` and creates `sandbox/.env` automatically. Add your `GEMINI_API_KEY` to `sandbox/.env`, then:
+```bash
+cd sandbox
+python ingest_sandbox.py
+```
+
+**Running locally instead?**
 ```bash
 cd sandbox
 python3 -m venv venv && source venv/bin/activate
@@ -25,4 +32,4 @@ cp .env.example .env   # add your GEMINI_API_KEY (free — aistudio.google.com/a
 ./venv/bin/python ingest_sandbox.py
 ```
 
-It will print a ranked list of chunks by similarity to a sample query — check that the top result is genuinely the most relevant one.
+Either way, it will print a ranked list of chunks by similarity to a sample query — check that the top result is genuinely the most relevant one.

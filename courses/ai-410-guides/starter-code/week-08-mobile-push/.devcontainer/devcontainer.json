@@ -1,0 +1,18 @@
+{
+    "name": "AI 410 — Week 8",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12",
+    "features": {
+        "ghcr.io/devcontainers/features/node:2": { "version": "20" }
+    },
+    "postCreateCommand": "pip install -r backend/requirements.txt && cp -n backend/.env.example backend/.env && cd mobile && npm install",
+    "forwardPorts": [8000, 8081],
+    "portsAttributes": {
+        "8000": { "label": "Backend API", "onAutoForward": "notify" },
+        "8081": { "label": "Expo dev server", "onAutoForward": "silent" }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": ["ms-python.python"]
+        }
+    }
+}

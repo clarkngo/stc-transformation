@@ -21,6 +21,12 @@ There's no new feature to build — this week is integration and deployment:
 5. Re-run your Week 5 bottleneck list against the deployed version.
 6. Prepare and give a 5-minute live demo.
 
+## Full local run-through
+
+**Recommended: GitHub Codespaces.** Push this folder to its own repo, then **Code → Codespaces → Create codespace on main** — dependencies install automatically. Add all your keys to `backend/.env` and run through the whole pipeline one more time (chat, RAG, guardrails, async ingestion, push, tracing) before touching deployment — it's much easier to fix something now, with full error output in your own terminal, than after it's live. A codespace is also a convenient place to do this from, since it's already a Git checkout of your repo — commit and push straight from there when you're done.
+
+Running locally instead works the same way, with the usual `./venv/bin/...` commands from earlier weeks.
+
 ## Deploy
 
 ```bash

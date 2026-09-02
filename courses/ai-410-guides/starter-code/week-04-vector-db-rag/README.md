@@ -16,18 +16,23 @@ Guide: [`../../week-04-vector-db-rag.html`](../../week-04-vector-db-rag.html)
 
 ## Run it
 
-```bash
-# 1. In the Supabase SQL editor, run schema.sql
+First, in the Supabase SQL editor, run `backend/schema.sql` — this is the same regardless of how you run the app.
 
-# 2. Load the sample docs into your vector DB
+**Recommended: GitHub Codespaces.** Push this folder to its own repo, then **Code → Codespaces → Create codespace on main** — `.devcontainer/devcontainer.json` installs `backend/requirements.txt` and creates `backend/.env` automatically. Add your `GEMINI_API_KEY` and Supabase `DATABASE_URL` to `backend/.env`, then:
+```bash
+cd backend
+python ingest.py          # load the sample docs into your vector DB
+uvicorn main:app --reload
+```
+
+**Running locally instead?**
+```bash
 cd backend
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # add your keys + DATABASE_URL
 ./venv/bin/python ingest.py
-
-# 3. Start the server
 ./venv/bin/uvicorn main:app --reload
 ```
 
-Ask something that can only be answered from the sample docs (e.g. "how long do I have to return an item?") and confirm the agent gets it right using retrieved context. Then comment out the retrieval call and ask again — it should get noticeably worse.
+Either way, ask something that can only be answered from the sample docs (e.g. "how long do I have to return an item?") and confirm the agent gets it right using retrieved context. Then comment out the retrieval call and ask again — it should get noticeably worse.

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>IS 201 Revamp — Design Brief</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --orange: #ea580c;
+      --orange-dim: #fff7ed;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --cyan: #0891b2;
+      --cyan-dim: #ecfeff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .shell { max-width: 920px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow); }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 24px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+    @media (max-width: 560px) { .toc ol { columns: 1; } }
+
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-num { font-size: 0.7rem; font-weight: 800; color: var(--slate-light); letter-spacing: 0.08em; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { margin: 2px 0 0; font-size: 0.85rem; color: var(--slate); }
+    .section-body { padding: 20px 24px; }
+
+    .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+    .icon-cyan { background: var(--cyan-dim); }
+
+    .prose p { font-size: 0.92rem; margin: 0 0 12px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose h3 { font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); margin: 20px 0 8px; }
+    .prose h3:first-child { margin-top: 0; }
+    .prose ul { margin: 6px 0 12px; padding-left: 20px; font-size: 0.92rem; }
+    .prose li { margin-bottom: 6px; }
+    .prose strong { font-weight: 700; }
+    .prose code { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-size: 0.85em; }
+
+    .lede { font-size: 1rem; font-weight: 600; color: var(--ink); margin: 0 0 16px; line-height: 1.55; }
+
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    .data-table th { text-align: left; padding: 10px 12px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate); background: var(--bg); border-bottom: 2px solid var(--border); vertical-align: bottom; }
+    .data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--ink); }
+    .data-table tr:last-child td { border-bottom: none; }
+    .table-scroll { overflow-x: auto; }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 16px; font-size: 0.88rem; border: 1px solid transparent; margin-top: 14px; }
+    .callout-amber { background: var(--amber-dim); border-color: #fde68a; color: #92400e; }
+    .callout-blue { background: var(--blue-dim); border-color: #bfdbfe; color: #1e3a8a; }
+    .callout-green { background: var(--green-dim); border-color: #bbf7d0; color: #14532d; }
+    .callout-cyan { background: var(--cyan-dim); border-color: #a5f3fc; color: #155e75; }
+    .callout-violet { background: var(--violet-dim); border-color: #ddd6fe; color: #4c1d95; }
+    .callout strong { font-weight: 700; }
+
+    /* Bloom's ladder */
+    .bloom-wrap { display: flex; gap: 14px; margin: 6px 0 4px; }
+    .bloom-axis { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-light); text-align: center; padding: 4px 0; white-space: nowrap; }
+    .bloom-ladder { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .bloom-rung { border-radius: 8px; padding: 9px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.82rem; }
+    .bloom-rung .br-verb { font-weight: 800; }
+    .bloom-rung .br-verbs { color: rgba(255,255,255,0.85); font-size: 0.78rem; font-weight: 500; }
+    .bloom-rung .br-tag { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+    .bloom-hi { color: #fff; }
+    .bloom-lo { color: #fff; }
+    .r-create { background: #4c1d95; }
+    .r-evaluate { background: #6d28d9; }
+    .r-analyze { background: #7c3aed; }
+    .r-apply { background: #2563eb; }
+    .r-understand { background: #3b82f6; }
+    .r-remember { background: #60a5fa; }
+    .br-tag-ai { background: rgba(255,255,255,0.22); }
+    .br-tag-human { background: rgba(255,255,255,0.22); }
+    .bloom-brace { display: flex; flex-direction: column; justify-content: center; gap: 4px; font-size: 0.7rem; font-weight: 700; color: var(--slate); text-align: center; }
+
+    /* Weight bars */
+    .weight-row { display: grid; grid-template-columns: 200px 1fr 60px; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.84rem; }
+    .weight-label { font-weight: 600; }
+    .weight-bar-track { background: var(--bg); border-radius: 6px; height: 18px; overflow: hidden; border: 1px solid var(--border); }
+    .weight-bar-fill { height: 100%; border-radius: 6px; }
+    .weight-pct { text-align: right; font-weight: 700; color: var(--slate); }
+    .weight-group-label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); margin: 16px 0 8px; }
+    .weight-group-label:first-child { margin-top: 0; }
+
+    /* Module map */
+    .mod-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 10px; background: var(--bg); }
+    .mod-card:last-child { margin-bottom: 0; }
+    .mod-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+    .mod-num { font-size: 0.68rem; font-weight: 800; color: var(--violet); letter-spacing: 0.06em; }
+    .mod-title { font-weight: 800; font-size: 0.92rem; }
+    .mod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.82rem; }
+    @media (max-width: 620px) { .mod-grid { grid-template-columns: 1fr; } }
+    .mod-block-label { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate-light); margin-bottom: 3px; }
+    .mod-block p { margin: 0; color: var(--slate); }
+
+    /* Domain chips */
+    .domain-demo { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; background: var(--bg); }
+    .domain-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .domain-tab { padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; border: 1.5px solid var(--border); background: var(--card); color: var(--slate); font-family: inherit; cursor: pointer; transition: background .12s, border-color .12s, color .12s; }
+    .domain-tab:hover { border-color: var(--violet); color: var(--violet); }
+    .domain-tab.active { background: var(--violet); border-color: var(--violet); color: #fff; }
+    .domain-tab.active:hover { color: #fff; }
+    .domain-tab:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+    .domain-snippet { background: #0f172a; color: #e2e8f0; border-radius: var(--radius-sm); padding: 12px 14px; font-family: "SF Mono", Menlo, monospace; font-size: 0.78rem; overflow-x: auto; white-space: pre; }
+    .domain-snippet .c-key { color: #7dd3fc; }
+    .domain-snippet .c-str { color: #86efac; }
+    .domain-snippet .c-cmt { color: #64748b; }
+    .domain-snippet .c-add { color: #86efac; }
+    .domain-snippet .c-del { color: #fca5a5; }
+
+    .oq-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .oq-item { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; background: var(--bg); font-size: 0.88rem; }
+    .oq-item strong { display: block; margin-bottom: 3px; font-size: 0.9rem; }
+    .risk-sev { display: inline-block; font-size: 0.64rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 9px; border-radius: 20px; margin-bottom: 6px; }
+    .risk-sev-high { background: var(--red-dim); color: var(--red); }
+    .risk-sev-med { background: var(--amber-dim); color: var(--amber); }
+    .risk-sev-low { background: var(--cyan-dim); color: var(--cyan); }
+
+    footer { text-align: center; color: var(--slate-light); font-size: 0.82rem; margin-top: 24px; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-hub.html">CityUX Hub</a>
+    <span class="nav-sep">›</span>
+    <span>IS 201 Revamp — Design Brief</span>
+    <span class="nav-sep">|</span>
+    <a href="teaching-framework-hub.html">Teaching Framework Hub →</a>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">CityUX Pilot · Curriculum Design Brief</div>
+    <h1>IS 201 Revamp — Teaching Python in the Age of AI</h1>
+    <p class="subtitle">A proposal to pilot a redesigned IS 201 (Fundamentals of Programming) as a CityUX course or microcredential — built around a simple thesis: generative AI has automated the bottom of Bloom's Taxonomy, so the course should stop grading it and start grading what's left.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Sep 1, 2026</span>
+      <span class="meta-chip">Status: Draft for discussion — not yet built</span>
+      <span class="meta-chip">Path: CityUX microcredential — no curriculum-committee gate</span>
+      <span class="meta-chip">Source docs: Course Syllabus, Outline, Module Overviews (Oct 2024 / Jul 2025)</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#why">Why: AI Ate the Bottom of Bloom's Taxonomy</a></li>
+      <li><a href="#diagnosis">The Current Course, Diagnosed</a></li>
+      <li><a href="#outcomes">Course Outcomes, Reframed</a></li>
+      <li><a href="#assessment">Assessment Rebalance</a></li>
+      <li><a href="#modules">Module Map — Same Topics, Higher Floor</a></li>
+      <li><a href="#domain">The Domain Switch</a></li>
+      <li><a href="#carryover">What Carries Over vs. What Changes</a></li>
+      <li><a href="#risks">Known Risks</a></li>
+      <li><a href="#open">Open Questions &amp; Next Steps</a></li>
+    </ol>
+  </div>
+
+  <!-- Why -->
+  <div class="section" id="why">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🧗</div>
+      <div>
+        <h2>Why: AI Ate the Bottom of Bloom's Taxonomy</h2>
+        <p class="section-sub">The argument, in one ladder</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <p class="lede">Generative AI is now reliably better and faster than a first-year student at <strong>Remembering</strong> syntax, <strong>Understanding</strong> what a function signature means, and <strong>Applying</strong> a known pattern to a new but similar problem. Those are the bottom three rungs of Bloom's Taxonomy — and they are exactly what most intro-programming courses, IS 201 included, spend most of their grade on.</p>
+      <p>What AI cannot do for a student — because it requires human judgment tied to a specific context — is <strong>Analyze</strong> why a piece of code behaves the way it does, <strong>Evaluate</strong> whether a solution is actually correct, safe, and fit for a real business problem, or <strong>Create</strong> a solution to a problem that hasn't been fully specified yet. Those top three rungs are where a Python course earns its keep in 2026.</p>
+
+      <div class="bloom-wrap">
+        <div class="bloom-axis">Higher-order thinking</div>
+        <div class="bloom-ladder">
+          <div class="bloom-rung r-create">
+            <span><span class="br-verb">Creating</span> <span class="br-verbs">— design, build, formulate a solution</span></span>
+            <span class="br-tag br-tag-human">Human center of gravity</span>
+          </div>
+          <div class="bloom-rung r-evaluate">
+            <span><span class="br-verb">Evaluating</span> <span class="br-verbs">— judge, validate, choose between options</span></span>
+            <span class="br-tag br-tag-human">Human center of gravity</span>
+          </div>
+          <div class="bloom-rung r-analyze">
+            <span><span class="br-verb">Analyzing</span> <span class="br-verbs">— trace a diff, debug, explain behavior</span></span>
+            <span class="br-tag br-tag-human">Human center of gravity</span>
+          </div>
+          <div class="bloom-rung r-apply">
+            <span><span class="br-verb">Applying</span> <span class="br-verbs">— implement a known pattern</span></span>
+            <span class="br-tag br-tag-ai">AI-accelerated</span>
+          </div>
+          <div class="bloom-rung r-understand">
+            <span><span class="br-verb">Understanding</span> <span class="br-verbs">— explain, summarize, interpret</span></span>
+            <span class="br-tag br-tag-ai">AI-accelerated</span>
+          </div>
+          <div class="bloom-rung r-remember">
+            <span><span class="br-verb">Remembering</span> <span class="br-verbs">— recall syntax, recite definitions</span></span>
+            <span class="br-tag br-tag-ai">AI-accelerated</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-violet">
+        <strong>The design principle for every decision below:</strong> the bottom three rungs stay in the course (students still need the vocabulary to read and direct code) but stop being the thing we grade heavily. They become the fast, AI-assisted on-ramp into the top three rungs, which become the center of gravity for both instruction time and assessment weight.
+      </div>
+      <p>This isn't a new idea for STC — the AI Institute meeting notes from Jul 21, 2026 already floated a <a href="meeting-notes-ai-institute-2026-07-21.html">&ldquo;flipped Bloom's Taxonomy&rdquo;</a> for CityUX's self-paced modules, and <a href="peer-instruction-cats-ai-age.html">Peer Instruction &amp; CATs in the AI Age</a> makes the parallel case for in-class activities. This brief is that same thesis applied to IS 201's content and grading structure — and its specific AI-resistance mechanics (Debug the AI, Structural Reverse-Engineer, live time-boxing) are pulled directly into the new assessments below, not just cited by analogy. See <a href="#assessment">Assessment Rebalance</a>.</p>
+    </div>
+  </div>
+
+  <!-- Diagnosis -->
+  <div class="section" id="diagnosis">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🩺</div>
+      <div>
+        <h2>The Current Course, Diagnosed</h2>
+        <p class="section-sub">IS 201's own course outcomes already span the ladder — its grading doesn't</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <p>The existing IS 201 Course Outcomes (from the current Course Outline) are, almost verbatim, a walk up Bloom's Taxonomy: CO1–CO2 <em>understand</em>, CO3 <em>apply</em>, CO4 <em>analyze</em>, CO5 <em>evaluate</em>, CO6 <em>create</em>. The outcomes were never the problem. The problem is where the 1,000 points actually go.</p>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Current assessment</th><th>Weight</th><th>Bloom level it actually tests</th></tr></thead>
+          <tbody>
+            <tr><td>Programming Exercise (PE)</td><td>40%</td><td>Apply (write correct syntax from a blank file, individually)</td></tr>
+            <tr><td>Hands-On Skill (HOS)</td><td>20%</td><td>Apply (follow steps for a specific tool)</td></tr>
+            <tr><td>Knowledge Check (KC)</td><td>10%</td><td>Remember / Understand (weekly quiz)</td></tr>
+            <tr><td>Muddiest Point (MP)</td><td>5%</td><td>Understand (reflective, low stakes)</td></tr>
+            <tr><td>Concept Debate (CD)</td><td>5%</td><td>Evaluate, in miniature (discussion-board depth)</td></tr>
+            <tr><td>Team Project (TP) — Tic-Tac-Toe</td><td>20%</td><td>Create (the one deliverable that reaches the top rung)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>75% of the grade (PE + HOS + KC + MP) sits on Remember / Understand / Apply</strong> — precisely the work a general-purpose AI assistant now does at or above a first-year student's level, on demand, for free. Only the Team Project reaches Create, and it's a single generic exercise (a board game) with no connection to a real domain, no requirements-gathering step, and no evaluation of alternative approaches.</p>
+    </div>
+  </div>
+
+  <!-- Outcomes reframed -->
+  <div class="section" id="outcomes">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🎯</div>
+      <div>
+        <h2>Course Outcomes, Reframed</h2>
+        <p class="section-sub">Same six outcomes — assessed at the level they actually name</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>CO</th><th>Current wording</th><th>How it's actually assessed today</th><th>How it should be assessed</th></tr></thead>
+          <tbody>
+            <tr><td><strong>CO1–CO2</strong></td><td>Understand constructs, data types &amp; structures</td><td>Weekly quiz (10%)</td><td>Unchanged — kept lightweight, AI-assisted self-check, not a grade driver</td></tr>
+            <tr><td><strong>CO3</strong></td><td>Apply constructs to programming in Python</td><td>Programming Exercise (40%), blank-file, unassisted</td><td>AI-paired implementation — graded on meeting the spec and explaining the code, not on typing it unaided</td></tr>
+            <tr><td><strong>CO4</strong></td><td>Analyze behavior of simple programs</td><td>Not directly assessed</td><td><strong>New:</strong> weekly diff/debug reading — trace what changed between two versions of a program and why</td></tr>
+            <tr><td><strong>CO5</strong></td><td>Evaluate applications of Python in AI/data science</td><td>Concept Debate (5%)</td><td><strong>Raised:</strong> judge 2–3 AI-generated candidate solutions against a domain's correctness/security/fit constraints, recommend one</td></tr>
+            <tr><td><strong>CO6</strong></td><td>Create programs to solve problems</td><td>Team Project (20%), generic game, no domain framing</td><td><strong>Raised &amp; reframed:</strong> domain capstone — requirements gathering against a stakeholder brief, then build</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assessment rebalance -->
+  <div class="section" id="assessment">
+    <div class="section-header">
+      <div class="section-icon icon-green">⚖️</div>
+      <div>
+        <h2>Assessment Rebalance</h2>
+        <p class="section-sub">Proposed weights — foundation stays, but shrinks to make room</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <div class="weight-group-label">Foundational · AI-accelerated (target: 35%, down from 75%)</div>
+      <div class="weight-row"><span class="weight-label">Knowledge Check</span><div class="weight-bar-track"><div class="weight-bar-fill" style="width:14%;background:#60a5fa"></div></div><span class="weight-pct">5%</span></div>
+      <div class="weight-row"><span class="weight-label">Muddiest Point</span><div class="weight-bar-track"><div class="weight-bar-fill" style="width:14%;background:#3b82f6"></div></div><span class="weight-pct">5%</span></div>
+      <div class="weight-row"><span class="weight-label">Hands-On Skill (AI-paired)</span><div class="weight-bar-track"><div class="weight-bar-fill" style="width:43%;background:#2563eb"></div></div><span class="weight-pct">15%</span></div>
+      <div class="weight-row"><span class="weight-label">Programming Exercise (AI-assisted)</span><div class="weight-bar-track"><div class="weight-bar-fill" style="width:29%;background:#1d4ed8"></div></div><span class="weight-pct">10%</span></div>
+
+      <div class="weight-group-label">Higher-order · Human judgment (target: 65%, up from 25%)</div>
+      <div class="weight-row"><span class="weight-label">Diff / Debug Sprint <em>(new)</em></span><div class="weight-bar-track"><div class="weight-bar-fill" style="width:43%;background:#7c3aed"></div></div><span class="weight-pct">15%</span></div>
+      <div class="weight-row"><span class="weight-label">Concept Debate (raised)</span><div class="weight-bar-track"><div class="weight-bar-fill" style="width:29%;background:#6d28d9"></div></div><span class="weight-pct">10%</span></div>
+      <div class="weight-row"><span class="weight-label">Solution Evaluation Brief <em>(new)</em></span><div class="weight-bar-track"><div class="weight-bar-fill" style="width:29%;background:#6d28d9"></div></div><span class="weight-pct">10%</span></div>
+      <div class="weight-row"><span class="weight-label">Domain Capstone Project (raised)</span><div class="weight-bar-track"><div class="weight-bar-fill" style="width:86%;background:#4c1d95"></div></div><span class="weight-pct">30%</span></div>
+
+      <h3>What the two new assessment types actually are</h3>
+      <ul>
+        <li><strong>Diff / Debug Sprint (Analyze).</strong> Every module, students get a short commit history or before/after diff where an AI assistant made the change — framed as <strong>&ldquo;Debug the AI&rdquo;</strong>: find the fatal conceptual flaw or regression it introduced, not just narrate what changed. Run as a timed, synchronous (or screen-recorded) session, so leaving the room to ask a second AI costs more than just doing the work. This is the literal mechanism for &ldquo;see code as diffs / commit history instead of typing it&rdquo; from the original brief.</li>
+        <li><strong>Solution Evaluation Brief (Evaluate).</strong> Students are handed 2–3 AI-generated candidate implementations of the same requirement <strong>plus an AI-generated evaluation of them</strong> — the task (a <strong>Structural Reverse-Engineer</strong>) is to find what that evaluation oversimplified or got wrong against a domain-specific constraint (e.g., a healthcare snippet handling PII, a finance snippet handling rounding), then recommend one in writing with their own reasoning.</li>
+      </ul>
+
+      <h3>Making these AI-resistant</h3>
+      <p>Changing what an assessment asks for doesn't make it any less promptable — a Diff Sprint answer or an Evaluation Brief can be pasted into an AI just as easily as a Programming Exercise can. <a href="peer-instruction-cats-ai-age.html">Peer Instruction &amp; CATs in the AI Age</a> already solved this exact problem for discussion-based work by shifting from evaluating the <em>final product</em> to capturing the <em>live human process</em>; the same mechanics carry over directly here.</p>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Mechanic (from Peer Instruction &amp; CATs)</th><th>Applied in IS 201</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Debug the AI</strong> — critique a flawed AI output instead of producing an answer from scratch</td><td>Diff/Debug Sprint is &ldquo;AI made this change — find the flaw it introduced,&rdquo; not an open &ldquo;explain this diff&rdquo; prompt an AI could answer just as well</td></tr>
+            <tr><td><strong>Structural Reverse-Engineer</strong> — given an AI-generated artifact, name what it oversimplified or got wrong</td><td>Solution Evaluation Brief hands students an AI-generated evaluation and asks them to find its blind spot, rather than generate their own evaluation unassisted</td></tr>
+            <tr><td><strong>Tight, live, unrecorded time-boxing</strong> — the friction of leaving to consult AI exceeds the friction of just doing the work</td><td>Diff Sprint runs timed and synchronous (or screen-recorded), not an open-window async text submission</td></tr>
+            <tr><td><strong>Capture the shift, not the artifact</strong> — evidence is how thinking changed, not just the final answer</td><td>Domain Capstone's requirements step (Module 5) uses the Roleplay Feedback Loop: brief an AI playing a skeptical stakeholder, submit the interaction log showing how the requirements changed under questioning</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Worked example — Diff/Debug Sprint</h3>
+      <p>Module 6 (Files &amp; Exceptions), Healthcare lens. Students get a 3-minute timer and this diff, framed only as: <em>&ldquo;An AI assistant made this &lsquo;cleanup&rsquo; commit. What did it break?&rdquo;</em></p>
+      <div class="domain-snippet"><span class="c-cmt"># commit: "simplify error handling"</span>
+<span class="c-del">-     except PatientNotFoundError:</span>
+<span class="c-del">-         log.warning(f"No record for {patient_id}")</span>
+<span class="c-del">-         return None</span>
+<span class="c-add">+     except Exception:</span>
+<span class="c-add">+         return None</span></div>
+      <p><strong>Example submission</strong> (typed with 19 seconds left on the clock, screen-recorded):</p>
+      <div class="callout callout-blue">&ldquo;The except got widened from <code>PatientNotFoundError</code> to a bare <code>Exception</code>, and the warning log was dropped. Now a real failure &mdash; a database timeout, a malformed record &mdash; silently returns <code>None</code> exactly like a routine &lsquo;patient not found.&rsquo; A clinician can't tell a missing record apart from a broken system, which is worse than an error in a healthcare context.&rdquo;</div>
+      <p><strong>How it's graded</strong> &mdash; fast, because a diff this small has only a handful of valid flaws to name, not an open-ended essay to interpret:</p>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Criterion</th><th>What's graded</th><th>Weight</th></tr></thead>
+          <tbody>
+            <tr><td>Flaw identification</td><td>Names the specific change (widened <code>except</code>, dropped log) &mdash; not a vague &ldquo;the error handling changed&rdquo;</td><td>40%</td></tr>
+            <tr><td>Consequence in domain</td><td>Explains what breaks <em>because of it</em>, in terms specific to the healthcare framing, not generic &ldquo;this could cause bugs&rdquo;</td><td>40%</td></tr>
+            <tr><td>Process evidence</td><td>Submitted inside the time box; recording shows no second AI tab open</td><td>20%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>This is also the answer to the grading-consistency risk below: because each diff is authored with a small, known set of valid flaws, a TA can grade a stack of these in the time it takes to skim each one against the criteria above &mdash; no open-ended rubric judgment call required.</p>
+
+      <div class="callout callout-green">
+        <strong>Net effect:</strong> the grade center of gravity moves from &ldquo;did you type working syntax from memory&rdquo; to &ldquo;can you read, judge, and direct code toward a real problem&rdquo; — and the new assessments stay hard to outsource to AI because the deliverable is a critique of AI output plus a live/logged process trail, not a clean final answer. Total still sums to 100%; no new point pool, just redistributed.
+      </div>
+    </div>
+  </div>
+
+  <!-- Module map -->
+  <div class="section" id="modules">
+    <div class="section-header">
+      <div class="section-icon icon-cyan">🗺️</div>
+      <div>
+        <h2>Module Map — Same Topics, Higher Floor</h2>
+        <p class="section-sub">The 10-module topic sequence is kept; each module gains an Analyze/Evaluate layer and a domain lens</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <p>Recommendation from the scope decision: keep all 10 modules and the current topic order (it's a sound scaffold — basics → collections → functions → files → OOP → applied automation). What changes inside each module is <em>time allocation</em>: less of the session spent watching syntax get typed, more spent on the higher-order layer.</p>
+
+      <div class="mod-card">
+        <div class="mod-head"><span class="mod-num">MODULE 1</span><span class="mod-title">Setup &amp; Intro — now includes AI pair-programming basics</span><span style="margin-left:auto;font-size:0.72rem;font-weight:700"><a href="courses/is-201-guides/week-01-setup-orientation.html">Guide is live →</a></span></div>
+        <div class="mod-grid">
+          <div class="mod-block"><div class="mod-block-label">Core (kept, fast)</div><p>Python env, VS Code, course orientation</p></div>
+          <div class="mod-block"><div class="mod-block-label">Higher-order layer</div><p>Set up an AI coding assistant; first exercise in prompting it well vs. accepting blindly — domain-flavored (Maritime / Marketing)</p></div>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-head"><span class="mod-num">MODULE 2</span><span class="mod-title">Variables, Data Types, Operators, Loops, If</span></div>
+        <div class="mod-grid">
+          <div class="mod-block"><div class="mod-block-label">Core (kept, fast)</div><p>Variables, comparison operators, while loops, if statements</p></div>
+          <div class="mod-block"><div class="mod-block-label">Higher-order layer</div><p>Diff Sprint: two versions of a domain data-intake script — explain the behavior change</p></div>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-head"><span class="mod-num">MODULE 3</span><span class="mod-title">Lists &amp; Tuples</span></div>
+        <div class="mod-grid">
+          <div class="mod-block"><div class="mod-block-label">Core (kept, fast)</div><p>List operations, sorting, common indentation bugs</p></div>
+          <div class="mod-block"><div class="mod-block-label">Higher-order layer</div><p>Evaluate two AI-generated sort/filter approaches on a domain dataset for correctness &amp; readability</p></div>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-head"><span class="mod-num">MODULE 4</span><span class="mod-title">Dictionaries &amp; Sets</span></div>
+        <div class="mod-grid">
+          <div class="mod-block"><div class="mod-block-label">Core (kept, fast)</div><p>Key-value pairs, iteration, nesting</p></div>
+          <div class="mod-block"><div class="mod-block-label">Higher-order layer</div><p>Model a real domain record (patient / transaction / shipment) as nested dicts; justify the schema choice</p></div>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-head"><span class="mod-num">MODULE 5</span><span class="mod-title">Functions</span></div>
+        <div class="mod-grid">
+          <div class="mod-block"><div class="mod-block-label">Core (kept, fast)</div><p>Parameters, return values, modules</p></div>
+          <div class="mod-block"><div class="mod-block-label">Higher-order layer</div><p>Roleplay Feedback Loop: brief an AI playing a skeptical stakeholder about a vague ask; submit the interaction log plus the function signature + docstring it converged on — the log is graded, not just the final signature</p></div>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-head"><span class="mod-num">MODULE 6</span><span class="mod-title">Files &amp; Exceptions</span></div>
+        <div class="mod-grid">
+          <div class="mod-block"><div class="mod-block-label">Core (kept, fast)</div><p>Try/except/finally, reading &amp; writing files</p></div>
+          <div class="mod-block"><div class="mod-block-label">Higher-order layer</div><p>Diff Sprint: find where error handling was removed/weakened in a commit, explain the risk in the domain context</p></div>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-head"><span class="mod-num">MODULE 7</span><span class="mod-title">Classes</span></div>
+        <div class="mod-grid">
+          <div class="mod-block"><div class="mod-block-label">Core (kept, fast)</div><p>Attributes, methods, instances</p></div>
+          <div class="mod-block"><div class="mod-block-label">Higher-order layer</div><p>Design (not code) a class hierarchy for a domain entity on paper first; AI implements the skeleton, student verifies it matches the design</p></div>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-head"><span class="mod-num">MODULE 8</span><span class="mod-title">Object-Oriented Programming</span></div>
+        <div class="mod-grid">
+          <div class="mod-block"><div class="mod-block-label">Core (kept, fast)</div><p>Inheritance, polymorphism, overloading</p></div>
+          <div class="mod-block"><div class="mod-block-label">Higher-order layer</div><p>Solution Evaluation Brief: compare inheritance vs. composition for a domain scenario, recommend one with tradeoffs</p></div>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-head"><span class="mod-num">MODULE 9</span><span class="mod-title">Web Scraping &amp; Spreadsheets</span></div>
+        <div class="mod-grid">
+          <div class="mod-block"><div class="mod-block-label">Core (kept, fast)</div><p>requests, BeautifulSoup, selenium basics</p></div>
+          <div class="mod-block"><div class="mod-block-label">Higher-order layer</div><p>Evaluate ethical/legal constraints (ToS, rate limits, PII) on scraping a domain-relevant public source before building</p></div>
+        </div>
+      </div>
+      <div class="mod-card">
+        <div class="mod-head"><span class="mod-num">MODULE 10</span><span class="mod-title">Image Manipulation &amp; Automation — Capstone</span></div>
+        <div class="mod-grid">
+          <div class="mod-block"><div class="mod-block-label">Core (kept, fast)</div><p>Pillow, PyAutoGUI basics</p></div>
+          <div class="mod-block"><div class="mod-block-label">Higher-order layer</div><p>Domain Capstone presentation — the Module 5 stakeholder interaction log carries forward as the requirements artifact, closing the requirements-to-solution arc</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Domain switch -->
+  <div class="section" id="domain">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔀</div>
+      <div>
+        <h2>The Domain Switch</h2>
+        <p class="section-sub">Click an industry; the example, dataset, and case study swap in place</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <p>Each module's higher-order activity (Diff Sprint, Evaluation Brief, capstone scenario) is written once per topic but authored in parallel across a small set of pilot domains. A simple tab control on the module page swaps the code snippet, toy dataset, and case-study framing — the underlying Python concept doesn't change, only the world it's applied to.</p>
+
+      <div class="domain-demo">
+        <div class="domain-tabs" role="tablist" aria-label="Pilot domain preview">
+          <button type="button" class="domain-tab active" data-domain="healthcare" role="tab" aria-selected="true">Healthcare</button>
+          <button type="button" class="domain-tab" data-domain="finance" role="tab" aria-selected="false">Finance</button>
+          <button type="button" class="domain-tab" data-domain="marketing" role="tab" aria-selected="false">Marketing / E-commerce</button>
+          <button type="button" class="domain-tab" data-domain="maritime" role="tab" aria-selected="false">Maritime</button>
+        </div>
+        <div class="domain-snippet" id="domain-snippet-display" role="tabpanel"><span class="c-cmt"># Module 4 — Dictionaries &amp; Sets, Healthcare lens</span>
+<span class="c-key">patient</span> = {
+    <span class="c-str">"id"</span>: 4471,
+    <span class="c-str">"age"</span>: 63,
+    <span class="c-str">"readmit_risk"</span>: 0.72,
+}
+<span class="c-key">if</span> patient[<span class="c-str">"readmit_risk"</span>] > 0.7:
+    flag_for_followup(patient)</div>
+      </div>
+
+      <h3>Pilot domain set</h3>
+      <ul>
+        <li><strong>Maritime</strong> <span style="color:var(--slate);font-weight:600">— MVP domain #1</span> — sensor/telemetry data, safety-critical thresholds, intermittent connectivity. Ties directly to STC's existing <a href="blue-tech-maritime-hub.html">Blue Tech &amp; Maritime</a> initiative, so real case studies and subject-matter expertise are already on hand.</li>
+        <li><strong>Marketing / E-commerce</strong> <span style="color:var(--slate);font-weight:600">— MVP domain #2</span> — customer records, cart/inventory logic, A/B-test style data</li>
+        <li><strong>Healthcare</strong> — patient records, appointment/readmission logic, data-privacy framing</li>
+        <li><strong>Finance / Fintech</strong> — transactions, budgeting logic, rounding/precision edge cases</li>
+      </ul>
+      <p>Maritime replaced an earlier Logistics placeholder specifically because it's not hypothetical — STC already has an active initiative and hub docs to draw from, which none of the other three domains have yet. Healthcare and Finance stay in the illustrative set (each forces a genuinely different constraint — privacy, precision) but are not built first.</p>
+
+      <h3>Build note</h3>
+      <p>Technically this is the same pattern as the <a href="courses/ai-410-guides/index.html">AI 410 week-by-week guides</a> and their <code>starter-code/</code> sandboxes — a small client-side component per module, not a platform rebuild. Authoring cost scales as <code>1 core explanation + N domain variants</code> per module, so the honest way to pilot this is <strong>Maritime + Marketing/E-commerce × Modules 1–3 as an MVP</strong> before committing content-authoring time to all 10 modules × the full domain set. Module 1 is live — see the <a href="courses/is-201-guides/index.html">IS 201 Week-by-Week Guides</a>.</p>
+    </div>
+  </div>
+
+  <!-- Carryover -->
+  <div class="section" id="carryover">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🔁</div>
+      <div>
+        <h2>What Carries Over vs. What Changes</h2>
+        <p class="section-sub">Against the current Syllabus / Outline / Module Overview docs</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Element</th><th>Carries over</th><th>Changes</th></tr></thead>
+          <tbody>
+            <tr><td>Course Outcomes (CO1–CO6)</td><td>Wording unchanged</td><td>Assessment finally matches the verb each CO already names</td></tr>
+            <tr><td>10-module topic sequence</td><td>Order &amp; core concepts unchanged</td><td>Each module gains a domain-flavored higher-order layer</td></tr>
+            <tr><td>Textbooks (Matthes, Sweigart)</td><td>Kept as the syntax reference</td><td>Read faster / AI-assisted; no longer the primary source of graded work</td></tr>
+            <tr><td>Team Project</td><td>Team structure, multi-submission checkpoints</td><td>Tic-Tac-Toe → domain-chosen capstone with a requirements-gathering step</td></tr>
+            <tr><td>Muddiest Point / Concept Debate</td><td>Discussion-board mechanic</td><td>Concept Debate weight raised; both stay low-friction</td></tr>
+            <tr><td>Programming Exercise / Hands-On Skill</td><td>Individual submission, plagiarism policy</td><td>Explicitly AI-paired; graded on spec + explanation, not unaided typing; weight cut</td></tr>
+            <tr><td>Grading scale, academic policies, accommodations</td><td>Unchanged — university policy, not course design</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Known risks -->
+  <div class="section" id="risks">
+    <div class="section-header">
+      <div class="section-icon icon-red">🚧</div>
+      <div>
+        <h2>Known Risks</h2>
+        <p class="section-sub">Where this brief is weakest — surfaced on purpose, not smoothed over</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <ul class="oq-list">
+        <li class="oq-item"><span class="risk-sev risk-sev-high">High</span><strong>Skill-atrophy / cognitive load</strong>Cutting Programming Exercise from 40% to 10% may not leave enough deliberate-practice time to build the fluency that Analyze/Evaluate/Create actually depend on — Bloom's own model assumes the lower rungs are largely mastered before the upper ones are reachable. <strong>Mitigation:</strong> treat the 35/65 split as a hypothesis to pilot-test on a small cohort, not a number to lock into a syllabus untested.</li>
+        <li class="oq-item"><span class="risk-sev risk-sev-med">Medium</span><strong>Curriculum-committee gate — deferred, not avoided</strong>Confirmed: CityUX doesn't require curriculum-committee approval, so this pilot can launch on the design in this brief without that gate. But the actual credit-bearing IS 201 does require it — so this stays a real constraint on the eventual fold-back decision, not on the pilot itself. <strong>Mitigation:</strong> treat every module/assessment change here as provisional until a fold-back is proposed; budget committee lead time into that decision when it comes, not now.</li>
+        <li class="oq-item"><span class="risk-sev risk-sev-med">Medium</span><strong>Diff/Debug Sprint authoring load</strong>A fresh broken/working code pair is needed every module, times however many domains are live — a heavier ongoing burden than the domain-switch tabs flagged in the Domain Switch section. <strong>Mitigation:</strong> the same 2-domain, modules-1&ndash;3 MVP scope caps this cost during the pilot.</li>
+        <li class="oq-item"><span class="risk-sev risk-sev-med">Medium</span><strong>Grading consistency for the new assessment types</strong>Judging a Diff Sprint or an Evaluation Brief is harder to score consistently at scale than &ldquo;does this program run&rdquo; was, and no rubric or rater-calibration plan exists yet. <strong>Mitigation:</strong> reuse the competency → rubric → calibration pipeline already built in the <a href="assessment-infrastructure-playbook.html">Assessment Infrastructure Playbook</a> instead of inventing a new one.</li>
+        <li class="oq-item"><span class="risk-sev risk-sev-low">Low</span><strong>Bloom's Taxonomy is a narrative, not a proof</strong>The ladder isn't strictly sequential in the cognitive-science literature — real analysis often requires simultaneous recall, not recall-then-analysis in strict order. It's a strong stakeholder-communication device and a reasonable design heuristic; it shouldn't be cited as settled learning science if this brief goes in front of a curriculum committee.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Open questions -->
+  <div class="section" id="open">
+    <div class="section-header">
+      <div class="section-icon icon-red">❓</div>
+      <div>
+        <h2>Open Questions &amp; Next Steps</h2>
+        <p class="section-sub">What needs a decision before this becomes the mandatory docx set</p>
+      </div>
+    </div>
+    <div class="section-body prose">
+      <ul class="oq-list">
+        <li class="oq-item"><strong>Domain set — decided for the MVP</strong>Maritime + Marketing/E-commerce build first (Maritime for its tie to STC's existing Blue Tech initiative; Marketing/E-commerce as a low-context-cost contrast). Healthcare and Finance/Fintech stay in the illustrative four but aren't built until the MVP validates the approach.</li>
+        <li class="oq-item"><strong>AI tool</strong>Which assistant do students standardize on for the AI-paired exercises (Claude, Copilot, something CityU-licensed), and does that choice need a procurement/compliance step?</li>
+        <li class="oq-item"><strong>Total point pool</strong>Keep 1,000 points / same percentage structure, or does the new assessment mix warrant revisiting the scale itself?</li>
+        <li class="oq-item"><strong>Dev environment — decided</strong>Runs on GitHub Codespaces, browser-based, zero local install — continuing the direction already flagged in the Sep 1 tooling meeting notes ("validate local dev environments vs. GitHub Codespaces to find the smoothest student setup") and the click-to-launch Codespaces pattern CityUX's own execution plan already commits to for lab content. A real <code>.devcontainer/devcontainer.json</code> now lives in this repo; see the <a href="courses/is-201-guides/week-01-setup-orientation.html">Week 1 guide</a> for the pilot test of it.</li>
+        <li class="oq-item"><strong>Platform</strong>Does the domain-switch component live as a lightweight embed inside Open edX content blocks, or does it need CityUX platform team involvement to wire in properly?</li>
+        <li class="oq-item"><strong>Synchronous vs. self-paced</strong>The Diff/Debug Sprint's AI-resistance depends on it being timed and live (or screen-recorded) — but CityUX's usual model is self-paced, asynchronous Open edX content. Does this pilot need a live cohort cadence, or can screen-recorded async submissions substitute without losing the time-pressure mechanic?</li>
+        <li class="oq-item"><strong>Positioning — decided</strong>Launches as a standalone CityUX microcredential, not a for-credit IS 201 section — CityUX doesn't require curriculum-committee approval, so this design can move directly to build. What's still open: <em>if</em> the pilot succeeds, does it fold back into credit-bearing IS 201 later, and does that trigger a scaled-down version of this redesign (to survive committee review) or the full version as proposed?</li>
+        <li class="oq-item"><strong>Next deliverable</strong>Once the above are settled: redraft the mandatory Course Syllabus, Course Outline, and Module Overview docx files to match this design, and adjust the Course Schedule as needed.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>IS 201 Revamp — Design Brief · CityUX Pilot · School of Technology and Computing, City University of Seattle</footer>
+
+</div>
+<script>
+(function(){
+  var snippets = {
+    healthcare:
+      '<span class="c-cmt"># Module 4 — Dictionaries &amp; Sets, Healthcare lens</span>\n' +
+      '<span class="c-key">patient</span> = {\n' +
+      '    <span class="c-str">"id"</span>: 4471,\n' +
+      '    <span class="c-str">"age"</span>: 63,\n' +
+      '    <span class="c-str">"readmit_risk"</span>: 0.72,\n' +
+      '}\n' +
+      '<span class="c-key">if</span> patient[<span class="c-str">"readmit_risk"</span>] > 0.7:\n' +
+      '    flag_for_followup(patient)',
+    finance:
+      '<span class="c-cmt"># Module 4 — Dictionaries &amp; Sets, Finance lens</span>\n' +
+      '<span class="c-key">transaction</span> = {\n' +
+      '    <span class="c-str">"id"</span>: 88213,\n' +
+      '    <span class="c-str">"amount"</span>: 2450.00,\n' +
+      '    <span class="c-str">"fraud_score"</span>: 0.81,\n' +
+      '}\n' +
+      '<span class="c-key">if</span> transaction[<span class="c-str">"fraud_score"</span>] > 0.75:\n' +
+      '    flag_for_review(transaction)',
+    marketing:
+      '<span class="c-cmt"># Module 4 — Dictionaries &amp; Sets, Marketing / E-commerce lens</span>\n' +
+      '<span class="c-key">customer</span> = {\n' +
+      '    <span class="c-str">"id"</span>: 30492,\n' +
+      '    <span class="c-str">"cart_total"</span>: 86.50,\n' +
+      '    <span class="c-str">"churn_risk"</span>: 0.64,\n' +
+      '}\n' +
+      '<span class="c-key">if</span> customer[<span class="c-str">"churn_risk"</span>] > 0.6:\n' +
+      '    send_retention_offer(customer)',
+    maritime:
+      '<span class="c-cmt"># Module 4 — Dictionaries &amp; Sets, Maritime lens</span>\n' +
+      '<span class="c-key">sensor_reading</span> = {\n' +
+      '    <span class="c-str">"vessel_id"</span>: "MV-2281",\n' +
+      '    <span class="c-str">"engine_temp_c"</span>: 96.4,\n' +
+      '    <span class="c-str">"overheat_risk"</span>: 0.83,\n' +
+      '}\n' +
+      '<span class="c-key">if</span> sensor_reading[<span class="c-str">"overheat_risk"</span>] > 0.8:\n' +
+      '    alert_engineering_officer(sensor_reading)'
+  };
+
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.domain-tab'));
+  var display = document.getElementById('domain-snippet-display');
+  if (!tabs.length || !display) return;
+
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      var domain = tab.getAttribute('data-domain');
+      if (!snippets[domain]) return;
+      tabs.forEach(function(t){
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      display.innerHTML = snippets[domain];
+    });
+  });
+})();
+</script>
+</body>
+</html>

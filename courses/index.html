@@ -28,6 +28,19 @@
         .course-card h3{margin:0 0 6px;font-size:0.95rem;line-height:1.3}
         .course-card p{margin:0;font-size:0.85rem;color:var(--muted);flex:1}
         .course-card .view-link{margin-top:12px;font-size:0.8rem;font-weight:600;color:var(--accent)}
+
+        /* Search */
+        .search-wrap{margin-bottom:28px;position:relative}
+        .search-input{width:100%;box-sizing:border-box;padding:12px 44px;border-radius:10px;border:1px solid #d1d5db;font-size:0.95rem;font-family:inherit;background:#fff;box-shadow:0 2px 8px rgba(15,23,42,0.04)}
+        .search-input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+        .search-icon{position:absolute;left:14px;top:14px;color:var(--muted);pointer-events:none;font-size:1rem}
+        .search-clear{position:absolute;right:8px;top:7px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1.05rem;padding:6px 8px;border-radius:6px;display:none}
+        .search-clear:hover{background:#f1f5f9;color:#0f1724}
+        .search-meta{margin-top:8px;font-size:0.82rem;color:var(--muted);min-height:1.2em}
+        .search-hidden{display:none !important}
+        .no-results{margin-top:8px;text-align:center;color:var(--muted);padding:40px 20px;background:#fff;border-radius:12px;border:1px dashed #d1d5db}
+        .no-results .nr-icon{font-size:2rem;margin-bottom:8px}
+
         footer{margin-top:40px;color:var(--muted);font-size:0.9rem;text-align:center}
     </style>
 </head>
@@ -41,6 +54,17 @@
         <div class="page-header">
             <h1>Course Catalog</h1>
             <p>All AI, CS, and DS courses in the STC curriculum — click any course to view its full assessment breakdown, case studies, and learning outcomes.</p>
+        </div>
+
+        <section class="search-wrap" aria-label="Search courses">
+            <span class="search-icon" aria-hidden="true">🔎</span>
+            <input type="search" id="course-search" class="search-input" placeholder="Search courses — e.g. &ldquo;AI 410&rdquo;, &ldquo;RAG&rdquo;, &ldquo;data mining&rdquo;&hellip;" aria-label="Search course code, title, and description" autocomplete="off">
+            <button type="button" id="course-search-clear" class="search-clear" aria-label="Clear search">✕</button>
+            <div class="search-meta" id="course-search-meta" aria-live="polite"></div>
+        </section>
+        <div class="no-results search-hidden" id="course-search-empty">
+            <div class="nr-icon">🗂️</div>
+            <div>No courses match &ldquo;<span id="course-search-empty-term"></span>&rdquo;.</div>
         </div>
 
         <section class="series">
@@ -161,5 +185,68 @@
             Built for City University of Seattle — School of Technology and Computing • <a href="../index.html" style="color:var(--accent)">Back to STC Hub</a>
         </footer>
     </div>
+    <script>
+    (function(){
+        var input = document.getElementById('course-search');
+        var clearBtn = document.getElementById('course-search-clear');
+        var meta = document.getElementById('course-search-meta');
+        var emptyState = document.getElementById('course-search-empty');
+        var emptyTerm = document.getElementById('course-search-empty-term');
+        if(!input) return;
+
+        var series = Array.prototype.slice.call(document.querySelectorAll('.series'));
+
+        function norm(s){ return (s || '').toLowerCase(); }
+
+        function resetAll(){
+            series.forEach(function(sec){
+                sec.classList.remove('search-hidden');
+                Array.prototype.slice.call(sec.querySelectorAll('.course-card')).forEach(function(c){ c.classList.remove('search-hidden'); });
+            });
+            meta.textContent = '';
+            emptyState.classList.add('search-hidden');
+        }
+
+        function runSearch(){
+            var term = norm(input.value.trim());
+            clearBtn.style.display = term ? 'block' : 'none';
+
+            if(!term){ resetAll(); return; }
+
+            var totalMatches = 0;
+
+            series.forEach(function(sec){
+                var cards = Array.prototype.slice.call(sec.querySelectorAll('.course-card'));
+                var sectionMatches = 0;
+                cards.forEach(function(card){
+                    var hit = norm(card.textContent).indexOf(term) !== -1;
+                    card.classList.toggle('search-hidden', !hit);
+                    if(hit) sectionMatches++;
+                });
+                sec.classList.toggle('search-hidden', sectionMatches === 0);
+                totalMatches += sectionMatches;
+            });
+
+            meta.textContent = totalMatches === 0 ? '' : (totalMatches + (totalMatches === 1 ? ' course' : ' courses'));
+            emptyTerm.textContent = input.value.trim();
+            emptyState.classList.toggle('search-hidden', totalMatches !== 0);
+        }
+
+        input.addEventListener('input', runSearch);
+        input.addEventListener('keydown', function(e){
+            if(e.key === 'Escape'){ input.value = ''; runSearch(); input.blur(); }
+        });
+        clearBtn.addEventListener('click', function(){ input.value = ''; runSearch(); input.focus(); });
+
+        document.addEventListener('keydown', function(e){
+            var active = document.activeElement;
+            var typing = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable);
+            if(e.key === '/' && !typing){
+                e.preventDefault();
+                input.focus();
+            }
+        });
+    })();
+    </script>
 </body>
 </html>

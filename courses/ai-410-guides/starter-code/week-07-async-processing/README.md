@@ -16,8 +16,18 @@ Guide: [`../../week-07-async-processing.html`](../../week-07-async-processing.ht
 
 ## Run it
 
-You need **two terminals** running at once:
+You need **two terminals** running at once — this is a great fit for Codespaces, since VS Code's terminal panel supports splitting into multiple panes with one click (the split-terminal icon in the top-right of the terminal panel).
 
+**Recommended: GitHub Codespaces.** Push this folder to its own repo, then **Code → Codespaces → Create codespace on main** — dependencies install and `backend/.env` is created automatically. Add your `GEMINI_API_KEY`, `DATABASE_URL`, and `REDIS_URL` to `backend/.env`, then split the terminal and run:
+```bash
+# Terminal 1 — the API
+cd backend && uvicorn main:app --reload
+
+# Terminal 2 — the worker (separate process!)
+cd backend && python worker.py
+```
+
+**Running locally instead?**
 ```bash
 # Terminal 1 — the API
 cd backend
@@ -31,4 +41,4 @@ cd backend
 ./venv/bin/python worker.py
 ```
 
-Upload a document, confirm you get a job ID back instantly, then poll `/jobs/{id}` until it's "finished" — while sending normal chat messages the whole time to prove the app stayed responsive.
+Either way, upload a document, confirm you get a job ID back instantly, then poll `/jobs/{id}` until it's "finished" — while sending normal chat messages the whole time to prove the app stayed responsive.

@@ -14,6 +14,12 @@ Guide: [`../../week-06-guardrails.html`](../../week-06-guardrails.html)
 
 ## Run it
 
-Same setup as Week 4 (run `schema.sql`, then `./venv/bin/python ingest.py`, then `./venv/bin/uvicorn main:app --reload`).
+Same setup as Week 4: run `schema.sql` in Supabase first. **Recommended: GitHub Codespaces** (Code → Codespaces → Create codespace on main — dependencies and `.env` are created for you), then:
+```bash
+cd backend
+python ingest.py
+uvicorn main:app --reload
+```
+Running locally instead, use `./venv/bin/python ingest.py` and `./venv/bin/uvicorn main:app --reload` as in earlier weeks.
 
 Test it on purpose: feed the agent a prompt likely to produce malformed tool arguments and confirm the guardrail catches it — either self-correcting on retry, or failing with a clear message instead of crashing.

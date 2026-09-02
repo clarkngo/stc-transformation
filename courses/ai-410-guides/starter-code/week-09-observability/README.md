@@ -16,4 +16,4 @@ Guide: [`../../week-09-observability.html`](../../week-09-observability.html)
 
 ## Run it
 
-Same as Week 8, plus your Langfuse keys in `.env`. Send a few chat requests, then open your Langfuse dashboard and find the traces. Deliberately ask something outside your document set, find that trace, and write a short critique of what it shows.
+Same as Week 8 — **GitHub Codespaces recommended** — plus your Langfuse keys added to `backend/.env`. Send a few chat requests, then open your Langfuse dashboard and find the traces. Deliberately ask something outside your document set, find that trace, and write a short critique of what it shows.

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IS 201 — Week 1 Guide: Setup, Orientation &amp; Your First AI Pairing Session</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+
+        /* Domain switch */
+        .domain-demo { border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:14px 0; background:#f8fafc; }
+        .domain-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+        .domain-tab { padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; border:1.5px solid #e2e8f0; background:#fff; color:#475569; font-family:inherit; cursor:pointer; }
+        .domain-tab:hover { border-color:#1e8449; color:#1e8449; }
+        .domain-tab.active { background:#1e8449; border-color:#1e8449; color:#fff; }
+        .domain-tab.active:hover { color:#fff; }
+        .domain-snippet { background:#0f172a; color:#e2e8f0; border-radius:6px; padding:12px 14px; font-family:'SFMono-Regular',Consolas,monospace; font-size:0.8rem; overflow-x:auto; white-space:pre; line-height:1.5; }
+        .domain-snippet .c-key { color:#7dd3fc; }
+        .domain-snippet .c-str { color:#86efac; }
+        .domain-snippet .c-cmt { color:#64748b; }
+        .domain-snippet .c-err { color:#fca5a5; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../../cityux-hub.html" style="color:#1e8449;text-decoration:none;font-weight:500">CityUX Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../../is201-revamp-design-brief.html" style="color:#1e8449;text-decoration:none;font-weight:500">IS 201 Design Brief</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Week-by-Week Guides</a>
+    </nav>
+
+        <h1>Week 1 — Setup, Orientation &amp; Your First AI Pairing Session</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 2–3 hrs</span>
+            <span class="meta-pill">CO1 · CO3</span>
+            <span class="meta-pill">Pilot domains: Maritime &amp; Marketing/E-commerce</span>
+            <span class="meta-pill">☁️ Runs in your browser — no local install</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Get a cloud dev environment running in your browser via <strong>GitHub Codespaces</strong> — nothing to download or install on your own machine — with Python and an AI coding assistant both ready to go. Then write one tiny script <em>with</em> the AI's help and read it back <em>without</em> the AI's help — that two-part habit (pair, then verify) is the one this whole course is built around, and every later module assumes you already have it.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>A free <a href="https://github.com/signup" target="_blank" rel="noopener">GitHub account</a></li>
+            <li>A modern browser — that's genuinely it. No Python install, no VS Code download, no local setup of any kind.</li>
+            <li>An AI coding assistant you can chat with inside your editor (Claude, GitHub Copilot, or similar — the specific tool is still being finalized for the pilot; any of these works for this week)</li>
+            <li>No prior programming experience assumed — this week has almost no "real" code yet</li>
+        </ul>
+        <div class="explain"><strong>Why Codespaces, and why now:</strong> this isn't a one-off choice for this guide — it's the direction STC has already been validating for exactly this reason ("smoothest student setup," per the Sep 1 tooling meeting notes) and the pattern CityUX's own execution plan commits to for lab content generally. Doing it here first is the pilot test for that decision, not a detour from it.</div>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Make sure you have a GitHub account</h4>If you don't already have one, <a href="https://github.com/signup" target="_blank" rel="noopener">sign up for free</a> — you only need the free tier for everything in this course.
+            </li>
+            <li><h4>Launch this week's Codespace</h4>Go to the <a href="https://github.com/clarkngo/stc-transformation" target="_blank" rel="noopener">course repository on GitHub</a>, click the green <strong>Code</strong> button, switch to the <strong>Codespaces</strong> tab, and click <strong>Create codespace on main</strong>.
+                <div class="explain"><strong>What's actually happening:</strong> GitHub is starting a full Linux computer somewhere in the cloud, pre-loaded from a small recipe file in the repo (<code>.devcontainer/devcontainer.json</code>) that says "this project needs Python 3.11" — and opening a full copy of VS Code for it, right inside your browser tab. The first launch takes a minute or two while that computer is built; every launch after that is much faster.</div>
+            </li>
+            <li><h4>Confirm your environment is ready</h4>Once VS Code loads in the browser, open its integrated terminal (<strong>Terminal → New Terminal</strong>, or the panel that's likely already open at the bottom) and run:
+<pre>python3 --version</pre>
+                <div class="explain"><strong>What you should see:</strong> something like <code>Python 3.11.x</code> — already there, because the devcontainer recipe installed it before you even arrived. This is the whole point: nothing to troubleshoot on your own machine, because there is no "your own machine" involved.</div>
+            </li>
+            <li><h4>Set up your AI coding assistant</h4>Sign in to your chosen assistant inside this browser-based VS Code (each has its own extension — install it from the Extensions panel on the left sidebar, the same way you'd install any VS Code extension, then sign in with your account).
+                <div class="explain"><strong>You are pairing with it, not handing off to it.</strong> Starting today, the habit this course builds is: ask the AI to draft something, then read every line it gives you before you run it. That second half — reading — is graded starting next module. This week it's just a habit to start forming.</div>
+            </li>
+            <li><h4>Create your scratch file</h4>In the file explorer on the left, create a new file called <code>week1.py</code> anywhere in the workspace.
+                <div class="explain"><strong>This Codespace is disposable scratch space.</strong> You don't need to save, commit, or submit anything from it — it's here so you can practice without worrying about breaking or permanently changing anything. Close it when you're done; a fresh one starts clean next time. (A proper personal starter-repo per student, the way <a href="../ai-410-guides/index.html">AI 410's guides</a> already do it, is still on the roadmap — this week's Codespace is the simplest version of that idea.)</div>
+            </li>
+            <li><h4>Pick your domain lens</h4>Module topics stay the same all term, but the examples you work through change depending on which pilot domain you're in. Pick the one for your section below — the code you're about to write matches it.
+                <div class="domain-demo">
+                    <div class="domain-tabs" role="tablist" aria-label="Pilot domain preview">
+                        <button type="button" class="domain-tab active" data-domain="maritime" role="tab" aria-selected="true">🚢 Maritime</button>
+                        <button type="button" class="domain-tab" data-domain="marketing" role="tab" aria-selected="false">🛒 Marketing / E-commerce</button>
+                    </div>
+                    <div class="domain-snippet" id="domain-snippet-display" role="tabpanel"><span class="c-cmt"># Prompt you'll give the AI assistant (Maritime lens):</span>
+<span class="c-cmt"># "Write a Python script that stores a vessel's name in a</span>
+<span class="c-cmt">#  variable and prints a one-line systems-check message using it."</span></div>
+                </div>
+            </li>
+            <li><h4>Ask the AI to write it, then read it before running it</h4>Type the prompt shown above (for your domain) to your AI assistant, right inside VS Code. It will likely hand you something very close to this:
+<pre id="ai-draft-maritime"><span></span>vessel_name = MV Example
+print(f"Systems check: {vessel_name} is online.")</pre>
+                <div class="explain"><strong>Before you run anything — read it.</strong> What does that first line — the one with <code>=</code> in it — do? What does the <code>f"..."</code> string do with the variable name inside the curly braces? If you can't answer both in one sentence each, ask the AI to explain those two lines before you go further — that's a legitimate use of it this week.</div>
+            </li>
+            <li><h4>Run it — and notice what happens</h4>Save the file, then in your terminal (inside the same folder):
+<pre>python3 week1.py</pre>
+                <div class="explain"><strong>You'll probably get an error</strong> — something like <code>SyntaxError: invalid syntax</code>, pointing at the second word on that line. That's not your mistake. Look closely at the line the AI gave you: it's missing quotation marks around the text, so Python can't tell that those two words are meant to be one piece of text — it can't even parse the line, let alone run it.</div>
+            </li>
+            <li><h4>Debug the AI (ungraded warm-up)</h4>Fix the line yourself — don't ask the AI to fix it for you this time — so it reads:
+<pre>vessel_name = "MV Example"
+print(f"Systems check: {vessel_name} is online.")</pre>
+                Save, run <code>python3 week1.py</code> again, and confirm you now see your systems-check message printed with no errors — e.g. <code id="run-output-confirm">Systems check: MV Example is online.</code>
+                <div class="explain"><strong>Why this matters more than it looks like it does:</strong> you just did — in miniature, ungraded — the exact thing this course grades starting next module: an AI assistant produced something with a flaw in it, and you were the one who caught it, not the AI. Quotation marks around text are one of the most common things AI assistants get right almost every time, but "almost every time" is exactly why reading before running is the habit, not typing speed.</div>
+            </li>
+        </ol>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>Your AI assistant is installed, signed in, and responds inside VS Code.</li>
+                <li><code>python3 week1.py</code> runs with no errors and prints your domain's systems-check message.</li>
+                <li>You can explain, in your own words, what each of the two lines does — and what was wrong with the AI's first version.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Codespace stuck on "Setting up your codespace…"</strong> — the first build for a new devcontainer can take a couple of minutes. If it's stuck much longer than that, go back to the repo's <strong>Code → Codespaces</strong> tab, delete it, and create a fresh one.</li>
+                <li><strong>"You've used all of your included Codespaces usage"</strong> — free GitHub accounts include a monthly quota of Codespaces hours, not unlimited use. If you're a student, check whether your account is enrolled in <a href="https://education.github.com/" target="_blank" rel="noopener">GitHub Education</a> for a larger quota; otherwise it resets at the start of your next billing cycle.</li>
+                <li><strong>AI assistant extension won't sign in</strong> — try signing in from a regular browser tab first, then retry inside the Codespace; some accounts need email verification the first time.</li>
+                <li><strong>Still getting a <code>SyntaxError</code> after adding quotes</strong> — check that <em>both</em> the opening and closing quote are there, and that they're straight quotes (<code>"</code>) not the curly ones a word processor sometimes auto-substitutes; a mismatched or missing quote produces the same kind of error.</li>
+                <li><strong>Nothing prints at all</strong> — make sure you saved <code>week1.py</code> before running it, and that your terminal is in the same folder as the file (<code>ls</code> should show <code>week1.py</code> in the listing).</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="index.html">← All Weeks</a>
+            <span style="color:#94a3b8;font-weight:600">Week 2 — coming soon</span>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+    <script>
+    (function(){
+      var snippets = {
+        maritime:
+          '<span class="c-cmt"># Prompt you\'ll give the AI assistant (Maritime lens):</span>\n' +
+          '<span class="c-cmt"># "Write a Python script that stores a vessel\'s name in a</span>\n' +
+          '<span class="c-cmt">#  variable and prints a one-line systems-check message using it."</span>',
+        marketing:
+          '<span class="c-cmt"># Prompt you\'ll give the AI assistant (Marketing / E-commerce lens):</span>\n' +
+          '<span class="c-cmt"># "Write a Python script that stores a store\'s name in a</span>\n' +
+          '<span class="c-cmt">#  variable and prints a one-line systems-check message using it."</span>'
+      };
+      var aiDraft = {
+        maritime: 'vessel_name = MV Example\nprint(f"Systems check: {vessel_name} is online.")',
+        marketing: 'store_name = Example Co\nprint(f"Systems check: {store_name} storefront is online.")'
+      };
+      var fixed = {
+        maritime: 'vessel_name = "MV Example"\nprint(f"Systems check: {vessel_name} is online.")',
+        marketing: 'store_name = "Example Co"\nprint(f"Systems check: {store_name} storefront is online.")'
+      };
+      var runOutput = {
+        maritime: 'Systems check: MV Example is online.',
+        marketing: 'Systems check: Example Co storefront is online.'
+      };
+
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.domain-tab'));
+      var display = document.getElementById('domain-snippet-display');
+      var draftEl = document.getElementById('ai-draft-maritime');
+      var runOutputEl = document.getElementById('run-output-confirm');
+      if (!tabs.length || !display) return;
+
+      var steps = document.querySelectorAll('ol.steps > li');
+      var fixStepPres = steps[8] ? steps[8].querySelectorAll('pre') : null;
+
+      tabs.forEach(function(tab){
+        tab.addEventListener('click', function(){
+          var domain = tab.getAttribute('data-domain');
+          if (!snippets[domain]) return;
+          tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+          display.innerHTML = snippets[domain];
+          if (draftEl) draftEl.textContent = aiDraft[domain];
+          if (fixStepPres && fixStepPres[0]) fixStepPres[0].textContent = fixed[domain];
+          if (runOutputEl) runOutputEl.textContent = runOutput[domain];
+        });
+      });
+    })();
+    </script>
+</body>
+</html>

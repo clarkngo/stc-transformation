@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IS 201 — Week 3 Guide: Lists &amp; Tuples</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { margin-top:34px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+
+        .domain-demo { border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:14px 0; background:#f8fafc; }
+        .domain-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+        .domain-tab { padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; border:1.5px solid #e2e8f0; background:#fff; color:#475569; font-family:inherit; cursor:pointer; }
+        .domain-tab:hover { border-color:#1e8449; color:#1e8449; }
+        .domain-tab.active { background:#1e8449; border-color:#1e8449; color:#fff; }
+        .domain-tab.active:hover { color:#fff; }
+        .domain-snippet { background:#0f172a; color:#e2e8f0; border-radius:6px; padding:12px 14px; font-family:'SFMono-Regular',Consolas,monospace; font-size:0.8rem; overflow-x:auto; white-space:pre; line-height:1.5; }
+        .domain-snippet .c-key { color:#7dd3fc; }
+        .domain-snippet .c-str { color:#86efac; }
+        .domain-snippet .c-cmt { color:#64748b; }
+
+        .runner-box { border:1px solid #e2e8f0; border-radius:8px; overflow:hidden; margin:14px 0; background:#fff; }
+        .runner-toolbar { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; background:#f8fafc; border-bottom:1px solid #e2e8f0; flex-wrap:wrap; }
+        .runner-status { font-size:0.8rem; color:#64748b; font-weight:600; }
+        .runner-status.ready { color:#15803d; }
+        .runner-status.err { color:#b91c1c; }
+        .runner-btns { display:flex; gap:8px; flex-wrap:wrap; }
+        .runner-btn { padding:6px 14px; border-radius:6px; font-size:0.82rem; font-weight:700; border:1px solid #1e8449; background:#1e8449; color:#fff; cursor:pointer; font-family:inherit; }
+        .runner-btn.secondary { background:#fff; color:#1e8449; }
+        .runner-btn:disabled { opacity:0.5; cursor:not-allowed; }
+        .runner-editor { width:100%; box-sizing:border-box; display:block; border:none; background:#0f172a; color:#e2e8f0; font-family:'SFMono-Regular',Consolas,monospace; font-size:0.82rem; line-height:1.6; padding:14px 16px; resize:vertical; min-height:90px; }
+        .runner-editor:focus { outline:none; }
+        .runner-output-wrap { border-top:1px solid #1e293b; }
+        .runner-output-label { font-size:0.68rem; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:#64748b; background:#f8fafc; padding:6px 16px; border-bottom:1px solid #e2e8f0; }
+        .runner-output { background:#0f172a; color:#e2e8f0; font-family:'SFMono-Regular',Consolas,monospace; font-size:0.8rem; padding:12px 16px; min-height:24px; white-space:pre-wrap; word-break:break-word; }
+        .runner-output.err { color:#fca5a5; }
+        .runner-output.ok { color:#86efac; }
+
+        .activity-box { border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:14px 0; background:#fff; overflow-x:auto; }
+        .match-table { width:100%; border-collapse:collapse; font-size:0.86rem; }
+        .match-table th { text-align:left; padding:8px 10px; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; border-bottom:2px solid #e2e8f0; white-space:nowrap; }
+        .match-table td { padding:10px 10px; border-bottom:1px solid #e2e8f0; vertical-align:top; }
+        .match-table td:first-child { font-weight:600; white-space:nowrap; }
+        .match-row.correct td:first-child { border-left:4px solid #15803d; }
+        .match-row.incorrect td:first-child { border-left:4px solid #dc2626; }
+        .match-table select { width:100%; min-width:260px; padding:6px 8px; border-radius:6px; border:1px solid #cbd5e1; font-family:inherit; font-size:0.84rem; }
+        .match-actions { display:flex; align-items:center; gap:12px; margin-top:14px; flex-wrap:wrap; }
+        .match-result { font-size:0.85rem; font-weight:700; color:#334155; }
+
+        .quiz-card { border:1px solid #e2e8f0; border-radius:8px; padding:14px 16px; margin-bottom:12px; background:#fff; }
+        .quiz-stem { font-weight:700; font-size:0.92rem; margin-bottom:8px; }
+        .quiz-opts { list-style:none; margin:0; padding:0; }
+        .quiz-opts li { margin-bottom:6px; }
+        .quiz-opts label { display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; cursor:pointer; }
+        .quiz-opts input { margin-top:3px; flex-shrink:0; }
+        .quiz-feedback { display:none; margin-top:10px; padding:10px 12px; border-radius:6px; font-size:0.85rem; }
+        .quiz-feedback.show { display:block; }
+        .quiz-feedback.correct { background:#ecfdf5; color:#047857; }
+        .quiz-feedback.incorrect { background:#fef2f2; color:#b91c1c; }
+        .quiz-feedback.unanswered { background:#fffbeb; color:#b45309; }
+        .quiz-score { display:none; text-align:center; padding:16px; border-radius:8px; background:#f0fdf4; margin-top:8px; }
+        .quiz-score.show { display:block; }
+        .quiz-score-big { display:block; font-size:1.6rem; font-weight:800; color:#15803d; }
+
+        .submit-box { border:1px solid #e2e8f0; border-radius:8px; padding:18px 20px; margin:14px 0; background:#fff; }
+        .submit-locked { display:flex; align-items:center; gap:10px; color:#64748b; font-size:0.88rem; background:#f8fafc; border-radius:6px; padding:12px 14px; }
+        .submit-locked .lock-icon { font-size:1.1rem; flex-shrink:0; }
+        .submit-field { margin-bottom:12px; }
+        .submit-field label { display:block; font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; }
+        .submit-field input { width:100%; box-sizing:border-box; padding:8px 10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit; font-size:0.9rem; }
+        .submit-field .field-hint { font-size:0.76rem; color:#94a3b8; margin-top:3px; }
+        .submit-receipt { background:#ecfdf5; border:1px solid #bbf7d0; border-radius:8px; padding:16px 18px; }
+        .submit-receipt h4 { margin:0 0 10px; color:#047857; font-size:0.95rem; }
+        .submit-receipt dl { margin:0; display:grid; grid-template-columns:auto 1fr; gap:6px 12px; font-size:0.86rem; }
+        .submit-receipt dt { color:#64748b; font-weight:600; }
+        .submit-receipt dd { margin:0; color:#0f172a; word-break:break-word; }
+        .submit-actions { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
+        .submit-note { font-size:0.78rem; color:#94a3b8; margin-top:12px; }
+
+        @media print {
+            body.printing-receipt * { visibility:hidden; }
+            body.printing-receipt .submit-receipt, body.printing-receipt .submit-receipt * { visibility:visible; }
+            body.printing-receipt .submit-receipt { position:absolute; top:0; left:0; width:100%; border:none; padding:24px; }
+            body.printing-receipt .submit-actions, body.printing-receipt .submit-note { display:none; }
+        }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../../cityux-hub.html" style="color:#1e8449;text-decoration:none;font-weight:500">CityUX Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../../is201-revamp-design-brief.html" style="color:#1e8449;text-decoration:none;font-weight:500">IS 201 Design Brief</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Week-by-Week Guides</a>
+    </nav>
+
+        <h1>Week 3 — Lists &amp; Tuples</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 2–3 hrs</span>
+            <span class="meta-pill">CO2 · CO4</span>
+            <span class="meta-pill">Pilot domains: Maritime &amp; Marketing/E-commerce</span>
+            <span class="meta-pill">🎯 Diff/Debug Sprint — graded</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Work with lists and tuples — ordered collections you'll use constantly from here on — and sort them with <code>sorted()</code>. Then run this week's Diff/Debug Sprint on a bug that isn't a wrong value this time, but a wrong <em>shape</em>: inconsistent indentation, the one place where whitespace itself is part of Python's syntax.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>Your Codespace from a previous week (or a fresh one — <a href="week-01-setup-orientation.html">setup steps here</a>)</li>
+            <li>Your AI coding assistant, signed in and ready</li>
+        </ul>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Pick your domain lens</h4>
+                <div class="domain-demo">
+                    <div class="domain-tabs" role="tablist" aria-label="Pilot domain preview">
+                        <button type="button" class="domain-tab active" data-domain="maritime" role="tab" aria-selected="true">🚢 Maritime</button>
+                        <button type="button" class="domain-tab" data-domain="marketing" role="tab" aria-selected="false">🛒 Marketing / E-commerce</button>
+                    </div>
+                    <div class="domain-snippet" id="domain-snippet-display" role="tabpanel"><span class="c-cmt"># Prompt you'll give the AI assistant (Maritime lens):</span>
+<span class="c-cmt"># "Write a Python script that stores a list of (vessel name, fuel</span>
+<span class="c-cmt">#  efficiency) tuples, prints each one, then prints them again</span>
+<span class="c-cmt">#  sorted by efficiency, most efficient first."</span></div>
+                </div>
+            </li>
+            <li><h4>Ask the AI to write it, then read it before running it</h4>It will likely hand you something very close to this:
+<pre id="ai-draft">placeholder</pre>
+                <div class="explain"><strong>Before you run anything:</strong> look at the indentation of every line inside the <code>for</code> loop. Is it consistent? Python doesn't use <code>{ }</code> or <code>end</code> to mark a block — the indentation <em>is</em> the block.</div>
+            </li>
+            <li><h4>Run it in your Codespace terminal</h4>Save as <code>week3.py</code> and run <code>python3 week3.py</code>.
+                <div class="explain"><strong>This one crashes again</strong> — but with a new error type: <code>IndentationError</code>. Unlike Week 1's <code>SyntaxError</code> (a word missing quotes) or Week 2's silent logic bug (a wrong number), this is Python telling you it can't even tell which lines belong inside the loop.</div>
+            </li>
+            <li><h4>Diff/Debug Sprint — graded (timed, ~3 min)</h4>The fix re-indents the <code>print</code> line so it's inside the loop, and adds a second block that sorts the list before printing it again:
+<pre id="fixed-code">placeholder</pre>
+                Run both, compare the output, and answer: <strong>what did the AI get wrong about the loop's structure, and what does <code>sorted(..., key=lambda v: v[1], reverse=True)</code> actually do?</strong>
+                <div class="explain"><strong>Why indentation bugs matter more than they look:</strong> a copy-paste from a chat window, a mixed-tabs-and-spaces paste, or an AI reformatting a block can silently shift indentation without changing what the code visually seems to say — this is exactly the kind of flaw that's easy to skim past and only Python's own parser catches.</div>
+            </li>
+        </ol>
+
+        <h2>Try It Yourself — Run Python Right Here</h2>
+        <p>Same in-browser Python sandbox as previous weeks. Pre-loaded with the AI's buggy draft — run it, see the <code>IndentationError</code>, then paste in the fixed version above.</p>
+        <div class="runner-box">
+            <div class="runner-toolbar">
+                <span class="runner-status" id="runner-status">Loading Python…</span>
+                <div class="runner-btns">
+                    <button type="button" class="runner-btn" id="runner-run" disabled>▶ Run</button>
+                    <button type="button" class="runner-btn secondary" id="runner-reset-code">Reset to AI's draft</button>
+                </div>
+            </div>
+            <textarea class="runner-editor" id="runner-code" spellcheck="false" rows="4"></textarea>
+            <div class="runner-output-wrap">
+                <div class="runner-output-label">Output</div>
+                <div class="runner-output" id="runner-output">Waiting for Python to finish loading…</div>
+            </div>
+        </div>
+
+        <h2>Activity: Match the Term to Its Meaning</h2>
+        <div class="activity-box">
+            <table class="match-table" id="match-table">
+                <thead><tr><th>Term</th><th>Best-matching definition</th></tr></thead>
+                <tbody>
+                    <tr class="match-row" data-answer="list"><td>List</td><td>
+                        <select aria-label="Definition for list">
+                            <option value="">— Select —</option>
+                            <option value="list">An ordered, changeable collection of values you can add to, remove from, or reorder</option>
+                            <option value="tuple">An ordered collection of values that can't be changed after it's created</option>
+                            <option value="indent">Python's way of marking which lines belong inside a block — part of the syntax, not just style</option>
+                            <option value="sorted">A built-in function that returns a new, ordered version of a list without changing the original</option>
+                            <option value="keyarg">Tells <code>sorted()</code> which value to compare when ranking items</option>
+                            <option value="indenterr">Python couldn't tell which lines belong inside a block because indentation was inconsistent or missing</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="tuple"><td>Tuple</td><td>
+                        <select aria-label="Definition for tuple">
+                            <option value="">— Select —</option>
+                            <option value="list">An ordered, changeable collection of values you can add to, remove from, or reorder</option>
+                            <option value="tuple">An ordered collection of values that can't be changed after it's created</option>
+                            <option value="indent">Python's way of marking which lines belong inside a block — part of the syntax, not just style</option>
+                            <option value="sorted">A built-in function that returns a new, ordered version of a list without changing the original</option>
+                            <option value="keyarg">Tells <code>sorted()</code> which value to compare when ranking items</option>
+                            <option value="indenterr">Python couldn't tell which lines belong inside a block because indentation was inconsistent or missing</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="indent"><td>Indentation</td><td>
+                        <select aria-label="Definition for indentation">
+                            <option value="">— Select —</option>
+                            <option value="list">An ordered, changeable collection of values you can add to, remove from, or reorder</option>
+                            <option value="tuple">An ordered collection of values that can't be changed after it's created</option>
+                            <option value="indent">Python's way of marking which lines belong inside a block — part of the syntax, not just style</option>
+                            <option value="sorted">A built-in function that returns a new, ordered version of a list without changing the original</option>
+                            <option value="keyarg">Tells <code>sorted()</code> which value to compare when ranking items</option>
+                            <option value="indenterr">Python couldn't tell which lines belong inside a block because indentation was inconsistent or missing</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="sorted"><td><code>sorted()</code></td><td>
+                        <select aria-label="Definition for sorted()">
+                            <option value="">— Select —</option>
+                            <option value="list">An ordered, changeable collection of values you can add to, remove from, or reorder</option>
+                            <option value="tuple">An ordered collection of values that can't be changed after it's created</option>
+                            <option value="indent">Python's way of marking which lines belong inside a block — part of the syntax, not just style</option>
+                            <option value="sorted">A built-in function that returns a new, ordered version of a list without changing the original</option>
+                            <option value="keyarg">Tells <code>sorted()</code> which value to compare when ranking items</option>
+                            <option value="indenterr">Python couldn't tell which lines belong inside a block because indentation was inconsistent or missing</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="keyarg"><td><code>key=</code> argument</td><td>
+                        <select aria-label="Definition for key argument">
+                            <option value="">— Select —</option>
+                            <option value="list">An ordered, changeable collection of values you can add to, remove from, or reorder</option>
+                            <option value="tuple">An ordered collection of values that can't be changed after it's created</option>
+                            <option value="indent">Python's way of marking which lines belong inside a block — part of the syntax, not just style</option>
+                            <option value="sorted">A built-in function that returns a new, ordered version of a list without changing the original</option>
+                            <option value="keyarg">Tells <code>sorted()</code> which value to compare when ranking items</option>
+                            <option value="indenterr">Python couldn't tell which lines belong inside a block because indentation was inconsistent or missing</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="indenterr"><td>IndentationError</td><td>
+                        <select aria-label="Definition for IndentationError">
+                            <option value="">— Select —</option>
+                            <option value="list">An ordered, changeable collection of values you can add to, remove from, or reorder</option>
+                            <option value="tuple">An ordered collection of values that can't be changed after it's created</option>
+                            <option value="indent">Python's way of marking which lines belong inside a block — part of the syntax, not just style</option>
+                            <option value="sorted">A built-in function that returns a new, ordered version of a list without changing the original</option>
+                            <option value="keyarg">Tells <code>sorted()</code> which value to compare when ranking items</option>
+                            <option value="indenterr">Python couldn't tell which lines belong inside a block because indentation was inconsistent or missing</option>
+                        </select>
+                    </td></tr>
+                </tbody>
+            </table>
+            <div class="match-actions">
+                <button type="button" class="runner-btn" id="match-check">Check My Matches</button>
+                <button type="button" class="runner-btn secondary" id="match-reset">Reset</button>
+                <span class="match-result" id="match-result"></span>
+            </div>
+        </div>
+
+        <h2>Knowledge Check</h2>
+        <div id="quiz-block">
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q1.</span> What's the key difference between a list and a tuple?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q1" value="a"> Lists can be changed after creation; tuples can't</label></li>
+                    <li><label><input type="radio" name="q1" value="b"> Lists can only hold numbers</label></li>
+                    <li><label><input type="radio" name="q1" value="c"> Tuples can only hold exactly one item</label></li>
+                    <li><label><input type="radio" name="q1" value="d"> There's no real difference</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb1"></div>
+            </div>
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q2.</span> What actually caused the buggy script to crash?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q2" value="a"> A line inside the <code>for</code> loop wasn't indented, so Python couldn't tell it belonged to the loop</label></li>
+                    <li><label><input type="radio" name="q2" value="b"> A missing colon after <code>for</code></label></li>
+                    <li><label><input type="radio" name="q2" value="c"> An undefined variable</label></li>
+                    <li><label><input type="radio" name="q2" value="d"> An infinite loop</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb2"></div>
+            </div>
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q3.</span> What does <code>sorted(data, key=lambda v: v[1], reverse=True)</code> do?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q3" value="a"> Returns a new list ordered by each tuple's second value, highest first</label></li>
+                    <li><label><input type="radio" name="q3" value="b"> Deletes the original list</label></li>
+                    <li><label><input type="radio" name="q3" value="c"> Sorts alphabetically only, regardless of the key</label></li>
+                    <li><label><input type="radio" name="q3" value="d"> Only works on tuples with exactly two items</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb3"></div>
+            </div>
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q4.</span> Does <code>sorted()</code> change the original list?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q4" value="a"> No — it returns a new list; the original is untouched unless you reassign it</label></li>
+                    <li><label><input type="radio" name="q4" value="b"> Yes, it always modifies the original in place</label></li>
+                    <li><label><input type="radio" name="q4" value="c"> Only if <code>reverse=True</code> is passed</label></li>
+                    <li><label><input type="radio" name="q4" value="d"> Only for tuples, never for lists</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb4"></div>
+            </div>
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q5.</span> Why can an indentation bug slip past a quick read more easily than a typo in a word?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q5" value="a"> Because whitespace carries real meaning in Python, so a formatting slip can change which block a line belongs to without changing how the text looks at a glance</label></li>
+                    <li><label><input type="radio" name="q5" value="b"> Indentation doesn't actually matter in Python</label></li>
+                    <li><label><input type="radio" name="q5" value="c"> AI assistants never make indentation mistakes</label></li>
+                    <li><label><input type="radio" name="q5" value="d"> Indentation errors print a warning but the code still runs</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb5"></div>
+            </div>
+            <div class="match-actions">
+                <button type="button" class="runner-btn" id="quiz-grade">Grade My Quiz</button>
+                <button type="button" class="runner-btn secondary" id="quiz-reset">Reset Quiz</button>
+            </div>
+            <div class="quiz-score" id="quiz-score">
+                <span class="quiz-score-big" id="quiz-score-big">0 / 5</span>
+                <span id="quiz-score-text"></span>
+            </div>
+        </div>
+
+        <h2>Submit Week 3</h2>
+        <p>Unlocks once the matching activity and knowledge check above are both fully correct.</p>
+        <div class="submit-box" id="submit-box">
+            <div class="submit-locked" id="submit-locked">
+                <span class="lock-icon" aria-hidden="true">🔒</span>
+                <span id="submit-locked-text">Complete the matching activity (6/6) and knowledge check (5/5) above to unlock this.</span>
+            </div>
+            <form id="submit-form" style="display:none">
+                <div class="submit-field">
+                    <label for="submit-name">Full name</label>
+                    <input type="text" id="submit-name" required autocomplete="name" placeholder="Jane Doe">
+                </div>
+                <div class="submit-field">
+                    <label for="submit-repo">GitHub repo (optional)</label>
+                    <input type="url" id="submit-repo" placeholder="https://github.com/your-username/your-repo">
+                    <div class="field-hint">Only if your instructor asked for one this week.</div>
+                </div>
+                <button type="submit" class="runner-btn" id="submit-btn-el">Submit Week 3</button>
+            </form>
+            <div class="submit-receipt" id="submit-receipt" style="display:none">
+                <h4>✓ Week 3 completion receipt</h4>
+                <dl>
+                    <dt>Name</dt><dd id="receipt-name"></dd>
+                    <dt>Week</dt><dd>Week 3 — Lists &amp; Tuples</dd>
+                    <dt>Submitted</dt><dd id="receipt-time"></dd>
+                    <dt id="receipt-repo-label" style="display:none">GitHub repo</dt><dd id="receipt-repo" style="display:none"></dd>
+                </dl>
+                <p class="submit-note"><strong>Take a screenshot of this receipt, or save it as a PDF</strong> using the button below — then submit that file wherever your instructor collects Week 3 work. This receipt is generated and stored only in this browser.</p>
+                <div class="submit-actions">
+                    <button type="button" class="runner-btn secondary" id="receipt-print">🖨️ Save as PDF</button>
+                    <button type="button" class="runner-btn secondary" id="receipt-edit">Submit a different name</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>You can point to the exact line and character where the indentation breaks.</li>
+                <li>You can explain what <code>sorted(..., key=..., reverse=...)</code> does without needing the AI to explain it again.</li>
+                <li>You've matched all six terms correctly and scored 5/5 on the knowledge check — which unlocks the submission receipt below.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>"Inconsistent use of tabs and spaces"</strong> — a related but different error; it means some lines use tab characters and others use spaces for indentation. Fix by re-typing the indentation with your editor's spaces (VS Code shows whitespace characters via <strong>View → Render Whitespace</strong>).</li>
+                <li><strong>Can't tell if two lines are indented the same</strong> — click at the start of each line and check the column number VS Code shows in the bottom status bar; they should match for lines in the same block.</li>
+                <li><strong>Runner says "Loading Python…" for a while</strong> — same as previous weeks, first load downloads a real Python runtime.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="week-02-variables-loops.html">← Week 2</a>
+            <a href="week-04-dictionaries-sets.html">Week 4 — Dictionaries &amp; Sets →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
+    <script>
+    (function(){
+      var pendingMatchRestore = false;
+      var pendingQuizRestore = false;
+
+      var snippets = {
+        maritime:
+          '<span class="c-cmt"># Prompt you\'ll give the AI assistant (Maritime lens):</span>\n' +
+          '<span class="c-cmt"># "Write a Python script that stores a list of (vessel name, fuel</span>\n' +
+          '<span class="c-cmt">#  efficiency) tuples, prints each one, then prints them again</span>\n' +
+          '<span class="c-cmt">#  sorted by efficiency, most efficient first."</span>',
+        marketing:
+          '<span class="c-cmt"># Prompt you\'ll give the AI assistant (Marketing / E-commerce lens):</span>\n' +
+          '<span class="c-cmt"># "Write a Python script that stores a list of (product name, price)</span>\n' +
+          '<span class="c-cmt">#  tuples, prints each one, then prints them again sorted by price,</span>\n' +
+          '<span class="c-cmt">#  cheapest first."</span>'
+      };
+      var aiDraft = {
+        maritime: 'fuel_data = [("MV Example", 12.4), ("MV Atlas", 9.8), ("MV Horizon", 14.1)]\nfor name, eff in fuel_data:\nprint(f"{name}: {eff} nm/gal")',
+        marketing: 'products = [("Deck Shoes", 42.99), ("Rope Bag", 18.50), ("Compass", 65.00)]\nfor name, price in products:\nprint(f"{name}: ${price}")'
+      };
+      var fixed = {
+        maritime: 'fuel_data = [("MV Example", 12.4), ("MV Atlas", 9.8), ("MV Horizon", 14.1)]\nfor name, eff in fuel_data:\n    print(f"{name}: {eff} nm/gal")\n\nranked = sorted(fuel_data, key=lambda v: v[1], reverse=True)\nprint("Most efficient first:")\nfor name, eff in ranked:\n    print(f"  {name}: {eff} nm/gal")',
+        marketing: 'products = [("Deck Shoes", 42.99), ("Rope Bag", 18.50), ("Compass", 65.00)]\nfor name, price in products:\n    print(f"{name}: ${price}")\n\nranked = sorted(products, key=lambda p: p[1])\nprint("Cheapest first:")\nfor name, price in ranked:\n    print(f"  {name}: ${price}")'
+      };
+      var currentDomain = 'maritime';
+
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.domain-tab'));
+      var display = document.getElementById('domain-snippet-display');
+      var draftEl = document.getElementById('ai-draft');
+      var fixedEl = document.getElementById('fixed-code');
+      var runnerCode = document.getElementById('runner-code');
+      var runnerOutput = document.getElementById('runner-output');
+
+      function resetRunnerCode() {
+        if (!runnerCode) return;
+        runnerCode.value = aiDraft[currentDomain];
+        runnerOutput.textContent = 'Click Run to see what happens.';
+        runnerOutput.className = 'runner-output';
+      }
+
+      function refreshDomainDisplay() {
+        display.innerHTML = snippets[currentDomain];
+        if (draftEl) draftEl.textContent = aiDraft[currentDomain];
+        if (fixedEl) fixedEl.textContent = fixed[currentDomain];
+        resetRunnerCode();
+      }
+
+      if (tabs.length && display) {
+        tabs.forEach(function(tab){
+          tab.addEventListener('click', function(){
+            var domain = tab.getAttribute('data-domain');
+            if (!snippets[domain]) return;
+            currentDomain = domain;
+            tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            refreshDomainDisplay();
+          });
+        });
+        refreshDomainDisplay();
+      }
+
+      function cleanPyError(msg) {
+        var lines = msg.split('\n');
+        var startIdx = -1;
+        for (var i = lines.length - 1; i >= 0; i--) {
+          if (lines[i].indexOf('File "<exec>"') !== -1) { startIdx = i; break; }
+        }
+        if (startIdx === -1) return msg.trim();
+        return lines.slice(startIdx).join('\n').trim();
+      }
+
+      var runnerStatus = document.getElementById('runner-status');
+      var runnerRunBtn = document.getElementById('runner-run');
+      var runnerResetBtn = document.getElementById('runner-reset-code');
+      var pyodideReady = null;
+
+      if (runnerCode) {
+        if (typeof loadPyodide === 'function') {
+          pyodideReady = loadPyodide().then(function(py){
+            runnerStatus.textContent = 'Python ready';
+            runnerStatus.className = 'runner-status ready';
+            runnerRunBtn.disabled = false;
+            runnerOutput.textContent = 'Click Run to see what happens.';
+            return py;
+          }).catch(function(err){
+            runnerStatus.textContent = 'Python failed to load';
+            runnerStatus.className = 'runner-status err';
+            runnerOutput.textContent = 'The in-page Python sandbox could not load. Your Codespace terminal still works fine — use that instead for this step.';
+            runnerOutput.className = 'runner-output err';
+          });
+        } else {
+          runnerStatus.textContent = 'Python sandbox unavailable';
+          runnerStatus.className = 'runner-status err';
+        }
+
+        runnerRunBtn.addEventListener('click', function(){
+          if (!pyodideReady) return;
+          runnerRunBtn.disabled = true;
+          runnerOutput.textContent = 'Running…';
+          runnerOutput.className = 'runner-output';
+          pyodideReady.then(function(py){
+            var lines = [];
+            py.setStdout({ batched: function(s){ lines.push(s); } });
+            py.setStderr({ batched: function(s){ lines.push(s); } });
+            return py.runPythonAsync(runnerCode.value).then(function(){
+              runnerOutput.textContent = lines.length ? lines.join('\n') : '(no output)';
+              runnerOutput.className = 'runner-output ok';
+            }).catch(function(err){
+              var msg = (err && err.message) ? err.message : String(err);
+              runnerOutput.textContent = (lines.length ? lines.join('\n') + '\n' : '') + cleanPyError(msg);
+              runnerOutput.className = 'runner-output err';
+            });
+          }).then(function(){
+            runnerRunBtn.disabled = false;
+          });
+        });
+
+        runnerResetBtn.addEventListener('click', resetRunnerCode);
+      }
+
+      /* ---------------- MATCHING ACTIVITY ---------------- */
+      var MATCH_KEY = 'is201-week3-match-answers';
+      var matchRows = Array.prototype.slice.call(document.querySelectorAll('#match-table .match-row'));
+      var matchResult = document.getElementById('match-result');
+      var matchCheckBtn = document.getElementById('match-check');
+      var matchResetBtn = document.getElementById('match-reset');
+
+      function saveMatchAnswers() {
+        try {
+          var vals = matchRows.map(function(row){ return row.querySelector('select').value; });
+          localStorage.setItem(MATCH_KEY, JSON.stringify(vals));
+        } catch (e) {}
+      }
+      function loadMatchAnswers() {
+        try { return JSON.parse(localStorage.getItem(MATCH_KEY) || 'null'); }
+        catch (e) { return null; }
+      }
+      function checkMapping() {
+        var correctCount = 0;
+        var totalAnswered = 0;
+        matchRows.forEach(function(row){
+          var select = row.querySelector('select');
+          var correctVal = row.getAttribute('data-answer');
+          row.classList.remove('correct', 'incorrect');
+          if (!select.value) return;
+          totalAnswered++;
+          if (select.value === correctVal) {
+            row.classList.add('correct');
+            correctCount++;
+          } else {
+            row.classList.add('incorrect');
+          }
+        });
+        matchResult.textContent = correctCount + ' of ' + matchRows.length + ' correct'
+          + (totalAnswered < matchRows.length ? ' (some rows left unanswered)' : '');
+        updateSubmitGate();
+      }
+
+      if (matchCheckBtn) {
+        matchRows.forEach(function(row){
+          row.querySelector('select').addEventListener('change', saveMatchAnswers);
+        });
+        matchCheckBtn.addEventListener('click', checkMapping);
+        matchResetBtn.addEventListener('click', function(){
+          matchRows.forEach(function(row){
+            row.querySelector('select').value = '';
+            row.classList.remove('correct', 'incorrect');
+          });
+          matchResult.textContent = '';
+          try { localStorage.removeItem(MATCH_KEY); } catch (e) {}
+          updateSubmitGate();
+        });
+        var savedMatch = loadMatchAnswers();
+        if (savedMatch && savedMatch.length === matchRows.length) {
+          matchRows.forEach(function(row, i){ row.querySelector('select').value = savedMatch[i] || ''; });
+          pendingMatchRestore = true;
+        }
+      }
+
+      /* ---------------- KNOWLEDGE CHECK ---------------- */
+      var QUIZ_KEY = 'is201-week3-quiz-answers';
+      var quizCards = Array.prototype.slice.call(document.querySelectorAll('#quiz-block .quiz-card'));
+      var quizGradeBtn = document.getElementById('quiz-grade');
+      var quizResetBtn = document.getElementById('quiz-reset');
+      var quizFeedback = {
+        1: { correct: "mutability is the real distinction — lists can be reordered/appended/removed after creation, tuples are locked in.", incorrect: "the difference is mutability, not value type or length — both can hold any type, and tuples aren't limited to one item." },
+        2: { correct: "the print line inside the loop lost its indentation, so Python couldn't tell it was part of the loop body.", incorrect: "the loop mechanics and variables were fine — the crash came purely from a missing indent on the line inside the loop." },
+        3: { correct: "that's exactly it — a new list, ranked by the second tuple value, largest first.", incorrect: "sorted() never deletes the original, and key= tells it exactly what to rank by — it's not alphabetical-only or two-item-only." },
+        4: { correct: "sorted() is non-destructive by design — you'd need list.sort() to change the list in place instead.", incorrect: "sorted() always returns a new list regardless of reverse= or the item type — the original stays exactly as it was." },
+        5: { correct: "whitespace is semantic in Python, so a slip in indentation can be invisible to a quick visual scan while still changing what the code actually does.", incorrect: "indentation absolutely matters in Python, AI assistants do make this mistake, and Python raises a hard error rather than a mere warning." }
+      };
+
+      function saveQuizAnswers() {
+        try {
+          var vals = {};
+          quizCards.forEach(function(card, i){
+            var qNum = i + 1;
+            var selected = card.querySelector('input[name="q' + qNum + '"]:checked');
+            vals['q' + qNum] = selected ? selected.value : '';
+          });
+          localStorage.setItem(QUIZ_KEY, JSON.stringify(vals));
+        } catch (e) {}
+      }
+      function loadQuizAnswers() {
+        try { return JSON.parse(localStorage.getItem(QUIZ_KEY) || 'null'); }
+        catch (e) { return null; }
+      }
+      function gradeQuiz() {
+        var correctCount = 0;
+        quizCards.forEach(function(card, i){
+          var qNum = i + 1;
+          var name = 'q' + qNum;
+          var selected = card.querySelector('input[name="' + name + '"]:checked');
+          var fb = document.getElementById('qfb' + qNum);
+          var correctVal = card.getAttribute('data-answer');
+          fb.className = 'quiz-feedback show';
+          if (!selected) {
+            fb.classList.add('unanswered');
+            fb.textContent = 'Not answered — select an option above, then grade again.';
+            return;
+          }
+          if (selected.value === correctVal) {
+            fb.classList.add('correct');
+            fb.textContent = '✓ Correct — ' + quizFeedback[qNum].correct;
+            correctCount++;
+          } else {
+            fb.classList.add('incorrect');
+            fb.textContent = '✗ Not quite — ' + quizFeedback[qNum].incorrect;
+          }
+        });
+        var scoreBox = document.getElementById('quiz-score');
+        var scoreBig = document.getElementById('quiz-score-big');
+        var scoreText = document.getElementById('quiz-score-text');
+        scoreBox.classList.add('show');
+        scoreBig.textContent = correctCount + ' / ' + quizCards.length;
+        scoreText.textContent = correctCount === quizCards.length
+          ? 'All five — you are ready for Week 4.'
+          : (correctCount >= 3 ? 'Solid grasp — review the items you missed before Week 4.' : 'Worth another pass through the steps above before moving on.');
+        updateSubmitGate();
+      }
+
+      if (quizGradeBtn) {
+        quizCards.forEach(function(card){
+          card.querySelectorAll('input[type="radio"]').forEach(function(r){ r.addEventListener('change', saveQuizAnswers); });
+        });
+        quizGradeBtn.addEventListener('click', gradeQuiz);
+        quizResetBtn.addEventListener('click', function(){
+          quizCards.forEach(function(card, i){
+            var qNum = i + 1;
+            card.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked = false; });
+            var fb = document.getElementById('qfb' + qNum);
+            fb.className = 'quiz-feedback';
+            fb.textContent = '';
+          });
+          document.getElementById('quiz-score').classList.remove('show');
+          try { localStorage.removeItem(QUIZ_KEY); } catch (e) {}
+          updateSubmitGate();
+        });
+        var savedQuiz = loadQuizAnswers();
+        if (savedQuiz) {
+          var hasAny = false;
+          quizCards.forEach(function(card, i){
+            var qNum = i + 1;
+            var val = savedQuiz['q' + qNum];
+            if (val) {
+              hasAny = true;
+              var input = card.querySelector('input[name="q' + qNum + '"][value="' + val + '"]');
+              if (input) input.checked = true;
+            }
+          });
+          if (hasAny) pendingQuizRestore = true;
+        }
+      }
+
+      /* ---------------- SUBMISSION ---------------- */
+      var SUBMIT_KEY = 'is201-week3-submission';
+      var submitLocked = document.getElementById('submit-locked');
+      var submitLockedText = document.getElementById('submit-locked-text');
+      var submitForm = document.getElementById('submit-form');
+      var submitReceipt = document.getElementById('submit-receipt');
+      var submitNameInput = document.getElementById('submit-name');
+      var submitRepoInput = document.getElementById('submit-repo');
+      var memorySubmission = null;
+
+      function matchIsAllCorrect() {
+        return matchRows.length > 0 && matchRows.every(function(r){ return r.classList.contains('correct'); });
+      }
+      function quizIsAllCorrect() {
+        if (!quizCards.length) return false;
+        return quizCards.every(function(card, i){
+          var fb = document.getElementById('qfb' + (i + 1));
+          return fb && fb.classList.contains('correct');
+        });
+      }
+      function renderReceipt(data) {
+        document.getElementById('receipt-name').textContent = data.name;
+        document.getElementById('receipt-time').textContent = data.displayTime;
+        var repoLabel = document.getElementById('receipt-repo-label');
+        var repoVal = document.getElementById('receipt-repo');
+        if (data.repo) {
+          repoLabel.style.display = ''; repoVal.style.display = ''; repoVal.textContent = data.repo;
+        } else {
+          repoLabel.style.display = 'none'; repoVal.style.display = 'none';
+        }
+        submitLocked.style.display = 'none';
+        submitForm.style.display = 'none';
+        submitReceipt.style.display = 'block';
+      }
+      function readStoredSubmission() {
+        try {
+          var stored = JSON.parse(localStorage.getItem(SUBMIT_KEY) || 'null');
+          if (stored) return stored;
+        } catch (e) {}
+        return memorySubmission;
+      }
+      function updateSubmitGate() {
+        if (!submitLocked) return;
+        var existing = readStoredSubmission();
+        if (existing) { renderReceipt(existing); return; }
+        var matchOk = matchIsAllCorrect();
+        var quizOk = quizIsAllCorrect();
+        if (matchOk && quizOk) {
+          submitLocked.style.display = 'none';
+          submitForm.style.display = 'block';
+          submitReceipt.style.display = 'none';
+        } else {
+          submitLocked.style.display = 'flex';
+          submitForm.style.display = 'none';
+          submitReceipt.style.display = 'none';
+          var missing = [];
+          if (!matchOk) missing.push('the matching activity (6/6)');
+          if (!quizOk) missing.push('the knowledge check (5/5)');
+          submitLockedText.textContent = 'Complete ' + missing.join(' and ') + ' above to unlock this.';
+        }
+      }
+
+      if (submitForm) {
+        submitForm.addEventListener('submit', function(e){
+          e.preventDefault();
+          if (!matchIsAllCorrect() || !quizIsAllCorrect()) return;
+          var name = submitNameInput.value.trim();
+          if (!name) return;
+          var now = new Date();
+          var data = { name: name, repo: submitRepoInput.value.trim(), isoTime: now.toISOString(), displayTime: now.toLocaleString() };
+          memorySubmission = data;
+          try { localStorage.setItem(SUBMIT_KEY, JSON.stringify(data)); } catch (err) {}
+          renderReceipt(data);
+        });
+
+        document.getElementById('receipt-print').addEventListener('click', function(){
+          document.body.classList.add('printing-receipt');
+          window.print();
+        });
+        window.addEventListener('afterprint', function(){
+          document.body.classList.remove('printing-receipt');
+        });
+
+        document.getElementById('receipt-edit').addEventListener('click', function(){
+          memorySubmission = null;
+          try { localStorage.removeItem(SUBMIT_KEY); } catch (err) {}
+          submitNameInput.value = '';
+          submitRepoInput.value = '';
+          updateSubmitGate();
+        });
+      }
+
+      if (pendingMatchRestore) checkMapping();
+      if (pendingQuizRestore) gradeQuiz();
+      updateSubmitGate();
+    })();
+    </script>
+</body>
+</html>

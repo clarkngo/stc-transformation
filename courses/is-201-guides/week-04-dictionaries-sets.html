@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IS 201 — Week 4 Guide: Dictionaries &amp; Sets</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { margin-top:34px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        .paper-box { background:#fdf4ff; border-left:5px solid #a855f7; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .paper-box h4 { margin:0 0 6px; color:#7e22ce; font-size:0.95rem; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+
+        .domain-demo { border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:14px 0; background:#f8fafc; }
+        .domain-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+        .domain-tab { padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; border:1.5px solid #e2e8f0; background:#fff; color:#475569; font-family:inherit; cursor:pointer; }
+        .domain-tab:hover { border-color:#1e8449; color:#1e8449; }
+        .domain-tab.active { background:#1e8449; border-color:#1e8449; color:#fff; }
+        .domain-tab.active:hover { color:#fff; }
+        .domain-snippet { background:#0f172a; color:#e2e8f0; border-radius:6px; padding:12px 14px; font-family:'SFMono-Regular',Consolas,monospace; font-size:0.8rem; overflow-x:auto; white-space:pre; line-height:1.5; }
+        .domain-snippet .c-key { color:#7dd3fc; }
+        .domain-snippet .c-str { color:#86efac; }
+        .domain-snippet .c-cmt { color:#64748b; }
+
+        .runner-box { border:1px solid #e2e8f0; border-radius:8px; overflow:hidden; margin:14px 0; background:#fff; }
+        .runner-toolbar { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; background:#f8fafc; border-bottom:1px solid #e2e8f0; flex-wrap:wrap; }
+        .runner-status { font-size:0.8rem; color:#64748b; font-weight:600; }
+        .runner-status.ready { color:#15803d; }
+        .runner-status.err { color:#b91c1c; }
+        .runner-btns { display:flex; gap:8px; flex-wrap:wrap; }
+        .runner-btn { padding:6px 14px; border-radius:6px; font-size:0.82rem; font-weight:700; border:1px solid #1e8449; background:#1e8449; color:#fff; cursor:pointer; font-family:inherit; }
+        .runner-btn.secondary { background:#fff; color:#1e8449; }
+        .runner-btn:disabled { opacity:0.5; cursor:not-allowed; }
+        .runner-editor { width:100%; box-sizing:border-box; display:block; border:none; background:#0f172a; color:#e2e8f0; font-family:'SFMono-Regular',Consolas,monospace; font-size:0.82rem; line-height:1.6; padding:14px 16px; resize:vertical; min-height:90px; }
+        .runner-editor:focus { outline:none; }
+        .runner-output-wrap { border-top:1px solid #1e293b; }
+        .runner-output-label { font-size:0.68rem; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:#64748b; background:#f8fafc; padding:6px 16px; border-bottom:1px solid #e2e8f0; }
+        .runner-output { background:#0f172a; color:#e2e8f0; font-family:'SFMono-Regular',Consolas,monospace; font-size:0.8rem; padding:12px 16px; min-height:24px; white-space:pre-wrap; word-break:break-word; }
+        .runner-output.err { color:#fca5a5; }
+        .runner-output.ok { color:#86efac; }
+
+        .activity-box { border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:14px 0; background:#fff; overflow-x:auto; }
+        .match-table { width:100%; border-collapse:collapse; font-size:0.86rem; }
+        .match-table th { text-align:left; padding:8px 10px; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; border-bottom:2px solid #e2e8f0; white-space:nowrap; }
+        .match-table td { padding:10px 10px; border-bottom:1px solid #e2e8f0; vertical-align:top; }
+        .match-table td:first-child { font-weight:600; white-space:nowrap; }
+        .match-row.correct td:first-child { border-left:4px solid #15803d; }
+        .match-row.incorrect td:first-child { border-left:4px solid #dc2626; }
+        .match-table select { width:100%; min-width:260px; padding:6px 8px; border-radius:6px; border:1px solid #cbd5e1; font-family:inherit; font-size:0.84rem; }
+        .match-actions { display:flex; align-items:center; gap:12px; margin-top:14px; flex-wrap:wrap; }
+        .match-result { font-size:0.85rem; font-weight:700; color:#334155; }
+
+        .quiz-card { border:1px solid #e2e8f0; border-radius:8px; padding:14px 16px; margin-bottom:12px; background:#fff; }
+        .quiz-stem { font-weight:700; font-size:0.92rem; margin-bottom:8px; }
+        .quiz-opts { list-style:none; margin:0; padding:0; }
+        .quiz-opts li { margin-bottom:6px; }
+        .quiz-opts label { display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; cursor:pointer; }
+        .quiz-opts input { margin-top:3px; flex-shrink:0; }
+        .quiz-feedback { display:none; margin-top:10px; padding:10px 12px; border-radius:6px; font-size:0.85rem; }
+        .quiz-feedback.show { display:block; }
+        .quiz-feedback.correct { background:#ecfdf5; color:#047857; }
+        .quiz-feedback.incorrect { background:#fef2f2; color:#b91c1c; }
+        .quiz-feedback.unanswered { background:#fffbeb; color:#b45309; }
+        .quiz-score { display:none; text-align:center; padding:16px; border-radius:8px; background:#f0fdf4; margin-top:8px; }
+        .quiz-score.show { display:block; }
+        .quiz-score-big { display:block; font-size:1.6rem; font-weight:800; color:#15803d; }
+
+        .submit-box { border:1px solid #e2e8f0; border-radius:8px; padding:18px 20px; margin:14px 0; background:#fff; }
+        .submit-locked { display:flex; align-items:center; gap:10px; color:#64748b; font-size:0.88rem; background:#f8fafc; border-radius:6px; padding:12px 14px; }
+        .submit-locked .lock-icon { font-size:1.1rem; flex-shrink:0; }
+        .submit-field { margin-bottom:12px; }
+        .submit-field label { display:block; font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; }
+        .submit-field input { width:100%; box-sizing:border-box; padding:8px 10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit; font-size:0.9rem; }
+        .submit-field .field-hint { font-size:0.76rem; color:#94a3b8; margin-top:3px; }
+        .submit-receipt { background:#ecfdf5; border:1px solid #bbf7d0; border-radius:8px; padding:16px 18px; }
+        .submit-receipt h4 { margin:0 0 10px; color:#047857; font-size:0.95rem; }
+        .submit-receipt dl { margin:0; display:grid; grid-template-columns:auto 1fr; gap:6px 12px; font-size:0.86rem; }
+        .submit-receipt dt { color:#64748b; font-weight:600; }
+        .submit-receipt dd { margin:0; color:#0f172a; word-break:break-word; }
+        .submit-actions { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
+        .submit-note { font-size:0.78rem; color:#94a3b8; margin-top:12px; }
+
+        @media print {
+            body.printing-receipt * { visibility:hidden; }
+            body.printing-receipt .submit-receipt, body.printing-receipt .submit-receipt * { visibility:visible; }
+            body.printing-receipt .submit-receipt { position:absolute; top:0; left:0; width:100%; border:none; padding:24px; }
+            body.printing-receipt .submit-actions, body.printing-receipt .submit-note { display:none; }
+        }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../../cityux-hub.html" style="color:#1e8449;text-decoration:none;font-weight:500">CityUX Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../../is201-revamp-design-brief.html" style="color:#1e8449;text-decoration:none;font-weight:500">IS 201 Design Brief</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Week-by-Week Guides</a>
+    </nav>
+
+        <h1>Week 4 — Dictionaries &amp; Sets</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 2–3 hrs</span>
+            <span class="meta-pill">CO2</span>
+            <span class="meta-pill">Pilot domains: Maritime &amp; Marketing/E-commerce</span>
+            <span class="meta-pill">🎯 Diff/Debug Sprint — graded</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Model a real domain record — with nested data, not just flat values — as a Python dictionary, and practice justifying <em>why</em> you shaped it the way you did. Then run a Diff/Debug Sprint on the single most common dictionary mistake: a typo in a key name.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>Your Codespace from a previous week (or a fresh one — <a href="week-01-setup-orientation.html">setup steps here</a>)</li>
+            <li>Your AI coding assistant, signed in and ready</li>
+        </ul>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Pick your domain lens</h4>
+                <div class="domain-demo">
+                    <div class="domain-tabs" role="tablist" aria-label="Pilot domain preview">
+                        <button type="button" class="domain-tab active" data-domain="maritime" role="tab" aria-selected="true">🚢 Maritime</button>
+                        <button type="button" class="domain-tab" data-domain="marketing" role="tab" aria-selected="false">🛒 Marketing / E-commerce</button>
+                    </div>
+                    <div class="domain-snippet" id="domain-snippet-display" role="tabpanel"><span class="c-cmt"># Prompt you'll give the AI assistant (Maritime lens):</span>
+<span class="c-cmt"># "Write a Python script that stores a vessel record as a</span>
+<span class="c-cmt">#  dictionary with a nested 'crew' dictionary inside it, then</span>
+<span class="c-cmt">#  prints the captain's name from the nested dictionary."</span></div>
+                </div>
+            </li>
+            <li><h4>Model the record on paper first — then have the AI write it</h4>Before typing anything, sketch what fields belong at the top level vs. nested one level deeper, and why. A vessel's <code>id</code> and <code>engine_temp_c</code> are simple values; its crew is a group of related people — that's the signal it deserves its own nested dictionary rather than flat fields like <code>captain_name</code>, <code>engineer_name</code>.
+                <div class="paper-box">
+                    <h4>Why this matters beyond this exercise</h4>
+                    <p>Every module from here on, you'll be asked more often to justify a design choice, not just produce output that runs. "It works" and "it's the right shape for how this data will actually be used" are different claims — this is the first module where the schema itself is part of what's being evaluated, foreshadowing Module 8's Solution Evaluation Brief.</p>
+                </div>
+                Now ask the AI for the script. It will likely hand you something very close to this:
+<pre id="ai-draft">placeholder</pre>
+            </li>
+            <li><h4>Run it in your Codespace terminal</h4>Save as <code>week4.py</code> and run <code>python3 week4.py</code>.
+                <div class="explain"><strong>Read the key names carefully before running.</strong> Dictionary keys are just strings — Python has no way to know <code>"capatin"</code> was supposed to say <code>"captain"</code>. It will only tell you the key you asked for doesn't exist.</div>
+            </li>
+            <li><h4>Diff/Debug Sprint — graded (timed, ~3 min)</h4>The fix corrects a single typo'd key:
+<pre id="fixed-code">placeholder</pre>
+                Run both, and answer: <strong>what's the actual difference between the two versions, and why does a dictionary typo fail loudly (an error) instead of silently (like Week 2's wrong number)?</strong>
+                <div class="explain"><strong>What's graded:</strong> naming the exact key that's wrong, not just "there's a typo somewhere" — and explaining why <code>KeyError</code> happens here specifically (the key genuinely isn't in the dictionary) rather than confusing it with the <code>AttributeError</code>/<code>IndexError</code> family you'll meet in later modules.</div>
+            </li>
+        </ol>
+
+        <h2>Try It Yourself — Run Python Right Here</h2>
+        <p>Pre-loaded with the AI's buggy draft — run it, see the <code>KeyError</code>, then paste in the fixed version above.</p>
+        <div class="runner-box">
+            <div class="runner-toolbar">
+                <span class="runner-status" id="runner-status">Loading Python…</span>
+                <div class="runner-btns">
+                    <button type="button" class="runner-btn" id="runner-run" disabled>▶ Run</button>
+                    <button type="button" class="runner-btn secondary" id="runner-reset-code">Reset to AI's draft</button>
+                </div>
+            </div>
+            <textarea class="runner-editor" id="runner-code" spellcheck="false" rows="6"></textarea>
+            <div class="runner-output-wrap">
+                <div class="runner-output-label">Output</div>
+                <div class="runner-output" id="runner-output">Waiting for Python to finish loading…</div>
+            </div>
+        </div>
+
+        <h2>Activity: Match the Term to Its Meaning</h2>
+        <div class="activity-box">
+            <table class="match-table" id="match-table">
+                <thead><tr><th>Term</th><th>Best-matching definition</th></tr></thead>
+                <tbody>
+                    <tr class="match-row" data-answer="dict"><td>Dictionary</td><td>
+                        <select aria-label="Definition for dictionary">
+                            <option value="">— Select —</option>
+                            <option value="dict">A collection of key-value pairs, where each key looks up its own value</option>
+                            <option value="nested">A dictionary (or list) stored as the value inside another dictionary</option>
+                            <option value="keyerror">Python raised an error because the exact key you asked for isn't in the dictionary</option>
+                            <option value="set">A collection of unique values with no guaranteed order and no duplicates allowed</option>
+                            <option value="schema">The shape of your data — which fields exist, and which ones are nested inside others</option>
+                            <option value="keyval">A single entry in a dictionary — one lookup name paired with one stored value</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="nested"><td>Nested dictionary</td><td>
+                        <select aria-label="Definition for nested dictionary">
+                            <option value="">— Select —</option>
+                            <option value="dict">A collection of key-value pairs, where each key looks up its own value</option>
+                            <option value="nested">A dictionary (or list) stored as the value inside another dictionary</option>
+                            <option value="keyerror">Python raised an error because the exact key you asked for isn't in the dictionary</option>
+                            <option value="set">A collection of unique values with no guaranteed order and no duplicates allowed</option>
+                            <option value="schema">The shape of your data — which fields exist, and which ones are nested inside others</option>
+                            <option value="keyval">A single entry in a dictionary — one lookup name paired with one stored value</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="keyerror"><td>KeyError</td><td>
+                        <select aria-label="Definition for KeyError">
+                            <option value="">— Select —</option>
+                            <option value="dict">A collection of key-value pairs, where each key looks up its own value</option>
+                            <option value="nested">A dictionary (or list) stored as the value inside another dictionary</option>
+                            <option value="keyerror">Python raised an error because the exact key you asked for isn't in the dictionary</option>
+                            <option value="set">A collection of unique values with no guaranteed order and no duplicates allowed</option>
+                            <option value="schema">The shape of your data — which fields exist, and which ones are nested inside others</option>
+                            <option value="keyval">A single entry in a dictionary — one lookup name paired with one stored value</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="set"><td>Set</td><td>
+                        <select aria-label="Definition for set">
+                            <option value="">— Select —</option>
+                            <option value="dict">A collection of key-value pairs, where each key looks up its own value</option>
+                            <option value="nested">A dictionary (or list) stored as the value inside another dictionary</option>
+                            <option value="keyerror">Python raised an error because the exact key you asked for isn't in the dictionary</option>
+                            <option value="set">A collection of unique values with no guaranteed order and no duplicates allowed</option>
+                            <option value="schema">The shape of your data — which fields exist, and which ones are nested inside others</option>
+                            <option value="keyval">A single entry in a dictionary — one lookup name paired with one stored value</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="schema"><td>Schema</td><td>
+                        <select aria-label="Definition for schema">
+                            <option value="">— Select —</option>
+                            <option value="dict">A collection of key-value pairs, where each key looks up its own value</option>
+                            <option value="nested">A dictionary (or list) stored as the value inside another dictionary</option>
+                            <option value="keyerror">Python raised an error because the exact key you asked for isn't in the dictionary</option>
+                            <option value="set">A collection of unique values with no guaranteed order and no duplicates allowed</option>
+                            <option value="schema">The shape of your data — which fields exist, and which ones are nested inside others</option>
+                            <option value="keyval">A single entry in a dictionary — one lookup name paired with one stored value</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="keyval"><td>Key-value pair</td><td>
+                        <select aria-label="Definition for key-value pair">
+                            <option value="">— Select —</option>
+                            <option value="dict">A collection of key-value pairs, where each key looks up its own value</option>
+                            <option value="nested">A dictionary (or list) stored as the value inside another dictionary</option>
+                            <option value="keyerror">Python raised an error because the exact key you asked for isn't in the dictionary</option>
+                            <option value="set">A collection of unique values with no guaranteed order and no duplicates allowed</option>
+                            <option value="schema">The shape of your data — which fields exist, and which ones are nested inside others</option>
+                            <option value="keyval">A single entry in a dictionary — one lookup name paired with one stored value</option>
+                        </select>
+                    </td></tr>
+                </tbody>
+            </table>
+            <div class="match-actions">
+                <button type="button" class="runner-btn" id="match-check">Check My Matches</button>
+                <button type="button" class="runner-btn secondary" id="match-reset">Reset</button>
+                <span class="match-result" id="match-result"></span>
+            </div>
+        </div>
+
+        <h2>Knowledge Check</h2>
+        <div id="quiz-block">
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q1.</span> Why did the buggy script raise a <code>KeyError</code> instead of just printing something wrong?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q1" value="a"> The typo'd key genuinely doesn't exist in the dictionary — Python has no key to fall back to</label></li>
+                    <li><label><input type="radio" name="q1" value="b"> Dictionaries can't hold nested dictionaries</label></li>
+                    <li><label><input type="radio" name="q1" value="c"> The vessel dictionary was never created</label></li>
+                    <li><label><input type="radio" name="q1" value="d"> Python auto-corrects typos, so this shouldn't be possible</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb1"></div>
+            </div>
+            <div class="quiz-card" data-answer="b">
+                <div class="quiz-stem"><span>Q2.</span> Why does a group of related fields (like a crew, with a captain and engineer) belong in a nested dictionary rather than flat top-level fields?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q2" value="a"> Python requires it — flat fields are not legal syntax</label></li>
+                    <li><label><input type="radio" name="q2" value="b"> It keeps related data grouped together and makes the relationship between the fields explicit in the shape of the data itself</label></li>
+                    <li><label><input type="radio" name="q2" value="c"> Nested dictionaries run faster than flat ones</label></li>
+                    <li><label><input type="radio" name="q2" value="d"> It's required for the script to print anything</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb2"></div>
+            </div>
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q3.</span> What's the difference between a dictionary and a set?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q3" value="a"> A dictionary stores key-value pairs; a set stores unique values with no keys at all</label></li>
+                    <li><label><input type="radio" name="q3" value="b"> A set is just a dictionary with numbers as keys</label></li>
+                    <li><label><input type="radio" name="q3" value="c"> They're the same thing with different names</label></li>
+                    <li><label><input type="radio" name="q3" value="d"> A dictionary can't hold duplicate values, but a set can</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb3"></div>
+            </div>
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q4.</span> This module asked you to sketch the record's shape on paper before writing code. Why?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q4" value="a"> Because deciding what's nested vs. flat is a design choice you should be able to justify, not just something that happens to run</label></li>
+                    <li><label><input type="radio" name="q4" value="b"> Because Python requires a paper diagram before you can write a dictionary</label></li>
+                    <li><label><input type="radio" name="q4" value="c"> Because it's faster than asking the AI directly</label></li>
+                    <li><label><input type="radio" name="q4" value="d"> It's just a formality with no real purpose</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb4"></div>
+            </div>
+            <div class="quiz-card" data-answer="b">
+                <div class="quiz-stem"><span>Q5.</span> What does this week's Diff/Debug Sprint actually grade?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q5" value="a"> Whether you noticed "something" was wrong</label></li>
+                    <li><label><input type="radio" name="q5" value="b"> Whether you can name the exact wrong key and explain why a KeyError happens here specifically, not confuse it with a different error type</label></li>
+                    <li><label><input type="radio" name="q5" value="c"> How fast you can retype the whole dictionary</label></li>
+                    <li><label><input type="radio" name="q5" value="d"> Whether the AI eventually fixes it for you</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb5"></div>
+            </div>
+            <div class="match-actions">
+                <button type="button" class="runner-btn" id="quiz-grade">Grade My Quiz</button>
+                <button type="button" class="runner-btn secondary" id="quiz-reset">Reset Quiz</button>
+            </div>
+            <div class="quiz-score" id="quiz-score">
+                <span class="quiz-score-big" id="quiz-score-big">0 / 5</span>
+                <span id="quiz-score-text"></span>
+            </div>
+        </div>
+
+        <h2>Submit Week 4</h2>
+        <p>Unlocks once the matching activity and knowledge check above are both fully correct.</p>
+        <div class="submit-box" id="submit-box">
+            <div class="submit-locked" id="submit-locked">
+                <span class="lock-icon" aria-hidden="true">🔒</span>
+                <span id="submit-locked-text">Complete the matching activity (6/6) and knowledge check (5/5) above to unlock this.</span>
+            </div>
+            <form id="submit-form" style="display:none">
+                <div class="submit-field">
+                    <label for="submit-name">Full name</label>
+                    <input type="text" id="submit-name" required autocomplete="name" placeholder="Jane Doe">
+                </div>
+                <div class="submit-field">
+                    <label for="submit-repo">GitHub repo (optional)</label>
+                    <input type="url" id="submit-repo" placeholder="https://github.com/your-username/your-repo">
+                    <div class="field-hint">Only if your instructor asked for one this week.</div>
+                </div>
+                <button type="submit" class="runner-btn" id="submit-btn-el">Submit Week 4</button>
+            </form>
+            <div class="submit-receipt" id="submit-receipt" style="display:none">
+                <h4>✓ Week 4 completion receipt</h4>
+                <dl>
+                    <dt>Name</dt><dd id="receipt-name"></dd>
+                    <dt>Week</dt><dd>Week 4 — Dictionaries &amp; Sets</dd>
+                    <dt>Submitted</dt><dd id="receipt-time"></dd>
+                    <dt id="receipt-repo-label" style="display:none">GitHub repo</dt><dd id="receipt-repo" style="display:none"></dd>
+                </dl>
+                <p class="submit-note"><strong>Take a screenshot of this receipt, or save it as a PDF</strong> using the button below — then submit that file wherever your instructor collects Week 4 work. This receipt is generated and stored only in this browser.</p>
+                <div class="submit-actions">
+                    <button type="button" class="runner-btn secondary" id="receipt-print">🖨️ Save as PDF</button>
+                    <button type="button" class="runner-btn secondary" id="receipt-edit">Submit a different name</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>You can point to the exact typo'd key that caused the <code>KeyError</code>.</li>
+                <li>You can explain why the top-level fields stayed flat but the crew became a nested dictionary.</li>
+                <li>You've matched all six terms correctly and scored 5/5 on the knowledge check — which unlocks the submission receipt below.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>"KeyError: 'crew'" instead of the nested key</strong> — check that the outer key exists first; if <code>vessel["crew"]</code> itself is misspelled, Python never even gets to the inner lookup.</li>
+                <li><strong>Mixing up dictionaries and lists</strong> — a dictionary looks up values by name (<code>vessel["id"]</code>); a list looks up values by position (<code>fuel_data[0]</code>). If you're counting on order, you probably want a list, not a dictionary.</li>
+                <li><strong>Runner says "Loading Python…" for a while</strong> — same as previous weeks, first load downloads a real Python runtime.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="week-03-lists-tuples.html">← Week 3</a>
+            <a href="week-05-functions.html">Week 5 — Functions →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
+    <script>
+    (function(){
+      var pendingMatchRestore = false;
+      var pendingQuizRestore = false;
+
+      var snippets = {
+        maritime:
+          '<span class="c-cmt"># Prompt you\'ll give the AI assistant (Maritime lens):</span>\n' +
+          '<span class="c-cmt"># "Write a Python script that stores a vessel record as a</span>\n' +
+          '<span class="c-cmt">#  dictionary with a nested \'crew\' dictionary inside it, then</span>\n' +
+          '<span class="c-cmt">#  prints the captain\'s name from the nested dictionary."</span>',
+        marketing:
+          '<span class="c-cmt"># Prompt you\'ll give the AI assistant (Marketing / E-commerce lens):</span>\n' +
+          '<span class="c-cmt"># "Write a Python script that stores a customer record as a</span>\n' +
+          '<span class="c-cmt">#  dictionary with a nested \'profile\' dictionary inside it, then</span>\n' +
+          '<span class="c-cmt">#  prints the customer\'s tier from the nested dictionary."</span>'
+      };
+      var aiDraft = {
+        maritime: 'vessel = {\n    "id": "MV-2281",\n    "engine_temp_c": 96.4,\n    "crew": {"captain": "R. Alvarez", "engineer": "T. Chen"},\n}\nprint(f"Vessel {vessel[\'id\']} captain: {vessel[\'crew\'][\'capatin\']}")',
+        marketing: 'customer = {\n    "id": 30492,\n    "cart_total": 86.50,\n    "profile": {"tier": "gold", "email": "j.doe@example.com"},\n}\nprint(f"Customer {customer[\'id\']} tier: {customer[\'profile\'][\'teir\']}")'
+      };
+      var fixed = {
+        maritime: 'vessel = {\n    "id": "MV-2281",\n    "engine_temp_c": 96.4,\n    "crew": {"captain": "R. Alvarez", "engineer": "T. Chen"},\n}\nprint(f"Vessel {vessel[\'id\']} captain: {vessel[\'crew\'][\'captain\']}")',
+        marketing: 'customer = {\n    "id": 30492,\n    "cart_total": 86.50,\n    "profile": {"tier": "gold", "email": "j.doe@example.com"},\n}\nprint(f"Customer {customer[\'id\']} tier: {customer[\'profile\'][\'tier\']}")'
+      };
+      var currentDomain = 'maritime';
+
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.domain-tab'));
+      var display = document.getElementById('domain-snippet-display');
+      var draftEl = document.getElementById('ai-draft');
+      var fixedEl = document.getElementById('fixed-code');
+      var runnerCode = document.getElementById('runner-code');
+      var runnerOutput = document.getElementById('runner-output');
+
+      function resetRunnerCode() {
+        if (!runnerCode) return;
+        runnerCode.value = aiDraft[currentDomain];
+        runnerOutput.textContent = 'Click Run to see what happens.';
+        runnerOutput.className = 'runner-output';
+      }
+
+      function refreshDomainDisplay() {
+        display.innerHTML = snippets[currentDomain];
+        if (draftEl) draftEl.textContent = aiDraft[currentDomain];
+        if (fixedEl) fixedEl.textContent = fixed[currentDomain];
+        resetRunnerCode();
+      }
+
+      if (tabs.length && display) {
+        tabs.forEach(function(tab){
+          tab.addEventListener('click', function(){
+            var domain = tab.getAttribute('data-domain');
+            if (!snippets[domain]) return;
+            currentDomain = domain;
+            tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            refreshDomainDisplay();
+          });
+        });
+        refreshDomainDisplay();
+      }
+
+      function cleanPyError(msg) {
+        var lines = msg.split('\n');
+        var startIdx = -1;
+        for (var i = lines.length - 1; i >= 0; i--) {
+          if (lines[i].indexOf('File "<exec>"') !== -1) { startIdx = i; break; }
+        }
+        if (startIdx === -1) return msg.trim();
+        return lines.slice(startIdx).join('\n').trim();
+      }
+
+      var runnerStatus = document.getElementById('runner-status');
+      var runnerRunBtn = document.getElementById('runner-run');
+      var runnerResetBtn = document.getElementById('runner-reset-code');
+      var pyodideReady = null;
+
+      if (runnerCode) {
+        if (typeof loadPyodide === 'function') {
+          pyodideReady = loadPyodide().then(function(py){
+            runnerStatus.textContent = 'Python ready';
+            runnerStatus.className = 'runner-status ready';
+            runnerRunBtn.disabled = false;
+            runnerOutput.textContent = 'Click Run to see what happens.';
+            return py;
+          }).catch(function(err){
+            runnerStatus.textContent = 'Python failed to load';
+            runnerStatus.className = 'runner-status err';
+            runnerOutput.textContent = 'The in-page Python sandbox could not load. Your Codespace terminal still works fine — use that instead for this step.';
+            runnerOutput.className = 'runner-output err';
+          });
+        } else {
+          runnerStatus.textContent = 'Python sandbox unavailable';
+          runnerStatus.className = 'runner-status err';
+        }
+
+        runnerRunBtn.addEventListener('click', function(){
+          if (!pyodideReady) return;
+          runnerRunBtn.disabled = true;
+          runnerOutput.textContent = 'Running…';
+          runnerOutput.className = 'runner-output';
+          pyodideReady.then(function(py){
+            var lines = [];
+            py.setStdout({ batched: function(s){ lines.push(s); } });
+            py.setStderr({ batched: function(s){ lines.push(s); } });
+            return py.runPythonAsync(runnerCode.value).then(function(){
+              runnerOutput.textContent = lines.length ? lines.join('\n') : '(no output)';
+              runnerOutput.className = 'runner-output ok';
+            }).catch(function(err){
+              var msg = (err && err.message) ? err.message : String(err);
+              runnerOutput.textContent = (lines.length ? lines.join('\n') + '\n' : '') + cleanPyError(msg);
+              runnerOutput.className = 'runner-output err';
+            });
+          }).then(function(){
+            runnerRunBtn.disabled = false;
+          });
+        });
+
+        runnerResetBtn.addEventListener('click', resetRunnerCode);
+      }
+
+      /* ---------------- MATCHING ACTIVITY ---------------- */
+      var MATCH_KEY = 'is201-week4-match-answers';
+      var matchRows = Array.prototype.slice.call(document.querySelectorAll('#match-table .match-row'));
+      var matchResult = document.getElementById('match-result');
+      var matchCheckBtn = document.getElementById('match-check');
+      var matchResetBtn = document.getElementById('match-reset');
+
+      function saveMatchAnswers() {
+        try {
+          var vals = matchRows.map(function(row){ return row.querySelector('select').value; });
+          localStorage.setItem(MATCH_KEY, JSON.stringify(vals));
+        } catch (e) {}
+      }
+      function loadMatchAnswers() {
+        try { return JSON.parse(localStorage.getItem(MATCH_KEY) || 'null'); }
+        catch (e) { return null; }
+      }
+      function checkMapping() {
+        var correctCount = 0;
+        var totalAnswered = 0;
+        matchRows.forEach(function(row){
+          var select = row.querySelector('select');
+          var correctVal = row.getAttribute('data-answer');
+          row.classList.remove('correct', 'incorrect');
+          if (!select.value) return;
+          totalAnswered++;
+          if (select.value === correctVal) {
+            row.classList.add('correct');
+            correctCount++;
+          } else {
+            row.classList.add('incorrect');
+          }
+        });
+        matchResult.textContent = correctCount + ' of ' + matchRows.length + ' correct'
+          + (totalAnswered < matchRows.length ? ' (some rows left unanswered)' : '');
+        updateSubmitGate();
+      }
+
+      if (matchCheckBtn) {
+        matchRows.forEach(function(row){
+          row.querySelector('select').addEventListener('change', saveMatchAnswers);
+        });
+        matchCheckBtn.addEventListener('click', checkMapping);
+        matchResetBtn.addEventListener('click', function(){
+          matchRows.forEach(function(row){
+            row.querySelector('select').value = '';
+            row.classList.remove('correct', 'incorrect');
+          });
+          matchResult.textContent = '';
+          try { localStorage.removeItem(MATCH_KEY); } catch (e) {}
+          updateSubmitGate();
+        });
+        var savedMatch = loadMatchAnswers();
+        if (savedMatch && savedMatch.length === matchRows.length) {
+          matchRows.forEach(function(row, i){ row.querySelector('select').value = savedMatch[i] || ''; });
+          pendingMatchRestore = true;
+        }
+      }
+
+      /* ---------------- KNOWLEDGE CHECK ---------------- */
+      var QUIZ_KEY = 'is201-week4-quiz-answers';
+      var quizCards = Array.prototype.slice.call(document.querySelectorAll('#quiz-block .quiz-card'));
+      var quizGradeBtn = document.getElementById('quiz-grade');
+      var quizResetBtn = document.getElementById('quiz-reset');
+      var quizFeedback = {
+        1: { correct: "exactly — Python looked for that exact string as a key and it wasn't there, full stop.", incorrect: "the dictionary and its nesting were both fine — the sole problem is that the exact key string being asked for doesn't exist." },
+        2: { correct: "grouping related fields under one nested dictionary makes the relationship visible in the data's own shape, not just in a comment.", incorrect: "it's not a syntax requirement, a speed optimization, or required for printing — it's a design choice about how the data is organized." },
+        3: { correct: "that's the core distinction — dictionaries map keys to values, sets just hold unique values with no keys involved.", incorrect: "a set isn't a dictionary variant with numeric keys, they aren't identical, and a plain dictionary actually can end up with duplicate values (just not duplicate keys)." },
+        4: { correct: "exactly what this module is practicing — being able to justify why data is shaped one way and not another.", incorrect: "there's no Python requirement for a paper sketch — the point is building the habit of justifying a schema, not a shortcut or a formality." },
+        5: { correct: "naming the specific wrong key and correctly identifying why it's a KeyError (not some other error type) is what's actually graded.", incorrect: "vague noticing, typing speed, and waiting on the AI are exactly what this course has moved away from grading." }
+      };
+
+      function saveQuizAnswers() {
+        try {
+          var vals = {};
+          quizCards.forEach(function(card, i){
+            var qNum = i + 1;
+            var selected = card.querySelector('input[name="q' + qNum + '"]:checked');
+            vals['q' + qNum] = selected ? selected.value : '';
+          });
+          localStorage.setItem(QUIZ_KEY, JSON.stringify(vals));
+        } catch (e) {}
+      }
+      function loadQuizAnswers() {
+        try { return JSON.parse(localStorage.getItem(QUIZ_KEY) || 'null'); }
+        catch (e) { return null; }
+      }
+      function gradeQuiz() {
+        var correctCount = 0;
+        quizCards.forEach(function(card, i){
+          var qNum = i + 1;
+          var name = 'q' + qNum;
+          var selected = card.querySelector('input[name="' + name + '"]:checked');
+          var fb = document.getElementById('qfb' + qNum);
+          var correctVal = card.getAttribute('data-answer');
+          fb.className = 'quiz-feedback show';
+          if (!selected) {
+            fb.classList.add('unanswered');
+            fb.textContent = 'Not answered — select an option above, then grade again.';
+            return;
+          }
+          if (selected.value === correctVal) {
+            fb.classList.add('correct');
+            fb.textContent = '✓ Correct — ' + quizFeedback[qNum].correct;
+            correctCount++;
+          } else {
+            fb.classList.add('incorrect');
+            fb.textContent = '✗ Not quite — ' + quizFeedback[qNum].incorrect;
+          }
+        });
+        var scoreBox = document.getElementById('quiz-score');
+        var scoreBig = document.getElementById('quiz-score-big');
+        var scoreText = document.getElementById('quiz-score-text');
+        scoreBox.classList.add('show');
+        scoreBig.textContent = correctCount + ' / ' + quizCards.length;
+        scoreText.textContent = correctCount === quizCards.length
+          ? 'All five — you are ready for Week 5.'
+          : (correctCount >= 3 ? 'Solid grasp — review the items you missed before Week 5.' : 'Worth another pass through the steps above before moving on.');
+        updateSubmitGate();
+      }
+
+      if (quizGradeBtn) {
+        quizCards.forEach(function(card){
+          card.querySelectorAll('input[type="radio"]').forEach(function(r){ r.addEventListener('change', saveQuizAnswers); });
+        });
+        quizGradeBtn.addEventListener('click', gradeQuiz);
+        quizResetBtn.addEventListener('click', function(){
+          quizCards.forEach(function(card, i){
+            var qNum = i + 1;
+            card.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked = false; });
+            var fb = document.getElementById('qfb' + qNum);
+            fb.className = 'quiz-feedback';
+            fb.textContent = '';
+          });
+          document.getElementById('quiz-score').classList.remove('show');
+          try { localStorage.removeItem(QUIZ_KEY); } catch (e) {}
+          updateSubmitGate();
+        });
+        var savedQuiz = loadQuizAnswers();
+        if (savedQuiz) {
+          var hasAny = false;
+          quizCards.forEach(function(card, i){
+            var qNum = i + 1;
+            var val = savedQuiz['q' + qNum];
+            if (val) {
+              hasAny = true;
+              var input = card.querySelector('input[name="q' + qNum + '"][value="' + val + '"]');
+              if (input) input.checked = true;
+            }
+          });
+          if (hasAny) pendingQuizRestore = true;
+        }
+      }
+
+      /* ---------------- SUBMISSION ---------------- */
+      var SUBMIT_KEY = 'is201-week4-submission';
+      var submitLocked = document.getElementById('submit-locked');
+      var submitLockedText = document.getElementById('submit-locked-text');
+      var submitForm = document.getElementById('submit-form');
+      var submitReceipt = document.getElementById('submit-receipt');
+      var submitNameInput = document.getElementById('submit-name');
+      var submitRepoInput = document.getElementById('submit-repo');
+      var memorySubmission = null;
+
+      function matchIsAllCorrect() {
+        return matchRows.length > 0 && matchRows.every(function(r){ return r.classList.contains('correct'); });
+      }
+      function quizIsAllCorrect() {
+        if (!quizCards.length) return false;
+        return quizCards.every(function(card, i){
+          var fb = document.getElementById('qfb' + (i + 1));
+          return fb && fb.classList.contains('correct');
+        });
+      }
+      function renderReceipt(data) {
+        document.getElementById('receipt-name').textContent = data.name;
+        document.getElementById('receipt-time').textContent = data.displayTime;
+        var repoLabel = document.getElementById('receipt-repo-label');
+        var repoVal = document.getElementById('receipt-repo');
+        if (data.repo) {
+          repoLabel.style.display = ''; repoVal.style.display = ''; repoVal.textContent = data.repo;
+        } else {
+          repoLabel.style.display = 'none'; repoVal.style.display = 'none';
+        }
+        submitLocked.style.display = 'none';
+        submitForm.style.display = 'none';
+        submitReceipt.style.display = 'block';
+      }
+      function readStoredSubmission() {
+        try {
+          var stored = JSON.parse(localStorage.getItem(SUBMIT_KEY) || 'null');
+          if (stored) return stored;
+        } catch (e) {}
+        return memorySubmission;
+      }
+      function updateSubmitGate() {
+        if (!submitLocked) return;
+        var existing = readStoredSubmission();
+        if (existing) { renderReceipt(existing); return; }
+        var matchOk = matchIsAllCorrect();
+        var quizOk = quizIsAllCorrect();
+        if (matchOk && quizOk) {
+          submitLocked.style.display = 'none';
+          submitForm.style.display = 'block';
+          submitReceipt.style.display = 'none';
+        } else {
+          submitLocked.style.display = 'flex';
+          submitForm.style.display = 'none';
+          submitReceipt.style.display = 'none';
+          var missing = [];
+          if (!matchOk) missing.push('the matching activity (6/6)');
+          if (!quizOk) missing.push('the knowledge check (5/5)');
+          submitLockedText.textContent = 'Complete ' + missing.join(' and ') + ' above to unlock this.';
+        }
+      }
+
+      if (submitForm) {
+        submitForm.addEventListener('submit', function(e){
+          e.preventDefault();
+          if (!matchIsAllCorrect() || !quizIsAllCorrect()) return;
+          var name = submitNameInput.value.trim();
+          if (!name) return;
+          var now = new Date();
+          var data = { name: name, repo: submitRepoInput.value.trim(), isoTime: now.toISOString(), displayTime: now.toLocaleString() };
+          memorySubmission = data;
+          try { localStorage.setItem(SUBMIT_KEY, JSON.stringify(data)); } catch (err) {}
+          renderReceipt(data);
+        });
+
+        document.getElementById('receipt-print').addEventListener('click', function(){
+          document.body.classList.add('printing-receipt');
+          window.print();
+        });
+        window.addEventListener('afterprint', function(){
+          document.body.classList.remove('printing-receipt');
+        });
+
+        document.getElementById('receipt-edit').addEventListener('click', function(){
+          memorySubmission = null;
+          try { localStorage.removeItem(SUBMIT_KEY); } catch (err) {}
+          submitNameInput.value = '';
+          submitRepoInput.value = '';
+          updateSubmitGate();
+        });
+      }
+
+      if (pendingMatchRestore) checkMapping();
+      if (pendingQuizRestore) gradeQuiz();
+      updateSubmitGate();
+    })();
+    </script>
+</body>
+</html>

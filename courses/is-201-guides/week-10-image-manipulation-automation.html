@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IS 201 — Week 10 Guide: Image Manipulation, Automation &amp; Capstone</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { margin-top:34px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        ol.steps { padding-left: 1.3em; }
+        ol.steps > li { margin-bottom:20px; }
+        ol.steps h4 { margin:0 0 6px; font-size:0.95rem; color:#1e8449; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .done-box h4 { margin:0 0 8px; color:#047857; }
+        .done-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        .limit-box { background:#fef2f2; border-left:5px solid #dc2626; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .limit-box h4 { margin:0 0 6px; color:#991b1b; font-size:0.95rem; }
+        .runner-btn { padding:6px 14px; border-radius:6px; font-size:0.82rem; font-weight:700; border:1px solid #1e8449; background:#1e8449; color:#fff; cursor:pointer; font-family:inherit; }
+        .runner-btn.secondary { background:#fff; color:#1e8449; }
+        .runner-btn:disabled { opacity:0.5; cursor:not-allowed; }
+        .capstone-box { background:#f5f3ff; border-left:5px solid #7c3aed; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .capstone-box h4 { margin:0 0 10px; color:#5b21b6; font-size:0.95rem; }
+        .capstone-box ol { margin:0; padding-left:20px; }
+        .capstone-box li { margin-bottom:8px; }
+        .checklist { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px 18px; margin:14px 0; }
+        .checklist ul { margin:0; padding-left:20px; }
+        .checklist li { margin-bottom:8px; }
+        ol.steps ol { margin:10px 0; padding-left:1.2em; }
+        ol.steps ol li { margin-bottom:8px; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+
+        .domain-demo { border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:14px 0; background:#f8fafc; }
+        .domain-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+        .domain-tab { padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; border:1.5px solid #e2e8f0; background:#fff; color:#475569; font-family:inherit; cursor:pointer; }
+        .domain-tab:hover { border-color:#1e8449; color:#1e8449; }
+        .domain-tab.active { background:#1e8449; border-color:#1e8449; color:#fff; }
+        .domain-tab.active:hover { color:#fff; }
+        .domain-snippet { background:#0f172a; color:#e2e8f0; border-radius:6px; padding:12px 14px; font-family:'SFMono-Regular',Consolas,monospace; font-size:0.8rem; overflow-x:auto; white-space:pre; line-height:1.5; }
+        .domain-snippet .c-key { color:#7dd3fc; }
+        .domain-snippet .c-str { color:#86efac; }
+        .domain-snippet .c-cmt { color:#64748b; }
+
+        .activity-box { border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:14px 0; background:#fff; overflow-x:auto; }
+        .match-table { width:100%; border-collapse:collapse; font-size:0.86rem; }
+        .match-table th { text-align:left; padding:8px 10px; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; border-bottom:2px solid #e2e8f0; white-space:nowrap; }
+        .match-table td { padding:10px 10px; border-bottom:1px solid #e2e8f0; vertical-align:top; }
+        .match-table td:first-child { font-weight:600; white-space:nowrap; }
+        .match-row.correct td:first-child { border-left:4px solid #15803d; }
+        .match-row.incorrect td:first-child { border-left:4px solid #dc2626; }
+        .match-table select { width:100%; min-width:260px; padding:6px 8px; border-radius:6px; border:1px solid #cbd5e1; font-family:inherit; font-size:0.84rem; }
+        .match-actions { display:flex; align-items:center; gap:12px; margin-top:14px; flex-wrap:wrap; }
+        .match-result { font-size:0.85rem; font-weight:700; color:#334155; }
+
+        .quiz-card { border:1px solid #e2e8f0; border-radius:8px; padding:14px 16px; margin-bottom:12px; background:#fff; }
+        .quiz-stem { font-weight:700; font-size:0.92rem; margin-bottom:8px; }
+        .quiz-opts { list-style:none; margin:0; padding:0; }
+        .quiz-opts li { margin-bottom:6px; }
+        .quiz-opts label { display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; cursor:pointer; }
+        .quiz-opts input { margin-top:3px; flex-shrink:0; }
+        .quiz-feedback { display:none; margin-top:10px; padding:10px 12px; border-radius:6px; font-size:0.85rem; }
+        .quiz-feedback.show { display:block; }
+        .quiz-feedback.correct { background:#ecfdf5; color:#047857; }
+        .quiz-feedback.incorrect { background:#fef2f2; color:#b91c1c; }
+        .quiz-feedback.unanswered { background:#fffbeb; color:#b45309; }
+        .quiz-score { display:none; text-align:center; padding:16px; border-radius:8px; background:#f0fdf4; margin-top:8px; }
+        .quiz-score.show { display:block; }
+        .quiz-score-big { display:block; font-size:1.6rem; font-weight:800; color:#15803d; }
+
+        .submit-box { border:1px solid #e2e8f0; border-radius:8px; padding:18px 20px; margin:14px 0; background:#fff; }
+        .submit-locked { display:flex; align-items:center; gap:10px; color:#64748b; font-size:0.88rem; background:#f8fafc; border-radius:6px; padding:12px 14px; }
+        .submit-locked .lock-icon { font-size:1.1rem; flex-shrink:0; }
+        .submit-field { margin-bottom:12px; }
+        .submit-field label { display:block; font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; }
+        .submit-field input { width:100%; box-sizing:border-box; padding:8px 10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit; font-size:0.9rem; }
+        .submit-field .field-hint { font-size:0.76rem; color:#94a3b8; margin-top:3px; }
+        .submit-receipt { background:#ecfdf5; border:1px solid #bbf7d0; border-radius:8px; padding:16px 18px; }
+        .submit-receipt h4 { margin:0 0 10px; color:#047857; font-size:0.95rem; }
+        .submit-receipt dl { margin:0; display:grid; grid-template-columns:auto 1fr; gap:6px 12px; font-size:0.86rem; }
+        .submit-receipt dt { color:#64748b; font-weight:600; }
+        .submit-receipt dd { margin:0; color:#0f172a; word-break:break-word; }
+        .submit-actions { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
+        .submit-note { font-size:0.78rem; color:#94a3b8; margin-top:12px; }
+
+        @media print {
+            body.printing-receipt * { visibility:hidden; }
+            body.printing-receipt .submit-receipt, body.printing-receipt .submit-receipt * { visibility:visible; }
+            body.printing-receipt .submit-receipt { position:absolute; top:0; left:0; width:100%; border:none; padding:24px; }
+            body.printing-receipt .submit-actions, body.printing-receipt .submit-note { display:none; }
+        }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../../cityux-hub.html" style="color:#1e8449;text-decoration:none;font-weight:500">CityUX Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../../is201-revamp-design-brief.html" style="color:#1e8449;text-decoration:none;font-weight:500">IS 201 Design Brief</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Week-by-Week Guides</a>
+    </nav>
+
+        <h1>Week 10 — Image Manipulation, Automation &amp; Capstone</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 3–4 hrs</span>
+            <span class="meta-pill">CO6</span>
+            <span class="meta-pill">Pilot domains: Maritime &amp; Marketing/E-commerce</span>
+            <span class="meta-pill">🎓 Domain Capstone</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Meet <code>Pillow</code> and <code>PyAutoGUI</code> — image manipulation and desktop automation — then close the arc this whole course has been building toward: the requirements you surfaced in Week 5's Roleplay Feedback Loop become the working, demoable project you present this week.</p>
+        </div>
+
+        <div class="limit-box">
+            <h4>⚠ Why this week has no in-page runner</h4>
+            <p><code>Pillow</code> needs a real image file to open and a package install this guide hasn't verified reliably enough to ship. <code>PyAutoGUI</code> is a different kind of impossible: it controls a real mouse, keyboard, and screen — there is no version of "run this in a browser tab" for that, on this page or any other. Both tools are real and worth knowing; this page just won't pretend to run them. The code below is for reading, not clicking Run on.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li>Your Codespace, with all nine previous weeks' work available to pull together</li>
+            <li>Your Week 5 Roleplay Feedback Loop transcript</li>
+            <li>Your AI coding assistant, signed in and ready</li>
+        </ul>
+
+        <h2>Steps</h2>
+        <ol class="steps">
+            <li><h4>Pick your domain lens</h4>
+                <div class="domain-demo">
+                    <div class="domain-tabs" role="tablist" aria-label="Pilot domain preview">
+                        <button type="button" class="domain-tab active" data-domain="maritime" role="tab" aria-selected="true">🚢 Maritime</button>
+                        <button type="button" class="domain-tab" data-domain="marketing" role="tab" aria-selected="false">🛒 Marketing / E-commerce</button>
+                    </div>
+                    <div class="domain-snippet" id="domain-snippet-display" role="tabpanel"><span class="c-cmt"># Maritime lens — read, don't run: resizing a scanned cargo</span>
+<span class="c-cmt"># manifest image for a mobile display.</span>
+<span class="c-key">from</span> PIL <span class="c-key">import</span> Image
+
+img = Image.open(<span class="c-str">"cargo_manifest_scan.jpg"</span>)
+resized = img.resize((<span class="c-str">800</span>, <span class="c-str">600</span>))
+resized.save(<span class="c-str">"cargo_manifest_thumbnail.jpg"</span>)</div>
+                </div>
+            </li>
+            <li><h4>What Pillow actually does</h4><code>Image.open(...)</code> loads an image file into memory as an object you can inspect and transform — <code>.resize()</code>, <code>.rotate()</code>, <code>.crop()</code>, applying filters — then <code>.save(...)</code> writes the result back out to a new file. It's the same "read, transform, write" shape as the file work from Week 6, just operating on pixels instead of text.
+            </li>
+            <li><h4>What PyAutoGUI actually does</h4>
+<pre id="pyautogui-example">placeholder</pre>
+                <div class="explain"><strong>This is a fundamentally different kind of code</strong> than anything else this term. <code>pyautogui.click(120, 340)</code> doesn't compute or return anything — it physically moves a real mouse cursor to a screen coordinate and clicks, exactly as if a person did it. It's used to automate repetitive tasks in applications that don't offer any other way to control them programmatically.</div>
+            </li>
+            <li><h4>Assemble your capstone</h4>Pull together what you've built across the term into one working program that answers the vague request from Week 5's Roleplay Feedback Loop.
+                <div class="capstone-box">
+                    <h4>What "assembled" means here</h4>
+                    <ol>
+                        <li><strong>Start from the Week 5 signature.</strong> Your function signature and docstring, refined by the stakeholder roleplay, is the spec you're building to.</li>
+                        <li><strong>Reuse, don't rewrite, modules 2-8.</strong> The variable/loop logic (Week 2), the data structures (Weeks 3-4), the exception handling (Week 6), the class design (Weeks 7-8) — this is where they combine into one program instead of ten separate exercises.</li>
+                        <li><strong>Add one Week 9 or Week 10 piece.</strong> Either a small data-extraction step (reusing the <code>html.parser</code> pattern from Week 9 against a fixed local snippet — not a live site) or an image-handling step using Pillow in your Codespace.</li>
+                        <li><strong>It has to actually run.</strong> Not "the logic makes sense" — run it in your Codespace and watch it produce real output against realistic input.</li>
+                    </ol>
+                </div>
+            </li>
+            <li><h4>Prepare your presentation</h4>
+                <div class="checklist">
+                    <strong>Structure your presentation around four things:</strong>
+                    <ul>
+                        <li><strong>The problem</strong> — the original vague ask from Week 5, in one sentence.</li>
+                        <li><strong>What the roleplay changed</strong> — quote the specific clarifying question that reshaped your function signature.</li>
+                        <li><strong>A live demo</strong> — run it, don't describe it. Show the output, including what happens on realistic bad input.</li>
+                        <li><strong>What you'd catch next</strong> — one thing you'd add a Diff/Debug Sprint-style check for if you kept building this.</li>
+                    </ul>
+                </div>
+            </li>
+        </ol>
+
+        <h2>Activity: Match the Term to Its Meaning</h2>
+        <div class="activity-box">
+            <table class="match-table" id="match-table">
+                <thead><tr><th>Term</th><th>Best-matching definition</th></tr></thead>
+                <tbody>
+                    <tr class="match-row" data-answer="pillow"><td>Pillow (PIL)</td><td>
+                        <select aria-label="Definition for Pillow">
+                            <option value="">— Select —</option>
+                            <option value="pillow">A library for opening, resizing, and saving image files in Python</option>
+                            <option value="pyautogui">A library that controls the mouse and keyboard to automate tasks in other applications</option>
+                            <option value="capstone">The final project pulling together and demonstrating skills built across the whole course</option>
+                            <option value="reqartifact">Documented evidence (like a roleplay transcript) showing how requirements were actually determined</option>
+                            <option value="domainlens">The industry framing applied to the same core Python concepts all term</option>
+                            <option value="demo">Showing a working program actually run, not just describing what it's supposed to do</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="pyautogui"><td>PyAutoGUI</td><td>
+                        <select aria-label="Definition for PyAutoGUI">
+                            <option value="">— Select —</option>
+                            <option value="pillow">A library for opening, resizing, and saving image files in Python</option>
+                            <option value="pyautogui">A library that controls the mouse and keyboard to automate tasks in other applications</option>
+                            <option value="capstone">The final project pulling together and demonstrating skills built across the whole course</option>
+                            <option value="reqartifact">Documented evidence (like a roleplay transcript) showing how requirements were actually determined</option>
+                            <option value="domainlens">The industry framing applied to the same core Python concepts all term</option>
+                            <option value="demo">Showing a working program actually run, not just describing what it's supposed to do</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="capstone"><td>Capstone</td><td>
+                        <select aria-label="Definition for capstone">
+                            <option value="">— Select —</option>
+                            <option value="pillow">A library for opening, resizing, and saving image files in Python</option>
+                            <option value="pyautogui">A library that controls the mouse and keyboard to automate tasks in other applications</option>
+                            <option value="capstone">The final project pulling together and demonstrating skills built across the whole course</option>
+                            <option value="reqartifact">Documented evidence (like a roleplay transcript) showing how requirements were actually determined</option>
+                            <option value="domainlens">The industry framing applied to the same core Python concepts all term</option>
+                            <option value="demo">Showing a working program actually run, not just describing what it's supposed to do</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="reqartifact"><td>Requirements artifact</td><td>
+                        <select aria-label="Definition for requirements artifact">
+                            <option value="">— Select —</option>
+                            <option value="pillow">A library for opening, resizing, and saving image files in Python</option>
+                            <option value="pyautogui">A library that controls the mouse and keyboard to automate tasks in other applications</option>
+                            <option value="capstone">The final project pulling together and demonstrating skills built across the whole course</option>
+                            <option value="reqartifact">Documented evidence (like a roleplay transcript) showing how requirements were actually determined</option>
+                            <option value="domainlens">The industry framing applied to the same core Python concepts all term</option>
+                            <option value="demo">Showing a working program actually run, not just describing what it's supposed to do</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="domainlens"><td>Domain lens</td><td>
+                        <select aria-label="Definition for domain lens">
+                            <option value="">— Select —</option>
+                            <option value="pillow">A library for opening, resizing, and saving image files in Python</option>
+                            <option value="pyautogui">A library that controls the mouse and keyboard to automate tasks in other applications</option>
+                            <option value="capstone">The final project pulling together and demonstrating skills built across the whole course</option>
+                            <option value="reqartifact">Documented evidence (like a roleplay transcript) showing how requirements were actually determined</option>
+                            <option value="domainlens">The industry framing applied to the same core Python concepts all term</option>
+                            <option value="demo">Showing a working program actually run, not just describing what it's supposed to do</option>
+                        </select>
+                    </td></tr>
+                    <tr class="match-row" data-answer="demo"><td>Demo</td><td>
+                        <select aria-label="Definition for demo">
+                            <option value="">— Select —</option>
+                            <option value="pillow">A library for opening, resizing, and saving image files in Python</option>
+                            <option value="pyautogui">A library that controls the mouse and keyboard to automate tasks in other applications</option>
+                            <option value="capstone">The final project pulling together and demonstrating skills built across the whole course</option>
+                            <option value="reqartifact">Documented evidence (like a roleplay transcript) showing how requirements were actually determined</option>
+                            <option value="domainlens">The industry framing applied to the same core Python concepts all term</option>
+                            <option value="demo">Showing a working program actually run, not just describing what it's supposed to do</option>
+                        </select>
+                    </td></tr>
+                </tbody>
+            </table>
+            <div class="match-actions">
+                <button type="button" class="runner-btn" id="match-check">Check My Matches</button>
+                <button type="button" class="runner-btn secondary" id="match-reset">Reset</button>
+                <span class="match-result" id="match-result"></span>
+            </div>
+        </div>
+
+        <h2>Knowledge Check</h2>
+        <div id="quiz-block">
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q1.</span> Why doesn't this module's guide include a live in-page runner for Pillow or PyAutoGUI?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q1" value="a"> Pillow needs an image file and an unverified package install, and PyAutoGUI needs real control of a mouse/keyboard/screen — neither fits a lightweight browser sandbox</label></li>
+                    <li><label><input type="radio" name="q1" value="b"> Pillow and PyAutoGUI don't actually exist as real libraries</label></li>
+                    <li><label><input type="radio" name="q1" value="c"> This course doesn't actually cover image manipulation</label></li>
+                    <li><label><input type="radio" name="q1" value="d"> Pyodide can't run any Python code at all</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb1"></div>
+            </div>
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q2.</span> What does <code>pyautogui.click(120, 340)</code> actually do?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q2" value="a"> Moves the mouse to that screen coordinate and clicks, exactly as if a person did it</label></li>
+                    <li><label><input type="radio" name="q2" value="b"> Draws a circle at that coordinate in an image file</label></li>
+                    <li><label><input type="radio" name="q2" value="c"> Prints the numbers 120 and 340 to the console</label></li>
+                    <li><label><input type="radio" name="q2" value="d"> Opens a new browser tab at that position</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb2"></div>
+            </div>
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q3.</span> What role does the Week 5 Roleplay transcript play in the capstone?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q3" value="a"> It's the requirements artifact — documented evidence for why the capstone was built the way it was, not just an early exercise</label></li>
+                    <li><label><input type="radio" name="q3" value="b"> It has no real connection to the capstone project</label></li>
+                    <li><label><input type="radio" name="q3" value="c"> It's only used to grade Week 5 and is never referenced again</label></li>
+                    <li><label><input type="radio" name="q3" value="d"> It replaces the need for a working demo</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb3"></div>
+            </div>
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q4.</span> What makes a capstone different from a regular weekly module?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q4" value="a"> It pulls together and demonstrates skills from across the whole course in one working project, rather than introducing one new topic</label></li>
+                    <li><label><input type="radio" name="q4" value="b"> It's the only graded work in the entire course</label></li>
+                    <li><label><input type="radio" name="q4" value="c"> It doesn't actually need to run</label></li>
+                    <li><label><input type="radio" name="q4" value="d"> It's unrelated to anything covered in earlier weeks</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb4"></div>
+            </div>
+            <div class="quiz-card" data-answer="a">
+                <div class="quiz-stem"><span>Q5.</span> Why does "demo it running" matter more than describing it, at the end of a course built around Diff/Debug Sprints?</div>
+                <ul class="quiz-opts">
+                    <li><label><input type="radio" name="q5" value="a"> Because a description can hide exactly the silent-failure and swallowed-exception risks this course spent all term teaching you to catch</label></li>
+                    <li><label><input type="radio" name="q5" value="b"> Descriptions are technically forbidden by the assignment</label></li>
+                    <li><label><input type="radio" name="q5" value="c"> Python syntax requires a live demonstration</label></li>
+                    <li><label><input type="radio" name="q5" value="d"> It doesn't actually matter — either approach is equally valid</label></li>
+                </ul>
+                <div class="quiz-feedback" id="qfb5"></div>
+            </div>
+            <div class="match-actions">
+                <button type="button" class="runner-btn" id="quiz-grade">Grade My Quiz</button>
+                <button type="button" class="runner-btn secondary" id="quiz-reset">Reset Quiz</button>
+            </div>
+            <div class="quiz-score" id="quiz-score">
+                <span class="quiz-score-big" id="quiz-score-big">0 / 5</span>
+                <span id="quiz-score-text"></span>
+            </div>
+        </div>
+
+        <h2>Submit Week 10 — Final Capstone</h2>
+        <p>Unlocks once the matching activity and knowledge check above are both fully correct. This is the last submission of the term.</p>
+        <div class="submit-box" id="submit-box">
+            <div class="submit-locked" id="submit-locked">
+                <span class="lock-icon" aria-hidden="true">🔒</span>
+                <span id="submit-locked-text">Complete the matching activity (6/6) and knowledge check (5/5) above to unlock this.</span>
+            </div>
+            <form id="submit-form" style="display:none">
+                <div class="submit-field">
+                    <label for="submit-name">Full name</label>
+                    <input type="text" id="submit-name" required autocomplete="name" placeholder="Jane Doe">
+                </div>
+                <div class="submit-field">
+                    <label for="submit-repo">GitHub repo (recommended this week)</label>
+                    <input type="url" id="submit-repo" placeholder="https://github.com/your-username/your-repo">
+                    <div class="field-hint">Unlike earlier weeks, this one should point to your actual capstone project if your instructor is collecting repos.</div>
+                </div>
+                <button type="submit" class="runner-btn" id="submit-btn-el">Submit Capstone</button>
+            </form>
+            <div class="submit-receipt" id="submit-receipt" style="display:none">
+                <h4>✓ Week 10 — Capstone completion receipt</h4>
+                <dl>
+                    <dt>Name</dt><dd id="receipt-name"></dd>
+                    <dt>Week</dt><dd>Week 10 — Image Manipulation, Automation &amp; Capstone</dd>
+                    <dt>Submitted</dt><dd id="receipt-time"></dd>
+                    <dt id="receipt-repo-label" style="display:none">GitHub repo</dt><dd id="receipt-repo" style="display:none"></dd>
+                </dl>
+                <p class="submit-note"><strong>Take a screenshot of this receipt, or save it as a PDF</strong> using the button below — then submit that file, along with your capstone project and presentation, wherever your instructor collects final work. This receipt is generated and stored only in this browser.</p>
+                <div class="submit-actions">
+                    <button type="button" class="runner-btn secondary" id="receipt-print">🖨️ Save as PDF</button>
+                    <button type="button" class="runner-btn secondary" id="receipt-edit">Submit a different name</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="done-box">
+            <h4>You'll know it worked when…</h4>
+            <ul>
+                <li>You can point to the exact line in your Week 5 transcript that shaped a real design decision in your capstone.</li>
+                <li>Your capstone actually runs in your Codespace — not "the logic should work."</li>
+                <li>You can explain why PyAutoGUI is a categorically different kind of code from everything else this term.</li>
+                <li>You've matched all six terms correctly and scored 5/5 on the knowledge check — which unlocks the final submission above.</li>
+            </ul>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Not sure what counts as "enough" for the capstone</strong> — it doesn't need to be large. A working function that correctly handles the Week 5 requirement, with one piece of real error handling and one domain-flavored data structure, is a complete capstone.</li>
+                <li><strong>Presentation turning into a code walkthrough instead of a demo</strong> — run it first, then explain what you're looking at. Reading code line-by-line is not the same as showing it work.</li>
+                <li><strong>Lost track of your Week 5 transcript</strong> — check your Week 5 submission receipt or your AI assistant's chat history for that session.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="week-09-web-scraping-spreadsheets.html">← Week 9</a>
+            <a href="index.html">All Weeks — Course Complete 🎓</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+    <script>
+    (function(){
+      var pendingMatchRestore = false;
+      var pendingQuizRestore = false;
+
+      var snippets = {
+        maritime:
+          '<span class="c-cmt"># Maritime lens — read, don\'t run: resizing a scanned cargo</span>\n' +
+          '<span class="c-cmt"># manifest image for a mobile display.</span>\n' +
+          '<span class="c-key">from</span> PIL <span class="c-key">import</span> Image\n\n' +
+          'img = Image.open(<span class="c-str">"cargo_manifest_scan.jpg"</span>)\n' +
+          'resized = img.resize((<span class="c-str">800</span>, <span class="c-str">600</span>))\n' +
+          'resized.save(<span class="c-str">"cargo_manifest_thumbnail.jpg"</span>)',
+        marketing:
+          '<span class="c-cmt"># Marketing / E-commerce lens — read, don\'t run: resizing a</span>\n' +
+          '<span class="c-cmt"># product photo for a listing thumbnail.</span>\n' +
+          '<span class="c-key">from</span> PIL <span class="c-key">import</span> Image\n\n' +
+          'img = Image.open(<span class="c-str">"product_photo.jpg"</span>)\n' +
+          'resized = img.resize((<span class="c-str">800</span>, <span class="c-str">600</span>))\n' +
+          'resized.save(<span class="c-str">"product_photo_thumbnail.jpg"</span>)'
+      };
+      var pyautoguiExample = {
+        maritime: 'import pyautogui\n\npyautogui.click(120, 340)          # click the "Submit Reading" button\npyautogui.typewrite("96.4")        # type the sensor value\npyautogui.press("enter")',
+        marketing: 'import pyautogui\n\npyautogui.click(120, 340)          # click the "Apply Discount" button\npyautogui.typewrite("20")          # type the discount percentage\npyautogui.press("enter")'
+      };
+      var currentDomain = 'maritime';
+
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.domain-tab'));
+      var display = document.getElementById('domain-snippet-display');
+      var pyautoguiEl = document.getElementById('pyautogui-example');
+
+      function refreshDomainDisplay() {
+        display.innerHTML = snippets[currentDomain];
+        if (pyautoguiEl) pyautoguiEl.textContent = pyautoguiExample[currentDomain];
+      }
+
+      if (tabs.length && display) {
+        tabs.forEach(function(tab){
+          tab.addEventListener('click', function(){
+            var domain = tab.getAttribute('data-domain');
+            if (!snippets[domain]) return;
+            currentDomain = domain;
+            tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            refreshDomainDisplay();
+          });
+        });
+        refreshDomainDisplay();
+      }
+
+      /* ---------------- MATCHING ACTIVITY ---------------- */
+      var MATCH_KEY = 'is201-week10-match-answers';
+      var matchRows = Array.prototype.slice.call(document.querySelectorAll('#match-table .match-row'));
+      var matchResult = document.getElementById('match-result');
+      var matchCheckBtn = document.getElementById('match-check');
+      var matchResetBtn = document.getElementById('match-reset');
+
+      function saveMatchAnswers() {
+        try {
+          var vals = matchRows.map(function(row){ return row.querySelector('select').value; });
+          localStorage.setItem(MATCH_KEY, JSON.stringify(vals));
+        } catch (e) {}
+      }
+      function loadMatchAnswers() {
+        try { return JSON.parse(localStorage.getItem(MATCH_KEY) || 'null'); }
+        catch (e) { return null; }
+      }
+      function checkMapping() {
+        var correctCount = 0;
+        var totalAnswered = 0;
+        matchRows.forEach(function(row){
+          var select = row.querySelector('select');
+          var correctVal = row.getAttribute('data-answer');
+          row.classList.remove('correct', 'incorrect');
+          if (!select.value) return;
+          totalAnswered++;
+          if (select.value === correctVal) {
+            row.classList.add('correct');
+            correctCount++;
+          } else {
+            row.classList.add('incorrect');
+          }
+        });
+        matchResult.textContent = correctCount + ' of ' + matchRows.length + ' correct'
+          + (totalAnswered < matchRows.length ? ' (some rows left unanswered)' : '');
+        updateSubmitGate();
+      }
+
+      if (matchCheckBtn) {
+        matchRows.forEach(function(row){
+          row.querySelector('select').addEventListener('change', saveMatchAnswers);
+        });
+        matchCheckBtn.addEventListener('click', checkMapping);
+        matchResetBtn.addEventListener('click', function(){
+          matchRows.forEach(function(row){
+            row.querySelector('select').value = '';
+            row.classList.remove('correct', 'incorrect');
+          });
+          matchResult.textContent = '';
+          try { localStorage.removeItem(MATCH_KEY); } catch (e) {}
+          updateSubmitGate();
+        });
+        var savedMatch = loadMatchAnswers();
+        if (savedMatch && savedMatch.length === matchRows.length) {
+          matchRows.forEach(function(row, i){ row.querySelector('select').value = savedMatch[i] || ''; });
+          pendingMatchRestore = true;
+        }
+      }
+
+      /* ---------------- KNOWLEDGE CHECK ---------------- */
+      var QUIZ_KEY = 'is201-week10-quiz-answers';
+      var quizCards = Array.prototype.slice.call(document.querySelectorAll('#quiz-block .quiz-card'));
+      var quizGradeBtn = document.getElementById('quiz-grade');
+      var quizResetBtn = document.getElementById('quiz-reset');
+      var quizFeedback = {
+        1: { correct: "exactly — a real image file plus an unverified package on one side, real OS-level input control on the other; neither is a fit for this sandbox.", incorrect: "both libraries are real and genuinely useful, this course does cover image work, and Pyodide runs plenty of Python — just not code that needs a live screen or an unverified extra package." },
+        2: { correct: "that's the whole point of PyAutoGUI — it drives real input devices, the same as a human would.", incorrect: "it doesn't touch image files, it isn't a print statement, and it has nothing to do with browser tabs — it's real mouse/keyboard control." },
+        3: { correct: "the transcript is the documented reasoning behind the capstone's design, carried forward rather than left behind in Week 5.", incorrect: "the transcript is directly load-bearing for the capstone, referenced again here, and a working demo is still required regardless of what the transcript shows." },
+        4: { correct: "a capstone integrates prior skills into one working project instead of teaching something new — that's the defining difference.", incorrect: "grading, running, and connection to earlier material are not what distinguishes a capstone — integration across the whole course is." },
+        5: { correct: "a description can quietly gloss over exactly the kind of silent failures this course spent all term training you to catch — only a real run proves it.", incorrect: "this isn't a syntax rule or an arbitrary restriction — demoing is what actually verifies the thing works, the way every Diff/Debug Sprint this term insisted on." }
+      };
+
+      function saveQuizAnswers() {
+        try {
+          var vals = {};
+          quizCards.forEach(function(card, i){
+            var qNum = i + 1;
+            var selected = card.querySelector('input[name="q' + qNum + '"]:checked');
+            vals['q' + qNum] = selected ? selected.value : '';
+          });
+          localStorage.setItem(QUIZ_KEY, JSON.stringify(vals));
+        } catch (e) {}
+      }
+      function loadQuizAnswers() {
+        try { return JSON.parse(localStorage.getItem(QUIZ_KEY) || 'null'); }
+        catch (e) { return null; }
+      }
+      function gradeQuiz() {
+        var correctCount = 0;
+        quizCards.forEach(function(card, i){
+          var qNum = i + 1;
+          var name = 'q' + qNum;
+          var selected = card.querySelector('input[name="' + name + '"]:checked');
+          var fb = document.getElementById('qfb' + qNum);
+          var correctVal = card.getAttribute('data-answer');
+          fb.className = 'quiz-feedback show';
+          if (!selected) {
+            fb.classList.add('unanswered');
+            fb.textContent = 'Not answered — select an option above, then grade again.';
+            return;
+          }
+          if (selected.value === correctVal) {
+            fb.classList.add('correct');
+            fb.textContent = '✓ Correct — ' + quizFeedback[qNum].correct;
+            correctCount++;
+          } else {
+            fb.classList.add('incorrect');
+            fb.textContent = '✗ Not quite — ' + quizFeedback[qNum].incorrect;
+          }
+        });
+        var scoreBox = document.getElementById('quiz-score');
+        var scoreBig = document.getElementById('quiz-score-big');
+        var scoreText = document.getElementById('quiz-score-text');
+        scoreBox.classList.add('show');
+        scoreBig.textContent = correctCount + ' / ' + quizCards.length;
+        scoreText.textContent = correctCount === quizCards.length
+          ? 'All five — congratulations, you\'ve completed IS 201.'
+          : (correctCount >= 3 ? 'Solid grasp — review the items you missed before your capstone presentation.' : 'Worth another pass through the steps above before your presentation.');
+        updateSubmitGate();
+      }
+
+      if (quizGradeBtn) {
+        quizCards.forEach(function(card){
+          card.querySelectorAll('input[type="radio"]').forEach(function(r){ r.addEventListener('change', saveQuizAnswers); });
+        });
+        quizGradeBtn.addEventListener('click', gradeQuiz);
+        quizResetBtn.addEventListener('click', function(){
+          quizCards.forEach(function(card, i){
+            var qNum = i + 1;
+            card.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked = false; });
+            var fb = document.getElementById('qfb' + qNum);
+            fb.className = 'quiz-feedback';
+            fb.textContent = '';
+          });
+          document.getElementById('quiz-score').classList.remove('show');
+          try { localStorage.removeItem(QUIZ_KEY); } catch (e) {}
+          updateSubmitGate();
+        });
+        var savedQuiz = loadQuizAnswers();
+        if (savedQuiz) {
+          var hasAny = false;
+          quizCards.forEach(function(card, i){
+            var qNum = i + 1;
+            var val = savedQuiz['q' + qNum];
+            if (val) {
+              hasAny = true;
+              var input = card.querySelector('input[name="q' + qNum + '"][value="' + val + '"]');
+              if (input) input.checked = true;
+            }
+          });
+          if (hasAny) pendingQuizRestore = true;
+        }
+      }
+
+      /* ---------------- SUBMISSION ---------------- */
+      var SUBMIT_KEY = 'is201-week10-submission';
+      var submitLocked = document.getElementById('submit-locked');
+      var submitLockedText = document.getElementById('submit-locked-text');
+      var submitForm = document.getElementById('submit-form');
+      var submitReceipt = document.getElementById('submit-receipt');
+      var submitNameInput = document.getElementById('submit-name');
+      var submitRepoInput = document.getElementById('submit-repo');
+      var memorySubmission = null;
+
+      function matchIsAllCorrect() {
+        return matchRows.length > 0 && matchRows.every(function(r){ return r.classList.contains('correct'); });
+      }
+      function quizIsAllCorrect() {
+        if (!quizCards.length) return false;
+        return quizCards.every(function(card, i){
+          var fb = document.getElementById('qfb' + (i + 1));
+          return fb && fb.classList.contains('correct');
+        });
+      }
+      function renderReceipt(data) {
+        document.getElementById('receipt-name').textContent = data.name;
+        document.getElementById('receipt-time').textContent = data.displayTime;
+        var repoLabel = document.getElementById('receipt-repo-label');
+        var repoVal = document.getElementById('receipt-repo');
+        if (data.repo) {
+          repoLabel.style.display = ''; repoVal.style.display = ''; repoVal.textContent = data.repo;
+        } else {
+          repoLabel.style.display = 'none'; repoVal.style.display = 'none';
+        }
+        submitLocked.style.display = 'none';
+        submitForm.style.display = 'none';
+        submitReceipt.style.display = 'block';
+      }
+      function readStoredSubmission() {
+        try {
+          var stored = JSON.parse(localStorage.getItem(SUBMIT_KEY) || 'null');
+          if (stored) return stored;
+        } catch (e) {}
+        return memorySubmission;
+      }
+      function updateSubmitGate() {
+        if (!submitLocked) return;
+        var existing = readStoredSubmission();
+        if (existing) { renderReceipt(existing); return; }
+        var matchOk = matchIsAllCorrect();
+        var quizOk = quizIsAllCorrect();
+        if (matchOk && quizOk) {
+          submitLocked.style.display = 'none';
+          submitForm.style.display = 'block';
+          submitReceipt.style.display = 'none';
+        } else {
+          submitLocked.style.display = 'flex';
+          submitForm.style.display = 'none';
+          submitReceipt.style.display = 'none';
+          var missing = [];
+          if (!matchOk) missing.push('the matching activity (6/6)');
+          if (!quizOk) missing.push('the knowledge check (5/5)');
+          submitLockedText.textContent = 'Complete ' + missing.join(' and ') + ' above to unlock this.';
+        }
+      }
+
+      if (submitForm) {
+        submitForm.addEventListener('submit', function(e){
+          e.preventDefault();
+          if (!matchIsAllCorrect() || !quizIsAllCorrect()) return;
+          var name = submitNameInput.value.trim();
+          if (!name) return;
+          var now = new Date();
+          var data = { name: name, repo: submitRepoInput.value.trim(), isoTime: now.toISOString(), displayTime: now.toLocaleString() };
+          memorySubmission = data;
+          try { localStorage.setItem(SUBMIT_KEY, JSON.stringify(data)); } catch (err) {}
+          renderReceipt(data);
+        });
+
+        document.getElementById('receipt-print').addEventListener('click', function(){
+          document.body.classList.add('printing-receipt');
+          window.print();
+        });
+        window.addEventListener('afterprint', function(){
+          document.body.classList.remove('printing-receipt');
+        });
+
+        document.getElementById('receipt-edit').addEventListener('click', function(){
+          memorySubmission = null;
+          try { localStorage.removeItem(SUBMIT_KEY); } catch (err) {}
+          submitNameInput.value = '';
+          submitRepoInput.value = '';
+          updateSubmitGate();
+        });
+      }
+
+      if (pendingMatchRestore) checkMapping();
+      if (pendingQuizRestore) gradeQuiz();
+      updateSubmitGate();
+    })();
+    </script>
+</body>
+</html>

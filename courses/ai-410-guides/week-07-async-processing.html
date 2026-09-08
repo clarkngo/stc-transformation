@@ -113,7 +113,7 @@
                     <li>Choose the Redis type, give it any name, and pick a region close to you.</li>
                     <li>On the database's page, find the <strong>Redis connection string / URL</strong> — it looks like <code>rediss://default:xxxxx@your-instance.upstash.io:6379</code> — and copy it.</li>
                 </ol>
-                Paste it into <code>backend/.env</code> as <code>REDIS_URL</code>, alongside your existing <code>GEMINI_API_KEY</code> and <code>DATABASE_URL</code>.
+                Paste it into <code>backend/.env</code> as <code>REDIS_URL</code>, alongside your existing <code>GEMINI_API_KEY</code>.
                 <div class="explain"><strong>What is Redis, and why do we need it here?</strong> Redis is a very fast, simple database, commonly used as a message queue — a to-do list that one program (your API) can add tasks to, and a different program (your worker) can pick tasks off of, one at a time. That's exactly the job here: hand off "please ingest this document" without making the person who asked wait for it to finish.</div>
             </li>
             <li><h4>Understand the two pieces that are already written for you</h4>Open <code>backend/queue_setup.py</code> — this is complete, you shouldn't need to change it:
@@ -148,18 +148,18 @@ if __name__ == "__main__":
     )
     vectors = [e.values for e in result.embeddings]
 
-    conn = psycopg.connect(os.environ["DATABASE_URL"])
-    cur = conn.cursor()
-    for chunk, vector in zip(chunks, vectors):
-        cur.execute(
-            "insert into documents (content, embedding, source) values (%s, %s, %s)",
-            (chunk, vector, os.path.basename(doc_path)),
-        )
-    conn.commit()
-    conn.close()
+    chroma = chromadb.PersistentClient(path=CHROMA_PATH)
+    collection = chroma.get_or_create_collection(name="documents")
+    source = os.path.basename(doc_path)
+    collection.add(
+        ids=[f"{source}-{i}" for i in range(len(chunks))],
+        embeddings=vectors,
+        documents=chunks,
+        metadatas=[{"source": source} for _ in chunks],
+    )
 
     return {"chunks_inserted": len(chunks)}</pre>
-                <div class="explain">This should look familiar — it's the same chunk → embed → insert steps from Week 4's <code>ingest.py</code>, just packaged as one function that a worker can call on any file path, instead of a script that only knows about the fixed sample-docs folder. <strong>Always <code>return</code> a plain dict here</strong> (not a custom object) — <code>rq</code> stores whatever you return as the job's result, and the status endpoint you write next needs to read it back.</div>
+                <div class="explain">This should look familiar — it's the same chunk → embed → add steps from Week 4's <code>ingest.py</code>, just packaged as one function that a worker can call on any file path, instead of a script that only knows about the fixed sample-docs folder. Note this is the <strong>same</strong> local <code>chroma_db/</code> folder Week 4's <code>ingest.py</code> and <code>retrieval.py</code> already point at — the worker is a separate process, but as long as it runs on the same machine, it's reading and writing the same files on disk. <strong>Always <code>return</code> a plain dict here</strong> (not a custom object) — <code>rq</code> stores whatever you return as the job's result, and the status endpoint you write next needs to read it back.</div>
             </li>
             <li><h4>Make the upload endpoint asynchronous</h4>In <code>backend/main.py</code>, find the <code>/documents</code> endpoint. It currently calls <code>ingest_document_job</code> directly, which blocks the request until ingestion finishes. Replace that with:
 <pre>@app.post("/documents")

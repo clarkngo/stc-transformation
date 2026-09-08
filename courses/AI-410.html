@@ -77,7 +77,7 @@
         </div>
         <div class="principle-box">
             <h4>3. Managed, low-code infrastructure for the hard backend pieces</h4>
-            <p>Vector databases, queues, and observability run on pre-provisioned free/managed tiers (e.g. Supabase pgvector, Upstash Redis, Langfuse, Expo Go) so students engineer at the application layer instead of standing up infrastructure — the same reason no-code AI programs keep infra out of the learner's hands.</p>
+            <p>Queues and observability run on pre-provisioned free/managed tiers (e.g. Upstash Redis, Langfuse, Expo Go); the vector store (Chroma) goes a step further and needs no provisioning at all — it's an embedded database that ships as a Python package. Either way, students engineer at the application layer instead of standing up infrastructure — the same reason no-code AI programs keep infra out of the learner's hands.</p>
         </div>
         <div class="principle-box">
             <h4>4. A mid-course checkpoint before the hardest weeks</h4>
@@ -91,7 +91,7 @@
             <tr><td class="wk">1</td><td>Foundations of full-stack AI systems; LLM architecture</td><td>Pre-wired chat UI + backend stub, deployed to a free host</td><td>Swap in your own LLM call — first working request/response</td><td>O1</td><td><a href="ai-410-guides/week-01-foundations.html">Guide →</a></td></tr>
             <tr><td class="wk">2</td><td>Agentic loops, tool calling, structured outputs</td><td>Agent-loop skeleton with one dummy tool stubbed in</td><td>Add a real tool call the agent can decide to invoke</td><td>O1</td><td><a href="ai-410-guides/week-02-agentic-loop.html">Guide →</a></td></tr>
             <tr><td class="wk">3</td><td>Embeddings &amp; chunking (context engineering I)</td><td>Sandbox notebook + sample document set, managed embeddings API</td><td>Ingestion script that chunks/embeds docs and inspects similarity</td><td>O1</td><td><a href="ai-410-guides/week-03-embeddings-chunking.html">Guide →</a></td></tr>
-            <tr><td class="wk">4</td><td>Vector databases &amp; RAG pipelines (context engineering II)</td><td>Pre-provisioned managed vector DB (connection string only)</td><td>Wire retrieval into the agent — RAG goes live in the app</td><td>O2</td><td><a href="ai-410-guides/week-04-vector-db-rag.html">Guide →</a></td></tr>
+            <tr><td class="wk">4</td><td>Vector databases &amp; RAG pipelines (context engineering II)</td><td>Embedded vector DB (Chroma) — no account, no setup</td><td>Wire retrieval into the agent — RAG goes live in the app</td><td>O2</td><td><a href="ai-410-guides/week-04-vector-db-rag.html">Guide →</a></td></tr>
             <tr><td class="wk">5</td><td><strong>Checkpoint —</strong> no new build; architecture &amp; bottleneck review</td><td>Shared diagramming template + instructor review rubric</td><td>Written/diagrammed Architecture &amp; Bottleneck Review</td><td>O3</td><td><a href="ai-410-guides/week-05-checkpoint-architecture-review.html">Guide →</a></td></tr>
             <tr><td class="wk">6</td><td>Probabilistic logic &amp; guardrails</td><td>Pre-built validation/retry middleware template</td><td>Add a guardrail layer that catches and retries bad output</td><td>O3</td><td><a href="ai-410-guides/week-06-guardrails.html">Guide →</a></td></tr>
             <tr><td class="wk">7</td><td>Asynchronous data processing</td><td>Queue + worker boilerplate wired to a managed Redis instance</td><td>Move ingestion to a background job with a status endpoint</td><td>O3</td><td><a href="ai-410-guides/week-07-async-processing.html">Guide →</a></td></tr>
@@ -131,7 +131,7 @@
 
         <div class="week-block">
             <h3>Week 4 — Vector Databases &amp; RAG Pipelines (Context Engineering II)</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> a managed vector database project (Supabase pgvector or Pinecone free tier) is pre-provisioned per student — they receive a connection string, not an infrastructure setup task.</p>
+            <p class="scaffold-note"><strong>Scaffold:</strong> Chroma, an embedded vector database that ships as a Python package — students get a working <code>ingest.py</code> from day one, with no account to create and no connection string to manage.</p>
             <p>Connects Week 3's embeddings to a persistent vector store and a retrieval step, completing a first working RAG pipeline.</p>
             <div class="example-box"><p><strong>App milestone:</strong> Wire retrieval into the Week 2 agent. The app now answers questions grounded in the documents embedded last week — RAG is live.</p></div>
             <span class="outcome-tag">Outcome 2</span>

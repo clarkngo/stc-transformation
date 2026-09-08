@@ -1,12 +1,28 @@
 # Deploys the API and the worker as two SEPARATE services from the
 # same Dockerfile — same lesson as Week 7: they're different
-# processes and need to run (and scale) independently.
+# processes and need to run (and scale) independently. A third
+# service, ai410-chromadb, runs Chroma's own server so the API and
+# worker share the same vector data instead of each getting its own
+# local copy (that only worked by accident in Weeks 1-9, where
+# everything ran as a single process on your laptop).
 #
-# Set the actual secret values (GEMINI_API_KEY, DATABASE_URL,
-# REDIS_URL, LANGFUSE_*) in the Render dashboard for each service —
-# never commit them here.
+# Set the actual secret values (GEMINI_API_KEY, REDIS_URL,
+# LANGFUSE_*) in the Render dashboard for each service — never
+# commit them here. CHROMA_HOST/CHROMA_PORT below already point at
+# the ai410-chromadb service by name — Render resolves service names
+# to internal addresses automatically, so you don't need to fill
+# those in.
 
 services:
+  - type: web
+    name: ai410-chromadb
+    runtime: image
+    image:
+      url: docker.io/chromadb/chroma:1.5.9
+    envVars:
+      - key: IS_PERSISTENT
+        value: "TRUE"
+
   - type: web
     name: ai410-api
     runtime: docker
@@ -14,8 +30,10 @@ services:
     envVars:
       - key: GEMINI_API_KEY
         sync: false
-      - key: DATABASE_URL
-        sync: false
+      - key: CHROMA_HOST
+        value: ai410-chromadb
+      - key: CHROMA_PORT
+        value: 8000
       - key: REDIS_URL
         sync: false
       - key: LANGFUSE_PUBLIC_KEY
@@ -33,8 +51,10 @@ services:
     envVars:
       - key: GEMINI_API_KEY
         sync: false
-      - key: DATABASE_URL
-        sync: false
+      - key: CHROMA_HOST
+        value: ai410-chromadb
+      - key: CHROMA_PORT
+        value: 8000
       - key: REDIS_URL
         sync: false
       - key: LANGFUSE_PUBLIC_KEY

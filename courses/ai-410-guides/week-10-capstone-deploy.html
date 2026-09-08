@@ -60,7 +60,7 @@
 
         <h4>What you'll need</h4>
         <ul class="needs-list">
-            <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/week-10-capstone-deploy" target="_blank" rel="noopener">this week's starter-code folder</a> — includes a Dockerfile and a Render deploy config for both the API and worker</li>
+            <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/week-10-capstone-deploy" target="_blank" rel="noopener">this week's starter-code folder</a> — includes a Dockerfile and a Render deploy config for the API, the worker, and a Chroma server</li>
             <li>Everything from Weeks 1–9 working locally</li>
         </ul>
 
@@ -89,8 +89,9 @@
 
                 <rect x="400" y="15" width="120" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
                 <text x="460" y="37" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Gemini API</text>
-                <rect x="400" y="58" width="120" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
-                <text x="460" y="80" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Supabase</text>
+                <rect x="400" y="58" width="120" height="35" rx="6" fill="#ede9fe" stroke="#7c3aed"/>
+                <text x="460" y="74" text-anchor="middle" font-size="9" font-weight="700" fill="#6d28d9" font-family="Inter,system-ui,sans-serif">ai410-chromadb</text>
+                <text x="460" y="86" text-anchor="middle" font-size="7" fill="#334155" font-family="Inter,system-ui,sans-serif">(Render, 3rd service)</text>
                 <rect x="400" y="101" width="120" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
                 <text x="460" y="123" text-anchor="middle" font-size="9" font-weight="700" fill="#b45309" font-family="Inter,system-ui,sans-serif">Upstash Redis</text>
                 <rect x="400" y="144" width="120" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
@@ -134,12 +135,12 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</pre>
                     <li>Go to <a href="https://render.com" target="_blank" rel="noopener">render.com</a>, sign up, and connect your GitHub account when prompted.</li>
                     <li>Click <strong>New +</strong> → <strong>Blueprint</strong>.</li>
                     <li>Select your repository, and point Render at the <code>backend/</code> folder (where <code>render.yaml</code> lives).</li>
-                    <li>Render reads <code>render.yaml</code> and shows you it's about to create <strong>two</strong> services — <code>ai410-api</code> and <code>ai410-worker</code> — both built from the same Dockerfile, matching the diagram above.</li>
-                    <li>Before clicking deploy, you'll be prompted to fill in the environment variables listed in <code>render.yaml</code> (they're marked <code>sync: false</code>, which means Render doesn't auto-fill them — you provide the real values). Fill in <code>GEMINI_API_KEY</code>, <code>DATABASE_URL</code>, <code>REDIS_URL</code>, and the <code>LANGFUSE_*</code> keys for <strong>both</strong> services, using the exact same real values from your local <code>.env</code>.</li>
+                    <li>Render reads <code>render.yaml</code> and shows you it's about to create <strong>three</strong> services — <code>ai410-api</code>, <code>ai410-worker</code>, and <code>ai410-chromadb</code> — matching the diagram above.</li>
+                    <li>Before clicking deploy, you'll be prompted to fill in the environment variables marked <code>sync: false</code> in <code>render.yaml</code> (Render doesn't auto-fill those — you provide the real values). Fill in <code>GEMINI_API_KEY</code>, <code>REDIS_URL</code>, and the <code>LANGFUSE_*</code> keys for <strong>both</strong> <code>ai410-api</code> and <code>ai410-worker</code>, using the exact same real values from your local <code>.env</code>. <code>CHROMA_HOST</code> and <code>CHROMA_PORT</code> are already filled in — they just point at the <code>ai410-chromadb</code> service by name, which Render resolves automatically.</li>
                 </ol>
-                <div class="explain"><strong>Why two services from one file?</strong> This is the same lesson as Week 7, just at deploy time now: your API and your worker are separate running processes with separate jobs. <code>render.yaml</code> defines them as two entries under <code>services:</code> — the worker one overrides the Dockerfile's default startup command with <code>dockerCommand: python worker.py</code> instead of running <code>uvicorn</code>.</div>
+                <div class="explain"><strong>Why does Chroma need to be its own service now?</strong> In Weeks 1-9, <code>ingest.py</code>, <code>retrieval.py</code>, and <code>jobs.py</code> all ran inside the <em>same</em> process on your laptop, so a local Chroma folder was all three of them at once — that's not true anymore. <code>ai410-api</code> and <code>ai410-worker</code> are two separate deployed processes, each with its own separate disk; if each one kept its own local Chroma folder, whatever the worker ingests would be invisible to the API. <code>ai410-chromadb</code> runs Chroma's own server (the official <code>chromadb/chroma</code> image — no Dockerfile of ours needed) so both the API and the worker talk to the <strong>same</strong> vector data over the network, the same lesson Week 7 already taught you about the API and worker being separate processes with separate jobs.</div>
             </li>
-            <li><h4>Wait for both to deploy, then verify</h4>Render will build and start both services — this can take a few minutes the first time. Once both show a green "Live" status, copy your API service's public URL (something like <code>https://ai410-api.onrender.com</code>) and test it:
+            <li><h4>Wait for all three to deploy, then verify</h4>Render will build and start all three services — this can take a few minutes the first time. Once all three show a green "Live" status, open the <strong>Shell</strong> tab on <code>ai410-api</code> (or <code>ai410-worker</code> — they're built from the same image) in the Render dashboard and run <code>python ingest.py</code> from there, so it reaches <code>ai410-chromadb</code> over Render's internal network the same way your deployed app does. That loads the sample docs into the vector database your live app is actually using. Then copy your API service's public URL (something like <code>https://ai410-api.onrender.com</code>) and test it:
 <pre>curl https://ai410-api-YOUR-URL.onrender.com/health</pre>
                 You should get back <code>{"status": "ok"}</code>. If it fails, check that service's <strong>Logs</strong> tab in the Render dashboard first — almost every deploy failure at this stage is a missing or mistyped environment variable, and the logs will usually name exactly which one.
             </li>
@@ -165,6 +166,7 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</pre>
             <ul>
                 <li><strong>Works locally, fails deployed</strong> — almost always a missing or mistyped environment variable on the host; check the host's logs first.</li>
                 <li><strong>Free-tier hosts spin down when idle</strong> — the first request after idle time can be noticeably slow. Mention this honestly during your demo rather than being caught off guard by it live.</li>
+                <li><strong><code>ai410-chromadb</code> loses its data if it spins down or redeploys</strong> — the free tier has no persistent disk attached, so a restart wipes it. Re-run <code>ingest.py</code> from a Shell tab (see the deploy step above) any time you need to reload the sample docs, especially right before your demo.</li>
             </ul>
         </div>
 

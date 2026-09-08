@@ -1,12 +1,14 @@
 """
 Loads the sample docs, chunks + embeds them, and inserts them into the
-documents table in Supabase — solved in Week 4, unchanged here.
+documents collection in Chroma — solved in Week 4, unchanged here except
+that Chroma now runs as its own service (see CHROMA_HOST/CHROMA_PORT),
+since the API and worker are separate deployed services this week.
 """
 
 import glob
 import os
 
-import psycopg
+import chromadb
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -43,8 +45,11 @@ def embed_chunks(chunks: list[str]) -> list[list[float]]:
 
 
 def main():
-    conn = psycopg.connect(os.environ["DATABASE_URL"])
-    cur = conn.cursor()
+    chroma = chromadb.HttpClient(
+        host=os.environ.get("CHROMA_HOST", "localhost"),
+        port=int(os.environ.get("CHROMA_PORT", 8001)),
+    )
+    collection = chroma.get_or_create_collection(name="documents")
 
     total = 0
     for path in sorted(glob.glob(os.path.join(SAMPLE_DOCS_DIR, "*.md"))):
@@ -53,18 +58,17 @@ def main():
 
         chunks = chunk_text(text)
         vectors = embed_chunks(chunks)
+        source = os.path.basename(path)
 
-        for chunk, vector in zip(chunks, vectors):
-            cur.execute(
-                "insert into documents (content, embedding, source) values (%s, %s, %s)",
-                (chunk, vector, os.path.basename(path)),
-            )
+        collection.add(
+            ids=[f"{source}-{i}" for i in range(len(chunks))],
+            embeddings=vectors,
+            documents=chunks,
+            metadatas=[{"source": source} for _ in chunks],
+        )
         total += len(chunks)
-        print(f"Inserted {len(chunks)} chunks from {os.path.basename(path)}")
+        print(f"Inserted {len(chunks)} chunks from {source}")
 
-    conn.commit()
-    cur.close()
-    conn.close()
     print(f"\nDone — {total} chunks inserted.")
 
 

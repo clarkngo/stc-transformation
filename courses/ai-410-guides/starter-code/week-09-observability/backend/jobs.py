@@ -5,7 +5,7 @@ notification on completion (Week 8) are both solved below.
 
 import os
 
-import psycopg
+import chromadb
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -19,6 +19,7 @@ load_dotenv()  # main.py imports this module before calling load_dotenv()
 client = genai.Client()
 EMBED_MODEL = "gemini-embedding-001"
 EMBED_DIM = 1024
+CHROMA_PATH = os.path.join(os.path.dirname(__file__), "chroma_db")
 
 
 def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> list[str]:
@@ -47,15 +48,15 @@ def ingest_document_job(doc_path: str, device_id: str | None = None) -> dict:
     )
     vectors = [e.values for e in result.embeddings]
 
-    conn = psycopg.connect(os.environ["DATABASE_URL"])
-    cur = conn.cursor()
-    for chunk, vector in zip(chunks, vectors):
-        cur.execute(
-            "insert into documents (content, embedding, source) values (%s, %s, %s)",
-            (chunk, vector, os.path.basename(doc_path)),
-        )
-    conn.commit()
-    conn.close()
+    chroma = chromadb.PersistentClient(path=CHROMA_PATH)
+    collection = chroma.get_or_create_collection(name="documents")
+    source = os.path.basename(doc_path)
+    collection.add(
+        ids=[f"{source}-{i}" for i in range(len(chunks))],
+        embeddings=vectors,
+        documents=chunks,
+        metadatas=[{"source": source} for _ in chunks],
+    )
 
     if device_id:
         token = get_push_token(device_id)

@@ -1,11 +1,11 @@
 """
 Retrieval for the RAG pipeline: embed the incoming query, then find
-the closest chunks in the documents table by vector distance.
+the closest chunks in the documents collection by vector distance.
 """
 
 import os
 
-import psycopg
+import chromadb
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -14,7 +14,8 @@ load_dotenv()
 
 client = genai.Client()
 EMBED_MODEL = "gemini-embedding-001"
-EMBED_DIM = 1024  # must match the vector(1024) column in schema.sql and ingest.py
+EMBED_DIM = 1024  # must match output_dimensionality in ingest.py
+CHROMA_PATH = os.path.join(os.path.dirname(__file__), "chroma_db")
 
 
 def retrieve(query: str, k: int = 5) -> list[str]:
@@ -26,10 +27,9 @@ def retrieve(query: str, k: int = 5) -> list[str]:
          ingest.py — but task_type="RETRIEVAL_QUERY" this time, not
          "RETRIEVAL_DOCUMENT" (Gemini optimizes the vector differently
          depending on which side of the search it's used for).
-      2. Query the documents table using pgvector's `<->` distance
-         operator, ordered ascending (closer = smaller distance),
-         limited to k rows.
-      3. Return just the chunk text for each row.
+      2. Open the same local Chroma collection ingest.py wrote to, and
+         query it for the k nearest chunks to that vector.
+      3. Return just the chunk text for each result.
 
     Starter shape:
 
@@ -43,11 +43,9 @@ def retrieve(query: str, k: int = 5) -> list[str]:
         )
         q_vec = result.embeddings[0].values
 
-        conn = psycopg.connect(os.environ["DATABASE_URL"])
-        rows = conn.execute(
-            "select content from documents order by embedding <-> %s limit %s",
-            (q_vec, k),
-        ).fetchall()
-        return [row[0] for row in rows]
+        chroma = chromadb.PersistentClient(path=CHROMA_PATH)
+        collection = chroma.get_or_create_collection(name="documents")
+        results = collection.query(query_embeddings=[q_vec], n_results=k)
+        return results["documents"][0]
     """
     raise NotImplementedError("implement retrieve() — see the TODO above")

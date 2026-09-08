@@ -1,12 +1,14 @@
 """
 Loads the sample docs, chunks + embeds them, and inserts them into the
-documents table in Supabase — solved in Week 4, unchanged here.
+documents collection in a local Chroma database — solved in Week 4, unchanged here.
+
+Run this once before starting the server:  python ingest.py
 """
 
 import glob
 import os
 
-import psycopg
+import chromadb
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -17,6 +19,7 @@ client = genai.Client()
 EMBED_MODEL = "gemini-embedding-001"
 EMBED_DIM = 1024
 SAMPLE_DOCS_DIR = os.path.join(os.path.dirname(__file__), "sample_docs")
+CHROMA_PATH = os.path.join(os.path.dirname(__file__), "chroma_db")
 
 
 def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> list[str]:
@@ -43,8 +46,8 @@ def embed_chunks(chunks: list[str]) -> list[list[float]]:
 
 
 def main():
-    conn = psycopg.connect(os.environ["DATABASE_URL"])
-    cur = conn.cursor()
+    chroma = chromadb.PersistentClient(path=CHROMA_PATH)
+    collection = chroma.get_or_create_collection(name="documents")
 
     total = 0
     for path in sorted(glob.glob(os.path.join(SAMPLE_DOCS_DIR, "*.md"))):
@@ -53,18 +56,17 @@ def main():
 
         chunks = chunk_text(text)
         vectors = embed_chunks(chunks)
+        source = os.path.basename(path)
 
-        for chunk, vector in zip(chunks, vectors):
-            cur.execute(
-                "insert into documents (content, embedding, source) values (%s, %s, %s)",
-                (chunk, vector, os.path.basename(path)),
-            )
+        collection.add(
+            ids=[f"{source}-{i}" for i in range(len(chunks))],
+            embeddings=vectors,
+            documents=chunks,
+            metadatas=[{"source": source} for _ in chunks],
+        )
         total += len(chunks)
-        print(f"Inserted {len(chunks)} chunks from {os.path.basename(path)}")
+        print(f"Inserted {len(chunks)} chunks from {source}")
 
-    conn.commit()
-    cur.close()
-    conn.close()
     print(f"\nDone — {total} chunks inserted.")
 
 

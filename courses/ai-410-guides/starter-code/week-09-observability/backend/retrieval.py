@@ -6,7 +6,7 @@ shows up as a distinct span in the dashboard.
 
 import os
 
-import psycopg
+import chromadb
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -19,6 +19,7 @@ load_dotenv()
 client = genai.Client()
 EMBED_MODEL = "gemini-embedding-001"
 EMBED_DIM = 1024
+CHROMA_PATH = os.path.join(os.path.dirname(__file__), "chroma_db")
 
 
 # TODO(week9): add @observe() above this function.
@@ -33,10 +34,7 @@ def retrieve(query: str, k: int = 5) -> list[str]:
     )
     q_vec = result.embeddings[0].values
 
-    conn = psycopg.connect(os.environ["DATABASE_URL"])
-    rows = conn.execute(
-        "select content from documents order by embedding <-> %s limit %s",
-        (q_vec, k),
-    ).fetchall()
-    conn.close()
-    return [row[0] for row in rows]
+    chroma = chromadb.PersistentClient(path=CHROMA_PATH)
+    collection = chroma.get_or_create_collection(name="documents")
+    results = collection.query(query_embeddings=[q_vec], n_results=k)
+    return results["documents"][0]

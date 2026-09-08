@@ -14,7 +14,7 @@ Guide: [`../../week-06-guardrails.html`](../../week-06-guardrails.html)
 
 ## Run it
 
-Same setup as Week 4: run `schema.sql` in Supabase first. **Recommended: GitHub Codespaces** (Code → Codespaces → Create codespace on main — dependencies and `.env` are created for you), then:
+Same setup as Week 4 — no database setup step, Chroma just needs `backend/chroma_db/` on disk. **Recommended: GitHub Codespaces** (Code → Codespaces → Create codespace on main — dependencies and `.env` are created for you), then:
 ```bash
 cd backend
 python ingest.py

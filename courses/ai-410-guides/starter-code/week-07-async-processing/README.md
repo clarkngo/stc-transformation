@@ -18,7 +18,7 @@ Guide: [`../../week-07-async-processing.html`](../../week-07-async-processing.ht
 
 You need **two terminals** running at once — this is a great fit for Codespaces, since VS Code's terminal panel supports splitting into multiple panes with one click (the split-terminal icon in the top-right of the terminal panel).
 
-**Recommended: GitHub Codespaces.** Push this folder to its own repo, then **Code → Codespaces → Create codespace on main** — dependencies install and `backend/.env` is created automatically. Add your `GEMINI_API_KEY`, `DATABASE_URL`, and `REDIS_URL` to `backend/.env`, then split the terminal and run:
+**Recommended: GitHub Codespaces.** Push this folder to its own repo, then **Code → Codespaces → Create codespace on main** — dependencies install and `backend/.env` is created automatically. Add your `GEMINI_API_KEY` and `REDIS_URL` to `backend/.env`, then split the terminal and run:
 ```bash
 # Terminal 1 — the API
 cd backend && uvicorn main:app --reload

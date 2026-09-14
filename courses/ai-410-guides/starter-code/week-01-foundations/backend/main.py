@@ -11,21 +11,11 @@ import os
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 load_dotenv()
 
 app = FastAPI(title="AI 410 — Week 1")
-
-# Don't remove this — the frontend runs from a plain file:// page,
-# which needs CORS enabled to call this API at all.
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 class ChatRequest(BaseModel):
@@ -40,16 +30,16 @@ class ChatResponse(BaseModel):
 def chat(body: ChatRequest) -> ChatResponse:
     # TODO(week1): replace this stub with a real call to Gemini.
     #
-    # from google import genai
-    # client = genai.Client()  # reads GEMINI_API_KEY from the environment
-    #
-    # interaction = client.interactions.create(
-    #     model="gemini-flash-latest",
-    #     input=body.message,
-    # )
-    # return ChatResponse(reply=interaction.output_text)
+    from google import genai
+    client = genai.Client()  # reads GEMINI_API_KEY from the environment
+    
+    interaction = client.interactions.create(
+        model="gemini-flash-latest",
+        input=body.message,
+    )
+    return ChatResponse(reply=interaction.output_text)
 
-    return ChatResponse(reply=f"(stub reply) You said: {body.message!r}")
+    # return ChatResponse(reply=f"(stub reply) You said: {body.message!r}")
 
 
 @app.get("/health")

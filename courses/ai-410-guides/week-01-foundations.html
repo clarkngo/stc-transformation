@@ -62,7 +62,7 @@
         <ul class="needs-list">
             <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/week-01-foundations" target="_blank" rel="noopener">this week's starter-code folder</a> — copy it into your own project and follow its README</li>
             <li>Python 3.11+ and a terminal</li>
-            <li>It already contains a <code>/backend</code> FastAPI app with a stubbed <code>/chat</code> endpoint, and a <code>/frontend</code> folder with a single working chat page wired to call it</li>
+            <li>It already contains a <code>/backend</code> FastAPI app with a stubbed <code>/chat</code> endpoint, and a <code>/frontend</code> folder with a working Streamlit chat page wired to call it</li>
             <li>A free Gemini API key (no credit card required) from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></li>
         </ul>
 
@@ -75,7 +75,7 @@
                 </defs>
                 <rect x="10" y="55" width="180" height="60" rx="8" fill="#eff6ff" stroke="#3b82f6"/>
                 <text x="100" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8" font-family="Inter,system-ui,sans-serif">Browser</text>
-                <text x="100" y="98" text-anchor="middle" font-size="11" fill="#334155" font-family="Inter,system-ui,sans-serif">frontend/index.html</text>
+                <text x="100" y="98" text-anchor="middle" font-size="11" fill="#334155" font-family="Inter,system-ui,sans-serif">frontend/app.py (Streamlit)</text>
 
                 <rect x="270" y="55" width="180" height="60" rx="8" fill="#ecfdf5" stroke="#10b981"/>
                 <text x="360" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#047857" font-family="Inter,system-ui,sans-serif">Your Backend</text>
@@ -107,9 +107,9 @@
             <li><h4>Get your bearings</h4>Open the starter-code folder in your code editor (VS Code, or whatever you're using) and open a terminal in that same folder. You should see two subfolders:
                 <ol type="a">
                     <li><code>backend/</code> — a small Python web server (using a framework called <strong>FastAPI</strong>) that will do the actual talking to Gemini.</li>
-                    <li><code>frontend/</code> — a plain HTML page with some JavaScript that gives you a chat box in the browser, and sends whatever you type to the backend.</li>
+                    <li><code>frontend/</code> — a small Python script using <strong>Streamlit</strong> (a framework for building simple web UIs in pure Python, no JavaScript needed) that gives you a chat box in the browser, and sends whatever you type to the backend.</li>
                 </ol>
-                <div class="explain"><strong>Why two folders?</strong> This is the "full-stack" in "full-stack AI systems" — a <em>frontend</em> (what the user sees and clicks) talking over the network to a <em>backend</em> (the server that holds your API key and does the real work). The frontend never talks to Gemini directly; it only ever talks to your own backend. You'll keep this same two-part shape for the rest of the course.</div>
+                <div class="explain"><strong>Why two folders?</strong> This is the "full-stack" in "full-stack AI systems" — a <em>frontend</em> (what the user sees and clicks) talking over the network to a <em>backend</em> (the server that holds your API key and does the real work). The frontend never talks to Gemini directly; it only ever talks to your own backend. Both are their own server processes here — that's also why there's no CORS setup to worry about: the request to your backend happens in Python, server-side, not from JavaScript in the browser. You'll keep this same two-part shape for the rest of the course.</div>
             </li>
             <li><h4>Create a Python virtual environment</h4>In your terminal, move into the <code>backend</code> folder and create a "venv":
 <pre>cd backend
@@ -174,8 +174,11 @@ def chat(body: ChatRequest) -> ChatResponse:
                 <div class="explain"><strong>Why <code>./venv/bin/uvicorn</code> and not just <code>uvicorn</code>?</strong> If your computer already has a <code>uvicorn</code> or <code>google-genai</code> installed somewhere else (a different project, a different Python version), typing the bare word <code>uvicorn</code> can accidentally run <em>that</em> one instead of the one you just installed in your venv — even if you activated it. Calling the file directly by its path (<code>./venv/bin/uvicorn</code>) removes all doubt about which one runs. <code>--reload</code> makes the server automatically restart every time you save a change to <code>main.py</code>, which you'll do a lot this term.</div>
                 You should see output ending in a line like <code>Uvicorn running on http://127.0.0.1:8000</code>. Leave this terminal window open and running — closing it stops your server.
             </li>
-            <li><h4>Open the frontend and test it</h4>In Finder/Explorer, double-click <code>frontend/index.html</code> (or run <code>open frontend/index.html</code> on macOS). It opens in your browser as a simple chat page. Type a question and hit Send.
-                <div class="explain">Behind the scenes: the page's JavaScript sends your message to <code>http://127.0.0.1:8000/chat</code> (your running backend), which calls Gemini and sends the reply back, which the page then displays. If nothing happens, check your terminal — errors from the backend show up there, not in the browser.</div>
+            <li><h4>Run the frontend and test it</h4>Open a <strong>second</strong> terminal (leave the backend running in the first one), move into <code>frontend/</code>, and run:
+<pre>cd frontend
+streamlit run app.py</pre>
+                Streamlit opens a browser tab automatically — in Codespaces, it's a forwarded preview tab for port 8501; running locally, it's <code>http://localhost:8501</code>. You'll see a chat box. Type a question and hit Enter.
+                <div class="explain">Behind the scenes: <code>app.py</code> is itself a small server, and when you submit a message it makes a Python <code>requests.post(...)</code> call to <code>http://127.0.0.1:8000/chat</code> (your running backend), which calls Gemini and sends the reply back, which Streamlit then displays. If nothing happens, check <strong>both</strong> terminals — errors from either server show up in its own terminal, not in the browser.</div>
             </li>
             <li><h4>Understand what just happened</h4>Temporarily add <code>print(interaction)</code> right before the <code>return</code> line in <code>main.py</code>, save, and send another message. Look at your terminal output. You'll see the full <code>interaction</code> object — it's built from a list called <code>steps</code> (right now just one text step), plus token-usage numbers. That same <code>steps</code> list is what you'll inspect starting next week to detect when the model wants to use a tool. The token-usage numbers matter too: every request has a limited "context window" — a ceiling on how much text (your message + the model's reply, measured in tokens) one request can contain. You can remove the <code>print()</code> line once you've looked at it.</li>
         </ol>
@@ -192,7 +195,7 @@ def chat(body: ChatRequest) -> ChatResponse:
             <h4>Common snags</h4>
             <ul>
                 <li><strong>"No API key was provided" or "invalid API key"</strong> — check that your <code>.env</code> file (not <code>.env.example</code>) contains the real key under the exact name <code>GEMINI_API_KEY</code>, with no quotes or extra spaces, and that you stopped and restarted <code>uvicorn</code> after editing <code>.env</code> — it's only read once, at startup.</li>
-                <li><strong>CORS errors in the browser console</strong> — the starter repo's CORS middleware already handles this; don't remove or "simplify" it.</li>
+                <li><strong>Streamlit shows "Error talking to the backend: Connection refused"</strong> — the backend isn't running (or crashed). Check the first terminal; you need both <code>uvicorn</code> and <code>streamlit</code> running at the same time, in separate terminals.</li>
                 <li><strong>Reply looks empty or broken</strong> — confirm you're reading <code>interaction.output_text</code> and not the whole interaction object.</li>
             </ul>
         </div>

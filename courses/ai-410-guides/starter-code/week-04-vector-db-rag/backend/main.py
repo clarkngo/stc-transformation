@@ -8,7 +8,6 @@ the agent can decide to use.
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from agent import run_agent
@@ -16,13 +15,6 @@ from agent import run_agent
 load_dotenv()
 
 app = FastAPI(title="AI 410 — Week 2")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 class ChatRequest(BaseModel):

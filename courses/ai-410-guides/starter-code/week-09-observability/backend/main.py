@@ -9,7 +9,6 @@ and in the mobile/ app: request permission and register the device.
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from rq.job import Job
 
@@ -21,13 +20,6 @@ from queue_setup import queue, redis_conn
 load_dotenv()
 
 app = FastAPI(title="AI 410 — Week 8")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 class ChatRequest(BaseModel):

@@ -194,7 +194,7 @@ TOOL_FUNCTIONS = {
                     <li><code>for _ in range(MAX_TURNS):</code> — a safety limit. Without it, a model that keeps calling tools forever (or your code has a bug that never satisfies it) would loop forever too.</li>
                 </ul>
                 </div>
-                Run the server (<code>./venv/bin/uvicorn main:app --reload</code>) and open <code>frontend/index.html</code>. Ask something like "call your ping tool" and watch it work before you've written a single line yourself.
+                Run the backend (<code>./venv/bin/uvicorn main:app --reload</code>), then in a second terminal run the frontend (<code>cd frontend && streamlit run app.py</code>). Ask something like "call your ping tool" and watch it work before you've written a single line yourself.
             </li>
             <li><h4>Define your own tool's schema</h4>You'll add a <code>calculate</code> tool. In <code>backend/tools.py</code>, add this to the <code>TOOLS</code> list, right after the <code>ping</code> entry (don't remove <code>ping</code> — keep both):
 <pre>{

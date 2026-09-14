@@ -1,11 +1,12 @@
 {
     "name": "AI 410 — Week 10",
     "image": "mcr.microsoft.com/devcontainers/python:3.12",
-    "postCreateCommand": "pip install -r backend/requirements.txt && cp -n backend/.env.example backend/.env",
+    "postCreateCommand": "pip install -r backend/requirements.txt -r frontend/requirements.txt && cp -n backend/.env.example backend/.env",
     "postStartCommand": "nohup chroma run --path backend/chroma_db --port 8001 > /tmp/chroma.log 2>&1 &",
-    "forwardPorts": [8000, 8001],
+    "forwardPorts": [8000, 8001, 8501],
     "portsAttributes": {
         "8000": { "label": "Backend API", "onAutoForward": "notify" },
+        "8501": { "label": "Frontend (Streamlit)", "onAutoForward": "openPreview" },
         "8001": { "label": "Chroma (local)", "onAutoForward": "silent" }
     },
     "customizations": {

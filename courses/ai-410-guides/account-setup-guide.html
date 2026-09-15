@@ -85,12 +85,12 @@
         <div class="meta-strip">
             <span class="meta-pill">Do this once, before you need it</span>
             <span class="meta-pill">Every service has a free tier — no credit card required anywhere</span>
-            <span class="meta-pill">4 services</span>
+            <span class="meta-pill">5 services</span>
         </div>
 
         <div class="intro-box">
             <h4>What this page is</h4>
-            <p>Every external account this course ever asks you to create, in one place, with exactly what to click and — for Redis specifically — what that intimidating connection string actually means. You don't need all four on day one: GitHub and Google are needed immediately (HOS 1 / Week 1), Redis isn't needed until HOS 3 / Week 7, and Langfuse isn't needed until HOS 4 / Week 9. Each section below says when, so you can set things up as you go instead of all at once.</p>
+            <p>Every external account this course ever asks you to create, in one place, with exactly what to click and — for Redis specifically — what that intimidating connection string actually means. You don't need all five on day one: GitHub and Google are needed immediately (HOS 1 / Week 1), Redis isn't needed until HOS 3 / Week 7, and Expo and Langfuse aren't needed until HOS 4 / Week 9. Each section below says when, so you can set things up as you go instead of all at once.</p>
         </div>
 
         <h2>Find your service</h2>
@@ -113,6 +113,12 @@
                 <td>The job queue behind background/async document processing</td>
                 <td>HOS 3 / Week 7</td>
                 <td><a class="jump" href="#redis">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="svc-name">Expo</td>
+                <td>Your mobile app's EAS project ID — required for push notifications to work at all</td>
+                <td>HOS 4 / Week 9</td>
+                <td><a class="jump" href="#expo">Read →</a></td>
             </tr>
             <tr>
                 <td class="svc-name">Langfuse</td>
@@ -230,6 +236,32 @@
             <div class="done-box">
                 <h4>You'll know it worked when…</h4>
                 <ul><li>Your <code>.env</code> has one line starting <code>REDIS_URL=rediss://default:...@...upstash.io:6379</code>, and Week 7 / HOS 3's <code>queue_setup.py</code> can connect without a connection error.</li></ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════ EXPO ══════════════════ -->
+        <div class="service" id="expo">
+            <div class="service-head"><h2>Expo — EAS Project ID</h2></div>
+            <div class="service-pills">
+                <span class="svc-pill when">First needed: HOS 4 / Week 9</span>
+                <span class="svc-pill cost">Free — no credit card</span>
+            </div>
+            <p class="why-line"><strong>What it's for:</strong> the mobile client itself (chat, running in Expo Go) works with no account at all — but as of Expo SDK 49+, requesting a <strong>push token</strong> specifically requires the app to be linked to a project on Expo's own servers. Without this, the exact line of code that asks for a push token throws an error instead of returning one.</p>
+
+            <ol class="steps">
+                <li>Go to <a href="https://expo.dev/signup" target="_blank" rel="noopener">expo.dev/signup</a> and create a free account.</li>
+                <li>In your terminal, inside the <code>mobile/</code> folder (with <code>npm install</code> already run):
+<pre>npx eas init</pre>
+                </li>
+                <li>It'll ask you to log in (use the account from step 1) and confirm creating a new project — say yes. It writes an <code>extra.eas.projectId</code> field directly into your <code>mobile/app.json</code> for you; you don't edit anything by hand.</li>
+                <li>Restart <code>npx expo start</code> so the app picks up the updated <code>app.json</code>.</li>
+            </ol>
+
+            <div class="explain"><strong>You don't need this to start HOS 4 / Week 9.</strong> The chat screen, sending messages, and everything backend-side works with no Expo account at all. Only the specific "register for push notifications" step needs it — the guides' starter/answer code already fails on that one step gracefully (a console warning, not a crash) if you haven't done this yet.</div>
+
+            <div class="done-box">
+                <h4>You'll know it worked when…</h4>
+                <ul><li><code>mobile/app.json</code> has a new <code>extra.eas.projectId</code> field after running <code>eas init</code>, and the app logs a real push token to the console instead of the "No EAS project ID found" warning.</li></ul>
             </div>
         </div>
 

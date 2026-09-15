@@ -1,9 +1,10 @@
 """
-HOS 3 answer key: Guardrails & Asynchronous Processing.
+HOS 4 starter code: Mobile Client, Push & Observability.
 
-Chat (with RAG + guardrails) is unchanged in shape from HOS 1-2. This
-HOS adds document upload as a background job instead of blocking the
-request, plus a status endpoint to poll it.
+This is your HOS 3 result, carried forward unchanged — chat (with RAG
++ guardrails) and async document ingestion via a background job. Build
+the mobile client, device registration, push notifications, and
+tracing on top of this in HOS 4's Create/Scaffold stage.
 
 Remember: run the worker in a SEPARATE terminal — python worker.py
 """
@@ -19,7 +20,7 @@ from queue_setup import queue, redis_conn
 
 load_dotenv()
 
-app = FastAPI(title="AI 410 — HOS 3")
+app = FastAPI(title="AI 410 — HOS 4")
 
 
 class ChatRequest(BaseModel):

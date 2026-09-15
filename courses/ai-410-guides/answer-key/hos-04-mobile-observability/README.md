@@ -40,4 +40,6 @@ npm install
 npx expo start
 ```
 
-Verified this session: `/health`, RAG-grounded chat, tool calling, `/register-device`, and a full async-ingestion-with-push job — all live, with Langfuse keys unset (confirmed it disables gracefully rather than crashing). `score_faithfulness()` unit-tested against a grounded answer (0.75), a deliberately invented one (0.077), and a plain "I don't know" (1.0 — nothing to check).
+Push notifications need one extra one-time step: run `npx eas init` inside `mobile/` (free Expo account, no credit card — see the [Account & Service Setup Guide](../../account-setup-guide.html#expo)). `getExpoPushTokenAsync()` requires an EAS project ID as of SDK 49+; without it, `App.js` now logs a warning and returns instead of crashing — chat still works fine either way.
+
+Verified this session: `/health`, RAG-grounded chat, tool calling, `/register-device`, and a full async-ingestion-with-push job — all live, with Langfuse keys unset (confirmed it disables gracefully rather than crashing). `score_faithfulness()` unit-tested against a grounded answer (0.75), a deliberately invented one (0.077), and a plain "I don't know" (1.0 — nothing to check). `mobile/App.js` was code-reviewed (not run live against a real device this session) — the missing-projectId fix is based on Expo's documented SDK 49+ requirement, not a live repro.

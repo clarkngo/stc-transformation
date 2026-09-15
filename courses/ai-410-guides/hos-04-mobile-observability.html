@@ -61,6 +61,7 @@
             <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-04-mobile-observability" target="_blank" rel="noopener">this HOS's starter-code folder</a> — your HOS 3 app, already working.</li>
             <li>A free <a href="https://cloud.langfuse.com" target="_blank" rel="noopener">Langfuse</a> project (no credit card)</li>
             <li>The <strong>Expo Go</strong> app on your phone, or an emulator — no Xcode/Android Studio required</li>
+            <li>A free <a href="https://expo.dev/signup" target="_blank" rel="noopener">Expo account</a> — needed for push notifications specifically (not for chat); see the Common Snags note below</li>
             <li>An AI coding assistant available in your environment</li>
         </ul>
 
@@ -126,6 +127,7 @@
         <div class="snag-box">
             <h4>Common snags</h4>
             <ul>
+                <li><strong>App crashes (or a red error screen) the moment it asks for a push token</strong> — <code>getExpoPushTokenAsync()</code> requires an EAS project ID as of SDK 49+, and a fresh project doesn't have one yet. Run <code>npx eas init</code> once inside <code>mobile/</code> (free — sign in with the Expo account above; no credit card) and it writes the ID into <code>app.json</code> for you. Chat works fine without this; only push notifications need it.</li>
                 <li><strong>Push notification API call succeeds but nothing arrives on your phone</strong> — Expo's push service returns <code>200 OK</code> even for a stale or invalid token, with the actual error inside the response body. Checking only the HTTP status isn't enough to confirm delivery.</li>
                 <li><strong>No Langfuse keys set yet, app still works</strong> — that's expected, not a bug. The SDK disables tracing and logs a line about it instead of crashing. You just won't see anything in the dashboard until keys are configured.</li>
                 <li><strong>Physical device can't reach a Codespaces-hosted backend</strong> — make the API port public in the Ports tab, use that forwarded URL as your mobile app's API base, and start Expo with <code>--tunnel</code> instead of the default LAN mode.</li>

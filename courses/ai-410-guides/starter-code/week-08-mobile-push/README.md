@@ -50,3 +50,5 @@ npx expo start
 Edit `mobile/src/api.js` — set `API_BASE` to your laptop's LAN IP, not `localhost` (your phone can't resolve your laptop's `localhost`). Scan the QR code with the **Expo Go** app.
 
 Either way: push notifications only work on a **real physical device**, not a simulator/emulator.
+
+**One more one-time step:** getting a push token requires an EAS project ID (Expo SDK 49+). Run `npx eas init` inside `mobile/` (free Expo account, no credit card — see the [Account & Service Setup Guide](../../account-setup-guide.html#expo)); it writes `extra.eas.projectId` into `app.json` for you. Without it, the app logs a warning and skips push registration instead of crashing — chat still works fine either way, and the guide's Common Snags section covers this too.

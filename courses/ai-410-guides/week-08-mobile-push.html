@@ -62,6 +62,7 @@
         <ul class="needs-list">
             <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/week-08-mobile-push" target="_blank" rel="noopener">this week's starter-code folder</a> — includes the Expo mobile shell and the backend's device-registration endpoint</li>
             <li>The <a href="https://expo.dev/go" target="_blank" rel="noopener">Expo Go</a> app installed on your personal phone</li>
+            <li>A free <a href="https://expo.dev/signup" target="_blank" rel="noopener">Expo account</a> — needed for push notifications specifically (not for chat); see the Common Snags note below</li>
             <li>Node.js — already included if you use a Codespace (see below); install it yourself if running locally</li>
         </ul>
 
@@ -166,6 +167,7 @@ const { data: pushToken } = await Notifications.getExpoPushTokenAsync();</pre>
         <div class="snag-box">
             <h4>Common snags</h4>
             <ul>
+                <li><strong>App crashes (or a red error screen) the moment it asks for a push token</strong> — <code>getExpoPushTokenAsync()</code> requires an EAS project ID as of SDK 49+, and a fresh project doesn't have one yet. Run <code>npx eas init</code> once inside <code>mobile/</code> (free — sign in with the Expo account above; no credit card) and it writes the ID into <code>app.json</code> for you. Chat works fine without this; only push notifications need it.</li>
                 <li><strong>Push notifications don't fire in a simulator/emulator</strong> — this has to be a real physical device for the free Expo Go flow.</li>
                 <li><strong>Phone can't reach your laptop's backend</strong> — make sure both are on the same Wi-Fi network, or use Expo's tunnel mode if they're not.</li>
                 <li><strong>Permission denied</strong> — if you accidentally declined the notification prompt, you'll need to re-enable it in your phone's system settings for Expo Go.</li>

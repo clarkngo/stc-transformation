@@ -53,7 +53,24 @@ export default function App() {
       return;
     }
 
-    const { data: pushToken } = await Notifications.getExpoPushTokenAsync();
+    // getExpoPushTokenAsync() needs an EAS project ID (SDK 49+) — run
+    // `npx eas init` once in mobile/ (free, just needs an Expo account;
+    // it writes extra.eas.projectId into app.json for you). Without one,
+    // this fails on purpose here instead of crashing the whole app —
+    // chat still works fine, you just won't get a push token yet.
+    const projectId = Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
+    if (!projectId) {
+      console.warn("No EAS project ID found — run `npx eas init` in mobile/ to enable push notifications.");
+      return;
+    }
+
+    let pushToken;
+    try {
+      pushToken = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
+    } catch (err) {
+      console.warn("Could not get a push token:", err.message);
+      return;
+    }
     console.log("Expo push token:", pushToken);
 
     // TODO(week8): send this token to your backend so it can push to

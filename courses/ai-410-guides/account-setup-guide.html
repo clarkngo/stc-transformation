@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Account &amp; Service Setup Guide</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .intro-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
+        .intro-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+
+        table.map-table { width:100%; border-collapse:collapse; margin:14px 0 6px; font-size:0.85rem; }
+        table.map-table th, table.map-table td { border:1px solid #e2e8f0; padding:9px 12px; text-align:left; vertical-align:top; }
+        table.map-table th { background:#f8fafc; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        table.map-table td.svc-name { font-weight:700; color:#1e8449; white-space:nowrap; }
+        table.map-table a.jump { font-weight:600; text-decoration:none; color:#1d4ed8; }
+        table.map-table a.jump:hover { text-decoration:underline; }
+
+        .service { border:1px solid #e2e8f0; border-radius:10px; padding:22px 24px 26px; margin:26px 0; scroll-margin-top:16px; }
+        .service-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-bottom:6px; }
+        .service-head h2 { margin:0; border-bottom:none; padding-bottom:0; }
+        .service-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+        .svc-pill { font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; }
+        .svc-pill.when { background:#ede9fe; color:#6d28d9; }
+        .svc-pill.cost { background:#dcfce7; color:#15803d; }
+        .why-line { font-size:0.92rem; color:#334155; margin:0 0 18px; }
+        .why-line strong { color:#0f172a; }
+
+        ol.steps { padding-left:1.3em; }
+        ol.steps > li { margin-bottom:14px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code, dd code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .explain { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.9rem; border-radius:0 4px 4px 0; }
+        .explain strong { color:#334155; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:18px 0 0; border-radius:4px; font-size:0.88rem; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; font-size:0.9rem; }
+        .done-box { background:#ecfdf5; border-left:5px solid #10b981; padding:13px 18px; margin:16px 0 0; border-radius:4px; font-size:0.88rem; }
+        .done-box h4 { margin:0 0 6px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .done-box ul { margin:0; padding-left:20px; }
+
+        /* Anatomy diagram for the Redis connection string */
+        .anatomy-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:20px 16px 16px; margin:18px 0; overflow-x:auto; }
+        .anatomy-string { font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace; font-size:0.95rem; white-space:nowrap; text-align:center; margin-bottom:4px; }
+        .anatomy-part { padding:2px 4px; border-radius:3px; }
+        .part-scheme { background:#ede9fe; color:#6d28d9; }
+        .part-user { background:#e0f2fe; color:#0369a1; }
+        .part-pass { background:#fee2e2; color:#b91c1c; }
+        .part-host { background:#dcfce7; color:#15803d; }
+        .part-port { background:#fef3c7; color:#b45309; }
+        .anatomy-legend { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin-top:14px; font-size:0.8rem; }
+        .anatomy-legend span.swatch { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; vertical-align:middle; }
+
+        .glossary-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px 16px; margin:14px 0; font-size:0.85rem; }
+        .glossary-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; }
+        .glossary-box dl { margin:0; }
+        .glossary-box dt { font-weight:700; color:#334155; display:inline; }
+        .glossary-box dd { display:inline; margin:0 0 0 4px; color:#475569; }
+        .glossary-box dd::after { content:""; display:block; margin-bottom:4px; }
+
+        .env-example { background:#0f172a; color:#e2e8f0; padding:16px 18px; border-radius:8px; font-size:0.82rem; line-height:1.7; margin:14px 0; }
+        .env-example .comment { color:#64748b; }
+        .env-example .key { color:#93c5fd; }
+
+        .back-to-top { display:inline-block; margin-top:30px; font-size:0.85rem; color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1 id="top">AI 410 — Account &amp; Service Setup Guide</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Do this once, before you need it</span>
+            <span class="meta-pill">Every service has a free tier — no credit card required anywhere</span>
+            <span class="meta-pill">4 services</span>
+        </div>
+
+        <div class="intro-box">
+            <h4>What this page is</h4>
+            <p>Every external account this course ever asks you to create, in one place, with exactly what to click and — for Redis specifically — what that intimidating connection string actually means. You don't need all four on day one: GitHub and Google are needed immediately (HOS 1 / Week 1), Redis isn't needed until HOS 3 / Week 7, and Langfuse isn't needed until HOS 4 / Week 9. Each section below says when, so you can set things up as you go instead of all at once.</p>
+        </div>
+
+        <h2>Find your service</h2>
+        <table class="map-table">
+            <tr><th>Service</th><th>What it's for</th><th>First needed</th><th>Jump</th></tr>
+            <tr>
+                <td class="svc-name">GitHub</td>
+                <td>Hosting your code, Codespaces (recommended dev environment)</td>
+                <td>HOS 1 / Week 1</td>
+                <td><a class="jump" href="#github">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="svc-name">Google AI Studio</td>
+                <td>Your Gemini API key — every LLM call all term runs through this</td>
+                <td>HOS 1 / Week 1</td>
+                <td><a class="jump" href="#google">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="svc-name">Upstash (Redis)</td>
+                <td>The job queue behind background/async document processing</td>
+                <td>HOS 3 / Week 7</td>
+                <td><a class="jump" href="#redis">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="svc-name">Langfuse</td>
+                <td>Tracing/observability for your pipeline</td>
+                <td>HOS 4 / Week 9</td>
+                <td><a class="jump" href="#langfuse">Read →</a></td>
+            </tr>
+        </table>
+
+        <!-- ══════════════════ GITHUB ══════════════════ -->
+        <div class="service" id="github">
+            <div class="service-head"><h2>GitHub</h2></div>
+            <div class="service-pills">
+                <span class="svc-pill when">First needed: HOS 1 / Week 1</span>
+                <span class="svc-pill cost">Free — no credit card</span>
+            </div>
+            <p class="why-line"><strong>What it's for:</strong> hosting your own copy of each week's starter code, and — the recommended path all term — <strong>GitHub Codespaces</strong>, a ready-made cloud dev environment that sidesteps the most common setup bug in this course (an old package on your own machine silently shadowing the project's real one).</p>
+
+            <ol class="steps">
+                <li>Go to <a href="https://github.com" target="_blank" rel="noopener">github.com</a> and click <strong>Sign up</strong> (top right).</li>
+                <li>Enter an email, create a password, and pick a username. Use something professional — this account is worth keeping and using beyond this course, for internships and job applications.</li>
+                <li>Verify your email when GitHub sends the confirmation.</li>
+                <li>That's it for a free account — no payment information is requested or required.</li>
+            </ol>
+
+            <div class="explain"><strong>Already have a GitHub account</strong> from a bootcamp, another course, or personal projects? Use that one — don't create a second account. One consistent GitHub profile is more useful to you later than several scattered ones.</div>
+
+            <div class="done-box">
+                <h4>You'll know it worked when…</h4>
+                <ul><li>You can sign in at github.com, and can see the option <strong>Code → Codespaces → Create codespace on main</strong> on any repository (including your own copy of a starter-code folder).</li></ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════ GOOGLE / GEMINI ══════════════════ -->
+        <div class="service" id="google">
+            <div class="service-head"><h2>Google AI Studio — Gemini API Key</h2></div>
+            <div class="service-pills">
+                <span class="svc-pill when">First needed: HOS 1 / Week 1</span>
+                <span class="svc-pill cost">Free — no credit card</span>
+            </div>
+            <p class="why-line"><strong>What it's for:</strong> the API key that lets your backend talk to Gemini. You get this once, in Week 1, and reuse the exact same key for every remaining week — chat, embeddings, everything.</p>
+
+            <ol class="steps">
+                <li>Go to <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with any Google account (a personal Gmail account is fine — you don't need a special one).</li>
+                <li>Click <strong>Create API key</strong>.</li>
+                <li>Copy the long string it gives you — it starts with something like <code>AIza...</code>.</li>
+                <li>Paste it into your project's <code>.env</code> file:
+<pre>GEMINI_API_KEY=AIzaSyD-your-real-key-goes-right-here</pre>
+                </li>
+            </ol>
+
+            <div class="explain"><strong>Treat this like a password.</strong> Anyone who has your key can make Gemini requests billed to your account. Never paste it into a file you commit to Git, a chat message, or a screenshot — that's exactly why it lives in <code>.env</code> and not in your code.</div>
+
+            <div class="done-box">
+                <h4>You'll know it worked when…</h4>
+                <ul><li>You have a copied key starting with <code>AIza</code> saved in your own notes somewhere safe, and pasted into <code>.env</code> as <code>GEMINI_API_KEY</code> (not <code>.env.example</code> — that file is just a template).</li></ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════ REDIS / UPSTASH ══════════════════ -->
+        <div class="service" id="redis">
+            <div class="service-head"><h2>Upstash — Redis Database</h2></div>
+            <div class="service-pills">
+                <span class="svc-pill when">First needed: HOS 3 / Week 7</span>
+                <span class="svc-pill cost">Free — no credit card</span>
+            </div>
+            <p class="why-line"><strong>What it's for:</strong> Redis is the fast, simple database your background job queue runs on — one process (your API) adds "please ingest this document" tasks to it, and a separate worker process pulls them off. Upstash gives you a managed, free Redis instance with no server to install yourself.</p>
+
+            <ol class="steps">
+                <li>Go to <a href="https://upstash.com" target="_blank" rel="noopener">upstash.com</a> and sign up — GitHub or Google sign-in both work, so you likely don't need a new password.</li>
+                <li>Click <strong>Create database</strong>.</li>
+                <li>Choose the <strong>Redis</strong> type, give it any name (e.g. <code>ai410-queue</code>), and pick a region close to you. Leave other settings at their defaults.</li>
+                <li>Once it's created, open the database's page and find the <strong>connection string / URL</strong> field — not just the hostname. Click to copy the <em>whole</em> string.</li>
+                <li>Paste it into <code>backend/.env</code> as <code>REDIS_URL</code>, alongside your existing <code>GEMINI_API_KEY</code>.</li>
+            </ol>
+
+            <h3 style="font-size:1rem;color:#334155;margin-top:22px">What that connection string actually means</h3>
+            <p style="font-size:0.9rem;color:#475569">It looks intimidating, but it's five plain pieces glued together in one line — the same shape as any URL, just with a login baked in:</p>
+
+            <div class="anatomy-box">
+                <div class="anatomy-string">
+<span class="anatomy-part part-scheme">rediss://</span><span class="anatomy-part part-user">default</span>:<span class="anatomy-part part-pass">AbCdEf123...</span>@<span class="anatomy-part part-host">your-instance-name.upstash.io</span>:<span class="anatomy-part part-port">6379</span>
+                </div>
+                <div class="anatomy-legend">
+                    <span><span class="swatch" style="background:#ede9fe"></span>Scheme</span>
+                    <span><span class="swatch" style="background:#e0f2fe"></span>Username</span>
+                    <span><span class="swatch" style="background:#fee2e2"></span>Password</span>
+                    <span><span class="swatch" style="background:#dcfce7"></span>Host</span>
+                    <span><span class="swatch" style="background:#fef3c7"></span>Port</span>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Piece by piece</h5>
+                <dl>
+                    <dt>rediss://</dt><dd>the protocol — this is TCP under the hood (Redis's own wire protocol, not HTTP), and the extra <code>s</code> means the connection is TLS-encrypted. Upstash requires this — don't swap it for plain <code>redis://</code>.</dd>
+                    <dt>default</dt><dd>the username. Upstash's free tier always uses the literal username <code>default</code> — you didn't choose it and don't need to change it.</dd>
+                    <dt>AbCdEf123...</dt><dd>the password, auto-generated by Upstash specifically for this database.</dd>
+                    <dt>your-instance-name.upstash.io</dt><dd>the host — the actual address of your Redis database on the internet.</dd>
+                    <dt>6379</dt><dd>the port — Redis's standard port, on every provider, essentially always this number.</dd>
+                </dl>
+            </div>
+
+            <div class="explain"><strong>Why copy the whole string instead of the pieces separately?</strong> The library this course uses (<code>Redis.from_url(...)</code>) reads all five pieces out of one string at once. Copying just the hostname, or just the password, means your code has no way to authenticate or find the right port — you need the entire <code>rediss://...</code> line, exactly as Upstash shows it, pasted as one value.</div>
+
+            <div class="snag-box">
+                <h4>Common snags</h4>
+                <ul>
+                    <li><strong>Copied only the hostname</strong> — if <code>REDIS_URL</code> in your <code>.env</code> doesn't start with <code>rediss://</code>, you copied the wrong field. Go back to the Upstash dashboard and look for a field explicitly labeled "connection string" or "URL," not "endpoint" or "host" alone.</li>
+                    <li><strong>Used <code>redis://</code> instead of <code>rediss://</code></strong> — Upstash's free tier requires the TLS-secured version. If Upstash's dashboard shows you both, always use the one with the extra <code>s</code>.</li>
+                    <li><strong>Pasted it with surrounding quotes</strong> — a <code>.env</code> value shouldn't have quote marks around it: <code>REDIS_URL=rediss://...</code>, not <code>REDIS_URL="rediss://..."</code>.</li>
+                </ul>
+            </div>
+
+            <div class="done-box">
+                <h4>You'll know it worked when…</h4>
+                <ul><li>Your <code>.env</code> has one line starting <code>REDIS_URL=rediss://default:...@...upstash.io:6379</code>, and Week 7 / HOS 3's <code>queue_setup.py</code> can connect without a connection error.</li></ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════ LANGFUSE ══════════════════ -->
+        <div class="service" id="langfuse">
+            <div class="service-head"><h2>Langfuse</h2></div>
+            <div class="service-pills">
+                <span class="svc-pill when">First needed: HOS 4 / Week 9</span>
+                <span class="svc-pill cost">Free — no credit card</span>
+            </div>
+            <p class="why-line"><strong>What it's for:</strong> observability — recording what actually happened on every real request (timing, inputs, outputs, cost) so you can look at data instead of guessing when something's slow or wrong. You won't need this until the observability week/HOS, but it's included here so this page covers every account the course asks for.</p>
+
+            <ol class="steps">
+                <li>Go to <a href="https://cloud.langfuse.com" target="_blank" rel="noopener">cloud.langfuse.com</a> and sign up.</li>
+                <li>Create a new project (any name — e.g. <code>ai410</code>).</li>
+                <li>Go to <strong>Settings → API Keys</strong> and create a new key pair. You'll get a <strong>Public Key</strong> (starts with <code>pk-lf-...</code>) and a <strong>Secret Key</strong> (starts with <code>sk-lf-...</code>).</li>
+                <li>Add all three to <code>backend/.env</code>:
+<pre>LANGFUSE_PUBLIC_KEY=pk-lf-...
+LANGFUSE_SECRET_KEY=sk-lf-...
+LANGFUSE_HOST=https://cloud.langfuse.com</pre>
+                </li>
+            </ol>
+
+            <div class="explain"><strong>Two keys, not one.</strong> Unlike the Gemini key, Langfuse gives you a pair — a public key and a secret key — both required together. If either is missing, tracing calls will fail silently or error at startup depending on the SDK version, so double-check both made it into <code>.env</code>.</div>
+
+            <div class="done-box">
+                <h4>You'll know it worked when…</h4>
+                <ul><li>Your Langfuse project's <strong>Traces</strong> tab shows real entries after you send a few chat messages through your Week 9 / HOS 4 app.</li></ul>
+            </div>
+        </div>
+
+        <h2>Putting it all together</h2>
+        <p style="font-size:0.9rem;color:#475569">By the end of the term, your <code>backend/.env</code> holds all four — but you add them one at a time, as each week/HOS needs them, not all on day one:</p>
+        <div class="env-example">
+<span class="comment"># HOS 1 / Week 1</span><br>
+<span class="key">GEMINI_API_KEY</span>=AIzaSyD-your-real-key-goes-right-here<br>
+<br>
+<span class="comment"># HOS 3 / Week 7</span><br>
+<span class="key">REDIS_URL</span>=rediss://default:AbCdEf123...@your-instance-name.upstash.io:6379<br>
+<br>
+<span class="comment"># HOS 4 / Week 9</span><br>
+<span class="key">LANGFUSE_PUBLIC_KEY</span>=pk-lf-...<br>
+<span class="key">LANGFUSE_SECRET_KEY</span>=sk-lf-...<br>
+<span class="key">LANGFUSE_HOST</span>=https://cloud.langfuse.com
+        </div>
+        <p style="font-size:0.85rem;color:#6b7280">This file is already excluded from Git by this project's <code>.gitignore</code> — it stays on your machine (or your Codespace) only, never committed.</p>
+
+        <a class="back-to-top" href="#top">↑ Back to top / find your service</a>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

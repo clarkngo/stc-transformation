@@ -91,7 +91,15 @@
             <p>Test it on purpose. At minimum, try:</p>
             <ul>
                 <li>A message likely to produce a malformed tool call (e.g. "calculate the square root of a banana") — does the guardrail catch it and retry, or does the request crash?</li>
-                <li>Upload a document, then immediately send a normal chat message — does the chat reply promptly, proving ingestion is genuinely running in the background?</li>
+                <li>Upload a document via <code>POST /documents</code>, confirm you get a <code>job_id</code> back instantly, then poll <code>GET /jobs/{id}</code> until it's <code>"finished"</code> — while sending normal chat messages the whole time to prove the app stayed responsive:
+<pre>curl -X POST http://127.0.0.1:8000/documents \
+  -H "Content-Type: application/json" \
+  -d '{"doc_path": "sample_docs/return-policy.md"}'
+# → should return {"job_id": "..."} immediately, not after ingestion finishes
+
+curl http://127.0.0.1:8000/jobs/YOUR-JOB-ID-HERE
+# → run this a few times; you should see "queued", then "started", then "finished"</pre>
+                While that job is still processing, send a message through the chat UI at the same time — if it replies normally instead of hanging, that's your proof the two are running independently, not that ingestion is just fast.</li>
                 <li>Stop the worker process and upload a document — does <code>/jobs/{id}</code> correctly report <code>"queued"</code> forever, rather than erroring or hanging?</li>
             </ul>
             <div class="submit-box">

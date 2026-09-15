@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — Tooling, Curriculum &amp; Staffing, September 1 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .chip { font-size: 0.78rem; font-weight: 600; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; color: var(--slate); }
+
+    .action-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .action-table th { text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); padding: 0 12px 10px; border-bottom: 2px solid var(--border); }
+    .action-table td { padding: 14px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .action-table tr:last-child td { border-bottom: none; }
+    .action-table td.item { font-weight: 700; color: var(--blue); }
+    @media (max-width: 640px) {
+      .action-table, .action-table thead, .action-table tbody, .action-table tr, .action-table td, .action-table th { display: block; }
+      .action-table thead { display: none; }
+      .action-table tr { border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 8px 4px; }
+      .action-table td { border-bottom: none; padding: 6px 12px; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="teaching-framework-hub.html">Teaching Framework Hub</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — Tooling, Curriculum &amp; Staffing, Sep 1 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes — Internal Working Session</div>
+    <h1>Tooling, Curriculum &amp; Staffing — September 1, 2026</h1>
+    <p class="subtitle">Four threads from one working session: settling the developer-tooling question in favor of Claude, structuring AI 410/420 around hands-on lab guides piloted on CityU-X, a proposed AI-assisted rework of IS 201 to bring down high DFW rates, and the budget case for a dedicated Program Manager role to protect CityU-X momentum.</p>
+    <div class="meta-row">
+      <span class="meta-chip">September 1, 2026</span>
+      <span class="meta-chip">Internal working session</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#tooling">Tooling Evaluation &amp; Strategy</a></li>
+      <li><a href="#curriculum">Curriculum Design &amp; CityU-X Integration</a></li>
+      <li><a href="#is201">Addressing Student Retention in IS 201</a></li>
+      <li><a href="#budget">Department Budget, Staffing &amp; PM Position</a></li>
+      <li><a href="#actions">Action Items</a></li>
+    </ol>
+  </div>
+
+  <!-- Tooling -->
+  <div class="section" id="tooling">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🛠️</div>
+      <div>
+        <h2>1. Tooling Evaluation &amp; Strategy</h2>
+        <div class="section-sub">Claude as primary; Cursor subscription winds down end of month</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Claude vs. Cursor</span>
+        <div class="point-body">
+          Claude is now the primary thinking/building partner — handles context well across long working sessions. <strong>Cursor</strong> stays on as a backup tool, not the default. This continues the comparison started in the <a href="ai-dev-tooling-comparison.html">AI Dev Tooling Comparison</a> writeup.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Config format</span>
+        <div class="point-body">
+          Noted that Claude reads project instructions from <strong>CLAUDE.md</strong>, not the <strong>AGENTS.md</strong> format some other platforms have standardized on — worth keeping in mind when writing docs meant to work across tools.
+        </div>
+      </div>
+      <div class="callout callout-amber mt16">
+        <strong>Decision:</strong> wind down the Cursor subscription at the end of the month and rely on Claude day to day, while still checking for academic licensing or discount programs before fully closing the door on it.
+      </div>
+    </div>
+  </div>
+
+  <!-- Curriculum -->
+  <div class="section" id="curriculum">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📚</div>
+      <div>
+        <h2>2. Curriculum Design &amp; CityU-X Integration</h2>
+        <div class="section-sub">AI 410 / AI 420, hands-on lab guides, and CityU-X as a staging sandbox</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-teal">Courses in scope</span>
+        <div class="point-body">
+          Reviewed course development for the BSAI/CS track: <strong>AI 410 (AI Engineering)</strong> and <strong>AI 420 (Agentic AI)</strong>.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">HOS format</span>
+        <div class="point-body">
+          Course modules are structured around progressive <strong>Hands-On Sessions (HOS)</strong> — architecture diagrams, clear step-by-step tasks, and verifiable code diffs, favored over passive lecturing.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">CityU-X as sandbox</span>
+        <div class="point-body">
+          CityU-X doubles as a rapid sandbox/staging platform — course materials get piloted and tested asynchronously there before moving to production. Ties back to the platform work in the <a href="cityux-hub.html">CityUX hub</a>.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Agentic-workflow concepts</span>
+        <div class="point-body">
+          Curriculum for teaching agentic workflows draws on <strong>ADK</strong>, <strong>MCP</strong>, <strong>A2A</strong>, <strong>Kubeflow pipelines</strong>, and API endpoints — referencing industry architectures and recent consultation insights (including discussions with HK).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IS 201 -->
+  <div class="section" id="is201">
+    <div class="section-header">
+      <div class="section-icon icon-red">📉</div>
+      <div>
+        <h2>3. Addressing Student Retention in IS 201</h2>
+        <div class="section-sub">30–40% DFW rate driving a shift away from heavy-syntax teaching</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-amber">
+        <strong>Root-cause review:</strong> introductory programming (IS 201) currently runs a <strong>30–40% Drop/Fail/Withdraw rate</strong>. The group traced this back to a teaching methodology that leads with heavy syntax before students see why any of it matters.
+      </div>
+      <div class="point mt16">
+        <span class="point-label lbl-blue">Proposed shift</span>
+        <div class="point-body">
+          Move to an <strong>AI-assisted, practical approach</strong>: students use tools like Claude/Gemini to build domain-relevant applications — e.g. business-track students building for their own domain rather than tech-track exercises — while learning to <strong>read code diffs and commit histories</strong> instead of writing every line from a blank file.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Budget -->
+  <div class="section" id="budget">
+    <div class="section-header">
+      <div class="section-icon icon-amber">💰</div>
+      <div>
+        <h2>4. Department Budget, Staffing &amp; PM Position</h2>
+        <div class="section-sub">Protecting CityU-X momentum inside a constrained budget</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">Constraints</span>
+        <div class="point-body">
+          Institutional budget is tight, tied to ongoing restructuring and external consulting costs.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Reallocation plan</span>
+        <div class="point-body">
+          To protect AI/CityU-X project momentum: reduce general student-worker headcount and redirect the freed budget toward the initiative.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">PM position</span>
+        <div class="point-body">
+          Pursuing approval for a dedicated <strong>Program Manager role</strong>, targeting <strong>0.5 FTE</strong> funded via PD/STC resources, to give CityU-X initiatives sustained staffing support.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="section" id="actions">
+    <div class="section-header">
+      <div class="section-icon icon-green">✅</div>
+      <div>
+        <h2>5. Action Items</h2>
+        <div class="section-sub">Owners implied by topic; no explicit assignments in the source notes</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table class="action-table">
+        <thead>
+          <tr>
+            <th>Action Item</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="item">Investigate Gemini Enterprise &amp; Google agent ecosystem</td>
+            <td>Research Google's enterprise agent platform and developer offerings, look into academic partnership programs or discounts, and complete the relevant Google Generative AI / Cloud introductory badge courses.</td>
+          </tr>
+          <tr>
+            <td class="item">Develop the IS 201 AI-assisted revamp proposal</td>
+            <td>Prepare a demonstration/sample module showing how IS 201 can be delivered via Claude and structured HOS labs, focused on practical application, diff reading, and problem-solving to reduce DFW rates.</td>
+          </tr>
+          <tr>
+            <td class="item">Advance AI 410 / AI 420 lab modules on CityU-X</td>
+            <td>Continue drafting and testing the 10-week HOS framework for AI 410 using the Gemini API / Python starter projects; validate local dev environments vs. GitHub Codespaces to find the smoothest student setup.</td>
+          </tr>
+          <tr>
+            <td class="item">Coordinate departmental approvals &amp; roles</td>
+            <td>Follow up on course permissions and repository/content access for IS 201 and related undergrad courses; formalize the PM position proposal with leadership.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Tooling precedent</span>
+        <div class="point-body"><a href="ai-dev-tooling-comparison.html">AI Dev Tooling Comparison</a> — the earlier Claude Desktop vs. VS Code + Claude vs. Cursor writeup this decision builds on</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">CityU-X platform</span>
+        <div class="point-body"><a href="cityux-hub.html">CityUX Initiative Hub</a> — the platform this session proposes using as a curriculum staging sandbox</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Course catalog</span>
+        <div class="point-body"><a href="courses/ai-410-guides/index.html">AI 410 — Hands-On Guides</a> — the 10-week HOS framework referenced above</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">CS-education context</span>
+        <div class="point-body"><a href="github-education-summit-2026.html">GitHub Education Summit 2026 — Learnings</a> — broader context on how CS education is adapting to generative AI, relevant to the IS 201 discussion</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

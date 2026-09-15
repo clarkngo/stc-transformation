@@ -33,6 +33,18 @@
         .tag.tech { background:#fee2e2; color:#b91c1c; }
         .tag.beginner { background:#dcfce7; color:#15803d; }
         .takeaway-list li { margin-bottom:6px; }
+        .plain-terms-box { background:#f0fdf4; border-left:5px solid #22c55e; padding:14px 18px; margin:16px 0 24px; border-radius:0 4px 4px 0; font-size:0.92rem; }
+        .plain-terms-box strong { color:#15803d; }
+        .glossary-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px 16px; margin:12px 0; font-size:0.85rem; }
+        .glossary-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; }
+        .glossary-box dl { margin:0; }
+        .glossary-box dt { font-weight:700; color:#334155; display:inline; }
+        .glossary-box dd { display:inline; margin:0 0 0 4px; color:#475569; }
+        .glossary-box dd::after { content:""; display:block; margin-bottom:4px; }
+        .check-box { background:#eef2ff; border-left:5px solid #6366f1; padding:12px 16px; margin:12px 0 0; border-radius:0 4px 4px 0; font-size:0.85rem; }
+        .check-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#4338ca; }
+        .check-box ul { margin:0; padding-left:18px; }
+        .check-box li { margin-bottom:4px; }
     </style>
 </head>
 <body class="course-page">
@@ -53,6 +65,8 @@
         </div>
 
         <p><a href="AI-410-syllabus.html">View the full syllabus →</a> — credits, prerequisites, outcomes, grading breakdown, and the course schedule in one page.</p>
+
+        <div class="plain-terms-box"><strong>In plain terms:</strong> you'll spend the term building one chat app that gets smarter step by step — first making it talk to an AI model, then teaching it to use tools, search your own documents, handle background work, notify your phone, and finally explaining what it's actually doing under the hood. No prior backend experience assumed.</div>
 
         <p><strong>Course Description:</strong> AI Engineering applies rigorous software engineering principles to the development and deployment of autonomous, learning-based systems. This course emphasizes leveraging Large Language Models (LLMs) within purpose-built software solutions to address real-world business challenges. Students will explore system architecture for agent development and integration, context engineering through Retrieval-Augmented Generation (RAG) and vector databases, and best practices for deploying and monitoring AI models in production environments. The curriculum also covers probabilistic logic for handling nondeterministic outputs. Learners gain hands-on experience building a full-stack AI solution, focusing on asynchronous data processing, push-based AI notifications, and seamless integration of vector stores for dynamic RAG applications. Mastery of these concepts will equip students to design and implement robust AI-powered applications using full-stack AI.</p>
 
@@ -111,6 +125,14 @@
             <div class="example-box"><p><strong>App milestone:</strong> Replace the stub LLM call in the starter repo with your own — the app answers its first real question. This becomes the base every later week builds on.</p></div>
             <span class="outcome-tag">Outcome 1</span>
             <a class="guide-link" href="ai-410-guides/week-01-foundations.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Frontend &amp; backend —</dt><dd>the two halves of the app: what the user sees and clicks (frontend) versus the server holding your API key and doing the real work (backend).</dd>
+                <dt>LLM —</dt><dd>the AI model itself (here, Google's Gemini) that generates the reply.</dd>
+            </dl></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>What's the difference between the frontend and the backend, and why does the API key live only in the backend?</li>
+                <li>Walk through what happens, step by step, from typing a message to seeing a reply.</li>
+            </ul></div>
         </div>
 
         <div class="week-block">
@@ -120,6 +142,14 @@
             <div class="example-box"><p><strong>App milestone:</strong> Add a real tool (e.g. a calculator or lookup call) to the loop, so the agent can choose to use it mid-conversation.</p></div>
             <span class="outcome-tag">Outcome 1</span>
             <a class="guide-link" href="ai-410-guides/week-02-agentic-loop.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Agentic loop —</dt><dd>the cycle where the model decides to use a tool, the tool runs, and the result goes back to the model before it answers.</dd>
+                <dt>Tool / function calling —</dt><dd>letting the model trigger a real function (like a calculator) instead of only generating text.</dd>
+            </dl></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>Why does the agent need to call a tool at all, instead of just answering directly?</li>
+                <li>What would go wrong if the tool's result never made it back to the model?</li>
+            </ul></div>
         </div>
 
         <div class="week-block">
@@ -129,6 +159,14 @@
             <div class="example-box"><p><strong>App milestone:</strong> Write an ingestion script that chunks and embeds the sample documents, and inspect similarity scores directly — not yet connected to the running app.</p></div>
             <span class="outcome-tag">Outcome 1</span>
             <a class="guide-link" href="ai-410-guides/week-03-embeddings-chunking.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Embedding —</dt><dd>a list of numbers representing the meaning of a piece of text, so similar meanings end up as similar numbers.</dd>
+                <dt>Chunking —</dt><dd>splitting a long document into smaller pieces before embedding it.</dd>
+            </dl></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>Why chunk a document before embedding it, instead of embedding the whole thing at once?</li>
+                <li>If two sentences mean almost the same thing, what would you expect their embeddings to look like?</li>
+            </ul></div>
         </div>
 
         <div class="week-block">
@@ -138,6 +176,14 @@
             <div class="example-box"><p><strong>App milestone:</strong> Wire retrieval into the Week 2 agent. The app now answers questions grounded in the documents embedded last week — RAG is live.</p></div>
             <span class="outcome-tag">Outcome 2</span>
             <a class="guide-link" href="ai-410-guides/week-04-vector-db-rag.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Vector database —</dt><dd>a database built to store embeddings and quickly find the closest matches to a query.</dd>
+                <dt>RAG (Retrieval-Augmented Generation) —</dt><dd>having the model answer using retrieved chunks of real text instead of only its own memory.</dd>
+            </dl></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>Where do the retrieved chunks go before the model generates its answer?</li>
+                <li>What's one way you could prove RAG is actually improving the answer, not just adding overhead?</li>
+            </ul></div>
         </div>
 
         <div class="week-block checkpoint">
@@ -147,6 +193,10 @@
             <div class="example-box"><p><strong>Deliverable:</strong> a short written/diagrammed Architecture &amp; Bottleneck Review, reviewed live with the instructor.</p></div>
             <span class="outcome-tag">Outcome 3</span>
             <a class="guide-link" href="ai-410-guides/week-05-checkpoint-architecture-review.html">Open hands-on guide →</a>
+            <div class="check-box"><h5>Review prompt — no new vocabulary this week</h5><ul>
+                <li>Can you draw, from memory, the path a message takes from your app through to the vector database and back?</li>
+                <li>Where in that path could something slow down or fail?</li>
+            </ul></div>
         </div>
 
         <div class="week-block">
@@ -156,6 +206,14 @@
             <div class="example-box"><p><strong>App milestone:</strong> Add a guardrail layer to the RAG agent so malformed or hallucinated responses are caught and retried instead of surfacing to the user.</p></div>
             <span class="outcome-tag">Outcome 3</span>
             <a class="guide-link" href="ai-410-guides/week-06-guardrails.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Nondeterministic —</dt><dd>the same input to a model can produce a different output each time you run it.</dd>
+                <dt>Guardrail —</dt><dd>a check that validates the model's output and retries or fixes it if something's wrong.</dd>
+            </dl></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>Why can't you just trust every response the model gives you without checking it?</li>
+                <li>What should happen if a guardrail catches a bad response — just fail, or try again?</li>
+            </ul></div>
         </div>
 
         <div class="week-block">
@@ -165,6 +223,14 @@
             <div class="example-box"><p><strong>App milestone:</strong> Move document ingestion to a background job and add a job-status endpoint, so uploading new documents no longer freezes the app.</p></div>
             <span class="outcome-tag">Outcome 3</span>
             <a class="guide-link" href="ai-410-guides/week-07-async-processing.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Asynchronous (async) —</dt><dd>work that happens in the background instead of making the user wait for it to finish.</dd>
+                <dt>Queue &amp; worker —</dt><dd>a waiting line of jobs (queue) picked up one at a time by a separate running process (worker).</dd>
+            </dl></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>Why move document ingestion to a background job instead of doing it during the request?</li>
+                <li>If the queue is empty, what does the worker do?</li>
+            </ul></div>
         </div>
 
         <div class="week-block">
@@ -174,6 +240,14 @@
             <div class="example-box"><p><strong>App milestone:</strong> Run the app on your own phone and receive a real push notification the moment a Week 7 background job finishes.</p></div>
             <span class="outcome-tag">Outcome 5</span>
             <a class="guide-link" href="ai-410-guides/week-08-mobile-push.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Push notification —</dt><dd>a message sent to a device even when the app isn't open.</dd>
+                <dt>Push token —</dt><dd>a unique ID that tells a push service which specific device to notify.</dd>
+            </dl></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>Why does the backend need to store a push token instead of just remembering "the user's phone"?</li>
+                <li>What has to happen before your phone can receive a push notification at all?</li>
+            </ul></div>
         </div>
 
         <div class="week-block">
@@ -183,6 +257,14 @@
             <div class="example-box"><p><strong>App milestone:</strong> Instrument the full pipeline — agent, RAG, async job, push — with tracing, and write a short critique of one real failure the dashboard surfaces.</p></div>
             <span class="outcome-tag">Outcome 4</span>
             <a class="guide-link" href="ai-410-guides/week-09-observability.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Observability —</dt><dd>being able to see what a running system is actually doing, not just whether it crashed.</dd>
+                <dt>Trace —</dt><dd>a recorded record of one request's full journey through the system, step by step.</dd>
+            </dl></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>If a user says "the app gave me a wrong answer," what would you look at first to figure out why?</li>
+                <li>What's the difference between a slow response and a wrong response, and how would you tell them apart from a trace?</li>
+            </ul></div>
         </div>
 
         <div class="week-block">
@@ -192,6 +274,14 @@
             <div class="example-box"><p><strong>App milestone:</strong> Deploy the finished agent-driven mobile app — RAG, guardrails, async processing, push notifications, and observability, all in one running product — and demo it live for instructor and peer critique.</p></div>
             <span class="outcome-tag">Outcome 5</span>
             <a class="guide-link" href="ai-410-guides/week-10-capstone-deploy.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Deploy / deployment —</dt><dd>making the app run on a live server other people can reach, not just on your own machine.</dd>
+                <dt>Environment variable —</dt><dd>a setting (like an API key) configured outside your code so it isn't hardcoded or committed to Git.</dd>
+            </dl></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>What's different about running your app on your laptop versus running it deployed for someone else to use?</li>
+                <li>If your deployed app can't find your API key, where would you look first?</li>
+            </ul></div>
         </div>
 
         <h2 id="research">Research &amp; Design Rationale</h2>

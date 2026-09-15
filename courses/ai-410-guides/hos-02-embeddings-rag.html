@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — HOS 2 Hands-On Guide: Embeddings, Chunking &amp; RAG Pipelines</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .draft-banner { background:#fef3c7; border:2px solid #f59e0b; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; }
+        .draft-banner strong { color:#b45309; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        .stage-block { border:1px solid #e2e8f0; border-radius:8px; padding:20px 22px; margin-bottom:18px; }
+        .stage-block h2 { margin:0 0 4px; font-size:1.15rem; }
+        .stage-num { display:inline-block; width:26px; height:26px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.85rem; text-align:center; line-height:26px; margin-right:8px; }
+        .stage-tagline { color:#6b7280; font-size:0.85rem; margin:0 0 14px 34px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .not-graded { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.85rem; border-radius:0 4px 4px 0; color:#475569; }
+        .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410-dev.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410 (draft redesign)</a>
+    </nav>
+
+        <div class="draft-banner"><strong>Part of the draft HOS redesign</strong> — not yet the production curriculum. See <a href="../AI-410-dev.html">AI-410-dev.html</a> for the full schedule this belongs to.</div>
+
+        <h1>HOS 2 — Embeddings, Chunking &amp; RAG Pipelines</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 2–2.5 hrs</span>
+            <span class="meta-pill">Outcome 2</span>
+            <span class="meta-pill">Merges old Weeks 3–4</span>
+            <span class="meta-pill">20% of final grade</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Extend HOS 1's chat app with retrieval: chunk and embed a set of documents into a vector database, then ground the agent's answers in them — using an AI assistant to scaffold it, then proving you understand what it built.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-02-embeddings-rag" target="_blank" rel="noopener">this HOS's starter-code folder</a> — your HOS 1 app, already working, plus five blank sample documents.</li>
+            <li>Your HOS 1 API key — same `.env` setup</li>
+            <li>An AI coding assistant available in your environment</li>
+        </ul>
+
+        <p>This HOS is graded across four stages instead of on code correctness alone. Each stage below says exactly what to submit.</p>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">1</span>Create / Scaffold</h2>
+            <p class="stage-tagline">Not graded on its own — this is the starting point, not the deliverable.</p>
+            <p>Prompt your AI assistant to add retrieval to the existing app:</p>
+<pre>Add RAG to this app:
+- backend/ingest.py: chunk each .md file in backend/sample_docs/ into
+  ~400-word pieces and embed them (Gemini's embedding model,
+  task_type="RETRIEVAL_DOCUMENT") into a local Chroma collection.
+- backend/retrieval.py: a retrieve(query, k=5) function that embeds
+  the query (task_type="RETRIEVAL_QUERY") and returns the k nearest
+  chunks from that collection.
+- Wire retrieve() into backend/agent.py: inject the retrieved chunks
+  as a system instruction before the model answers, so it grounds its
+  reply in the documents. Keep the existing tool-calling loop working
+  alongside this — don't let the new instruction suppress tool use.</pre>
+            <p>Run <code>python ingest.py</code> once the scaffold is in place, then test in the chat app.</p>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">2</span>Evaluate</h2>
+            <p class="stage-tagline">The critical gate — is the AI-produced result actually correct?</p>
+            <p>Test it on purpose. At minimum, try:</p>
+            <ul>
+                <li>A question only answerable from the sample docs (e.g. "how long do I have to return an item?") — does it cite the real figure, or guess?</li>
+                <li>A question that needs one of your HOS 1 tools (e.g. "what's 25 times 4?") — does it still call the tool, or does the new RAG instruction silently swallow tool use? <strong>This is a real, common bug</strong> — worth testing even if your app seems fine at a glance.</li>
+                <li>A policy-shaped question the docs don't cover (e.g. "do you offer gift wrapping?") — does it say it doesn't know, or invent a plausible-sounding answer?</li>
+            </ul>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul><li>A short written note: what you tested, what you found, and anything the AI got wrong, missed, or handled surprisingly well.</li></ul>
+            </div>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">3</span>Analyze</h2>
+            <p class="stage-tagline">Why does this work, mechanically?</p>
+            <p>Pick <strong>one</strong> specific piece — a strong choice is why <code>ingest.py</code> and <code>retrieval.py</code> use <em>different</em> <code>task_type</code> values (<code>RETRIEVAL_DOCUMENT</code> vs. <code>RETRIEVAL_QUERY</code>) even though they call the same embedding API. Explain what that setting actually changes and what would happen (not crash — just get quietly worse) if both used the same one.</p>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul><li>A short written walkthrough of the one piece you chose, in your own words.</li></ul>
+            </div>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">4</span>Understand &amp; Refine</h2>
+            <p class="stage-tagline">The mastery check — can you extend it correctly, without AI doing this part too?</p>
+            <div class="not-graded">By hand this time — no AI assistance for this stage.</div>
+            <p>Write a <strong>sixth</strong> sample document by hand (a new policy or product page, in the same style as the existing five) and re-run <code>ingest.py</code>. Confirm a question that can only be answered from your new document returns the correct, specific detail — proof the full ingest → embed → retrieve path is something you actually understand, not just something you ran once.</p>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul>
+                    <li>A screenshot of the working app, correctly answering a question from your hand-written document.</li>
+                    <li>The document itself.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Tool calls stop working after adding RAG</strong> — check your system instruction's wording. "If the answer isn't in the context, say you don't know" applied broadly will make the model refuse to use tools too. Scope it explicitly to content questions, and say tools are exempt.</li>
+                <li><strong><code>EMBED_DIM</code> mismatch</strong> — the embedding dimensionality has to be identical in <code>ingest.py</code> and <code>retrieval.py</code>, or Chroma's comparison breaks. If retrieval returns nothing useful, check this first.</li>
+                <li><strong>Forgot to re-run <code>ingest.py</code></strong> — after adding your sixth document (Stage 4), the vector database won't know about it until you ingest again.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="hos-01-foundations-agentic-loop.html">← HOS 1</a>
+            <a href="../AI-410-dev.html">Back to the draft schedule →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

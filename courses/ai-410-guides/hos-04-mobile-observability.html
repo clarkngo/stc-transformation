@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — HOS 4 Hands-On Guide: Mobile Client, Push &amp; Observability</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .draft-banner { background:#fef3c7; border:2px solid #f59e0b; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; }
+        .draft-banner strong { color:#b45309; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        .stage-block { border:1px solid #e2e8f0; border-radius:8px; padding:20px 22px; margin-bottom:18px; }
+        .stage-block h2 { margin:0 0 4px; font-size:1.15rem; }
+        .stage-num { display:inline-block; width:26px; height:26px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.85rem; text-align:center; line-height:26px; margin-right:8px; }
+        .stage-tagline { color:#6b7280; font-size:0.85rem; margin:0 0 14px 34px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .not-graded { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.85rem; border-radius:0 4px 4px 0; color:#475569; }
+        .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410-dev.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410 (draft redesign)</a>
+    </nav>
+
+        <div class="draft-banner"><strong>Part of the draft HOS redesign</strong> — not yet the production curriculum. See <a href="../AI-410-dev.html">AI-410-dev.html</a> for the full schedule this belongs to.</div>
+
+        <h1>HOS 4 — Mobile Client, Push &amp; Observability</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 2.5–3 hrs</span>
+            <span class="meta-pill">Outcomes 4 &amp; 5</span>
+            <span class="meta-pill">Merges old Weeks 8–9</span>
+            <span class="meta-pill">20% of final grade</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Take HOS 3's app all the way to production shape: a real mobile client that gets notified when work finishes, and full visibility into what the agent is actually doing on every request.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-04-mobile-observability" target="_blank" rel="noopener">this HOS's starter-code folder</a> — your HOS 3 app, already working.</li>
+            <li>A free <a href="https://cloud.langfuse.com" target="_blank" rel="noopener">Langfuse</a> project (no credit card)</li>
+            <li>The <strong>Expo Go</strong> app on your phone, or an emulator — no Xcode/Android Studio required</li>
+            <li>An AI coding assistant available in your environment</li>
+        </ul>
+
+        <p>This HOS is graded across four stages instead of on code correctness alone. Each stage below says exactly what to submit.</p>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">1</span>Create / Scaffold</h2>
+            <p class="stage-tagline">Not graded on its own — this is the starting point, not the deliverable.</p>
+            <p>Prompt your AI assistant to add both pieces:</p>
+<pre>Add a mobile client and observability to this app:
+- mobile/: an Expo (React Native) chat screen that calls this
+  backend's /chat endpoint, requests push-notification permission,
+  and registers the device's push token with the backend once granted.
+- backend/main.py: add POST /register-device (device_id, push_token)
+  storing the token.
+- backend/jobs.py: after a document finishes ingesting, send a push
+  notification to that job's device, if one was provided.
+- backend/agent.py and retrieval.py: add Langfuse tracing (@observe())
+  so each request produces a trace with retrieval and generation as
+  separate spans.</pre>
+            <p>Run <code>npx expo start</code> in <code>mobile/</code> and scan the QR code with Expo Go to test on your own phone.</p>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">2</span>Evaluate</h2>
+            <p class="stage-tagline">The critical gate — is the AI-produced result actually correct?</p>
+            <p>Test it on purpose. At minimum, try:</p>
+            <ul>
+                <li>Upload a document with your device registered — does a push notification actually arrive on your phone, not just does the API call return success?</li>
+                <li>Open a trace in the Langfuse dashboard for a real chat request — can you see retrieval and generation as two separate spans, with their own latency and token numbers?</li>
+                <li>Ask something the docs don't cover — does the model say it doesn't know, or hallucinate? Check the logged faithfulness score against what actually happened.</li>
+            </ul>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul><li>A short written note: what you tested, what you found, and anything the AI got wrong, missed, or handled surprisingly well.</li></ul>
+            </div>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">3</span>Analyze</h2>
+            <p class="stage-tagline">Why does this work, mechanically?</p>
+            <p>Pick <strong>one</strong> specific piece — either why push notifications are addressed to a device token rather than a user ID, or why retrieval and generation end up as two nested spans in a trace instead of one flat one, and what that split actually lets you see that a single number wouldn't.</p>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul><li>A short written walkthrough of the one piece you chose, in your own words.</li></ul>
+            </div>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">4</span>Understand &amp; Refine</h2>
+            <p class="stage-tagline">The mastery check — can you extend it correctly, without AI doing this part too?</p>
+            <div class="not-graded">By hand this time — no AI assistance for this stage.</div>
+            <p>Write a <code>score_faithfulness(answer, context)</code> function yourself — a heuristic or cheap check for whether the agent's answer is actually grounded in what was retrieved, not just plausible-sounding. Call it from <code>run_agent()</code> and log the score against the current trace.</p>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul>
+                    <li>The function you wrote, and how you decided to score faithfulness.</li>
+                    <li>Two example scores: one from an answer you'd call faithful, one from an answer you'd call unfaithful — and why the scores make sense.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Push notification API call succeeds but nothing arrives on your phone</strong> — Expo's push service returns <code>200 OK</code> even for a stale or invalid token, with the actual error inside the response body. Checking only the HTTP status isn't enough to confirm delivery.</li>
+                <li><strong>No Langfuse keys set yet, app still works</strong> — that's expected, not a bug. The SDK disables tracing and logs a line about it instead of crashing. You just won't see anything in the dashboard until keys are configured.</li>
+                <li><strong>Physical device can't reach a Codespaces-hosted backend</strong> — make the API port public in the Ports tab, use that forwarded URL as your mobile app's API base, and start Expo with <code>--tunnel</code> instead of the default LAN mode.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="hos-03-guardrails-async.html">← HOS 3</a>
+            <a href="../AI-410-dev.html">Back to the draft schedule →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

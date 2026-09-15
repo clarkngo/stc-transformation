@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Student View Simulation: Module 5</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .internal-banner { background:#f1f5f9; border:1px solid #cbd5e1; border-radius:8px; padding:14px 18px; margin:0 0 24px; font-size:0.88rem; color:#475569; }
+        .internal-banner strong { color:#334155; }
+        .lms-shell { border:1px solid #d1d5db; border-radius:10px; overflow:hidden; margin-top:10px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+        .lms-topbar { background:#1e293b; color:#e2e8f0; padding:14px 22px; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; }
+        .lms-topbar .course-name { font-weight:700; font-size:0.95rem; }
+        .lms-topbar .student-name { color:#94a3b8; }
+        .lms-progress-bar { background:#f8fafc; padding:14px 22px; border-bottom:1px solid #e2e8f0; }
+        .lms-progress-bar .label { font-size:0.78rem; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; font-weight:700; margin-bottom:8px; }
+        .module-track { display:flex; gap:8px; }
+        .module-pip { flex:1; height:8px; border-radius:4px; background:#e2e8f0; }
+        .module-pip.active { background:#22c55e; }
+        .module-pip.done { background:#86efac; }
+        .lms-body { padding:26px 28px; background:#fff; }
+        .module-title { font-size:1.4rem; font-weight:800; color:#0f172a; margin:0 0 4px; }
+        .module-sub { color:#64748b; font-size:0.9rem; margin:0 0 22px; }
+        .item { border:1px solid #e2e8f0; border-radius:10px; margin-bottom:14px; overflow:hidden; }
+        .item-head { display:flex; align-items:center; gap:14px; padding:14px 18px; background:#f8fafc; border-bottom:1px solid #e2e8f0; }
+        .item-icon { font-size:1.4rem; flex-shrink:0; width:36px; text-align:center; }
+        .item-meta { flex:1 1 auto; }
+        .item-type { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6d28d9; }
+        .item-title { font-size:1rem; font-weight:700; color:#0f172a; margin-top:2px; }
+        .item-tags { display:flex; gap:6px; flex-shrink:0; }
+        .item-tag { font-size:0.7rem; font-weight:700; padding:2px 9px; border-radius:999px; white-space:nowrap; }
+        .tag-due { background:#fee2e2; color:#b91c1c; }
+        .tag-points { background:#dcfce7; color:#15803d; }
+        .tag-time { background:#e0f2fe; color:#0369a1; }
+        .tag-ungraded { background:#f1f5f9; color:#475569; }
+        .item-body { padding:16px 18px; font-size:0.9rem; color:#334155; }
+        .item-body p:first-child { margin-top:0; }
+        .item-body p:last-child { margin-bottom:0; }
+        .student-field { background:#fafafa; border:1px dashed #cbd5e1; border-radius:8px; padding:12px 14px; margin-top:10px; font-size:0.85rem; color:#64748b; }
+        .student-field .fname { font-weight:700; color:#475569; display:block; margin-bottom:3px; }
+        .stage-mini { border-left:3px solid #22c55e; padding:8px 0 8px 14px; margin:10px 0; }
+        .stage-mini .snum { font-weight:700; color:#15803d; }
+        .cd-stage { background:#faf5ff; border-radius:6px; padding:10px 14px; margin:8px 0; font-size:0.85rem; }
+        .cd-stage strong { color:#7e22ce; }
+        .kc-q { background:#eef2ff; border-radius:6px; padding:10px 14px; margin:6px 0; font-size:0.88rem; }
+        .rail-note { font-size:0.78rem; color:#94a3b8; font-style:italic; margin-top:4px; }
+        .module-nav { display:flex; justify-content:space-between; margin-top:18px; font-size:0.9rem; }
+        .module-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+        .up-next { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:14px 18px; margin-top:18px; font-size:0.9rem; }
+        .up-next a { font-weight:700; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+    </nav>
+
+    <div class="internal-banner"><strong>Internal review tool — not a real course page.</strong> A simulation of what a student would actually see opening "Module 5" (Week 5) in the online course menu, built from the real content already in <a href="AI-410.html">AI-410.html</a> — reassembled in the order and format a student would encounter it.</div>
+
+    <h1>Student View Simulation — Module 5</h1>
+
+    <div class="lms-shell">
+        <div class="lms-topbar">
+            <span class="course-name">AI 410 — AI Engineering</span>
+            <span class="student-name">Viewing as: Student</span>
+        </div>
+        <div class="lms-progress-bar">
+            <div class="label">Course Progress — Week 5 of 10</div>
+            <div class="module-track">
+                <div class="module-pip done"></div>
+                <div class="module-pip done"></div>
+                <div class="module-pip done"></div>
+                <div class="module-pip done"></div>
+                <div class="module-pip active"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
+            </div>
+        </div>
+
+        <div class="lms-body">
+            <div class="module-title">Module 5 — Checkpoint: Architecture &amp; Bottleneck Review</div>
+            <p class="module-sub">No new build this week · Outcome 3 · Ungraded, formative review</p>
+
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">📋</span>
+                    <div class="item-meta">
+                        <div class="item-type">Overview</div>
+                        <div class="item-title">Welcome to Module 5 — a pause, not a build week</div>
+                    </div>
+                </div>
+                <div class="item-body">
+                    <p><strong>Goal:</strong> No new build this week. Step back and look at all 4 HOS as one system instead of four separate weeks — diagram the combined architecture and find where it could actually break.</p>
+                    <p>There's no Muddiest Point, Concept Debate, or Application Challenge due this week. That's intentional — it's a breather before the Team/Term Project ramps up.</p>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">🧭</span>
+                    <div class="item-meta">
+                        <div class="item-type">Activity — Architecture &amp; Bottleneck Review</div>
+                        <div class="item-title">Diagram the combined system across all 4 HOS</div>
+                    </div>
+                    <div class="item-tags"><span class="item-tag tag-ungraded">Ungraded</span></div>
+                </div>
+                <div class="item-body">
+                    <p>Diagram the path a message takes across all 4 HOS, start to finish — the agentic loop and tool calling (HOS 1), retrieval into the agent (HOS 2), guardrails and background jobs (HOS 3), and the mobile client and observability layer (HOS 4). Then identify where in that path nondeterminism or latency could break the system.</p>
+                    <div class="student-field"><span class="fname">Submit</span>A labeled diagram (hand-drawn is fine) plus a short written note on your riskiest point and why.</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">✅</span>
+                    <div class="item-meta">
+                        <div class="item-type">Review Prompt</div>
+                        <div class="item-title">Self-check before Module 6</div>
+                    </div>
+                    <div class="item-tags"><span class="item-tag tag-ungraded">No new vocabulary this week</span></div>
+                </div>
+                <div class="item-body">
+                    <div class="kc-q">Can you draw, from memory, the path a message takes across all 4 HOS, start to finish?</div>
+                    <div class="kc-q">Where in that path could something slow down or fail?</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="up-next">Next: <strong>Module 6 — Integration &amp; Alternate Review</strong>, where the Concept Debate connects all 4 HOS together and you'll scope or form your Team/Term Project team.</div>
+
+    <div class="module-nav">
+        <a href="AI-410-module4-student-view.html">← Module 4</a>
+        <a href="AI-410-module6-student-view.html">Module 6 →</a>
+    </div>
+    </div>
+    <script src="../assets/nav.js"></script>
+</body>
+</html>

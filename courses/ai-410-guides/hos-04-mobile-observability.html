@@ -93,6 +93,9 @@
                 <li>Open a trace in the Langfuse dashboard for a real chat request — can you see retrieval and generation as two separate spans, with their own latency and token numbers?</li>
                 <li>Ask something the docs don't cover — does the model say it doesn't know, or hallucinate? Check the logged faithfulness score against what actually happened.</li>
             </ul>
+            <p style="font-size:0.85rem;color:#6b7280">What you're looking for, illustrated below: the trace view shows <code>retrieve</code> nested under <code>run_agent</code> as its own span with its own latency, plus the faithfulness score attached to that run. The Scores table is where every run's score accumulates over time, so you can see whether faithfulness is trending up or down, not just what one run happened to score.</p>
+            <img src="../../assets/ai410-langfuse-broll/01-trace-detail.svg" width="760" height="400" loading="lazy" alt="Illustrative mockup of a Langfuse trace: run_agent span (0.30s) with a nested retrieve span and a faithfulness score of 0.83, plus the Input/Output panel showing the retrieved return-policy answer" style="width:100%;height:auto;display:block;border-radius:8px;border:1px solid #e2e8f0;margin:14px 0"/>
+            <img src="../../assets/ai410-langfuse-broll/02-scores-table.svg" width="760" height="340" loading="lazy" alt="Illustrative mockup of a Langfuse Scores table, listing five faithfulness score runs by timestamp and value" style="width:100%;height:auto;display:block;border-radius:8px;border:1px solid #e2e8f0;margin:0 0 14px"/>
             <div class="submit-box">
                 <h5>Submit</h5>
                 <ul><li>A short written note: what you tested, what you found, and anything the AI got wrong, missed, or handled surprisingly well.</li></ul>

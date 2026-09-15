@@ -1,0 +1,15 @@
+{
+    "name": "AI 410 — HOS 1",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12",
+    "postCreateCommand": "cp -n backend/.env.example backend/.env",
+    "forwardPorts": [8000, 8501],
+    "portsAttributes": {
+        "8000": { "label": "Backend API (once you scaffold it)", "onAutoForward": "notify" },
+        "8501": { "label": "Frontend (once you scaffold it)", "onAutoForward": "openPreview" }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": ["ms-python.python"]
+        }
+    }
+}

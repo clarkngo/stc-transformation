@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — HOS 3 Hands-On Guide: Guardrails &amp; Asynchronous Processing</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .draft-banner { background:#fef3c7; border:2px solid #f59e0b; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; }
+        .draft-banner strong { color:#b45309; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        .stage-block { border:1px solid #e2e8f0; border-radius:8px; padding:20px 22px; margin-bottom:18px; }
+        .stage-block h2 { margin:0 0 4px; font-size:1.15rem; }
+        .stage-num { display:inline-block; width:26px; height:26px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.85rem; text-align:center; line-height:26px; margin-right:8px; }
+        .stage-tagline { color:#6b7280; font-size:0.85rem; margin:0 0 14px 34px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .not-graded { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.85rem; border-radius:0 4px 4px 0; color:#475569; }
+        .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410-dev.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410 (draft redesign)</a>
+    </nav>
+
+        <div class="draft-banner"><strong>Part of the draft HOS redesign</strong> — not yet the production curriculum. See <a href="../AI-410-dev.html">AI-410-dev.html</a> for the full schedule this belongs to.</div>
+
+        <h1>HOS 3 — Guardrails &amp; Asynchronous Processing</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 2.5–3 hrs</span>
+            <span class="meta-pill">Outcome 3</span>
+            <span class="meta-pill">Merges old Weeks 6–7</span>
+            <span class="meta-pill">20% of final grade</span>
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Make HOS 2's app reliable under two different kinds of unpredictability: a model that sometimes calls a tool with bad arguments, and document ingestion that's slow enough to block the whole app if it runs inline.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-03-guardrails-async" target="_blank" rel="noopener">this HOS's starter-code folder</a> — your HOS 2 app, already working.</li>
+            <li>A free <a href="https://upstash.com" target="_blank" rel="noopener">Upstash Redis</a> instance (no credit card) — get the connection URL from its dashboard before you start.</li>
+            <li>An AI coding assistant available in your environment</li>
+        </ul>
+
+        <p>This HOS is graded across four stages instead of on code correctness alone. Each stage below says exactly what to submit.</p>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">1</span>Create / Scaffold</h2>
+            <p class="stage-tagline">Not graded on its own — this is the starting point, not the deliverable.</p>
+            <p>Prompt your AI assistant to add both pieces:</p>
+<pre>Add reliability to this app:
+- backend/guardrails.py: a call_with_guardrail(fn, schema, ...)
+  helper that calls fn(), validates the result against a Pydantic
+  schema, and retries (up to 2 times) if validation fails — returning
+  an {"error": ...} dict instead of raising if all retries fail.
+  Define a schema for the "calculate" tool's arguments and wrap that
+  tool's call in agent.py with the guardrail.
+- backend/queue_setup.py + worker.py: a Redis-backed queue (using rq
+  and REDIS_URL from .env) and a worker process that runs jobs from it.
+- backend/jobs.py: move the document-ingestion logic (chunk, embed,
+  insert into Chroma) into a job function the worker can run.
+- backend/main.py: change POST /documents to enqueue the job and
+  return a job_id immediately, and add GET /jobs/{id} to report status.</pre>
+            <p>Remember: the worker (<code>python worker.py</code>) runs in its own terminal, separate from <code>uvicorn</code>.</p>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">2</span>Evaluate</h2>
+            <p class="stage-tagline">The critical gate — is the AI-produced result actually correct?</p>
+            <p>Test it on purpose. At minimum, try:</p>
+            <ul>
+                <li>A message likely to produce a malformed tool call (e.g. "calculate the square root of a banana") — does the guardrail catch it and retry, or does the request crash?</li>
+                <li>Upload a document, then immediately send a normal chat message — does the chat reply promptly, proving ingestion is genuinely running in the background?</li>
+                <li>Stop the worker process and upload a document — does <code>/jobs/{id}</code> correctly report <code>"queued"</code> forever, rather than erroring or hanging?</li>
+            </ul>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul><li>A short written note: what you tested, what you found, and anything the AI got wrong, missed, or handled surprisingly well.</li></ul>
+            </div>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">3</span>Analyze</h2>
+            <p class="stage-tagline">Why does this work, mechanically?</p>
+            <p>Pick <strong>one</strong> specific piece — either why <code>call_with_guardrail</code> feeds the validation error back into the retry instead of just trying again blindly, or why the worker has to run as a separate OS process rather than a function the API calls directly. Explain the specific failure each design choice prevents.</p>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul><li>A short written walkthrough of the one piece you chose, in your own words.</li></ul>
+            </div>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">4</span>Understand &amp; Refine</h2>
+            <p class="stage-tagline">The mastery check — can you extend it correctly, without AI doing this part too?</p>
+            <div class="not-graded">By hand this time — no AI assistance for this stage.</div>
+            <p>Extend the guardrail pattern to your <strong>second</strong> tool (from HOS 1's Understand &amp; Refine) — write a Pydantic schema for its arguments, including at least one validation rule beyond "the field exists" (e.g. rejecting an empty string), and wire it into the tool dispatch in <code>agent.py</code> the same way the first tool is guarded.</p>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul>
+                    <li>A screenshot showing the new guardrail catching a bad call to your second tool.</li>
+                    <li>The schema and dispatch code you wrote by hand.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Jobs stuck on "queued" forever</strong> — the single most common issue. It means the worker process isn't running. Start it in its own terminal: <code>python worker.py</code>.</li>
+                <li><strong>Testing locally on macOS, a job goes straight to "failed"</strong> — if the worker log mentions <code>NSMutableString</code> or <code>fork()</code>, that's a known macOS + RQ interaction, not a bug. Run the worker with <code>OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES python worker.py</code>, or just use Codespaces, where this doesn't happen.</li>
+                <li><strong>The guardrail "retries" but gets the same wrong answer every time</strong> — check that <code>correction_hint</code> (if you're using one) actually feeds the validation error back into the next attempt. A retry with no new information has no better chance of succeeding than the first try.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="hos-02-embeddings-rag.html">← HOS 2</a>
+            <a href="../AI-410-dev.html">Back to the draft schedule →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

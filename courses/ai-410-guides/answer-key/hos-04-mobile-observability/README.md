@@ -24,11 +24,18 @@ python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env   # add GEMINI_API_KEY, REDIS_URL, LANGFUSE_*
 ./venv/bin/python ingest.py
+```
 
+Then two separate terminals (in Codespaces, a new tab always starts back at the repo root, so `cd backend` again in each one):
+
+```bash
 # Terminal 1 — API
+cd backend
 ./venv/bin/uvicorn main:app --reload
-
+```
+```bash
 # Terminal 2 — worker
+cd backend
 ./venv/bin/python worker.py
 ```
 

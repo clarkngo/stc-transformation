@@ -178,11 +178,12 @@ def job_status(job_id: str):
     return {"status": job.get_status(), "result": job.result}</pre>
                 <div class="explain"><code>Job.fetch(job_id, ...)</code> looks up that same job by the ID you returned in the previous step. <code>job.get_status()</code> returns one of <code>"queued"</code>, <code>"started"</code>, <code>"finished"</code>, or <code>"failed"</code>; <code>job.result</code> is whatever dict your job function returned, once it's finished.</div>
             </li>
-            <li><h4>Run both processes and prove it end to end</h4>You need <strong>two terminals</strong> open at once, both with the venv activated:
+            <li><h4>Run both processes and prove it end to end</h4>You need <strong>two terminals</strong> open at once, each in <code>backend/</code> with the venv activated. <strong>In Codespaces, a new terminal tab always starts back at the repo root</strong> — not wherever your last terminal left off — so <code>cd backend</code> again in each one, even though you already did it earlier:
 <pre># Terminal 1 — the API
-./venv/bin/uvicorn main:app --reload
-
-# Terminal 2 — the worker
+cd backend
+./venv/bin/uvicorn main:app --reload</pre>
+<pre># Terminal 2 — the worker
+cd backend
 ./venv/bin/python worker.py</pre>
                 Then, from a third terminal (or a tool like <code>curl</code>), upload a document:
 <pre>curl -X POST http://127.0.0.1:8000/documents \

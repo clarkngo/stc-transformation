@@ -9,6 +9,7 @@ and in the mobile/ app: request permission and register the device.
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from rq.job import Job
 
@@ -20,6 +21,22 @@ from queue_setup import queue, redis_conn
 load_dotenv()
 
 app = FastAPI(title="AI 410 — Week 8")
+
+# CORS — needed for testing with `npx expo start --web` (Expo Go's
+# browser-based mode). Streamlit and Expo Go on a real device never hit
+# this: they call the backend server-side / outside a browser, so CORS
+# doesn't apply to them. Expo web does run in a real browser though, and
+# a browser blocks a cross-origin fetch() until the server explicitly
+# allows it (a preflight OPTIONS check) — that's what this middleware
+# answers. Wide open (allow_origins=["*"]) is fine for a course dev
+# environment; a real product would scope this to its actual frontend's
+# domain instead.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class ChatRequest(BaseModel):

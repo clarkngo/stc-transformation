@@ -1,7 +1,12 @@
+// Set in mobile/.env (copy from .env.example) as EXPO_PUBLIC_API_BASE —
+// Expo inlines any EXPO_PUBLIC_* variable automatically, no extra config
+// needed. Change the value, then reload the app (shake your phone →
+// Reload, or press `r` in the terminal) to pick it up.
+//
 // TODO(week10): once your backend is deployed (see backend/render.yaml),
-// point this at the deployed URL instead of your laptop's LAN IP, e.g.
-// "https://ai410-api.onrender.com"
-export const API_BASE = "http://192.168.1.23:8000";
+// update EXPO_PUBLIC_API_BASE in mobile/.env to the deployed URL, e.g.
+// "https://ai410-api.onrender.com" — instead of your laptop's LAN IP.
+export const API_BASE = process.env.EXPO_PUBLIC_API_BASE || "http://192.168.1.23:8000";
 
 export async function sendChatMessage(message) {
   const res = await fetch(`${API_BASE}/chat`, {

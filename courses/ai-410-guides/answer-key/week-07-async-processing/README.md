@@ -1,6 +1,6 @@
 # Week 7 Answer Key — Asynchronous Data Processing
 
-Guide: [`../../week-07-async-processing.html`](../../week-07-async-processing.html)
+Guide: [`../../week-07-async-processing.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-07-async-processing.html)
 Starter: [`../../starter-code/week-07-async-processing`](../../starter-code/week-07-async-processing)
 
 Reference solution for SME/instructor verification — not what students should be given. Built on top of Week 6's guardrailed RAG app.

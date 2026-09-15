@@ -90,7 +90,7 @@
 
         <div class="intro-box">
             <h4>What this page is</h4>
-            <p>Every external account this course ever asks you to create, in one place, with exactly what to click and — for Redis specifically — what that intimidating connection string actually means. You don't need all five on day one: GitHub and Google are needed immediately (HOS 1 / Week 1), Redis isn't needed until HOS 3 / Week 7, and Expo and Langfuse aren't needed until HOS 4 / Week 9. Each section below says when, so you can set things up as you go instead of all at once.</p>
+            <p>Every external account this course ever asks you to create, in one place, with exactly what to click and — for Redis specifically — what that intimidating connection string actually means. You don't need all five on day one: GitHub and Google are needed immediately (HOS 1), Redis isn't needed until HOS 3, and Expo and Langfuse aren't needed until HOS 4. Each section below says when, so you can set things up as you go instead of all at once.</p>
         </div>
 
         <h2>Find your service</h2>
@@ -99,31 +99,31 @@
             <tr>
                 <td class="svc-name">GitHub</td>
                 <td>Hosting your code, Codespaces (recommended dev environment)</td>
-                <td>HOS 1 / Week 1</td>
+                <td>HOS 1</td>
                 <td><a class="jump" href="#github">Read →</a></td>
             </tr>
             <tr>
                 <td class="svc-name">Google AI Studio</td>
                 <td>Your Gemini API key — every LLM call all term runs through this</td>
-                <td>HOS 1 / Week 1</td>
+                <td>HOS 1</td>
                 <td><a class="jump" href="#google">Read →</a></td>
             </tr>
             <tr>
                 <td class="svc-name">Upstash (Redis)</td>
                 <td>The job queue behind background/async document processing</td>
-                <td>HOS 3 / Week 7</td>
+                <td>HOS 3</td>
                 <td><a class="jump" href="#redis">Read →</a></td>
             </tr>
             <tr>
                 <td class="svc-name">Expo</td>
                 <td>Your mobile app's EAS project ID — required for push notifications to work at all</td>
-                <td>HOS 4 / Week 9</td>
+                <td>HOS 4</td>
                 <td><a class="jump" href="#expo">Read →</a></td>
             </tr>
             <tr>
                 <td class="svc-name">Langfuse</td>
                 <td>Tracing/observability for your pipeline</td>
-                <td>HOS 4 / Week 9</td>
+                <td>HOS 4</td>
                 <td><a class="jump" href="#langfuse">Read →</a></td>
             </tr>
         </table>
@@ -132,10 +132,10 @@
         <div class="service" id="github">
             <div class="service-head"><h2>GitHub</h2></div>
             <div class="service-pills">
-                <span class="svc-pill when">First needed: HOS 1 / Week 1</span>
+                <span class="svc-pill when">First needed: HOS 1</span>
                 <span class="svc-pill cost">Free — no credit card</span>
             </div>
-            <p class="why-line"><strong>What it's for:</strong> hosting your own copy of each week's starter code, and — the recommended path all term — <strong>GitHub Codespaces</strong>, a ready-made cloud dev environment that sidesteps the most common setup bug in this course (an old package on your own machine silently shadowing the project's real one).</p>
+            <p class="why-line"><strong>What it's for:</strong> hosting your own copy of each HOS's starter code, and — the recommended path all term — <strong>GitHub Codespaces</strong>, a ready-made cloud dev environment that sidesteps the most common setup bug in this course (an old package on your own machine silently shadowing the project's real one).</p>
 
             <ol class="steps">
                 <li>Go to <a href="https://github.com" target="_blank" rel="noopener">github.com</a> and click <strong>Sign up</strong> (top right).</li>
@@ -156,10 +156,10 @@
         <div class="service" id="google">
             <div class="service-head"><h2>Google AI Studio — Gemini API Key</h2></div>
             <div class="service-pills">
-                <span class="svc-pill when">First needed: HOS 1 / Week 1</span>
+                <span class="svc-pill when">First needed: HOS 1</span>
                 <span class="svc-pill cost">Free — no credit card</span>
             </div>
-            <p class="why-line"><strong>What it's for:</strong> the API key that lets your backend talk to Gemini. You get this once, in Week 1, and reuse the exact same key for every remaining week — chat, embeddings, everything.</p>
+            <p class="why-line"><strong>What it's for:</strong> the API key that lets your backend talk to Gemini. You get this once, in HOS 1, and reuse the exact same key for every remaining HOS — chat, embeddings, everything.</p>
 
             <ol class="steps">
                 <li>Go to <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with any Google account (a personal Gmail account is fine — you don't need a special one).</li>
@@ -182,7 +182,7 @@
         <div class="service" id="redis">
             <div class="service-head"><h2>Upstash — Redis Database</h2></div>
             <div class="service-pills">
-                <span class="svc-pill when">First needed: HOS 3 / Week 7</span>
+                <span class="svc-pill when">First needed: HOS 3</span>
                 <span class="svc-pill cost">Free — no credit card</span>
             </div>
             <p class="why-line"><strong>What it's for:</strong> Redis is the fast, simple database your background job queue runs on — one process (your API) adds "please ingest this document" tasks to it, and a separate worker process pulls them off. Upstash gives you a managed, free Redis instance with no server to install yourself.</p>
@@ -235,33 +235,54 @@
 
             <div class="done-box">
                 <h4>You'll know it worked when…</h4>
-                <ul><li>Your <code>.env</code> has one line starting <code>REDIS_URL=rediss://default:...@...upstash.io:6379</code>, and Week 7 / HOS 3's <code>queue_setup.py</code> can connect without a connection error.</li></ul>
+                <ul><li>Your <code>.env</code> has one line starting <code>REDIS_URL=rediss://default:...@...upstash.io:6379</code>, and HOS 3's <code>queue_setup.py</code> can connect without a connection error.</li></ul>
             </div>
         </div>
 
         <!-- ══════════════════ EXPO ══════════════════ -->
         <div class="service" id="expo">
-            <div class="service-head"><h2>Expo — EAS Project ID</h2></div>
+            <div class="service-head"><h2>Expo — Account, Login &amp; EAS Project ID</h2></div>
             <div class="service-pills">
-                <span class="svc-pill when">First needed: HOS 4 / Week 9</span>
+                <span class="svc-pill when">First needed: HOS 4</span>
                 <span class="svc-pill cost">Free — no credit card</span>
             </div>
-            <p class="why-line"><strong>What it's for:</strong> the mobile client itself (chat, running in Expo Go) works with no account at all — but as of Expo SDK 49+, requesting a <strong>push token</strong> specifically requires the app to be linked to a project on Expo's own servers. Without this, the exact line of code that asks for a push token throws an error instead of returning one.</p>
+            <p class="why-line"><strong>What it's for:</strong> two separate things, both solved by the same free account. First — on current versions of <strong>Expo Go for iOS</strong>, you must be logged in to the same Expo account in <em>both</em> your terminal and the Expo Go app just to load the project at all (a newer Expo Go requirement, not specific to this course). Second — requesting a <strong>push token</strong> specifically also requires the app to be linked to a project on Expo's own servers (EAS), separately from the login above.</p>
 
             <ol class="steps">
                 <li>Go to <a href="https://expo.dev/signup" target="_blank" rel="noopener">expo.dev/signup</a> and create a free account.</li>
-                <li>In your terminal, inside the <code>mobile/</code> folder (with <code>npm install</code> already run):
+                <li><strong>Log in on the CLI</strong> — in your Codespaces terminal, inside <code>mobile/</code>:
+<pre>npx expo login</pre>
+                It prints a link; open it, sign in with the account from step 1, and the terminal picks it up automatically.</li>
+                <li><strong>Log in on your phone too</strong> — open the Expo Go app, tap the avatar/profile icon in the top-right of its home screen, and sign in with the <em>same</em> account. Both have to match — logged in as one user in the terminal and a different one (or no one) in Expo Go won't load the project.</li>
+                <li>Then, for push notifications specifically, still inside <code>mobile/</code>:
 <pre>npx eas init</pre>
-                </li>
-                <li>It'll ask you to log in (use the account from step 1) and confirm creating a new project — say yes. It writes an <code>extra.eas.projectId</code> field directly into your <code>mobile/app.json</code> for you; you don't edit anything by hand.</li>
-                <li>Restart <code>npx expo start</code> so the app picks up the updated <code>app.json</code>.</li>
+                It'll confirm you're logged in (from step 2) and confirm creating a new project — say yes. It writes an <code>extra.eas.projectId</code> field directly into your <code>mobile/app.json</code> for you; you don't edit anything by hand.</li>
+                <li>Restart <code>npx expo start --tunnel</code> so the app picks up the updated login state and <code>app.json</code>.</li>
             </ol>
 
-            <div class="explain"><strong>You don't need this to start HOS 4 / Week 9.</strong> The chat screen, sending messages, and everything backend-side works with no Expo account at all. Only the specific "register for push notifications" step needs it — the guides' starter/answer code already fails on that one step gracefully (a console warning, not a crash) if you haven't done this yet.</div>
+            <div class="explain"><strong>Chat still works without the EAS project step (step 4).</strong> Only "register for push notifications" needs it — the guides' starter/answer code already fails on that one step gracefully (a console warning, not a crash) if you haven't done it yet. But steps 2 and 3 (logging in on both ends) currently gate <em>everything</em> in Expo Go on iOS, chat included. This is rolling out to Android too, just not required there yet.</div>
+
+            <div class="snag-box">
+                <h4>Don't want to deal with phone login or Expo Go at all? Use Expo web instead</h4>
+                <p>For quickly testing the chat screen — no phone, no Expo Go, no account login required — run this inside <code>mobile/</code> instead:</p>
+<pre>npx expo start --web</pre>
+                <p>This opens the app in a regular browser tab (in Codespaces, it uses the forwarded-port preview automatically). It's the fastest way to confirm the chat UI and your backend connection work before dealing with phones at all. <strong>Trade-off:</strong> push notifications don't exist on Expo web — <code>expo-notifications</code> isn't supported there, so <code>Device.isDevice</code> is <code>false</code> and this app's code already skips push registration cleanly on its own (no error, it just doesn't run). Use web to verify chat, then switch to a real phone only for the push-notification stages.</p>
+            </div>
+
+            <div class="snag-box">
+                <h4>"Project is incompatible with this version of Expo Go"</h4>
+                <p>The Expo Go app on your phone only ever supports the <em>current</em> Expo SDK — and it auto-updates itself, so which SDK counts as "current" keeps moving forward over time, independent of this course. If the version this project is pinned to falls behind, Expo Go will refuse to open it and tell you exactly which SDK it wants instead. Fix it by upgrading the project to match, right inside <code>mobile/</code>:</p>
+<pre>npx expo install expo@latest
+npx expo install --fix</pre>
+                <p>The second command re-aligns every other Expo/React Native package to versions compatible with whatever <code>expo@latest</code> turned out to be. Restart <code>npx expo start --tunnel</code> afterward. This will happen again the next time Expo ships a new SDK — the fix is always these same two commands.</p>
+            </div>
 
             <div class="done-box">
                 <h4>You'll know it worked when…</h4>
-                <ul><li><code>mobile/app.json</code> has a new <code>extra.eas.projectId</code> field after running <code>eas init</code>, and the app logs a real push token to the console instead of the "No EAS project ID found" warning.</li></ul>
+                <ul>
+                    <li>The project actually loads in Expo Go on your phone (not stuck on a login/loading screen) — confirming the CLI and phone are logged into the same account.</li>
+                    <li><code>mobile/app.json</code> has a new <code>extra.eas.projectId</code> field after running <code>eas init</code>, and the app logs a real push token to the console instead of the "No EAS project ID found" warning.</li>
+                </ul>
             </div>
         </div>
 
@@ -269,10 +290,10 @@
         <div class="service" id="langfuse">
             <div class="service-head"><h2>Langfuse</h2></div>
             <div class="service-pills">
-                <span class="svc-pill when">First needed: HOS 4 / Week 9</span>
+                <span class="svc-pill when">First needed: HOS 4</span>
                 <span class="svc-pill cost">Free — no credit card</span>
             </div>
-            <p class="why-line"><strong>What it's for:</strong> observability — recording what actually happened on every real request (timing, inputs, outputs, cost) so you can look at data instead of guessing when something's slow or wrong. You won't need this until the observability week/HOS, but it's included here so this page covers every account the course asks for.</p>
+            <p class="why-line"><strong>What it's for:</strong> observability — recording what actually happened on every real request (timing, inputs, outputs, cost) so you can look at data instead of guessing when something's slow or wrong. You won't need this until the observability HOS, but it's included here so this page covers every account the course asks for.</p>
 
             <ol class="steps">
                 <li>Go to <a href="https://cloud.langfuse.com" target="_blank" rel="noopener">cloud.langfuse.com</a> and sign up.</li>
@@ -289,20 +310,20 @@ LANGFUSE_HOST=https://cloud.langfuse.com</pre>
 
             <div class="done-box">
                 <h4>You'll know it worked when…</h4>
-                <ul><li>Your Langfuse project's <strong>Traces</strong> tab shows real entries after you send a few chat messages through your Week 9 / HOS 4 app.</li></ul>
+                <ul><li>Your Langfuse project's <strong>Traces</strong> tab shows real entries after you send a few chat messages through your HOS 4 app.</li></ul>
             </div>
         </div>
 
         <h2>Putting it all together</h2>
-        <p style="font-size:0.9rem;color:#475569">By the end of the term, your <code>backend/.env</code> holds all four — but you add them one at a time, as each week/HOS needs them, not all on day one:</p>
+        <p style="font-size:0.9rem;color:#475569">By the end of the term, your <code>backend/.env</code> holds all four — but you add them one at a time, as each HOS needs them, not all on day one:</p>
         <div class="env-example">
-<span class="comment"># HOS 1 / Week 1</span><br>
+<span class="comment"># HOS 1</span><br>
 <span class="key">GEMINI_API_KEY</span>=AIzaSyD-your-real-key-goes-right-here<br>
 <br>
-<span class="comment"># HOS 3 / Week 7</span><br>
+<span class="comment"># HOS 3</span><br>
 <span class="key">REDIS_URL</span>=rediss://default:AbCdEf123...@your-instance-name.upstash.io:6379<br>
 <br>
-<span class="comment"># HOS 4 / Week 9</span><br>
+<span class="comment"># HOS 4</span><br>
 <span class="key">LANGFUSE_PUBLIC_KEY</span>=pk-lf-...<br>
 <span class="key">LANGFUSE_SECRET_KEY</span>=sk-lf-...<br>
 <span class="key">LANGFUSE_HOST</span>=https://cloud.langfuse.com

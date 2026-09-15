@@ -18,7 +18,8 @@ import { registerDevice, sendChatMessage } from "./src/api";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
   }),
@@ -28,7 +29,7 @@ export default function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
-  const deviceId = useRef(Constants.installationId || Device.osInternalBuildId || "dev-device").current;
+  const deviceId = useRef(Constants.sessionId || Device.osInternalBuildId || "dev-device").current;
 
   useEffect(() => {
     registerForPushNotificationsAsync();

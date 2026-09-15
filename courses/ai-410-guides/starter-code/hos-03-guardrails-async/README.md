@@ -1,6 +1,6 @@
 # HOS 3 — Guardrails & Asynchronous Processing
 
-Guide: [`../../hos-03-guardrails-async.html`](../../hos-03-guardrails-async.html)
+Guide: [`../../hos-03-guardrails-async.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/hos-03-guardrails-async.html)
 
 ## What's already working
 

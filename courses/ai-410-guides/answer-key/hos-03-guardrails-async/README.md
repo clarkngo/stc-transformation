@@ -1,6 +1,6 @@
 # HOS 3 Answer Key — Guardrails & Asynchronous Processing
 
-Guide: [`../../hos-03-guardrails-async.html`](../../hos-03-guardrails-async.html)
+Guide: [`../../hos-03-guardrails-async.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/hos-03-guardrails-async.html)
 Starter: [`../../starter-code/hos-03-guardrails-async`](../../starter-code/hos-03-guardrails-async)
 
 Reference solution, built on top of HOS 2's RAG + tool-calling app.

@@ -1,6 +1,6 @@
 # Week 10 Starter — Capstone Integration, Deployment & Demo
 
-Guide: [`../../week-10-capstone-deploy.html`](../../week-10-capstone-deploy.html)
+Guide: [`../../week-10-capstone-deploy.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-10-capstone-deploy.html)
 
 ## What's already working
 
@@ -17,7 +17,7 @@ There's no new feature to build — this week is integration and deployment:
 1. Run a full local pass through the whole pipeline first and fix anything that regressed.
 2. Set every environment variable from `.env` in your host's dashboard (never commit `.env`).
 3. Deploy `backend/` using `render.yaml` (or adapt it for another host) — as **three** services: API, worker, and a Chroma server the other two share.
-4. Update `mobile/src/api.js`'s `API_BASE` to your deployed URL (see the `# TODO(week10)` comment) and confirm push notifications still work against the live server.
+4. Update `EXPO_PUBLIC_API_BASE` in `mobile/.env` to your deployed URL (see the `# TODO(week10)` comment in `mobile/src/api.js`), reload the app on your phone (a `.env` edit needs a reload, saving alone isn't enough), and confirm push notifications still work against the live server.
 5. Re-run your Week 5 bottleneck list against the deployed version.
 6. Prepare and give a 5-minute live demo.
 

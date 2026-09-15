@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 410: Hands-On Guides — Week by Week</title>
+    <title>AI 410: Hands-On Guides</title>
     <link rel="stylesheet" href="../../assets/styles.css">
     <style>
         h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
@@ -28,6 +28,8 @@
         .relevance-table th, .relevance-table td { border:1px solid #e2e8f0; padding:9px 12px; text-align:left; vertical-align:top; }
         .relevance-table th { background:#f8fafc; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
         .relevance-table td.wk { font-weight:700; color:#1e8449; white-space:nowrap; }
+        .legacy-toggle { background:#f1f5f9; border:1px solid #cbd5e1; border-radius:8px; padding:14px 18px; margin:18px 0; font-size:0.88rem; color:#475569; }
+        .legacy-toggle strong { color:#334155; }
     </style>
 </head>
 <body class="course-page">
@@ -40,17 +42,17 @@
       <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
     </nav>
 
-        <h1>AI 410: Hands-On Guides — Week by Week</h1>
-        <p>Ten step-by-step guides, one per week of the <a href="../AI-410.html">AI 410 schedule</a>. Each guide expands that week's "App Milestone" into concrete steps: what you're starting from, what to build, and how to know it worked. They build on each other — the app you extend in Week 8 is the same one you started in Week 1.</p>
-        <p>Each week also has real <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code" target="_blank" rel="noopener">starter code</a> on GitHub — a self-contained folder you can copy straight into your own project. See the "Code →" link on each row below, or browse <code>starter-code/</code> for all ten at once.</p>
+        <h1>AI 410: Hands-On Guides</h1>
+        <p>Four step-by-step guides, one per HOS of the <a href="../AI-410.html">AI 410 schedule</a>. Each guide walks through the Create/Scaffold → Evaluate → Analyze → Understand &amp; Refine cycle: what you're starting from, what to prompt an AI assistant to build, and how to prove you actually understand the result.</p>
+        <p>Each HOS also has real <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code" target="_blank" rel="noopener">starter code</a> on GitHub — a self-contained folder you can copy straight into your own project. See the "Code →" link on each row below, or browse <code>starter-code/</code> for all of them at once.</p>
 
         <div style="background:#eff6ff;border-left:5px solid #3b82f6;padding:15px 18px;margin:18px 0;border-radius:0 6px 6px 0;font-size:0.92rem">
-            <h4 style="margin:0 0 6px;color:#1d4ed8;font-size:0.95rem">New: read this before you start any week or HOS</h4>
-            <p style="margin:0">The <a href="concept-companion.html"><strong>Concept Companion</strong></a> gathers every concept and piece of vocabulary these guides assume you already know — full-stack architecture, the agentic loop, embeddings &amp; RAG, guardrails, async processing, mobile/push, and observability — in one standalone, modular page. It works whether you're following the 8-week schedule or the 4-HOS redesign.</p>
+            <h4 style="margin:0 0 6px;color:#1d4ed8;font-size:0.95rem">Read this before you start any HOS</h4>
+            <p style="margin:0">The <a href="concept-companion.html"><strong>Concept Companion</strong></a> gathers every concept and piece of vocabulary these guides assume you already know — full-stack architecture, the agentic loop, embeddings &amp; RAG, guardrails, async processing, mobile/push, and observability — in one standalone, modular page, one module per HOS.</p>
         </div>
 
         <div style="background:#ecfdf5;border-left:5px solid #10b981;padding:15px 18px;margin:18px 0;border-radius:0 6px 6px 0;font-size:0.92rem">
-            <h4 style="margin:0 0 6px;color:#047857;font-size:0.95rem">Also new: setting up your accounts</h4>
+            <h4 style="margin:0 0 6px;color:#047857;font-size:0.95rem">Also: setting up your accounts</h4>
             <p style="margin:0">The <a href="account-setup-guide.html"><strong>Account &amp; Service Setup Guide</strong></a> walks through every sign-up this course ever asks for — GitHub, your Gemini API key, Upstash (Redis), Expo (push notifications), and Langfuse — including exactly what that Redis connection string means and where each piece goes.</p>
         </div>
 
@@ -58,28 +60,71 @@
 
         <div class="why-box">
             <h4>This isn't a tutorial project — it's the job</h4>
-            <p>"AI Engineer" is one of the fastest-growing job titles in software right now, and it means something specific: not prompting ChatGPT well, but building the systems <em>around</em> a model that make it reliable enough to put in front of real users — retrieval so it answers from real data instead of guessing, guardrails so bad output doesn't crash the app, background processing so it doesn't freeze under load, and monitoring so someone finds out about a problem before a customer does. Every one of those is a separate week in this schedule, because every one of them is a separate skill companies are hiring for.</p>
+            <p>"AI Engineer" is one of the fastest-growing job titles in software right now, and it means something specific: not prompting ChatGPT well, but building the systems <em>around</em> a model that make it reliable enough to put in front of real users — retrieval so it answers from real data instead of guessing, guardrails so bad output doesn't crash the app, background processing so it doesn't freeze under load, and monitoring so someone finds out about a problem before a customer does. Every one of those is a separate HOS in this schedule, because every one of them is a separate skill companies are hiring for.</p>
         </div>
 
         <div class="why-box">
-            <h4>By Week 10, you have something to show, not just something to submit</h4>
-            <p>Most course projects live and die on a grader's screen. This one doesn't: it's a live, deployed, agent-driven mobile app you can hand someone a link to, and a GitHub repo with real commit history showing how it was built, one working piece at a time. In an interview, "I followed a tutorial" and "I built this, here's why I made this specific tradeoff in Week 6" are very different answers — this schedule is built to get you to the second one.</p>
+            <h4>By the end, you have something to show, not just something to submit</h4>
+            <p>Most course projects live and die on a grader's screen. This one doesn't: the Team/Term Project is a live, deployed, agent-driven mobile app you can hand someone a link to, built on 4 HOS worth of real components — RAG, guardrails, async processing, push, observability — not a tutorial follow-along. In an interview, "I followed a tutorial" and "I built this, here's why I made this specific tradeoff" are very different answers — this schedule is built to get you to the second one.</p>
         </div>
 
         <table class="relevance-table">
-            <tr><th>Week</th><th>Skill</th><th>Where it shows up outside this course</th></tr>
-            <tr><td class="wk">1</td><td>Full-stack LLM request/response</td><td>The base pattern behind literally every AI product with a chat interface — ChatGPT, Claude.ai, every "AI-powered" feature bolted onto an existing app.</td></tr>
-            <tr><td class="wk">2</td><td>Agentic loops &amp; tool calling</td><td>How customer-support bots check a real order status, how scheduling assistants read a real calendar, how coding agents (including the one you might be using to build this) actually run commands instead of just describing them.</td></tr>
-            <tr><td class="wk">3</td><td>Embeddings &amp; chunking</td><td>The foundation under every "search," "chat with your documents," or "find similar items" feature — this is what makes meaning-based search possible instead of exact keyword matching.</td></tr>
-            <tr><td class="wk">4</td><td>RAG pipelines</td><td>The single most common pattern companies use to make an LLM answer accurately about <em>their own</em> data — internal wikis, support docs, product catalogs — instead of hallucinating.</td></tr>
-            <tr><td class="wk">5</td><td>Architecture &amp; failure analysis</td><td>What separates a junior engineer from a senior one in almost every technical interview: "walk me through what happens if this fails" is one of the most common questions asked, at any level.</td></tr>
-            <tr><td class="wk">6</td><td>Guardrails for nondeterministic output</td><td>The exact gap between a demo that works when you type the happy-path question, and a product that survives real users typing whatever they want.</td></tr>
-            <tr><td class="wk">7</td><td>Asynchronous processing</td><td>A core backend skill that has nothing to do with AI specifically — any app that uploads files, sends emails, or does anything slow uses this same queue/worker pattern.</td></tr>
-            <tr><td class="wk">8</td><td>Mobile client &amp; push notifications</td><td>Proof you can work across the whole stack, not just one layer of it — most teams want engineers who aren't siloed to "just backend" or "just frontend."</td></tr>
-            <tr><td class="wk">9</td><td>Observability &amp; evaluation</td><td>What companies mean by "AI evals" — a newly emerging, actively-hiring specialization built on one simple idea: you can't improve a system you can't measure.</td></tr>
-            <tr><td class="wk">10</td><td>Deployment</td><td>The single biggest gap between "I can code" and "I can ship" — code that only runs on your own laptop isn't a product yet, and most student projects never cross that line.</td></tr>
+            <tr><th>HOS</th><th>Skills</th><th>Where it shows up outside this course</th></tr>
+            <tr><td class="wk">1</td><td>Full-stack LLM request/response; agentic loops &amp; tool calling</td><td>The base pattern behind every AI product with a chat interface (ChatGPT, Claude.ai), plus how customer-support bots, scheduling assistants, and coding agents actually call real functions instead of just describing them.</td></tr>
+            <tr><td class="wk">2</td><td>Embeddings, chunking &amp; RAG pipelines</td><td>The foundation under every "search," "chat with your documents," or "find similar items" feature, and the single most common pattern for making an LLM answer accurately about a company's own data instead of hallucinating.</td></tr>
+            <tr><td class="wk">3</td><td>Guardrails for nondeterministic output; asynchronous processing</td><td>The exact gap between a demo that works on the happy path and a product that survives real users, plus a core backend skill (queues/workers) any app that uploads files or does anything slow relies on.</td></tr>
+            <tr><td class="wk">4</td><td>Mobile client, push notifications &amp; observability</td><td>Proof you can work across the whole stack, not just one layer, plus what companies mean by "AI evals" — you can't improve a system you can't measure.</td></tr>
+            <tr><td class="wk">Ckpt.</td><td>Architecture &amp; failure analysis</td><td>What separates a junior engineer from a senior one in almost every technical interview: "walk me through what happens if this fails" is one of the most common questions asked, at any level.</td></tr>
+            <tr><td class="wk">Project</td><td>Integration &amp; deployment</td><td>The single biggest gap between "I can code" and "I can ship" — code that only runs on your own laptop isn't a product yet, and most student projects never cross that line.</td></tr>
         </table>
 
+        <h2>HOS Hands-On Guides</h2>
+        <div class="guide-grid">
+            <div class="guide-row">
+                <a class="guide-row-link" href="hos-01-foundations-agentic-loop.html">
+                    <span class="guide-wk">HOS 1</span>
+                    <span class="guide-title">Foundations &amp; the Agentic Loop<span class="guide-desc">Scaffold a full-stack chat app with a real tool the agent can call, then prove you understand it.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="hos-01-foundations-agentic-loop.html">Guide →</a>
+                    <a class="guide-arrow code" href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-01-foundations-agentic-loop" target="_blank" rel="noopener">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="hos-02-embeddings-rag.html">
+                    <span class="guide-wk">HOS 2</span>
+                    <span class="guide-title">Embeddings, Chunking &amp; RAG Pipelines<span class="guide-desc">Wire retrieval into the agent so answers are grounded in real documents.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="hos-02-embeddings-rag.html">Guide →</a>
+                    <a class="guide-arrow code" href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-02-embeddings-rag" target="_blank" rel="noopener">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="hos-03-guardrails-async.html">
+                    <span class="guide-wk">HOS 3</span>
+                    <span class="guide-title">Guardrails &amp; Asynchronous Processing<span class="guide-desc">Catch bad model output and move slow work into a background job.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="hos-03-guardrails-async.html">Guide →</a>
+                    <a class="guide-arrow code" href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-03-guardrails-async" target="_blank" rel="noopener">Code →</a>
+                </span>
+            </div>
+            <div class="guide-row">
+                <a class="guide-row-link" href="hos-04-mobile-observability.html">
+                    <span class="guide-wk">HOS 4</span>
+                    <span class="guide-title">Mobile Client, Push &amp; Observability<span class="guide-desc">Run the app on your phone, receive a push notification, and trace every request.</span></span>
+                </a>
+                <span class="guide-links">
+                    <a class="guide-arrow" href="hos-04-mobile-observability.html">Guide →</a>
+                    <a class="guide-arrow code" href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-04-mobile-observability" target="_blank" rel="noopener">Code →</a>
+                </span>
+            </div>
+        </div>
+
+        <div class="legacy-toggle"><strong>Looking for the individual week-by-week guides?</strong> The original 10-week, 8-individual-HOS guides (Week 1 through Week 10) are still live, unchanged, and fully usable on their own — see the <a href="../AI-410-legacy-schedule.html">legacy schedule</a> for the full list with descriptions, or jump straight to a guide below.</div>
+
+        <h2>Legacy Week-by-Week Guides (archived)</h2>
         <div class="guide-grid">
             <div class="guide-row">
                 <a class="guide-row-link" href="week-01-foundations.html">

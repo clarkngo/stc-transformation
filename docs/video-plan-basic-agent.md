@@ -22,7 +22,7 @@
 - **Why Example #1:** The greeting agent carries the philosophical questions non-developers ask (intent, instructions, accountability) without requiring code on screen.
 - **Execution risk:** A consistent on-camera anchor (Dean or named faculty) over years matters more than production polish; compare CS50’s single visible instructor model.
 
-**Deliverables on the HTML pack:** [Strategy + action shortcuts](../adk-basic-agent-video-plan.html#strategic-framing) · [Full script on concepts page](../adk-basic-agent-concepts-interplay.html#script)
+**Deliverables on the HTML pack:** [Strategy + action shortcuts](https://clarkngo.github.io/stc-transformation/adk-basic-agent-video-plan.html#strategic-framing) · [Full script on concepts page](https://clarkngo.github.io/stc-transformation/adk-basic-agent-concepts-interplay.html#script)
 
 ---
 

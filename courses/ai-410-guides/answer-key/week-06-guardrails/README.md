@@ -1,6 +1,6 @@
 # Week 6 Answer Key — Probabilistic Logic & Guardrails
 
-Guide: [`../../week-06-guardrails.html`](../../week-06-guardrails.html)
+Guide: [`../../week-06-guardrails.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-06-guardrails.html)
 Starter: [`../../starter-code/week-06-guardrails`](../../starter-code/week-06-guardrails)
 
 Reference solution for SME/instructor verification — not what students should be given. Built on top of Week 4's RAG app.

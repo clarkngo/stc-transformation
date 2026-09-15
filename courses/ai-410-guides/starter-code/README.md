@@ -1,6 +1,6 @@
 # AI 410 — Starter Code
 
-One folder per week, matching the [10 hands-on guides](../index.html). Each folder is a **complete, standalone snapshot** of the app as it exists at the *start* of that week — everything from prior weeks is already working, and that week's new piece is stubbed in (not solved) so the exercise in the guide still has something to do.
+One folder per week, matching the [10 hands-on guides](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/index.html). Each folder is a **complete, standalone snapshot** of the app as it exists at the *start* of that week — everything from prior weeks is already working, and that week's new piece is stubbed in (not solved) so the exercise in the guide still has something to do.
 
 **Instructor/SME:** a fully-solved reference for select weeks lives in [`../answer-key/`](../answer-key/) — use it to verify a week's components actually work, not to hand to students.
 

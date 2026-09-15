@@ -3,36 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 410: AI Engineering - 10-Week Course Schedule</title>
+    <title>AI 410: AI Engineering — Course Schedule</title>
     <link rel="stylesheet" href="../assets/styles.css">
     <style>
-        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; }
-        h2 { color: #27ae60; }
-        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-10px 0 24px; }
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; margin-top:36px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
         .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .compare-box { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.9rem; }
+        .compare-box a { font-weight:600; }
         .outcomes-list li { margin-bottom:10px; }
         .principle-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin-bottom:14px; border-radius:4px; }
         .principle-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
         .principle-box p { margin:0; font-size:0.92rem; }
-        table.schedule { width:100%; border-collapse:collapse; margin:20px 0 30px; font-size:0.88rem; }
+        table.bloom { width:100%; border-collapse:collapse; margin:16px 0 8px; font-size:0.9rem; }
+        table.bloom th, table.bloom td { border:1px solid #e2e8f0; padding:10px 14px; text-align:left; vertical-align:top; }
+        table.bloom th { background:#f8fafc; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        table.bloom td.old { color:#94a3b8; }
+        table.bloom td.new { font-weight:700; color:#1e8449; }
+        .ceau-strip { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0 28px; }
+        .ceau-card { flex:1 1 200px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:14px 16px; }
+        .ceau-card .num { display:inline-block; width:24px; height:24px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.8rem; text-align:center; line-height:24px; margin-bottom:8px; }
+        .ceau-card h4 { margin:0 0 6px; font-size:0.95rem; }
+        .ceau-card p { margin:0; font-size:0.82rem; color:#475569; }
+        table.schedule { width:100%; border-collapse:collapse; margin:16px 0 30px; font-size:0.87rem; }
         table.schedule th, table.schedule td { border:1px solid #e2e8f0; padding:10px 12px; text-align:left; vertical-align:top; }
         table.schedule th { background:#f8fafc; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#475569; }
         table.schedule td.wk { font-weight:700; color:#1e8449; white-space:nowrap; }
+        table.schedule tr.checkpoint td { background:#fffbeb; }
+        table.schedule tr.review td { background:#eff6ff; }
+        table.schedule tr.project td { background:#f0fdf4; }
+        table.schedule tr.demo td { background:#fdf2f8; }
         .outcome-tag { display:inline-block; background:#dcfce7; color:#15803d; font-size:0.72rem; font-weight:700; padding:2px 7px; border-radius:6px; margin-top:4px; }
         .guide-link { display:inline-block; font-size:0.78rem; font-weight:600; margin-top:4px; margin-left:10px; }
         .week-block { border:1px solid #e2e8f0; border-radius:8px; padding:18px 20px; margin-bottom:16px; }
         .week-block h3 { margin-top:0; }
-        .checkpoint { border-color:#fbbf24; background:#fffbeb; }
-        .checkpoint h3 { color:#b45309; }
-        .scaffold-note { font-size:0.85rem; color:#475569; margin:6px 0 12px; }
-        .scaffold-note strong { color:#334155; }
-        .research-card { border:1px solid #e2e8f0; border-radius:8px; padding:16px 18px; margin-bottom:14px; }
-        .research-card h4 { margin:0 0 6px; font-size:0.98rem; }
-        .research-card .tag { display:inline-block; font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; padding:2px 8px; border-radius:6px; margin-bottom:8px; }
-        .tag.notech { background:#ede9fe; color:#6d28d9; }
-        .tag.tech { background:#fee2e2; color:#b91c1c; }
-        .tag.beginner { background:#dcfce7; color:#15803d; }
-        .takeaway-list li { margin-bottom:6px; }
+        .week-block .merge-note { font-size:0.82rem; color:#6b7280; margin:-6px 0 10px; }
+        .checkpoint-block { border-color:#fbbf24; background:#fffbeb; }
+        .checkpoint-block h3 { color:#b45309; }
+        .review-block { border-color:#93c5fd; background:#eff6ff; }
+        .review-block h3 { color:#1d4ed8; }
+        .project-block { border-color:#86efac; background:#f0fdf4; }
+        .project-block h3 { color:#15803d; }
+        .demo-block { border-color:#f9a8d4; background:#fdf2f8; }
+        .demo-block h3 { color:#be185d; }
+        table.grading { width:100%; border-collapse:collapse; margin:16px 0 30px; font-size:0.88rem; }
+        table.grading th, table.grading td { border:1px solid #e2e8f0; padding:10px 12px; text-align:left; vertical-align:top; }
+        table.grading th { background:#f8fafc; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#475569; }
+        table.grading td.wt { font-weight:700; color:#1e8449; white-space:nowrap; }
+        .open-question { background:#fdf4ff; border-left:5px solid #a855f7; padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
+        .open-question h4 { margin:0 0 6px; color:#7e22ce; font-size:0.95rem; }
+        .open-question p:last-child { margin-bottom:0; }
         .plain-terms-box { background:#f0fdf4; border-left:5px solid #22c55e; padding:14px 18px; margin:16px 0 24px; border-radius:0 4px 4px 0; font-size:0.92rem; }
         .plain-terms-box strong { color:#15803d; }
         .glossary-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px 16px; margin:12px 0; font-size:0.85rem; }
@@ -45,6 +66,8 @@
         .check-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#4338ca; }
         .check-box ul { margin:0; padding-left:18px; }
         .check-box li { margin-bottom:4px; }
+        .challenge-box { background:#ecfdf5; border-left:5px solid #10b981; padding:12px 16px; margin:12px 0 0; border-radius:0 4px 4px 0; font-size:0.85rem; }
+        .challenge-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#047857; }
     </style>
 </head>
 <body class="course-page">
@@ -55,24 +78,27 @@
       <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
     </nav>
 
-        <h1>AI 410: AI Engineering — 10-Week Course Schedule</h1>
+        <h1>AI 410: AI Engineering</h1>
 
         <div class="meta-strip">
             <span class="meta-pill">5 Credits</span>
             <span class="meta-pill">Prerequisites: CS 352, DS 479</span>
             <span class="meta-pill">10 Weeks</span>
-            <span class="meta-pill">Capstone: Agent-Driven Mobile App</span>
+            <span class="meta-pill">4 Merged HOS</span>
+            <span class="meta-pill">Capstone: Team/Term Project</span>
         </div>
 
-        <p><a href="AI-410-syllabus.html">View the full syllabus →</a> — credits, prerequisites, outcomes, grading breakdown, and the course schedule in one page.</p>
-        <p><a href="ai-410-guides/concept-companion.html">Concept Companion →</a> — every concept you should know before starting a week's Hands-On Guide, gathered in one place.</p>
-        <p><a href="ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide →</a> — how to sign up for GitHub, get a Gemini API key, and set up Redis, Expo, and Langfuse when each is needed.</p>
+        <div class="compare-box">Looking for the previous version? The original 8-individual-HOS, 10-week schedule is archived at <a href="AI-410-legacy-schedule.html">AI-410-legacy-schedule.html</a>, kept for reference.</div>
 
-        <div class="plain-terms-box"><strong>In plain terms:</strong> you'll spend the term building one chat app that gets smarter step by step — first making it talk to an AI model, then teaching it to use tools, search your own documents, handle background work, notify your phone, and finally explaining what it's actually doing under the hood. No prior backend experience assumed.</div>
+        <div class="plain-terms-box"><strong>In plain terms:</strong> you'll build the same kind of app all term — a chat assistant that gets smarter over time — but each unit you'll start from an AI-assisted working version and spend your time judging, explaining, and improving it, not just typing it from scratch. No prior backend experience assumed.</div>
+
+        <p><a href="AI-410-syllabus.html">View the full syllabus →</a> — credits, prerequisites, outcomes, grading breakdown, and the course schedule in one page.</p>
+        <p><a href="ai-410-guides/concept-companion.html">Concept Companion →</a> — every concept you should know before starting a HOS, gathered in one place.</p>
+        <p><a href="ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide →</a> — how to sign up for GitHub, get a Gemini API key, and set up Redis, Expo, and Langfuse when each is needed.</p>
 
         <p><strong>Course Description:</strong> AI Engineering applies rigorous software engineering principles to the development and deployment of autonomous, learning-based systems. This course emphasizes leveraging Large Language Models (LLMs) within purpose-built software solutions to address real-world business challenges. Students will explore system architecture for agent development and integration, context engineering through Retrieval-Augmented Generation (RAG) and vector databases, and best practices for deploying and monitoring AI models in production environments. The curriculum also covers probabilistic logic for handling nondeterministic outputs. Learners gain hands-on experience building a full-stack AI solution, focusing on asynchronous data processing, push-based AI notifications, and seamless integration of vector stores for dynamic RAG applications. Mastery of these concepts will equip students to design and implement robust AI-powered applications using full-stack AI.</p>
 
-        <h2>Outcomes</h2>
+        <h2>Course Outcomes</h2>
         <p>As a result of this course, students will know or be able to do the following:</p>
         <ol class="outcomes-list">
             <li><strong>O1 —</strong> Define and explain the essential components of full-stack AI systems, such as LLM architecture, agentic loops, and the differences between prompt engineering and context engineering.</li>
@@ -82,242 +108,206 @@
             <li><strong>O5 —</strong> Develop a fully functional, agent-driven mobile application that seamlessly integrates real-time notifications and persistent vector storage into a comprehensive full-stack solution.</li>
         </ol>
 
-        <h2>Who This Schedule Is Designed For</h2>
-        <p>STC's AI Engineering cohort skews toward students who are new to production software concepts — many arrive via CS 352 and DS 479 with programming fundamentals but limited exposure to backend infrastructure like queues, vector databases, or observability tooling. The schedule below is built around four scaffolding principles, drawn from research into how other hands-on AI programs teach non-technical and beginner audiences (see <a href="#research">Research &amp; Design Rationale</a> below).</p>
+        <h2>Course Design Philosophy: Merge, Don't Reduce</h2>
+        <p>Each Hands-On Skill (HOS) unit pairs a new AI/agent concept with a new piece of backend tooling (FastAPI, Chroma, Redis/RQ, Expo, Langfuse). Asking students new to production software to absorb a new <em>concept</em> and a new <em>tech component</em> in the same sitting, eight times in a row, is cognitive overload on two axes at once — so two related skills are taught together as one merged HOS, without doubling the load.</p>
 
         <div class="principle-box">
-            <h4>1. One running app, not ten disposable ones</h4>
-            <p>Every week extends the same app rather than starting a new project from scratch. Students always know what they're building toward, and each week's work is visibly load-bearing for the capstone.</p>
-        </div>
-        <div class="principle-box">
-            <h4>2. A starter scaffold every week</h4>
-            <p>Students never face a blank repo. Each week ships with working boilerplate for everything <em>except</em> that week's new concept, so effort goes into the one skill being taught, not re-deriving plumbing.</p>
-        </div>
-        <div class="principle-box">
-            <h4>3. Managed, low-code infrastructure for the hard backend pieces</h4>
-            <p>Queues and observability run on pre-provisioned free/managed tiers (e.g. Upstash Redis, Langfuse, Expo Go); the vector store (Chroma) goes a step further and needs no provisioning at all — it's an embedded database that ships as a Python package. Either way, students engineer at the application layer instead of standing up infrastructure — the same reason no-code AI programs keep infra out of the learner's hands.</p>
-        </div>
-        <div class="principle-box">
-            <h4>4. A mid-course checkpoint before the hardest weeks</h4>
-            <p>Week 5 pauses new material entirely for an architecture review, so students consolidate what they've built before the course's two most infrastructure-heavy weeks (async processing, mobile + push).</p>
+            <h4>The fix isn't cutting content — it's changing what AI does in the loop</h4>
+            <p>Every one of the original 8 skills still gets taught, and all 5 Outcomes still get covered — nothing is dropped. What changes is that <strong>students use an AI coding assistant to scaffold the boilerplate</strong> (the FastAPI wiring, the Chroma setup, the Redis connection) instead of spending class time building it line by line. That reclaims enough time to teach two related skills together as one merged unit — because the part that used to eat a whole week (getting the plumbing working) now takes an afternoon.</p>
         </div>
 
-        <h2>Schedule at a Glance</h2>
-        <p>Every row links to a step-by-step hands-on guide — <a href="ai-410-guides/index.html">see all 10 guides</a>.</p>
+        <h2>The CEAU Cycle — Replacing "Score the Code"</h2>
+        <p>If an AI assistant can produce working code, grading whether the code works stops measuring whether the student understands it. Traditional Bloom's builds up <em>to</em> Create as the hardest, final stage. In an AI-assisted course that ordering is backwards — Create is now the fast, cheap part. The stages that actually take skill come after it:</p>
+
+        <table class="bloom">
+            <tr><th>Traditional Bloom's Order</th><th>AI-Era Reordered Stage</th></tr>
+            <tr><td class="old">Stage 1: Foundational</td><td class="new">Create / Scaffold</td></tr>
+            <tr><td class="old">Stage 2: Critical Gate</td><td class="new">Evaluate</td></tr>
+            <tr><td class="old">Stage 3: Deep Dissection</td><td class="new">Analyze</td></tr>
+            <tr><td class="old">Stage 4: Mastery</td><td class="new">Understand &amp; Refine</td></tr>
+        </table>
+
+        <p>Every HOS is graded across all four stages instead of on code correctness alone:</p>
+
+        <div class="ceau-strip">
+            <div class="ceau-card"><span class="num">1</span><h4>Create / Scaffold</h4><p>Student uses an AI assistant to get a working version running fast. Not graded on its own — this is the starting point, not the deliverable.</p></div>
+            <div class="ceau-card"><span class="num">2</span><h4>Evaluate</h4><p>Is the AI-produced result actually correct? What's missing, wrong, or fragile? The critical gate — can the student judge output they didn't write by hand?</p></div>
+            <div class="ceau-card"><span class="num">3</span><h4>Analyze</h4><p>Why does this work, mechanically? Dissect one specific piece (a function, a query, a request flow) and explain it in the student's own words.</p></div>
+            <div class="ceau-card"><span class="num">4</span><h4>Understand &amp; Refine</h4><p>Extend or fix something in the scaffold by hand — the mastery check. Can they change it correctly without AI doing that part too?</p></div>
+        </div>
+
+        <p>Each HOS's artifact is a screenshot of the working result plus a short written response walking through Evaluate → Analyze → Understand &amp; Refine for that unit's build. Cheap to grade at class scale, and hard to fake without having actually engaged with the material.</p>
+
+        <div class="open-question">
+            <h4>Naming — one decided, one still open</h4>
+            <p><strong>Decided:</strong> the renamed PE — a smaller, individual transfer task after each HOS — is called "Application Challenge" — "Challenge" signals a higher Bloom's tier (evaluating, synthesizing, creating) without sounding intimidating. It's a separate category from the Team/Term Project. <strong>Still open:</strong> "the CEAU Cycle" for the per-HOS rubric structure remains a working name pending sign-off.</p>
+        </div>
+
+        <h2>4 Merged HOS</h2>
+        <table class="grading">
+            <tr><th>HOS</th><th>Merges (legacy weeks)</th><th>Outcome(s)</th></tr>
+            <tr><td>HOS 1 — Foundations &amp; the Agentic Loop</td><td>Week 1 + Week 2</td><td>O1</td></tr>
+            <tr><td>HOS 2 — Embeddings, Chunking &amp; RAG Pipelines</td><td>Week 3 + Week 4</td><td>O2</td></tr>
+            <tr><td>HOS 3 — Guardrails &amp; Asynchronous Processing</td><td>Week 6 + Week 7</td><td>O3</td></tr>
+            <tr><td>HOS 4 — Mobile Client, Push &amp; Observability</td><td>Week 8 + Week 9</td><td>O4, O5</td></tr>
+        </table>
+
+        <h2>Course Assignments and Grading</h2>
+        <p>Per the Dean's requirement, Muddiest Point and Concept Debate are graded activities, not just formative checkpoints. Application Challenge is a separate category from the Team/Term Project — a smaller transfer task after each HOS, not the same thing as the capstone.</p>
+        <table class="grading">
+            <tr><th>Component</th><th>Weight</th><th>What it covers</th></tr>
+            <tr>
+                <td>Muddiest Point (MP)</td>
+                <td class="wt">5%</td>
+                <td>A short reflection identifying the most confusing part of that week's HOS content, submitted before the week's build begins.</td>
+            </tr>
+            <tr>
+                <td>Concept Debate (CD)</td>
+                <td class="wt">5%</td>
+                <td>A structured, staged discussion-board activity connecting that week's concepts (or, in Week 6, all 4 HOS together).</td>
+            </tr>
+            <tr>
+                <td>4 Hands-On Skill (HOS) units</td>
+                <td class="wt">50%</td>
+                <td>Weeks 1-4, one merged HOS per week, each graded on the CEAU cycle (Evaluate, Analyze, Understand &amp; Refine — not on code correctness alone). 12.5% per HOS.</td>
+            </tr>
+            <tr>
+                <td>4 Application Challenges</td>
+                <td class="wt">20%</td>
+                <td>One immediately after each HOS — a smaller, individual transfer task applying that week's skill to a new scenario (design/evaluate/critique, not another full build). 5% each.</td>
+            </tr>
+            <tr>
+                <td>Team/Term Project</td>
+                <td class="wt">20%</td>
+                <td>Weeks 7-9. Students (team or individual, their choice) analyze and apply the 4 HOS together into one cohesive piece of work, presented in Week 10.</td>
+            </tr>
+        </table>
+
+        <h2>Schedule</h2>
+        <p>Compressing 8 HOS into 4 frees three additional weeks: a dedicated integration/review week (Week 6) before Team/Term Project work begins in Week 7.</p>
         <table class="schedule">
-            <tr><th>Wk</th><th>Concept (one per week)</th><th>Scaffold Provided</th><th>App Milestone</th><th>Outcome</th><th>Guide</th></tr>
-            <tr><td class="wk">1</td><td>Foundations of full-stack AI systems; LLM architecture</td><td>Pre-wired chat UI + backend stub, deployed to a free host</td><td>Swap in your own LLM call — first working request/response</td><td>O1</td><td><a href="ai-410-guides/week-01-foundations.html">Guide →</a></td></tr>
-            <tr><td class="wk">2</td><td>Agentic loops, tool calling, structured outputs</td><td>Agent-loop skeleton with one dummy tool stubbed in</td><td>Add a real tool call the agent can decide to invoke</td><td>O1</td><td><a href="ai-410-guides/week-02-agentic-loop.html">Guide →</a></td></tr>
-            <tr><td class="wk">3</td><td>Embeddings &amp; chunking (context engineering I)</td><td>Sandbox notebook + sample document set, managed embeddings API</td><td>Ingestion script that chunks/embeds docs and inspects similarity</td><td>O1</td><td><a href="ai-410-guides/week-03-embeddings-chunking.html">Guide →</a></td></tr>
-            <tr><td class="wk">4</td><td>Vector databases &amp; RAG pipelines (context engineering II)</td><td>Embedded vector DB (Chroma) — no account, no setup</td><td>Wire retrieval into the agent — RAG goes live in the app</td><td>O2</td><td><a href="ai-410-guides/week-04-vector-db-rag.html">Guide →</a></td></tr>
-            <tr><td class="wk">5</td><td><strong>Checkpoint —</strong> no new build; architecture &amp; bottleneck review</td><td>Shared diagramming template + instructor review rubric</td><td>Written/diagrammed Architecture &amp; Bottleneck Review</td><td>O3</td><td><a href="ai-410-guides/week-05-checkpoint-architecture-review.html">Guide →</a></td></tr>
-            <tr><td class="wk">6</td><td>Probabilistic logic &amp; guardrails</td><td>Pre-built validation/retry middleware template</td><td>Add a guardrail layer that catches and retries bad output</td><td>O3</td><td><a href="ai-410-guides/week-06-guardrails.html">Guide →</a></td></tr>
-            <tr><td class="wk">7</td><td>Asynchronous data processing</td><td>Queue + worker boilerplate wired to a managed Redis instance</td><td>Move ingestion to a background job with a status endpoint</td><td>O3</td><td><a href="ai-410-guides/week-07-async-processing.html">Guide →</a></td></tr>
-            <tr><td class="wk">8</td><td>Mobile client &amp; real-time push notifications</td><td>Pre-built Expo Go mobile shell wired to the backend API</td><td>Run the app on your phone, receive a push when a job finishes</td><td>O5</td><td><a href="ai-410-guides/week-08-mobile-push.html">Guide →</a></td></tr>
-            <tr><td class="wk">9</td><td>Observability &amp; evaluation</td><td>Pre-provisioned Langfuse project, add instrumentation lines</td><td>Instrument the pipeline; critique one real failure it surfaces</td><td>O4</td><td><a href="ai-410-guides/week-09-observability.html">Guide →</a></td></tr>
-            <tr><td class="wk">10</td><td>Capstone integration, deployment &amp; demo</td><td>One-click deploy template (Docker + free-tier host)</td><td>Deploy and live-demo the finished agent-driven mobile app</td><td>O5</td><td><a href="ai-410-guides/week-10-capstone-deploy.html">Guide →</a></td></tr>
+            <tr><th>Wk</th><th>Focus</th><th>Format</th><th>Outcome</th></tr>
+            <tr><td class="wk">1</td><td>HOS 1 — Foundations &amp; the Agentic Loop</td><td>Lecture → Concept Debate → CEAU build → Application Challenge → Knowledge Check</td><td>O1</td></tr>
+            <tr><td class="wk">2</td><td>HOS 2 — Embeddings, Chunking &amp; RAG</td><td>Lecture → Concept Debate → CEAU build → Application Challenge → Knowledge Check</td><td>O2</td></tr>
+            <tr><td class="wk">3</td><td>HOS 3 — Guardrails &amp; Async Processing</td><td>Lecture → Concept Debate → CEAU build → Application Challenge → Knowledge Check</td><td>O3</td></tr>
+            <tr><td class="wk">4</td><td>HOS 4 — Mobile, Push &amp; Observability</td><td>Lecture → Concept Debate → CEAU build → Application Challenge → Knowledge Check</td><td>O4, O5</td></tr>
+            <tr class="checkpoint"><td class="wk">5</td><td>Checkpoint: Architecture &amp; Bottleneck Review</td><td>No new build — review architecture across all 4 HOS together</td><td>O3</td></tr>
+            <tr class="review"><td class="wk">6</td><td>Integration &amp; Alternate Review</td><td>Concept debate connecting all 4 HOS; scope and form project teams</td><td>—</td></tr>
+            <tr class="project"><td class="wk">7</td><td>Team/Term Project — Project Work</td><td>Team/individual project work time</td><td>—</td></tr>
+            <tr class="project"><td class="wk">8</td><td>Team/Term Project — Project Work</td><td>Team/individual project work time</td><td>—</td></tr>
+            <tr class="project"><td class="wk">9</td><td>Team/Term Project — Project Work</td><td>Team/individual project work time; polish</td><td>—</td></tr>
+            <tr class="demo"><td class="wk">10</td><td>Final Presentation &amp; Demo</td><td>Live presentation of the Team/Term Project</td><td>O1–O5</td></tr>
         </table>
 
         <h2>Weekly Breakdown</h2>
 
         <div class="week-block">
-            <h3>Week 1 — Foundations of Full-Stack AI Systems</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> a working chat UI + backend stub, already deployed to a free host — nothing to configure before class.</p>
-            <p>Introduces LLM architecture at the level a full-stack engineer needs (context windows, tokens, API shape) and draws the line between prompt engineering (what you ask) and context engineering (what the model can see).</p>
-            <div class="example-box"><p><strong>App milestone:</strong> Replace the stub LLM call in the starter repo with your own — the app answers its first real question. This becomes the base every later week builds on.</p></div>
+            <h3>Week 1 — HOS 1: Foundations &amp; the Agentic Loop</h3>
+            <p class="merge-note">Merges legacy Weeks 1–2.</p>
+            <p>LLM architecture at the level a full-stack engineer needs, plus the agentic loop and tool calling — the two concepts that make everything after this possible. Students scaffold both with an AI assistant, then work through Evaluate/Analyze/Understand &amp; Refine on the result.</p>
             <span class="outcome-tag">Outcome 1</span>
-            <a class="guide-link" href="ai-410-guides/week-01-foundations.html">Open hands-on guide →</a>
+            <a class="guide-link" href="ai-410-guides/hos-01-foundations-agentic-loop.html">Open hands-on guide →</a>
             <div class="glossary-box"><h5>New words this week</h5><dl>
-                <dt>Frontend &amp; backend —</dt><dd>the two halves of the app: what the user sees and clicks (frontend) versus the server holding your API key and doing the real work (backend).</dd>
+                <dt>Frontend &amp; backend —</dt><dd>the two halves of the app: what the user sees (frontend) versus the server holding your API key (backend).</dd>
                 <dt>LLM —</dt><dd>the AI model itself (here, Google's Gemini) that generates the reply.</dd>
+                <dt>Agentic loop &amp; tool calling —</dt><dd>the cycle where the model decides to use a real function instead of just replying with text, and the result comes back before it answers.</dd>
             </dl></div>
+            <div class="challenge-box"><h5>Application Challenge</h5><p style="margin:0">Design the tool schemas (not full implementations) a completely different kind of business would need for its own agent, and justify each one — practicing the judgment call of "should the model be able to call this," not just the mechanics of calling it.</p></div>
             <div class="check-box"><h5>Knowledge check</h5><ul>
-                <li>What's the difference between the frontend and the backend, and why does the API key live only in the backend?</li>
-                <li>Walk through what happens, step by step, from typing a message to seeing a reply.</li>
+                <li>What's the difference between the frontend and backend, and why does the API key live in the backend only?</li>
+                <li>Walk through what happens, step by step, from typing a message to the agent deciding to call a tool.</li>
             </ul></div>
         </div>
 
         <div class="week-block">
-            <h3>Week 2 — Structured Outputs &amp; the Agentic Loop</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> agent-loop skeleton with one dummy tool already stubbed in, so the plumbing for "model decides, tool executes, result returns to model" is visible before students write their own.</p>
-            <p>Covers the ReAct-style agentic loop, function/tool calling, and structured JSON outputs — the core pattern behind every agent students will build for the rest of the course.</p>
-            <div class="example-box"><p><strong>App milestone:</strong> Add a real tool (e.g. a calculator or lookup call) to the loop, so the agent can choose to use it mid-conversation.</p></div>
-            <span class="outcome-tag">Outcome 1</span>
-            <a class="guide-link" href="ai-410-guides/week-02-agentic-loop.html">Open hands-on guide →</a>
-            <div class="glossary-box"><h5>New words this week</h5><dl>
-                <dt>Agentic loop —</dt><dd>the cycle where the model decides to use a tool, the tool runs, and the result goes back to the model before it answers.</dd>
-                <dt>Tool / function calling —</dt><dd>letting the model trigger a real function (like a calculator) instead of only generating text.</dd>
-            </dl></div>
-            <div class="check-box"><h5>Knowledge check</h5><ul>
-                <li>Why does the agent need to call a tool at all, instead of just answering directly?</li>
-                <li>What would go wrong if the tool's result never made it back to the model?</li>
-            </ul></div>
-        </div>
-
-        <div class="week-block">
-            <h3>Week 3 — Embeddings &amp; Chunking (Context Engineering I)</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> a sandbox notebook pre-loaded with a small sample document set and a managed embeddings API key — no self-hosted embedding model to configure.</p>
-            <p>Builds intuition for embeddings and chunking strategies in isolation, before they're wired into the live app next week — matching how beginner-friendly programs introduce one new idea at a time rather than stacking RAG's full pipeline in a single sitting.</p>
-            <div class="example-box"><p><strong>App milestone:</strong> Write an ingestion script that chunks and embeds the sample documents, and inspect similarity scores directly — not yet connected to the running app.</p></div>
-            <span class="outcome-tag">Outcome 1</span>
-            <a class="guide-link" href="ai-410-guides/week-03-embeddings-chunking.html">Open hands-on guide →</a>
-            <div class="glossary-box"><h5>New words this week</h5><dl>
-                <dt>Embedding —</dt><dd>a list of numbers representing the meaning of a piece of text, so similar meanings end up as similar numbers.</dd>
-                <dt>Chunking —</dt><dd>splitting a long document into smaller pieces before embedding it.</dd>
-            </dl></div>
-            <div class="check-box"><h5>Knowledge check</h5><ul>
-                <li>Why chunk a document before embedding it, instead of embedding the whole thing at once?</li>
-                <li>If two sentences mean almost the same thing, what would you expect their embeddings to look like?</li>
-            </ul></div>
-        </div>
-
-        <div class="week-block">
-            <h3>Week 4 — Vector Databases &amp; RAG Pipelines (Context Engineering II)</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> Chroma, an embedded vector database that ships as a Python package — students get a working <code>ingest.py</code> from day one, with no account to create and no connection string to manage.</p>
-            <p>Connects Week 3's embeddings to a persistent vector store and a retrieval step, completing a first working RAG pipeline.</p>
-            <div class="example-box"><p><strong>App milestone:</strong> Wire retrieval into the Week 2 agent. The app now answers questions grounded in the documents embedded last week — RAG is live.</p></div>
+            <h3>Week 2 — HOS 2: Embeddings, Chunking &amp; RAG Pipelines</h3>
+            <p class="merge-note">Merges legacy Weeks 3–4.</p>
+            <p>Context engineering end to end: chunking and embedding documents, then wiring retrieval into the agent so answers are grounded in real data instead of guessed.</p>
             <span class="outcome-tag">Outcome 2</span>
-            <a class="guide-link" href="ai-410-guides/week-04-vector-db-rag.html">Open hands-on guide →</a>
+            <a class="guide-link" href="ai-410-guides/hos-02-embeddings-rag.html">Open hands-on guide →</a>
             <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Embedding &amp; chunking —</dt><dd>splitting a document into pieces (chunking), then turning each piece into a list of numbers representing its meaning (embedding).</dd>
                 <dt>Vector database —</dt><dd>a database built to store embeddings and quickly find the closest matches to a query.</dd>
                 <dt>RAG (Retrieval-Augmented Generation) —</dt><dd>having the model answer using retrieved chunks of real text instead of only its own memory.</dd>
             </dl></div>
+            <div class="challenge-box"><h5>Application Challenge</h5><p style="margin:0">Given a different, unfamiliar RAG pipeline's code, evaluate it: identify one thing it gets right, one thing that's likely to quietly underperform (not crash — just answer worse), and explain how you'd confirm your suspicion without running it.</p></div>
             <div class="check-box"><h5>Knowledge check</h5><ul>
-                <li>Where do the retrieved chunks go before the model generates its answer?</li>
-                <li>What's one way you could prove RAG is actually improving the answer, not just adding overhead?</li>
+                <li>Why chunk a document before embedding it?</li>
+                <li>Where do retrieved chunks go before the model generates its answer, and how would you prove retrieval is actually helping?</li>
             </ul></div>
         </div>
 
-        <div class="week-block checkpoint">
-            <h3>Week 5 — Checkpoint: Architecture &amp; Bottleneck Review</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> a shared diagramming template and an instructor-led review rubric. No new API or build task this week.</p>
-            <p>No new material is introduced. Students step back and diagram their app's current architecture — LLM call → agent loop → tool calls → RAG → vector store — and identify, in writing, where nondeterminism or latency could break the system before it gets harder to reason about. This directly targets the analytical half of Outcome 3, which the build-only weeks around it don't exercise on their own, and mirrors the consolidation break other programs use before their most infrastructure-heavy modules.</p>
-            <div class="example-box"><p><strong>Deliverable:</strong> a short written/diagrammed Architecture &amp; Bottleneck Review, reviewed live with the instructor.</p></div>
+        <div class="week-block">
+            <h3>Week 3 — HOS 3: Guardrails &amp; Asynchronous Processing</h3>
+            <p class="merge-note">Merges legacy Weeks 6–7.</p>
+            <p>Handling nondeterministic output (validation/retry guardrails) and moving long-running work off the request path (background jobs) — the two reliability concerns that show up together in any real production agent.</p>
             <span class="outcome-tag">Outcome 3</span>
-            <a class="guide-link" href="ai-410-guides/week-05-checkpoint-architecture-review.html">Open hands-on guide →</a>
+            <a class="guide-link" href="ai-410-guides/hos-03-guardrails-async.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Nondeterministic &amp; guardrail —</dt><dd>the same input can produce a different output each time (nondeterministic); a guardrail checks that output and retries or fixes it if something's wrong.</dd>
+                <dt>Asynchronous (async), queue &amp; worker —</dt><dd>work that runs in the background instead of making the user wait, held in a waiting line (queue) and picked up by a separate process (worker).</dd>
+            </dl></div>
+            <div class="challenge-box"><h5>Application Challenge</h5><p style="margin:0">Design (schema + validation rule, not necessarily working code) a guardrail for a tool this course hasn't built — argue for the one field you'd validate first and what specifically could go wrong if you skipped it.</p></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>Why can't you trust every model response without checking it first?</li>
+                <li>Why move long-running work to a background job instead of making the user wait?</li>
+            </ul></div>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 4 — HOS 4: Mobile Client, Push &amp; Observability</h3>
+            <p class="merge-note">Merges legacy Weeks 8–9.</p>
+            <p>A real mobile client wired to the backend with push notifications, instrumented with tracing so its behavior is observable in production — full-stack, end to end.</p>
+            <span class="outcome-tag">Outcome 4</span>
+            <span class="outcome-tag">Outcome 5</span>
+            <a class="guide-link" href="ai-410-guides/hos-04-mobile-observability.html">Open hands-on guide →</a>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Push notification &amp; push token —</dt><dd>a message sent to a device even when the app isn't open, addressed using a unique ID (push token) for that device.</dd>
+                <dt>Observability &amp; trace —</dt><dd>being able to see what a running system is actually doing (observability), via a recorded record of one request's full journey (trace).</dd>
+            </dl></div>
+            <div class="challenge-box"><h5>Application Challenge</h5><p style="margin:0">Propose an observability plan (what to trace, what to score, what alert you'd want) for a different kind of AI feature than this course built — argue for what would actually be worth watching versus what would just be noise.</p></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>What has to happen before your phone can receive a push notification?</li>
+                <li>If a user reports a wrong answer, what would you check first to figure out why?</li>
+            </ul></div>
+        </div>
+
+        <div class="week-block checkpoint-block">
+            <h3>Week 5 — Checkpoint: Architecture &amp; Bottleneck Review</h3>
+            <p>No new build. Students diagram the combined architecture across all 4 HOS and identify where nondeterminism or latency could break the system — now reviewing a complete picture instead of one week's slice of it.</p>
+            <span class="outcome-tag">Outcome 3</span>
             <div class="check-box"><h5>Review prompt — no new vocabulary this week</h5><ul>
-                <li>Can you draw, from memory, the path a message takes from your app through to the vector database and back?</li>
+                <li>Can you draw, from memory, the path a message takes across all 4 HOS, start to finish?</li>
                 <li>Where in that path could something slow down or fail?</li>
             </ul></div>
         </div>
 
-        <div class="week-block">
-            <h3>Week 6 — Probabilistic Logic &amp; Guardrails</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> a pre-built validation/retry middleware template — students plug in their own output schema rather than writing retry logic from scratch.</p>
-            <p>Covers handling nondeterministic LLM output: schema validation, retries, and fallback routing — directly informed by the bottlenecks each student flagged in Week 5.</p>
-            <div class="example-box"><p><strong>App milestone:</strong> Add a guardrail layer to the RAG agent so malformed or hallucinated responses are caught and retried instead of surfacing to the user.</p></div>
-            <span class="outcome-tag">Outcome 3</span>
-            <a class="guide-link" href="ai-410-guides/week-06-guardrails.html">Open hands-on guide →</a>
-            <div class="glossary-box"><h5>New words this week</h5><dl>
-                <dt>Nondeterministic —</dt><dd>the same input to a model can produce a different output each time you run it.</dd>
-                <dt>Guardrail —</dt><dd>a check that validates the model's output and retries or fixes it if something's wrong.</dd>
-            </dl></div>
-            <div class="check-box"><h5>Knowledge check</h5><ul>
-                <li>Why can't you just trust every response the model gives you without checking it?</li>
-                <li>What should happen if a guardrail catches a bad response — just fail, or try again?</li>
+        <div class="week-block review-block">
+            <h3>Week 6 — Integration &amp; Alternate Review</h3>
+            <p>A deliberate pause: no new build, no new tech. Concept debate connecting all 4 HOS into one coherent system, and time to scope and form project teams (or confirm going individual) before Team/Term Project work begins.</p>
+            <div class="check-box"><h5>Review prompt</h5><ul>
+                <li>Which of the 4 HOS depends on which other one, and in what order do they actually run?</li>
+                <li>What's one thing you'd want to double-check before starting the term project?</li>
             </ul></div>
         </div>
 
-        <div class="week-block">
-            <h3>Week 7 — Asynchronous Data Processing</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> queue and worker boilerplate pre-wired to a managed, serverless Redis instance (Upstash free tier) — students write job logic, not queue infrastructure.</p>
-            <p>Introduces event-driven, background processing so long-running work (like document ingestion) stops blocking the app — the layer most students without backend experience haven't touched before.</p>
-            <div class="example-box"><p><strong>App milestone:</strong> Move document ingestion to a background job and add a job-status endpoint, so uploading new documents no longer freezes the app.</p></div>
-            <span class="outcome-tag">Outcome 3</span>
-            <a class="guide-link" href="ai-410-guides/week-07-async-processing.html">Open hands-on guide →</a>
-            <div class="glossary-box"><h5>New words this week</h5><dl>
-                <dt>Asynchronous (async) —</dt><dd>work that happens in the background instead of making the user wait for it to finish.</dd>
-                <dt>Queue &amp; worker —</dt><dd>a waiting line of jobs (queue) picked up one at a time by a separate running process (worker).</dd>
-            </dl></div>
-            <div class="check-box"><h5>Knowledge check</h5><ul>
-                <li>Why move document ingestion to a background job instead of doing it during the request?</li>
-                <li>If the queue is empty, what does the worker do?</li>
+        <div class="week-block project-block">
+            <h3>Weeks 7–9 — Team/Term Project</h3>
+            <p>Students (team or individual, their choice) analyze and apply the 4 HOS together — the project is explicitly a synthesis of what was built in Weeks 1–4, not a new concept. Three weeks of work time, with instructor check-ins.</p>
+            <div class="check-box"><h5>Progress checks</h5><ul>
+                <li><strong>Week 7:</strong> Have you scoped exactly which HOS pieces your project combines, and why?</li>
+                <li><strong>Week 8:</strong> Can you demo a working (even rough) version to a partner or the instructor?</li>
+                <li><strong>Week 9:</strong> Is your project's story clear enough that someone with no tech background could follow your Week 10 demo?</li>
             </ul></div>
         </div>
 
-        <div class="week-block">
-            <h3>Week 8 — Mobile Client &amp; Real-Time Push Notifications</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> a pre-built Expo Go mobile shell already wired to the student's backend API — no Xcode or Android Studio required. Students test on their own phone by scanning a QR code.</p>
-            <p>Connects the backend to a real mobile client and adds push notifications tied to backend events, using Expo's push service over FCM/APNs.</p>
-            <div class="example-box"><p><strong>App milestone:</strong> Run the app on your own phone and receive a real push notification the moment a Week 7 background job finishes.</p></div>
-            <span class="outcome-tag">Outcome 5</span>
-            <a class="guide-link" href="ai-410-guides/week-08-mobile-push.html">Open hands-on guide →</a>
-            <div class="glossary-box"><h5>New words this week</h5><dl>
-                <dt>Push notification —</dt><dd>a message sent to a device even when the app isn't open.</dd>
-                <dt>Push token —</dt><dd>a unique ID that tells a push service which specific device to notify.</dd>
-            </dl></div>
-            <div class="check-box"><h5>Knowledge check</h5><ul>
-                <li>Why does the backend need to store a push token instead of just remembering "the user's phone"?</li>
-                <li>What has to happen before your phone can receive a push notification at all?</li>
+        <div class="week-block demo-block">
+            <h3>Week 10 — Final Presentation &amp; Demo</h3>
+            <p>Live demonstration of the Team/Term Project, touching every outcome the course covered.</p>
+            <div class="check-box"><h5>Self-check before you present</h5><ul>
+                <li>Can you explain, without notes, how each of the 4 HOS shows up in your final project?</li>
             </ul></div>
         </div>
-
-        <div class="week-block">
-            <h3>Week 9 — Observability &amp; Evaluation</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> a Langfuse (or equivalent) project pre-provisioned per student — instrumentation is a handful of added lines, not a dashboard built from scratch.</p>
-            <p>Covers tracing, latency/cost tracking, and RAG-specific evaluation metrics (faithfulness, retrieval precision) for judging probabilistic output in production.</p>
-            <div class="example-box"><p><strong>App milestone:</strong> Instrument the full pipeline — agent, RAG, async job, push — with tracing, and write a short critique of one real failure the dashboard surfaces.</p></div>
-            <span class="outcome-tag">Outcome 4</span>
-            <a class="guide-link" href="ai-410-guides/week-09-observability.html">Open hands-on guide →</a>
-            <div class="glossary-box"><h5>New words this week</h5><dl>
-                <dt>Observability —</dt><dd>being able to see what a running system is actually doing, not just whether it crashed.</dd>
-                <dt>Trace —</dt><dd>a recorded record of one request's full journey through the system, step by step.</dd>
-            </dl></div>
-            <div class="check-box"><h5>Knowledge check</h5><ul>
-                <li>If a user says "the app gave me a wrong answer," what would you look at first to figure out why?</li>
-                <li>What's the difference between a slow response and a wrong response, and how would you tell them apart from a trace?</li>
-            </ul></div>
-        </div>
-
-        <div class="week-block">
-            <h3>Week 10 — Capstone Integration, Deployment &amp; Demo</h3>
-            <p class="scaffold-note"><strong>Scaffold:</strong> a one-click deploy template (Docker + free-tier host) prepared in advance so deployment mechanics don't compete with final debugging time.</p>
-            <p>Final integration, hardening, and a live demo of the complete system built week over week.</p>
-            <div class="example-box"><p><strong>App milestone:</strong> Deploy the finished agent-driven mobile app — RAG, guardrails, async processing, push notifications, and observability, all in one running product — and demo it live for instructor and peer critique.</p></div>
-            <span class="outcome-tag">Outcome 5</span>
-            <a class="guide-link" href="ai-410-guides/week-10-capstone-deploy.html">Open hands-on guide →</a>
-            <div class="glossary-box"><h5>New words this week</h5><dl>
-                <dt>Deploy / deployment —</dt><dd>making the app run on a live server other people can reach, not just on your own machine.</dd>
-                <dt>Environment variable —</dt><dd>a setting (like an API key) configured outside your code so it isn't hardcoded or committed to Git.</dd>
-            </dl></div>
-            <div class="check-box"><h5>Knowledge check</h5><ul>
-                <li>What's different about running your app on your laptop versus running it deployed for someone else to use?</li>
-                <li>If your deployed app can't find your API key, where would you look first?</li>
-            </ul></div>
-        </div>
-
-        <h2 id="research">Research &amp; Design Rationale</h2>
-        <p>To calibrate pacing for an audience newer to production software concepts, three representative hands-on AI programs were reviewed. None is a direct template — AI 410's outcomes require real full-stack engineering (async processing, a real mobile app, production observability), which rules out going fully no-code — but each contributed a specific scaffolding technique used above.</p>
-
-        <div class="research-card">
-            <span class="tag notech">Non-Technical Audience</span>
-            <h4><a href="https://professionalonline2.mit.edu/no-code-artificial-intelligence-machine-learning-program" target="_blank" rel="noopener">MIT No-Code AI and Agentic AI Program</a></h4>
-            <p>14 weeks, explicitly targets "professionals from technical and non-technical backgrounds" (PMs, business leaders, non-CS founders). Six weeks of core concepts, then a dedicated consolidation/break week, before advancing into RAG (week 9) and agents (weeks 12–13). Three capstone projects, each scoped to one new capability rather than integrating everything at once. Keeps the entire curriculum no-code (KNIME, n8n) — no mobile app — precisely because the audience is non-technical.</p>
-            <ul class="takeaway-list">
-                <li><strong>Borrowed:</strong> the mid-course consolidation checkpoint (→ AI 410 Week 5) and gating each capstone project to a single new capability.</li>
-            </ul>
-        </div>
-
-        <div class="research-card">
-            <span class="tag tech">Technical Audience</span>
-            <h4><a href="https://datasciencedojo.com/agentic-ai-bootcamp/" target="_blank" rel="noopener">Data Science Dojo — Agentic AI Bootcamp</a></h4>
-            <p>The closest structural match in length and topic sequence: 10 weeks, vector databases, RAG, agentic design patterns, protocols (MCP/A2A), and a multi-agent capstone in week 10. But prerequisites are "basic Python" plus prior LLM/transformer/embeddings knowledge, and it targets ML engineers, backend engineers, and solutions architects — the pacing assumes a technical audience and moves faster than appropriate here.</p>
-            <ul class="takeaway-list">
-                <li><strong>Borrowed:</strong> the overall 10-week length and topic ordering (vector DBs/RAG → agent patterns → evaluation → capstone).</li>
-                <li><strong>Not borrowed:</strong> its pacing — most weeks introduce 3–4 new concepts simultaneously, which AI 410 deliberately avoids.</li>
-            </ul>
-        </div>
-
-        <div class="research-card">
-            <span class="tag beginner">Beginner-First</span>
-            <h4><a href="https://www.nocode.mba/tracks/building-apps-with-ai" target="_blank" rel="noopener">No Code MBA — Building Apps with AI</a></h4>
-            <p>Genuinely beginner-first: the only stated prerequisite is "a willingness to learn." Rather than one compounding capstone, it teaches through 11 small, standalone apps (a chatbot, a PDF-chat app using embeddings and Pinecone, an image generator), each built in under two hours, introducing one new API or concept at a time before anything is combined.</p>
-            <ul class="takeaway-list">
-                <li><strong>Borrowed:</strong> the "one new concept per week, everything else pre-wired" scaffolding pattern, adapted so each week extends one running app instead of starting a new one.</li>
-            </ul>
-        </div>
-
-        <p style="color:#6b7280;font-size:0.85rem;margin-top:20px">Research conducted August 2026 to inform this schedule's pacing and scaffolding decisions; not a formal literature review.</p>
     </div>
     <script src="../assets/nav.js"></script>
 </body>

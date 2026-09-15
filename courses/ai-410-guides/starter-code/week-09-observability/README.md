@@ -1,6 +1,6 @@
 # Week 9 Starter — Observability & Evaluation
 
-Guide: [`../../week-09-observability.html`](../../week-09-observability.html)
+Guide: [`../../week-09-observability.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-09-observability.html)
 
 ## What's already working
 

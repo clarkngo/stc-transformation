@@ -1,6 +1,6 @@
 # HOS 1 Answer Key — Foundations & the Agentic Loop
 
-Guide: [`../../hos-01-foundations-agentic-loop.html`](../../hos-01-foundations-agentic-loop.html)
+Guide: [`../../hos-01-foundations-agentic-loop.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/hos-01-foundations-agentic-loop.html)
 Starter: [`../../starter-code/hos-01-foundations-agentic-loop`](../../starter-code/hos-01-foundations-agentic-loop)
 
 This is a **reference solution**, for SME/instructor verification against a working example — not what students should be given. Unlike the week-by-week starter code, this HOS's starter is a near-blank seed (students scaffold the app themselves with an AI assistant), so there's no single "correct" Create/Scaffold output to diff against. This answer key represents one reasonable result of that stage, plus the Understand & Refine addition and reference notes for the two written stages.

@@ -1,6 +1,6 @@
 # Week 3 Answer Key — Embeddings & Chunking
 
-Guide: [`../../week-03-embeddings-chunking.html`](../../week-03-embeddings-chunking.html)
+Guide: [`../../week-03-embeddings-chunking.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-03-embeddings-chunking.html)
 Starter: [`../../starter-code/week-03-embeddings-chunking`](../../starter-code/week-03-embeddings-chunking)
 
 Reference solution for SME/instructor verification — not what students should be given. Not part of the main chat app — a standalone sandbox script.

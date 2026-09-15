@@ -1,7 +1,8 @@
-// Points at your local backend. On a physical device, "localhost"
-// means the PHONE, not your laptop — use your laptop's LAN IP
-// instead (e.g. http://192.168.1.23:8000), or Expo's tunnel mode.
-export const API_BASE = "http://192.168.1.23:8000";
+// Set in mobile/.env (copy from .env.example) as EXPO_PUBLIC_API_BASE —
+// Expo inlines any EXPO_PUBLIC_* variable automatically, no extra config
+// needed. Change the value, then reload the app (shake your phone →
+// Reload, or press `r` in the terminal) to pick it up.
+export const API_BASE = process.env.EXPO_PUBLIC_API_BASE || "http://192.168.1.23:8000";
 
 export async function sendChatMessage(message) {
   const res = await fetch(`${API_BASE}/chat`, {

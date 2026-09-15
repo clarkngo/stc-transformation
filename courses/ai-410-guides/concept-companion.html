@@ -56,7 +56,7 @@
             .flow-line, .flow-dot, .pulse-box { animation:none !important; }
         }
 
-        /* Glossary / self-check boxes — matching AI-410-dev.html's vocabulary */
+        /* Glossary / self-check boxes — matching AI-410.html's vocabulary */
         .glossary-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px 16px; margin:14px 0; font-size:0.85rem; }
         .glossary-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; }
         .glossary-box dl { margin:0; }
@@ -88,51 +88,46 @@
         <h1 id="top">AI 410 — Concept Companion</h1>
         <div class="meta-strip">
             <span class="meta-pill">Read before you start, not while you're debugging</span>
-            <span class="meta-pill">Works for the 8-week or the 4-HOS schedule</span>
+            <span class="meta-pill">One module per HOS</span>
             <span class="meta-pill">5 standalone modules</span>
         </div>
 
         <div class="intro-box">
             <h4>What this page is</h4>
-            <p>The Hands-On Guides tell you <em>what to build, step by step</em>. This page is different: it's every concept and piece of vocabulary you should already understand <strong>before</strong> you open one of those guides, gathered in one place instead of scattered across ten weeks. Read the module for what you're about to start, not the whole page at once — each module is written to stand on its own.</p>
-            <p style="margin-bottom:0"><strong>Modular by design:</strong> whether your version of the course runs the original 8 individually-graded weeks (<a href="../AI-410.html">AI-410.html</a>) or the redesigned 4 merged HOS (<a href="../AI-410-dev.html">AI-410-dev.html</a>), the same five modules below cover it — each one just maps to a different span of weeks depending on which schedule you're following. Use the table below to find your module.</p>
+            <p>The Hands-On Guides tell you <em>what to build, step by step</em>. This page is different: it's every concept and piece of vocabulary you should already understand <strong>before</strong> you open one of those guides, gathered in one place instead of scattered across the term. Read the module for what you're about to start, not the whole page at once — each module is written to stand on its own.</p>
+            <p style="margin-bottom:0"><strong>Modular by design:</strong> the same five modules below cover the whole <a href="../AI-410.html">AI 410</a> schedule, each mapped to one HOS. Use the table below to find your module.</p>
         </div>
 
         <h2>Find your module</h2>
         <table class="map-table">
-            <tr><th>Module</th><th>If you're on the 4-HOS schedule</th><th>If you're on the 8-week schedule</th><th>Outcome(s)</th><th>Jump</th></tr>
+            <tr><th>Module</th><th>When</th><th>Outcome(s)</th><th>Jump</th></tr>
             <tr>
                 <td class="mod-name">0 — Universal Tooling</td>
                 <td>Before HOS 1</td>
-                <td>Before Week 1</td>
                 <td>—</td>
                 <td><a class="jump" href="#module-0">Read →</a></td>
             </tr>
             <tr>
                 <td class="mod-name">A — Foundations &amp; the Agentic Loop</td>
                 <td>Before HOS 1</td>
-                <td>Before Weeks 1–2</td>
                 <td>O1</td>
                 <td><a class="jump" href="#module-a">Read →</a></td>
             </tr>
             <tr>
                 <td class="mod-name">B — Embeddings, Chunking &amp; RAG</td>
                 <td>Before HOS 2</td>
-                <td>Before Weeks 3–4</td>
                 <td>O1, O2</td>
                 <td><a class="jump" href="#module-b">Read →</a></td>
             </tr>
             <tr>
                 <td class="mod-name">C — Guardrails &amp; Async Processing</td>
                 <td>Before HOS 3</td>
-                <td>Before Weeks 5–7</td>
                 <td>O3</td>
                 <td><a class="jump" href="#module-c">Read →</a></td>
             </tr>
             <tr>
                 <td class="mod-name">D — Mobile, Push &amp; Observability</td>
                 <td>Before HOS 4</td>
-                <td>Before Weeks 8–10</td>
                 <td>O4, O5</td>
                 <td><a class="jump" href="#module-d">Read →</a></td>
             </tr>
@@ -144,9 +139,8 @@
             <div class="module-head"><h2>Module 0 — Universal Tooling</h2></div>
             <div class="module-pills">
                 <span class="mod-pill hos">Before HOS 1</span>
-                <span class="mod-pill wk">Before Week 1</span>
             </div>
-            <p class="why-line">These tools show up in <strong>every single week</strong> of this course, not just one. Get comfortable with them once, here, instead of relearning them under deadline pressure in Week 1.</p>
+            <p class="why-line">These tools show up in <strong>every single HOS</strong> of this course, not just one. Get comfortable with them once, here, instead of relearning them under deadline pressure in HOS 1.</p>
 
             <div class="diagram-box">
                 <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
@@ -168,9 +162,9 @@
                         <text x="653" y="60" text-anchor="middle" font-size="10" font-weight="700" fill="#15803d">Ready</text>
                         <text x="653" y="73" text-anchor="middle" font-size="9" fill="#166534">to code</text>
                     </g>
-                    <text x="350" y="115" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Inter,system-ui,sans-serif">Every week's "What you'll need" starts with some version of this same setup path.</text>
+                    <text x="350" y="115" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Inter,system-ui,sans-serif">Every HOS's "What you'll need" starts with some version of this same setup path.</text>
                 </svg>
-                <div class="diagram-caption">The setup pipeline you'll repeat, in some form, at the start of nearly every week.</div>
+                <div class="diagram-caption">The setup pipeline you'll repeat, in some form, at the start of nearly every HOS.</div>
             </div>
 
             <div class="concept-grid">
@@ -181,7 +175,7 @@
                 <div class="concept-card">
                     <h4>Python virtual environment (<code>venv</code>)</h4>
                     <p>A private, self-contained copy of Python and its installed packages, scoped to one project folder. <code>python3 -m venv venv</code> creates it; <code>source venv/bin/activate</code> switches your terminal to use it.</p>
-                    <div class="why"><strong>Why it matters:</strong> different weeks (and different projects entirely) can need different, sometimes conflicting, package versions. Without a venv, installing one project's dependencies can silently break another's.</div>
+                    <div class="why"><strong>Why it matters:</strong> different HOS units (and different projects entirely) can need different, sometimes conflicting, package versions. Without a venv, installing one project's dependencies can silently break another's.</div>
                 </div>
                 <div class="concept-card">
                     <h4>Package managers — <code>pip</code> and <code>npm</code></h4>
@@ -199,12 +193,12 @@
                 <div class="concept-card">
                     <h4>GitHub Codespaces &amp; devcontainers</h4>
                     <p>A <code>.devcontainer/devcontainer.json</code> file describes a ready-made development environment — the right language versions, tools, and settings — that GitHub can spin up for you in the browser with one click (<strong>Code → Codespaces → Create codespace on main</strong>), dependencies and <code>.env</code> setup included.</p>
-                    <div class="why"><strong>Why it matters:</strong> the most common bug in this course is a local machine with an old package already installed globally that silently shadows the project's own version. A fresh Codespace sidesteps that entirely — every week's starter code is built to support it.</div>
-                    <div class="why"><strong>Changes to <code>devcontainer.json</code> only apply on rebuild.</strong> If a Codespace already exists and its config changes later (e.g. you carry the same Codespace forward from an earlier week into one that needs Node.js for the first time), it won't have the new tools — a command like <code>npm</code> will say "not found" even though the config says it should be there. Fix: Command Palette (<code>Cmd/Ctrl+Shift+P</code>) → "Codespaces: Rebuild Container." Your files are untouched; only the container's installed tools get reapplied.</div>
+                    <div class="why"><strong>Why it matters:</strong> the most common bug in this course is a local machine with an old package already installed globally that silently shadows the project's own version. A fresh Codespace sidesteps that entirely — every HOS's starter code is built to support it.</div>
+                    <div class="why"><strong>Changes to <code>devcontainer.json</code> only apply on rebuild.</strong> If a Codespace already exists and its config changes later (e.g. you carry the same Codespace forward from an earlier HOS into one that needs Node.js for the first time), it won't have the new tools — a command like <code>npm</code> will say "not found" even though the config says it should be there. Fix: Command Palette (<code>Cmd/Ctrl+Shift+P</code>) → "Codespaces: Rebuild Container." Your files are untouched; only the container's installed tools get reapplied.</div>
                 </div>
                 <div class="concept-card">
                     <h4>A new terminal tab starts back at the repo root</h4>
-                    <p>Every week from Week 7 / HOS 3 onward asks you to run two or three processes at once (the API, the worker, the mobile dev server) in separate terminal tabs. In Codespaces, opening a <strong>new</strong> tab always starts you back at the repo's top-level folder — it does not remember that an earlier tab was sitting inside <code>backend/</code>.</p>
+                    <p>Every HOS from HOS 3 onward asks you to run two or three processes at once (the API, the worker, the mobile dev server) in separate terminal tabs. In Codespaces, opening a <strong>new</strong> tab always starts you back at the repo's top-level folder — it does not remember that an earlier tab was sitting inside <code>backend/</code>.</p>
                     <div class="why"><strong>Why it matters:</strong> if you copy just the run command (e.g. <code>./venv/bin/python worker.py</code>) into a fresh tab without <code>cd backend</code> first, it fails — that script only exists inside <code>backend/</code>. Get in the habit of typing <code>cd backend</code> (or <code>cd mobile</code>) as the very first thing in every new terminal tab, every time, even if you already did it in a different tab a minute ago.</div>
                 </div>
                 <div class="concept-card">
@@ -230,10 +224,9 @@
             <div class="module-head"><h2>Module A — Foundations &amp; the Agentic Loop</h2></div>
             <div class="module-pills">
                 <span class="mod-pill hos">HOS 1</span>
-                <span class="mod-pill wk">Weeks 1–2</span>
                 <span class="mod-pill outcome">Outcome 1</span>
             </div>
-            <p class="why-line"><strong>Why before you start:</strong> almost everything you build for the rest of the term is an extension of one request/response call and one decision loop. Get these two shapes solid now and every later week is "the same thing, plus one more piece."</p>
+            <p class="why-line"><strong>Why before you start:</strong> almost everything you build for the rest of the term is an extension of one request/response call and one decision loop. Get these two shapes solid now and every later HOS is "the same thing, plus one more piece."</p>
 
             <div class="diagram-box">
                 <svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
@@ -261,7 +254,7 @@
 
                     <text x="360" y="155" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Inter,system-ui,sans-serif">The frontend never talks to Gemini directly — only your backend ever holds the API key.</text>
                 </svg>
-                <div class="diagram-caption">The request/response shape underneath every week of this course.</div>
+                <div class="diagram-caption">The request/response shape underneath every HOS of this course.</div>
             </div>
 
             <div class="concept-grid">
@@ -350,7 +343,6 @@
             <div class="module-head"><h2>Module B — Embeddings, Chunking &amp; RAG</h2></div>
             <div class="module-pills">
                 <span class="mod-pill hos">HOS 2</span>
-                <span class="mod-pill wk">Weeks 3–4</span>
                 <span class="mod-pill outcome">Outcomes 1–2</span>
             </div>
             <p class="why-line"><strong>Why before you start:</strong> Retrieval-Augmented Generation (RAG) is the single most common pattern for making a model answer accurately about specific data instead of guessing. Every concept here builds toward that one pipeline.</p>
@@ -439,7 +431,6 @@
             <div class="module-head"><h2>Module C — Guardrails &amp; Asynchronous Processing</h2></div>
             <div class="module-pills">
                 <span class="mod-pill hos">HOS 3</span>
-                <span class="mod-pill wk">Weeks 5–7</span>
                 <span class="mod-pill outcome">Outcome 3</span>
             </div>
             <p class="why-line"><strong>Why before you start:</strong> once your app is doing real retrieval and tool calls, two new risks show up — the model can produce malformed output, and slow work can freeze the app for everyone using it. This module is about naming those risks on purpose, then handling both.</p>
@@ -535,7 +526,6 @@
             <div class="module-head"><h2>Module D — Mobile, Push &amp; Observability</h2></div>
             <div class="module-pills">
                 <span class="mod-pill hos">HOS 4</span>
-                <span class="mod-pill wk">Weeks 8–10</span>
                 <span class="mod-pill outcome">Outcomes 4–5</span>
             </div>
             <p class="why-line"><strong>Why before you start:</strong> the last stretch puts the same backend you've been building in front of a real device, and makes what's happening inside it visible instead of a black box you have to guess about.</p>
@@ -547,7 +537,7 @@
                 </div>
                 <div class="concept-card">
                     <h4>Same backend, different client</h4>
-                    <p>The mobile app is just another caller of the exact same API you've been building since Week 1 — it doesn't talk to Gemini directly either, and it doesn't require rebuilding anything on the backend.</p>
+                    <p>The mobile app is just another caller of the exact same API you've been building since HOS 1 — it doesn't talk to Gemini directly either, and it doesn't require rebuilding anything on the backend.</p>
                 </div>
                 <div class="concept-card">
                     <h4>Push notifications &amp; push tokens</h4>
@@ -568,7 +558,7 @@
                 </div>
                 <div class="concept-card">
                     <h4>Deployment</h4>
-                    <p>The gap between "runs on my laptop" and "a real, reachable product." Code nobody else can access isn't a product yet — this is what turns a term's worth of weekly builds into something you can hand someone a link to.</p>
+                    <p>The gap between "runs on my laptop" and "a real, reachable product." Code nobody else can access isn't a product yet — this is what turns a term's worth of builds into something you can hand someone a link to.</p>
                 </div>
             </div>
 
@@ -632,7 +622,7 @@
             </div>
         </div>
 
-        <p style="font-size:0.85rem;color:#6b7280;margin-top:8px">Missed something after all this? Every Hands-On Guide's "Common snags" box is written for exactly that moment — go back to the relevant week or HOS guide and re-read its <code>explain</code> boxes alongside this page.</p>
+        <p style="font-size:0.85rem;color:#6b7280;margin-top:8px">Missed something after all this? Every Hands-On Guide's "Common snags" box is written for exactly that moment — go back to the relevant HOS guide and re-read its <code>explain</code> boxes alongside this page.</p>
         <a class="back-to-top" href="#top">↑ Back to top / module map</a>
     </div>
     <script src="../../assets/nav.js"></script>

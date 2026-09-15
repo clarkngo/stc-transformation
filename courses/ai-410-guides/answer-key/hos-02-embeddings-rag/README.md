@@ -1,6 +1,6 @@
 # HOS 2 Answer Key — Embeddings, Chunking & RAG Pipelines
 
-Guide: [`../../hos-02-embeddings-rag.html`](../../hos-02-embeddings-rag.html)
+Guide: [`../../hos-02-embeddings-rag.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/hos-02-embeddings-rag.html)
 Starter: [`../../starter-code/hos-02-embeddings-rag`](../../starter-code/hos-02-embeddings-rag)
 
 Reference solution for SME/instructor verification, built on top of HOS 1's tool-calling app (`tools.py`, `main.py`, `frontend/` carried forward unchanged).

@@ -1,6 +1,6 @@
 # Week 4 Answer Key — Vector Databases & RAG Pipelines
 
-Guide: [`../../week-04-vector-db-rag.html`](../../week-04-vector-db-rag.html)
+Guide: [`../../week-04-vector-db-rag.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-04-vector-db-rag.html)
 Starter: [`../../starter-code/week-04-vector-db-rag`](../../starter-code/week-04-vector-db-rag)
 
 This is the **fully solved** version of Week 4 — everything a student

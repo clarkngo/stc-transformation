@@ -1,6 +1,6 @@
 # Week 1 Answer Key — Foundations of Full-Stack AI Systems
 
-Guide: [`../../week-01-foundations.html`](../../week-01-foundations.html)
+Guide: [`../../week-01-foundations.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-01-foundations.html)
 Starter: [`../../starter-code/week-01-foundations`](../../starter-code/week-01-foundations)
 
 Reference solution for SME/instructor verification — not what students should be given.

@@ -21,8 +21,12 @@ def run_agent(user_message: str) -> str:
     chunks = retrieve(user_message, k=5)
     context = "\n\n".join(chunks)
     system_instruction = (
-        "Use the following context to answer the user's question. "
-        "If the answer isn't in the context, say you don't know.\n\n"
+        "Use the following context to answer questions about Northwind "
+        "Outfitters' policies and products. If a policy/product question "
+        "isn't answered by the context, say you don't know rather than "
+        "guessing. This restriction does not apply to your tools (e.g. "
+        "calculate) — use them normally whenever they help, regardless "
+        "of what's in the context below.\n\n"
         f"{context}"
     )
 

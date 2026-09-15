@@ -1,7 +1,7 @@
 """
-The agentic loop — RAG (Week 4) and the guardrail (Week 6) are both
-solved and wired in below. Nothing to change here this week; your
-Week 8 work is in jobs.py and the mobile/ app.
+The agentic loop — RAG (Week 4) is solved and wired in below. The
+tool call is wrapped with the guardrail from guardrails.py using the
+schema defined there.
 """
 
 from dotenv import load_dotenv
@@ -48,6 +48,7 @@ def run_agent(user_message: str) -> str:
         results = []
         for call in function_calls:
             fn = TOOL_FUNCTIONS.get(call.name)
+
             if fn is None:
                 result = f"Error: no tool registered named '{call.name}'"
             elif call.name == "calculate":

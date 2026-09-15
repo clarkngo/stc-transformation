@@ -57,11 +57,12 @@
             <span class="meta-pill">8 programs surveyed</span>
             <span class="meta-pill">4 categories</span>
             <span class="meta-pill">Universities · Companies · Creators · Research</span>
+            <span class="meta-pill">+ MP/CD async deep dive</span>
         </div>
 
         <div class="intro-box">
             <h4>What this covers</h4>
-            <p>For each program: <strong>format</strong> (self-paced video, live cohort, project-based), <strong>content</strong>, <strong>target audience</strong>, <strong>technology taught</strong>, whether the <strong>course itself</strong> is free, and whether the <strong>technology stack</strong> it teaches is free to use. Organized into the four categories asked for: universities/colleges, companies, known YouTubers/creator tutorials, and articles/academic research on curriculum design.</p>
+            <p>For each program: <strong>format</strong> (self-paced video, live cohort, project-based), <strong>content</strong>, <strong>target audience</strong>, <strong>technology taught</strong>, whether the <strong>course itself</strong> is free, and whether the <strong>technology stack</strong> it teaches is free to use. Organized into the four categories asked for: universities/colleges, companies, known YouTubers/creator tutorials, and articles/academic research on curriculum design. A focused deep dive follows on making Muddiest Point and Concept Debate work as graded activities in a fully asynchronous course with no live lecture.</p>
         </div>
 
         <h2>Universities &amp; Colleges</h2>
@@ -190,6 +191,63 @@
             </div>
             <div class="card-row"><strong>Argument:</strong> Identifies a gap in teaching resources specifically for Model Context Protocol (MCP) and LLM-integrated software engineering — most existing studies lack a systematic, industry-oriented teaching design for this material.</div>
             <div class="takeaway"><strong>Relevant to AI 410:</strong> A live gap AI 410 doesn't currently address either — MCP isn't part of the course's tool-calling coverage (it uses direct function-calling instead). Worth a note for a future revision if MCP becomes more standard in the field before the next redesign.</div>
+        </div>
+
+        <h2>Deep Dive: Muddiest Point &amp; Concept Debate Without a Live Lecture</h2>
+        <div class="intro-box">
+            <h4>Why this needed its own research pass</h4>
+            <p>Both techniques were originally designed around a live class session — Muddiest Point (MP) is classically submitted so the instructor can address it <em>in the next lecture</em> (the core move of Just-in-Time Teaching), and Concept Debate (CD) is often run as live back-and-forth. AI 410 is fully asynchronous — no live virtual lecture — yet the Dean requires both as graded activities. The question: do these techniques still work without the live session they were built around, and if so, how should they be structured?</p>
+        </div>
+
+        <div class="research-card">
+            <h3>Muddiest Point → adapted for async (the JiTT substitute)</h3>
+            <div class="card-meta">
+                <span class="tag format">Classroom assessment technique</span>
+                <span class="tag audience">Any level</span>
+            </div>
+            <div class="card-row"><strong>Finding:</strong> MP adapts cleanly to async delivery via an end-of-week survey or discussion-board post rather than an in-class index card. It works because the mechanism that matters isn't the live moment — it's normalizing confusion (asking all students to respond independently, without the social pressure of admitting confusion in front of peers) and giving the instructor timely, specific information to act on.</div>
+            <div class="card-row"><strong>The live-lecture gap, and how JiTT research handles it:</strong> Just-in-Time Teaching's core move — reading responses right before class and adjusting the lecture on the spot — has no direct equivalent without a live session. The adaptation literature substitutes three things: a <strong>structured timeline</strong> (regular deadlines so responses arrive before the next content unlocks), <strong>frequent short assessments</strong> rather than one big one, and <strong>iterative adjustment of the asynchronous materials themselves</strong> (updating a recorded clip, a written FAQ, or the next module) instead of a live pivot.</div>
+            <div class="card-row"><strong>Effectiveness note:</strong> MP interventions are more effective with frequent, repeated use — students get better at asking specific, useful questions as the pattern becomes familiar, which argues for doing it every week rather than occasionally.</div>
+            <div class="takeaway"><strong>Sources:</strong> <a href="https://lth.engineering.asu.edu/reference-guide/muddiest-points/" target="_blank" rel="noopener">ASU Learning &amp; Teaching Hub — Muddiest Points</a>, <a href="https://grovecenter.science.psu.edu/instructors/classroom-assessment-techniques/muddiest-point" target="_blank" rel="noopener">Penn State — Muddiest Point</a>, <a href="https://www.mvcc.edu/teaching/jitt.php" target="_blank" rel="noopener">MVCC — Just-in-Time Teaching</a>, <a href="https://ready.msudenver.edu/canvas-spotlight/just-in-time-teaching-jitt/" target="_blank" rel="noopener">MSU Denver — JiTT in Canvas</a>.</div>
+        </div>
+
+        <div class="research-card">
+            <h3><a href="https://doi.org/10.24059/olj.v23i3.2050" target="_blank" rel="noopener">Mitchell (2019) — "Using Debate in an Online Asynchronous Social Policy Course"</a></h3>
+            <div class="card-meta">
+                <span class="tag free">Peer-reviewed, open access</span>
+                <span class="tag format">N=36, quant + qual</span>
+                <span class="tag audience">Graduate students</span>
+            </div>
+            <div class="card-row"><strong>Structure used:</strong> not a single discussion-board thread — a staged, semester-long assignment: individual position statement (week 1) → group position statement (week 3) → written rebuttal (week 6) → open asynchronous discussion forum (week 8) → reflection paper (week 9). Students were randomly assigned pro/con, then worked in groups.</div>
+            <div class="card-row"><strong>Quantitative results</strong> (% who agreed or strongly agreed): helped understand course concepts <strong>80%</strong>; understood concepts better than lecture/reading would have <strong>78%</strong>; helped critical thinking <strong>92%</strong>; improved collaboration <strong>92%</strong>; helped in other courses/work <strong>57%</strong> — but only <strong>28%</strong> said it made them feel <em>more engaged</em> in the course.</div>
+            <div class="card-row"><strong>Qualitative themes:</strong> students reported real apprehension going in — nervousness about arguing, about group work with people they'd never meet in person, about the format being unfamiliar — but this largely resolved once the activity was underway. A recurring theme was students being forced to argue a position they didn't personally hold, which "challenged their own viewpoint" more than a same-side discussion would have.</div>
+            <div class="takeaway"><strong>Relevant to AI 410:</strong> The 80/28 split is the single most important number here — structured async debate is strong for understanding and critical thinking, weak for engagement on its own. AI 410's Concept Debate shouldn't be asked to carry the course's engagement load; that's what the CEAU build artifacts and Knowledge Checks are for. The staged structure (individual → group → rebuttal → open forum) is directly adoptable, scaled down from a semester to a single week.</div>
+        </div>
+
+        <div class="research-card">
+            <h3>General async discussion-board effectiveness — cross-study findings</h3>
+            <div class="card-meta">
+                <span class="tag format">Multiple studies</span>
+                <span class="tag audience">Higher ed, general</span>
+            </div>
+            <div class="card-row"><strong>What consistently predicts quality:</strong> active instructor participation and feedback in the thread — students explicitly associate discussion quality with the instructor showing up, not just posting a prompt and grading silently later. Clear structure and expectations (what counts as a response, minimum posts, deadlines) and a designed question prompt matter more than the platform.</div>
+            <div class="card-row"><strong>Social presence:</strong> discussions work better when students can build some sense of who they're talking to — varying group size (not always whole-class) gives more students room to lead a discussion rather than lurk.</div>
+            <div class="takeaway"><strong>Relevant to AI 410:</strong> If MP and CD are now graded, whoever teaches the course needs to budget real time to actually read and respond in those threads — the research is fairly blunt that ungraded-by-the-instructor-in-practice discussion boards underperform, regardless of how well the assignment itself is designed.</div>
+        </div>
+
+        <div class="research-card">
+            <h3><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9766407/" target="_blank" rel="noopener">"Bringing Interactivity to Fully Asynchronous Programs"</a></h3>
+            <div class="card-meta">
+                <span class="tag format">Program design case study</span>
+                <span class="tag audience">Adult/professional learners</span>
+            </div>
+            <div class="card-row"><strong>Approach:</strong> a fully self-paced, no-live-session program that still needed to "mimic important shared and active learning components of facilitated sessions." Solution: small cohorts (~10 people) for a sense of shared progress, automated weekly pacing nudges, short post-tests at each unit, a cohort-scoped discussion board, and reflective free-text exercises.</div>
+            <div class="takeaway"><strong>Relevant to AI 410:</strong> The cohort-scoped discussion board (not one giant whole-class thread) is worth considering for CD specifically — smaller groups likely produce more genuine back-and-forth than a 30+ student thread, echoing the "vary group size" finding above.</div>
+        </div>
+
+        <div class="synth-box">
+            <h4>Concrete design for AI 410's MP &amp; CD, given no live lecture</h4>
+            <p><strong>Muddiest Point:</strong> a short async submission (form or discussion post) due before that week's HOS build begins, based on the week's recorded/written lecture material. The JiTT "pivot" becomes a short instructor-posted response — text or a short recorded clip — addressing the 2-3 most common muddiest points, published early in the week alongside or right after the Concept Debate opens. <strong>Concept Debate:</strong> stage it rather than leave it as one freeform thread — an initial position, a required response to at least one peer, and (mirroring Mitchell's design) run it in smaller groups rather than one whole-class thread. <strong>Don't lean on CD for engagement</strong> — Mitchell's own data says it won't carry that weight; the CEAU build and Knowledge Check are where engagement should come from. <strong>Budget instructor time</strong> — the research is consistent that visible instructor participation in these threads is what actually drives quality, not the assignment design alone.</p>
         </div>
 
         <h2>Summary Table</h2>

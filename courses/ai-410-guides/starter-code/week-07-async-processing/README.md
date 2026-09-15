@@ -1,6 +1,6 @@
 # Week 7 Starter — Asynchronous Data Processing
 
-Guide: [`../../week-07-async-processing.html`](../../week-07-async-processing.html)
+Guide: [`../../week-07-async-processing.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-07-async-processing.html)
 
 ## What's already working
 

@@ -1,6 +1,6 @@
 # HOS 2 — Embeddings, Chunking & RAG Pipelines
 
-Guide: [`../../hos-02-embeddings-rag.html`](../../hos-02-embeddings-rag.html)
+Guide: [`../../hos-02-embeddings-rag.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/hos-02-embeddings-rag.html)
 
 ## What's already working
 

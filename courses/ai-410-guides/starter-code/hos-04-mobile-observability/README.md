@@ -1,6 +1,6 @@
 # HOS 4 — Mobile Client, Push & Observability
 
-Guide: [`../../hos-04-mobile-observability.html`](../../hos-04-mobile-observability.html)
+Guide: [`../../hos-04-mobile-observability.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/hos-04-mobile-observability.html)
 
 ## What's already working
 
@@ -10,7 +10,7 @@ Your HOS 3 result, carried forward: RAG-grounded, guardrailed chat with async do
 
 No `mobile/` app, no device registration, no tracing — **you build those with an AI assistant.** A free [Langfuse](https://cloud.langfuse.com) project (no credit card) is needed for observability; see `backend/.env.example`.
 
-**Heads up before you scaffold the mobile client:** requesting a push token (`getExpoPushTokenAsync()`) requires an EAS project ID as of Expo SDK 49+, and a fresh project doesn't have one until you run `npx eas init` once inside `mobile/` (free Expo account, no credit card — see the [Account & Service Setup Guide](../../account-setup-guide.html#expo)). If your AI-scaffolded app crashes the moment it asks for a push token, this is almost certainly why — the guide's Common Snags section covers it.
+**Heads up before you scaffold the mobile client:** requesting a push token (`getExpoPushTokenAsync()`) requires an EAS project ID as of Expo SDK 49+, and a fresh project doesn't have one until you run `npx eas init` once inside `mobile/` (free Expo account, no credit card — see the [Account & Service Setup Guide](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/account-setup-guide.html#expo)). If your AI-scaffolded app crashes the moment it asks for a push token, this is almost certainly why — the guide's Common Snags section covers it.
 
 ## What you'll build
 

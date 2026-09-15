@@ -38,10 +38,8 @@
       &nbsp;/&nbsp;
       <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
       &nbsp;/&nbsp;
-      <a href="../AI-410-dev.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410 (draft redesign)</a>
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
     </nav>
-
-        <div class="draft-banner"><strong>Part of the draft HOS redesign</strong> — not yet the production curriculum. See <a href="../AI-410-dev.html">AI-410-dev.html</a> for the full schedule this belongs to.</div>
 
         <h1>HOS 4 — Mobile Client, Push &amp; Observability</h1>
         <div class="meta-strip">
@@ -61,7 +59,7 @@
             <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-04-mobile-observability" target="_blank" rel="noopener">this HOS's starter-code folder</a> — your HOS 3 app, already working.</li>
             <li>A free <a href="https://cloud.langfuse.com" target="_blank" rel="noopener">Langfuse</a> project (no credit card)</li>
             <li>The <strong>Expo Go</strong> app on your phone, or an emulator — no Xcode/Android Studio required</li>
-            <li>A free <a href="https://expo.dev/signup" target="_blank" rel="noopener">Expo account</a> — needed for push notifications specifically (not for chat); see the Common Snags note below</li>
+            <li>A free <a href="https://expo.dev/signup" target="_blank" rel="noopener">Expo account</a>, logged in on <strong>both</strong> your terminal (<code>npx expo login</code>) and the Expo Go app on your phone (tap the avatar icon → sign in) — on iOS, current Expo Go won't load the project at all without this. See the <a href="account-setup-guide.html#expo">Account &amp; Service Setup Guide</a> for the exact steps.</li>
             <li>An AI coding assistant available in your environment</li>
         </ul>
 
@@ -82,7 +80,8 @@
 - backend/agent.py and retrieval.py: add Langfuse tracing (@observe())
   so each request produces a trace with retrieval and generation as
   separate spans.</pre>
-            <p>Run <code>npx expo start</code> in <code>mobile/</code> and scan the QR code with Expo Go to test on your own phone.</p>
+            <p>Run <code>npx expo start --tunnel</code> in <code>mobile/</code> and scan the QR code with Expo Go to test on your own phone. <strong>In Codespaces, always use <code>--tunnel</code></strong> — the plain command uses LAN mode, which can't work since your phone and the Codespace aren't on the same network (it'll look like it's hanging, not actually connect). The very first time you run <code>--tunnel</code>, Expo installs a small tunneling package on the spot, which takes a minute or two — after that, it starts fast. (Note: <code>--tunnel</code> itself doesn't need any login — but current Expo Go on iOS separately requires the same Expo account logged in on both your terminal and the phone app just to load the project at all; see the <a href="account-setup-guide.html#expo">Account &amp; Service Setup Guide</a>.)</p>
+            <p>No phone handy yet, or want to sanity-check the chat screen fastest? Run <code>npx expo start --web</code> instead — opens the app in a browser tab, no Expo Go or login needed at all. Push notifications don't exist on web (the app already skips that step cleanly there), so switch to a real phone once you get to the push-notification stages.</p>
         </div>
 
         <div class="stage-block">
@@ -128,16 +127,30 @@
             <h4>Common snags</h4>
             <ul>
                 <li><strong><code>npm: command not found</code></strong> — this HOS's <code>.devcontainer/devcontainer.json</code> installs Node.js automatically, but only when the container is <em>built</em>. If this Codespace was created earlier (e.g. carried over from an earlier HOS that never needed Node), it won't have picked up that change. Command Palette (<code>Cmd/Ctrl+Shift+P</code>) → <strong>"Codespaces: Rebuild Container"</strong> — your files are untouched, only the container's installed tools get reapplied from the config.</li>
+                <li><strong>"Project is incompatible with this version of Expo Go"</strong> — Expo Go on your phone only ever supports the newest Expo SDK, and it updates itself, so this project's pinned version can fall behind. Fix inside <code>mobile/</code>: <code>npx expo install expo@latest</code>, then <code>npx expo install --fix</code> to realign every other package, then restart <code>npx expo start --tunnel</code>. This will happen again after any future Expo SDK release — same two commands fix it.</li>
+                <li><strong>Project won't load in Expo Go at all — stuck on a loading/login screen</strong> — unlike the push-token issue below, this blocks everything, chat included. Current Expo Go on iOS requires the same Expo account logged in on <em>both</em> your terminal (<code>npx expo login</code>) and the Expo Go app on your phone (tap the avatar icon on its home screen → sign in). Logged in as different accounts, or only on one side, and the project won't open.</li>
                 <li><strong>App crashes (or a red error screen) the moment it asks for a push token</strong> — <code>getExpoPushTokenAsync()</code> requires an EAS project ID as of SDK 49+, and a fresh project doesn't have one yet. Run <code>npx eas init</code> once inside <code>mobile/</code> (free — sign in with the Expo account above; no credit card) and it writes the ID into <code>app.json</code> for you. Chat works fine without this; only push notifications need it.</li>
+                <li><strong>On Android, no push notification ever arrives — not even a failed one</strong> — this isn't a bug in this course's code. Expo removed push-notification support from Expo Go on Android entirely as of SDK 53 (iOS Expo Go still supports it). Chat still works fine on Android either way; for the actual push-notification proof step, test on an iPhone if you have access to one, or build a free Expo development client via <code>eas build --profile development</code> instead of using Expo Go (no local Android Studio needed — EAS builds it in the cloud).</li>
                 <li><strong>Push notification API call succeeds but nothing arrives on your phone</strong> — Expo's push service returns <code>200 OK</code> even for a stale or invalid token, with the actual error inside the response body. Checking only the HTTP status isn't enough to confirm delivery.</li>
                 <li><strong>No Langfuse keys set yet, app still works</strong> — that's expected, not a bug. The SDK disables tracing and logs a line about it instead of crashing. You just won't see anything in the dashboard until keys are configured.</li>
-                <li><strong>Physical device can't reach a Codespaces-hosted backend</strong> — make the API port public in the Ports tab, use that forwarded URL as your mobile app's API base, and start Expo with <code>--tunnel</code> instead of the default LAN mode.</li>
+                <li><strong>Physical device can't reach a Codespaces-hosted backend</strong> — make the API port public in the Ports tab, use that forwarded URL as your mobile app's API base (ideally via an <code>EXPO_PUBLIC_API_BASE</code> variable in <code>mobile/.env</code>, reloading the app after editing it), and start Expo with <code>--tunnel</code> instead of the default LAN mode.</li>
+                <li><strong>Testing with <code>npx expo start --web</code>: "Failed to fetch" / server log shows <code>OPTIONS /chat ... 405 Method Not Allowed</code></strong> — unlike Streamlit or Expo Go on a real device, Expo <em>web</em> runs inside an actual browser, and browsers block cross-origin requests until the server explicitly allows them (a "CORS preflight" — the browser's own <code>OPTIONS</code> check before the real request). If your AI-scaffolded backend doesn't already have this, add it to <code>backend/main.py</code>:
+<pre>from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)</pre>
+                Restart <code>uvicorn</code> afterward — like any code change, it isn't picked up until the server restarts (or reloads, if you're running with <code>--reload</code>).</li>
+                <li><strong>Replies feel slower on the phone than they did testing with <code>curl</code></strong> — expected, not a bug. A <code>curl</code> test from inside the Codespace terminal is a loopback call; your phone's request travels over the real internet through GitHub's port-forwarding proxy to reach the Codespace and back, on top of whatever the agentic loop itself takes (a Gemini call, sometimes two if a tool fires, plus retrieval and guardrail validation). A couple of seconds is normal for this setup.</li>
             </ul>
         </div>
 
         <div class="guide-nav">
             <a href="hos-03-guardrails-async.html">← HOS 3</a>
-            <a href="../AI-410-dev.html">Back to the draft schedule →</a>
+            <a href="../AI-410.html">Back to the schedule →</a>
         </div>
     </div>
     <script src="../../assets/nav.js"></script>

@@ -1,6 +1,6 @@
 # Week 3 Starter — Embeddings & Chunking
 
-Guide: [`../../week-03-embeddings-chunking.html`](../../week-03-embeddings-chunking.html)
+Guide: [`../../week-03-embeddings-chunking.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-03-embeddings-chunking.html)
 
 This week is a **standalone sandbox** — it isn't wired into the chat app. You're building intuition for chunking and embeddings in isolation before connecting anything to the live app in Week 4.
 

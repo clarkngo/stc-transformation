@@ -1,6 +1,6 @@
 # Week 2 Answer Key — Structured Outputs & the Agentic Loop
 
-Guide: [`../../week-02-agentic-loop.html`](../../week-02-agentic-loop.html)
+Guide: [`../../week-02-agentic-loop.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-02-agentic-loop.html)
 Starter: [`../../starter-code/week-02-agentic-loop`](../../starter-code/week-02-agentic-loop)
 
 Reference solution for SME/instructor verification — not what students should be given.

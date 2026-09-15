@@ -1,6 +1,6 @@
 # Week 4 Starter — Vector Databases & RAG Pipelines
 
-Guide: [`../../week-04-vector-db-rag.html`](../../week-04-vector-db-rag.html)
+Guide: [`../../week-04-vector-db-rag.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-04-vector-db-rag.html)
 
 ## What's already working
 

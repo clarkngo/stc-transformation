@@ -1,6 +1,6 @@
 # Week 1 Starter — Foundations of Full-Stack AI Systems
 
-Guide: [`../../week-01-foundations.html`](../../week-01-foundations.html)
+Guide: [`../../week-01-foundations.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-01-foundations.html)
 
 ## What's already working
 

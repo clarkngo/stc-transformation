@@ -4,7 +4,7 @@
     "features": {
         "ghcr.io/devcontainers/features/node:2": { "version": "20" }
     },
-    "postCreateCommand": "pip install -r backend/requirements.txt -r frontend/requirements.txt && cp -n backend/.env.example backend/.env && cd mobile && npm install",
+    "postCreateCommand": "pip install -r backend/requirements.txt -r frontend/requirements.txt && cp -n backend/.env.example backend/.env && cp -n mobile/.env.example mobile/.env && cd mobile && npm install",
     "forwardPorts": [8000, 8081, 8501],
     "portsAttributes": {
         "8000": { "label": "Backend API", "onAutoForward": "notify" },

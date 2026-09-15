@@ -1,6 +1,6 @@
 # HOS 1 — Foundations & the Agentic Loop
 
-Guide: [`../../hos-01-foundations-agentic-loop.html`](../../hos-01-foundations-agentic-loop.html)
+Guide: [`../../hos-01-foundations-agentic-loop.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/hos-01-foundations-agentic-loop.html)
 
 ## This folder is (almost) empty on purpose
 

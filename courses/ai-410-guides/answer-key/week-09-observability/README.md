@@ -1,6 +1,6 @@
 # Week 9 Answer Key — Observability & Evaluation
 
-Guide: [`../../week-09-observability.html`](../../week-09-observability.html)
+Guide: [`../../week-09-observability.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-09-observability.html)
 Starter: [`../../starter-code/week-09-observability`](../../starter-code/week-09-observability)
 
 Reference solution for SME/instructor verification — not what students should be given. Built on top of Week 8's mobile/push app.

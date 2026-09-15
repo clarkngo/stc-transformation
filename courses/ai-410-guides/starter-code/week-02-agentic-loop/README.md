@@ -1,6 +1,6 @@
 # Week 2 Starter — Structured Outputs & the Agentic Loop
 
-Guide: [`../../week-02-agentic-loop.html`](../../week-02-agentic-loop.html)
+Guide: [`../../week-02-agentic-loop.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-02-agentic-loop.html)
 
 ## What's already working
 

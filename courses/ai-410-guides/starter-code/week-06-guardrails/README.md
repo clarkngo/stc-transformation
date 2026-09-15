@@ -1,6 +1,6 @@
 # Week 6 Starter — Probabilistic Logic & Guardrails
 
-Guide: [`../../week-06-guardrails.html`](../../week-06-guardrails.html)
+Guide: [`../../week-06-guardrails.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-06-guardrails.html)
 
 ## What's already working
 

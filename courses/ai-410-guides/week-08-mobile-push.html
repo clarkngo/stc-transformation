@@ -167,6 +167,7 @@ const { data: pushToken } = await Notifications.getExpoPushTokenAsync();</pre>
         <div class="snag-box">
             <h4>Common snags</h4>
             <ul>
+                <li><strong><code>npm: command not found</code></strong> — this week's <code>.devcontainer/devcontainer.json</code> installs Node.js automatically, but only when the container is <em>built</em>. If this Codespace was created earlier (e.g. carried over from an earlier week that never needed Node), it won't have picked up that change. Command Palette (<code>Cmd/Ctrl+Shift+P</code>) → <strong>"Codespaces: Rebuild Container"</strong> — your files are untouched, only the container's installed tools get reapplied from the config.</li>
                 <li><strong>App crashes (or a red error screen) the moment it asks for a push token</strong> — <code>getExpoPushTokenAsync()</code> requires an EAS project ID as of SDK 49+, and a fresh project doesn't have one yet. Run <code>npx eas init</code> once inside <code>mobile/</code> (free — sign in with the Expo account above; no credit card) and it writes the ID into <code>app.json</code> for you. Chat works fine without this; only push notifications need it.</li>
                 <li><strong>Push notifications don't fire in a simulator/emulator</strong> — this has to be a real physical device for the free Expo Go flow.</li>
                 <li><strong>Phone can't reach your laptop's backend</strong> — make sure both are on the same Wi-Fi network, or use Expo's tunnel mode if they're not.</li>

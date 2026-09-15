@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Delivery Walkthrough</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; margin-top:40px; border-bottom:1px solid #eee; padding-bottom:6px; }
+        .internal-banner { background:#f1f5f9; border:1px solid #cbd5e1; border-radius:8px; padding:14px 18px; margin:0 0 24px; font-size:0.88rem; color:#475569; }
+        .internal-banner strong { color:#334155; }
+        .hero-box { background:linear-gradient(135deg,#ecfdf5,#eff6ff); border:1px solid #bbf7d0; border-radius:12px; padding:22px 26px; margin:18px 0 28px; }
+        .hero-box p { font-size:1rem; margin:0; color:#1e293b; }
+        .hero-box p strong { color:#15803d; }
+
+        .toc { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 30px; }
+        .toc a { background:#f1f5f9; color:#334155; font-size:0.82rem; font-weight:600; padding:6px 14px; border-radius:999px; text-decoration:none; }
+        .toc a:hover { background:#dcfce7; color:#15803d; }
+
+        .section { scroll-margin-top:20px; }
+        .card-grid { display:flex; flex-wrap:wrap; gap:16px; margin:16px 0 8px; }
+        .deliver-card { flex:1 1 280px; border:1px solid #e2e8f0; border-radius:10px; padding:18px 20px; }
+        .deliver-card h3 { margin:0 0 6px; font-size:1.02rem; }
+        .deliver-card p { font-size:0.87rem; color:#475569; margin:0 0 12px; }
+        .deliver-card .path { font-size:0.75rem; color:#94a3b8; margin-bottom:8px; font-family:'SFMono-Regular',Consolas,monospace; }
+        .deliver-card a.go { font-size:0.85rem; font-weight:700; color:#1e8449; text-decoration:none; }
+        .tag-badge { display:inline-block; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.03em; padding:2px 9px; border-radius:999px; margin-bottom:8px; }
+        .tag-new { background:#fef3c7; color:#b45309; }
+        .tag-core { background:#dcfce7; color:#15803d; }
+        .tag-ref { background:#ede9fe; color:#6d28d9; }
+        .tag-safety { background:#f1f5f9; color:#475569; }
+
+        .why-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:14px 18px; margin:14px 0; border-radius:0 6px 6px 0; font-size:0.9rem; }
+        .why-box strong { color:#1d4ed8; }
+
+        .stat-row { display:flex; flex-wrap:wrap; gap:14px; margin:18px 0; }
+        .stat { flex:1 1 140px; text-align:center; background:#f8fafc; border-radius:10px; padding:16px 10px; }
+        .stat .num { font-size:1.6rem; font-weight:800; color:#15803d; }
+        .stat .lbl { font-size:0.75rem; color:#64748b; text-transform:uppercase; letter-spacing:0.03em; margin-top:2px; }
+
+        .module-strip { display:flex; flex-wrap:wrap; gap:10px; margin:14px 0; }
+        .module-strip a { flex:1 1 130px; text-align:center; background:#0f172a; color:#fff; border-radius:8px; padding:14px 10px; text-decoration:none; font-weight:700; font-size:0.85rem; }
+        .module-strip a span { display:block; font-weight:400; font-size:0.72rem; color:#94a3b8; margin-top:3px; }
+
+        .back-to-top { display:inline-block; margin-top:20px; font-size:0.85rem; color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+    </nav>
+
+    <div class="internal-banner"><strong>Walkthrough for internal presentation.</strong> A single, navigable summary of the AI 410 redesign, built to show colleagues what shipped and why — not a page for students.</div>
+
+    <h1 id="top">AI 410 — Delivery Walkthrough</h1>
+
+    <div class="hero-box">
+        <p>AI 410 was redesigned from <strong>8 individually-graded weekly skills</strong> into <strong>4 merged Hands-On Skill (HOS) units</strong>, graded on a new <strong>CEAU cycle</strong> (Create/Scaffold → Evaluate → Analyze → Understand &amp; Refine) instead of code correctness alone — reflecting a course where students use an AI assistant to scaffold code, then have to prove they understand what it built. Every piece below is live, cross-linked, and verified.</p>
+    </div>
+
+    <div class="stat-row">
+        <div class="stat"><div class="num">4</div><div class="lbl">Merged HOS units</div></div>
+        <div class="stat"><div class="num">5</div><div class="lbl">Grading categories</div></div>
+        <div class="stat"><div class="num">2</div><div class="lbl">Research-backed MP/CD formats</div></div>
+        <div class="stat"><div class="num">4</div><div class="lbl">Student-view simulations</div></div>
+        <div class="stat"><div class="num">100%</div><div class="lbl">Legacy version preserved</div></div>
+    </div>
+
+    <h2>Jump to a section</h2>
+    <div class="toc">
+        <a href="#core">Core Pages</a>
+        <a href="#guides">Hands-On Guides &amp; Tooling</a>
+        <a href="#research">Research &amp; Design Rationale</a>
+        <a href="#mpcd">Improved MP &amp; Concept Debate</a>
+        <a href="#project">Team/Term Project Support</a>
+        <a href="#studentview">See It From a Student's Seat</a>
+        <a href="#safety">Fallback &amp; Internal Tracking</a>
+    </div>
+
+    <!-- CORE PAGES -->
+    <h2 id="core" class="section">Core Pages</h2>
+    <p>The two pages any student, faculty reviewer, or the Dean would actually open.</p>
+    <div class="card-grid">
+        <div class="deliver-card">
+            <span class="tag-badge tag-core">Live</span>
+            <h3>Course Schedule</h3>
+            <div class="path">courses/AI-410.html</div>
+            <p>Outcomes, the CEAU model explained, the 4-HOS grading breakdown, the 10-week schedule, and a full weekly breakdown with glossary, Application Challenge, and Knowledge Check per HOS.</p>
+            <a class="go" href="AI-410.html">Open →</a>
+        </div>
+        <div class="deliver-card">
+            <span class="tag-badge tag-core">Live</span>
+            <h3>Syllabus</h3>
+            <div class="path">courses/AI-410-syllabus.html</div>
+            <p>The house-template syllabus: prerequisites, outcomes, the 5-category grading table, per-assignment criteria, and the course schedule — now including Team/Term Project milestones and suggested MP/CD formats.</p>
+            <a class="go" href="AI-410-syllabus.html">Open →</a>
+        </div>
+    </div>
+
+    <!-- GUIDES -->
+    <h2 id="guides" class="section">Hands-On Guides &amp; Tooling</h2>
+    <p>Every HOS has a real, runnable guide with starter code and a verified answer key — plus two reference pages built to reduce first-week setup friction.</p>
+    <div class="card-grid">
+        <div class="deliver-card">
+            <span class="tag-badge tag-core">Live</span>
+            <h3>4 HOS Hands-On Guides</h3>
+            <div class="path">courses/ai-410-guides/hos-0{1–4}-*.html</div>
+            <p>Foundations &amp; the Agentic Loop · Embeddings, Chunking &amp; RAG · Guardrails &amp; Async Processing · Mobile, Push &amp; Observability. Each with starter code and a live-verified answer key.</p>
+            <a class="go" href="ai-410-guides/index.html">Open guides index →</a>
+        </div>
+        <div class="deliver-card">
+            <span class="tag-badge tag-ref">Reference</span>
+            <h3>Concept Companion</h3>
+            <div class="path">courses/ai-410-guides/concept-companion.html</div>
+            <p>Every concept a student needs before starting a HOS — full-stack architecture, the agentic loop, RAG, guardrails, async processing, mobile/push, observability — in 5 standalone modules.</p>
+            <a class="go" href="ai-410-guides/concept-companion.html">Open →</a>
+        </div>
+        <div class="deliver-card">
+            <span class="tag-badge tag-ref">Reference</span>
+            <h3>Account &amp; Service Setup Guide</h3>
+            <div class="path">courses/ai-410-guides/account-setup-guide.html</div>
+            <p>Every external account the course requires — GitHub, Gemini API key, Redis, Expo, Langfuse — with exact click-paths and a breakdown of the Redis connection string.</p>
+            <a class="go" href="ai-410-guides/account-setup-guide.html">Open →</a>
+        </div>
+    </div>
+
+    <!-- RESEARCH -->
+    <h2 id="research" class="section">Research &amp; Design Rationale</h2>
+    <p>Design decisions aren't arbitrary — they're checked against how comparable programs teach this material, and against published research on the specific pedagogy techniques the Dean required.</p>
+    <div class="card-grid">
+        <div class="deliver-card">
+            <span class="tag-badge tag-ref">Reference</span>
+            <h3>Comparable Courses Research</h3>
+            <div class="path">courses/AI-410-market-research.html</div>
+            <p>8 programs across universities, companies, and creators, compared against AI 410's own choices — plus two deep dives: making Muddiest Point &amp; Concept Debate work with no live lecture, and verifying HOS completion without manual review.</p>
+            <a class="go" href="AI-410-market-research.html">Open →</a>
+        </div>
+    </div>
+    <div class="why-box"><strong>Why this matters for the review:</strong> every non-obvious structural choice — the CEAU stage order, the async MP/CD design, the "one running app all term" principle — has a cited source, not just a design preference.</div>
+
+    <!-- MP/CD -->
+    <h2 id="mpcd" class="section">Improved Muddiest Point &amp; Concept Debate</h2>
+    <p>The two problems flagged in practice: MP submissions were low-effort ("people just post whatever"), and Concept Debate responses were collapsing into "I agree." Both are now research-backed, structured formats, added directly to the syllabus.</p>
+    <div class="card-grid">
+        <div class="deliver-card">
+            <span class="tag-badge tag-new">New</span>
+            <h3>Muddiest Point — Structured, Standing Submission</h3>
+            <p>Based on <a href="https://link.springer.com/article/10.1007/s40670-024-02248-w" target="_blank" rel="noopener">ACQUIRED (2025)</a>: a standing, always-open submission (not one Friday form) with 4 required fields — what you were doing, where you got stuck, what you tried, and an optional guess. A low-effort post is structurally harder to write than a real one.</p>
+            <a class="go" href="AI-410-syllabus.html#top">See it in the syllabus →</a>
+        </div>
+        <div class="deliver-card">
+            <span class="tag-badge tag-new">New</span>
+            <h3>Concept Debate — Argue Both Sides, Then Synthesize</h3>
+            <p>Based on <a href="https://doi.org/10.24059/olj.v23i3.2050" target="_blank" rel="noopener">Mitchell (2019)</a> and Structured Academic Controversy: an assigned (not chosen) position, followed by arguing the <em>opposite</em> side before any response is allowed — breaking "I agree" as a viable reply since nobody's own position is left to agree with.</p>
+            <a class="go" href="AI-410-syllabus.html#top">See it in the syllabus →</a>
+        </div>
+    </div>
+
+    <!-- PROJECT SUPPORT -->
+    <h2 id="project" class="section">Team/Term Project Support</h2>
+    <p>Weeks 7–9 were previously three open, under-specified work weeks. Now each week has a named milestone, plus a tool to help students actually start.</p>
+    <div class="card-grid">
+        <div class="deliver-card">
+            <span class="tag-badge tag-new">New</span>
+            <h3>Weekly Milestones (Weeks 7–9)</h3>
+            <p>Week 7: scope locked, roles assigned, architecture sketched. Week 8: a rough working version touching ≥2 combined HOS pieces. Week 9: feature-complete and rehearsed for the Week 10 demo.</p>
+            <a class="go" href="AI-410-syllabus.html#top">See it in the syllabus →</a>
+        </div>
+        <div class="deliver-card">
+            <span class="tag-badge tag-new">New</span>
+            <h3>Capstone Prompt Builder</h3>
+            <p>An external tool linked from both the schedule and syllabus to help students structure what they're asking an AI assistant to scaffold for their specific project — the same Create/Scaffold pattern used in every HOS, applied to the capstone.</p>
+            <a class="go" href="https://clarkngo.github.io/prompt-builder/builders/capstone.html" target="_blank" rel="noopener">Open tool →</a>
+        </div>
+    </div>
+
+    <!-- STUDENT VIEW -->
+    <h2 id="studentview" class="section">See It From a Student's Seat</h2>
+    <p>Four simulated "Module" pages — one per HOS — reassembling the real course content in the order and format a student would actually encounter it: lecture, Muddiest Point, Concept Debate, the HOS build, Application Challenge, Knowledge Check. Built to review pacing and tone from the student's side, not ours.</p>
+    <div class="module-strip">
+        <a href="AI-410-module1-student-view.html">Module 1<span>Foundations &amp; Agentic Loop</span></a>
+        <a href="AI-410-module2-student-view.html">Module 2<span>Embeddings &amp; RAG</span></a>
+        <a href="AI-410-module3-student-view.html">Module 3<span>Guardrails &amp; Async</span></a>
+        <a href="AI-410-module4-student-view.html">Module 4<span>Mobile, Push &amp; Observability</span></a>
+    </div>
+
+    <!-- SAFETY NET -->
+    <h2 id="safety" class="section">Fallback &amp; Internal Tracking</h2>
+    <p>The original version isn't gone — it's fully preserved and one click away if a rollback is ever needed.</p>
+    <div class="card-grid">
+        <div class="deliver-card">
+            <span class="tag-badge tag-safety">Archived</span>
+            <h3>Legacy Schedule &amp; Syllabus</h3>
+            <div class="path">courses/AI-410-legacy-schedule.html · AI-410-legacy-syllabus.html</div>
+            <p>The original 10-week, 8-individual-HOS version, unchanged, with all 10 original week guides still live and linked.</p>
+            <a class="go" href="AI-410-legacy-schedule.html">Open legacy schedule →</a>
+        </div>
+        <div class="deliver-card">
+            <span class="tag-badge tag-safety">Internal</span>
+            <h3>Materials Tracker</h3>
+            <div class="path">courses/AI-410-tracker.html</div>
+            <p>Every version and piece of material for AI 410 in one place — current, legacy, and cross-cutting reference pages, with verification status for each answer key.</p>
+            <a class="go" href="AI-410-tracker.html">Open →</a>
+        </div>
+    </div>
+
+    <p style="font-size:0.85rem;color:#6b7280;margin-top:30px">Every internal link on this page resolves — checked with a script that verifies all AI 410 cross-references, not just spot-checked by eye.</p>
+    <a class="back-to-top" href="#top">↑ Back to top</a>
+    </div>
+    <script src="../assets/nav.js"></script>
+</body>
+</html>

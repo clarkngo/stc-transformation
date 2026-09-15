@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Student View Simulation: Module 1</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .internal-banner { background:#f1f5f9; border:1px solid #cbd5e1; border-radius:8px; padding:14px 18px; margin:0 0 24px; font-size:0.88rem; color:#475569; }
+        .internal-banner strong { color:#334155; }
+
+        /* LMS shell chrome */
+        .lms-shell { border:1px solid #d1d5db; border-radius:10px; overflow:hidden; margin-top:10px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+        .lms-topbar { background:#1e293b; color:#e2e8f0; padding:14px 22px; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; }
+        .lms-topbar .course-name { font-weight:700; font-size:0.95rem; }
+        .lms-topbar .student-name { color:#94a3b8; }
+        .lms-progress-bar { background:#f8fafc; padding:14px 22px; border-bottom:1px solid #e2e8f0; }
+        .lms-progress-bar .label { font-size:0.78rem; color:#64748b; text-transform:uppercase; letter-spacing:0.04em; font-weight:700; margin-bottom:8px; }
+        .module-track { display:flex; gap:8px; }
+        .module-pip { flex:1; height:8px; border-radius:4px; background:#e2e8f0; }
+        .module-pip.active { background:#22c55e; }
+        .module-pip.done { background:#86efac; }
+        .lms-body { padding:26px 28px; background:#fff; }
+        .module-title { font-size:1.4rem; font-weight:800; color:#0f172a; margin:0 0 4px; }
+        .module-sub { color:#64748b; font-size:0.9rem; margin:0 0 22px; }
+
+        /* Item list */
+        .item { border:1px solid #e2e8f0; border-radius:10px; margin-bottom:14px; overflow:hidden; }
+        .item-head { display:flex; align-items:center; gap:14px; padding:14px 18px; background:#f8fafc; border-bottom:1px solid #e2e8f0; }
+        .item-icon { font-size:1.4rem; flex-shrink:0; width:36px; text-align:center; }
+        .item-meta { flex:1 1 auto; }
+        .item-type { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6d28d9; }
+        .item-title { font-size:1rem; font-weight:700; color:#0f172a; margin-top:2px; }
+        .item-tags { display:flex; gap:6px; flex-shrink:0; }
+        .item-tag { font-size:0.7rem; font-weight:700; padding:2px 9px; border-radius:999px; white-space:nowrap; }
+        .tag-due { background:#fee2e2; color:#b91c1c; }
+        .tag-points { background:#dcfce7; color:#15803d; }
+        .tag-time { background:#e0f2fe; color:#0369a1; }
+        .item-body { padding:16px 18px; font-size:0.9rem; color:#334155; }
+        .item-body p:first-child { margin-top:0; }
+        .item-body p:last-child { margin-bottom:0; }
+        .student-field { background:#fafafa; border:1px dashed #cbd5e1; border-radius:8px; padding:12px 14px; margin-top:10px; font-size:0.85rem; color:#64748b; }
+        .student-field .fname { font-weight:700; color:#475569; display:block; margin-bottom:3px; }
+        .stage-mini { border-left:3px solid #22c55e; padding:8px 0 8px 14px; margin:10px 0; }
+        .stage-mini .snum { font-weight:700; color:#15803d; }
+        .cd-stage { background:#faf5ff; border-radius:6px; padding:10px 14px; margin:8px 0; font-size:0.85rem; }
+        .cd-stage strong { color:#7e22ce; }
+        .kc-q { background:#eef2ff; border-radius:6px; padding:10px 14px; margin:6px 0; font-size:0.88rem; }
+
+        .rail-note { font-size:0.78rem; color:#94a3b8; font-style:italic; margin-top:4px; }
+        .module-nav { display:flex; justify-content:space-between; margin-top:18px; font-size:0.9rem; }
+        .module-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+    </nav>
+
+    <div class="internal-banner"><strong>Internal review tool — not a real course page.</strong> A simulation of what a student would actually see opening "Module 1" in the online course menu, built from the real content already in <a href="AI-410.html">AI-410.html</a>, <a href="AI-410-syllabus.html">AI-410-syllabus.html</a>, and the <a href="ai-410-guides/hos-01-foundations-agentic-loop.html">HOS 1 guide</a> — reassembled in the order and format a student would encounter it, so we can review pacing, tone, and volume from their seat instead of ours.</div>
+
+    <h1>Student View Simulation — Module 1</h1>
+
+    <div class="lms-shell">
+        <div class="lms-topbar">
+            <span class="course-name">AI 410 — AI Engineering</span>
+            <span class="student-name">Viewing as: Student</span>
+        </div>
+        <div class="lms-progress-bar">
+            <div class="label">Course Progress — Module 1 of 4</div>
+            <div class="module-track">
+                <div class="module-pip active"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
+            </div>
+        </div>
+
+        <div class="lms-body">
+            <div class="module-title">Module 1 — Foundations &amp; the Agentic Loop</div>
+            <p class="module-sub">HOS 1 · Outcome 1 · 20% of your final grade · Estimated 2–2.5 hrs of build time, plus MP/CD</p>
+
+            <!-- OVERVIEW -->
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">📋</span>
+                    <div class="item-meta">
+                        <div class="item-type">Overview</div>
+                        <div class="item-title">Welcome to Module 1</div>
+                    </div>
+                </div>
+                <div class="item-body">
+                    <p><strong>Goal:</strong> Build a full-stack chat app that can call a real tool — using an AI coding assistant to scaffold it fast, then proving, in writing and by hand, that you actually understand what it built.</p>
+                    <p>This module is graded across four stages instead of on code correctness alone: <strong>Create/Scaffold → Evaluate → Analyze → Understand &amp; Refine.</strong> You'll also complete a Muddiest Point reflection, a Concept Debate, and an Application Challenge this week — see below for each.</p>
+                </div>
+            </div>
+
+            <!-- LECTURE -->
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">🎥</span>
+                    <div class="item-meta">
+                        <div class="item-type">Lecture / Pre-work</div>
+                        <div class="item-title">LLM Architecture &amp; the Agentic Loop</div>
+                    </div>
+                    <div class="item-tags"><span class="item-tag tag-time">~20 min</span></div>
+                </div>
+                <div class="item-body">
+                    <p>Recorded walkthrough covering how a request/response call to an LLM works, what tokens and context windows are, and the agentic loop pattern — the model deciding to call a tool, your backend running it, and the result going back before the model answers. Watch this before starting your Muddiest Point below.</p>
+                </div>
+            </div>
+
+            <!-- MUDDIEST POINT -->
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">💬</span>
+                    <div class="item-meta">
+                        <div class="item-type">Discussion — Muddiest Point</div>
+                        <div class="item-title">What's still unclear after this week's lecture?</div>
+                    </div>
+                    <div class="item-tags"><span class="item-tag tag-due">Due Wed</span><span class="item-tag tag-points">5% of grade</span></div>
+                </div>
+                <div class="item-body">
+                    <p>This submission is open now and stays open all week — post as soon as you hit something confusing, don't wait until the deadline. Fill in all four fields:</p>
+                    <div class="student-field"><span class="fname">1. What were you doing right before you got confused?</span>e.g. "Watching the part of the lecture about tool calling…"</div>
+                    <div class="student-field"><span class="fname">2. The exact place you got stuck</span>Be specific — not "I don't get tool calling," but the precise line, term, or step.</div>
+                    <div class="student-field"><span class="fname">3. What did you already try?</span>Re-reading, a search, asking a classmate — show your attempt.</div>
+                    <div class="student-field"><span class="fname">4. (Optional) Your best guess</span>Even if you think it's wrong.</div>
+                    <p class="rail-note">Instructor posts a short response addressing the most common muddiest points early in the week, before the Hands-On Skill build below.</p>
+                </div>
+            </div>
+
+            <!-- CONCEPT DEBATE -->
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">💬</span>
+                    <div class="item-meta">
+                        <div class="item-type">Discussion — Concept Debate</div>
+                        <div class="item-title">Should an AI agent decide on its own which tools to call — or should every tool call require human approval first?</div>
+                    </div>
+                    <div class="item-tags"><span class="item-tag tag-points">5% of grade</span></div>
+                </div>
+                <div class="item-body">
+                    <p>You've been assigned a side below (not your choice) — small groups, staged across the week:</p>
+                    <div class="cd-stage"><strong>Stage 1 — Initial position (Mon–Tue):</strong> Argue your assigned side with a specific claim and evidence, not a general summary.</div>
+                    <div class="cd-stage"><strong>Stage 2 — Argue the opposite (Wed–Thu):</strong> Before responding to a classmate, post the strongest version of the <em>other</em> side's argument — the one you weren't assigned.</div>
+                    <div class="cd-stage"><strong>Stage 3 — Synthesis (Fri):</strong> Drop advocacy. State a genuine synthesis position, citing a specific point from a classmate's post — "great points, I agree" doesn't meet the Writing criterion.</div>
+                    <p class="rail-note">Your assigned side this week: <strong>Group A — Autonomous tool calling</strong>. (Groups are ~5 students; you'll see your specific group and classmates in the discussion board itself.)</p>
+                </div>
+            </div>
+
+            <!-- HANDS-ON SKILL BUILD -->
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">🛠️</span>
+                    <div class="item-meta">
+                        <div class="item-type">Hands-On Skill (HOS) Build</div>
+                        <div class="item-title">HOS 1 — Foundations &amp; the Agentic Loop</div>
+                    </div>
+                    <div class="item-tags"><span class="item-tag tag-points">12.5% of grade</span><span class="item-tag tag-time">~2–2.5 hrs</span></div>
+                </div>
+                <div class="item-body">
+                    <p>Full guide: <a href="ai-410-guides/hos-01-foundations-agentic-loop.html">HOS 1 Hands-On Guide →</a> — starter code, exact prompts, and submission details. Four stages:</p>
+                    <div class="stage-mini"><span class="snum">1. Create/Scaffold</span> — not graded on its own. Prompt an AI assistant to build a full-stack chat app that can call a real tool.</div>
+                    <div class="stage-mini"><span class="snum">2. Evaluate</span> — test it on purpose (does it call the tool when it should, skip it when it shouldn't, fail gracefully on bad input?). Submit a short note on what you found.</div>
+                    <div class="stage-mini"><span class="snum">3. Analyze</span> — pick one specific piece of the AI-generated code and explain, in your own words, exactly how it works.</div>
+                    <div class="stage-mini"><span class="snum">4. Understand &amp; Refine</span> — by hand, no AI: add a second tool yourself and confirm the agent calls the right tool for the right question.</div>
+                </div>
+            </div>
+
+            <!-- APPLICATION CHALLENGE -->
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">🎯</span>
+                    <div class="item-meta">
+                        <div class="item-type">Application Challenge</div>
+                        <div class="item-title">Design tool schemas for a different kind of business</div>
+                    </div>
+                    <div class="item-tags"><span class="item-tag tag-points">5% of grade</span></div>
+                </div>
+                <div class="item-body">
+                    <p>Design the tool schemas (not full implementations) a completely different kind of business would need for its own agent, and justify each one — practicing the judgment call of "should the model be able to call this," not just the mechanics of calling it.</p>
+                </div>
+            </div>
+
+            <!-- KNOWLEDGE CHECK -->
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">✅</span>
+                    <div class="item-meta">
+                        <div class="item-type">Knowledge Check</div>
+                        <div class="item-title">Self-check before you move on</div>
+                    </div>
+                    <div class="item-tags"><span class="item-tag tag-time">Ungraded</span></div>
+                </div>
+                <div class="item-body">
+                    <div class="kc-q">What's the difference between the frontend and backend, and why does the API key live in the backend only?</div>
+                    <div class="kc-q">Walk through what happens, step by step, from typing a message to the agent deciding to call a tool.</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="internal-banner" style="margin-top:24px">
+        <strong>What to look for reviewing this:</strong> Is the weekly rhythm clear (lecture → MP opens → CD stages → HOS build → Application Challenge → Knowledge Check)? Does the MP/CD workload feel reasonable stacked against the HOS build in the same week? Does the tone read as approachable for a beginner-leaning cohort? This module's content is real — pulled directly from the live course pages, not written fresh for this mockup.
+    </div>
+
+    <div class="module-nav">
+        <span></span>
+        <a href="AI-410-module2-student-view.html">Module 2 →</a>
+    </div>
+    </div>
+    <script src="../assets/nav.js"></script>
+</body>
+</html>

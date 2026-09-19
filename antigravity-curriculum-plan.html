@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Antigravity in the STC Curriculum — Synthesis &amp; Plan</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout-red    { background: var(--red-dim);    border-color: #fecaca; color: #7f1d1d; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .stack-grid { grid-template-columns: 1fr; } }
+    .stack-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 16px; background: var(--bg); }
+    .stack-card .stack-name { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.02em; margin-bottom: 6px; }
+    .stack-card .stack-role { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 8px; }
+    .stack-card .stack-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.5; }
+
+    .phase-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .phase-table th { text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); padding: 0 12px 10px; border-bottom: 2px solid var(--border); }
+    .phase-table td { padding: 14px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .phase-table tr:last-child td { border-bottom: none; }
+    .phase-table td.phase { font-weight: 700; color: var(--violet); white-space: nowrap; }
+    @media (max-width: 640px) {
+      .phase-table, .phase-table thead, .phase-table tbody, .phase-table tr, .phase-table td, .phase-table th { display: block; }
+      .phase-table thead { display: none; }
+      .phase-table tr { border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 8px 4px; }
+      .phase-table td { border-bottom: none; padding: 6px 12px; }
+    }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--violet-dim); color: var(--violet); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="teaching-framework-hub.html">Teaching Framework Hub</a>
+    <span class="nav-sep">›</span>
+    <span>Antigravity in the STC Curriculum — Synthesis &amp; Plan</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Synthesis &amp; Plan — Faculty Tooling</div>
+    <h1>Antigravity in the STC Curriculum</h1>
+    <p class="subtitle">Drafted from the <a href="meeting-notes-spencer-liu-2026-09-16.html">Sep 16 conversation with Spencer Liu (Google)</a>. This is not a proposal to replace Claude Code — it's a plan for where Google Antigravity fits alongside it: a lower-stakes harness for students who are still learning to work with an agent, with Google ADK as the escalation path once a workflow needs to be custom-built.</p>
+    <div class="meta-row">
+      <span class="meta-chip">September 16, 2026</span>
+      <span class="meta-chip">Draft — not yet decided</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#recommendation">Recommendation</a></li>
+      <li><a href="#stack">The Three-Tool Stack</a></li>
+      <li><a href="#placement">Where It Fits in the Course Map</a></li>
+      <li><a href="#phases">Phased Rollout</a></li>
+      <li><a href="#risks">Open Questions &amp; Risks</a></li>
+      <li><a href="#actions">Action Items</a></li>
+    </ol>
+  </div>
+
+  <!-- Recommendation -->
+  <div class="section" id="recommendation">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🎯</div>
+      <div>
+        <h2>1. Recommendation</h2>
+        <div class="section-sub">Add Antigravity as the student-facing default; keep Claude Code where it already sits</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-violet">
+        <strong>Recommendation:</strong> pilot Google Antigravity as the primary agent harness for students in AI 410 / AI 420, specifically for the weeks where the point of the exercise is learning to work <em>with</em> an agent — including recovering from its mistakes. Leave Claude Code as the internal STC default (per the <a href="meeting-notes-tooling-curriculum-2026-09-01.html">Sep 1 tooling decision</a>) for faculty work and for any capstone-stage work where reliability matters more than the learning value of friction.
+      </div>
+      <div class="point mt16">
+        <span class="point-label lbl-violet">Why this isn't an either/or</span>
+        <div class="point-body">
+          Spencer's own framing draws the line for us: Claude Code is "mature and complete," which is exactly why it's a weaker teaching tool for the specific skill Google is hiring for — <strong>noticing when an agent is wrong and knowing what to do next</strong>. Antigravity needing more active attention is a feature for a classroom, not a bug. The free tier's generous token allowance also matters for a cohort of students, where Claude Code usage is metered against STC's own budget.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stack -->
+  <div class="section" id="stack">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🧱</div>
+      <div>
+        <h2>2. The Three-Tool Stack</h2>
+        <div class="section-sub">Each tool has a different job, not a ranked "best tool" list</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="stack-grid">
+        <div class="stack-card">
+          <div class="stack-name" style="color:var(--violet)">Antigravity</div>
+          <div class="stack-role">Learning harness</div>
+          <div class="stack-desc">Default for students. Free-tier token allowance is generous enough for a full cohort. Handles generic, well-scoped tasks.</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-name" style="color:var(--teal)">Google ADK</div>
+          <div class="stack-role">Escalation path</div>
+          <div class="stack-desc">When a task needs a customized agentic workflow Antigravity can't fulfill generically, students (or faculty) build it directly in ADK.</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-name" style="color:var(--blue)">Claude Code</div>
+          <div class="stack-role">Faculty / production default</div>
+          <div class="stack-desc">Stays the internal STC default per the Sep 1 decision. Mature, low-friction — the right tool once reliability matters more than the learning value of debugging an agent.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Placement -->
+  <div class="section" id="placement">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📍</div>
+      <div>
+        <h2>3. Where It Fits in the Course Map</h2>
+        <div class="section-sub">Three named options from the conversation, not yet narrowed to one</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-teal">Option A</span>
+        <div class="point-body">Fold it into <strong>AI 410 (AI Engineering)</strong> and <strong>AI 420 (Agentic AI)</strong> directly — Antigravity becomes the harness for specific HOS weeks that focus on agent error-recovery and prompt-engineering breadth, alongside the existing <a href="courses/ai-410-guides/index.html">10-week HOS framework</a>.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Option B</span>
+        <div class="point-body">Stand up a dedicated <strong>Agentic Engineering</strong> / <strong>Agent Harness</strong> / <strong>Agent System</strong> course, with Antigravity + ADK as its core toolchain and the Forward-Deployed-Engineer multi-agent evaluation pattern as a unit.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Option C</span>
+        <div class="point-body">Use <strong>CityU-X as the staging sandbox</strong> (already proposed in the Sep 1 meeting) to pilot Antigravity-built student projects before anything touches production — keeps the blast radius of a student's agent mistake contained.</div>
+      </div>
+      <div class="callout callout-amber mt16">
+        These aren't mutually exclusive — C is an infrastructure choice that supports either A or B. The open question is A vs. B: extend the existing AI 410/420 sequence, or carve out a new course.
+      </div>
+    </div>
+  </div>
+
+  <!-- Phases -->
+  <div class="section" id="phases">
+    <div class="section-header">
+      <div class="section-icon icon-green">🗺️</div>
+      <div>
+        <h2>4. Phased Rollout</h2>
+        <div class="section-sub">Crawl-walk-run, not a term-one switch</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table class="phase-table">
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Scope</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="phase">1. Faculty pilot</td>
+            <td>Faculty (not students) build one HOS-style module in Antigravity, hit the ADK escalation path at least once on purpose, and log where it broke compared to the equivalent Claude Code workflow.</td>
+          </tr>
+          <tr>
+            <td class="phase">2. Single-cohort trial</td>
+            <td>Run one AI 410 or AI 420 section with Antigravity as the default harness for 2–3 HOS weeks, staged on CityU-X. Compare completion rate and error-recovery quality against the Claude Code cohort from the same term.</td>
+          </tr>
+          <tr>
+            <td class="phase">3. Decide A vs. B</td>
+            <td>Using Phase 2 results, decide whether Antigravity stays folded into AI 410/420 or becomes the anchor for a standalone Agentic Engineering / Agent Harness course.</td>
+          </tr>
+          <tr>
+            <td class="phase">4. Scale</td>
+            <td>Roll the chosen structure out across all AI 410/420 sections; fold the certifications (Google AI Professional Certificate, Anthropic/Pearson VUE) into the same track as optional stretch credentials.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Risks -->
+  <div class="section" id="risks">
+    <div class="section-header">
+      <div class="section-icon icon-red">⚠️</div>
+      <div>
+        <h2>5. Open Questions &amp; Risks</h2>
+        <div class="section-sub">Unresolved as of this draft</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Token limits under real load</span>
+        <div class="point-body">"Generous on the free tier" hasn't been tested against a full cohort running the same HOS week simultaneously — needs a real trial, not just Spencer's account of it.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Grading consistency</span>
+        <div class="point-body">If Antigravity and Claude Code cohorts are graded on the same rubric, error-recovery behavior needs to be assessed the same way regardless of which harness surfaced the error.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Two harnesses to teach and support</span>
+        <div class="point-body">Faculty already just settled on Claude as the internal default (Sep 1). Adding a second, student-facing harness means maintaining documentation and troubleshooting for both.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="section" id="actions">
+    <div class="section-header">
+      <div class="section-icon icon-violet">✅</div>
+      <div>
+        <h2>6. Action Items</h2>
+        <div class="section-sub">Before this becomes a course decision</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check">1</span>
+          <div class="action-body">Run Phase 1 (faculty pilot) — build one HOS module in Antigravity and one equivalent in ADK, log where each broke.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">2</span>
+          <div class="action-body">Confirm whether CityU-X can host a staged Antigravity pilot without touching production systems.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">3</span>
+          <div class="action-body">Draft a shared error-recovery rubric that grades the skill (not the tool), so an Antigravity section and a Claude Code section stay comparable.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">4</span>
+          <div class="action-body">Scope the Option A vs. Option B decision (extend AI 410/420 vs. new Agentic Engineering course) as its own follow-up conversation once Phase 2 data exists.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">5</span>
+          <div class="action-body">Loop back to Spencer once Phase 1 is done — possible guest session or FDE-style demo, per the meeting notes.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Source conversation</span>
+        <div class="point-body"><a href="meeting-notes-spencer-liu-2026-09-16.html">Meeting Notes — Spencer Liu (Google), Sep 16 2026</a> — the full notes this plan was synthesized from</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Internal tooling decision</span>
+        <div class="point-body"><a href="meeting-notes-tooling-curriculum-2026-09-01.html">Meeting Notes — Tooling, Curriculum &amp; Staffing, Sep 1 2026</a> — where Claude was set as the internal default and the CityU-X-as-sandbox idea first came up</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Prior comparison</span>
+        <div class="point-body"><a href="ai-dev-tooling-comparison.html">AI Dev Tooling Comparison</a> — the earlier Claude Desktop vs. Cursor IDE writeup</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Course sequence</span>
+        <div class="point-body"><a href="courses/ai-410-guides/index.html">AI 410 — Hands-On Guides</a> — the 10-week HOS framework this plan proposes extending</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — Spencer Liu (Google), September 16 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="teaching-framework-hub.html">Teaching Framework Hub</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — Spencer Liu (Google), Sep 16 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes — Industry Conversation</div>
+    <h1>Spencer Liu (Google) — Agent Tooling, Hiring &amp; Safety, September 16, 2026</h1>
+    <p class="subtitle">Conversation with Spencer Liu — Google engineer and CityU School of Technology &amp; Computing alum (Master's) — on how engineering orgs recover from agent errors, where Google Antigravity and Claude Code each fit a curriculum, how Google hires fresh grads for agent-facing roles, and Spencer's own research on deterministic safety guardrails for non-deterministic models.</p>
+    <div class="meta-row">
+      <span class="meta-chip">September 16, 2026</span>
+      <span class="meta-chip">With Spencer Liu — Google, CityU STC alum</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#systems">System Thinking After an Agent Error</a></li>
+      <li><a href="#data">Data Engineering — Metadata, Policy &amp; Guardrails</a></li>
+      <li><a href="#certs">Industry Certifications</a></li>
+      <li><a href="#antigravity">Agent Harness: Antigravity, ADK &amp; Claude Code</a></li>
+      <li><a href="#python">Learning Python</a></li>
+      <li><a href="#hiring">Hiring Fresh Grads</a></li>
+      <li><a href="#fde">Forward Deployed Engineer — Multi-Agent Evaluation</a></li>
+      <li><a href="#research">Spencer's Own Research</a></li>
+      <li><a href="#actions">Action Items</a></li>
+    </ol>
+  </div>
+
+  <!-- System thinking -->
+  <div class="section" id="systems">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🧩</div>
+      <div>
+        <h2>1. System Thinking After an Agent Error</h2>
+        <div class="section-sub">The main idea driving the conversation</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Core question</span>
+        <div class="point-body">
+          How does a team proceed after an AI agent returns an error, or a result that isn't what was expected? Spencer frames this as a <strong>systems-thinking</strong> problem, not a one-off debugging problem.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">The role is now a blend</span>
+        <div class="point-body">
+          The role that handles this is a mix of <strong>PM and engineering</strong> — engineering now has decision-making authority that used to sit with product. Different departments across Google are being equipped with their own AI agents, which pushes this "what do we do when it goes wrong" judgment call down into engineering teams directly.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data engineering -->
+  <div class="section" id="data">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🗄️</div>
+      <div>
+        <h2>2. Data Engineering — Metadata, Policy &amp; Guardrails</h2>
+        <div class="section-sub">Called out as a very important, currently under-resourced topic</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-teal">Why it matters now</span>
+        <div class="point-body">
+          Data processing has become one of the most important topics in agent systems — specifically <strong>metadata</strong>, <strong>policies</strong>, and <strong>guardrails</strong>. This is squarely Data Engineering's territory, and it's the layer that determines whether an agent's mistake stays contained or cascades.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certifications -->
+  <div class="section" id="certs">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🎓</div>
+      <div>
+        <h2>3. Industry Certifications</h2>
+        <div class="section-sub">Two credentials flagged as worth pursuing / recommending to students</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="link-list">
+        <li>
+          <a href="https://grow.google/enroll-certificates/ai-professional-certificate-mid/" target="_blank" rel="noopener">Google AI Professional Certificate ↗</a>
+          <span class="link-desc">Google's mid-level AI professional certification track.</span>
+        </li>
+        <li>
+          <a href="https://www.pearsonvue.com/us/en/anthropic.html" target="_blank" rel="noopener">Anthropic Certification — Pearson VUE ↗</a>
+          <span class="link-desc">Anthropic's certification, administered through Pearson VUE testing centers.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Antigravity -->
+  <div class="section" id="antigravity">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🚀</div>
+      <div>
+        <h2>4. Agent Harness: Antigravity, ADK &amp; Claude Code</h2>
+        <div class="section-sub">Where each tool fits a student's or a team's workflow</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Antigravity — for learning</span>
+        <div class="point-body">
+          Google Antigravity gives free users a generous token allowance. Spencer's recommendation: <strong>if a student is learning, point them to Antigravity instead of Claude Code</strong> — lower cost of experimentation while they're still building intuition.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Escalation path to ADK</span>
+        <div class="point-body">
+          Antigravity is positioned for generic tasks. When a request needs a <strong>customized workflow</strong> beyond what Antigravity can fulfill, the path is to move to <strong>Google ADK</strong> to build it directly.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Where it could live in the curriculum</span>
+        <div class="point-body">
+          Flagged as a fit for an <strong>Agentic Engineering</strong>, <strong>Agent Harness</strong>, or <strong>Agent System</strong> course. Spencer noted that at Google, all of their own systems are deployed in Antigravity.
+        </div>
+      </div>
+      <div class="callout callout-blue mt16">
+        <strong>Claude Code, by contrast:</strong> "pretty mature and complete" — less chance of something going wrong, which also means less opportunity to learn from working through a failure. The two tools were framed as serving different points in a learning arc, not as a straight replacement of one by the other.
+      </div>
+    </div>
+  </div>
+
+  <!-- Python -->
+  <div class="section" id="python">
+    <div class="section-header">
+      <div class="section-icon icon-green">🐍</div>
+      <div>
+        <h2>5. Learning Python</h2>
+        <div class="section-sub">Two resources raised on our side, confirmed by Spencer as good picks</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="module-grid">
+        <div class="module-card">
+          <div class="module-name" style="color:var(--blue);">Gemini Learn</div>
+          <div class="module-desc">Google's guided-learning surface for picking up Python fundamentals.</div>
+        </div>
+        <div class="module-card">
+          <div class="module-name" style="color:var(--teal);">NotebookLM</div>
+          <div class="module-desc">Used as a study/reference tool alongside hands-on practice.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hiring -->
+  <div class="section" id="hiring">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🧑‍💻</div>
+      <div>
+        <h2>6. Hiring Fresh Grads</h2>
+        <div class="section-sub">Two interview archetypes, and the behavioral signal Google looks for</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">What fresh grads are evaluated on</span>
+        <div class="point-body">
+          How a new grad communicates with an AI agent, and specifically <strong>how they fix an error in an agent's result</strong> — this is treated as a real, assessable skill, not a soft skill.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Two interview types for the role</span>
+        <div class="point-body">
+          <strong>1. Model-area understanding</strong> — does this person know how the model builds something, i.e. genuine insight into how the model arrives at an output?<br>
+          <strong>2. Application &amp; integration engineer</strong> — can this person build and wire the systems that sit around a model?
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">The behavioral signal</span>
+        <div class="point-body">
+          What Google looks for in a new grad's interview behavior: <strong>curiosity and awareness</strong> about the agent's output and what to do next — a broader form of prompt engineering than just writing a good prompt. Spencer noted Antigravity may actually help surface this, since it needs more active attention to work properly than a more "finished" tool would.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FDE -->
+  <div class="section" id="fde">
+    <div class="section-header">
+      <div class="section-icon icon-red">🛰️</div>
+      <div>
+        <h2>7. Forward Deployed Engineer — Multi-Agent Evaluation</h2>
+        <div class="section-sub">How the FDE role checks agent work before it ships</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Comparative execution</span>
+        <div class="point-body">
+          Forward Deployed Engineers run the same plan across <strong>different AI agents</strong> to see how execution diverges between them.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Agent-swarm decision-making</span>
+        <div class="point-body">
+          A group of agents will discuss and reach a decision together — described as an <strong>"agent swarm"</strong> pattern rather than a single agent working alone.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Verification before shipping</span>
+        <div class="point-body">
+          Code quality gets evaluated before it ships; verification includes actually <strong>running the app or website</strong>, not just reading the diff. Limits and constraints are built into that evaluation step.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Research -->
+  <div class="section" id="research">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🔬</div>
+      <div>
+        <h2>8. Spencer's Own Research</h2>
+        <div class="section-sub">Device computation and deterministic safety over non-deterministic models</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-teal">Device computation</span>
+        <div class="point-body">
+          Same broad area as physical AI — models running <strong>on-device</strong> rather than in the cloud, and <strong>small models built for a specific job</strong> rather than one large general-purpose model.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-red">Deterministic vs. non-deterministic safety</span>
+        <div class="point-body">
+          Spencer's framing question: how do you put a <strong>deterministic safety guard</strong> around a <strong>non-deterministic</strong> model? A non-deterministic system doesn't inherently have a safeguard for preventing behavior when its output has to be translated into a deterministic action.
+        </div>
+      </div>
+      <div class="callout callout-amber mt16">
+        <strong>Example 1 — speech to text:</strong> a model transcribing profanity or flagged language doesn't have a built-in guard for why that content can't simply pass through as-is; the non-deterministic transcription step and the deterministic "can this be output" policy step aren't naturally connected.
+      </div>
+      <div class="callout callout-amber mt16">
+        <strong>Example 2 — a robot washing dishes:</strong> if someone nearby starts yelling, the robot should recognize that as a trigger to stop its current task and check on the person — a deterministic safety response layered on top of a non-deterministic perception model.
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="section" id="actions">
+    <div class="section-header">
+      <div class="section-icon icon-green">✅</div>
+      <div>
+        <h2>9. Action Items</h2>
+        <div class="section-sub">Follow-ups from this conversation</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item">
+          <span class="action-check">1</span>
+          <div class="action-body">Look into the <a href="#certs">Google AI Professional Certificate and Anthropic/Pearson VUE certification</a> for STC faculty and students.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">2</span>
+          <div class="action-body">Evaluate Google Antigravity as a student-facing agent harness — see the companion plan: <a href="antigravity-curriculum-plan.html">Antigravity in the STC Curriculum — Synthesis &amp; Plan</a>.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">3</span>
+          <div class="action-body">Feed the two-archetype hiring model (model-area understanding vs. application/integration engineering) and the "curiosity and awareness" behavioral signal into how STC evaluates student readiness, not just how Google interviews.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">4</span>
+          <div class="action-body">Consider the deterministic-vs-non-deterministic safety framing (profanity filtering, distress-response triggers) as a teaching example for the guardrails material already in AI 410/420.</div>
+        </li>
+        <li class="action-item">
+          <span class="action-check">5</span>
+          <div class="action-body">Keep the door open with Spencer as a possible guest session or FDE-style demo for students, given the CityU STC alum connection.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Curriculum plan</span>
+        <div class="point-body"><a href="antigravity-curriculum-plan.html">Antigravity in the STC Curriculum — Synthesis &amp; Plan</a> — the follow-up plan drafted from this conversation</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Tooling precedent</span>
+        <div class="point-body"><a href="meeting-notes-tooling-curriculum-2026-09-01.html">Meeting Notes — Tooling, Curriculum &amp; Staffing, Sep 1 2026</a> — where Claude was chosen over Cursor as the internal default and the AI 410/420 HOS lab format was set</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">Tooling comparison</span>
+        <div class="point-body"><a href="ai-dev-tooling-comparison.html">AI Dev Tooling Comparison</a> — the earlier Claude Desktop vs. Cursor IDE writeup this conversation extends</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Course catalog</span>
+        <div class="point-body"><a href="courses/ai-410-guides/index.html">AI 410 — Hands-On Guides</a> — the course this session's HOS-format guardrails material would extend</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

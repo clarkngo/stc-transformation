@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 (Antigravity Pilot) — HOS 1: Antigravity, GitHub &amp; GitHub Pages</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .meta-pill.pilot { background:#f5f3ff; color:#6d28d9; }
+        .draft-banner { background:#f5f3ff; border:2px solid #c4b5fd; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; color:#4c1d95; }
+        .draft-banner strong { color:#5b21b6; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        .stage-block { border:1px solid #e2e8f0; border-radius:8px; padding:20px 22px; margin-bottom:18px; }
+        .stage-block h2 { margin:0 0 4px; font-size:1.15rem; }
+        .stage-num { display:inline-block; width:26px; height:26px; border-radius:50%; background:#ede9fe; color:#6d28d9; font-weight:700; font-size:0.85rem; text-align:center; line-height:26px; margin-right:8px; }
+        .stage-tagline { color:#6b7280; font-size:0.85rem; margin:0 0 14px 34px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .not-graded { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.85rem; border-radius:0 4px 4px 0; color:#475569; }
+        .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .field-notes { background:#f5f3ff; border-left:5px solid #7c3aed; padding:15px 18px; margin:20px 0; border-radius:4px; font-size:0.9rem; color:#4c1d95; }
+        .field-notes h4 { margin:0 0 8px; color:#5b21b6; }
+        .field-notes ul { margin:8px 0 0; padding-left:20px; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>HOS 1 (Antigravity Pilot) — Antigravity, GitHub &amp; GitHub Pages</h1>
+        <div class="meta-strip">
+            <span class="meta-pill pilot">Pilot — not graded</span>
+            <span class="meta-pill">Est. 75–90 min</span>
+            <span class="meta-pill">Includes a real bug and a real ADK wall</span>
+        </div>
+
+        <div class="draft-banner">
+            <strong>What this is:</strong> a single-HOS pilot, not a parallel course yet — Phase 1 (faculty pilot) of the <a href="../../antigravity-curriculum-plan.html">Antigravity curriculum plan</a>, drafted from the <a href="../../meeting-notes-spencer-liu-2026-09-16.html">Sep 16 conversation with Spencer Liu</a>. The regular AI 410 sequence (<a href="hos-01-foundations-agentic-loop.html">HOS 1–4</a>) is unaffected and untouched — this lives alongside it until the pilot tells us whether it's worth building out further.
+        </div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Get Antigravity, GitHub, and GitHub Pages working end to end — but the point isn't the plumbing, it's what the plumbing sets up. GitHub Pages serves a project site from a <em>subpath</em> (<code>username.github.io/repo-name/</code>), not the domain root, and Antigravity has no way to know that while it's writing code in Stage 1. That mismatch reliably produces a real, unprompted bug once the site goes live — which is exactly the "notice the agent got something wrong, then decide what to do about it" moment this whole pilot exists to test (see Spencer's <a href="../../meeting-notes-spencer-liu-2026-09-16.html#systems">framing</a>). Stage 5 then pushes past what Antigravity can do generically at all, into the Google ADK escalation path the <a href="../../antigravity-curriculum-plan.html">curriculum plan</a> calls for.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li><strong>An Antigravity account</strong> — free tier, no credit card. (Sign-up flow confirmed by Spencer Liu in the Sep 16 conversation as generous on tokens for exactly this kind of exercise.)</li>
+            <li><strong>A GitHub account</strong> — if you don't already have one, see <a href="account-setup-guide.html#github">the GitHub section of the Account &amp; Service Setup Guide</a>. Same account as the rest of AI 410; nothing new to create there.</li>
+            <li>A browser. Nothing else for Stages 1–4 — no local Python, no starter-code folder. Unlike every other HOS in this course, you're starting from a truly blank repo on purpose. Stage 5 stays read/observe-only for the same reason — see that stage for why.</li>
+        </ul>
+
+        <p>Graded the same way as the rest of AI 410 will eventually be, but this pilot itself isn't graded — it's a dry run. Each stage below still says what to produce, so faculty running the pilot have something concrete to compare against the Claude Code track.</p>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">1</span>Create / Scaffold</h2>
+            <p class="stage-tagline">Antigravity-driven. Start from nothing — an empty local folder, no starter code.</p>
+            <p>Open Antigravity, point it at a new empty folder, and give it a prompt like:</p>
+<pre>Scaffold a tiny static personal site in this folder — two pages,
+sharing one stylesheet and one nav bar:
+- index.html: my name, one sentence about what AI 410 is, and a nav
+  link to about.html.
+- about.html: two sentences about what I'm hoping to learn this term,
+  and a nav link back to index.html.
+- One shared stylesheet, linked from both pages, styling the nav bar
+  and page body.
+Plain HTML/CSS, no build step, no framework.</pre>
+            <p>On purpose, don't tell it anything about GitHub Pages, folder layout, or how the site will be hosted — let Antigravity decide that on its own. Let it run, then look at the file paths it chose (open the generated HTML and check the <code>&lt;link&gt;</code> and <code>&lt;a href&gt;</code> tags) before moving on. Don't hand-edit anything yet.</p>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">2</span>Ship It — GitHub &amp; Pages</h2>
+            <p class="stage-tagline">Prompt to public URL — and the step that exposes whatever Antigravity assumed in Stage 1.</p>
+            <ol>
+                <li>Create a new <strong>public</strong> repo on GitHub (Pages needs public, unless your account has a paid plan) and push what Antigravity built, unchanged.</li>
+                <li>In the repo, go to <strong>Settings → Pages</strong>. Under <strong>Build and deployment</strong>, set <strong>Source</strong> to <em>Deploy from a branch</em>, pick <code>main</code>, and pick the folder your <code>index.html</code> actually lives in (<code>/ (root)</code> or <code>/docs</code> — has to match where Antigravity put it in Stage 1).</li>
+                <li>Save, then wait — the first deploy usually takes one to two minutes. GitHub shows a green checkmark and a URL once it's live: <code>https://&lt;username&gt;.github.io/&lt;repo-name&gt;/</code>.</li>
+                <li>Open that exact URL — <strong>not</strong> the local file, not a preview inside Antigravity. Notice the URL has your repo name in the path, after your username. That detail matters in Stage 3.</li>
+            </ol>
+            <div class="submit-box">
+                <h5>Submit (pilot log, not a grade)</h5>
+                <ul><li>The live GitHub Pages URL, plus how long Stages 1–2 took start to finish.</li></ul>
+            </div>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">3</span>Evaluate</h2>
+            <p class="stage-tagline">The real test: does the live page actually work, not just the local one.</p>
+            <p>On the live URL — reload it fresh, don't trust a cached tab — check three things: does the page have any styling at all, or is it plain unstyled text? Does clicking the nav link to the other page actually load it? Open your browser's dev tools (<strong>F12 → Network</strong> or <strong>Console</strong>) and look for any red 404 errors.</p>
+            <p>If something's broken, don't fix it yet — first work out <em>why</em>. Look at the exact URL a failing request is trying to reach (dev tools will show it) and compare it to where that file actually lives in your repo. Antigravity built and tested this locally, where a path like <code>/style.css</code> means "the root of my hard drive's dev server." On GitHub Pages, your site doesn't live at the root — it lives at <code>/&lt;repo-name&gt;/</code> — so that same absolute path now points somewhere that doesn't exist. Antigravity had no way to know that in Stage 1; it only shows up now, live.</p>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul><li>What's broken (if anything) and the exact failing URL from dev tools, or — if nothing broke — a note on what Antigravity did differently that avoided this (e.g. it may have used relative paths like <code>style.css</code> on its own).</li></ul>
+            </div>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">4</span>Understand &amp; Refine</h2>
+            <p class="stage-tagline">By hand, no AI — fix the actual bug, not a cosmetic one.</p>
+            <div class="not-graded">No Antigravity for this stage. Open the file with the broken reference yourself.</div>
+            <p>If Stage 3 found a broken path: fix it by hand — change the absolute path (<code>/style.css</code>) to a relative one (<code>style.css</code> or <code>./style.css</code>), so it resolves correctly no matter what subpath the site is served from. Commit, push, and reload the <strong>live</strong> URL to confirm it's actually fixed — not just that it looks right in a local preview.</p>
+            <p>If Stage 3 came back clean, don't skip this: deliberately introduce the bug yourself first (hand-edit one path to be absolute), confirm it breaks live, then fix it. Either way, you should end this stage having watched one specific path go from broken to working on the real deployed site.</p>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul><li>The one line you changed, and a screenshot of the live (not local) page working correctly after the fix.</li></ul>
+            </div>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">5</span>Hit the Wall — Antigravity to ADK</h2>
+            <p class="stage-tagline">Read/observe only. This is where "generic" stops being enough.</p>
+            <p>Back in Antigravity, ask for something it can't cleanly fulfill as a static site — for example:</p>
+<pre>Add a section to index.html that shows today's local weather,
+fetched live from a weather API, every time the page loads.</pre>
+            <p>Watch what it does. A static GitHub Pages site has no server of its own, so the honest options are limited: call a weather API directly from browser JavaScript (which means putting an API key in code anyone can view — a real security problem, not a hypothetical one), or leave the feature unfinished. Notice which one it picks, and whether it flags the tradeoff to you or just ships it quietly.</p>
+            <p>This is the wall the <a href="../../antigravity-curriculum-plan.html">curriculum plan</a> calls the ADK escalation path: a live API key that needs to stay server-side, and logic that needs to run somewhere other than the visitor's browser, is exactly the kind of <strong>customized workflow</strong> Antigravity hands off rather than solves generically. Solving it for real means standing up a small backend — which is what <a href="https://google.github.io/adk-docs/" target="_blank" rel="noopener">Google ADK</a> is for. You're not building that backend in this pilot HOS; noticing *that this is the point where you'd need to* is the actual skill being tested here.</p>
+            <div class="submit-box">
+                <h5>Submit</h5>
+                <ul><li>What Antigravity actually did with the weather prompt, and in one or two sentences: what would have to move server-side to do this properly, and why a static site can't be the place that happens.</li></ul>
+            </div>
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>Pages says "not found" after a few minutes</strong> — almost always a Source/folder mismatch. If Antigravity put <code>index.html</code> in <code>/docs</code> but Pages is set to deploy from <code>/ (root)</code> (or vice versa), it'll build successfully and still 404. Go back to Settings → Pages and match the folder exactly.</li>
+                <li><strong>Repo is private</strong> — free GitHub accounts need the repo set to public for Pages to serve it. Check the repo's visibility before troubleshooting anything else.</li>
+                <li><strong>Change pushed but the live site looks the same</strong> — Pages deploys are not instant; check the <strong>Actions</strong> tab (or the Pages settings page) for a running or just-finished deployment before assuming something's broken.</li>
+                <li><strong>Stage 3 found nothing broken</strong> — that's a real, valid result, not a failed exercise. It means Antigravity happened to use relative paths on its own; say so in Stage 3's submission, then do the "introduce it yourself" fallback in Stage 4 so you still get the diagnose-and-fix rep.</li>
+                <li><strong>Everything looks fine locally, only breaks live</strong> — that's the whole point, not a bug in the exercise. A local dev server and <code>username.github.io/repo-name/</code> resolve absolute paths differently; always evaluate against the live URL, never the local one.</li>
+            </ul>
+        </div>
+
+        <div class="field-notes">
+            <h4>Faculty: this is Phase 1 of the pilot</h4>
+            <p>Per the <a href="../../antigravity-curriculum-plan.html#phases">phased rollout</a>, log this before treating it as done — this version is built specifically to produce a real error-recovery moment (Stages 3–4) and a real ADK-escalation moment (Stage 5), not just toolchain setup:</p>
+            <ul>
+                <li>Did Antigravity actually produce the absolute-path bug on its own, or did you have to force it in Stage 4's fallback? Either outcome is useful data — it tells us how reliably this exercise teaches the intended lesson without hand-holding.</li>
+                <li>In Stage 5, did Antigravity flag the API-key security problem itself, or ship it silently? That's close to the exact "curiosity and awareness" signal <a href="../../meeting-notes-spencer-liu-2026-09-16.html#hiring">Spencer described Google screening fresh grads for</a> — worth noting whether Antigravity's own behavior helps or hides that.</li>
+                <li>Did the free-tier token allowance feel tight for a task this size, or was it a non-issue?</li>
+                <li>How long did all five stages actually take, end to end — this is the number that decides whether a full cohort trial (Phase 2) is realistic in one class session.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="../../antigravity-curriculum-plan.html">← Antigravity curriculum plan</a>
+            <a href="index.html">Back to Hands-On Guides →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

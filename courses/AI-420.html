@@ -36,7 +36,7 @@
         .st-new { background:#ede9fe; color:#6d28d9; }
         .st-prov { background:#fef3c7; color:#92400e; }
         .outcome-tag { display:inline-block; background:#dcfce7; color:#15803d; font-size:0.72rem; font-weight:700; padding:2px 7px; border-radius:6px; margin-top:4px; }
-        .guide-pending { display:inline-block; font-size:0.78rem; font-weight:600; margin-top:4px; margin-left:10px; color:#94a3b8; }
+        .guide-link { display:inline-block; font-size:0.78rem; font-weight:600; margin-top:4px; margin-left:10px; }
         .week-block { border:1px solid #e2e8f0; border-radius:8px; padding:18px 20px; margin-bottom:16px; }
         .week-block h3 { margin-top:0; }
         .week-block .merge-note { font-size:0.82rem; color:#6b7280; margin:-6px 0 10px; }
@@ -90,10 +90,10 @@
             <span class="meta-pill">10 Weeks</span>
             <span class="meta-pill">4 Merged HOS</span>
             <span class="meta-pill">Capstone: Portfolio Project</span>
-            <span class="meta-pill draft">Course design v0.2 — Sep 23, 2026</span>
+            <span class="meta-pill draft">Course design v0.3 — Sep 24, 2026</span>
         </div>
 
-        <div class="compare-box">This is the course design: outcomes, stack, schedule, grading, and what each unit builds. The hands-on guides, starter code, and answer keys come next, following the same pattern as <a href="AI-410.html">AI 410</a> (see the <a href="AI-410-vs-AI-420.html">side-by-side comparison</a>). Background on the stack choices: <a href="../bsai-course-tech-stack-brainstorm.html">AI 420 / 430 / 440 Technology Stack Brainstorm</a>. Every choice here follows the <a href="../bsai-course-design-constraints.html">BSAI Course Design Constraints</a>: the course description is fixed, everything runs in GitHub Codespaces, and free tiers come first.</div>
+        <div class="compare-box">This is the course design: outcomes, stack, schedule, grading, and what each unit builds. The <a href="ai-420-guides/index.html">hands-on guides, starter code, and answer keys</a> are built (in faculty testing), following the same pattern as <a href="AI-410.html">AI 410</a> (see the <a href="AI-410-vs-AI-420.html">side-by-side comparison</a>). Background on the stack choices: <a href="../bsai-course-tech-stack-brainstorm.html">AI 420 / 430 / 440 Technology Stack Brainstorm</a>. Every choice here follows the <a href="../bsai-course-design-constraints.html">BSAI Course Design Constraints</a>: the course description is fixed, everything runs in GitHub Codespaces, and free tiers come first.</div>
 
         <div class="plain-terms-box"><strong>In plain terms:</strong> in AI 410 you built an app with an AI model inside it. In AI 420 you build software where the AI decides what to do next. It picks a tool, looks at what came back, notices when it went wrong, and tries again, all without a person clicking "next." Every unit adds a working agent to your portfolio. By Week 10 you'll have taken one real, manual business process and handed it to a team of agents, with numbers showing how well they do it.</div>
 
@@ -201,13 +201,13 @@
             <p class="merge-note">Merges: agent components &amp; LLM inference · agentic patterns.</p>
             <p>Students solve the same task twice: once with a single LLM call, then with a loop they write themselves (model → tool call → observation → model again, until done). With no framework hiding the loop, the four components are easy to point at in the code. Reasoning is the model's decision at each step, planning is how it breaks the task down, tool use is the function calls, and memory is the growing message history. The unit closes with a tour of the common patterns: ReAct, plan-and-execute, reflection, and routing.</p>
             <span class="outcome-tag">Outcome 1</span>
-            <span class="guide-pending">Hands-on guide — not yet built</span>
+            <a class="guide-link" href="ai-420-guides/hos-01-agent-anatomy.html">Open hands-on guide →</a>
             <div class="build-box"><h5>What gets built</h5><ol>
                 <li>Baseline: one Gemini call answers a multi-step research question. It often guesses or makes things up.</li>
-                <li>A hand-written ReAct loop in about 60 lines of Python, with two simple tools (search, calculator) and a step cap. <em>New unit.</em></li>
-                <li>The same agent rebuilt in ADK, walking through agent-development <strong>hos01</strong> (first agent), <strong>hos03</strong> (swapping the model provider), and <strong>hos04</strong> (structured output). Students find where ADK hides the loop they just wrote.</li>
-                <li>A plan-and-execute variant of the same agent, compared against ReAct on the same five tasks.</li>
-                <li>Committed as <code>portfolio/01-research-agent/</code> with a README.</li>
+                <li>A hand-written ReAct loop in about 60 lines of Python, with three tools (Wikipedia search, Wikipedia intro, calculator; free, no key) and a step cap. <em>New unit.</em></li>
+                <li>The same agent in ADK (patterned on agent-development <strong>hos01</strong>–<strong>hos02</strong>). Students match ADK's Events view to the steps of the loop they wrote.</li>
+                <li>A plan-and-execute variant, written by hand in Stage 4, compared against ReAct on the same five tasks.</li>
+                <li>Committed to the student's portfolio repo as <code>hos-01-agent-anatomy/</code> with a README.</li>
             </ol></div>
             <div class="glossary-box"><h5>New words this week</h5><dl>
                 <dt>Inference —</dt><dd>one request to the model, one response back. No actions, no second chances.</dd>
@@ -228,15 +228,16 @@
             <p>The course description names three kinds of external tools: APIs, web browsers, and databases. Students build one custom tool of each kind, write their function-calling schemas, and serve all three from a small MCP server. An ADK agent then uses them. The unit's second half adds memory. Short-term memory is session state within one run. Long-term memory lives in Chroma, running locally in the Codespace, where the agent <em>writes</em> what it learned so a later run can recall it.</p>
             <span class="outcome-tag">Outcome 2</span>
             <span class="outcome-tag">Outcome 1</span>
-            <span class="guide-pending">Hands-on guide — not yet built</span>
+            <a class="guide-link" href="ai-420-guides/hos-02-tools-mcp-memory.html">Open hands-on guide →</a>
             <div class="build-box"><h5>What gets built</h5><ol>
-                <li><strong>API tool:</strong> wraps a real public API (e.g. weather or shipping status). The API key stays server-side. This is the exact wall students hit in the <a href="ai-410-guides/antigravity-hos-01-github-pages.html">Antigravity pilot's Stage 5</a>.</li>
+                <li><strong>API tool:</strong> marine weather (wind, gusts, waves) from Open-Meteo, a real public API that is free and needs no key. It's provided as the worked example the other tools follow.</li>
                 <li><strong>Browser tool:</strong> fetches a page and returns clean text, with a length limit so the page doesn't flood the context.</li>
-                <li><strong>Database tool:</strong> read-only SQL against a small SQLite business dataset, with a guard that rejects writes.</li>
+                <li><strong>Database tool:</strong> read-only SQL against Harbor Supply Co.'s SQLite database (a marine supply store), protected twice: a single-SELECT check, and the database opened read-only.</li>
                 <li>All three served over MCP and used by an ADK operations agent. Tool errors are returned to the model as observations, not raised as crashes.</li>
-                <li>Starts from agent-development <strong>hos02</strong> (tools), <strong>hos07</strong> (real API tools and agents as tools), and <strong>hos05–06</strong> (session state and persistent memory).</li>
+                <li>Reference reading: agent-development <strong>hos05–06</strong> (session state and persistent memory) and <strong>hos07</strong> (real API tools).</li>
+                <li>Stage 4, by hand: two narrow, typed tools (<code>order_status</code>, <code>low_stock_report</code>) that the model should prefer over free-form SQL.</li>
                 <li>Long-term memory: the agent saves a customer preference in run 1 and uses it in run 2.</li>
-                <li>Committed as <code>portfolio/02-ops-agent/</code>.</li>
+                <li>Committed to the portfolio repo as <code>hos-02-tools-mcp-memory/</code>.</li>
             </ol></div>
             <div class="glossary-box"><h5>New words this week</h5><dl>
                 <dt>Tool schema —</dt><dd>the name, description, and parameter types the model reads to decide whether and how to call a tool. The description matters as much as the code.</dd>
@@ -253,16 +254,15 @@
         <div class="week-block">
             <h3>Week 3 — HOS 3: Reasoning Traces, Failure Diagnosis &amp; Self-Correction</h3>
             <p class="merge-note">Merges: trace analysis · self-correcting agents.</p>
-            <p>Students get an agent that looks fine and fails in five planted ways: a malformed tool argument, a call to a tool that doesn't exist, a loop that repeats the same call, a context overflow where early instructions get lost, and a "confident wrong answer" that finishes successfully while being incorrect. They instrument it with Langfuse and find each failure <em>from the trace alone</em> before reading the source. Then they add self-correction: reflection after each tool result, retry with a corrected argument, repeated-call detection, and a step and cost budget.</p>
+            <p>Students get Harbor Supply Co.'s customer-support agent, which looks fine and fails in five planted ways: a tool-argument error that crashes the run, a call to a tool that doesn't exist (after which the agent tells the customer the refund went through), a loop that repeats the same call, a silently truncated result that produces a confident wrong total, and a vaguely described tool that quotes the store's wholesale cost as the price. They trace it into Langfuse and find each failure <em>from the trace alone</em> before reading the source. Then they fix each cause and add generic self-correction: tool errors returned as something the model can read, repeated-call detection, and a step budget.</p>
             <span class="outcome-tag">Outcome 3</span>
-            <span class="guide-pending">Hands-on guide — not yet built</span>
+            <a class="guide-link" href="ai-420-guides/hos-03-traces-self-correction.html">Open hands-on guide →</a>
             <div class="build-box"><h5>What gets built</h5><ol>
-                <li>Traces from <code>adk web</code>, then Langfuse on every model call and tool call (same setup as AI 410 HOS 4), attached through agent-development <strong>hos09</strong>'s callbacks.</li>
-                <li>The logic-loop lesson uses <strong>hos12</strong>'s <code>exit_loop</code> and <code>max_iterations</code>: what happens when the exit condition never fires.</li>
-                <li>The planted-bug agent is a <em>new unit</em>.</li>
+                <li>A local trace per scenario, then Langfuse on every model call and tool call (same free account as AI 410 HOS 4). Students write this prompt themselves.</li>
+                <li>Reference reading: agent-development <strong>hos09</strong> (the callbacks the guards use) and <strong>hos12</strong> (how a loop is supposed to end).</li>
                 <li>A failure log: for each planted bug, the trace step where it shows up, the symptom, and the root cause.</li>
-                <li>Self-correction added, with before/after traces showing the agent recovering on its own.</li>
-                <li>Committed as <code>portfolio/03-self-healing-agent/</code>.</li>
+                <li>Stage 4, by hand: the fixes plus <code>guards.py</code> (an <code>on_tool_error_callback</code> and a repeated-call <code>before_tool_callback</code>), with before/after traces showing the agent recovering on its own.</li>
+                <li>Committed to the portfolio repo as <code>hos-03-traces-self-correction/</code>.</li>
             </ol></div>
             <div class="glossary-box"><h5>New words this week</h5><dl>
                 <dt>Reasoning trace —</dt><dd>the step-by-step record of a run: each model input and output, each tool call and its result, with timing and token counts.</dd>
@@ -279,14 +279,15 @@
         <div class="week-block">
             <h3>Week 4 — HOS 4: Multi-Agent Orchestration &amp; Agent-on-Agent Evaluation</h3>
             <p class="merge-note">Merges: multi-agent workflows &amp; orchestration · quantitative evaluation.</p>
-            <p>Students split last week's single agent into a coordinator plus specialist agents using ADK's sequential, parallel, and loop patterns. Then they test it the way industry does: a <em>simulated-user agent</em> plays the customer across a suite of 20+ scenarios, and a <em>judge agent</em> grades each outcome against a rubric. Every run logs success rate, cost per task (from token counts × price), and latency (p50/p95). The key comparison is whether the multi-agent version actually beat the single agent, or just cost more.</p>
+            <p>Students split last week's repaired single agent into a coordinator that delegates to specialist agents (ADK's <code>sub_agents</code>). Then they test both versions the way industry does: a <em>simulated-user agent</em> plays the customer across 12 scenarios, and a <em>judge agent</em> grades each outcome against a rubric. Every run logs success rate, cost per task (from token counts × price), and latency (p50/p95). The key comparison is whether the multi-agent version actually beat the single agent, or just cost more.</p>
             <span class="outcome-tag">Outcome 4</span>
-            <span class="guide-pending">Hands-on guide — not yet built</span>
+            <a class="guide-link" href="ai-420-guides/hos-04-multi-agent-evaluation.html">Open hands-on guide →</a>
             <div class="build-box"><h5>What gets built</h5><ol>
-                <li>A coordinator + 2–3 specialist agents, orchestrated in ADK using the patterns from agent-development <strong>hos07–hos08</strong> (supervisor, stateful multi-agent) and <strong>hos10–12</strong> (sequential, parallel, loop).</li>
+                <li>A coordinator + 3 specialist agents (orders, catalog, reports), each holding only its own tools. Reference reading: agent-development <strong>hos07–hos08</strong> (supervisor, team) and <strong>hos10–12</strong> (sequential, parallel, loop).</li>
                 <li>An eval harness: scenario file → simulated user → agent system → judge → metrics table.</li>
-                <li>A one-page metrics report comparing the single-agent and multi-agent versions on all three metrics, plus one spot-check where a human disagreed with the judge.</li>
-                <li>Committed as <code>portfolio/04-agent-team/</code>.</li>
+                <li>A one-page metrics report comparing the single-agent and multi-agent versions on all three metrics.</li>
+                <li>Stage 4, by hand: <code>agreement.py</code>, which measures how often the judge agrees with the student's own grading, and in which direction it errs.</li>
+                <li>Committed to the portfolio repo as <code>hos-04-multi-agent-evaluation/</code>.</li>
             </ol></div>
             <div class="glossary-box"><h5>New words this week</h5><dl>
                 <dt>Orchestration —</dt><dd>the logic that decides which agent runs when: in sequence, in parallel, or in a loop until a condition is met.</dd>

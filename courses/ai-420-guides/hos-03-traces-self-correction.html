@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 420 — HOS 3 Hands-On Guide: Traces, Failure Diagnosis & Self-Correction</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .meta-pill.scaffold { background:#ede9fe; color:#6d28d9; }
+        .draft-banner { background:#fef3c7; border:2px solid #f59e0b; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; }
+        .draft-banner strong { color:#b45309; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .goal-box p { margin:0; }
+        .needs-list li { margin-bottom:6px; }
+        .ref-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px 18px; margin:16px 0 22px; font-size:0.88rem; }
+        .ref-box h4 { margin:0 0 6px; font-size:0.9rem; color:#334155; }
+        .ref-box ul { margin:0; padding-left:20px; }
+        .stage-block { border:1px solid #e2e8f0; border-radius:8px; padding:20px 22px; margin-bottom:18px; }
+        .stage-block h2 { margin:0 0 4px; font-size:1.15rem; }
+        .stage-num { display:inline-block; width:26px; height:26px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.85rem; text-align:center; line-height:26px; margin-right:8px; }
+        .stage-tagline { color:#6b7280; font-size:0.85rem; margin:0 0 14px 34px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code, td code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul { margin:0; padding-left:20px; }
+        .pledge-box { background:#f5f3ff; border-left:5px solid #8b5cf6; padding:12px 16px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.86rem; }
+        .pledge-box h5 { margin:0 0 6px; color:#6d28d9; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .pledge-box p { margin:0 0 6px; }
+        .pledge-box p:last-child { margin:0; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .snag-box li { margin-bottom:8px; }
+        table.mini { width:100%; border-collapse:collapse; margin:10px 0; font-size:0.86rem; }
+        table.mini th, table.mini td { border:1px solid #e2e8f0; padding:8px 10px; text-align:left; vertical-align:top; }
+        table.mini th { background:#f8fafc; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        .table-scroll { overflow-x:auto; }
+        .guide-nav { display:flex; justify-content:space-between; gap:12px; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-420.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 420</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>HOS 3 — Reasoning Traces, Failure Diagnosis &amp; Self-Correction</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 3–4 hrs</span>
+            <span class="meta-pill">Outcome 3</span>
+            <span class="meta-pill scaffold">Scaffolding: spec only — you write the prompt</span>
+            <span class="meta-pill">12.5% of final grade</span>
+        </div>
+
+        <div class="draft-banner"><strong>Draft — in faculty testing.</strong> The code for this HOS has been checked offline (tools against the real free APIs, agent logic against a scripted stand-in model), but not yet run end to end against Gemini. Faculty running it: note anything that breaks or takes longer than the estimate.</div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Harbor Supply Co.'s customer-support agent looks fine and fails in several different ways. Find every failure <strong>from the traces alone</strong>, before you read its source code — the way on-call engineers debug agents they didn't write. Then make it correct itself.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-420-guides/starter-code/hos-03-traces-self-correction" target="_blank" rel="noopener">this HOS's starter-code folder</a>. Copy it into your portfolio repo (made from the <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-420-guides/starter-code/portfolio-template" target="_blank" rel="noopener">portfolio template</a> in Week 1) as its own folder, then open the repo in GitHub Codespaces. Dependencies install automatically.</li>
+            <li>Your free Gemini API key (the same one from AI 410, no credit card) from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. In the HOS folder: <code>cp .env.example .env</code>, then paste it in as <code>GOOGLE_API_KEY</code>.</li>
+            <li>An AI coding assistant in your Codespace (Antigravity, Claude Code, or equivalent)</li>
+            <li>A free Langfuse account (no credit card) — the same project as AI 410 HOS 4 is fine. Keys go in <code>.env</code>.</li>
+        </ul>
+        <div class="ref-box"><h4>Reference reading (optional, before you start)</h4><ul>
+            <li><a href="https://github.com/clarkngo/agent-development/tree/main/hos-google-adk/hos09-before-after-agent-model-callbacks" target="_blank" rel="noopener">agent-development hos09 — callbacks</a>: the before/after hooks you'll use in Stage 4.</li>
+            <li><a href="https://github.com/clarkngo/agent-development/tree/main/hos-google-adk/hos12-linkedin-post-loop-agent" target="_blank" rel="noopener">agent-development hos12 — loop agent</a>: how a loop is <em>supposed</em> to end (<code>exit_loop</code>, <code>max_iterations</code>).</li>
+        </ul></div>
+
+        <p>This HOS is graded across four stages instead of on code correctness alone. Each stage below says exactly what to submit.</p>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">1</span>Create / Scaffold</h2>
+            <p class="stage-tagline">Not graded on its own — this is the starting point, not the deliverable.</p>
+            <p><strong>Don't open <code>support_agent/tools.py</code> or <code>agent.py</code> yet.</strong> First run the six scenarios and read what comes out:</p>
+<pre>python run_scenarios.py</pre>
+            <p>Each run prints a trace (every tool call, result, reply, and error, with timings) and saves it under <code>traces/</code>. That's your local trace. Now the spec for your AI assistant. <strong>This time you write the prompt yourself.</strong></p>
+            <blockquote><p>Every agent run from <code>run_scenarios.py</code> (and from <code>adk web</code>) should also appear in Langfuse as one trace, with each model call and each tool call as its own span showing inputs, outputs, and timing. It should switch on only when Langfuse keys are in <code>.env</code>, and do nothing otherwise. <code>run_scenarios.py</code> already imports a module called <code>tracing</code> if one exists and calls <code>tracing.flush()</code> at the end.</p></blockquote>
+            <p>Keep your prompt; you'll submit it.</p>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">2</span>Evaluate</h2>
+            <p class="stage-tagline">The critical gate — find every failure from the traces, not the code.</p>
+            <p>For each scenario, decide from the trace alone: did it succeed? If not, fill in one row of a failure log:</p>
+            <div class="table-scroll"><table class="mini">
+                <tr><th>Scenario</th><th>Failure type</th><th>First step where it shows</th><th>Symptom</th><th>Likely root cause</th></tr>
+                <tr><td><code>s1-…</code></td><td>tool-call error / logic loop / invented action / wrong data / wrong tool / none</td><td>e.g. step 2, the first <code>check_shipment</code> result</td><td>What you actually see</td><td>Your best guess, before reading the code</td></tr>
+            </table></div>
+            <p>Not every failure crashes. Watch for runs that finish politely and are still wrong. For any number the agent states, check it against what the tools actually returned.</p>
+            <div class="submit-box"><h5>Submit</h5>
+                <ul>
+                    <li>Your prompt from Stage 1.</li>
+                    <li>A screenshot of one Langfuse trace with the tool calls visible as separate spans.</li>
+                    <li>Your failure log, one row per scenario, written <em>before</em> you opened the source.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">3</span>Analyze</h2>
+            <p class="stage-tagline">Why does this happen, mechanically?</p>
+            <p>Now open the source. Pick the <strong>one</strong> failure you think is most dangerous in production and explain it fully:</p>
+            <ul>
+                <li>Which line of code or instruction causes it, and why does the model behave the way it does given what it was told?</li>
+                <li>Why didn't it crash, or, if it did, why is crashing actually the <em>less</em> dangerous outcome here?</li>
+                <li>How would a real customer or manager find out, and how long might that take?</li>
+            </ul>
+            <div class="submit-box"><h5>Submit</h5>
+                <ul>
+                    <li>A short written walkthrough of the one failure you chose, in your own words.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">4</span>Understand &amp; Refine</h2>
+            <p class="stage-tagline">The mastery check — by hand, no AI assistance for this stage.</p>
+            <p>Fix each root cause you found in <code>tools.py</code> and the instruction. Then add two <strong>generic</strong> guards that don't know about any specific bug, in <code>support_agent/guards.py</code>, attached as ADK callbacks:</p>
+            <ul>
+                <li><code>on_tool_error_callback</code>: when a tool raises, return an error dict the model can read instead of crashing the run.</li>
+                <li><code>before_tool_callback</code>: count identical calls (same tool, same arguments) within one run. After two, skip the real call and tell the model the result won't change. (Hint: returning a dict skips the tool; returning <code>None</code> lets it run. Keys starting with <code>temp:</code> in <code>tool_context.state</code> last for one run only.)</li>
+            </ul>
+            <p>Rerun all six scenarios. Keep the <code>--max-calls</code> budget in place: it's the last line of defense if a model ignores your guard.</p>
+            <div class="submit-box"><h5>Submit</h5>
+                <ul>
+                    <li>Your <code>guards.py</code> and a short list of the fixes you made to <code>tools.py</code> and the instruction.</li>
+                    <li>Before/after traces for two scenarios, showing the agent now recovering on its own.</li>
+                </ul>
+            </div>
+            <div class="pledge-box"><h5>Honor code</h5>
+                <p>Tick one when you submit: <strong>☐</strong> "I wrote the Stage 4 code myself, without AI assistance, under the CityU academic integrity policy." <strong>or ☐</strong> "I used AI for part of Stage 4. Here's what I used it for and why."</p>
+                <p>Disclosed AI use earns partial credit on this stage instead of zero, so saying so honestly always costs less than hiding it. The Week 5 cold build is where independent skill is checked directly.</p>
+            </div>
+
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>A scenario ends with <code>LlmCallsLimitExceededError</code></strong> — that's the step budget from <code>--max-calls</code> stopping a runaway loop. It's a finding, not a problem with the script.</li>
+                <li><strong>A trace looks different each run</strong> — expected; the model isn't deterministic. If a failure doesn't show up, run that scenario again with <code>--only</code>. Base your log on what you saw, and note when behavior varied.</li>
+                <li><strong>Nothing appears in Langfuse</strong> — traces are sent in batches, so the script has to call <code>flush()</code> before it exits. Also check <code>LANGFUSE_HOST</code> matches your account's region (the EU and US clouds have different URLs).</li>
+                <li><strong>Huge red tracebacks in the terminal</strong> — ADK logs every tool error. <code>run_scenarios.py</code> quiets that logger and records the error in the trace instead. If your AI assistant rewrote the script, check it kept that line.</li>
+                <li><strong><code>429 RESOURCE_EXHAUSTED</code></strong> — you hit the free tier's per-minute limit. Wait a minute and rerun; the scripts' <code>--pause</code> option adds a gap between runs.</li>
+                <li><strong>Codespaces doesn't pick up the devcontainer</strong> — Codespaces only reads <code>.devcontainer/</code> at the <em>root</em> of a repo. Use the portfolio template (its devcontainer covers all four HOS), or make this HOS folder the root of its own repo.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="hos-02-tools-mcp-memory.html">← HOS 2</a>
+            <a href="hos-04-multi-agent-evaluation.html">HOS 4 →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

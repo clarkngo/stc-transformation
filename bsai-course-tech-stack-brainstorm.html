@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 420 / 430 / 440 — Technology Stack Brainstorm</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 900px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--green);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .stack-grid { grid-template-columns: 1fr; } }
+    .stack-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .stack-card .stack-name { font-size: 0.86rem; font-weight: 800; margin-bottom: 4px; }
+    .stack-card .stack-role { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 6px; }
+    .stack-card .stack-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.5; }
+    .stack-card .stack-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-top: 8px; }
+    .tag-reuse { background: var(--green-dim); color: var(--green); }
+    .tag-new { background: var(--violet-dim); color: var(--violet); }
+    .tag-warn { background: var(--amber-dim); color: var(--amber); }
+    .phase-table code, .point-body code { font-size: 0.82em; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+    .phase-table .stack-tag { margin-top: 0; margin-bottom: 4px; }
+
+    .phase-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .phase-table th { text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); padding: 0 12px 10px; border-bottom: 2px solid var(--border); }
+    .phase-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .phase-table tr:last-child td { border-bottom: none; }
+    .phase-table td.phase { font-weight: 700; color: var(--teal); white-space: nowrap; }
+    @media (max-width: 640px) {
+      .phase-table, .phase-table thead, .phase-table tbody, .phase-table tr, .phase-table td, .phase-table th { display: block; }
+      .phase-table thead { display: none; }
+      .phase-table tr { border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 12px; padding: 8px 4px; }
+      .phase-table td { border-bottom: none; padding: 6px 12px; }
+    }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--green-dim); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="bsai-hub.html">BSAI Hub</a>
+    <span class="nav-sep">›</span>
+    <span>AI 420 / 430 / 440 — Technology Stack Brainstorm</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Course Planning — Living Draft</div>
+    <h1>AI 420 / 430 / 440 — Technology Stack Brainstorm</h1>
+    <p class="subtitle">Clark owns building out three BSAI AI-track courses: <strong>AI 420 (Agentic AI)</strong>, <strong>AI 430 (MLOps and AgentOps)</strong>, and <strong>AI 440 (Digital Twins and Physical AI)</strong>, all AAC-approved as part of the <a href="bs-ai-aac-04142026.html">Bachelor of Science in Artificial Intelligence</a>. This page proposes a stack for each course that runs entirely in GitHub Codespaces on free tiers, and says whether the existing <a href="https://clarkngo.github.io/agent-development/">agent-development</a> repo can serve as each course's hands-on base or whether something new is needed.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Revised September 23, 2026</span>
+      <span class="meta-chip">First draft Sep 22</span>
+      <span class="meta-chip">Proposed — not yet final</span>
+      <span class="meta-chip">Owner: Clark</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#scope">Ground Rules</a></li>
+      <li><a href="#repo">The agent-development Repo — Current State</a></li>
+      <li><a href="#ai420">AI 420 — Agentic AI</a></li>
+      <li><a href="#ai430">AI 430 — MLOps and AgentOps</a></li>
+      <li><a href="#ai440">AI 440 — Digital Twins and Physical AI</a></li>
+      <li><a href="#threads">Cross-Course Constraints</a></li>
+      <li><a href="#questions">Open Questions</a></li>
+      <li><a href="#actions">Action Items</a></li>
+    </ol>
+  </div>
+
+  <!-- Scope -->
+  <div class="section" id="scope">
+    <div class="section-header">
+      <div class="section-icon icon-green">🗂️</div>
+      <div>
+        <h2>1. Ground Rules</h2>
+        <div class="section-sub">Three constraints every technology choice below has to pass</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-blue" style="margin-bottom:16px">
+        <strong>Full rules and meeting checklist:</strong> <a href="bsai-course-design-constraints.html">BSAI Course Design Constraints</a>. Read at the start of every course-design meeting.
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Description is fixed</span>
+        <div class="point-body">
+          Each course's AAC-approved description and outcomes (<a href="bs-ai-aac-04142026.html">approved program</a>) are the source of truth and don't change. When existing material doesn't cover something the description promises, the gap is new content to build. The outcome wording is never softened to fit the material.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Runs in Codespaces</span>
+        <div class="point-body">
+          Students work in GitHub Codespaces, as in <a href="courses/AI-410.html">AI 410</a>. No local installs, no GPU, no desktop apps. Services that need a server run in Docker inside the Codespace.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Free tier first</span>
+        <div class="point-body">
+          Only free tiers with no credit card, or open-source tools. Anything that needs a paid key or a billing account is flagged below as optional, never required. Where a free tier's rate limits could be the bottleneck, that's flagged too.
+        </div>
+      </div>
+      <div class="callout callout-green mt16">
+        <strong>Legend:</strong> <span class="stack-tag tag-reuse">Reuse</span> already exists in agent-development or AI 410 · <span class="stack-tag tag-new">New</span> needs to be built · <span class="stack-tag tag-warn">Caution</span> works, but with a limit worth planning around.
+      </div>
+    </div>
+  </div>
+
+  <!-- Repo state -->
+  <div class="section" id="repo">
+    <div class="section-header">
+      <div class="section-icon icon-amber">📦</div>
+      <div>
+        <h2>2. The agent-development Repo — Current State</h2>
+        <div class="section-sub">After the Sep 23 update to google-adk 2.9.2 and current Gemini models</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-green">What's there</span>
+        <div class="point-body">
+          Twelve ADK walkthroughs (<code>hos-google-adk/hos01–hos12</code>): first agent, custom tools, provider switching, structured output, session state, persistent memory, supervisor, stateful multi-agent, callbacks, and sequential, parallel, and loop pipelines. Also an A2A example (<code>hos-a2a/hos01</code>) and a full-stack movie app. The Sep 23 commit moved hos-google-adk to <code>google-adk==2.9.2</code> and <code>gemini-3.6-flash</code>.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-red">Still to fix</span>
+        <div class="point-body">
+          <ul style="margin:0;padding-left:18px">
+            <li><strong>hos01</strong> still uses <code>gemini-2.0-flash</code>. It's the only ADK example the update missed, and the first one students run.</li>
+            <li><strong>hos03</strong> still calls Claude and GPT through OpenRouter, which needs a paid key. Keep the provider-switching lesson but make it free: switch between two Gemini models, or Gemini and a small local model.</li>
+            <li><strong><code>hos-a2a</code></strong> and <strong><code>movie-app-ai-powered</code></strong> weren't updated and still use <code>gemini-2.0-flash</code>.</li>
+            <li><strong>hos08–hos12</strong> have no <code>requirements.txt</code>.</li>
+            <li>No <strong><code>.devcontainer/</code></strong>, so the repo can't open in a ready-to-run Codespace with one click.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Role per course</span>
+        <div class="point-body">
+          <strong>AI 420:</strong> the base. It covers most of the course, with four new units to add. <strong>AI 430:</strong> covers the agent side only; the MLOps side needs a new companion repo. <strong>AI 440:</strong> contributes only the decision-making agent; needs its own repo.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI 420 -->
+  <div class="section" id="ai420">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🤖</div>
+      <div>
+        <h2>3. AI 420 — Agentic AI</h2>
+        <div class="section-sub">Verdict: build on agent-development, adding four new units</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-violet">
+        <strong>What the description commits to:</strong> perceiving the environment; multi-step reasoning and planning; external tools, specifically <em>APIs, web browsers, and databases</em>; self-correction without ongoing human intervention; custom tools, multi-agent workflows, orchestration; a portfolio of functional agents. Outcomes: O1 agent components vs. LLM inference, plus patterns · O2 custom tools via function calling · O3 diagnosing failures from reasoning traces · O4 agent-on-agent testing with success rate, cost per task, latency · O5 a portfolio project automating a business process. Course design: <a href="courses/AI-420.html">AI 420 course page</a>.
+      </div>
+      <table class="phase-table mt16">
+        <thead><tr><th>Need</th><th>Technology</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td class="phase">O1 · agent vs. plain inference</td><td>A hand-built agent loop in about 60 lines using the <code>google-genai</code> SDK, before ADK hides the loop.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">O1 · patterns &amp; orchestration</td><td>ADK 2.x sequential, parallel, loop, and supervisor agents.</td><td><span class="stack-tag tag-reuse">Reuse hos07, hos10–12</span></td></tr>
+          <tr><td class="phase">O1 · memory</td><td>ADK session state + SQLite persistence; Chroma (local, no sign-up) for long-term memory.</td><td><span class="stack-tag tag-reuse">Reuse hos05–06</span> <span class="stack-tag tag-new">New: vector memory</span></td></tr>
+          <tr><td class="phase">O2 · custom tools (APIs)</td><td>ADK function tools calling real services.</td><td><span class="stack-tag tag-reuse">Reuse hos02, 03, 07, 11</span></td></tr>
+          <tr><td class="phase">O2 · browser &amp; database tools</td><td><code>httpx</code> + <code>trafilatura</code> to fetch and clean web pages (Playwright optional); a read-only SQLite query tool.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">O2 · tool packaging</td><td>MCP: Python MCP SDK server + ADK's MCP toolset.</td><td><span class="stack-tag tag-new">New</span> (only in the archived code today)</td></tr>
+          <tr><td class="phase">O3 · trace diagnosis</td><td>The trace view built into <code>adk web</code> (zero setup) → Langfuse free tier; hos09 callbacks for instrumentation; hos12's <code>exit_loop</code> / <code>max_iterations</code> for the logic-loop lesson; plus an agent with planted bugs to diagnose.</td><td><span class="stack-tag tag-reuse">Reuse hos09, hos12</span> <span class="stack-tag tag-new">New: planted-bug agent</span></td></tr>
+          <tr><td class="phase">O4 · agent-on-agent testing</td><td><code>adk eval</code> with test-case files + a simulated-user agent + an LLM judge. Cost per task from token counts × list price (students can compute it even on the free tier); latency from event timestamps.</td><td><span class="stack-tag tag-new">New</span> <span class="stack-tag tag-warn">Rate limits</span></td></tr>
+          <tr><td class="phase">O5 · capstone</td><td>Vendored ADK samples <code>marketing-agency</code> and <code>software-bug-assistant</code>, which match the description's two example projects.</td><td><span class="stack-tag tag-reuse">Reuse</span> <span class="stack-tag tag-warn">Check for Google Cloud dependencies</span></td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-amber mt16">
+        <strong>A2A moves to AI 430.</strong> AI 420's description doesn't mention agent-to-agent communication. AI 430's names it explicitly. Since the descriptions are fixed, AI 430 owns A2A, and AI 420 stays focused on agents within one system.
+      </div>
+    </div>
+  </div>
+
+  <!-- AI 430 -->
+  <div class="section" id="ai430">
+    <div class="section-header">
+      <div class="section-icon icon-blue">⚙️</div>
+      <div>
+        <h2>4. AI 430 — MLOps and AgentOps</h2>
+        <div class="section-sub">Verdict: agent-development covers the agent side; the MLOps side needs a new companion repo</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-blue">
+        <strong>What the description commits to:</strong> DataOps, experiment tracking, CI/CD/CT, multi-step reasoning traces, long-term memory, agent-to-agent communication, LLM-based evaluation, safety guardrails. Outcomes: O1 traditional vs. MLOps vs. AgentOps architecture · O2 CI/CD/CT for models and agentic workflows · O3 monitoring drift, reasoning accuracy, latency in real time · O4 vector DB/RAG performance · O5 security and ethical risk, including prompt injection and unintended actions, within an enterprise framework · O6 an end-to-end agentic pipeline with tool use, memory persistence, and error handling.
+      </div>
+      <table class="phase-table mt16">
+        <thead><tr><th>Need</th><th>Technology</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td class="phase">DataOps</td><td>DVC (datasets versioned alongside git) + pandera (data validation checks).</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">Experiment tracking &amp; registry</td><td>MLflow running in the Codespace, UI on a forwarded port; a small scikit-learn model trained on CPU.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">O2 · CI/CD/CT</td><td>GitHub Actions: tests on every push, deploy on merge, and a scheduled retraining workflow triggered by detected drift. Free for public repos.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">Deploy target</td><td>Hugging Face Spaces (free CPU hosting). Google Cloud Run needs a billing account with a card, so it's optional only.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">O3 · drift, reasoning accuracy, latency</td><td>Evidently (model drift reports) + Langfuse (traces, LLM-judge scores, latency dashboards).</td><td><span class="stack-tag tag-reuse">Langfuse from AI 410</span> <span class="stack-tag tag-new">Evidently</span></td></tr>
+          <tr><td class="phase">O4 · vector DB / RAG performance</td><td>Chroma vs. Qdrant (both local in Docker) + Ragas for RAG quality; recall@k and retrieval latency.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">O5 · security, prompt injection, unintended actions</td><td>promptfoo red-teaming or garak scanning; guardrails built on ADK callbacks; OWASP Top 10 for LLM Applications and NIST AI RMF as the enterprise framework; a pytm threat model plus Clark's CISSE 2025 paper on threat-modeling ADK agents.</td><td><span class="stack-tag tag-reuse">Reuse hos09, hos01 threat-model</span> <span class="stack-tag tag-warn">Scanners make many model calls</span></td></tr>
+          <tr><td class="phase">Agent-to-agent communication</td><td><code>a2a-sdk</code>.</td><td><span class="stack-tag tag-reuse">Reuse hos-a2a, after its update</span></td></tr>
+          <tr><td class="phase">O6 · pipeline: memory &amp; error handling</td><td>ADK SQLite session storage + Redis in Docker (no sign-up; Upstash is the hosted alternative) + retry logic with <code>tenacity</code>.</td><td><span class="stack-tag tag-reuse">Reuse hos06</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- AI 440 -->
+  <div class="section" id="ai440">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🌐</div>
+      <div>
+        <h2>5. AI 440 — Digital Twins and Physical AI</h2>
+        <div class="section-sub">Verdict: needs its own repo; the hardest fit for Codespaces + free tier</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-teal">
+        <strong>What the description commits to:</strong> high-fidelity 3D modeling, IoT real-time data assimilation, PINNs, synthetic data generation, sim-to-real robotics, ethics of autonomous systems in safety-critical domains. Outcomes: O1 digital shadow vs. twin architecture · O2 PINNs · O3 real-time sensor-to-model pipelines · O4 photorealistic, physically accurate simulation for synthetic data · O5 "what-if" scenario testing · O6 a deployed twin (smart building, drone, or manufacturing cell) with real-time monitoring and autonomous decisions.
+      </div>
+      <table class="phase-table mt16">
+        <thead><tr><th>Need</th><th>Technology</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td class="phase">O1 · shadow vs. twin</td><td>MQTT (Mosquitto) + Node-RED in Docker. A shadow syncs data one way only; a twin also sends commands back. Eclipse Ditto is optional because it's heavy on memory.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">O3 · real-time pipeline</td><td>Python sensor simulator or Wokwi (browser) → MQTT → InfluxDB → Grafana.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">O2 · PINNs</td><td>A small PINN written in plain PyTorch first, then DeepXDE. Small problems (heat flow, a damped spring) train in minutes on CPU. NVIDIA PhysicsNeMo (formerly Modulus) needs a GPU and is excluded.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">High-fidelity 3D modeling</td><td>OpenUSD (<code>usd-core</code>, the scene format NVIDIA and industry use) + Blender scripting.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">O4 · photorealistic synthetic data</td><td>MuJoCo (accurate physics on CPU) + BlenderProc (photorealistic rendered images with automatic labels, CPU rendering).</td><td><span class="stack-tag tag-new">New</span> <span class="stack-tag tag-warn">Slow on CPU; small batches</span></td></tr>
+          <tr><td class="phase">Sim-to-real robotics</td><td>Gymnasium + MuJoCo + stable-baselines3 on CPU, with randomized physics. Real hardware is out of scope; transfer is tested against deliberately altered physics.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">O5 · what-if testing</td><td>SimPy (manufacturing-cell simulation) or MuJoCo parameter sweeps; many randomized runs to find failure and safety limits.</td><td><span class="stack-tag tag-new">New</span></td></tr>
+          <tr><td class="phase">O6 · deployed twin with autonomous decisions</td><td>The stack above + an ADK agent that reads InfluxDB and acts over MQTT. Public demo on free cloud tiers: HiveMQ Cloud, InfluxDB Cloud, Grafana Cloud.</td><td><span class="stack-tag tag-reuse">ADK agent from AI 420 (hos11/hos12 patterns)</span></td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-amber mt16">
+        <strong>The O4 compromise, and what it means for the feasibility study.</strong> CPU rendering in a Codespace meets the outcome, but only at small scale. The <a href="feasibility-study-digital-twins.html">Digital Twins Lab Feasibility Study</a>'s Phase 1 open-source stack (Node-RED, InfluxDB, Grafana, Wokwi, optional Ditto) carries over, now running in Docker in the Codespace. Its Phase 2B NVIDIA track (Omniverse, Isaac Sim) needs an RTX GPU and can't run in Codespaces. It becomes an optional extension funded by paid GPU time or free academic credits, never a requirement. Phase 2A (Azure Digital Twins) is likewise optional, via Azure for Students credit.
+      </div>
+    </div>
+  </div>
+
+  <!-- Cross-course -->
+  <div class="section" id="threads">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🧵</div>
+      <div>
+        <h2>6. Cross-Course Constraints</h2>
+        <div class="section-sub">What applies to all three courses (and AI 410)</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-amber">Codespaces hours</span>
+        <div class="point-body">
+          Students with GitHub Education get the Pro allowance: 180 core-hours a month. That's 90 hours on a 2-core machine but 45 on a 4-core one. AI 440's Docker stack and AI 430's MLflow + Qdrant setup will want 4 cores. Set short idle timeouts and teach students to stop the Codespace when they're done.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-red">Gemini free-tier limits</span>
+        <div class="point-body">
+          The main risk is AI 420's automated agent testing and AI 430's security scanning, which make many model calls per run. Estimate calls per student per run before building either unit, and use smaller models for the simulated user, the judge, and the attack probes.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">One devcontainer pattern</span>
+        <div class="point-body">
+          A shared <code>.devcontainer/</code> setup across all four course repos, so "open in Codespaces" behaves the same in every course.
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Sequencing</span>
+        <div class="point-body">
+          410 → 420 → 430 is a natural progression: build an agent, then operate agents in production. AI 440 is mostly independent but reuses an ADK agent from 420 for its decision-making layer, so taking 420 first helps.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Open questions -->
+  <div class="section" id="questions">
+    <div class="section-header">
+      <div class="section-icon icon-red">❓</div>
+      <div>
+        <h2>7. Open Questions</h2>
+        <div class="section-sub">Still to decide</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Free-tier fit for evals &amp; red-teaming</span>
+        <div class="point-body">Do AI 420's agent-on-agent test suites and AI 430's security scans fit Gemini's free-tier rate limits at class scale? Needs a measured dry run.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Capstone samples &amp; Google Cloud</span>
+        <div class="point-body">Do the vendored <code>marketing-agency</code> and <code>software-bug-assistant</code> samples run on a plain Gemini API key, or do they expect Vertex AI or BigQuery? If the latter, they need a free-tier adaptation before they're offered as capstone starters.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Hands-on unit (HOS) mic access for voice</span>
+        <div class="point-body">hos02's voice variant needs microphone access from a browser tab connected to a Codespace. Test it before making it required.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">AI 440 GPU path</span>
+        <div class="point-body">Whether to pursue free academic GPU credits (NVIDIA, Azure for Students) for an optional Isaac Sim extension. The feasibility study's ~$6,400 local-hardware request is moot for the core course under the Codespaces constraint.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="section" id="actions">
+    <div class="section-header">
+      <div class="section-icon icon-green">✅</div>
+      <div>
+        <h2>8. Action Items</h2>
+        <div class="section-sub">Next steps to move from stack to built courses</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item"><span class="action-check">1</span><div class="action-body">Finish the agent-development cleanup: hos01 model, hos03 free provider switch, <code>hos-a2a</code> and movie-app models, requirements for hos08–12, and a <code>.devcontainer/</code>.</div></li>
+        <li class="action-item"><span class="action-check">2</span><div class="action-body">Build AI 420's four new units in agent-development: hand-built loop, MCP + browser/database tools, planted-bug trace diagnosis, and the agent-on-agent eval harness.</div></li>
+        <li class="action-item"><span class="action-check">3</span><div class="action-body">Measure free-tier call volume for one AI 420 eval run and one AI 430 red-team scan.</div></li>
+        <li class="action-item"><span class="action-check">4</span><div class="action-body">Start a companion repo for AI 430's MLOps side (DVC, MLflow, Actions, Evidently, Hugging Face Spaces).</div></li>
+        <li class="action-item"><span class="action-check">5</span><div class="action-body">Start AI 440's repo from a Docker Compose stack (Mosquitto, Node-RED, InfluxDB, Grafana) and prototype one small PINN and one BlenderProc render on a 4-core Codespace to confirm timing.</div></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

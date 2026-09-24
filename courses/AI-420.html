@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 420: Agentic AI — Course Schedule</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; margin-top:36px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .meta-pill.draft { background:#fef3c7; color:#92400e; }
+        .compare-box { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.9rem; }
+        .compare-box a { font-weight:600; }
+        .outcomes-list li { margin-bottom:10px; }
+        .principle-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin-bottom:14px; border-radius:4px; }
+        .principle-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .principle-box p { margin:0; font-size:0.92rem; }
+        .ceau-strip { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0 28px; }
+        .ceau-card { flex:1 1 200px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:14px 16px; }
+        .ceau-card .num { display:inline-block; width:24px; height:24px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.8rem; text-align:center; line-height:24px; margin-bottom:8px; }
+        .ceau-card h4 { margin:0 0 6px; font-size:0.95rem; }
+        .ceau-card p { margin:0; font-size:0.82rem; color:#475569; }
+        table.schedule, table.grading { width:100%; border-collapse:collapse; margin:16px 0 30px; font-size:0.87rem; }
+        table.schedule th, table.schedule td, table.grading th, table.grading td { border:1px solid #e2e8f0; padding:10px 12px; text-align:left; vertical-align:top; }
+        table.schedule th, table.grading th { background:#f8fafc; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#475569; }
+        table.schedule td.wk { font-weight:700; color:#1e8449; white-space:nowrap; }
+        table.grading td.wt { font-weight:700; color:#1e8449; white-space:nowrap; }
+        table.schedule tr.checkpoint td { background:#fffbeb; }
+        table.schedule tr.review td { background:#eff6ff; }
+        table.schedule tr.project td { background:#f0fdf4; }
+        table.schedule tr.demo td { background:#fdf2f8; }
+        .status { display:inline-block; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:999px; white-space:nowrap; }
+        .st-reuse { background:#dcfce7; color:#15803d; }
+        .st-new { background:#ede9fe; color:#6d28d9; }
+        .st-prov { background:#fef3c7; color:#92400e; }
+        .outcome-tag { display:inline-block; background:#dcfce7; color:#15803d; font-size:0.72rem; font-weight:700; padding:2px 7px; border-radius:6px; margin-top:4px; }
+        .guide-pending { display:inline-block; font-size:0.78rem; font-weight:600; margin-top:4px; margin-left:10px; color:#94a3b8; }
+        .week-block { border:1px solid #e2e8f0; border-radius:8px; padding:18px 20px; margin-bottom:16px; }
+        .week-block h3 { margin-top:0; }
+        .week-block .merge-note { font-size:0.82rem; color:#6b7280; margin:-6px 0 10px; }
+        .checkpoint-block { border-color:#fbbf24; background:#fffbeb; }
+        .checkpoint-block h3 { color:#b45309; }
+        .review-block { border-color:#93c5fd; background:#eff6ff; }
+        .review-block h3 { color:#1d4ed8; }
+        .project-block { border-color:#86efac; background:#f0fdf4; }
+        .project-block h3 { color:#15803d; }
+        .demo-block { border-color:#f9a8d4; background:#fdf2f8; }
+        .demo-block h3 { color:#be185d; }
+        .build-box { background:#f8fafc; border:1px dashed #cbd5e1; border-radius:6px; padding:12px 16px; margin:12px 0; font-size:0.87rem; }
+        .build-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#475569; }
+        .build-box ol, .build-box ul { margin:0; padding-left:20px; }
+        .build-box li { margin-bottom:4px; }
+        .open-question { background:#fdf4ff; border-left:5px solid #a855f7; padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
+        .open-question h4 { margin:0 0 6px; color:#7e22ce; font-size:0.95rem; }
+        .open-question p:last-child, .open-question ul:last-child { margin-bottom:0; }
+        .plain-terms-box { background:#f0fdf4; border-left:5px solid #22c55e; padding:14px 18px; margin:16px 0 24px; border-radius:0 4px 4px 0; font-size:0.92rem; }
+        .plain-terms-box strong { color:#15803d; }
+        .glossary-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px 16px; margin:12px 0; font-size:0.85rem; }
+        .glossary-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; }
+        .glossary-box dl { margin:0; }
+        .glossary-box dt { font-weight:700; color:#334155; display:inline; }
+        .glossary-box dd { display:inline; margin:0 0 0 4px; color:#475569; }
+        .glossary-box dd::after { content:""; display:block; margin-bottom:4px; }
+        .check-box { background:#eef2ff; border-left:5px solid #6366f1; padding:12px 16px; margin:12px 0 0; border-radius:0 4px 4px 0; font-size:0.85rem; }
+        .check-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#4338ca; }
+        .check-box ul { margin:0; padding-left:18px; }
+        .check-box li { margin-bottom:4px; }
+        .challenge-box { background:#ecfdf5; border-left:5px solid #10b981; padding:12px 16px; margin:12px 0 0; border-radius:0 4px 4px 0; font-size:0.85rem; }
+        .challenge-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#047857; }
+        .table-scroll { overflow-x:auto; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../bsai-hub.html" style="color:#1e8449;text-decoration:none;font-weight:500">BSAI Hub</a>
+    </nav>
+
+        <h1>AI 420: Agentic AI</h1>
+
+        <div class="meta-strip">
+            <span class="meta-pill">5 Credits</span>
+            <span class="meta-pill">Prerequisites: CS 352, DS 479</span>
+            <span class="meta-pill">10 Weeks</span>
+            <span class="meta-pill">4 Merged HOS</span>
+            <span class="meta-pill">Capstone: Portfolio Project</span>
+            <span class="meta-pill draft">Course design v0.2 — Sep 23, 2026</span>
+        </div>
+
+        <div class="compare-box">This is the course design: outcomes, stack, schedule, grading, and what each unit builds. The hands-on guides, starter code, and answer keys come next, following the same pattern as <a href="AI-410.html">AI 410</a>. Background on the stack choices: <a href="../bsai-course-tech-stack-brainstorm.html">AI 420 / 430 / 440 Technology Stack Brainstorm</a>. Every choice here follows the <a href="../bsai-course-design-constraints.html">BSAI Course Design Constraints</a>: the course description is fixed, everything runs in GitHub Codespaces, and free tiers come first.</div>
+
+        <div class="plain-terms-box"><strong>In plain terms:</strong> in AI 410 you built an app with an AI model inside it. In AI 420 you build software where the AI decides what to do next. It picks a tool, looks at what came back, notices when it went wrong, and tries again, all without a person clicking "next." Every unit adds a working agent to your portfolio. By Week 10 you'll have taken one real, manual business process and handed it to a team of agents, with numbers showing how well they do it.</div>
+
+        <p><strong>Course Description:</strong> Agentic AI empowers students to design intelligent systems capable of perceiving their environment, reasoning through complex, multi-step plans, utilizing external tools (such as APIs, web browsers, and databases), and self-correcting their actions to achieve specific outcomes without ongoing human intervention. This course emphasizes the core principles of agency, including individual agencies, the development of custom tools, advanced reasoning techniques, multi-agent workflows, and orchestration. By the end of the course, students will have built professional portfolios featuring a range of functional agent examples, acquired industry-ready AI engineering skills, and developed agentic mindsets to transform manual business processes into automated sequences of agent-driven tasks.</p>
+
+        <h2>Course Outcomes</h2>
+        <p>As a result of this course, students will know or be able to do the following:</p>
+        <ol class="outcomes-list">
+            <li><strong>O1 —</strong> Explain the core components of an "AI Agent" (Reasoning, Planning, Tool Use, and Memory), distinguish them from standard LLM inference, and identify common agentic patterns.</li>
+            <li><strong>O2 —</strong> Implement custom tools and integrate them into an agentic loop via function calling.</li>
+            <li><strong>O3 —</strong> Analyze agent reasoning traces to diagnose why an agent failed at a given task, such as identifying tool-call errors or logic loops.</li>
+            <li><strong>O4 —</strong> Assess agent system performance through agent-on-agent testing and quantitative metrics, including success rate, cost per task, and latency.</li>
+            <li><strong>O5 —</strong> Produce a professional-grade portfolio project that automates a multi-step business process, such as an autonomous marketing department or a self-healing coding assistant.</li>
+        </ol>
+
+        <h2>Coverage Map — Description → Units</h2>
+        <p>Every commitment in the approved course description is taught in a specific place, so nothing in the catalog copy goes untaught:</p>
+        <div class="table-scroll">
+        <table class="grading">
+            <tr><th>Course description says…</th><th>Where it's taught</th></tr>
+            <tr><td>Perceiving their environment</td><td>HOS 1 (observations: what the agent sees after each step) · HOS 2 (tools that read the outside world: APIs, web pages, a database)</td></tr>
+            <tr><td>Reasoning through complex, multi-step plans</td><td>HOS 1 (ReAct vs. plan-and-execute) · HOS 3 (reading the reasoning in a trace)</td></tr>
+            <tr><td>External tools: APIs, web browsers, databases</td><td>HOS 2: one custom tool of each kind, served over MCP</td></tr>
+            <tr><td>Self-correcting their actions</td><td>HOS 3: reflection, retry-on-error, loop detection, step budgets</td></tr>
+            <tr><td>Without ongoing human intervention</td><td>HOS 4 and capstone: agents run end-to-end from a single trigger. Human-in-the-loop checkpoints are used only where a task truly needs one, and each is justified</td></tr>
+            <tr><td>Individual agency · custom tools · advanced reasoning · multi-agent workflows · orchestration</td><td>HOS 1 · HOS 2 · HOS 1 &amp; 3 · HOS 4 · HOS 4</td></tr>
+            <tr><td>Professional portfolios with a range of functional agent examples</td><td>One portfolio repo all term: each HOS adds one working agent, and the capstone is the centerpiece</td></tr>
+            <tr><td>Agentic mindset: manual process → automated agent-task sequence</td><td>Week 6 Process-Mapping Workshop → Weeks 7–9 capstone</td></tr>
+        </table>
+        </div>
+
+        <h2>Stack: Built on the agent-development Repo</h2>
+        <p>The hands-on units are built on <a href="https://clarkngo.github.io/agent-development/" target="_blank" rel="noopener">agent-development</a>, twelve Google ADK walkthroughs (<code>hos-google-adk/hos01–hos12</code>, on google-adk 2.9.2). They already cover most of the course. Four pieces the course description requires aren't in the repo yet and get built as new units: a hand-built agent loop, MCP with browser and database tools, a planted-bug agent for trace diagnosis, and the agent-on-agent evaluation harness. AI 420 also reuses AI 410's Gemini key, Codespaces workflow, and Langfuse, so the new material is agency itself and not another round of setup.</p>
+        <div class="table-scroll">
+        <table class="grading">
+            <tr><th>Layer</th><th>Tool</th><th>Status</th><th>Why</th></tr>
+            <tr><td>Model</td><td>Gemini API (native function calling)</td><td><span class="status st-reuse">Reused from AI 410</span></td><td>Same API key and free tier students already have.</td></tr>
+            <tr><td>Delivery</td><td>GitHub + Codespaces, one portfolio repo per student</td><td><span class="status st-reuse">Reused from AI 410</span></td><td>No local setup. The repo becomes the portfolio (O5).</td></tr>
+            <tr><td>Agent framework</td><td>A plain Python loop first (<code>google-genai</code> SDK), then Google ADK 2.x via agent-development</td><td><span class="status st-reuse">Reused: agent-development</span></td><td>Building the loop by hand first is what lets students <em>distinguish an agent from standard inference</em> (O1). ADK brings the orchestration patterns (hos07, hos10–12) and a built-in eval runner.</td></tr>
+            <tr><td>Custom tools</td><td>ADK function tools (hos02, 03, 07, 11) + new browser tool (<code>httpx</code> + <code>trafilatura</code>) and read-only SQLite tool, served over MCP</td><td><span class="status st-reuse">Reused</span> <span class="status st-new">+ New</span></td><td>O2, and the description's "APIs, web browsers, and databases." MCP is the current standard for packaging tools so any agent or harness can use them.</td></tr>
+            <tr><td>Memory</td><td>ADK session state + SQLite persistence (hos05–06) + Chroma for long-term memory</td><td><span class="status st-reuse">Reused</span></td><td>Chroma runs locally in the Codespace with no sign-up. AI 410 HOS 2 taught retrieval; here it becomes something the agent writes to and not only reads from.</td></tr>
+            <tr><td>Reasoning traces</td><td>The trace view built into <code>adk web</code>, then Langfuse free tier; hos09 callbacks for instrumentation</td><td><span class="status st-reuse">Reused</span></td><td>O3. Same Langfuse UI students used in AI 410 HOS 4, now read for failures and not only for latency.</td></tr>
+            <tr><td>Evaluation</td><td><code>adk eval</code> + simulated-user agent + LLM judge. Cost per task from token counts × list price; latency from event timestamps.</td><td><span class="status st-new">New to the track</span></td><td>O4: success rate, cost per task, latency. Students can compute cost per task at list price even while running on the free tier.</td></tr>
+            <tr><td>AI coding assistant</td><td>Antigravity (recommended while learning) or Claude Code</td><td><span class="status st-prov">Provisional</span></td><td>Per the <a href="../meeting-notes-spencer-liu-2026-09-16.html">Sep 16 Spencer Liu conversation</a>: Antigravity's free-tier token allowance suits experimentation, and its rougher edges produce the "notice the agent was wrong" moments this course is about.</td></tr>
+        </table>
+        </div>
+
+        <h2>Course Design: Same CEAU Cycle, Applied to Agents</h2>
+        <p>AI 420 keeps AI 410's CEAU rubric. It fits agents especially well because an agent's output changes from run to run. "Did the code run" says almost nothing, and "can you explain what the agent did and why" says a lot.</p>
+        <div class="ceau-strip">
+            <div class="ceau-card"><span class="num">1</span><h4>Create / Scaffold</h4><p>Use an AI coding assistant to get the unit's agent running. Not graded on its own.</p></div>
+            <div class="ceau-card"><span class="num">2</span><h4>Evaluate</h4><p>Run the agent against the unit's task set. Where does it succeed, fail, or succeed for the wrong reason?</p></div>
+            <div class="ceau-card"><span class="num">3</span><h4>Analyze</h4><p>Open one trace and walk it step by step: what the model saw, what it decided, which tool it called, and what came back.</p></div>
+            <div class="ceau-card"><span class="num">4</span><h4>Understand &amp; Refine</h4><p>Fix or extend one behavior by hand (a tool, a prompt, a stop condition), then show the before/after run.</p></div>
+        </div>
+
+        <div class="principle-box">
+            <h4>The portfolio accumulates. It isn't assembled at the end.</h4>
+            <p>Each HOS ends with a committed, runnable agent in the student's portfolio repo, with a short README: what it does, a trace screenshot, and one lesson learned. By Week 6 every student already has four working agent examples, which covers the "range of functional agent examples" in the course description. The capstone then adds the centerpiece.</p>
+        </div>
+
+        <h2>4 Merged HOS</h2>
+        <div class="table-scroll">
+        <table class="grading">
+            <tr><th>HOS</th><th>Portfolio agent</th><th>Outcome(s)</th></tr>
+            <tr><td>HOS 1 — Anatomy of an Agent: Inference vs. the Agentic Loop</td><td>Research assistant with a hand-built loop (no framework)</td><td>O1</td></tr>
+            <tr><td>HOS 2 — Custom Tools, MCP &amp; Memory</td><td>Operations agent using an API tool, a browser tool, and a database tool, with long-term memory</td><td>O2, O1</td></tr>
+            <tr><td>HOS 3 — Reasoning Traces, Failure Diagnosis &amp; Self-Correction</td><td>A seeded broken agent, diagnosed from traces and repaired to self-correct</td><td>O3</td></tr>
+            <tr><td>HOS 4 — Multi-Agent Orchestration &amp; Agent-on-Agent Evaluation</td><td>A coordinator + specialist team, with an eval harness and a metrics report</td><td>O4</td></tr>
+        </table>
+        </div>
+
+        <h2>Course Assignments and Grading</h2>
+        <p>Same weights and categories as AI 410, so students and faculty moving between the two courses see one grading system. Muddiest Point and Concept Debate are graded, per the Dean's requirement.</p>
+        <table class="grading">
+            <tr><th>Component</th><th>Weight</th><th>What it covers</th></tr>
+            <tr><td>Muddiest Point (MP)</td><td class="wt">5%</td><td>A short reflection on the most confusing part of the week's concepts, submitted before the build begins.</td></tr>
+            <tr><td>Concept Debate (CD)</td><td class="wt">5%</td><td>A structured, staged discussion-board debate on a real design tension of the week (e.g. "one smart agent or several narrow ones?").</td></tr>
+            <tr><td>4 Hands-On Skill (HOS) units</td><td class="wt">50%</td><td>Weeks 1–4, graded on the CEAU cycle, not on code correctness alone. 12.5% each. Each HOS ends with a committed portfolio agent.</td></tr>
+            <tr><td>4 Application Challenges</td><td class="wt">20%</td><td>Individual transfer tasks after each HOS, applying the skill to a new business scenario (design, evaluate, or diagnose, not another full build). 5% each.</td></tr>
+            <tr><td>Portfolio Capstone Project</td><td class="wt">20%</td><td>Weeks 7–9, presented Week 10. Automates a real multi-step business process end-to-end, with an evaluation report (O5).</td></tr>
+        </table>
+
+        <h2>Schedule</h2>
+        <div class="table-scroll">
+        <table class="schedule">
+            <tr><th>Wk</th><th>Focus</th><th>Format</th><th>Outcome</th></tr>
+            <tr><td class="wk">1</td><td>HOS 1 — Anatomy of an Agent</td><td>Lecture → Concept Debate → CEAU build → Application Challenge → Knowledge Check</td><td>O1</td></tr>
+            <tr><td class="wk">2</td><td>HOS 2 — Custom Tools, MCP &amp; Memory</td><td>Lecture → Concept Debate → CEAU build → Application Challenge → Knowledge Check</td><td>O2, O1</td></tr>
+            <tr><td class="wk">3</td><td>HOS 3 — Traces, Failure Diagnosis &amp; Self-Correction</td><td>Lecture → Concept Debate → CEAU build → Application Challenge → Knowledge Check</td><td>O3</td></tr>
+            <tr><td class="wk">4</td><td>HOS 4 — Multi-Agent Orchestration &amp; Evaluation</td><td>Lecture → Concept Debate → CEAU build → Application Challenge → Knowledge Check</td><td>O4</td></tr>
+            <tr class="checkpoint"><td class="wk">5</td><td>Checkpoint: Failure Clinic</td><td>No new build. Swap agents with a peer, break each other's, diagnose from traces</td><td>O3, O4</td></tr>
+            <tr class="review"><td class="wk">6</td><td>Process-Mapping Workshop</td><td>Map a real manual business process into an agent-task sequence; form teams; lock the capstone scope</td><td>O1, O5</td></tr>
+            <tr class="project"><td class="wk">7</td><td>Portfolio Capstone — Build</td><td>Agents + tools working on the happy path</td><td>O5</td></tr>
+            <tr class="project"><td class="wk">8</td><td>Portfolio Capstone — Harden</td><td>Self-correction, failure handling, eval harness running</td><td>O3, O4, O5</td></tr>
+            <tr class="project"><td class="wk">9</td><td>Portfolio Capstone — Measure &amp; Polish</td><td>Final eval run, metrics report, portfolio README</td><td>O4, O5</td></tr>
+            <tr class="demo"><td class="wk">10</td><td>Final Demo &amp; Portfolio Review</td><td>Live run from a single trigger + walkthrough of one real failure trace</td><td>O1–O5</td></tr>
+        </table>
+        </div>
+
+        <h2>Weekly Breakdown</h2>
+
+        <div class="week-block">
+            <h3>Week 1 — HOS 1: Anatomy of an Agent: Inference vs. the Agentic Loop</h3>
+            <p class="merge-note">Merges: agent components &amp; LLM inference · agentic patterns.</p>
+            <p>Students solve the same task twice: once with a single LLM call, then with a loop they write themselves (model → tool call → observation → model again, until done). With no framework hiding the loop, the four components are easy to point at in the code. Reasoning is the model's decision at each step, planning is how it breaks the task down, tool use is the function calls, and memory is the growing message history. The unit closes with a tour of the common patterns: ReAct, plan-and-execute, reflection, and routing.</p>
+            <span class="outcome-tag">Outcome 1</span>
+            <span class="guide-pending">Hands-on guide — not yet built</span>
+            <div class="build-box"><h5>What gets built</h5><ol>
+                <li>Baseline: one Gemini call answers a multi-step research question. It often guesses or makes things up.</li>
+                <li>A hand-written ReAct loop in about 60 lines of Python, with two simple tools (search, calculator) and a step cap. <em>New unit.</em></li>
+                <li>The same agent rebuilt in ADK, walking through agent-development <strong>hos01</strong> (first agent), <strong>hos03</strong> (swapping the model provider), and <strong>hos04</strong> (structured output). Students find where ADK hides the loop they just wrote.</li>
+                <li>A plan-and-execute variant of the same agent, compared against ReAct on the same five tasks.</li>
+                <li>Committed as <code>portfolio/01-research-agent/</code> with a README.</li>
+            </ol></div>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Inference —</dt><dd>one request to the model, one response back. No actions, no second chances.</dd>
+                <dt>Agent —</dt><dd>a model placed in a loop where it can take actions (tool calls), see the results, and decide what to do next until the task is done.</dd>
+                <dt>ReAct —</dt><dd>"Reason + Act": the model alternates between thinking about the next step and taking it.</dd>
+                <dt>Plan-and-execute —</dt><dd>the model writes a full plan first, then works through it step by step.</dd>
+            </dl></div>
+            <div class="challenge-box"><h5>Application Challenge</h5><p style="margin:0">Given three short workflow descriptions from a real business (e.g. answering a customer email, reconciling an invoice, drafting a weekly report), decide which ones actually need an agent and which are better as a single LLM call or a fixed script. Justify each choice using the four components. Saying "no agent needed" with a good reason is a strong answer.</p></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>Point to the line in your loop where "reasoning" happens, and to the line where "memory" grows.</li>
+                <li>What would happen to your agent if you removed the step cap?</li>
+            </ul></div>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 2 — HOS 2: Custom Tools, MCP &amp; Memory</h3>
+            <p class="merge-note">Merges: custom tool development &amp; function calling · agent memory.</p>
+            <p>The course description names three kinds of external tools: APIs, web browsers, and databases. Students build one custom tool of each kind, write their function-calling schemas, and serve all three from a small MCP server. An ADK agent then uses them. The unit's second half adds memory. Short-term memory is session state within one run. Long-term memory lives in Chroma, running locally in the Codespace, where the agent <em>writes</em> what it learned so a later run can recall it.</p>
+            <span class="outcome-tag">Outcome 2</span>
+            <span class="outcome-tag">Outcome 1</span>
+            <span class="guide-pending">Hands-on guide — not yet built</span>
+            <div class="build-box"><h5>What gets built</h5><ol>
+                <li><strong>API tool:</strong> wraps a real public API (e.g. weather or shipping status). The API key stays server-side. This is the exact wall students hit in the <a href="ai-410-guides/antigravity-hos-01-github-pages.html">Antigravity pilot's Stage 5</a>.</li>
+                <li><strong>Browser tool:</strong> fetches a page and returns clean text, with a length limit so the page doesn't flood the context.</li>
+                <li><strong>Database tool:</strong> read-only SQL against a small SQLite business dataset, with a guard that rejects writes.</li>
+                <li>All three served over MCP and used by an ADK operations agent. Tool errors are returned to the model as observations, not raised as crashes.</li>
+                <li>Starts from agent-development <strong>hos02</strong> (tools), <strong>hos07</strong> (real API tools and agents as tools), and <strong>hos05–06</strong> (session state and persistent memory).</li>
+                <li>Long-term memory: the agent saves a customer preference in run 1 and uses it in run 2.</li>
+                <li>Committed as <code>portfolio/02-ops-agent/</code>.</li>
+            </ol></div>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Tool schema —</dt><dd>the name, description, and parameter types the model reads to decide whether and how to call a tool. The description matters as much as the code.</dd>
+                <dt>MCP (Model Context Protocol) —</dt><dd>a standard way to package tools so any compatible agent or harness can discover and call them.</dd>
+                <dt>Short-term vs. long-term memory —</dt><dd>what the agent holds during one task, versus what it stores so it can recall it in a future task.</dd>
+            </dl></div>
+            <div class="challenge-box"><h5>Application Challenge</h5><p style="margin:0">You're given a poorly written tool schema (vague description, loosely typed parameters, no error contract). Predict three specific ways a model would misuse it, rewrite it, and explain which change you expect to matter most.</p></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>Why return a tool error to the model instead of letting the program crash?</li>
+                <li>What should go into long-term memory, and what should never go there?</li>
+            </ul></div>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 3 — HOS 3: Reasoning Traces, Failure Diagnosis &amp; Self-Correction</h3>
+            <p class="merge-note">Merges: trace analysis · self-correcting agents.</p>
+            <p>Students get an agent that looks fine and fails in five planted ways: a malformed tool argument, a call to a tool that doesn't exist, a loop that repeats the same call, a context overflow where early instructions get lost, and a "confident wrong answer" that finishes successfully while being incorrect. They instrument it with Langfuse and find each failure <em>from the trace alone</em> before reading the source. Then they add self-correction: reflection after each tool result, retry with a corrected argument, repeated-call detection, and a step and cost budget.</p>
+            <span class="outcome-tag">Outcome 3</span>
+            <span class="guide-pending">Hands-on guide — not yet built</span>
+            <div class="build-box"><h5>What gets built</h5><ol>
+                <li>Traces from <code>adk web</code>, then Langfuse on every model call and tool call (same setup as AI 410 HOS 4), attached through agent-development <strong>hos09</strong>'s callbacks.</li>
+                <li>The logic-loop lesson uses <strong>hos12</strong>'s <code>exit_loop</code> and <code>max_iterations</code>: what happens when the exit condition never fires.</li>
+                <li>The planted-bug agent is a <em>new unit</em>.</li>
+                <li>A failure log: for each planted bug, the trace step where it shows up, the symptom, and the root cause.</li>
+                <li>Self-correction added, with before/after traces showing the agent recovering on its own.</li>
+                <li>Committed as <code>portfolio/03-self-healing-agent/</code>.</li>
+            </ol></div>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Reasoning trace —</dt><dd>the step-by-step record of a run: each model input and output, each tool call and its result, with timing and token counts.</dd>
+                <dt>Logic loop —</dt><dd>the agent keeps repeating the same action (or a short cycle of actions) without getting closer to done.</dd>
+                <dt>Reflection —</dt><dd>a step where the agent reviews its own last result and decides whether it's good enough or needs another try.</dd>
+            </dl></div>
+            <div class="challenge-box"><h5>Application Challenge</h5><p style="margin:0">Diagnose three unfamiliar exported traces from a different agent than the one you built. For each, name the failure type, the exact step where it first appears, and the smallest change that would prevent it. You get no access to the source code, which is how on-call debugging usually works.</p></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>How can you tell a logic loop from an agent that is legitimately retrying?</li>
+                <li>Why is the "confident wrong answer" the hardest failure to catch, and what would catch it?</li>
+            </ul></div>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 4 — HOS 4: Multi-Agent Orchestration &amp; Agent-on-Agent Evaluation</h3>
+            <p class="merge-note">Merges: multi-agent workflows &amp; orchestration · quantitative evaluation.</p>
+            <p>Students split last week's single agent into a coordinator plus specialist agents using ADK's sequential, parallel, and loop patterns. Then they test it the way industry does: a <em>simulated-user agent</em> plays the customer across a suite of 20+ scenarios, and a <em>judge agent</em> grades each outcome against a rubric. Every run logs success rate, cost per task (from token counts × price), and latency (p50/p95). The key comparison is whether the multi-agent version actually beat the single agent, or just cost more.</p>
+            <span class="outcome-tag">Outcome 4</span>
+            <span class="guide-pending">Hands-on guide — not yet built</span>
+            <div class="build-box"><h5>What gets built</h5><ol>
+                <li>A coordinator + 2–3 specialist agents, orchestrated in ADK using the patterns from agent-development <strong>hos07–hos08</strong> (supervisor, stateful multi-agent) and <strong>hos10–12</strong> (sequential, parallel, loop).</li>
+                <li>An eval harness: scenario file → simulated user → agent system → judge → metrics table.</li>
+                <li>A one-page metrics report comparing the single-agent and multi-agent versions on all three metrics, plus one spot-check where a human disagreed with the judge.</li>
+                <li>Committed as <code>portfolio/04-agent-team/</code>.</li>
+            </ol></div>
+            <div class="glossary-box"><h5>New words this week</h5><dl>
+                <dt>Orchestration —</dt><dd>the logic that decides which agent runs when: in sequence, in parallel, or in a loop until a condition is met.</dd>
+                <dt>Agent-on-agent testing —</dt><dd>using one agent to act as a user and another to grade the results, so hundreds of test conversations can run without a person.</dd>
+                <dt>Success rate · cost per task · latency —</dt><dd>how often it finished correctly · how much each finished task cost in model usage · how long it took, typically reported as median (p50) and slow-case (p95).</dd>
+            </dl></div>
+            <div class="challenge-box"><h5>Application Challenge</h5><p style="margin:0">A vendor claims their agent has "a 94% success rate." Write the five questions you'd ask before believing it: about the test set, the judge, the cost, the latency, and what counted as "success." Then say which answer would make you walk away.</p></div>
+            <div class="check-box"><h5>Knowledge check</h5><ul>
+                <li>Why can't an LLM judge be trusted without a human spot-check?</li>
+                <li>Name a case where adding more agents makes a system worse.</li>
+            </ul></div>
+        </div>
+
+        <div class="week-block checkpoint-block">
+            <h3>Week 5 — Checkpoint: Failure Clinic</h3>
+            <p>No new build. Students swap portfolio agents with a peer and try to break them with adversarial inputs, missing data, and tool outages. Each student then diagnoses the failures in their <em>own</em> agent from the peer's traces. This is the Forward Deployed Engineer habit from the Spencer Liu conversation: run the same plan against different agents and study where execution diverges before anything ships.</p>
+            <span class="outcome-tag">Outcome 3</span>
+            <span class="outcome-tag">Outcome 4</span>
+            <div class="check-box"><h5>Review prompt — no new vocabulary this week</h5><ul>
+                <li>Which failure in your agent did you not see coming, and which trace step revealed it?</li>
+                <li>Which of your four portfolio agents would you trust to run unattended overnight, and why only that one?</li>
+            </ul></div>
+        </div>
+
+        <div class="week-block review-block">
+            <h3>Week 6 — Process-Mapping Workshop</h3>
+            <p>Where the "agentic mindset" in the course description gets practiced directly. Students pick a real manual business process (from a job, an internship, a CityU office, or a partner employer), shadow or interview someone who does it, and map it step by step. For each step they decide: agent, deterministic code, or human checkpoint, and why. The map becomes the capstone's scope. Teams form (or students confirm going solo).</p>
+            <span class="outcome-tag">Outcome 1</span>
+            <span class="outcome-tag">Outcome 5</span>
+            <div class="check-box"><h5>Review prompt</h5><ul>
+                <li>Which step in your process is the one an agent is most likely to get wrong, and what happens downstream if it does?</li>
+                <li>How will you know, with a number, that your automation is better than the manual version?</li>
+            </ul></div>
+        </div>
+
+        <div class="week-block project-block">
+            <h3>Weeks 7–9 — Portfolio Capstone Project</h3>
+            <p>Automate the process mapped in Week 6. The course description's examples, an <strong>autonomous marketing department</strong> (research → draft → brand review → schedule) or a <strong>self-healing coding assistant</strong> (read failing test → diagnose → patch → re-run → open PR), are both acceptable starting points. The vendored ADK samples <code>marketing-agency</code> and <code>software-bug-assistant</code> in agent-development match them closely and can serve as starters. So is any real process that meets the minimum bar below.</p>
+            <div class="build-box"><h5>Minimum bar for a "professional-grade" capstone</h5><ul>
+                <li>Runs end-to-end from a single trigger, with no human clicks between steps except justified checkpoints.</li>
+                <li>At least 3 custom tools (served over MCP), and at least 2 cooperating agents.</li>
+                <li>At least one self-correction mechanism, shown working in a real trace.</li>
+                <li>An eval suite of 15+ agent-on-agent scenarios, reporting success rate, cost per task, and latency.</li>
+                <li>A portfolio README a hiring manager could read in 3 minutes: the problem, architecture diagram, metrics, one failure and how it was fixed, and a demo video link.</li>
+            </ul></div>
+            <div class="check-box"><h5>Progress checks</h5><ul>
+                <li><strong>Week 7 — Build:</strong> process map finalized; agents and tools working on the happy path.</li>
+                <li><strong>Week 8 — Harden:</strong> self-correction in place; eval harness runs; first metrics exist, even if they're bad.</li>
+                <li><strong>Week 9 — Measure &amp; polish:</strong> final eval run, metrics report, README, and demo rehearsed. No new features.</li>
+            </ul></div>
+        </div>
+
+        <div class="week-block demo-block">
+            <h3>Week 10 — Final Demo &amp; Portfolio Review</h3>
+            <p>Live run of the capstone from a single trigger, followed by a walkthrough of one real failure trace from development: what broke, how it showed up in the trace, and what fixed it. Peers review one another's portfolio repos using the minimum-bar checklist.</p>
+            <span class="outcome-tag">O1–O5</span>
+            <div class="check-box"><h5>Self-check before you present</h5><ul>
+                <li>Can you name where reasoning, planning, tool use, and memory each live in your capstone?</li>
+                <li>Can you state your success rate, cost per task, and p95 latency from memory, and say what you'd change to improve the worst of the three?</li>
+            </ul></div>
+        </div>
+
+        <h2>Open Questions</h2>
+        <div class="open-question">
+            <h4>Still to resolve before the HOS guides get built</h4>
+            <ul>
+                <li><strong>Free-tier cost for agent-on-agent evals.</strong> A 20-scenario suite with a simulated user and a judge makes many model calls per student per run. Measure one run against the Gemini free tier's rate limits before HOS 4 is built, and plan smaller models for the simulated user and judge.</li>
+                <li><strong>Capstone starters and Google Cloud.</strong> Confirm the vendored <code>marketing-agency</code> and <code>software-bug-assistant</code> samples run on a plain Gemini API key. If they expect Vertex AI or BigQuery, they need a free-tier adaptation first.</li>
+                <li><strong>agent-development cleanup.</strong> hos01 still uses <code>gemini-2.0-flash</code>; hos03 still needs a paid OpenRouter key; hos08–12 have no <code>requirements.txt</code>; there's no <code>.devcontainer/</code>. All four block Week 1 in a Codespace.</li>
+                <li><strong>Overlap with AI 610 (Agent Based Systems).</strong> The graduate course covers related ground. Worth a short comparison so a student who takes both sees progression and not repetition.</li>
+            </ul>
+        </div>
+    </div>
+    <script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 # AI 410 — Starter Code
 
+> **Current course structure (4 HOS):** the `hos-01-…` through `hos-04-…` folders are the live AI 410 starter code; the `week-…` folders described below are the archived 10-week version. For a file-by-file explanation of the HOS folders, see the [Starter Code Walkthrough](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/starter-code-walkthrough.html).
+
 One folder per week, matching the [10 hands-on guides](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/index.html). Each folder is a **complete, standalone snapshot** of the app as it exists at the *start* of that week — everything from prior weeks is already working, and that week's new piece is stubbed in (not solved) so the exercise in the guide still has something to do.
 
 **Instructor/SME:** a fully-solved reference for select weeks lives in [`../answer-key/`](../answer-key/) — use it to verify a week's components actually work, not to hand to students.

@@ -36,3 +36,10 @@ Hub pages share one lightweight visual system (see `blue-tech-maritime-hub.html`
 `index.html` order: header → hero (`#hubs`/`#recent-added` anchor targets) → Initiative Hubs grid → live client-side search (filters hub cards, recent-items, audience-band cards, and archive cards by title/description) → "Recently added" strip → audience-band sections (Grant Research, Blue Tech, First Responders, Academic Affairs, Leadership & Strategy, Faculty, Students) → archived program history.
 
 The audience-band sections predate the hub system and are kept as a complementary "browse by role" view — they are not being phased out, just supplemented.
+
+## BSAI course design constraints
+
+Standing rules for AI 410 / 420 / 430 / 440 live in `bsai-course-design-constraints.html`: (1) the official AAC-approved course description and outcomes are fixed, and materials adapt to them; (2) every hands-on unit runs in GitHub Codespaces; (3) free tiers and free resources first, and anything needing a paid key or billing account is optional only.
+
+- **Meeting notes:** any meeting-notes page that discusses these courses (curriculum, tools, HOS, capstones) opens with a short reminder callout linking to `bsai-course-design-constraints.html`, and flags any decision in the meeting that conflicts with a rule.
+- **New course/stack pages:** link to the constraints page near the top, as `courses/AI-410.html`, `courses/AI-420.html`, and `bsai-course-tech-stack-brainstorm.html` do.

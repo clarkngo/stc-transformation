@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 vs. AI 420 — Course Comparison</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; margin-top:38px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .meta-pill.draft { background:#fef3c7; color:#92400e; }
+        .rule-box { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.9rem; }
+        .rule-box a { font-weight:600; }
+        .plain-terms-box { background:#f0fdf4; border-left:5px solid #22c55e; padding:14px 18px; margin:16px 0 24px; border-radius:0 4px 4px 0; font-size:0.92rem; }
+        .plain-terms-box strong { color:#15803d; }
+        .table-scroll { overflow-x:auto; }
+        table.cmp { width:100%; min-width:600px; border-collapse:collapse; margin:14px 0 26px; font-size:0.87rem; }
+        table.cmp th, table.cmp td { border:1px solid #e2e8f0; padding:10px 12px; text-align:left; vertical-align:top; }
+        table.cmp th { background:#f8fafc; font-size:0.76rem; text-transform:uppercase; letter-spacing:0.04em; color:#475569; }
+        table.cmp th.c410 { border-top:3px solid #3b82f6; }
+        table.cmp th.c420 { border-top:3px solid #7c3aed; }
+        table.cmp td.row { font-weight:700; color:#1e8449; white-space:nowrap; }
+        table.cmp td.same { background:#f8fafc; color:#475569; text-align:center; }
+        .status { display:inline-block; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:999px; white-space:nowrap; margin-bottom:3px; }
+        .st-reuse { background:#dcfce7; color:#15803d; }
+        .st-new { background:#ede9fe; color:#6d28d9; }
+        .st-none { background:#f1f5f9; color:#64748b; }
+        .two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0 26px; }
+        @media (max-width: 700px) { .two-col { grid-template-columns:1fr; } }
+        .idea-card { border:1px solid #e2e8f0; border-radius:8px; padding:16px 18px; background:#fff; }
+        .idea-card.a410 { border-top:4px solid #3b82f6; }
+        .idea-card.a420 { border-top:4px solid #7c3aed; }
+        .idea-card h3 { margin:0 0 6px; font-size:1rem; }
+        .idea-card .tag { font-size:0.72rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:#64748b; }
+        .idea-card p { margin:8px 0 0; font-size:0.9rem; }
+        .handoff { border:1px solid #e2e8f0; border-radius:8px; margin:10px 0; background:#fff; display:grid; grid-template-columns:1fr 28px 1fr; align-items:stretch; }
+        .handoff > div { padding:12px 16px; font-size:0.88rem; }
+        .handoff .arrow { display:flex; align-items:center; justify-content:center; color:#94a3b8; font-weight:700; padding:0; background:#f8fafc; }
+        .handoff .from { border-right:none; }
+        .handoff small { display:block; font-size:0.7rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:3px; }
+        .handoff .from small { color:#3b82f6; }
+        .handoff .to small { color:#7c3aed; }
+        @media (max-width: 700px) { .handoff { grid-template-columns:1fr; } .handoff .arrow { padding:4px 0; } }
+        .open-question { background:#fdf4ff; border-left:5px solid #a855f7; padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
+        .open-question h4 { margin:0 0 8px; color:#7e22ce; font-size:0.95rem; }
+        .open-question ol { margin:0; padding-left:20px; }
+        .open-question li { margin-bottom:9px; }
+        .open-question li:last-child { margin-bottom:0; }
+        .note { font-size:0.85rem; color:#64748b; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../bsai-hub.html" style="color:#1e8449;text-decoration:none;font-weight:500">BSAI Hub</a>
+    </nav>
+
+        <h1>AI 410 vs. AI 420</h1>
+
+        <div class="meta-strip">
+            <span class="meta-pill">Same credits, prerequisites, length, and grading</span>
+            <span class="meta-pill">Different question</span>
+            <span class="meta-pill draft">Sep 24, 2026 — AI 420 is a design (v0.2), not yet built</span>
+        </div>
+
+        <div class="rule-box">Compares the two course pages as they stand: <a href="AI-410.html">AI 410: AI Engineering</a> (built and deployed) and <a href="AI-420.html">AI 420: Agentic AI</a> (course design v0.2). Both follow the <a href="../bsai-course-design-constraints.html">BSAI Course Design Constraints</a>: the official description and outcomes are fixed, everything runs in GitHub Codespaces, and free tiers come first.</div>
+
+        <div class="plain-terms-box"><strong>In one line:</strong> AI 410 builds the system around an AI model. AI 420 builds software where the model decides what to do next. Same rubric, same weights, same 4-HOS shape, but the thing students judge changes from "does the app work and can you explain the code" to "what did the agent do, and why."</div>
+
+        <h2>At a glance</h2>
+        <div class="table-scroll">
+        <table class="cmp">
+            <tr><th></th><th class="c410">AI 410 — AI Engineering</th><th class="c420">AI 420 — Agentic AI</th></tr>
+            <tr><td class="row">Credits</td><td colspan="2" class="same">5 (both)</td></tr>
+            <tr><td class="row">Prerequisites</td><td colspan="2" class="same">CS 352, DS 479 (both) — AI 410 is <strong>not</strong> a listed prerequisite for AI 420</td></tr>
+            <tr><td class="row">Length and shape</td><td colspan="2" class="same">10 weeks, 4 merged HOS, then a checkpoint week, an integration week, three project weeks, and a final demo (both)</td></tr>
+            <tr><td class="row">What it teaches</td><td>The system around a model: agent architecture, retrieval (RAG), guardrails for nondeterministic output, async processing, mobile push, and observability.</td><td>Agency itself: the agent loop, custom tools and memory, reading reasoning traces, self-correction, multi-agent orchestration, and measuring agents.</td></tr>
+            <tr><td class="row">Capstone</td><td>Team/Term Project, team or individual. Combines the 4 HOS into one piece of work; presented Week 10.</td><td>Portfolio Capstone Project. Automates one real multi-step business process end to end, with an evaluation report; presented Week 10.</td></tr>
+            <tr><td class="row">What a student ends with</td><td>A working, agent-driven mobile app with real-time notifications and persistent vector storage (O5).</td><td>A portfolio repo: one working agent per HOS, plus a capstone with numbers showing how well it performs (O5).</td></tr>
+            <tr><td class="row">Status</td><td>Hands-on guides, starter code, starter-code walkthrough, concept companion, and account setup guide are built.</td><td>Course design only. Hands-on guides, starter code, and answer keys are not built yet.</td></tr>
+        </table>
+        </div>
+
+        <h2>What each course is really about</h2>
+        <div class="two-col">
+            <div class="idea-card a410">
+                <span class="tag">AI 410</span>
+                <h3>The model is a component</h3>
+                <p>Students build the same chat assistant all term and keep adding the parts that make it dependable in front of real users: retrieval so it answers from real data, guardrails so bad output doesn't crash it, background jobs so it doesn't freeze, and tracing so problems are visible. The model is one part inside an engineered app.</p>
+            </div>
+            <div class="idea-card a420">
+                <span class="tag">AI 420</span>
+                <h3>The model is the decision-maker</h3>
+                <p>Students build software that picks a tool, looks at what came back, notices when it went wrong, and tries again without a person clicking "next." The hard skill is no longer wiring components together. It is judging behavior that changes from run to run.</p>
+            </div>
+        </div>
+
+        <h2>Official outcomes, side by side</h2>
+        <p class="note">Quoted from each course page. Both are AAC-approved and fixed; nothing here proposes rewording them.</p>
+        <div class="table-scroll">
+        <table class="cmp">
+            <tr><th></th><th class="c410">AI 410</th><th class="c420">AI 420</th></tr>
+            <tr><td class="row">O1</td><td>Define and explain the essential components of full-stack AI systems, such as LLM architecture, agentic loops, and the differences between prompt engineering and context engineering.</td><td>Explain the core components of an "AI Agent" (Reasoning, Planning, Tool Use, and Memory), distinguish them from standard LLM inference, and identify common agentic patterns.</td></tr>
+            <tr><td class="row">O2</td><td>Design and implement a Retrieval-Augmented Generation (RAG) pipeline using vector databases to deliver context to autonomous agents.</td><td>Implement custom tools and integrate them into an agentic loop via function calling.</td></tr>
+            <tr><td class="row">O3</td><td>Analyze and break down the multi-layered architecture of agent-driven applications to identify and address potential bottlenecks in asynchronous data processing and nondeterministic reasoning.</td><td>Analyze agent reasoning traces to diagnose why an agent failed at a given task, such as identifying tool-call errors or logic loops.</td></tr>
+            <tr><td class="row">O4</td><td>Evaluate and critique the performance and reliability of production AI models using appropriate observability tools and metrics for assessing probabilistic outputs.</td><td>Assess agent system performance through agent-on-agent testing and quantitative metrics, including success rate, cost per task, and latency.</td></tr>
+            <tr><td class="row">O5</td><td>Develop a fully functional, agent-driven mobile application that seamlessly integrates real-time notifications and persistent vector storage into a comprehensive full-stack solution.</td><td>Produce a professional-grade portfolio project that automates a multi-step business process, such as an autonomous marketing department or a self-healing coding assistant.</td></tr>
+        </table>
+        </div>
+        <p class="note">The two lists pair off: O1 is "know the parts" in both, O3 is "diagnose" in both, and O4 is "measure" in both. What changes is the object: an app's architecture and bottlenecks in 410, an agent's reasoning trace in 420. The agent itself is the biggest overlap: AI 410 O1 introduces agentic loops, and AI 420 O1 goes deeper on what an agent is made of.</p>
+
+        <h2>The four HOS, side by side</h2>
+        <div class="table-scroll">
+        <table class="cmp">
+            <tr><th>HOS</th><th class="c410">AI 410 — what students build</th><th class="c420">AI 420 — what students build</th></tr>
+            <tr><td class="row">1</td><td><strong>Foundations &amp; the Agentic Loop.</strong> An AI-assisted full-stack chat app whose agent can call a real tool. <em>O1</em></td><td><strong>Anatomy of an Agent.</strong> The same task solved with one LLM call, then with an agent loop students write themselves (about 60 lines, no framework), then rebuilt in Google ADK. <em>O1</em></td></tr>
+            <tr><td class="row">2</td><td><strong>Embeddings, Chunking &amp; RAG.</strong> Documents chunked, embedded, and retrieved so answers are grounded in real text. <em>O2</em></td><td><strong>Custom Tools, MCP &amp; Memory.</strong> An API tool, a browser tool, and a read-only database tool, served over MCP, plus short- and long-term memory. <em>O2, O1</em></td></tr>
+            <tr><td class="row">3</td><td><strong>Guardrails &amp; Async Processing.</strong> Validation and retry around a tool's arguments; document ingestion moved to a background job. <em>O3</em></td><td><strong>Traces, Failure Diagnosis &amp; Self-Correction.</strong> An agent with five planted failures, diagnosed from traces alone, then repaired with reflection, retries, loop detection, and budgets. <em>O3</em></td></tr>
+            <tr><td class="row">4</td><td><strong>Mobile, Push &amp; Observability.</strong> An Expo mobile client, push notifications, tracing, and a hand-written faithfulness check. <em>O4, O5</em></td><td><strong>Multi-Agent Orchestration &amp; Agent-on-Agent Evaluation.</strong> A coordinator plus specialist agents, an eval harness, and a metrics report. <em>O4</em></td></tr>
+        </table>
+        </div>
+
+        <h2>How AI 420 builds on AI 410</h2>
+        <p>Almost every AI 420 unit takes an idea AI 410 introduced and changes how the student meets it:</p>
+        <div class="handoff"><div class="from"><small>AI 410 HOS 1</small>The agentic loop, scaffolded with an AI coding assistant.</div><div class="arrow">→</div><div class="to"><small>AI 420 HOS 1</small>The same loop written by hand, with no framework hiding it, so the four components can be pointed at in the code.</div></div>
+        <div class="handoff"><div class="from"><small>AI 410 HOS 1</small>Function calling with two simple tools.</div><div class="arrow">→</div><div class="to"><small>AI 420 HOS 2</small>Tools that touch the outside world (API, browser, database), served over MCP, with tool errors returned to the model as observations instead of crashes.</div></div>
+        <div class="handoff"><div class="from"><small>AI 410 HOS 2</small>Chroma retrieval: the agent <em>reads</em> documents.</div><div class="arrow">→</div><div class="to"><small>AI 420 HOS 2</small>Chroma as long-term memory: the agent <em>writes</em> what it learned so a later run can recall it.</div></div>
+        <div class="handoff"><div class="from"><small>AI 410 HOS 3</small>Guardrails: validate and retry a tool's arguments.</div><div class="arrow">→</div><div class="to"><small>AI 420 HOS 3</small>Self-correction: reflection, retry with a corrected argument, repeated-call detection, and step and cost budgets.</div></div>
+        <div class="handoff"><div class="from"><small>AI 410 HOS 4</small>Langfuse tracing for latency and a faithfulness check.</div><div class="arrow">→</div><div class="to"><small>AI 420 HOS 3–4</small>The same Langfuse UI, now read to diagnose failures, then extended with success rate, cost per task, and an LLM judge.</div></div>
+
+        <h2>The stack, layer by layer</h2>
+        <div class="table-scroll">
+        <table class="cmp">
+            <tr><th>Layer</th><th class="c410">AI 410</th><th class="c420">AI 420</th></tr>
+            <tr><td class="row">Model</td><td>Gemini API (free key)</td><td><span class="status st-reuse">Same as 410</span><br>Gemini API, native function calling</td></tr>
+            <tr><td class="row">Environment</td><td>GitHub Codespaces</td><td><span class="status st-reuse">Same as 410</span><br>GitHub + Codespaces, one portfolio repo per student</td></tr>
+            <tr><td class="row">Agent framework</td><td>None taught. The loop is scaffolded in FastAPI with the Gemini SDK.</td><td><span class="status st-new">New</span><br>A plain Python loop first, then Google ADK 2.x</td></tr>
+            <tr><td class="row">Tools</td><td>Two simple function tools (calculator, word count)</td><td><span class="status st-new">New</span><br>ADK function tools, plus new browser and read-only SQLite tools, served over MCP</td></tr>
+            <tr><td class="row">Memory and data</td><td>Chroma vector store for RAG</td><td><span class="status st-reuse">Extends 410</span><br>ADK session state, SQLite persistence, Chroma for long-term memory</td></tr>
+            <tr><td class="row">Background work</td><td>Redis (Upstash) + RQ job queue and worker</td><td><span class="status st-none">Not in the stack</span></td></tr>
+            <tr><td class="row">Client</td><td>Streamlit chat UI, then an Expo mobile app</td><td><span class="status st-none">Not in the stack</span><br>Agents run end to end from a single trigger</td></tr>
+            <tr><td class="row">Tracing and evaluation</td><td>Langfuse tracing plus a hand-written faithfulness check</td><td><span class="status st-reuse">Reuses Langfuse</span> <span class="status st-new">New eval</span><br><code>adk web</code> traces, Langfuse, <code>adk eval</code>, a simulated-user agent, and an LLM judge</td></tr>
+            <tr><td class="row">AI coding assistant</td><td>Any assistant (Claude Code as the example)</td><td><span class="status st-new">Provisional</span><br>Antigravity recommended while learning, or Claude Code</td></tr>
+        </table>
+        </div>
+
+        <h2>Same assessment system, different things to judge</h2>
+        <p>Both courses use the same four-stage CEAU cycle (Create/Scaffold, Evaluate, Analyze, Understand &amp; Refine) and identical weights: Muddiest Point 5%, Concept Debate 5%, four HOS at 12.5% each (50%), four Application Challenges at 5% each (20%), and the capstone 20%. Students and faculty moving between the courses see one grading system.</p>
+        <div class="table-scroll">
+        <table class="cmp">
+            <tr><th></th><th class="c410">AI 410</th><th class="c420">AI 420</th></tr>
+            <tr><td class="row">Analyze stage</td><td>Dissect one piece of code (a function, a query, a request flow) and explain it in your own words.</td><td>Open one agent trace and walk it step by step: what the model saw, what it decided, which tool it called, what came back.</td></tr>
+            <tr><td class="row">HOS artifact</td><td>A screenshot of the working result plus a short written response through Evaluate, Analyze, and Understand &amp; Refine.</td><td>A committed, runnable agent in the portfolio repo with a README: what it does, a trace screenshot, and one lesson learned.</td></tr>
+            <tr><td class="row">Week 5</td><td>Checkpoint: Architecture &amp; Bottleneck Review. Diagram the combined system across all 4 HOS.</td><td>Checkpoint: Failure Clinic. Swap agents with a peer, break each other's, and diagnose from traces.</td></tr>
+            <tr><td class="row">Week 6</td><td>Integration &amp; Alternate Review. Concept debate across all 4 HOS; scope and form project teams.</td><td>Process-Mapping Workshop. Map a real manual business process into an agent-task sequence; form teams; lock the capstone scope.</td></tr>
+            <tr><td class="row">Weeks 7–9</td><td>Team/Term Project work time with progress checks: scope locked, rough working version, feature-complete and rehearsed.</td><td>Portfolio Capstone: Build (happy path), Harden (self-correction, failure handling, eval harness), Measure &amp; Polish (final eval run, metrics report).</td></tr>
+            <tr><td class="row">Week 10</td><td>Live presentation and demo of the project, touching every outcome.</td><td>Live run from a single trigger, plus a walkthrough of one real failure trace.</td></tr>
+        </table>
+        </div>
+
+        <div class="open-question">
+            <h4>Worth deciding</h4>
+            <ol>
+                <li><strong>The prerequisites don't chain, but the setup does.</strong> Both courses list CS 352 and DS 479. AI 420 reuses AI 410's Gemini key, Codespaces workflow, and Langfuse, yet AI 410 is not an approved prerequisite for AI 420, and the approved prerequisites can't be changed. A student can arrive in AI 420 without ever having done any of that setup. Decide how AI 420's first week covers them, for example a short setup checklist pointing to the <a href="ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a> and the <a href="ai-410-guides/concept-companion.html">Concept Companion</a>.</li>
+                <li><strong>Two courses teach the agentic loop.</strong> AI 410 HOS 1 introduces it and AI 420 HOS 1 rebuilds it by hand. That is deliberate and both course descriptions require it, but a student who took both could find HOS 1 repetitive. Make the difference explicit in AI 420's opening: last time you scaffolded it, this time you write it.</li>
+                <li><strong>Free-tier load is heavier in AI 420.</strong> One AI 410 chat turn is one or a few model calls. An AI 420 evaluation run multiplies calls per task (the agent, a simulated user, and a judge). Constraint 3 says to estimate calls per student per run against the free-tier rate limits before building, so do that estimate before the HOS 4 guide is written.</li>
+                <li><strong>The materials aren't comparable yet.</strong> AI 410 is fully built and AI 420 is a design. This page compares design to design; revisit it once AI 420's guides and starter code exist.</li>
+            </ol>
+        </div>
+
+        <p style="margin-top:26px;font-size:0.9rem"><a href="AI-410.html">AI 410 course page →</a> &nbsp;·&nbsp; <a href="AI-420.html">AI 420 course page →</a> &nbsp;·&nbsp; <a href="../bsai-course-tech-stack-brainstorm.html">Technology stack brainstorm →</a></p>
+    </div>
+    <script src="../assets/nav.js"></script>
+</body>
+</html>

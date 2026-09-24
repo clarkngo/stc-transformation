@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 420 — HOS 1 Hands-On Guide: Anatomy of an Agent</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .meta-pill.scaffold { background:#ede9fe; color:#6d28d9; }
+        .draft-banner { background:#fef3c7; border:2px solid #f59e0b; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; }
+        .draft-banner strong { color:#b45309; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .goal-box p { margin:0; }
+        .needs-list li { margin-bottom:6px; }
+        .ref-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px 18px; margin:16px 0 22px; font-size:0.88rem; }
+        .ref-box h4 { margin:0 0 6px; font-size:0.9rem; color:#334155; }
+        .ref-box ul { margin:0; padding-left:20px; }
+        .stage-block { border:1px solid #e2e8f0; border-radius:8px; padding:20px 22px; margin-bottom:18px; }
+        .stage-block h2 { margin:0 0 4px; font-size:1.15rem; }
+        .stage-num { display:inline-block; width:26px; height:26px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.85rem; text-align:center; line-height:26px; margin-right:8px; }
+        .stage-tagline { color:#6b7280; font-size:0.85rem; margin:0 0 14px 34px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code, td code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul { margin:0; padding-left:20px; }
+        .pledge-box { background:#f5f3ff; border-left:5px solid #8b5cf6; padding:12px 16px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.86rem; }
+        .pledge-box h5 { margin:0 0 6px; color:#6d28d9; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .pledge-box p { margin:0 0 6px; }
+        .pledge-box p:last-child { margin:0; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .snag-box li { margin-bottom:8px; }
+        table.mini { width:100%; border-collapse:collapse; margin:10px 0; font-size:0.86rem; }
+        table.mini th, table.mini td { border:1px solid #e2e8f0; padding:8px 10px; text-align:left; vertical-align:top; }
+        table.mini th { background:#f8fafc; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        .table-scroll { overflow-x:auto; }
+        .guide-nav { display:flex; justify-content:space-between; gap:12px; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-420.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 420</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>HOS 1 — Anatomy of an Agent: Inference vs. the Agentic Loop</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 3–4 hrs</span>
+            <span class="meta-pill">Outcome 1</span>
+            <span class="meta-pill scaffold">Scaffolding: full prompt given</span>
+            <span class="meta-pill">12.5% of final grade</span>
+        </div>
+
+        <div class="draft-banner"><strong>Draft — in faculty testing.</strong> The code for this HOS has been checked offline (tools against the real free APIs, agent logic against a scripted stand-in model), but not yet run end to end against Gemini. Faculty running it: note anything that breaks or takes longer than the estimate.</div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Answer the same multi-step questions two ways — one plain LLM call, then an agent loop you build yourself with no framework — so you can point at the exact lines where reasoning, planning, tool use, and memory happen. Then rebuild it in Google ADK and find the loop ADK hides from you.</p>
+        </div>
+
+        <h4>What you'll need</h4>
+        <ul class="needs-list">
+            <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-420-guides/starter-code/hos-01-agent-anatomy" target="_blank" rel="noopener">this HOS's starter-code folder</a>. Copy it into your portfolio repo (made from the <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-420-guides/starter-code/portfolio-template" target="_blank" rel="noopener">portfolio template</a> in Week 1) as its own folder, then open the repo in GitHub Codespaces. Dependencies install automatically.</li>
+            <li>Your free Gemini API key (the same one from AI 410, no credit card) from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. In the HOS folder: <code>cp .env.example .env</code>, then paste it in as <code>GOOGLE_API_KEY</code>.</li>
+            <li>An AI coding assistant in your Codespace (Antigravity, Claude Code, or equivalent)</li>
+        </ul>
+        <div class="ref-box"><h4>Reference reading (optional, before you start)</h4><ul>
+            <li><a href="https://github.com/clarkngo/agent-development/tree/main/hos-google-adk/hos01-greeting-agent" target="_blank" rel="noopener">agent-development hos01 — greeting agent</a>: the smallest possible ADK agent.</li>
+            <li><a href="https://github.com/clarkngo/agent-development/tree/main/hos-google-adk/hos02-multi-agent-with-voice" target="_blank" rel="noopener">agent-development hos02 — tool agent</a>: an ADK agent with function tools, the same shape as <code>adk_research_agent/</code>.</li>
+        </ul></div>
+
+        <p>This HOS is graded across four stages instead of on code correctness alone. Each stage below says exactly what to submit.</p>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">1</span>Create / Scaffold</h2>
+            <p class="stage-tagline">Not graded on its own — this is the starting point, not the deliverable.</p>
+            <p>The starter already has three working tools (<code>research/tools.py</code>: Wikipedia search, Wikipedia intro, calculator), a single-call baseline (<code>research/baseline.py</code>), five test questions (<code>tasks.json</code>), and a comparison script (<code>compare.py</code>). First run the baseline alone to see what plain inference does with a multi-step question:</p>
+<pre>python -m research.baseline "How many years before the first iPhone was the Space Needle completed?"</pre>
+            <p>Then prompt your AI assistant to build the loop. Use this prompt as given:</p>
+<pre>In research/react_loop.py, write a ReAct agent loop by hand using the
+google-genai SDK. Do not use any agent framework.
+- Expose run(question, max_steps=8, verbose=False) -> dict with keys:
+  answer, steps, tool_calls, tokens, seconds, log.
+- Import TOOLS and TOOLS_BY_NAME from research/tools.py, and MODEL,
+  SYSTEM, get_client, count_tokens from research/common.py.
+- Pass the tool functions in GenerateContentConfig(tools=...) and turn
+  OFF automatic function calling, so this code runs the loop itself.
+- Each step: call the model with the full message history. If it asks
+  for function calls, append its turn to the history, run each tool,
+  and append the results as function responses. If it doesn't, return
+  its text as the final answer.
+- If max_steps runs out, return an honest "couldn't finish" answer
+  instead of looping forever.
+- Record every tool call (name, args, result) in log.
+- Add a __main__ block that runs a question from the command line.</pre>
+            <p>Then run all five questions through both approaches:</p>
+<pre>python compare.py --verbose</pre>
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">2</span>Evaluate</h2>
+            <p class="stage-tagline">The critical gate — is the AI-produced result actually correct?</p>
+            <p>Check every answer from <code>compare.py</code> against the <code>expected</code> line printed under each question. At minimum, work out:</p>
+            <ul>
+                <li>Which questions did the <strong>baseline</strong> get right anyway, and why? (Some facts are in the model's memory. Being right from memory isn't the same as being right from evidence.)</li>
+                <li>For the <strong>agent</strong>: did it use the calculator for the arithmetic, or do the math in its own reply? Open the <code>--verbose</code> step log to check.</li>
+                <li>What does the agent cost you? Compare steps, tokens, and seconds against the baseline in the summary table.</li>
+                <li>Set <code>max_steps=2</code> and rerun one question. Does it stop honestly, or pretend it finished?</li>
+            </ul>
+            <div class="submit-box"><h5>Submit</h5>
+                <ul>
+                    <li>The comparison table from <code>compare.py</code>, and a short note: which answers were right, which were right for the wrong reason, and what the agent cost compared with the baseline.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">3</span>Analyze</h2>
+            <p class="stage-tagline">Why does this work, mechanically?</p>
+            <p>Pick <strong>one</strong> of these and explain it in your own words:</p>
+            <ul>
+                <li>Point to the exact line in <code>react_loop.py</code> where each of the four components lives: reasoning, planning, tool use, and memory. For memory, explain why the whole history is sent again on every step, and what that does to token count as the loop goes on.</li>
+                <li>Run the ADK version (<code>adk web</code> from the HOS folder, pick <code>adk_research_agent</code>) on the same question, and open its <strong>Events</strong> tab. Match each event to the step in your own loop that does the same job. What does ADK do that your loop doesn't?</li>
+            </ul>
+            <div class="submit-box"><h5>Submit</h5>
+                <ul>
+                    <li>A short written walkthrough of the one you chose. If you picked the ADK comparison, include a screenshot of the Events tab.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="stage-block">
+            <h2><span class="stage-num">4</span>Understand &amp; Refine</h2>
+            <p class="stage-tagline">The mastery check — by hand, no AI assistance for this stage.</p>
+            <p>ReAct plans one step at a time. Write the other pattern yourself: <strong>plan-and-execute</strong>, in <code>research/plan_execute.py</code>.</p>
+            <ul>
+                <li>First, one model call returns the whole plan as a JSON list of 2–4 steps. (Hint: <code>response_mime_type="application/json"</code> with <code>response_schema=list[str]</code>.)</li>
+                <li>Then run each step through your own <code>react_loop.run()</code> with a small step budget, passing along what earlier steps found.</li>
+                <li>Finally, one call writes the answer from those findings alone.</li>
+                <li>Return the same dict shape as <code>react_loop.run()</code>, plus the plan, so <code>python compare.py --with-plan</code> works.</li>
+            </ul>
+            <div class="submit-box"><h5>Submit</h5>
+                <ul>
+                    <li>Your <code>plan_execute.py</code>.</li>
+                    <li>The <code>compare.py --with-plan</code> table, and two or three sentences: on these questions, which pattern was more accurate, and which was cheaper?</li>
+                </ul>
+            </div>
+            <div class="pledge-box"><h5>Honor code</h5>
+                <p>Tick one when you submit: <strong>☐</strong> "I wrote the Stage 4 code myself, without AI assistance, under the CityU academic integrity policy." <strong>or ☐</strong> "I used AI for part of Stage 4. Here's what I used it for and why."</p>
+                <p>Disclosed AI use earns partial credit on this stage instead of zero, so saying so honestly always costs less than hiding it. The Week 5 cold build is where independent skill is checked directly.</p>
+            </div>
+
+        </div>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>A Wikipedia tool returns <code>403 Forbidden</code></strong> — Wikipedia blocks requests without a descriptive <code>User-Agent</code> that includes contact information. The starter's <code>HEADERS</code> already has one. If your AI assistant rewrote the tools, check it didn't drop that header.</li>
+                <li><strong>The model answers without calling any tool</strong> — check that automatic function calling is actually off and that the tools are in the config. With automatic calling on, the SDK runs tools for you and your loop never sees them.</li>
+                <li><strong><code>GOOGLE_API_KEY is not set</code></strong> — the <code>.env</code> file must sit in the HOS folder itself (next to <code>tasks.json</code>), not in <code>research/</code>.</li>
+                <li><strong><code>adk web</code> lists folders that aren't agents</strong> — that's expected. It shows every folder in the directory you started it from. Pick <code>adk_research_agent</code>.</li>
+                <li><strong><code>429 RESOURCE_EXHAUSTED</code></strong> — you hit the free tier's per-minute limit. Wait a minute and rerun; the scripts' <code>--pause</code> option adds a gap between runs.</li>
+                <li><strong>Codespaces doesn't pick up the devcontainer</strong> — Codespaces only reads <code>.devcontainer/</code> at the <em>root</em> of a repo. Use the portfolio template (its devcontainer covers all four HOS), or make this HOS folder the root of its own repo.</li>
+            </ul>
+        </div>
+
+        <div class="guide-nav">
+            <a href="index.html">← All HOS</a>
+            <a href="hos-02-tools-mcp-memory.html">HOS 2 →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

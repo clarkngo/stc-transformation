@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 420 Hands-On Guides</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; margin-top:34px; }
+        .intro-box { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.9rem; }
+        .hos-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:14px; margin:16px 0 8px; }
+        .hos-card { display:block; border:1px solid #e2e8f0; border-radius:10px; padding:16px 18px; text-decoration:none; color:inherit; background:#fff; }
+        .hos-card:hover { border-color:#86efac; }
+        .hos-card .num { font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#1e8449; }
+        .hos-card h3 { margin:4px 0 6px; font-size:1rem; color:#0f172a; }
+        .hos-card p { margin:0 0 8px; font-size:0.85rem; color:#475569; }
+        .hos-card .tags { display:flex; flex-wrap:wrap; gap:6px; }
+        .hos-card .tag { font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:999px; background:#f1f5f9; color:#334155; }
+        .hos-card .tag.fade { background:#ede9fe; color:#6d28d9; }
+        .links-list li { margin-bottom:6px; }
+        .test-box { background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:16px 20px; margin:12px 0; font-size:0.9rem; }
+        .test-box h3 { margin:0 0 8px; font-size:1rem; color:#92400e; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code, td code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        table.check { width:100%; border-collapse:collapse; margin:10px 0 18px; font-size:0.86rem; }
+        table.check th, table.check td { border:1px solid #e2e8f0; padding:9px 11px; text-align:left; vertical-align:top; }
+        table.check th { background:#f8fafc; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        table.check td:first-child { font-weight:700; white-space:nowrap; color:#1e8449; }
+        .table-scroll { overflow-x:auto; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-420.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 420</a>
+    </nav>
+
+        <h1>AI 420: Agentic AI — Hands-On Guides</h1>
+
+        <div class="intro-box">Four Hands-On Skill (HOS) units, Weeks 1–4, each graded on the CEAU cycle (Create/Scaffold → Evaluate → Analyze → Understand &amp; Refine). Each one adds a working agent to the student's portfolio repo. The help students get from the prompt fades as the units go on, per the <a href="../AI-410-tracker.html#design-review">AI 410 design review</a>: HOS 1 gives the full prompt and HOS 4 gives only the goal. Everything runs in GitHub Codespaces on free tiers, per the <a href="../../bsai-course-design-constraints.html">BSAI Course Design Constraints</a>.</div>
+
+        <div class="hos-grid">
+            <a class="hos-card" href="hos-01-agent-anatomy.html">
+                <div class="num">HOS 1 · Week 1 · O1</div>
+                <h3>Anatomy of an Agent</h3>
+                <p>One LLM call vs. an agent loop you write by hand, then the same agent in Google ADK. Plan-and-execute by hand.</p>
+                <div class="tags"><span class="tag">Est. 3–4 hrs</span><span class="tag fade">Full prompt</span></div>
+            </a>
+            <a class="hos-card" href="hos-02-tools-mcp-memory.html">
+                <div class="num">HOS 2 · Week 2 · O2, O1</div>
+                <h3>Custom Tools, MCP &amp; Memory</h3>
+                <p>API, browser, and database tools on your own MCP server, plus short- and long-term memory.</p>
+                <div class="tags"><span class="tag">Est. 3.5–4.5 hrs</span><span class="tag fade">Partial prompt</span></div>
+            </a>
+            <a class="hos-card" href="hos-03-traces-self-correction.html">
+                <div class="num">HOS 3 · Week 3 · O3</div>
+                <h3>Traces, Failure Diagnosis &amp; Self-Correction</h3>
+                <p>Find five planted failures from traces alone, then add guards so the agent recovers on its own.</p>
+                <div class="tags"><span class="tag">Est. 3–4 hrs</span><span class="tag fade">Spec only</span></div>
+            </a>
+            <a class="hos-card" href="hos-04-multi-agent-evaluation.html">
+                <div class="num">HOS 4 · Week 4 · O4</div>
+                <h3>Multi-Agent Orchestration &amp; Evaluation</h3>
+                <p>A coordinator + specialists, tested by a simulated customer and an LLM judge: success rate, cost per task, latency.</p>
+                <div class="tags"><span class="tag">Est. 4–5 hrs</span><span class="tag fade">Goal only</span></div>
+            </a>
+        </div>
+
+        <h2>Code</h2>
+        <ul class="links-list">
+            <li><a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-420-guides/starter-code" target="_blank" rel="noopener">Starter code</a> — one folder per HOS, plus the <code>portfolio-template/</code> students create their repo from in Week 1.</li>
+            <li><a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-420-guides/answer-key" target="_blank" rel="noopener">Answer keys</a> — instructor/SME only. Its README lists exactly what has and hasn't been verified.</li>
+            <li><a href="https://github.com/clarkngo/agent-development/tree/main/hos-google-adk" target="_blank" rel="noopener">agent-development</a> — the ADK walkthroughs each guide points to as reference reading.</li>
+        </ul>
+
+        <h2 id="testing">Faculty Testing Checklist</h2>
+        <div class="test-box">
+            <h3>Status: checked offline, not yet run against Gemini</h3>
+            <p style="margin:0">Every tool has been run against the real free services, and every agent's logic against a scripted stand-in model. What's left is a real run with a Gemini key. Test from the <strong>answer key</strong> first, to confirm the unit works, then from the <strong>starter</strong>, to time the student path.</p>
+        </div>
+        <p>Quickest way to run any answer key, locally or in any Codespace:</p>
+<pre>cd courses/ai-420-guides/answer-key/hos-01-agent-anatomy
+python3 -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env            # paste your GOOGLE_API_KEY
+python data/seed_db.py          # HOS 2–4 only
+python compare.py --with-plan   # HOS 1  (HOS 2: adk web · HOS 3: python run_scenarios.py · HOS 4: python evals/run_eval.py --system single --limit 3)</pre>
+
+        <div class="table-scroll">
+        <table class="check">
+            <tr><th>HOS</th><th>What to watch for with a real model</th><th>Record</th></tr>
+            <tr><td>HOS 1</td><td>Does the baseline actually get some of the 5 questions wrong or guess (it needs to, for the lesson to land)? Does the agent use the calculator rather than doing math in its reply? Does <code>max_steps=2</code> stop honestly?</td><td>Accuracy per approach; tokens and seconds; total time</td></tr>
+            <tr><td>HOS 2</td><td>Does the agent choose <code>order_status</code> / <code>low_stock_report</code> over free-form SQL? Does "cancel order 1003" leave the database unchanged? Does memory recall work in a fresh <code>adk web</code> session? How slow is the first memory call?</td><td>Any tool-choice mistakes; total time</td></tr>
+            <tr><td>HOS 3</td><td>Does each of s1–s5 fail visibly with a real model? The key ones: s2 claiming the refund was done, s4 reporting $1,622.79, s5 quoting $153.30. If a real model sidesteps a bug (for example, strips the "#" in s1), that bug needs a stronger plant. Does the answer key's version pass all six?</td><td>Which bugs reproduced, and how reliably over 2–3 runs</td></tr>
+            <tr><td>HOS 4</td><td>Does the simulated customer stay in character and stop? Does the judge's grading look right to you? How many model calls does <code>--limit 3</code> take, and does a full 12-scenario run fit the free tier?</td><td>Success rate, cost per task, p50/p95 for both systems; calls per scenario; any 429s</td></tr>
+        </table>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

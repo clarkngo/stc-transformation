@@ -1,0 +1,15 @@
+{
+    "name": "AI 420 — Agent Portfolio",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12",
+    "hostRequirements": { "cpus": 2 },
+    "postCreateCommand": "pip install -r requirements.txt",
+    "forwardPorts": [8000],
+    "portsAttributes": {
+        "8000": { "label": "ADK Web UI (adk web)", "onAutoForward": "openPreview" }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": ["ms-python.python"]
+        }
+    }
+}

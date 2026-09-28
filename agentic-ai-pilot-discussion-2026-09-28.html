@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Agentic AI Pilot — 1-1 Prep with Jim, September 28 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--teal); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--teal-dim); border: 1px solid rgba(13,148,136,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p:first-child { margin-top: 0; }
+    .icon-teal { background: var(--teal-dim); } .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); } .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); }
+    .answer { font-weight: 700; color: var(--teal); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px solid var(--border); }
+    th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); background: var(--bg); }
+    td:first-child { font-weight: 600; white-space: nowrap; }
+    .pill { display: inline-block; font-size: 0.72rem; font-weight: 700; border-radius: 12px; padding: 2px 9px; }
+    .pill.go { background: var(--green-dim); color: var(--green); }
+    .pill.later { background: var(--amber-dim); color: var(--amber); }
+    .uc { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 14px; }
+    .uc h3 { margin: 0 0 6px; font-size: 1rem; }
+    .uc dl { margin: 0; display: grid; grid-template-columns: 150px 1fr; gap: 4px 12px; font-size: 0.88rem; }
+    .uc dt { font-weight: 700; color: var(--slate); }
+    .uc dd { margin: 0; }
+    @media (max-width: 600px) { .uc dl { grid-template-columns: 1fr; } .uc dd { margin-bottom: 6px; } .doc-header { padding: 22px 18px; } td:first-child { white-space: normal; } }
+    ol.steps li, ul.tight li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="corporate-partnerships-hub.html">Corporate Partnerships Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">1-1 Prep · Outside STC, adjacent to it</div>
+    <h1>Agentic AI Pilot — Answers for Jim's Discussion Doc</h1>
+    <p class="subtitle">Draft responses to Jim's five questions about a small, paid Agentic AI pilot spanning his CityU School of Business &amp; Management SME work and his Habitat for Humanity SKKC board role.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Sep 28, 2026</span>
+      <span class="meta-chip">🗣 1-1 with Jim</span>
+      <span class="meta-chip">🧪 Pilot proposal · draft</span>
+    </div>
+  </header>
+
+  <div class="tldr">
+    <h2>TL;DR — what I'll say in the room</h2>
+    <ul>
+      <li><strong>Yes, I'm interested.</strong> Put it in writing first, keep it fully separate from any course I'm in, and use only public or approved data.</li>
+      <li><strong>Start with public-data work.</strong> A research-to-brief agent for <em>Space Economy / Project Leo</em> or the <em>MBA 551 refresh</em> pays off fastest and raises no confidentiality issues.</li>
+      <li><strong>Habitat comes second</strong>, after Habitat approves which data can be used and which tools are allowed.</li>
+      <li><strong>Proposed scope:</strong> a 4–6 week pilot, about 20–30 hours, a weekly 45-min working session, fixed deliverables, then a go/no-go decision.</li>
+      <li><strong>What Jim should learn first:</strong> working in Claude or ChatGPT Projects, deep-research mode, source-grounded synthesis in NotebookLM, and then one agent workflow he runs himself.</li>
+    </ul>
+  </div>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">🤝</div><div><h2>1. Does this opportunity interest you?</h2><div class="section-sub">Yes, with guardrails agreed up front</div></div></div>
+    <div class="section-body">
+      <p><span class="answer">Yes.</span> It matches what I'm already doing on the STC side: agentic workflows, building AI 420 (Agentic AI), and CityUX. Real SBM and nonprofit use cases would also make my teaching examples better.</p>
+      <p>Guardrails I'd want in place before any paid work starts (Jim's doc already raises these):</p>
+      <ul class="tight">
+        <li><strong>Separation of roles.</strong> A short written agreement with VMI LLC. No paid work overlaps a course where Jim grades me. If there is any overlap in timing, disclose it to the appropriate CityU contact first.</li>
+        <li><strong>Data rules.</strong> Phase 1 uses public information plus Jim's own non-confidential materials only. Nothing from CityU, Habitat, or donors goes into an AI tool until the owning organization approves it.</li>
+        <li><strong>IP clarity.</strong> Jim owns what's built for his work. I keep the right to reuse the general methods and patterns, but no client-specific content.</li>
+        <li><strong>My capacity.</strong> A fixed-hour cap so the pilot doesn't compete with my STC course-building commitments.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">🎯</div><div><h2>2. Where can Agentic AI create the most immediate value?</h2><div class="section-sub">Ranked by speed to value and data risk</div></div></div>
+    <div class="section-body">
+      <p>The pattern that pays off fastest: <strong>many sources in, one structured and cited synthesis out, with a human reviewing</strong>. Full automation of operations comes later.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Area</th><th>Agentic use</th><th>Value</th><th>Data risk</th><th>Timing</th></tr></thead>
+        <tbody>
+          <tr><td>Space Economy / Project Leo</td><td>Research agent that produces a recurring market and competitor landscape brief with sources</td><td>High</td><td>Low (public)</td><td><span class="pill go">Pilot</span></td></tr>
+          <tr><td>MBA 551 refresh</td><td>Curriculum copilot: benchmark peer programs, map outcomes, find gaps, draft cases and assignments</td><td>High</td><td>Low</td><td><span class="pill go">Pilot</span></td></tr>
+          <tr><td>BAM / Veterans pathway</td><td>Research on veteran credit-for-prior-learning, competitor pathways, and funding (GI Bill, SkillBridge)</td><td>Med-High</td><td>Low</td><td><span class="pill go">Pilot option</span></td></tr>
+          <tr><td>Habitat board knowledge</td><td>Q&amp;A over strategic-plan and board documents, plus meeting-prep briefs</td><td>High</td><td>Med (needs approval)</td><td><span class="pill later">Phase 2</span></td></tr>
+          <tr><td>Habitat housing intel</td><td>Affordable-housing market and policy monitor for King and Kittitas counties</td><td>Med</td><td>Low (public)</td><td><span class="pill later">Phase 2</span></td></tr>
+          <tr><td>Donor / partner prospecting</td><td>Prospect-research briefs</td><td>Med</td><td>High (personal data)</td><td><span class="pill later">Later, with policy</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">🧪</div><div><h2>3. What would be a good first pilot?</h2><div class="section-sub">Two candidates, run through Jim's 6-question framework</div></div></div>
+    <div class="section-body">
+      <div class="uc">
+        <h3>Pilot A (recommended): "Research-to-Brief" agent, starting with Space Economy / Project Leo</h3>
+        <dl>
+          <dt>Problem</dt><dd>Tracking a fast-moving sector (launch costs, LEO commercial stations, workforce demand, competing programs) by hand takes hours and the notes are scattered.</dd>
+          <dt>Architecture</dt><dd>A deep-research step, then a synthesis agent with a fixed brief template, then Jim reviews. Runs as a saved Project plus a reusable prompt/skill, optionally on a weekly schedule. Output goes to a shared doc or knowledge base.</dd>
+          <dt>Info / systems</dt><dd>Public web sources, industry reports, and Jim's own notes. No institutional systems.</dd>
+          <dt>Automate vs. judge</dt><dd>Automate collecting, summarizing, citing, and comparing. Jim judges strategic implications, program positioning, and anything that goes to leadership.</dd>
+          <dt>Measure</dt><dd>Hours per brief, before vs. after. Jim's 1–5 rating on quality and usefulness. Share of claims with a verifiable source. Number of briefs Jim produces without me.</dd>
+          <dt>What Jim learns</dt><dd>Writing research prompts, structuring briefs, checking citations, spotting hallucinations, and then changing the workflow himself.</dd>
+        </dl>
+      </div>
+      <div class="uc">
+        <h3>Pilot B: MBA 551 curriculum-refresh copilot</h3>
+        <dl>
+          <dt>Problem</dt><dd>A refresh means benchmarking peer programs, aligning outcomes, and drafting new cases and assessments. The work is repetitive and heavy on synthesis.</dd>
+          <dt>Architecture</dt><dd>A Project loaded with the course outcomes and the current syllabus, plus agents for three tasks: peer benchmarking, an outcome-to-assessment map, and case/assignment drafts.</dd>
+          <dt>Info / systems</dt><dd>The public course description, Jim's own syllabus and materials, and public peer-program info. Check whether CityU course materials may go into the chosen tool.</dd>
+          <dt>Automate vs. judge</dt><dd>Automate the benchmarking tables and first drafts. Jim decides pedagogy, outcomes alignment, and the final content.</dd>
+          <dt>Measure</dt><dd>Time to a refresh-ready draft. Outcome-coverage gaps found. Jim's rating of the draft quality.</dd>
+          <dt>What Jim learns</dt><dd>Context engineering: what to feed the model, how templates constrain its output, and how to iterate.</dd>
+        </dl>
+      </div>
+      <div class="callout blue"><strong>Why Pilot A first:</strong> it uses public data only, so nobody else has to approve it. The result is visible within about two weeks, and the same research-to-brief pattern then carries over to MBA 551, the BAM pathway, and Habitat housing intel.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-amber">🧰</div><div><h2>4. Which tools and capabilities should Jim master?</h2><div class="section-sub">A learning ladder: each rung builds on the last</div></div></div>
+    <div class="section-body">
+      <ol class="steps">
+        <li><strong>Projects and context:</strong> Claude Projects or ChatGPT Projects with custom instructions and uploaded reference files. This is the foundation for everything else.</li>
+        <li><strong>Deep research modes:</strong> multi-step web research with citations, and how to check those citations critically.</li>
+        <li><strong>Source-grounded synthesis:</strong> NotebookLM, or Projects restricted to the uploaded sources, for board and strategic-plan documents.</li>
+        <li><strong>Templates and reusable skills:</strong> turning a good prompt into a repeatable workflow such as a brief template or a benchmark rubric.</li>
+        <li><strong>Connectors (MCP) and scheduling:</strong> letting the assistant read Drive and email, and running recurring briefs on a schedule.</li>
+        <li><strong>Desktop agents:</strong> Claude Cowork and similar agents for multi-step file and document work, with a human approving each consequential step.</li>
+      </ol>
+      <p style="margin-bottom:0">Concepts that matter more than any one tool: <strong>context engineering, human-in-the-loop design, verification and evals, and data classification</strong> (what may go into which tool).</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">📐</div><div><h2>5. Scope, time commitment, and working arrangement</h2><div class="section-sub">Proposed; open to Jim's input</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <tbody>
+          <tr><td>Duration</td><td>4–6 weeks, then a go/no-go review</td></tr>
+          <tr><td>Effort</td><td>About 20–30 hours total from me, capped</td></tr>
+          <tr><td>Cadence</td><td>One 45-minute working session a week, where Jim drives and I coach, plus async build time</td></tr>
+          <tr><td>Deliverables</td><td>(1) A working research-to-brief workflow for Pilot A. (2) Two or three real briefs produced with it. (3) A one-page runbook Jim can follow alone. (4) A pilot readout with metrics and a recommended Phase 2.</td></tr>
+          <tr><td>Commercials</td><td>Through VMI LLC under a short SOW, at a fixed fee or an hourly cap. Rate to be agreed separately.</td></tr>
+          <tr><td>Tool costs</td><td>Jim's own subscription accounts, so the workflows stay his after the pilot</td></tr>
+          <tr><td>Governance</td><td>Written separation from academic evaluation. Public or approved data only. A CityU and Habitat policy check before Phase 2.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>Suggested timeline:</strong> Week 1: pick the pilot, set up the tools, capture a baseline. Weeks 2–3: build the workflow and produce the first brief. Weeks 4–5: Jim runs it himself while I tune it. Week 6: readout and decision on Phase 2.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">❓</div><div><h2>Questions to ask Jim</h2><div class="section-sub">To close out today</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li>Which initiative has the nearest deadline or the most visibility: Project Leo, MBA 551, or BAM?</li>
+        <li>Which AI tools and subscriptions does he already use, and does CityU or Habitat restrict any of them?</li>
+        <li>Who at CityU should know about the arrangement, so it's cleanly separated from coursework?</li>
+        <li>What does success look like to him in 6 weeks: time saved, better output, or his own fluency?</li>
+      </ul>
+      <div class="callout blue"><strong>STC tie-in:</strong> a working cross-school (SBM × STC) agentic-workflow case study. Once it's sanitized, it could feed AI 420 examples and the <a href="corporate-partnerships-hub.html">corporate AI-enablement</a> playbook.</div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

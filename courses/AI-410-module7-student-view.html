@@ -43,7 +43,6 @@
         .stage-mini .snum { font-weight:700; color:#15803d; }
         .cd-stage { background:#faf5ff; border-radius:6px; padding:10px 14px; margin:8px 0; font-size:0.85rem; }
         .cd-stage strong { color:#7e22ce; }
-        .kc-q { background:#eef2ff; border-radius:6px; padding:10px 14px; margin:6px 0; font-size:0.88rem; }
         .rail-note { font-size:0.78rem; color:#94a3b8; font-style:italic; margin-top:4px; }
         .module-nav { display:flex; justify-content:space-between; margin-top:18px; font-size:0.9rem; }
         .module-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
@@ -61,7 +60,7 @@
       <a href="AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
     </nav>
 
-    <div class="internal-banner"><strong>Internal review tool — not a real course page.</strong> A simulation of what a student would actually see opening "Module 7" (Week 7) in the online course menu, built from the real content already in <a href="AI-410.html">AI-410.html</a> and <a href="AI-410-syllabus.html#team-project">AI-410-syllabus.html</a>'s Team/Term Project section.</div>
+    <div class="internal-banner"><strong>Internal review tool — not a real course page.</strong> A simulation of what a student would actually see opening "Module 7" (Week 7) — HOS 4's first week (the last HOS), built from the real content in <a href="AI-410.html">AI-410.html</a> and the <a href="ai-410-guides/hos-04-mobile-observability.html">HOS 4 guide</a>.</div>
 
     <h1>Student View Simulation — Module 7</h1>
 
@@ -87,33 +86,70 @@
         </div>
 
         <div class="lms-body">
-            <div class="module-title">Module 7 — Team/Term Project: Planning Sprint (1 of 2)</div>
-            <p class="module-sub">No project code yet — this week is scope, backlog, and setup</p>
+            <div class="module-title">Module 7 — HOS 4 (1 of 2): Mobile, Push &amp; Observability</div>
+            <p class="module-sub">Build &amp; Evaluate week · Outcomes 4 &amp; 5 · 12.5% of your final grade across both weeks</p>
 
             <div class="item">
                 <div class="item-head">
                     <span class="item-icon">📋</span>
                     <div class="item-meta">
                         <div class="item-type">Overview</div>
-                        <div class="item-title">Welcome to Module 7 — plan before you build</div>
+                        <div class="item-title">Welcome to Module 7 — the last HOS</div>
                     </div>
                 </div>
                 <div class="item-body">
-                    <p><strong>Goal:</strong> No project code this week, on purpose. Plan the way a small real-world team would, using a lightweight version of Scrum — the same framework a lot of real software teams use to plan short, iterative chunks of work. You'll actually build in Modules 9–10.</p>
+                    <p><strong>Goal this week:</strong> Take your app all the way to production shape — a real mobile client that gets notified when work finishes, and full visibility into what the agent is actually doing on every request. Build and judge this week; next week (Module 8) you'll finish HOS 4 and get a compact review of all 4 HOS together.</p>
                 </div>
             </div>
 
             <div class="item">
                 <div class="item-head">
-                    <span class="item-icon">📚</span>
+                    <span class="item-icon">🎥</span>
                     <div class="item-meta">
-                        <div class="item-type">Reading — Scrum-lite &amp; Example Project</div>
-                        <div class="item-title">How to plan this project</div>
+                        <div class="item-type">Lecture / Pre-work</div>
+                        <div class="item-title">Mobile Clients, Push Notifications &amp; Observability</div>
                     </div>
-                    <div class="item-tags"><span class="item-tag tag-time">~15 min</span></div>
+                    <div class="item-tags"><span class="item-tag tag-time">~20 min</span></div>
                 </div>
                 <div class="item-body">
-                    <p>The syllabus's Team/Term Project section covers a worked example project ("Study Buddy," an AI study assistant touching all 4 HOS) and a 4-piece Scrum-lite framework: Product Backlog, Sprint Planning, Standups, and Sprint Review. Read it before starting the activity below.</p>
+                    <p>Covers how a mobile client (Expo/React Native) calls the same backend your other clients do, how a push notification reaches a specific device via a push token, and why tracing a request as nested spans (retrieval, generation) lets you answer "which part was actually slow?" Watch before starting your Muddiest Point below.</p>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">💬</span>
+                    <div class="item-meta">
+                        <div class="item-type">Discussion — Muddiest Point</div>
+                        <div class="item-title">What's still unclear after this week's lecture?</div>
+                    </div>
+                    <div class="item-tags"><span class="item-tag tag-due">Due Wed</span><span class="item-tag tag-points">5% of grade</span></div>
+                </div>
+                <div class="item-body">
+                    <p>Open now, stays open all week — post as soon as you hit something confusing. Fill in all four fields:</p>
+                    <div class="student-field"><span class="fname">1. What were you doing right before you got confused?</span>e.g. "Reading about why push notifications are addressed to a device token, not a user ID…"</div>
+                    <div class="student-field"><span class="fname">2. The exact place you got stuck</span>Be specific.</div>
+                    <div class="student-field"><span class="fname">3. What did you already try?</span>Show your attempt.</div>
+                    <div class="student-field"><span class="fname">4. (Optional) Your best guess</span>Even if you think it's wrong.</div>
+                    <p class="rail-note">Instructor posts a short response addressing the most common muddiest points early in the week.</p>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-head">
+                    <span class="item-icon">💬</span>
+                    <div class="item-meta">
+                        <div class="item-type">Discussion — Concept Debate</div>
+                        <div class="item-title">Should an AI product proactively alert users the moment observability data suggests something might be wrong — or only surface issues when a user explicitly asks?</div>
+                    </div>
+                    <div class="item-tags"><span class="item-tag tag-points">5% of grade</span></div>
+                </div>
+                <div class="item-body">
+                    <p>You've been assigned a side below (not your choice) — small groups, staged across the week:</p>
+                    <div class="cd-stage"><strong>Stage 1 — Initial position (Mon–Tue):</strong> Argue your assigned side with a specific claim and evidence.</div>
+                    <div class="cd-stage"><strong>Stage 2 — Argue the opposite (Wed–Thu):</strong> Post the strongest version of the <em>other</em> side's argument before responding to a classmate.</div>
+                    <div class="cd-stage"><strong>Stage 3 — Synthesis (Fri):</strong> Drop advocacy. State a genuine synthesis, citing a specific point from a classmate's post.</div>
+                    <p class="rail-note">Your assigned side this week: <strong>Group A — Proactive alerts, even at the risk of alert fatigue</strong>.</p>
                 </div>
             </div>
 
@@ -121,33 +157,26 @@
                 <div class="item-head">
                     <span class="item-icon">🛠️</span>
                     <div class="item-meta">
-                        <div class="item-type">Project Work Time</div>
-                        <div class="item-title">Write your product backlog, and set up a PM tool</div>
+                        <div class="item-type">Hands-On Skill (HOS) Build — this week's stages</div>
+                        <div class="item-title">HOS 4 — Mobile Client, Push &amp; Observability</div>
                     </div>
+                    <div class="item-tags"><span class="item-tag tag-time">~2.5–3 hrs</span></div>
                 </div>
                 <div class="item-body">
-                    <p>Write your backlog as user stories: "As a [user], I want [capability], so that [benefit]." Doesn't need to be complete or ordered — get every idea onto the list. Then set up a free project management tool to track it — GitHub Projects is recommended since it's already tied to your repo, but Trello or Notion work too. Not sure where to start scoping? Use the <a href="https://clarkngo.github.io/prompt-builder/builders/capstone.html" target="_blank" rel="noopener">Capstone Prompt Builder →</a>.</p>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="item-head">
-                    <span class="item-icon">🎯</span>
-                    <div class="item-meta">
-                        <div class="item-type">Progress Check — Week 7</div>
-                        <div class="item-title">Scope locked as a product backlog</div>
-                    </div>
-                    <div class="item-tags"><span class="item-tag tag-due">Due end of week</span></div>
-                </div>
-                <div class="item-body">
-                    <div class="stage-mini"><span class="snum">Submit</span> Which HOS pieces your project combines and why, written as user stories, plus a rough architecture sketch. Roles assigned if it's a team, and your PM tool set up and linked.</div>
+                    <p>Full guide: <a href="ai-410-guides/hos-04-mobile-observability.html">HOS 4 Hands-On Guide →</a> — starter code, exact prompts, and submission details.</p>
+                    <div class="stage-mini"><span class="snum">1. Create/Scaffold</span> — prompt an AI assistant to add an Expo mobile client, device push registration, and Langfuse tracing.</div>
+                    <div class="stage-mini"><span class="snum">2. Evaluate</span> — confirm a push notification actually arrives on your phone, open a real trace and check for two separate spans, and check a faithfulness score against a question the docs don't cover.</div>
+                    <p class="rail-note" style="margin-top:12px">This is what the Evaluate stage's Langfuse dashboard actually looks like — a trace with a faithfulness score attached, and a running table of every score you've logged:</p>
+                    <img src="../assets/ai410-langfuse-broll/01-trace-detail.svg" width="760" height="400" loading="lazy" alt="Illustrative mockup of a Langfuse trace: run_agent span with a nested retrieve span and a faithfulness score of 0.83" style="width:100%;height:auto;display:block;border-radius:8px;border:1px solid #e2e8f0;margin:8px 0"/>
+                    <img src="../assets/ai410-langfuse-broll/02-scores-table.svg" width="760" height="340" loading="lazy" alt="Illustrative mockup of a Langfuse Scores table, listing several faithfulness score runs by timestamp and value" style="width:100%;height:auto;display:block;border-radius:8px;border:1px solid #e2e8f0"/>
+                    <p class="rail-note" style="margin-top:10px">Analyze and Understand &amp; Refine happen next week in Module 8, alongside a compact review of all 4 HOS together.</p>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <div class="up-next">Next: <strong>Module 8</strong> — refine the backlog into a concrete Sprint 1 plan for the Build Sprint.</div>
+    <div class="up-next">Next: <strong>Module 8</strong> — finish HOS 4, plus the Architecture Review and Integration Concept Debate.</div>
 
     <div class="module-nav">
         <a href="AI-410-module6-student-view.html">← Module 6</a>

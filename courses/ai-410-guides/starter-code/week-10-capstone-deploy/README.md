@@ -1,4 +1,4 @@
-# Week 10 Starter — Capstone Integration, Deployment & Demo
+# Week 10 Starter — Team/Term Project Integration, Deployment & Demo
 
 Guide: [`../../week-10-capstone-deploy.html`](https://clarkngo.github.io/stc-transformation/courses/ai-410-guides/week-10-capstone-deploy.html)
 

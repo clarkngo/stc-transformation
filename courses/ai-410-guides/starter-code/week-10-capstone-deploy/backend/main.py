@@ -1,5 +1,5 @@
 """
-AI 410 — Week 10 starter: Capstone Integration & Deployment.
+AI 410 — Week 10 starter: Team/Term Project Integration & Deployment.
 
 Everything from Weeks 1-9 (chat, RAG, guardrails, async ingestion,
 push notifications, tracing) is already solved and carried forward

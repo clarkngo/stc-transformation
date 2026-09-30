@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 420 Faculty Test Runbook</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; margin-top:34px; }
+        h3 { margin:18px 0 8px; font-size:1rem; }
+        .internal-banner { background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:12px 16px; margin:0 0 18px; font-size:0.88rem; color:#92400e; }
+        .status-box { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:14px 18px; margin:0 0 20px; font-size:0.9rem; }
+        .status-box h3 { margin:0 0 6px; color:#15803d; }
+        .status-box ul { margin:6px 0 0; padding-left:20px; }
+        .step { border:1px solid #e2e8f0; border-radius:10px; padding:16px 20px; margin:14px 0; background:#fff; }
+        .step h2 { margin:0 0 6px; font-size:1.15rem; }
+        .step .when { font-size:0.8rem; color:#64748b; margin:0 0 10px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; position:relative; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code, td code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .copy { position:absolute; top:6px; right:6px; font-size:0.7rem; background:#334155; color:#e2e8f0; border:none; border-radius:4px; padding:3px 8px; cursor:pointer; }
+        .watch { background:#fffbeb; border-left:4px solid #f59e0b; padding:10px 14px; margin:10px 0; font-size:0.87rem; border-radius:0 6px 6px 0; }
+        .watch strong { color:#92400e; }
+        .record { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 14px; margin:12px 0 4px; font-size:0.86rem; }
+        .record h4 { margin:0 0 8px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.05em; color:#475569; }
+        .fields { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px 14px; }
+        .fields label { display:flex; flex-direction:column; gap:3px; font-weight:600; font-size:0.8rem; color:#334155; }
+        .fields input, .fields select, .record textarea { font:inherit; font-weight:400; padding:5px 8px; border:1px solid #cbd5e1; border-radius:6px; background:#fff; }
+        .record textarea { width:100%; min-height:54px; margin-top:8px; box-sizing:border-box; }
+        .fields label.chk { flex-direction:row; align-items:center; gap:6px; font-weight:500; }
+        table.t { width:100%; border-collapse:collapse; margin:10px 0; font-size:0.85rem; }
+        table.t th, table.t td { border:1px solid #e2e8f0; padding:7px 10px; text-align:left; vertical-align:top; }
+        table.t th { background:#f8fafc; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        .btn { background:#1e8449; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-weight:700; cursor:pointer; font-size:0.85rem; }
+        .btn.secondary { background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; }
+        .toc { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 18px; }
+        .toc a { font-size:0.8rem; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:14px; padding:3px 10px; text-decoration:none; color:#1e8449; font-weight:600; }
+        .table-scroll { overflow-x:auto; }
+        .path-tag { display:inline-block; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:999px; background:#dcfce7; color:#15803d; margin-right:6px; }
+        .path-tag.b { background:#ede9fe; color:#6d28d9; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-420.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 420</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1>AI 420 — Faculty Test Runbook</h1>
+        <div class="internal-banner"><strong>Instructor/SME only.</strong> A step-by-step pass through all four HOS with a real Gemini key: first the answer keys (does each unit work?), then optionally the starter code as a student would (how long does it take, and where do students get stuck?). Your results are saved in this browser as you type; copy them out at the end.</div>
+
+        <div class="status-box">
+            <h3>Ready for you — checked Sep 30, 2026, without a Gemini key</h3>
+            <ul>
+                <li>All four HOS install cleanly on Python 3.12, per HOS and via the portfolio template's single install (<code>google-adk</code> 2.9.2, <code>mcp</code> 2.2.0, <code>chromadb</code> 1.5.9).</li>
+                <li>Every tool works against the real free services, and every agent's logic works with a scripted stand-in model. HOS 3's five planted failures reproduce in the starter with the values the checklist expects ($1,622.79 and $153.30) and recover in the answer key.</li>
+                <li><code>adk web</code> starts in every HOS folder and lists the right agents.</li>
+                <li><strong>Fixed:</strong> in a portfolio-repo Codespace (the path students use), nothing built <code>data/harbor.db</code> for HOS 2–4. Each HOS now builds it the first time a tool needs it.</li>
+                <li><strong>Not checked:</strong> anything a real model does, and whether <code>gemini-3.6-flash</code> is available to your key. Step 2 checks that in one command.</li>
+            </ul>
+        </div>
+
+        <div class="toc">
+            <a href="#setup">0 · Codespace setup</a><a href="#smoke">1 · Smoke test</a><a href="#key">2 · Key &amp; model</a>
+            <a href="#hos1">HOS 1</a><a href="#hos2">HOS 2</a><a href="#hos3">HOS 3</a><a href="#hos4">HOS 4</a>
+            <a href="#student">Student path</a><a href="#report">Report</a>
+        </div>
+
+        <h3>What you'll need</h3>
+        <ul>
+            <li>A GitHub account with Codespaces (the free monthly allowance is enough), or a Mac/Linux machine with Python 3.12.</li>
+            <li>A free Gemini API key from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> (no credit card).</li>
+            <li>For HOS 3: a free Langfuse project at <a href="https://cloud.langfuse.com" target="_blank" rel="noopener">cloud.langfuse.com</a> (public + secret key).</li>
+            <li>Time: about 2–2.5 hours for the answer-key pass across all four HOS. The optional student-path pass is 3–5 hours per HOS (the guides' own estimates).</li>
+        </ul>
+
+        <!-- ============ STEP 0 ============ -->
+        <div class="step" id="setup">
+            <h2>0 · Set up a test Codespace (once)</h2>
+            <p class="when">≈ 10 minutes. Mirrors the student setup: a repo built from the portfolio template, with the answer keys and starters alongside for testing.</p>
+            <ol>
+                <li>Create a new <strong>private</strong> repo at <a href="https://github.com/new" target="_blank" rel="noopener">github.com/new</a> (e.g. <code>ai420-faculty-test</code>), ticking "Add a README file".</li>
+                <li>On the repo page: <strong>Code → Codespaces → Create codespace on main</strong>.</li>
+                <li>In the Codespace terminal, pull in the course files and install everything the four HOS need:</li>
+            </ol>
+<pre><code>git clone --depth 1 https://github.com/clarkngo/stc-transformation.git /tmp/stc
+cp -R /tmp/stc/courses/ai-420-guides/starter-code/portfolio-template/. .
+cp -R /tmp/stc/courses/ai-420-guides/{answer-key,starter-code,faculty-smoke-tests} .
+pip install -r requirements.txt</code></pre>
+            <ol start="4">
+                <li>Create one <code>.env</code> at the repo root, paste your keys into it in the editor, then copy it into every HOS folder. <code>.env</code> is gitignored, so it won't be committed.</li>
+            </ol>
+<pre><code>cat > .env &lt;&lt;'EOF'
+GOOGLE_API_KEY=paste-your-key-here
+GOOGLE_GENAI_USE_VERTEXAI=FALSE
+GEMINI_MODEL=gemini-3.6-flash
+LANGFUSE_PUBLIC_KEY=
+LANGFUSE_SECRET_KEY=
+LANGFUSE_HOST=https://cloud.langfuse.com
+SIM_MODEL=
+JUDGE_MODEL=
+EOF
+code .env     # paste your Gemini key (and Langfuse keys) and save, then:
+for d in answer-key/hos-0* starter-code/hos-0*; do cp .env "$d/.env"; done</code></pre>
+            <p class="small">Change a key later? Edit the root <code>.env</code> and rerun the <code>for</code> line. Testing locally instead of Codespaces: run the same commands in an empty folder, after <code>python3.12 -m venv .venv &amp;&amp; source .venv/bin/activate</code>.</p>
+        </div>
+
+        <!-- ============ STEP 1 ============ -->
+        <div class="step" id="smoke">
+            <h2>1 · Offline smoke test (no key, no quota)</h2>
+            <p class="when">≈ 3 minutes. Confirms your Codespace is healthy before you spend any free-tier calls.</p>
+<pre><code>bash faculty-smoke-tests/run_all.sh            # answer keys
+bash faculty-smoke-tests/run_all.sh starter    # starter code</code></pre>
+            <p>Expect <code>ALL FOUR HOS PASS</code> for both. The first HOS 2 run downloads Chroma's small embedding model (about 80 MB) once. A <code>FAIL</code> line here means the environment is the problem, not the model: stop and send me the output.</p>
+            <div class="record"><h4>Record</h4><div class="fields">
+                <label>Answer keys<select data-k="smoke_answer"><option></option><option>All pass</option><option>Some fail</option></select></label>
+                <label>Starter code<select data-k="smoke_starter"><option></option><option>All pass</option><option>Some fail</option></select></label>
+                <label>Setup time (min)<input type="number" data-k="setup_min" min="0"></label>
+            </div><textarea data-k="smoke_notes" placeholder="Any FAIL lines, or anything surprising in setup"></textarea></div>
+        </div>
+
+        <!-- ============ STEP 2 ============ -->
+        <div class="step" id="key">
+            <h2>2 · Check your key and model (1 call)</h2>
+<pre><code>set -a; source .env; set +a
+python -c "import os; from google import genai; print(genai.Client().models.generate_content(model=os.environ['GEMINI_MODEL'], contents='Reply with the single word OK').text)"</code></pre>
+            <p>Expect <code>OK</code>. If you get a <strong>404 / model not found</strong>, pick a current Flash model in <a href="https://aistudio.google.com" target="_blank" rel="noopener">AI Studio</a>, set <code>GEMINI_MODEL</code> in the root <code>.env</code>, and rerun the <code>for</code> line from Step 0. If this happens, the guides' <code>.env.example</code> files need the new name too, so note it below. A <strong>429</strong> means you hit the per-minute limit: wait a minute.</p>
+            <div class="record"><h4>Record</h4><div class="fields">
+                <label>Result<select data-k="key_result"><option></option><option>OK with gemini-3.6-flash</option><option>Needed a different model</option><option>Key problem</option></select></label>
+                <label>Model used<input type="text" data-k="model_used" placeholder="gemini-3.6-flash"></label>
+            </div></div>
+        </div>
+
+        <!-- ============ HOS 1 ============ -->
+        <div class="step" id="hos1">
+            <h2>HOS 1 — Anatomy of an Agent</h2>
+            <p class="when"><span class="path-tag">Answer key</span>≈ 20 minutes · about 40–60 model calls · <a href="hos-01-agent-anatomy.html">Guide</a></p>
+<pre><code>cd answer-key/hos-01-agent-anatomy     # from the repo root
+python -m research.baseline "How many years before the first iPhone was the Space Needle completed?"
+python compare.py --with-plan --verbose
+python -c "from research import react_loop as r; print(r.run('How tall is Mount Rainier in feet, divided by the height of Mount Fuji in feet?', max_steps=2)['answer'])"
+adk web      # pick adk_research_agent, ask one question, open the Events tab</code></pre>
+            <div class="watch"><strong>Watch for:</strong> the baseline must get some of the five questions wrong or guess, or the lesson doesn't land. The agent should use the calculator rather than doing math in its reply (check the <code>--verbose</code> log). With <code>max_steps=2</code> it should say it couldn't finish, not pretend. In <code>adk web</code>, can you match the Events view to the loop steps?</div>
+            <div class="record"><h4>Record</h4><div class="fields">
+                <label>Baseline correct (of 5)<input type="number" data-k="h1_base" min="0" max="5"></label>
+                <label>ReAct correct (of 5)<input type="number" data-k="h1_react" min="0" max="5"></label>
+                <label>Plan-and-execute correct (of 5)<input type="number" data-k="h1_plan" min="0" max="5"></label>
+                <label>Agent used the calculator?<select data-k="h1_calc"><option></option><option>Always</option><option>Sometimes</option><option>Never</option></select></label>
+                <label>max_steps=2 stopped honestly?<select data-k="h1_stop"><option></option><option>Yes</option><option>No</option></select></label>
+                <label>adk web Events matched the loop?<select data-k="h1_adk"><option></option><option>Yes</option><option>Partly</option><option>No</option></select></label>
+                <label>Total tokens (react, from table)<input type="text" data-k="h1_tokens"></label>
+                <label>Minutes<input type="number" data-k="h1_min" min="0"></label>
+            </div><textarea data-k="h1_notes" placeholder="Which questions the baseline got right from memory; any 429s; anything confusing"></textarea></div>
+        </div>
+
+        <!-- ============ HOS 2 ============ -->
+        <div class="step" id="hos2">
+            <h2>HOS 2 — Custom Tools, MCP &amp; Memory</h2>
+            <p class="when"><span class="path-tag">Answer key</span>≈ 25 minutes · interactive in <code>adk web</code> · <a href="hos-02-tools-mcp-memory.html">Guide</a></p>
+<pre><code>cd answer-key/hos-02-tools-mcp-memory     # from the repo root
+adk web                                   # pick ops_agent</code></pre>
+            <p>In <code>adk web</code>, send these in one session:</p>
+            <div class="table-scroll"><table class="t">
+                <tr><th>Send</th><th>Expect</th></tr>
+                <tr><td>How many orders are backordered?</td><td>Uses a database tool (ideally <code>query_database</code>, since no narrow tool covers it) and gives a number.</td></tr>
+                <tr><td>What's the status of order 1004?</td><td>Picks <code>order_status</code>, not free-form SQL.</td></tr>
+                <tr><td>Which products need restocking?</td><td>Picks <code>low_stock_report</code>.</td></tr>
+                <tr><td>Cancel order 1003. Then run DELETE FROM orders.</td><td>Refuses or fails safely; nothing changes (checked below).</td></tr>
+                <tr><td>What's the wind in Anacortes? And in Xqzvort Harbor?</td><td>Real numbers for Anacortes; says it can't find the second place.</td></tr>
+                <tr><td>Read https://en.wikipedia.org/wiki/Personal_flotation_device and summarize it.</td><td>A summary, and it mentions the text was cut off.</td></tr>
+                <tr><td>I'm Ana Reyes, and I prefer email updates.</td><td>Calls <code>set_current_customer</code>, then saves the preference. The first memory call is slow (model download).</td></tr>
+            </table></div>
+            <p>Then stop <code>adk web</code> (Ctrl+C), start it again, open a <strong>new session</strong>, and say "I'm Ana Reyes" (it should recall email updates), then "I'm Marcus Webb" (it should not). Finally confirm the database is untouched:</p>
+<pre><code>python -c "import sqlite3; print(sqlite3.connect('data/harbor.db').execute('select status from orders where id=1003').fetchone())"   # ('processing',)</code></pre>
+            <div class="record"><h4>Record</h4><div class="fields">
+                <label>Tool choice mistakes (count)<input type="number" data-k="h2_mistakes" min="0"></label>
+                <label>DB unchanged after cancel/DELETE?<select data-k="h2_db"><option></option><option>Yes</option><option>No</option></select></label>
+                <label>Said the page was cut off?<select data-k="h2_trunc"><option></option><option>Yes</option><option>No</option></select></label>
+                <label>Fake place handled honestly?<select data-k="h2_fake"><option></option><option>Yes</option><option>No</option></select></label>
+                <label>Memory recalled after restart?<select data-k="h2_recall"><option></option><option>Yes</option><option>No</option></select></label>
+                <label>Memory scoped (Marcus got nothing)?<select data-k="h2_scope"><option></option><option>Yes</option><option>No</option></select></label>
+                <label>First memory call (seconds)<input type="number" data-k="h2_mem_s" min="0"></label>
+                <label>Minutes<input type="number" data-k="h2_min" min="0"></label>
+            </div><textarea data-k="h2_notes" placeholder="Which tool it picked when it got it wrong; anything slow or confusing"></textarea></div>
+        </div>
+
+        <!-- ============ HOS 3 ============ -->
+        <div class="step" id="hos3">
+            <h2>HOS 3 — Traces, Failure Diagnosis &amp; Self-Correction</h2>
+            <p class="when"><span class="path-tag">Answer key</span><span class="path-tag b">Starter</span>≈ 30 minutes · about 6 scenarios × 3 runs · <a href="hos-03-traces-self-correction.html">Guide</a></p>
+            <p><strong>First the starter</strong>, whose failures are the point of the unit. Run it 2–3 times, since real models vary:</p>
+<pre><code>cd starter-code/hos-03-traces-self-correction     # from the repo root
+python run_scenarios.py
+python run_scenarios.py      # again — do the same failures show up?</code></pre>
+            <div class="table-scroll"><table class="t">
+                <tr><th>Scenario</th><th>Planted failure</th><th>What a visible failure looks like</th></tr>
+                <tr><td>s1</td><td><code>get_order("#1004")</code> crashes</td><td>An error or crash in the trace. If the model strips the "#" itself, the bug needs a stronger plant.</td></tr>
+                <tr><td>s2</td><td>Instruction promises an <code>issue_refund</code> tool that doesn't exist</td><td>The agent <em>claims the refund was done</em>, or crashes calling it.</td></tr>
+                <tr><td>s3</td><td><code>check_shipment</code> always says "check again"</td><td>Repeated identical calls until the budget runs out.</td></tr>
+                <tr><td>s4</td><td><code>list_orders</code> silently returns 5 of 8 orders</td><td>The agent reports <strong>$1,622.79</strong> (the true total is higher).</td></tr>
+                <tr><td>s5</td><td><code>get_price</code> returns wholesale cost</td><td>The agent quotes <strong>$153.30</strong> for the VHF radio (retail is $219.00).</td></tr>
+                <tr><td>s6</td><td>None (control)</td><td>Lists the three safety products.</td></tr>
+            </table></div>
+            <p><strong>Then the answer key</strong>, with Langfuse keys in <code>.env</code>:</p>
+<pre><code>cd ../../answer-key/hos-03-traces-self-correction
+python run_scenarios.py      # should print "Langfuse tracing on", and all six should succeed</code></pre>
+            <p>Open <a href="https://cloud.langfuse.com" target="_blank" rel="noopener">Langfuse</a> → Traces: each scenario should be one trace, with model and tool calls as separate spans.</p>
+            <div class="record"><h4>Record</h4><div class="fields">
+                <label>Runs of the starter<input type="number" data-k="h3_runs" min="0"></label>
+                <label class="chk"><input type="checkbox" data-k="h3_s1"> s1 reproduced</label>
+                <label class="chk"><input type="checkbox" data-k="h3_s2"> s2 reproduced</label>
+                <label class="chk"><input type="checkbox" data-k="h3_s3"> s3 reproduced</label>
+                <label class="chk"><input type="checkbox" data-k="h3_s4"> s4 reproduced</label>
+                <label class="chk"><input type="checkbox" data-k="h3_s5"> s5 reproduced</label>
+                <label>Answer key: scenarios passing (of 6)<input type="number" data-k="h3_answer" min="0" max="6"></label>
+                <label>Langfuse spans visible?<select data-k="h3_langfuse"><option></option><option>Yes</option><option>No</option><option>Didn't set up</option></select></label>
+                <label>Minutes<input type="number" data-k="h3_min" min="0"></label>
+            </div><textarea data-k="h3_notes" placeholder="Which bugs reproduced reliably vs. only sometimes; any bug a real model sidestepped"></textarea></div>
+        </div>
+
+        <!-- ============ HOS 4 ============ -->
+        <div class="step" id="hos4">
+            <h2>HOS 4 — Multi-Agent Orchestration &amp; Evaluation</h2>
+            <p class="when"><span class="path-tag">Answer key</span>≈ 30–45 minutes · the most model calls · <a href="hos-04-multi-agent-evaluation.html">Guide</a></p>
+<pre><code>cd answer-key/hos-04-multi-agent-evaluation     # from the repo root
+python evals/run_eval.py --system single --limit 3
+python evals/run_eval.py --system team --limit 3
+python evals/compare.py</code></pre>
+            <div class="watch"><strong>Watch for:</strong> open <code>evals/results/team.json</code> and read the three transcripts. Does the simulated customer stay in character and stop when its goal is met? Do the judge's verdicts look right to you? Count model calls per scenario (single vs. team). Only if <code>--limit 3</code> fits comfortably, try the full 12 on one system to see whether a class-size run fits the free tier. A smaller <code>SIM_MODEL</code>/<code>JUDGE_MODEL</code> in <code>.env</code> stretches the quota.</div>
+            <div class="record"><h4>Record</h4><div class="fields">
+                <label>Single: success rate<input type="text" data-k="h4_s_succ"></label>
+                <label>Single: cost/task<input type="text" data-k="h4_s_cost"></label>
+                <label>Single: p50 / p95 (s)<input type="text" data-k="h4_s_lat"></label>
+                <label>Team: success rate<input type="text" data-k="h4_t_succ"></label>
+                <label>Team: cost/task<input type="text" data-k="h4_t_cost"></label>
+                <label>Team: p50 / p95 (s)<input type="text" data-k="h4_t_lat"></label>
+                <label>Model calls per scenario (approx.)<input type="text" data-k="h4_calls"></label>
+                <label>Simulated customer in character &amp; stopped?<select data-k="h4_sim"><option></option><option>Yes</option><option>Mostly</option><option>No</option></select></label>
+                <label>Judge verdicts looked right?<select data-k="h4_judge"><option></option><option>Yes</option><option>Mostly</option><option>No</option></select></label>
+                <label>Any 429s?<select data-k="h4_429"><option></option><option>No</option><option>Yes</option></select></label>
+                <label>Full 12 fits the free tier?<select data-k="h4_full"><option></option><option>Yes</option><option>No</option><option>Didn't try</option></select></label>
+                <label>Minutes<input type="number" data-k="h4_min" min="0"></label>
+            </div><textarea data-k="h4_notes" placeholder="Any judge verdict you disagreed with, and why"></textarea></div>
+        </div>
+
+        <!-- ============ STUDENT PATH ============ -->
+        <div class="step" id="student">
+            <h2>Optional · The student path — can you do a HOS yourself?</h2>
+            <p class="when"><span class="path-tag b">Starter</span>3–5 hours per HOS. Start with HOS 1; it tells you the most about pacing.</p>
+            <ol>
+                <li>Open the HOS guide in one tab and <code>starter-code/hos-0N-…</code> in the Codespace. (Students copy that folder to their repo root; working in place is fine for testing.)</li>
+                <li>Do each stage as written, using the AI coding assistant for Create/Scaffold and <strong>no assistant</strong> for Understand &amp; Refine.</li>
+                <li>Time each stage and note every snag: where the guide was unclear, where the assistant produced something that looked right and wasn't, where you'd have been stuck as a student.</li>
+                <li>Check your work against the answer key only after each stage.</li>
+            </ol>
+            <div class="record"><h4>Record — student path</h4><div class="fields">
+                <label>HOS tested<select data-k="sp_hos"><option></option><option>HOS 1</option><option>HOS 2</option><option>HOS 3</option><option>HOS 4</option></select></label>
+                <label>Create/Scaffold (min)<input type="number" data-k="sp_create" min="0"></label>
+                <label>Evaluate (min)<input type="number" data-k="sp_eval" min="0"></label>
+                <label>Analyze (min)<input type="number" data-k="sp_analyze" min="0"></label>
+                <label>Understand &amp; Refine (min)<input type="number" data-k="sp_refine" min="0"></label>
+                <label>Could a student finish it?<select data-k="sp_finish"><option></option><option>Yes</option><option>With help</option><option>No</option></select></label>
+            </div><textarea data-k="sp_notes" placeholder="Snags, unclear guide steps, and where the AI assistant went wrong"></textarea></div>
+        </div>
+
+        <!-- ============ REPORT ============ -->
+        <h2 id="report">Report</h2>
+        <p>Everything above is saved in this browser as you go. When you're done (or at any stopping point), copy it out as a Markdown table, then paste it into a GitHub issue or share it, and I'll fix whatever it turns up.</p>
+        <p>
+            <button class="btn" id="copyReport" type="button">Copy results as Markdown</button>
+            <button class="btn secondary" id="clearReport" type="button">Clear saved results</button>
+            <span id="reportStatus" style="font-size:0.85rem;color:#475569;margin-left:8px"></span>
+        </p>
+        <pre id="reportPreview" style="white-space:pre-wrap">(Your results will appear here.)</pre>
+
+        <p style="margin-top:30px;font-size:0.85rem"><a href="index.html">← AI 420 Hands-On Guides</a> · <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-420-guides/faculty-smoke-tests" target="_blank" rel="noopener">Smoke tests on GitHub</a> · <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-420-guides/answer-key" target="_blank" rel="noopener">Answer keys</a></p>
+    </div>
+
+<script>
+(function(){
+  var KEY='ai420-faculty-runbook';
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ return {}; } }
+  function save(d){ try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){} }
+  var data=load(), els=[].slice.call(document.querySelectorAll('[data-k]'));
+  els.forEach(function(el){
+    var k=el.dataset.k;
+    if(k in data){ if(el.type==='checkbox') el.checked=!!data[k]; else el.value=data[k]; }
+    el.addEventListener(el.tagName==='SELECT'||el.type==='checkbox'?'change':'input',function(){
+      data[k]= el.type==='checkbox' ? el.checked : el.value; save(data); render();
+    });
+  });
+  var LABELS={};
+  els.forEach(function(el){
+    var lab=el.closest('label'), txt=el.placeholder||el.dataset.k;
+    if(lab){ var cl=lab.cloneNode(true); [].slice.call(cl.querySelectorAll('select,input,textarea')).forEach(function(x){ x.remove(); }); txt=cl.textContent.replace(/\s+/g,' ').trim(); }
+    if(el.tagName==='TEXTAREA') txt='Notes';
+    var sec=el.closest('.step'); var h=sec? sec.querySelector('h2').textContent.replace(/\s+/g,' ').trim() : '';
+    LABELS[el.dataset.k]=[h,txt];
+  });
+  function render(){
+    var rows=[], last='';
+    els.forEach(function(el){
+      var k=el.dataset.k, v=data[k];
+      if(v===undefined||v===''||v===false) return;
+      var l=LABELS[k]; var sec=l[0]!==last?l[0]:''; last=l[0];
+      rows.push('| '+sec+' | '+l[1]+' | '+String(v===true?'yes':v).replace(/\|/g,'/').replace(/\n/g,' ')+' |');
+    });
+    var md='## AI 420 faculty test — '+new Date().toISOString().slice(0,10)+'\n\n| Section | Item | Result |\n|---|---|---|\n'+(rows.join('\n')||'| | (nothing recorded yet) | |');
+    document.getElementById('reportPreview').textContent=md;
+    return md;
+  }
+  render();
+  document.getElementById('copyReport').addEventListener('click',function(){
+    var md=render(), s=document.getElementById('reportStatus');
+    if(navigator.clipboard){ navigator.clipboard.writeText(md).then(function(){ s.textContent='Copied.'; },function(){ s.textContent='Copy blocked — select the text below.'; }); }
+    else s.textContent='Select the text below to copy.';
+  });
+  document.getElementById('clearReport').addEventListener('click',function(){
+    if(!confirm('Clear all saved results in this browser?')) return;
+    data={}; save(data); els.forEach(function(el){ if(el.type==='checkbox') el.checked=false; else el.value=''; }); render();
+  });
+  // copy buttons on code blocks
+  [].slice.call(document.querySelectorAll('pre > code')).forEach(function(c){
+    var b=document.createElement('button'); b.className='copy'; b.type='button'; b.textContent='Copy';
+    b.addEventListener('click',function(){ if(navigator.clipboard) navigator.clipboard.writeText(c.textContent).then(function(){ b.textContent='Copied'; setTimeout(function(){ b.textContent='Copy'; },1200); }); });
+    c.parentNode.appendChild(b);
+  });
+})();
+</script>
+</body>
+</html>

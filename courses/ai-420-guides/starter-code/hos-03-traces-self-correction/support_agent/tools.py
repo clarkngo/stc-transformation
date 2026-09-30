@@ -8,6 +8,9 @@ import sqlite3
 from pathlib import Path
 
 DB = Path(__file__).resolve().parent.parent / "data" / "harbor.db"
+if not DB.exists():  # e.g. in a portfolio-repo Codespace, whose devcontainer doesn't seed it
+    import runpy
+    runpy.run_path(str(DB.with_name("seed_db.py")))["build"]()
 
 
 def _db():

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 420 Team/Term Project, Weeks 9-10: map a manual business process, build a backlog, meet the professional-grade minimum bar, and plan the demo.">
+<title>Team/Term Project Guide</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#6d28d9; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#1e1236 0%,#4c1d95 60%,#6d28d9 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --bg:#f6f4fb;--surface2:#f1eef9;--border:#ddd6f0;--text:#1c1530;--muted:#5f5675;--accent:#6d28d9;--accent2:#5b21b6;--accent-light:#f1ebff;--header-bg:#1e1236; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0f0b1a;--surface:#181127;--surface2:#211836;--border:#342a4d;--text:#ece8f7;--muted:#a79fbf;--accent:#c4b5fd;--accent2:#ddd6fe;--accent-light:#221640;--on-accent:#1e1236;--header-bg:#0a0612; } }
+:root[data-theme="dark"] { --bg:#0f0b1a;--surface:#181127;--surface2:#211836;--border:#342a4d;--text:#ece8f7;--muted:#a79fbf;--accent:#c4b5fd;--accent2:#ddd6fe;--accent-light:#221640;--on-accent:#1e1236;--header-bg:#0a0612; }
+
+:root { --maxw:1100px; }
+.draftbar { background:var(--amber-bg); color:var(--amber); border-bottom:1px solid var(--amber); font-size:.8rem; font-weight:700; text-align:center; padding:7px 16px; }
+
+.secnav { position:sticky; top:var(--header-h,62px); z-index:150; background:var(--surface); border-bottom:1px solid var(--border); box-shadow:var(--shadow); }
+.secnav-inner { max-width:var(--maxw); margin:0 auto; padding:8px 16px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:thin; }
+.secnav a { flex:none; font-size:.76rem; font-weight:600; text-decoration:none; color:var(--muted); padding:4px 10px; border-radius:16px; border:1px solid transparent; white-space:nowrap; }
+.secnav a:hover, .secnav a.active { color:var(--accent2); background:var(--accent-light); border-color:var(--accent); }
+.secnav .sep { flex:none; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:5px 4px 0 10px; }
+section.module { scroll-margin-top:calc(var(--header-h,62px) + 56px); }
+.part-banner { margin:30px 0 16px; padding:12px 18px; border-radius:var(--radius); background:var(--header-bg); color:var(--header-text); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:baseline; }
+.part-banner b { font-size:1.02rem; } .part-banner span { font-size:.8rem; opacity:.8; }
+.module-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; }
+.module-icon { width:40px; height:40px; flex:none; border-radius:10px; background:var(--accent-light); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+.module-head h2 { margin:0; }
+.module-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+.flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:6px 0 4px; }
+.flow a { text-decoration:none; color:inherit; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:block; }
+.flow a:hover { border-color:var(--accent); box-shadow:var(--shadow-hover); }
+.flow .n { font-size:.68rem; font-weight:800; color:var(--accent2); letter-spacing:.06em; text-transform:uppercase; }
+.flow .t { font-weight:700; font-size:.88rem; display:block; }
+.flow .w { font-size:.74rem; color:var(--muted); }
+.lo li { margin-bottom:6px; }
+.lecture-part { border-top:1px dashed var(--border); padding-top:14px; margin-top:16px; }
+.lecture-part:first-of-type { border-top:none; padding-top:0; margin-top:0; }
+.lecture-part h3 { margin-top:0; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.lecture-part h3 small { font-weight:600; color:var(--muted); font-size:.76rem; }
+.arch { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:10px 0 14px; }
+.arch .box { flex:1 1 150px; border:2px solid var(--border); border-radius:10px; padding:10px 12px; background:var(--surface2); font-size:.84rem; }
+.arch .box b { display:block; font-size:.9rem; }
+.arch .box.key { border-color:var(--accent); }
+.arch .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.seq { counter-reset:s; list-style:none; margin:10px 0 14px; padding:0; }
+.seq li { counter-increment:s; position:relative; padding:8px 12px 8px 44px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; background:var(--surface); font-size:.88rem; }
+.seq li::before { content:counter(s); position:absolute; left:10px; top:8px; width:24px; height:24px; border-radius:50%; background:var(--accent); color:var(--on-accent); font-weight:800; font-size:.78rem; display:flex; align-items:center; justify-content:center; }
+.seq li.loopback { border-style:dashed; border-color:var(--amber); }
+dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted); font-size:.88rem; }
+.two { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+.eg { border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; background:var(--surface2); }
+.eg.weak { border-left:5px solid var(--bad); } .eg.strong { border-left:5px solid var(--ok); }
+.eg .label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+.eg.weak .label { color:var(--bad); } .eg.strong .label { color:var(--ok); }
+.counter { font-size:.72rem; color:var(--muted); text-align:right; }
+.spec-meter { display:flex; gap:10px; align-items:center; margin:12px 0 6px; font-size:.84rem; }
+.spec-track { flex:1; height:10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.spec-fill { height:100%; width:0; background:var(--bad); transition:width .25s, background .25s; }
+.hints { font-size:.8rem; margin:4px 0 10px 1.1em; color:var(--muted); }
+.hints li.ok { color:var(--ok); } .hints li.no { color:var(--bad); }
+.stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:10px 0 16px; }
+.stage { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface2); font-size:.85rem; }
+.stage .day { font-size:.7rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--violet); }
+.side { border:2px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; }
+.side.a { border-color:var(--blue); } .side.b { border-color:var(--rose); }
+.side.mine { box-shadow:0 0 0 4px var(--accent-light); }
+.side h4 { display:flex; justify-content:space-between; gap:6px; }
+.checklist label { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; background:var(--surface); font-size:.88rem; }
+.checklist input { margin-top:4px; accent-color:var(--accent); width:16px; height:16px; flex:none; }
+.checklist label.done { background:var(--ok-bg); border-color:var(--ok); }
+.progress-line { font-size:.8rem; font-weight:700; color:var(--accent2); margin-bottom:8px; }
+.pick { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:12px; }
+.pick button { text-align:left; background:var(--surface2); border:2px solid var(--border); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:.85rem; color:var(--text); cursor:pointer; }
+.pick button[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-light); }
+.pick button b { display:block; }
+.sorter-row { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:.86rem; background:var(--surface); }
+.sorter-row .opts { display:flex; gap:4px; flex-wrap:wrap; }
+.sorter-row .opts button { font-family:inherit; font-size:.72rem; font-weight:700; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:6px; padding:4px 8px; cursor:pointer; }
+.sorter-row .opts button[aria-pressed="true"].auto { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+.sorter-row .opts button[aria-pressed="true"].confirm { background:var(--amber-bg); border-color:var(--amber); color:var(--amber); }
+.sorter-row .opts button[aria-pressed="true"].never { background:var(--bad-bg); border-color:var(--bad); color:var(--bad); }
+.sorter-row .why { grid-column:1/-1; font-size:.8rem; color:var(--muted); display:none; }
+.sorter-row.revealed .why { display:block; }
+@media (max-width:560px){ .sorter-row { grid-template-columns:1fr; } }
+.q { border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:10px; background:var(--surface); }
+.q .stem { font-weight:700; font-size:.9rem; margin-bottom:8px; }
+.q .opt { display:block; width:100%; text-align:left; font-family:inherit; font-size:.86rem; color:var(--text); background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:7px 10px; margin-bottom:6px; cursor:pointer; }
+.q .opt.right { background:var(--ok-bg); border-color:var(--ok); }
+.q .opt.wrong { background:var(--bad-bg); border-color:var(--bad); }
+.q .fb { font-size:.82rem; margin-top:4px; display:none; }
+.q.answered .fb { display:block; }
+.score { font-weight:800; color:var(--accent2); }
+.project-map td:first-child { font-weight:700; white-space:nowrap; }
+
+.pipe-row { display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin:6px 0; }
+.pipe-row .box { flex:1 1 120px; border:2px solid var(--border); border-radius:10px; padding:8px 10px; background:var(--surface2); font-size:.8rem; }
+.pipe-row .box b { display:block; font-size:.84rem; }
+.pipe-row .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.pipe-label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:10px; }
+.vec-demo { display:grid; grid-template-columns:1fr auto; gap:6px 12px; font-size:.84rem; align-items:center; margin:8px 0 12px; }
+.vec-demo .s { font-weight:800; color:var(--accent2); }
+.review-code { counter-reset:ln; }
+
+.story-form { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+@media (max-width:720px){ .story-form { grid-template-columns:1fr; } }
+.hos-chk { display:flex; gap:10px; flex-wrap:wrap; font-size:.82rem; margin:8px 0; }
+.hos-chk label { display:flex; gap:4px; align-items:center; cursor:pointer; }
+.hos-chk input { accent-color:var(--accent); }
+.story { display:grid; grid-template-columns:1fr auto; gap:6px 10px; border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:.85rem; background:var(--surface); }
+.story.later { border-left-color:var(--muted); opacity:.8; }
+.story .tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:4px; }
+.story .acts { display:flex; gap:4px; align-items:start; }
+.story .acts button { font-family:inherit; font-size:.72rem; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:6px; padding:3px 8px; cursor:pointer; }
+.cover { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0; }
+@media (max-width:560px){ .cover { grid-template-columns:repeat(2,1fr); } }
+.cover div { border:1px solid var(--border); border-radius:8px; padding:8px; text-align:center; font-size:.78rem; background:var(--surface2); }
+.cover div b { display:block; font-size:1.2rem; }
+.cover div.ok { border-color:var(--ok); background:var(--ok-bg); } .cover div.ok b { color:var(--ok); }
+.demo-row { display:grid; grid-template-columns:70px 1fr; gap:10px; border-bottom:1px dashed var(--border); padding:8px 0; font-size:.86rem; }
+.demo-row .tm { font-weight:800; color:var(--accent2); }
+
+.pm-row { display:grid; grid-template-columns:1fr auto; gap:6px 10px; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:.85rem; background:var(--surface); }
+.pm-row .opts { display:flex; gap:4px; flex-wrap:wrap; }
+.pm-row .opts button { font-family:inherit; font-size:.72rem; font-weight:700; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:6px; padding:3px 8px; cursor:pointer; }
+.pm-row .opts button[aria-pressed="true"] { background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
+.pm-row input { grid-column:1/-1; }
+@media (max-width:560px){ .pm-row { grid-template-columns:1fr; } }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">420</span><span><b>AI 420: Agentic AI</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-420.html">← AI 420</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+  
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 420 · Weeks 9–10 · Team/Term Project</div>
+    <h1>Team/Term Project: Plan, Build &amp; Demo</h1>
+    <p class="lede">Hand one real, manual business process to a team of agents — and report how well they do it. A process map and a short backlog in Week 9, then build; Week 10 meets the minimum bar and ends with a live run and one real failure trace.</p>
+    <div class="chips"><span class="chip">Outcomes O1–O5</span><span class="chip">20% of course</span><span class="chip">Team or solo</span><span class="chip">Process map</span><span class="chip">Minimum bar</span></div>
+  </div>
+</section>
+<main id="main">
+
+<nav class="secnav no-print" aria-label="Page sections"><div class="secnav-inner"><a href="#overview">Overview</a><span class="sep">Week 9</span><a href="#process">Process map</a><a href="#backlog">Backlog &amp; Sprint 1</a><a href="#roles">Roles &amp; tools</a><a href="#build">Build</a><span class="sep">Week 10</span><a href="#minbar">Minimum bar</a><a href="#freeze">Freeze</a><a href="#demo">Demo</a><a href="#reflect">Reflection</a></div></nav>
+<div class="callout amber" style="margin-top:20px"><span class="label">Course design constraints</span><p>Your project follows the same <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a> as every HOS: GitHub Codespaces, free tiers only. Anything that needs a paid key or a billing account is out of scope.</p></div>
+<section class="module card" id="overview"><div class="module-head"><div class="module-icon">🧭</div><div><h2>What Weeks 9–10 are for</h2><div class="module-meta"><span class="tag">20% of course</span><span class="tag blue">Team or solo</span></div></div></div>
+<p>The project is the centerpiece of your portfolio: <strong>automate one real multi-step business process end to end</strong>, running from a single trigger, and prove how well it works with an evaluation report. It's synthesis — you built every technical piece in HOS 1–4.</p>
+<p>The course description's examples both work as starting points: an <em>autonomous marketing department</em> (research → draft → brand review → schedule) or a <em>self-healing coding assistant</em> (read failing test → diagnose → patch → re-run → open PR). So does any real process that meets the minimum bar.</p>
+<div class="table-wrap"><table class="t"><tr><th>Week</th><th>Milestone</th><th>Where</th></tr><tr><td>1</td><td>Introduced — start noticing manual processes around you</td><td><a href="hos-01-lesson.html#project">HOS 1 lesson</a></td></tr><tr><td>6</td><td>Checkpoint: team (or solo) + one paragraph naming the process and the HOS pieces</td><td><a href="hos-03-lesson.html#checkpoint">HOS 3 lesson</a></td></tr><tr><td>8</td><td>Architecture review and Integration debate</td><td><a href="hos-04-lesson.html#review">HOS 4 lesson</a></td></tr><tr><td><b>9</b></td><td>Early: process mapped, backlog, architecture sketch, first draft of 15+ eval scenarios, PM tool. End: the happy path runs end to end and the harness produces first metrics</td><td>This page</td></tr><tr><td><b>10</b></td><td>Early: self-correction in place, final eval run, README done, demo rehearsed. Then: live demo and peer review of portfolio repos</td><td>This page</td></tr></table></div>
+<h3>How it's graded</h3><div class="table-wrap"><table class="t"><tr><th>Criteria</th><th>Weight</th><th>What it looks like</th></tr><tr><td>Synthesis &amp; Scope</td><td>25%</td><td>Every HOS is really there: the loop, MCP tools and memory, self-correction in a trace, a team with an eval.</td></tr><tr><td>Execution</td><td>35%</td><td>Runs end to end from one trigger and meets the minimum bar.</td></tr><tr><td>Presentation</td><td>25%</td><td>A live run plus a walkthrough of one real failure trace.</td></tr><tr><td>Collaboration</td><td>15%</td><td>Individual contribution (teams) or process reflection (solo).</td></tr></table></div></section>
+<div class="part-banner"><b>Week 9 · Plan fast, then build</b><span>Process map → Backlog → Sprint 1 → roles &amp; PM tool → build</span></div>
+<section class="module card" id="process"><div class="module-head"><div class="module-icon">🗺️</div><div><h2>Day 1: map the manual process</h2><div class="module-meta"><span class="tag">The agentic mindset</span></div></div></div>
+<p>Shadow or interview someone who does the process by hand, and list its steps. For each step, decide: <b>agent</b> (judgment, varying inputs), <b>deterministic code</b> (a fixed rule), or <b>human checkpoint</b> (a decision that needs a person) — and why. This is the course description's "agentic mindset" in practice. Human checkpoints are allowed only where a task truly needs one, and each needs a justification.</p>
+<div class="row" style="margin-bottom:8px"><input type="text" id="pmStep" placeholder="A step, e.g. 'Read the incoming email and find the course code'" style="flex:1"><button class="btn" id="pmAdd" type="button">Add step</button></div>
+<div id="pmList"></div>
+<p class="small muted" id="pmSummary"></p></section>
+<section class="module card" id="backlog"><div class="module-head"><div class="module-icon">🗂️</div><div><h2>Backlog and Sprint 1</h2><div class="module-meta"><span class="tag">Scrum-lite</span><span class="tag amber">Keep it brief</span></div></div></div>
+<p>Turn each step of your process map into a user story — "As a [user], I want [capability], so that [benefit]" — and tag the HOS it depends on. Mark a small, realistic subset as <strong>Sprint 1</strong>. Your list stays in this browser; copy it into your PM tool when it's ready.</p>
+<div class="row" style="margin-bottom:8px"><button class="btn secondary" id="importCp" type="button">Import my Week 6 checkpoint</button><span class="small muted" id="importStatus" aria-live="polite"></span></div>
+<div class="story-form"><div><label class="field" for="sWho">As a…</label><input type="text" id="sWho"></div><div><label class="field" for="sWant">I want…</label><input type="text" id="sWant"></div><div><label class="field" for="sWhy">so that…</label><input type="text" id="sWhy"></div></div>
+<div class="hos-chk" id="sHos"><span class="small"><b>Depends on:</b></span><label><input type="checkbox" value="1"> HOS 1 · loop &amp; patterns</label><label><input type="checkbox" value="2"> HOS 2 · tools, MCP &amp; memory</label><label><input type="checkbox" value="3"> HOS 3 · traces &amp; self-correction</label><label><input type="checkbox" value="4"> HOS 4 · team &amp; evaluation</label><label><input type="checkbox" id="sSprint" checked> In Sprint 1</label></div>
+<div class="row"><button class="btn" id="sAdd" type="button">Add story</button><span class="small muted" id="sMsg" aria-live="polite"></span></div>
+<h3>Coverage</h3><p class="small muted">Sprint 1 should touch at least two HOS end to end this week, and all four by the Week 10 demo.</p>
+<div class="cover" id="cover"></div><div id="stories"></div>
+<div class="row" style="margin-top:8px"><button class="btn" id="sCopy" type="button">Copy backlog as Markdown</button><button class="btn secondary" id="sClear" type="button">Clear all</button><span class="small muted" id="sCopyMsg" aria-live="polite"></span></div></section>
+<section class="module card" id="roles"><div class="module-head"><div class="module-icon">👥</div><div><h2>Roles, standups and a PM tool</h2></div></div>
+<p><b>Teams:</b> split by area, not by week — e.g. tools &amp; MCP server, agents &amp; orchestration, evaluation harness, and README/demo. Everyone commits code. <b>Solo:</b> keep a daily log instead of standups; it becomes your process reflection.</p>
+<div class="table-wrap"><table class="t"><tr><th>Tool</th><th>Free tier</th><th>Why you might pick it</th></tr><tr><td><b>GitHub Projects</b> (recommended)</td><td>Free, unlimited</td><td>Your stories become Issues on a Kanban board in the repo you already have.</td></tr><tr><td>Trello</td><td>Free for small teams</td><td>Simple and visual.</td></tr><tr><td>Notion</td><td>Free for students</td><td>Backlog, notes, and write-up in one place.</td></tr></table></div>
+<pre><code>Standup — [date] — [name]
+Did:      …
+Next:     …
+Blocked:  …</code></pre></section>
+<section class="module card" id="build"><div class="module-head"><div class="module-icon">🛠️</div><div><h2>Build</h2><div class="module-meta"><span class="tag">Rest of Week 9 → Week 10</span></div></div></div><ul><li><b>Start from your portfolio:</b> your HOS 4 team and harness are the skeleton. Change what the process needs; don't start over.</li><li><b>Try a starter if it fits:</b> the vendored ADK samples <code>marketing-agency</code> and <code>software-bug-assistant</code> in agent-development match the two example projects. Check they run on a plain Gemini key first.</li><li><b>Happy path first:</b> one trigger → the whole process → a result, before widening any step.</li><li><b>Write eval scenarios early</b> — a first draft of 15+ in Week 9 — and check whether a run fits the free tier's rate limits. Use a smaller model for the simulated user and judge.</li><li><b>Keep traces on.</b> The demo needs one real failure trace from development: what broke, how it showed up, what fixed it.</li></ul></section>
+<div class="part-banner"><b>Week 10 · Finish, freeze, demo</b><span>Minimum bar → freeze → rehearse → live demo</span></div>
+<section class="module card" id="minbar"><div class="module-head"><div class="module-icon">🎯</div><div><h2>Minimum bar</h2><div class="module-meta"><span class="tag">Professional-grade portfolio project (O5)</span></div></div></div>
+<div class="progress-line" id="minProgress">0 / 6 met</div><div class="checklist" id="minList"><label><input type="checkbox"><span>Runs end to end from a single trigger, with no human clicks between steps except justified checkpoints.</span></label><label><input type="checkbox"><span>At least 3 custom tools, served over MCP.</span></label><label><input type="checkbox"><span>At least 2 cooperating agents.</span></label><label><input type="checkbox"><span>At least one self-correction mechanism, shown working in a real trace.</span></label><label><input type="checkbox"><span>An eval suite of 15+ agent-on-agent scenarios reporting success rate, cost per task, and latency.</span></label><label><input type="checkbox"><span>A README a hiring manager could read in 3 minutes: the problem, an architecture diagram, metrics, one failure and how it was fixed, and a demo video link.</span></label></div></section>
+<section class="module card" id="freeze"><div class="module-head"><div class="module-icon">🧊</div><div><h2>Feature freeze and rehearsal</h2><div class="module-meta"><span class="tag amber">Early Week 10</span></div></div></div>
+<div class="progress-line" id="freezeProgress">0 / 6 done</div><div class="checklist" id="freezeList"><label><input type="checkbox"><span>Every Sprint 1 story works together from a single trigger, on a clean Codespace restart.</span></label><label><input type="checkbox"><span>Final eval run done; the metrics in the README match the latest run.</span></label><label><input type="checkbox"><span>One real failure trace saved and ready to show (Langfuse link or screenshot).</span></label><label><input type="checkbox"><span>A backup demo video, in case the live run hits a rate limit.</span></label><label><input type="checkbox"><span>A timed rehearsal, with someone asking "where is HOS 2 in this?"</span></label><label><input type="checkbox"><span>An honest list of what didn't make it in.</span></label></div></section>
+<section class="module card" id="demo"><div class="module-head"><div class="module-icon">🎤</div><div><h2>Demo plan</h2><div class="module-meta"><span class="tag">Presentation</span></div></div></div><div class="demo-row"><span class="tm">~0:30</span><span><b>The process and who does it today.</b> Show your process map: which steps are agents, code, or people — and why.</span></div><div class="demo-row"><span class="tm">~2:30</span><span><b>A live run from a single trigger</b>, end to end. Narrate which HOS each part comes from.</span></div><div class="demo-row"><span class="tm">~1:30</span><span><b>One real failure trace</b> from development: what broke, how it showed up in the trace, and what fixed it.</span></div><div class="demo-row"><span class="tm">~0:30</span><span><b>The numbers:</b> success rate, cost per task, p95 latency — and what you'd change to improve the worst one.</span></div><div class="demo-row"><span class="tm">rest</span><span><b>Questions</b>, then peer review of each other's portfolio repos against the minimum-bar checklist.</span></div></section>
+<section class="module card" id="reflect"><div class="module-head"><div class="module-icon">🪞</div><div><h2>Self-check and reflection</h2></div></div><p><b>Self-check before you present:</b> can you name where reasoning, planning, tool use, and memory each live in your project? Can you state your success rate, cost per task, and p95 latency from memory?</p>
+<ul><li><b>Teams:</b> what you personally built (link commits or issues), one design decision you argued for, and one thing a teammate did that made the project better.</li>
+<li><b>Solo:</b> your daily log summarized — where you lost the most time, and what you'd scope differently.</li>
+<li><b>Everyone:</b> one moment where a trace or an eval caught a problem before the demo.</li></ul></section>
+<section class="card"><h2>Resources</h2><ul><li><a href="../AI-420.html">AI 420 course page — Weeks 9–10 and the minimum bar</a></li><li>HOS lessons: <a href="hos-01-lesson.html">1</a> · <a href="hos-02-lesson.html">2</a> · <a href="hos-03-lesson.html">3</a> · <a href="hos-04-lesson.html">4</a> · <a href="index.html">All lessons &amp; simulators</a></li></ul></section>
+
+</main>
+<footer class="foot">AI 420: Agentic AI · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai420-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai420-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){ return null; } }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* section nav highlight */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest',inline:'center'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+
+/* Backlog builder */
+(function(){
+  var KEY='ai420-project-backlog', stories=[];
+  try{ stories=JSON.parse(store(KEY)||'[]')||[]; }catch(e){ stories=[]; }
+  var $=function(id){return document.getElementById(id);};
+  var NAMES={"1": "HOS 1 \u00b7 loop &amp; patterns", "2": "HOS 2 \u00b7 tools, MCP &amp; memory", "3": "HOS 3 \u00b7 traces &amp; self-correction", "4": "HOS 4 \u00b7 team &amp; evaluation"};
+  function save(){ store(KEY,JSON.stringify(stories)); }
+  function render(){
+    var html=stories.map(function(s,i){
+      return '<div class="story'+(s.sprint?'':' later')+'"><div><b>As a</b> '+esc(s.who)+', <b>I want</b> '+esc(s.want)+(s.why?', <b>so that</b> '+esc(s.why):'')+
+        '<div class="tags">'+(s.sprint?'<span class="tag ok">Sprint 1</span>':'<span class="tag">Backlog</span>')+s.hos.map(function(h){return '<span class="tag blue">'+NAMES[h]+'</span>';}).join('')+(s.hos.length?'':'<span class="tag bad">no HOS tagged</span>')+'</div></div>'+
+        '<div class="acts"><button type="button" data-a="toggle" data-i="'+i+'">'+(s.sprint?'→ Backlog':'→ Sprint 1')+'</button><button type="button" data-a="del" data-i="'+i+'" aria-label="Remove story">✕</button></div></div>';
+    }).join('');
+    $('stories').innerHTML=html||'<p class="small muted">No stories yet. Add your first one above.</p>';
+    [].slice.call($('stories').querySelectorAll('button')).forEach(function(b){ b.addEventListener('click',function(){
+      var i=+b.dataset.i; if(b.dataset.a==='del') stories.splice(i,1); else stories[i].sprint=!stories[i].sprint; save(); render();
+    }); });
+    var cov=[1,2,3,4].map(function(h){ var all=stories.filter(function(s){return s.hos.indexOf(h)>=0;}).length, sp=stories.filter(function(s){return s.sprint&&s.hos.indexOf(h)>=0;}).length; return [h,all,sp]; });
+    $('cover').innerHTML=cov.map(function(c){ return '<div class="'+(c[2]?'ok':'')+'"><b>'+c[2]+'</b>HOS '+c[0]+' in Sprint 1<br><span class="muted">'+c[1]+' in total</span></div>'; }).join('');
+    var sprintHos=cov.filter(function(c){return c[2]>0;}).length, allHos=cov.filter(function(c){return c[1]>0;}).length;
+    $('sMsg').textContent= !stories.length ? '' : sprintHos<2 ? 'Sprint 1 touches '+sprintHos+' HOS — aim for at least 2 this week.' : allHos<4 ? 'Good start. '+(4-allHos)+' HOS still missing from the backlog entirely.' : 'Every HOS is covered.';
+  }
+  $('sAdd').addEventListener('click',function(){
+    var who=$('sWho').value.trim(), want=$('sWant').value.trim(), why=$('sWhy').value.trim();
+    if(!who||!want){ $('sMsg').textContent='Fill in at least "As a…" and "I want…".'; return; }
+    var hos=[].slice.call(document.querySelectorAll('#sHos input[value]')).filter(function(c){return c.checked;}).map(function(c){return +c.value;});
+    stories.push({who:who,want:want,why:why,hos:hos,sprint:$('sSprint').checked}); save();
+    $('sWant').value=''; $('sWhy').value=''; [].slice.call(document.querySelectorAll('#sHos input[value]')).forEach(function(c){c.checked=false;});
+    render();
+  });
+  $('importCp').addEventListener('click',function(){
+    var n=0;
+    [1,2,3,4].forEach(function(h){ if(store('ai420-checkpoint-h'+h)==='1'){ var t=store('ai420-checkpoint-t'+h)||''; if(t){ stories.push({who:'user',want:t,why:'',hos:[h],sprint:true}); n++; } } });
+    save(); render();
+    $('importStatus').textContent= n ? 'Imported '+n+' HOS notes as draft stories — rewrite each as a real user story.' : 'No Week 6 checkpoint found in this browser (it was drafted in the HOS 3 lesson).';
+  });
+  $('sCopy').addEventListener('click',function(){
+    function line(s){ return '- [ ] As a '+s.who+', I want '+s.want+(s.why?', so that '+s.why:'')+(s.hos.length?' ('+s.hos.map(function(h){return 'HOS '+h;}).join(', ')+')':''); }
+    var t='## Sprint 1\n'+stories.filter(function(s){return s.sprint;}).map(line).join('\n')+'\n\n## Backlog\n'+stories.filter(function(s){return !s.sprint;}).map(line).join('\n');
+    var m=$('sCopyMsg');
+    if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ m.textContent='Copied — paste into a GitHub issue or your PM tool.'; },function(){ m.textContent='Copy blocked by the browser.'; }); } else m.textContent='Copy not supported here.';
+  });
+  $('sClear').addEventListener('click',function(){ if(stories.length && !confirm('Remove all stories from this browser?')) return; stories=[]; save(); render(); });
+  render();
+})();
+
+/* Freeze checklist */
+(function(){
+  var boxes=[].slice.call(document.querySelectorAll('#freezeList input')), key='ai420-project-freeze';
+  var saved=(store(key)||'').split(',');
+  boxes.forEach(function(b,i){ if(saved[i]==='1') b.checked=true; b.addEventListener('change',upd); });
+  function upd(){ boxes.forEach(function(b){ b.parentNode.classList.toggle('done',b.checked); });
+    document.getElementById('freezeProgress').textContent=boxes.filter(function(b){return b.checked;}).length+' / '+boxes.length+' done';
+    store(key,boxes.map(function(b){return b.checked?'1':'0';}).join(',')); }
+  upd();
+})();
+
+(function(){
+  var boxes=[].slice.call(document.querySelectorAll('#minList input')), key='ai420-project-minbar';
+  var saved=(store(key)||'').split(',');
+  boxes.forEach(function(b,i){ if(saved[i]==='1') b.checked=true; b.addEventListener('change',upd); });
+  function upd(){ boxes.forEach(function(b){ b.parentNode.classList.toggle('done',b.checked); });
+    document.getElementById('minProgress').textContent=boxes.filter(function(b){return b.checked;}).length+' / '+boxes.length+' met';
+    store(key,boxes.map(function(b){return b.checked?'1':'0';}).join(',')); }
+  upd();
+})();
+(function(){
+  var list=document.getElementById('pmList'); if(!list) return;
+  var KEY='ai420-process-map', steps=[]; try{ steps=JSON.parse(store(KEY)||'[]')||[]; }catch(e){}
+  var OPTS=[['agent','Agent'],['code','Deterministic code'],['human','Human checkpoint']];
+  function save(){ store(KEY,JSON.stringify(steps)); }
+  function render(){
+    list.innerHTML=steps.map(function(s,i){ return '<div class="pm-row" data-i="'+i+'"><span><b>'+(i+1)+'.</b> '+esc(s.text)+'</span><div class="opts">'+OPTS.map(function(o){ return '<button type="button" data-o="'+o[0]+'" aria-pressed="'+(s.kind===o[0])+'">'+o[1]+'</button>'; }).join('')+'<button type="button" data-o="del" aria-label="Remove step">✕</button></div><input type="text" placeholder="Why? (one line)" value="'+esc(s.why||'')+'"></div>'; }).join('')||'<p class="small muted">No steps yet.</p>';
+    [].slice.call(list.querySelectorAll('.pm-row')).forEach(function(row){ var i=+row.dataset.i;
+      [].slice.call(row.querySelectorAll('button')).forEach(function(b){ b.addEventListener('click',function(){ if(b.dataset.o==='del') steps.splice(i,1); else steps[i].kind=b.dataset.o; save(); render(); }); });
+      row.querySelector('input').addEventListener('input',function(e){ steps[i].why=e.target.value; save(); }); });
+    var c={agent:0,code:0,human:0,none:0}; steps.forEach(function(s){ c[s.kind||'none']++; });
+    document.getElementById('pmSummary').textContent= steps.length ? c.agent+' agent step(s), '+c.code+' code step(s), '+c.human+' human checkpoint(s)'+(c.none?', '+c.none+' undecided':'')+'. '+(c.human?'Every human checkpoint needs a one-line justification.':'') : '';
+  }
+  document.getElementById('pmAdd').addEventListener('click',function(){ var t=document.getElementById('pmStep'); if(!t.value.trim()) return; steps.push({text:t.value.trim(),kind:'',why:''}); t.value=''; save(); render(); });
+  render();
+})();
+</script>
+</body>
+</html>

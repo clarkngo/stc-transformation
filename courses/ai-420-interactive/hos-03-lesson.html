@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 420 HOS 3 (Weeks 5-6): reasoning traces, failure diagnosis from traces alone, and self-correction guards.">
+<title>HOS 3 Interactive Lesson</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#6d28d9; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#1e1236 0%,#4c1d95 60%,#6d28d9 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --bg:#f6f4fb;--surface2:#f1eef9;--border:#ddd6f0;--text:#1c1530;--muted:#5f5675;--accent:#6d28d9;--accent2:#5b21b6;--accent-light:#f1ebff;--header-bg:#1e1236; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0f0b1a;--surface:#181127;--surface2:#211836;--border:#342a4d;--text:#ece8f7;--muted:#a79fbf;--accent:#c4b5fd;--accent2:#ddd6fe;--accent-light:#221640;--on-accent:#1e1236;--header-bg:#0a0612; } }
+:root[data-theme="dark"] { --bg:#0f0b1a;--surface:#181127;--surface2:#211836;--border:#342a4d;--text:#ece8f7;--muted:#a79fbf;--accent:#c4b5fd;--accent2:#ddd6fe;--accent-light:#221640;--on-accent:#1e1236;--header-bg:#0a0612; }
+
+:root { --maxw:1100px; }
+.draftbar { background:var(--amber-bg); color:var(--amber); border-bottom:1px solid var(--amber); font-size:.8rem; font-weight:700; text-align:center; padding:7px 16px; }
+
+.secnav { position:sticky; top:var(--header-h,62px); z-index:150; background:var(--surface); border-bottom:1px solid var(--border); box-shadow:var(--shadow); }
+.secnav-inner { max-width:var(--maxw); margin:0 auto; padding:8px 16px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:thin; }
+.secnav a { flex:none; font-size:.76rem; font-weight:600; text-decoration:none; color:var(--muted); padding:4px 10px; border-radius:16px; border:1px solid transparent; white-space:nowrap; }
+.secnav a:hover, .secnav a.active { color:var(--accent2); background:var(--accent-light); border-color:var(--accent); }
+.secnav .sep { flex:none; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:5px 4px 0 10px; }
+section.module { scroll-margin-top:calc(var(--header-h,62px) + 56px); }
+.part-banner { margin:30px 0 16px; padding:12px 18px; border-radius:var(--radius); background:var(--header-bg); color:var(--header-text); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:baseline; }
+.part-banner b { font-size:1.02rem; } .part-banner span { font-size:.8rem; opacity:.8; }
+.module-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; }
+.module-icon { width:40px; height:40px; flex:none; border-radius:10px; background:var(--accent-light); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+.module-head h2 { margin:0; }
+.module-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+.flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:6px 0 4px; }
+.flow a { text-decoration:none; color:inherit; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:block; }
+.flow a:hover { border-color:var(--accent); box-shadow:var(--shadow-hover); }
+.flow .n { font-size:.68rem; font-weight:800; color:var(--accent2); letter-spacing:.06em; text-transform:uppercase; }
+.flow .t { font-weight:700; font-size:.88rem; display:block; }
+.flow .w { font-size:.74rem; color:var(--muted); }
+.lo li { margin-bottom:6px; }
+.lecture-part { border-top:1px dashed var(--border); padding-top:14px; margin-top:16px; }
+.lecture-part:first-of-type { border-top:none; padding-top:0; margin-top:0; }
+.lecture-part h3 { margin-top:0; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.lecture-part h3 small { font-weight:600; color:var(--muted); font-size:.76rem; }
+.arch { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:10px 0 14px; }
+.arch .box { flex:1 1 150px; border:2px solid var(--border); border-radius:10px; padding:10px 12px; background:var(--surface2); font-size:.84rem; }
+.arch .box b { display:block; font-size:.9rem; }
+.arch .box.key { border-color:var(--accent); }
+.arch .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.seq { counter-reset:s; list-style:none; margin:10px 0 14px; padding:0; }
+.seq li { counter-increment:s; position:relative; padding:8px 12px 8px 44px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; background:var(--surface); font-size:.88rem; }
+.seq li::before { content:counter(s); position:absolute; left:10px; top:8px; width:24px; height:24px; border-radius:50%; background:var(--accent); color:var(--on-accent); font-weight:800; font-size:.78rem; display:flex; align-items:center; justify-content:center; }
+.seq li.loopback { border-style:dashed; border-color:var(--amber); }
+dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted); font-size:.88rem; }
+.two { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+.eg { border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; background:var(--surface2); }
+.eg.weak { border-left:5px solid var(--bad); } .eg.strong { border-left:5px solid var(--ok); }
+.eg .label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+.eg.weak .label { color:var(--bad); } .eg.strong .label { color:var(--ok); }
+.counter { font-size:.72rem; color:var(--muted); text-align:right; }
+.spec-meter { display:flex; gap:10px; align-items:center; margin:12px 0 6px; font-size:.84rem; }
+.spec-track { flex:1; height:10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.spec-fill { height:100%; width:0; background:var(--bad); transition:width .25s, background .25s; }
+.hints { font-size:.8rem; margin:4px 0 10px 1.1em; color:var(--muted); }
+.hints li.ok { color:var(--ok); } .hints li.no { color:var(--bad); }
+.stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:10px 0 16px; }
+.stage { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface2); font-size:.85rem; }
+.stage .day { font-size:.7rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--violet); }
+.side { border:2px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; }
+.side.a { border-color:var(--blue); } .side.b { border-color:var(--rose); }
+.side.mine { box-shadow:0 0 0 4px var(--accent-light); }
+.side h4 { display:flex; justify-content:space-between; gap:6px; }
+.checklist label { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; background:var(--surface); font-size:.88rem; }
+.checklist input { margin-top:4px; accent-color:var(--accent); width:16px; height:16px; flex:none; }
+.checklist label.done { background:var(--ok-bg); border-color:var(--ok); }
+.progress-line { font-size:.8rem; font-weight:700; color:var(--accent2); margin-bottom:8px; }
+.pick { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:12px; }
+.pick button { text-align:left; background:var(--surface2); border:2px solid var(--border); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:.85rem; color:var(--text); cursor:pointer; }
+.pick button[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-light); }
+.pick button b { display:block; }
+.sorter-row { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:.86rem; background:var(--surface); }
+.sorter-row .opts { display:flex; gap:4px; flex-wrap:wrap; }
+.sorter-row .opts button { font-family:inherit; font-size:.72rem; font-weight:700; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:6px; padding:4px 8px; cursor:pointer; }
+.sorter-row .opts button[aria-pressed="true"].auto { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+.sorter-row .opts button[aria-pressed="true"].confirm { background:var(--amber-bg); border-color:var(--amber); color:var(--amber); }
+.sorter-row .opts button[aria-pressed="true"].never { background:var(--bad-bg); border-color:var(--bad); color:var(--bad); }
+.sorter-row .why { grid-column:1/-1; font-size:.8rem; color:var(--muted); display:none; }
+.sorter-row.revealed .why { display:block; }
+@media (max-width:560px){ .sorter-row { grid-template-columns:1fr; } }
+.q { border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:10px; background:var(--surface); }
+.q .stem { font-weight:700; font-size:.9rem; margin-bottom:8px; }
+.q .opt { display:block; width:100%; text-align:left; font-family:inherit; font-size:.86rem; color:var(--text); background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:7px 10px; margin-bottom:6px; cursor:pointer; }
+.q .opt.right { background:var(--ok-bg); border-color:var(--ok); }
+.q .opt.wrong { background:var(--bad-bg); border-color:var(--bad); }
+.q .fb { font-size:.82rem; margin-top:4px; display:none; }
+.q.answered .fb { display:block; }
+.score { font-weight:800; color:var(--accent2); }
+.project-map td:first-child { font-weight:700; white-space:nowrap; }
+
+.pipe-row { display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin:6px 0; }
+.pipe-row .box { flex:1 1 120px; border:2px solid var(--border); border-radius:10px; padding:8px 10px; background:var(--surface2); font-size:.8rem; }
+.pipe-row .box b { display:block; font-size:.84rem; }
+.pipe-row .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.pipe-label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:10px; }
+.vec-demo { display:grid; grid-template-columns:1fr auto; gap:6px 12px; font-size:.84rem; align-items:center; margin:8px 0 12px; }
+.vec-demo .s { font-weight:800; color:var(--accent2); }
+.review-code { counter-reset:ln; }
+
+.wf-demo { font-size:.8rem; margin:8px 0 12px; }
+.wf-demo .r { display:grid; grid-template-columns:150px 1fr 60px; gap:8px; align-items:center; margin-bottom:4px; }
+.wf-demo .t { position:relative; height:14px; background:var(--surface2); border-radius:4px; }
+.wf-demo .b { position:absolute; top:2px; bottom:2px; border-radius:3px; background:var(--accent); }
+.wf-demo .b.g { background:var(--violet); } .wf-demo .b.root { background:var(--muted); }
+@media (max-width:520px){ .wf-demo .r { grid-template-columns:100px 1fr 50px; } }
+.order-pool { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.order-pool button { font-family:inherit; font-size:.8rem; text-align:left; background:var(--surface2); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 10px; cursor:pointer; }
+.order-pool button:hover { border-color:var(--accent); }
+.order-pool button.shake { border-color:var(--bad); background:var(--bad-bg); }
+.order-done { list-style:none; margin:0; padding:0; }
+.order-done li { display:grid; grid-template-columns:26px 1fr auto; gap:8px; align-items:start; border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:7px 10px; margin-bottom:5px; font-size:.84rem; background:var(--surface); }
+.order-done li .n { font-weight:800; color:var(--accent2); }
+.order-done li .risk { grid-column:2/4; font-size:.78rem; color:var(--muted); display:none; }
+.order-done.revealed li .risk { display:block; }
+.faith-out .sent { font-size:.82rem; padding:5px 10px; border-radius:6px; margin-bottom:4px; }
+.faith-out .sent.ok { background:var(--ok-bg); } .faith-out .sent.bad { background:var(--bad-bg); }
+
+.hos-tick { display:grid; grid-template-columns:auto 1fr; gap:6px 10px; align-items:start; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; background:var(--surface); }
+.hos-tick input[type=checkbox] { margin-top:5px; accent-color:var(--accent); width:16px; height:16px; }
+.hos-tick input[type=text] { grid-column:2; }
+.litmus li.ok { color:var(--ok); } .litmus li.no { color:var(--muted); }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">420</span><span><b>AI 420: Agentic AI</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-420.html">← AI 420</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+  
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 420 · HOS 3 · Weeks 5–6 · Interactive lesson</div>
+    <h1>Traces, Failure Diagnosis &amp; Self-Correction</h1>
+    <p class="lede">A support agent that looks fine fails in five planted ways. Find each one from the traces alone, before reading the code — then fix the causes and add guards so the agent recovers on its own.</p>
+    <div class="chips"><span class="chip">Outcome O3</span><span class="chip">2 weeks</span><span class="chip">Lecture · MP · CD</span><span class="chip">Langfuse</span><span class="chip">Failure log</span><span class="chip">Self-correction guards</span><span class="chip">Project checkpoint</span></div>
+  </div>
+</section>
+<main id="main">
+<nav class="secnav no-print" aria-label="Lesson sections"><div class="secnav-inner"><a href="#overview">Overview</a><span class="sep">Week 5</span><a href="#lecture">Lecture</a><a href="#muddiest">Muddiest Point</a><a href="#debate">Concept Debate</a><a href="#create">Create / Scaffold</a><a href="#evaluate">Evaluate</a><span class="sep">Week 6</span><a href="#analyze">Analyze</a><a href="#refine">Understand &amp; Refine</a><a href="#challenge">Application Challenge</a><a href="#check">Knowledge Check</a><a href="#checkpoint">Project Checkpoint</a></div></nav><div class="callout amber" style="margin-top:20px"><span class="label">Course design constraints</span><p>This lesson follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>. It adapts to AI 420's official description and Outcome O3, everything runs in GitHub Codespaces from your portfolio repo, and everything is free: the same Gemini key as AI 410, plus services that need no key at all.</p></div><section class="module card" id="overview"><div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag ">O3</span><span class="tag blue">12.5% HOS + MP + CD + AC</span><span class="tag amber">+ Team/Term Project checkpoint</span></div></div></div><p>Harbor Supply Co.'s customer-support agent passes a quick demo. Run six scenarios and it crashes on an order number with a "#", tells a customer a refund went through that never happened, loops on a shipment check, reports a confident wrong monthly total, and quotes the store's wholesale cost as the price. Three of those five never crash. They just finish politely, wrong.</p><p>Week 5 traces every run into Langfuse and builds a failure log from the traces alone — no source code. Week 6 opens the code, fixes each root cause by hand, and adds generic guards that let the agent recover from failures nobody planted. It ends with a quick Team/Term Project check-in.</p><div class="callout blue"><span class="label">Anchoring analogy</span><p>Debugging an agent from its trace is like an airline incident review from the flight recorder: you don't get to ask the pilot what they were thinking — you have the instrument readings, second by second, and you reconstruct the decision that went wrong. That's how on-call debugging of agents actually works: an exported trace, no access to the code, and a customer waiting.</p></div><h3>Learning objectives</h3><p class="small muted">By the end of the two weeks you will be able to:</p><ol class="lo"><li>Read a reasoning trace step by step: model input, decision, tool call, result, reply. <span class="tag">O3</span></li><li>Classify agent failures: tool-call errors, logic loops, invented actions, wrong data, wrong tool. <span class="tag">O3</span></li><li>Find the first step where a failure shows up — before reading the source. <span class="tag">O3</span></li><li>Fix root causes, and add generic self-correction: errors as observations, repeat-call detection, step budgets. <span class="tag">O3</span></li><li>Explain why a confident wrong answer is harder to catch than a crash. <span class="tag">O3</span></li></ol><h3>Your two weeks at a glance</h3><div class="flow"><a href="#lecture"><span class="n">Wk 5 · Mon</span><span class="t">Lecture</span><span class="w">~75 min, 3 parts</span></a><a href="#muddiest"><span class="n">Wk 5 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a><a href="#debate"><span class="n">Wk 5 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a><a href="#create"><span class="n">Wk 5 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">not graded</span></a><a href="#evaluate"><span class="n">Wk 5 · Fri–Sun</span><span class="t">Evaluate</span><span class="w">30% of HOS</span></a><a href="#analyze"><span class="n">Wk 6 · Mon–Tue</span><span class="t">Analyze</span><span class="w">30% of HOS</span></a><a href="#refine"><span class="n">Wk 6 · Wed–Thu</span><span class="t">Understand &amp; Refine</span><span class="w">40% of HOS · no AI</span></a><a href="#challenge"><span class="n">Wk 6 · Fri–Sun</span><span class="t">Application Challenge</span><span class="w">5% of course</span></a><a href="#check"><span class="n">Wk 6 · any time</span><span class="t">Knowledge Check</span><span class="w">self-check</span></a><a href="#checkpoint"><span class="n">Wk 6 · by Sun</span><span class="t">Project Checkpoint</span><span class="w">team + 1-paragraph idea</span></a></div><p class="small muted" style="margin-top:10px">Days are a suggested pacing for an online term, not fixed deadlines — your instructor's Brightspace dates win.</p></section>
+<div class="part-banner"><b>Week 5 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div><section class="module card" id="lecture"><div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: reading traces and making agents correct themselves</h2><div class="module-meta"><span class="tag ">≈ 70 min</span><span class="tag blue">3 short parts</span><span class="tag ">O3</span></div></div></div><p class="small muted">Three short segments. Pause after each and try the quick check. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p><div class="lecture-part"><h3>Part 1 — What a reasoning trace shows <small>≈ 20 min</small></h3><p>A <strong>reasoning trace</strong> is the step-by-step record of one run: every model input and output, every tool call with its arguments and result, and timing and tokens for each. Locally, <code>run_scenarios.py</code> prints one per scenario; with tracing on, each run also becomes a Langfuse trace with every model call and tool call as its own span.</p>
+<pre><code>[ 0.9s] CALL   list_orders({})
+[ 1.0s] RESULT list_orders -> {"orders": [ ...5 orders... ]}
+[ 2.3s] SAYS   "We received 5 orders in September, totaling $1,622.79."</code></pre>
+<div class="callout violet"><span class="label">Quick check</span><p>Nothing in that trace is an error. What would you check to know whether the answer is right?</p></div></div><div class="lecture-part"><h3>Part 2 — Five ways agents fail <small>≈ 25 min</small></h3><div class="table-wrap"><table class="t">
+<tr><th>Failure type</th><th>What it looks like in a trace</th></tr>
+<tr><td><b>Tool-call error</b></td><td>An exception on a tool call — often bad arguments ("#1004" into an int).</td></tr>
+<tr><td><b>Invented action</b></td><td>The model calls a tool that doesn't exist, or <em>says</em> it did something no tool did.</td></tr>
+<tr><td><b>Logic loop</b></td><td>The same call with the same arguments, again and again, getting no closer to done.</td></tr>
+<tr><td><b>Wrong data</b></td><td>A tool returned incomplete or misleading data, and the model trusted it — a confident wrong answer.</td></tr>
+<tr><td><b>Wrong tool</b></td><td>A vaguely described tool matched the request better than the right one.</td></tr>
+</table></div>
+<p>The rule for this HOS: <strong>diagnose from the trace first.</strong> Write your failure log — scenario, failure type, first step where it shows, symptom, likely root cause — before you open <code>tools.py</code>. Guessing from code is easy; production doesn't give you the code.</p></div><div class="lecture-part"><h3>Part 3 — Self-correction: fix causes, then add guards <small>≈ 25 min</small></h3><p>Fixing each planted bug makes this agent correct. <strong>Guards</strong> make the next agent resilient to bugs nobody planted. Both are ADK callbacks:</p>
+<pre><code>def error_as_observation(tool, args, tool_context, error):   # on_tool_error_callback
+    return {"status": "error", "error": f"{tool.name} failed: {error}",
+            "hint": "Check your arguments and try once more, or explain the problem."}
+
+def repeat_call_guard(tool, args, tool_context):               # before_tool_callback
+    # same tool + same args more than twice this run -> skip the call, tell the model to stop</code></pre>
+<p>Plus the step budget you already know from HOS 1. <strong>Reflection</strong> — the agent reviewing its own last result — is the fourth pattern; it catches some wrong-data failures, at the cost of an extra call.</p>
+<div class="callout"><span class="label">Try it before the build</span><p>Open <a href="sim03-trace-detective.html"><strong>Trace Detective</strong></a>. Diagnose five traces without code, then switch guards on and watch which failures recover — and which don't.</p></div>
+<div class="callout amber"><span class="label">Teaching note</span><p>Tell students up front that <em>real</em> models vary: one run might sidestep a bug (strip the "#" itself). That's a finding, not a failure of the lab — ask them to run twice and log what reproduced.</p></div></div><h3>New words this week</h3><dl class="gloss"><dt>Reasoning trace</dt><dd>The step-by-step record of a run: each model input and output, each tool call and result, with timing and tokens.</dd><dt>Logic loop</dt><dd>The agent repeats the same action (or a short cycle) without getting closer to done.</dd><dt>Confident wrong answer</dt><dd>A run that finishes politely and is wrong — no error anywhere.</dd><dt>Guard (callback)</dt><dd>Code that runs around every tool call to turn failures into something the model can recover from.</dd><dt>Reflection</dt><dd>A step where the agent reviews its own last result and decides whether to accept or retry.</dd></dl></section>
+<section class="module card" id="muddiest"><div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag rose">Graded · part of 5% MP category</span><span class="tag ">Due before the build begins</span></div></div></div><p>Four short fields, not a blank box. Draft it here — your draft stays in this browser only — then <strong>copy it into the Brightspace submission</strong>.</p><div class="two" style="margin-bottom:14px"><div class="eg weak"><span class="label">Doesn't meet the bar</span>"I don't know how to read the traces."</div><div class="eg strong"><span class="label">Meets the bar</span>"Lecture Part 3: <code>repeat_call_guard</code> blocks the third identical call. But in s3 the model calls <code>check_shipment(1002)</code> and then <code>check_shipment("1002")</code> — is that the same call? I tried both in Trace Detective and read the guard code in the guide; it depends on how args are compared, and I can't tell."</div></div><form onsubmit="return false"><label class="field" for="mp1">1 · What were you doing right before you got confused?</label><input type="text" id="mp1" placeholder="e.g. Lecture Part 3, repeat_call_guard — or the s3 trace"><label class="field" for="mp2">2 · The exact place you got stuck</label><textarea id="mp2" placeholder="Not 'traces are confusing' — the specific step or line that doesn't add up."></textarea><div class="counter" id="mp2count">0 words</div><label class="field" for="mp3">3 · What you already tried</label><textarea id="mp3" placeholder="Re-read a section, searched something specific, asked a classmate, tried the simulator…"></textarea><label class="field" for="mp4">4 · Optional: your best guess at the answer</label><textarea id="mp4" placeholder="Even if you think it's wrong."></textarea></form><div class="spec-meter"><b>Specificity</b><div class="spec-track"><div class="spec-fill" id="specFill"></div></div><span id="specLabel">—</span></div><ul class="hints" id="specHints"></ul><div class="row"><button class="btn" id="mpCopy" type="button">Copy for submission</button><button class="btn secondary" id="mpClear" type="button">Clear draft</button><span class="small muted" id="mpStatus" aria-live="polite"></span></div><p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — on time, addresses a genuine confusion (80%) · Writing — clear, specific, not generic (20%). The meter above is a nudge, not your grade.</p></section>
+<section class="module card" id="debate"><div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag ">Discussion board · 3 stages</span></div></div></div><div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>When a tool fails, is it safer for the agent to crash loudly or to recover and keep going?</strong></p></div><p>You'll argue the side your debate team is assigned, then argue the other one, then drop advocacy and synthesize.</p><div class="callout blue"><span class="label">Your side this HOS</span><p>Sides rotate each HOS. <b>In HOS 3, Debate Team 1 argues Side A and Debate Team 2 argues Side B.</b> Find your team under <b>Communication → Groups</b> in Brightspace. Not in a team? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A.</p></div><div class="row" style="margin-bottom:10px"><label for="team" class="small"><b>My Brightspace team:</b></label><select class="team" id="team" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select><span class="small" id="sideResult" aria-live="polite"></span></div><div class="two"><div class="side a" id="sideA"><h4><span>Side A — Recover and keep going</span><span class="tag blue">Team 1 this HOS</span></h4><p>Turn errors into observations; let the model fix its input or explain the problem.</p><ul class="small"><li>Customers get an answer instead of an error page.</li><li>Most tool errors are fixable input mistakes ("#1004").</li><li>Guards make recovery generic, not per-bug.</li></ul></div><div class="side b" id="sideB"><h4><span>Side B — Crash loudly</span><span class="tag rose">Team 2 this HOS</span></h4><p>Stop the run and surface the error to engineers.</p><ul class="small"><li>A crash is visible; a recovered-but-wrong answer isn't.</li><li>Recovery can hide bugs that should be fixed at the source.</li><li>For actions that move money, stopping is safer than improvising.</li></ul></div></div><div class="stages"><div class="stage"><span class="day">Stage 1 · by Tue</span><h4>Initial position</h4>Argue your assigned side with one specific claim and one piece of evidence — a run, a trace, a simulator setting. Not a topic summary.</div><div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>Before replying to anyone, post the <em>strongest</em> version of the side you didn't hold.</div><div class="stage"><span class="day">Stage 3 · by Sat</span><h4>Synthesis</h4>Drop advocacy. State a real position, citing at least one specific point from a classmate's post.</div></div><div class="two"><div class="eg weak"><span class="label">Weak synthesis</span>"Recovering is better for users but crashing is better for debugging, so both matter."</div><div class="eg strong"><span class="label">Strong synthesis</span>"Sam pointed out that s2 was worse <em>because</em> it didn't crash — the agent told Tom his refund was done. So: recover from input errors like s1, but for anything that claims an action happened, the guard should force a hand-off, not a retry. Recovery for reads, loud failure for writes."</div></div><p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%).</p></section>
+<section class="module card" id="create"><div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag ">Not graded on its own</span><span class="tag blue">GitHub Codespaces</span></div></div></div><p>Don't open <code>support_agent/tools.py</code> or <code>agent.py</code> yet. Run the scenarios and read what comes out.</p>
+<ol><li>Copy <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-420-guides/starter-code/hos-03-traces-self-correction" target="_blank" rel="noopener">the HOS 3 starter folder</a> into your portfolio repo; add your Gemini key and free Langfuse keys to <code>.env</code>.</li>
+<li><code>python run_scenarios.py</code> — each run prints a trace and saves it under <code>traces/</code>.</li>
+<li>Write the tracing prompt <em>yourself</em> (the guide gives a spec, not a prompt): every run should appear in Langfuse as one trace, with each model call and tool call as its own span, only when keys are set.</li></ol>
+<p class="small">Spec, submission list, and snags: <a href="../ai-420-guides/hos-03-traces-self-correction.html">HOS 3 hands-on guide</a>.</p></section>
+<section class="module card" id="evaluate"><div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag ">30% of HOS grade</span></div></div></div><p>Decide from each trace alone: did it succeed? If not, add one row to your failure log. Not every failure crashes.</p><div class="progress-line" id="evalProgress">0 / 4 tests run</div><div class="checklist" data-key="eval" data-prog="evalProgress" data-suffix="tests run"><label><input type="checkbox"><span><b>Run all six scenarios twice.</b> Note which failures reproduce both times and which only sometimes.</span></label><label><input type="checkbox"><span><b>Failure log:</b> for each failing scenario — failure type, the first step where it shows, the symptom, your best-guess root cause. Written <em>before</em> opening the source.</span></label><label><input type="checkbox"><span><b>Check every number</b> the agent states against what the tools actually returned. Which answers are confidently wrong?</span></label><label><input type="checkbox"><span><b>Langfuse:</b> screenshot one trace with the tool calls visible as separate spans.</span></label></div><label class="field" for="evalNote">Draft your Evaluate note (stays in this browser)</label><textarea id="evalNote" data-save="evalnote" placeholder="What I tested · what I found · what the AI got wrong, missed, or handled surprisingly well"></textarea><p class="small muted">Submit: evidence (screenshots, a trace or a results table) + this note, via Brightspace.</p></section>
+<div class="part-banner"><b>Week 6 · Explain &amp; Master</b><span>Analyze → Understand &amp; Refine → Application Challenge → Knowledge Check → Project Checkpoint</span></div><section class="module card" id="analyze"><div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does this happen?</h2><div class="module-meta"><span class="tag ">30% of HOS grade</span></div></div></div><p>Now open the source. Pick the one failure you think is <strong>most dangerous in production</strong> and explain it fully.</p><div class="pick" id="analyzePick"><button type="button" aria-pressed="false" data-k="refund"><b>s2 — the refund that never happened</b>An invented action.</button><button type="button" aria-pressed="false" data-k="total"><b>s4 — the confident wrong total</b>Wrong data, trusted.</button><button type="button" aria-pressed="false" data-k="price"><b>s5 — the wholesale price quote</b>The wrong tool.</button></div><div class="callout blue" id="analyzeFrame"><span class="label">Explain-it frame</span><p>Pick a piece above to see prompts that make a strong Analyze.</p></div></section>
+<section class="module card" id="refine"><div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag ">40% of HOS grade</span><span class="tag bad">No AI assistant for this part</span></div></div></div><p>By hand: fix each root cause in <code>tools.py</code> and the instruction, then add two generic guards in <code>support_agent/guards.py</code> as ADK callbacks — and show before/after traces of the agent recovering on its own.</p><div class="progress-line" id="refineProgress">0 / 5 done</div><div class="checklist" data-key="refine" data-prog="refineProgress" data-suffix="done"><label><input type="checkbox"><span>Fix the five root causes (argument parsing, the non-existent refund tool, the "check again" loop, the silent truncation, the wholesale price).</span></label><label><input type="checkbox"><span><code>on_tool_error_callback</code>: a tool that raises becomes an error the model can read.</span></label><label><input type="checkbox"><span><code>before_tool_callback</code>: block the same tool with the same arguments after two calls.</span></label><label><input type="checkbox"><span>Before/after traces for at least two scenarios, showing recovery.</span></label><label><input type="checkbox"><span>Commit <code>hos-03-traces-self-correction/</code> with your failure log and README.</span></label></div></section>
+<section class="module card" id="challenge"><div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — diagnose three traces from someone else's agent</h2><div class="module-meta"><span class="tag ">5% of course</span><span class="tag blue">Diagnose from traces — no source code</span></div></div></div><p>You get three exported traces from a different agent than the one you built, and no access to its code — which is how on-call debugging usually works. For each: name the failure type, the exact step where it first appears, and the smallest change that would prevent it.</p><h3>Warm-up: name the failure</h3><p class="small">Each line describes what a trace shows. Classify it.</p><div id="sorter"></div><div class="row" style="margin:8px 0 16px"><button class="btn" id="sorterReveal" type="button">Reveal reasoning</button><span class="small" id="sorterScore" aria-live="polite"></span></div><div class="callout"><span class="label">What to submit</span><ul><li>For each of the three traces: failure type, the exact first step, and your evidence.</li><li>The smallest change that would prevent each (a tool fix, a description fix, or a guard).</li><li>Which of the three you'd fix first in production, and why.</li></ul></div><p class="small muted"><b>Grading:</b> Judgment &amp; reasoning (50%) · Transfer to the new scenario (35%) · Clarity (15%).</p></section>
+<section class="module card" id="check"><div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag ">Self-check · not graded</span></div></div></div><p>Five quick questions, then the two open questions your instructor will ask in the Week 6 check-in.</p><div id="quiz"></div><p class="score" id="quizScore" aria-live="polite"></p><h3>Open questions</h3><ol><li>How can you tell a logic loop from an agent that is legitimately retrying?</li><li>Why is the "confident wrong answer" the hardest failure to catch, and what would catch it?</li></ol></section>
+<section class="module card" id="checkpoint"><div class="module-head"><div class="module-icon">🚀</div><div><h2>Team/Term Project — mid-course checkpoint</h2><div class="module-meta"><span class="tag amber">Due end of Week 6</span><span class="tag ">Not graded on depth</span></div></div></div><p>This confirms you won't start Week 9 from zero. Submit in Brightspace: <strong>your team (or that you're going solo)</strong>, and <strong>a one-paragraph idea naming the manual business process you'll automate</strong> and which HOS pieces it combines. Draft it here — it stays in this browser — then copy it over.</p><label class="field" for="cpTeam">Team members (or "Solo")</label><input type="text" id="cpTeam" placeholder="Names — or Solo"><label class="field" for="cpIdea">The manual business process, in one paragraph — who does it today, and what are its steps?</label><textarea id="cpIdea" placeholder="e.g. Our program office answers ~40 transfer-credit emails a week: read the email, find the course in the catalog, check the equivalency table, draft a reply, and flag unusual cases for an advisor."></textarea><h3>Which HOS pieces does it combine?</h3><p class="small muted">Tick each one and say, in a few words, what it does <em>in your project</em>.</p><div id="cpHos"><label class="hos-tick"><input type="checkbox" data-h="1"><span><b>HOS 1 — agent loop &amp; patterns</b></span><input type="text" placeholder="e.g. a plan-and-execute coordinator"></label><label class="hos-tick"><input type="checkbox" data-h="2"><span><b>HOS 2 — custom tools, MCP &amp; memory</b></span><input type="text" placeholder="e.g. read the website, query past campaigns, remember brand voice"></label><label class="hos-tick"><input type="checkbox" data-h="3"><span><b>HOS 3 — traces &amp; self-correction</b></span><input type="text" placeholder="e.g. a review step that sends off-voice drafts back"></label><label class="hos-tick"><input type="checkbox" data-h="4"><span><b>HOS 4 — multi-agent &amp; evaluation</b></span><input type="text" placeholder="e.g. researcher + writer + reviewer, 15 eval scenarios"></label></div><h3>Litmus test</h3><ul class="hints litmus" id="cpLitmus"></ul><div class="row"><button class="btn" id="cpCopy" type="button">Copy for submission</button><span class="small muted" id="cpStatus" aria-live="polite"></span></div><p class="small" style="margin-top:12px">The minimum bar for the final project and two example projects: <a href="../AI-420.html">AI 420 → Weeks 9–10</a> · <a href="team-project.html">Project guide</a>.</p></section>
+<section class="card"><h2>Resources</h2><ul><li><a href="../ai-420-guides/hos-03-traces-self-correction.html">HOS 3 hands-on guide</a></li><li><a href="sim03-trace-detective.html">Trace Detective</a></li><li>← <a href="hos-02-lesson.html">HOS 2 lesson</a> · <a href="index.html">All lessons &amp; simulators</a> · Next: <a href="hos-04-lesson.html">HOS 4 lesson</a> →</li></ul></section>
+</main>
+<footer class="foot">AI 420: Agentic AI · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai420-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai420-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>window.LESSON={"slug": "ai420", "code": "AI 420", "hos": 3, "weekB": 6, "concrete": "(`|\\(|\\)|\\.py|\\/|step \\d|part \\d|line|trace|span|langfuse|scenario|s\\d|call|result|guard|callback|loop|error|refund|total|price|budget)", "debates": [{"a": "sideA", "b": "sideB", "out": "sideResult", "team1": "A", "prefix": "In HOS 3 you argue ", "nameA": "Side A \u2014 Recover and keep going", "nameB": "Side B \u2014 Crash loudly"}], "frames": {"refund": ["Which line of the instruction causes it, and why does the model behave the way it does given what it was told?", "Why is this worse than a crash?", "How would the customer find out, and how long might that take?"], "total": ["Which line in <code>list_orders</code> causes it, and why can't the model tell?", "What would the tool need to return for the model to notice?", "Who acts on this number, and what do they decide wrong?"], "price": ["Why did the model prefer <code>get_price</code> over <code>get_product</code>? Quote the descriptions.", "Is this a tool bug or a description bug?", "What's the business cost, and who would notice first?"]}, "sorter": {"opts": [["loop", "Logic loop"], ["invented", "Invented action / wrong data"], ["toolerr", "Tool-call error"]], "items": [["Steps 3\u20139: <code>search_flights(\"SEA\",\"LAX\",\"2026-10-12\")</code> seven times, identical results each time.", "loop", "Same call, same args, no progress. A repeat-call guard, or a tool result that says \"no change\" clearly."], ["Step 4: <code>book_room(date=\"next Tuesday\")</code> raises <code>ValueError: invalid date</code>; the run ends.", "toolerr", "Bad arguments crash the run. Parse relative dates in the tool, or return the error as an observation so the model can retry with a real date."], ["Step 6: the agent says \"I've emailed your receipt\" \u2014 no email tool exists and none was called.", "invented", "An action claimed without a tool. The instruction likely implies an ability the agent doesn't have."], ["Step 2: <code>get_invoices()</code> returns 20 rows; the agent reports \"your total for the year is $4,210\" (the first 20 of 63 invoices).", "invented", "Silently truncated data, confidently summed. The tool should report its count and whether it truncated."], ["Steps 2\u20137 alternate <code>get_cart</code> \u2192 <code>apply_coupon</code> \u2192 <code>get_cart</code> \u2192 <code>apply_coupon</code>\u2026", "loop", "A short cycle, not one repeated call \u2014 a simple identical-call guard misses it. A step budget still catches it."]], "after": "The hardest ones are the confident wrong answers \u2014 nothing in the trace is red."}, "quiz": [["An agent reports a monthly total with no errors in the trace. What should you check first?", ["The model's temperature", "Whether the tool returned all the data the total depends on", "The step budget", "Langfuse's latency view"], 1, "Confident wrong answers come from trusted-but-incomplete data."], ["What does <code>on_tool_error_callback</code> do in this HOS?", ["Retries the tool automatically", "Crashes the run with a clearer message", "Turns a raised exception into an error the model can read and respond to", "Logs to Langfuse"], 2, "Errors become observations, not crashes."], ["How do you tell a logic loop from a legitimate retry?", ["A retry changes something (arguments, approach); a loop repeats without progress", "Loops are always longer", "Retries never call the same tool", "You can't, from a trace"], 0, "Progress is the difference."], ["Why diagnose from the trace before reading the code?", ["The code is too long", "Traces are more accurate than code", "It's faster", "In production you usually have the trace, not the code \u2014 and code-reading hides how the failure actually presents"], 3, "Practice the way on-call debugging really works."], ["The agent tells a customer their refund was processed; no refund tool exists. This is:", ["A tool-call error", "An invented action", "A logic loop", "A latency problem"], 1, "It claimed an action no tool performed."]], "paths": null, "cpNeed": "\\b(process|workflow|manual|by hand|steps?)\\b", "cpNeedLabel": "Names the manual process and its steps"};
+
+var L=window.LESSON;
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){ return null; } }
+function $(id){ return document.getElementById(id); }
+function K(k){ return L.slug+'-'+L.hos+'-'+k; }
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest',inline:'center'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+/* Muddiest Point */
+(function(){
+  var els=['mp1','mp2','mp3','mp4'].map($); if(!els[0]) return;
+  els.forEach(function(el){ var v=store(K(el.id)); if(v) el.value=v; el.addEventListener('input',update); });
+  var vague=/\b(confus(ing|ed)|everything|all of it|the whole|in general|kind of|stuff)\b/i, concrete=new RegExp(L.concrete,'i');
+  function words(s){ return (s.trim().match(/\S+/g)||[]).length; }
+  function update(){
+    els.forEach(function(el){ store(K(el.id), el.value); });
+    var stuck=els[1].value, w=words(stuck); $('mp2count').textContent=w+' words';
+    var checks=[[words(els[0].value)>=3,'Context names where you were (a part, step, or line)'],[w>=15,'Stuck point is at least ~15 words'],
+      [concrete.test(stuck),'Stuck point mentions a concrete thing (a step, function, file, term)'],[!vague.test(stuck)||w>=30,'Avoids vague catch-alls like "confusing" or "everything"'],
+      [words(els[2].value)>=5,'Says what you already tried']];
+    var n=checks.filter(function(c){return c[0];}).length, pct=n/checks.length*100, f=$('specFill');
+    f.style.width=pct+'%'; f.style.background= pct>=80?'var(--ok)':pct>=40?'var(--amber)':'var(--bad)';
+    $('specLabel').textContent= pct>=80?'Specific':pct>=40?'Getting there':'Too vague';
+    $('specHints').innerHTML=checks.map(function(c){return '<li class="'+(c[0]?'ok':'no')+'">'+(c[0]?'✓ ':'○ ')+c[1]+'</li>';}).join('');
+  }
+  update();
+  $('mpCopy').addEventListener('click',function(){
+    var t='MUDDIEST POINT — '+L.code+' HOS '+L.hos+'\n\n1. Right before I got confused: '+els[0].value+'\n\n2. Where I got stuck: '+els[1].value+'\n\n3. What I already tried: '+els[2].value+'\n\n4. My best guess: '+(els[3].value||'(none)');
+    var s=$('mpStatus'); if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into Brightspace.'; },function(){ s.textContent='Copy blocked — select the fields manually.'; }); } else s.textContent='Copy not supported — select the fields manually.';
+  });
+  $('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); $('mpStatus').textContent='Draft cleared.'; });
+})();
+/* Debate sides (shared team across lessons) */
+(function(){
+  var sels=[].slice.call(document.querySelectorAll('select.team')); if(!sels.length) return;
+  var v=store(L.slug+'-team');
+  function upd(val){
+    sels.forEach(function(s){ s.value=val; }); if(val) store(L.slug+'-team',val);
+    (L.debates||[]).forEach(function(d){
+      var a=$(d.a), b=$(d.b), out=$(d.out); a.classList.remove('mine'); b.classList.remove('mine');
+      if(!val){ out.textContent=''; return; }
+      var sideA=(val==='1')===(d.team1==='A'); (sideA?a:b).classList.add('mine');
+      out.innerHTML=d.prefix+'<b>'+(sideA?d.nameA:d.nameB)+'</b> in Stage 1.';
+    });
+  }
+  sels.forEach(function(s){ s.addEventListener('change',function(){ upd(s.value); }); }); upd(v||'');
+})();
+/* checklists */
+[].slice.call(document.querySelectorAll('.checklist[data-key]')).forEach(function(list){
+  var boxes=[].slice.call(list.querySelectorAll('input')), key=K(list.dataset.key), prog=$(list.dataset.prog), suffix=list.dataset.suffix;
+  var saved=(store(key)||'').split(',');
+  boxes.forEach(function(b,i){ if(saved[i]==='1') b.checked=true; b.addEventListener('change',upd); });
+  function upd(){ boxes.forEach(function(b){ b.parentNode.classList.toggle('done',b.checked); });
+    if(prog) prog.textContent=boxes.filter(function(b){return b.checked;}).length+' / '+boxes.length+' '+suffix;
+    store(key,boxes.map(function(b){return b.checked?'1':'0';}).join(',')); }
+  upd();
+});
+[].slice.call(document.querySelectorAll('textarea[data-save]')).forEach(function(t){ var k=K(t.dataset.save); var v=store(k); if(v) t.value=v; t.addEventListener('input',function(){ store(k,t.value); }); });
+/* Analyze frames */
+(function(){
+  var btns=[].slice.call(document.querySelectorAll('#analyzePick button')), box=$('analyzeFrame'); if(!box) return;
+  btns.forEach(function(b){ b.addEventListener('click',function(){
+    btns.forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true');
+    box.innerHTML='<span class="label">Explain-it frame</span><ul>'+L.frames[b.dataset.k].map(function(q){return '<li>'+q+'</li>';}).join('')+'</ul><p class="small">Aim for 250–400 words. Quote the line(s) or trace step(s) you are explaining.</p>';
+  }); });
+})();
+/* Sorter */
+(function(){
+  var S=L.sorter, host=$('sorter'); if(!S||!host) return;
+  var answers={}, score=$('sorterScore'), cls=['auto','confirm','never'];
+  host.innerHTML=S.items.map(function(t,i){
+    return '<div class="sorter-row" data-i="'+i+'"><span>'+t[0]+'</span><div class="opts">'+S.opts.map(function(o,j){ return '<button type="button" class="'+cls[j]+'" aria-pressed="false" data-o="'+o[0]+'">'+o[1]+'</button>'; }).join('')+'</div><div class="why"></div></div>';
+  }).join('');
+  [].slice.call(host.querySelectorAll('.opts button')).forEach(function(b){ b.addEventListener('click',function(){
+    var row=b.closest('.sorter-row'); [].slice.call(row.querySelectorAll('button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); answers[row.dataset.i]=b.dataset.o; }); });
+  $('sorterReveal').addEventListener('click',function(){
+    var right=0;
+    [].slice.call(host.querySelectorAll('.sorter-row')).forEach(function(row){
+      var t=S.items[row.dataset.i]; if(answers[row.dataset.i]===t[1]) right++;
+      var lbl=S.opts.filter(function(o){return o[0]===t[1];})[0][1];
+      row.querySelector('.why').innerHTML='<b>Suggested: '+lbl+'.</b> '+t[2]; row.classList.add('revealed'); });
+    score.textContent=right+' / '+S.items.length+' match the suggested call. '+(S.after||'');
+  });
+})();
+/* Quiz */
+(function(){
+  var host=$('quiz'); if(!host) return; var qs=L.quiz, right=0, done=0;
+  host.innerHTML=qs.map(function(q,i){ return '<div class="q" data-i="'+i+'"><div class="stem">'+(i+1)+'. '+q[0]+'</div>'+q[1].map(function(o,j){return '<button type="button" class="opt" data-j="'+j+'">'+o+'</button>';}).join('')+'<div class="fb"></div></div>'; }).join('');
+  [].slice.call(host.querySelectorAll('.q')).forEach(function(card){
+    var q=qs[card.dataset.i];
+    [].slice.call(card.querySelectorAll('.opt')).forEach(function(b){ b.addEventListener('click',function(){
+      if(card.classList.contains('answered')) return; card.classList.add('answered'); done++;
+      var ok=+b.dataset.j===q[2]; if(ok) right++;
+      b.classList.add(ok?'right':'wrong'); card.querySelectorAll('.opt')[q[2]].classList.add('right');
+      card.querySelector('.fb').innerHTML=(ok?'✓ ':'✗ ')+q[3];
+      $('quizScore').textContent= done===qs.length ? 'Score: '+right+' / '+qs.length+(right===qs.length?' — ready for the Week '+L.weekB+' check-in.':' — revisit the lecture parts you missed.') : '';
+    }); });
+  });
+})();
+/* Project checkpoint drafter (HOS 3) */
+(function(){
+  var team=$('cpTeam'); if(!team) return; var idea=$('cpIdea'), rows=[].slice.call(document.querySelectorAll('#cpHos .hos-tick'));
+  function key(k){ return L.slug+'-checkpoint-'+k; }
+  var v=store(key('team')); if(v) team.value=v; v=store(key('idea')); if(v) idea.value=v;
+  rows.forEach(function(r){ var cb=r.querySelector('input[type=checkbox]'), tx=r.querySelector('input[type=text]'), h=cb.dataset.h;
+    if(store(key('h'+h))==='1') cb.checked=true; var t=store(key('t'+h)); if(t) tx.value=t;
+    cb.addEventListener('change',upd); tx.addEventListener('input',function(){ if(tx.value && !cb.checked) cb.checked=true; upd(); }); });
+  team.addEventListener('input',upd); idea.addEventListener('input',upd);
+  function words(s){ return (s.trim().match(/\S+/g)||[]).length; }
+  function upd(){
+    store(key('team'),team.value); store(key('idea'),idea.value); var ticked=0, described=0;
+    rows.forEach(function(r){ var cb=r.querySelector('input[type=checkbox]'), tx=r.querySelector('input[type=text]'), h=cb.dataset.h;
+      store(key('h'+h),cb.checked?'1':'0'); store(key('t'+h),tx.value); if(cb.checked){ ticked++; if(words(tx.value)>=3) described++; } });
+    var checks=[[team.value.trim().length>0,'Team named (or "Solo")'],[words(idea.value)>=30,'Idea is a real paragraph (~30+ words)'],
+      [new RegExp(L.cpNeed,'i').test(idea.value),L.cpNeedLabel],[ticked>=2,'Combines at least two HOS pieces (all four by Week 10)'],
+      [ticked>0 && described===ticked,'Each ticked HOS says what it does in your project']];
+    $('cpLitmus').innerHTML=checks.map(function(c){return '<li class="'+(c[0]?'ok':'no')+'">'+(c[0]?'✓ ':'○ ')+c[1]+'</li>';}).join('');
+  }
+  upd();
+  $('cpCopy').addEventListener('click',function(){
+    var parts=rows.filter(function(r){return r.querySelector('input[type=checkbox]').checked;}).map(function(r){ return '- '+r.querySelector('b').textContent+': '+r.querySelector('input[type=text]').value; });
+    var t='TEAM/TERM PROJECT CHECKPOINT — '+L.code+' (Week 6)\n\nTeam: '+team.value+'\n\nIdea: '+idea.value+'\n\nHOS pieces it combines:\n'+(parts.join('\n')||'(none yet)');
+    var s=$('cpStatus'); if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into Brightspace.'; },function(){ s.textContent='Copy blocked.'; }); } else s.textContent='Copy not supported.';
+  });
+})();
+/* Architecture path ordering (HOS 4) */
+(function(){
+  var pool=$('orderPool'); if(!pool) return; var P=L.paths, cur=Object.keys(P)[0], next=0, done=$('orderDone'), hint=$('orderHint'), reveal=$('orderReveal');
+  function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=a[i]; a[i]=a[j]; a[j]=x; } return a; }
+  function reset(){
+    next=0; done.innerHTML=''; done.classList.remove('revealed'); reveal.disabled=true; hint.textContent='Click the first step.';
+    pool.innerHTML=shuffle(P[cur].map(function(s,i){return {s:s,i:i};})).map(function(o){ return '<button type="button" data-i="'+o.i+'">'+o.s[0]+'</button>'; }).join('');
+    [].slice.call(pool.querySelectorAll('button')).forEach(function(b){ b.addEventListener('click',function(){
+      if(+b.dataset.i===next){ var s=P[cur][next], li=document.createElement('li');
+        li.innerHTML='<span class="n">'+(next+1)+'</span><span>'+s[0]+'</span><span class="tag">'+s[1]+'</span><span class="risk">⚠ '+s[2]+'</span>';
+        done.appendChild(li); b.remove(); next++;
+        hint.textContent= next===P[cur].length ? 'Path complete. Now reveal where each step can slow down or fail.' : 'Correct — what happens next?';
+        if(next===P[cur].length) reveal.disabled=false;
+      } else { b.classList.add('shake'); hint.textContent='Not yet — what must happen first?'; setTimeout(function(){ b.classList.remove('shake'); },600); }
+    }); });
+  }
+  [].slice.call(document.querySelectorAll('#pathPick button')).forEach(function(b){ b.addEventListener('click',function(){
+    [].slice.call(document.querySelectorAll('#pathPick button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); cur=b.dataset.p; reset(); }); });
+  reveal.addEventListener('click',function(){ done.classList.add('revealed'); }); $('orderReset').addEventListener('click',reset); reset();
+})();
+</script>
+</body>
+</html>

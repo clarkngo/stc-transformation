@@ -95,6 +95,8 @@
 
         <div class="compare-box">This is the course design: outcomes, stack, schedule, grading, and what each unit builds. The <a href="ai-420-guides/index.html">hands-on guides, starter code, and answer keys</a> are built (in faculty testing — see the <a href="ai-420-guides/faculty-test-runbook.html">faculty test runbook</a>), following the same pattern as <a href="AI-410.html">AI 410</a> (see the <a href="AI-410-vs-AI-420.html">side-by-side comparison</a>). Background on the stack choices: <a href="../bsai-course-tech-stack-brainstorm.html">AI 420 / 430 / 440 Technology Stack Brainstorm</a>. Every choice here follows the <a href="../bsai-course-design-constraints.html">BSAI Course Design Constraints</a>: the course description is fixed, everything runs in GitHub Codespaces, and free tiers come first.</div>
 
+        <p><a href="ai-420-interactive/index.html"><strong>Interactive Lessons &amp; HOS Simulators →</strong></a> — a two-week interactive lesson for each HOS (Lecture, Muddiest Point, Concept Debate, CEAU stages, Application Challenge), four browser simulators, a Weeks 9–10 project guide, and an instructor teaching guide.</p>
+
         <div class="plain-terms-box"><strong>In plain terms:</strong> in AI 410 you built an app with an AI model inside it. In AI 420 you build software where the AI decides what to do next. It picks a tool, looks at what came back, notices when it went wrong, and tries again, all without a person clicking "next." Every unit adds a working agent to your portfolio. By Week 10 you'll have taken one real, manual business process and handed it to a team of agents, with numbers showing how well they do it.</div>
 
         <p><strong>Course Description:</strong> Agentic AI empowers students to design intelligent systems capable of perceiving their environment, reasoning through complex, multi-step plans, utilizing external tools (such as APIs, web browsers, and databases), and self-correcting their actions to achieve specific outcomes without ongoing human intervention. This course emphasizes the core principles of agency, including individual agencies, the development of custom tools, advanced reasoning techniques, multi-agent workflows, and orchestration. By the end of the course, students will have built professional portfolios featuring a range of functional agent examples, acquired industry-ready AI engineering skills, and developed agentic mindsets to transform manual business processes into automated sequences of agent-driven tasks.</p>
@@ -204,6 +206,7 @@
             <p>Students solve the same task twice: once with a single LLM call, then with a loop they write themselves (model → tool call → observation → model again, until done). With no framework hiding the loop, the four components are easy to point at in the code. Reasoning is the model's decision at each step, planning is how it breaks the task down, tool use is the function calls, and memory is the growing message history. The unit closes with a tour of the common patterns: ReAct, plan-and-execute, reflection, and routing.</p>
             <span class="outcome-tag">Outcome 1</span>
             <a class="guide-link" href="ai-420-guides/hos-01-agent-anatomy.html">Open hands-on guide →</a>
+            <a class="guide-link" href="ai-420-interactive/hos-01-lesson.html">Interactive lesson →</a><a class="guide-link" href="ai-420-interactive/sim01-agent-loop.html">Simulator →</a>
             <div class="build-box"><h5>What gets built (across both weeks)</h5><ol>
                 <li>Baseline: one Gemini call answers a multi-step research question. It often guesses or makes things up.</li>
                 <li>A hand-written ReAct loop in about 60 lines of Python, with three tools (Wikipedia search, Wikipedia intro, calculator; free, no key) and a step cap. <em>New unit.</em></li>
@@ -247,6 +250,7 @@
             <span class="outcome-tag">Outcome 2</span>
             <span class="outcome-tag">Outcome 1</span>
             <a class="guide-link" href="ai-420-guides/hos-02-tools-mcp-memory.html">Open hands-on guide →</a>
+            <a class="guide-link" href="ai-420-interactive/hos-02-lesson.html">Interactive lesson →</a><a class="guide-link" href="ai-420-interactive/sim02-tool-schemas.html">Simulator →</a>
             <div class="build-box"><h5>What gets built (across both weeks)</h5><ol>
                 <li><strong>API tool:</strong> marine weather (wind, gusts, waves) from Open-Meteo, a real public API that is free and needs no key. It's provided as the worked example the other tools follow.</li>
                 <li><strong>Browser tool:</strong> fetches a page and returns clean text, with a length limit so the page doesn't flood the context.</li>
@@ -291,6 +295,7 @@
             <p>Students get Harbor Supply Co.'s customer-support agent, which looks fine and fails in five planted ways: a tool-argument error that crashes the run, a call to a tool that doesn't exist (after which the agent tells the customer the refund went through), a loop that repeats the same call, a silently truncated result that produces a confident wrong total, and a vaguely described tool that quotes the store's wholesale cost as the price. They trace it into Langfuse and find each failure <em>from the trace alone</em> before reading the source. Then they fix each cause and add generic self-correction: tool errors returned as something the model can read, repeated-call detection, and a step budget.</p>
             <span class="outcome-tag">Outcome 3</span>
             <a class="guide-link" href="ai-420-guides/hos-03-traces-self-correction.html">Open hands-on guide →</a>
+            <a class="guide-link" href="ai-420-interactive/hos-03-lesson.html">Interactive lesson →</a><a class="guide-link" href="ai-420-interactive/sim03-trace-detective.html">Simulator →</a>
             <div class="build-box"><h5>What gets built (across both weeks)</h5><ol>
                 <li>A local trace per scenario, then Langfuse on every model call and tool call (same free account as AI 410 HOS 4). Students write this prompt themselves.</li>
                 <li>Reference reading: agent-development <strong>hos09</strong> (the callbacks the guards use) and <strong>hos12</strong> (how a loop is supposed to end).</li>
@@ -332,6 +337,7 @@
             <p>Students split their repaired HOS 3 single agent into a coordinator that delegates to specialist agents (ADK's <code>sub_agents</code>). Then they test both versions the way industry does: a <em>simulated-user agent</em> plays the customer across 12 scenarios, and a <em>judge agent</em> grades each outcome against a rubric. Every run logs success rate, cost per task (from token counts × price), and latency (p50/p95). The key comparison is whether the multi-agent version actually beat the single agent, or just cost more.</p>
             <span class="outcome-tag">Outcome 4</span>
             <a class="guide-link" href="ai-420-guides/hos-04-multi-agent-evaluation.html">Open hands-on guide →</a>
+            <a class="guide-link" href="ai-420-interactive/hos-04-lesson.html">Interactive lesson →</a><a class="guide-link" href="ai-420-interactive/sim04-eval-lab.html">Simulator →</a>
             <div class="build-box"><h5>What gets built (across both weeks)</h5><ol>
                 <li>A coordinator + 3 specialist agents (orders, catalog, reports), each holding only its own tools. Reference reading: agent-development <strong>hos07–hos08</strong> (supervisor, team) and <strong>hos10–12</strong> (sequential, parallel, loop).</li>
                 <li>An eval harness: scenario file → simulated user → agent system → judge → metrics table.</li>
@@ -373,6 +379,7 @@
 
         <div class="week-block project-block">
             <h3>Week 9 — Team/Term Project: Plan &amp; Build Begins</h3>
+            <a class="guide-link" style="margin-left:0" href="ai-420-interactive/team-project.html">Interactive project guide (process map, backlog, minimum bar) →</a>
             <p>Students (team or individual, their choice) apply the 4 HOS together to automate one real manual business process — the project is a synthesis of what was built in Weeks 1–8, not a new concept. The course description's examples, an <strong>autonomous marketing department</strong> (research → draft → brand review → schedule) or a <strong>self-healing coding assistant</strong> (read failing test → diagnose → patch → re-run → open PR), are both acceptable starting points. The vendored ADK samples <code>marketing-agency</code> and <code>software-bug-assistant</code> in agent-development match them closely and can serve as starters. So is any real process that meets the minimum bar below. Everything technical was already built once in HOS 1–4; the work here is synthesis.</p>
             <p>A few days of lightweight planning (you've had the idea since Week 1 and a checkpoint in Week 6, so this isn't starting cold), using a compact version of Scrum, then straight into building:</p>
             <ul>

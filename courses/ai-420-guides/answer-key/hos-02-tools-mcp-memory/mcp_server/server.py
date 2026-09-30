@@ -23,6 +23,9 @@ import trafilatura
 from mcp.server.mcpserver import MCPServer
 
 DB = Path(__file__).resolve().parent.parent / "data" / "harbor.db"
+if not DB.exists():  # e.g. in a portfolio-repo Codespace, whose devcontainer doesn't seed it
+    import runpy
+    runpy.run_path(str(DB.with_name("seed_db.py")))["build"]()
 HEADERS = {"User-Agent": "AI420-course-agent/1.0 (https://github.com/clarkngo/stc-transformation; educational use)"}
 MAX_ROWS = 50
 

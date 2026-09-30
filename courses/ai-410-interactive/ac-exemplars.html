@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 410 instructor teaching guide: one-time Brightspace setup, the two-week HOS rhythm, responding to Muddiest Points, running Concept Debates, grading, verifying hand-written Refine work, per-HOS snags, and running the Team/Term Project.">
-<title>AI 410 Teaching Guide</title>
+<meta name="description" content="AI 410 grader calibration: a strong and a typical Application Challenge answer for each HOS, scored against the rubric with feedback to give.">
+<title>Application Challenge Examples</title>
 <style>
 :root {
   --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
@@ -205,11 +205,19 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 .vec-demo .s { font-weight:800; color:var(--accent2); }
 .review-code { counter-reset:ln; }
 
-details.hos { border:1px solid var(--border); border-radius:10px; padding:10px 14px; margin-bottom:8px; background:var(--surface); }
-details.hos summary { cursor:pointer; font-weight:700; }
-details.hos[open] summary { margin-bottom:8px; }
-details.hos h4 { margin-top:10px; font-size:.85rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
 .internal { background:var(--amber-bg); border:1px solid var(--amber); color:var(--amber); font-weight:700; font-size:.82rem; padding:8px 14px; border-radius:8px; margin:20px 0 0; }
+.ex { border:1px solid var(--border); border-radius:10px; padding:12px 16px; margin:10px 0; background:var(--surface); font-size:.88rem; }
+.ex.strong { border-left:5px solid var(--ok); } .ex.weak { border-left:5px solid var(--amber); }
+.ex .hd { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:baseline; margin-bottom:6px; }
+.ex .hd b { font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; }
+.ex.strong .hd b { color:var(--ok); } .ex.weak .hd b { color:var(--amber); }
+.ex .score { font-weight:800; font-size:.9rem; }
+.ex blockquote { margin:6px 0 8px; padding:8px 12px; background:var(--surface2); border-radius:6px; font-size:.86rem; }
+.ex blockquote p:last-child { margin-bottom:0; }
+.ex pre { margin:6px 0; }
+.why { font-size:.84rem; }
+.why li { margin-bottom:3px; }
+.prompt { font-size:.9rem; }
 
 </style>
 </head>
@@ -224,160 +232,73 @@ details.hos h4 { margin-top:10px; font-size:.85rem; text-transform:uppercase; le
 <section class="hero">
   <div class="hero-inner">
     <div class="eyebrow">AI 410 · Instructor reference</div>
-    <h1>Teaching Guide</h1>
-    <p class="lede">How to run AI 410 week to week: one-time setup, the two-week rhythm, responding to Muddiest Points, running Concept Debates, grading quickly, checking that Refine work was done by hand, and where students get stuck in each HOS.</p>
-    <div class="chips"><span class="chip">Internal</span><span class="chip">Brightspace</span><span class="chip">Two-week HOS rhythm</span><span class="chip">Grading</span><span class="chip">Per-HOS snags</span></div>
+    <h1>Application Challenge: Example Answers</h1>
+    <p class="lede">A strong answer and a typical partial-credit answer for each HOS's Application Challenge, scored against the rubric (Judgment 50 · Transfer 35 · Clarity 15), with the one line of feedback that moves a typical answer up.</p>
+    <div class="chips"><span class="chip">Internal</span><span class="chip">4 HOS</span><span class="chip">Grader calibration</span></div>
   </div>
 </section>
 <main id="main">
 
-<div class="internal">Internal — instructor and SME reference, not for students. AI 410 is an upcoming course; this guide describes how it's designed to run.</div>
+<div class="internal">Internal — for instructors and graders, not students. AI 410 is an upcoming course; these are sample answers written to calibrate grading.</div>
 
-<nav class="secnav no-print" aria-label="Guide sections" style="margin-top:14px">
-  <div class="secnav-inner">
-    <a href="#setup">Before the term</a>
-    <a href="#rhythm">Two-week rhythm</a>
-    <a href="#mp">Muddiest Points</a>
-    <a href="#cd">Concept Debates</a>
-    <a href="#grading">Grading quickly</a>
-    <a href="#refine">"No AI" check</a>
-    <a href="#hos">Per-HOS notes</a>
-    <a href="#project">Weeks 9–10</a>
-  </div>
+<nav class="secnav no-print" aria-label="Sections" style="margin-top:14px">
+  <div class="secnav-inner"><a href="#how">How to use</a><a href="#hos1">HOS 1</a><a href="#hos2">HOS 2</a><a href="#hos3">HOS 3</a><a href="#hos4">HOS 4</a></div>
 </nav>
 
-<section class="module card" id="setup" style="margin-top:18px">
-  <div class="module-head"><div class="module-icon">🧰</div><div><h2>Before the term: one-time setup</h2><div class="module-meta"><span class="tag">≈ 1 hour, once</span></div></div></div>
-  <div class="progress-line" id="setupProgress">0 / 6 done</div>
-  <div class="checklist" id="setupList">
-    <label><input type="checkbox"><span><b>Debate teams:</b> create the auto-enrolled, randomized "Concept Debate Teams" group category in Brightspace. Step-by-step: <a href="../AI-410.html#cd-team-setup">AI 410 schedule, Week 1 instructor setup</a>.</span></label>
-    <label><input type="checkbox"><span><b>Five Concept Debate topics</b> (HOS 1–4 plus the Week 8 Integration debate), each a single whole-class discussion topic with the three stage dates in its description. The sides and prompts are in each <a href="index.html">interactive lesson</a>.</span></label>
-    <label><input type="checkbox"><span><b>Four Muddiest Point submissions</b>, one per HOS, due before that HOS's build begins. Use four required fields (context, stuck point, what you tried, optional guess), not one free-text box.</span></label>
-    <label><input type="checkbox"><span><b>HOS, Application Challenge and project assignments</b> with the CEAU rubric (30/30/40), the AC rubric (50/35/15), and the project rubric (25/35/25/15) from the <a href="../AI-410-syllabus.html">syllabus</a>.</span></label>
-    <label><input type="checkbox"><span><b>Account timeline in the Week 1 announcement:</b> GitHub + Gemini key (Week 1), Upstash Redis (Week 5), Expo + EAS + Langfuse (Week 7). All free, no credit card. Source: <a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a>.</span></label>
-    <label><input type="checkbox"><span><b>Codespaces hours:</b> remind students that a verified GitHub student account (GitHub Education) can raise the free Codespaces allowance, and to stop Codespaces they aren't using.</span></label>
-  </div>
-</section>
-
-<section class="module card" id="rhythm">
-  <div class="module-head"><div class="module-icon">🗓️</div><div><h2>The two-week rhythm — what you do, when</h2><div class="module-meta"><span class="tag">Repeats for each HOS</span></div></div></div>
-  <div class="table-wrap"><table class="t">
-    <tr><th>When</th><th>Students</th><th>You</th></tr>
-    <tr><td>Wk A · Mon</td><td>Lecture (3 parts), simulator</td><td>Release the lesson; post the CD question and each team's side for this HOS.</td></tr>
-    <tr><td>Wk A · Tue</td><td>CD Stage 1</td><td>Skim for posts that only summarize the topic; nudge publicly with one example of a specific claim.</td></tr>
-    <tr><td>Wk A · Wed</td><td>Muddiest Point due; start Create/Scaffold</td><td>Read the MPs the same day; cluster them (see below).</td></tr>
-    <tr><td>Wk A · Thu</td><td>CD Stage 2; build</td><td>Post the "Top 3 muddiest points" response before students reach Evaluate.</td></tr>
-    <tr><td>Wk A · Fri–Sun</td><td>Evaluate; CD Stage 3</td><td>Office hours target environment snags (see per-HOS notes).</td></tr>
-    <tr><td>Wk B · Mon–Thu</td><td>Analyze, Understand &amp; Refine (no AI)</td><td>Run the short "one line" follow-ups for the Refine check (below).</td></tr>
-    <tr><td>Wk B · Fri–Sun</td><td>Application Challenge; knowledge check; HOS artifact submitted</td><td>Grade the HOS and CD; reuse one strong AC answer (anonymized) in the next lecture.</td></tr>
-  </table></div>
-  <p class="small muted">Week 6 also has the project checkpoint; Week 8 also has the Architecture Review and Integration debate — plan for Week 8 to be the heaviest grading week.</p>
-</section>
-
-<section class="module card" id="mp">
-  <div class="module-head"><div class="module-icon">🌫️</div><div><h2>Responding to Muddiest Points</h2><div class="module-meta"><span class="tag">≈ 30 min per HOS</span></div></div></div>
-  <ol>
-    <li><b>Cluster, don't reply one by one.</b> Most submissions fall into three or four groups. Tag each with its lecture part or file.</li>
-    <li><b>Answer the top three in one post</b> (or a 5-minute video) before students reach Evaluate. Quote a submission (anonymized) for each — students see their confusion was shared and specific questions get rewarded.</li>
-    <li><b>Feed the rest forward.</b> A cluster you couldn't answer well is a lecture-part rewrite for next term.</li>
-  </ol>
-  <p>The lessons' specificity meter nudges students toward the four-field format, but grading stays with the rubric: participation — on time and genuine (80%) — and writing — specific, not generic (20%). A vague submission on time still earns most of the participation credit; the goal is better questions, not fewer points.</p>
-</section>
-
-<section class="module card" id="cd">
-  <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Running Concept Debates</h2><div class="module-meta"><span class="tag">3 stages per HOS</span></div></div></div>
+<section class="module card" id="how" style="margin-top:18px">
+  <div class="module-head"><div class="module-icon">🎯</div><div><h2>How to use these</h2><div class="module-meta"><span class="tag">≈ 10 min per grader, once per HOS</span></div></div></div>
+  <p>Each Application Challenge asks for judgment on a <em>new</em> scenario, so there's no single right answer. These pairs show where full credit and partial credit usually land. Before grading a batch, read the pair for that HOS and score both yourself, then compare with the suggested score. If two graders share a section, doing this together is the fastest way to agree.</p>
   <ul>
-    <li><b>Sides rotate automatically:</b> Team 1 argues Side A in HOS 1, HOS 3 and the Integration debate, and Side B in HOS 2 and HOS 4. You never assign individuals. Late adds without a team join the side with fewer Stage 1 posts.</li>
-    <li><b>Stage 2 is the one students skip.</b> Posting the strongest version of the other side before replying to anyone is what prevents "I agree" threads. Check for it first when grading.</li>
-    <li><b>Stage 3 must cite a classmate's specific point.</b> A synthesis that only affirms agreement doesn't meet the Writing criterion.</li>
-    <li><b>Evidence from the build counts most.</b> A test the student ran, a trace, a simulator setting — reward it over general claims.</li>
+    <li><b>The strong answer</b> makes one clear call and defends it with a concrete consequence — what breaks, for whom, if the call were wrong.</li>
+    <li><b>The typical answer</b> is on-topic and mostly correct but restates the week's build, stays general, or misclassifies one thing. It's what most submissions will look like.</li>
+    <li>The most common way to lose Transfer points is reusing the lesson's warm-up scenario instead of the student's own.</li>
   </ul>
 </section>
+<section class="module card" id="hos1"><div class="module-head"><div class="module-icon">🔁</div><div><h2>HOS 1 — Tool schemas for a different business</h2><div class="module-meta"><span class="tag">Week 2</span><span class="tag">O1</span></div></div></div><p class="prompt"><b>Prompt:</b> design the tool schemas (not implementations) another business would need for its own agent, and justify each — including whether the model should be allowed to call it at all.</p><p class="small muted">Rubric for every Application Challenge: Judgment &amp; reasoning 50 · Transfer to the new scenario 35 · Clarity 15. Scores below are suggestions to calibrate against, not answer keys — a different design argued well deserves full credit.</p><div class="ex strong"><div class="hd"><b>Strong answer · Food bank volunteer desk</b><span class="score">≈ 95 / 100</span></div>
+<blockquote><p><b>Business:</b> a regional food bank whose agent answers volunteers' questions and manages shift sign-ups.</p>
+<pre><code>list_open_shifts(site: "north"|"south"|"warehouse", date: YYYY-MM-DD)   → auto
+sign_up_for_shift(volunteer_id: str, shift_id: str)                   → confirm first
+cancel_shift(volunteer_id: str, shift_id: str)                        → confirm first
+update_emergency_contact(volunteer_id: str, name: str, phone: str)    → never</code></pre>
+<p><code>list_open_shifts</code> is read-only; a wrong call just shows the wrong day, which the volunteer can see. Sign-up and cancel commit a real person to a real warehouse, and a cancel the volunteer didn't mean leaves a site short-staffed, so the agent proposes and the volunteer taps yes. Emergency contacts are personal data about a third party; the agent links to the secure profile page instead.</p>
+<p><b>Rejected:</b> <code>send_reminder_to_all_volunteers</code>. One misread request ("remind everyone about Saturday") would text 800 people. That belongs to staff with a preview step, not to a chat agent.</p></blockquote>
+<ul class="why"><li><b>Judgment:</b> every tool gets a call and a concrete consequence; the rejected tool shows the student can say no.</li><li><b>Transfer:</b> a new domain with its own risks (third-party data, mass messaging), not the calculator restated.</li><li><b>Clarity:</b> schemas use constrained types (an enum for site, a date format), which shows the HOS 1 declaration ideas carried over.</li></ul></div><div class="ex weak"><div class="hd"><b>Typical answer — partial credit · Pizza shop</b><span class="score">≈ 65 / 100</span></div>
+<blockquote><p>The pizza shop needs <code>get_menu()</code>, <code>place_order(items)</code>, and <code>calculate_total(expression)</code>. The model should be able to call all of them because that's how function calling works — the model decides which tool to use, like in our calculator app. <code>calculate_total</code> is important because models are bad at math.</p></blockquote>
+<ul class="why"><li><b>Judgment (partial):</b> no auto / confirm / never distinction. <code>place_order</code> spends the customer's money and gets the same treatment as reading the menu.</li><li><b>Transfer (partial):</b> <code>calculate_total</code> is the HOS 1 calculator renamed; the reasoning is the lecture's, not the new business's.</li><li><b>Clarity:</b> readable, but <code>items</code> has no type or shape, so the model can't know how to fill it.</li><li><b>Feedback to give:</b> "Which of these would you let the model call without asking the customer? What happens if it's wrong?"</li></ul></div></section><section class="module card" id="hos2"><div class="module-head"><div class="module-icon">📚</div><div><h2>HOS 2 — Review someone else's RAG pipeline</h2><div class="module-meta"><span class="tag">Week 4</span><span class="tag">O2</span></div></div></div><p class="prompt"><b>Prompt:</b> given an unfamiliar RAG pipeline (the campus help-desk code in the lesson), name one thing it gets right, one thing likely to quietly underperform, and how you'd confirm that without running it.</p><p class="small muted">Rubric for every Application Challenge: Judgment &amp; reasoning 50 · Transfer to the new scenario 35 · Clarity 15. Scores below are suggestions to calibrate against, not answer keys — a different design argued well deserves full credit.</p><div class="ex strong"><div class="hd"><b>Strong answer · Help-desk pipeline</b><span class="score">≈ 95 / 100</span></div>
+<blockquote><p><b>Right:</b> every chunk stores <code>{"source": article_id}</code>. When an answer is wrong, you can see which article it came from — that's the first thing I'd want when debugging, and it lets the bot cite its source to students.</p>
+<p><b>Quietly underperforms:</b> the chunks are embedded with <code>task_type="RETRIEVAL_QUERY"</code>, the setting meant for questions. Nothing crashes, but documents embedded as queries tend to match questions less reliably, so the bot will sometimes pull a loosely related article and answer from it. It would show up most on questions phrased very differently from the articles ("my laptop won't talk to the wifi" vs. an article titled "Connecting to eduroam").</p>
+<p><b>Confirming without running it:</b> (1) Gemini's embedding docs describe the two task types and which side each is for — the code contradicts them. (2) Ask the team for five real student questions that got bad answers, and check whether the article that <em>should</em> have matched was the one retrieved; if the right article exists but loses, that points at retrieval rather than the model. (3) With <code>n_results=1</code>, a single slightly-wrong match has no backup, which makes this worse.</p></blockquote>
+<ul class="why"><li><b>Judgment:</b> picks the quiet failure the rubric is looking for and explains the mechanism, not just the name.</li><li><b>Transfer:</b> uses the new pipeline's specifics (student phrasing, help-desk articles) rather than the Northwind docs.</li><li><b>Confirm-without-running</b> is concrete: documentation, a small set of real failures, and a way to tell retrieval problems from model problems.</li></ul></div><div class="ex weak"><div class="hd"><b>Typical answer — partial credit · Help-desk pipeline</b><span class="score">≈ 60 / 100</span></div>
+<blockquote><p>It gets right that it uses Chroma, which is a good vector database. The problem is that <code>hits["documents"][0][0]</code> will crash if there are no results. Also chunking every 2,000 characters might not be ideal. To confirm, I would run the code with an empty database and see if it crashes.</p></blockquote>
+<ul class="why"><li><b>Judgment (partial):</b> the empty-result crash is real, but the prompt asked for something that <em>quietly</em> underperforms — a crash is loud. The chunking point is right but unexplained.</li><li><b>Transfer (partial):</b> "uses Chroma" is true of every pipeline in the course; it isn't something this pipeline got right.</li><li><b>Confirm-without-running:</b> missed entirely — the plan is to run it.</li><li><b>Feedback to give:</b> "Which of these would give students worse answers without anyone noticing? How would you prove it from outside the code?"</li></ul></div></section><section class="module card" id="hos3"><div class="module-head"><div class="module-icon">🛡️</div><div><h2>HOS 3 — A guardrail for a tool we haven't built</h2><div class="module-meta"><span class="tag">Week 6</span><span class="tag">O3</span></div></div></div><p class="prompt"><b>Prompt:</b> design a guardrail (schema + validation rule; working code optional) for a tool the course hasn't built. Argue for the one field you'd validate first and what goes wrong if you skip it.</p><p class="small muted">Rubric for every Application Challenge: Judgment &amp; reasoning 50 · Transfer to the new scenario 35 · Clarity 15. Scores below are suggestions to calibrate against, not answer keys — a different design argued well deserves full credit.</p><div class="ex strong"><div class="hd"><b>Strong answer · schedule_study_reminder</b><span class="score">≈ 95 / 100</span></div>
+<blockquote><p><b>Tool:</b> <code>schedule_study_reminder(message, send_at, channel)</code> for a study-assistant agent.</p>
+<pre><code>class ReminderArgs(BaseModel):
+    message: str = Field(min_length=1, max_length=200)
+    send_at: datetime            # must be timezone-aware
+    channel: Literal["push", "email"]
 
-<section class="module card" id="grading">
-  <div class="module-head"><div class="module-icon">📝</div><div><h2>Grading quickly — what full credit looks like</h2><div class="module-meta"><span class="tag">Rubrics from the syllabus</span></div></div></div>
-  <div class="table-wrap"><table class="t">
-    <tr><th>Item</th><th>Weights</th><th>Fast signals of full credit</th></tr>
-    <tr><td>Muddiest Point</td><td>Participation 80 · Writing 20</td><td>Names a specific step, file, or line; says what was tried.</td></tr>
-    <tr><td>Concept Debate</td><td>Participation 50 · Writing 50</td><td>All three stages posted; Stage 2 is a genuine best case for the other side; Stage 3 quotes a peer.</td></tr>
-    <tr><td>HOS — Evaluate</td><td>30%</td><td>Every required test run, including the failure cases; at least one thing the AI got wrong or missed, with evidence.</td></tr>
-    <tr><td>HOS — Analyze</td><td>30%</td><td>One mechanism explained in the student's own words, naming the failure the design prevents — not a paraphrase of AI output.</td></tr>
-    <tr><td>HOS — Understand &amp; Refine</td><td>40%</td><td>The hand-written extension works, is shown working, and the student can explain any line of it.</td></tr>
-    <tr><td>Application Challenge</td><td>Judgment 50 · Transfer 35 · Clarity 15</td><td>Applies the HOS judgment to the new scenario — not a restatement of the week's build.</td></tr>
-  </table></div>
-  <p class="small muted">Create/Scaffold is never graded on its own.</p>
-  <p><a href="ac-exemplars.html"><b>Application Challenge example answers →</b></a> a strong and a typical answer for each HOS, scored against the rubric, to calibrate before grading a batch.</p>
-</section>
-
-<section class="module card" id="refine">
-  <div class="module-head"><div class="module-icon">✋</div><div><h2>Checking that Understand &amp; Refine was done by hand</h2><div class="module-meta"><span class="tag">40% of each HOS</span></div></div></div>
-  <p>The Refine stage is the mastery check, so it's where AI use matters most. AI-text detectors are unreliable and shouldn't be the basis of a grade. These checks are cheaper and fairer — pick one or two that suit your section:</p>
-  <ul>
-    <li><b>One-line follow-up.</b> Pick one line of the student's Refine code and ask them to explain it — a two-minute async video, a discussion reply, or live in office hours. Someone who wrote it can answer immediately.</li>
-    <li><b>A separate commit.</b> Ask for the Refine work as its own commit (or small series of commits) after the scaffold. Small, incremental diffs with a clear message look very different from one large pasted block.</li>
-    <li><b>"One thing your version still gets wrong."</b> Every Refine checklist ends with a limitation question (a bad input the schema misses, a case the faithfulness heuristic is fooled by). Students who built it by hand tend to know; generated explanations tend to claim completeness.</li>
-    <li><b>Spot live checks.</b> In office hours, ask a student to make a tiny change to their Refine code (rename a field, add one validation rule) while sharing their screen.</li>
-  </ul>
-  <p class="small muted">State the policy in Week 1 and repeat it in each lesson — every Refine section is labeled "No AI assistant for this part."</p>
-</section>
-
-<section class="module card" id="hos">
-  <div class="module-head"><div class="module-icon">📚</div><div><h2>Per-HOS notes: likely confusions and snags</h2><div class="module-meta"><span class="tag">Plan support time around these</span></div></div></div>
-  <details class="hos" open><summary>HOS 1 — Foundations &amp; the Agentic Loop (Weeks 1–2)</summary>
-    <h4>Likely muddiest points</h4>
-    <ul><li>Where the tool actually runs (many assume the model runs it).</li><li>Why the backend resends the whole history with every call.</li><li>Why the API key can't sit in the frontend "just for a demo."</li></ul>
-    <h4>Snags</h4>
-    <ul><li>First-time Codespaces and <code>.env</code> setup; a missing or mistyped <code>GEMINI_API_KEY</code>.</li><li>Streamlit and uvicorn both need to run — two terminals.</li></ul>
-    <p class="small"><a href="hos-01-lesson.html">Lesson</a> · <a href="sim01-agentic-loop.html">Simulator</a> · <a href="../ai-410-guides/hos-01-foundations-agentic-loop.html">Hands-on guide</a></p>
-  </details>
-  <details class="hos"><summary>HOS 2 — Embeddings, Chunking &amp; RAG (Weeks 3–4)</summary>
-    <h4>Likely muddiest points</h4>
-    <ul><li>Why documents and queries use different <code>task_type</code> values.</li><li>Why chunk at all, and how big.</li><li>Why the model still invents answers when retrieval finds nothing relevant (this week's debate).</li></ul>
-    <h4>Snags</h4>
-    <ul><li>RAG instruction suppresses tool calls — the most common silent bug.</li><li><code>EMBED_DIM</code> mismatch between ingest and retrieval.</li><li>Forgetting to re-run <code>ingest.py</code> after adding the sixth document.</li></ul>
-    <p class="small"><a href="hos-02-lesson.html">Lesson</a> · <a href="sim02-rag-pipeline.html">Simulator</a> · <a href="../ai-410-guides/hos-02-embeddings-rag.html">Hands-on guide</a></p>
-  </details>
-  <details class="hos"><summary>HOS 3 — Guardrails &amp; Async Processing (Weeks 5–6)</summary>
-    <h4>Likely muddiest points</h4>
-    <ul><li>Why the worker must be a separate process rather than a function or thread.</li><li>Why the validation error goes into the retry.</li><li>Why a schema can't catch "valid but wrong."</li></ul>
-    <h4>Snags</h4>
-    <ul><li>Jobs stuck on <code>queued</code> — the worker isn't running. By far the most common.</li><li>macOS + RQ fork issue when running locally (use Codespaces, or the env var in the guide).</li><li>Retries that repeat the same error because the hint isn't fed back.</li></ul>
-    <h4>Also this unit</h4>
-    <p>Week 6 project checkpoint: not graded on depth. Flag any student with no team decision and no idea — they're the ones at risk in Week 9.</p>
-    <p class="small"><a href="hos-03-lesson.html">Lesson</a> · <a href="sim03-guardrails-queue.html">Simulator</a> · <a href="../ai-410-guides/hos-03-guardrails-async.html">Hands-on guide</a></p>
-  </details>
-  <details class="hos"><summary>HOS 4 — Mobile, Push &amp; Observability (Weeks 7–8)</summary>
-    <h4>Likely muddiest points</h4>
-    <ul><li>How nested spans are decided.</li><li>Why push is addressed to a device token, not a user.</li><li>What a faithfulness score can and can't detect.</li></ul>
-    <h4>Snags — budget the most support time here</h4>
-    <ul><li><code>npm</code> missing in an older Codespace — rebuild the container.</li><li>Expo SDK mismatch with Expo Go — <code>npx expo install expo@latest</code> then <code>--fix</code>.</li><li>iOS Expo Go requires the same Expo account signed in on the terminal and the phone.</li><li>Push token crash without an EAS project ID — <code>npx eas init</code>.</li><li><b>Android Expo Go no longer supports push (SDK 53+).</b> Tell Android-only students in advance: iPhone or a development build for the push proof step.</li><li>Expo push returns 200 OK for stale tokens — the error is in the response body.</li></ul>
-    <h4>Also this unit</h4>
-    <p>Week 8 Architecture Review and Integration Concept Debate — the heaviest week. Consider moving the HOS 4 Application Challenge deadline to the start of Week 9 if your section is struggling.</p>
-    <p class="small"><a href="hos-04-lesson.html">Lesson</a> · <a href="sim04-push-observability.html">Simulator</a> · <a href="../ai-410-guides/hos-04-mobile-observability.html">Hands-on guide</a></p>
-  </details>
-</section>
-
-<section class="module card" id="project">
-  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Weeks 9–10: running the Team/Term Project</h2><div class="module-meta"><span class="tag">20% of course</span></div></div></div>
-  <ul>
-    <li><b>Early Week 9:</b> ask every team for its Sprint 1 list (the <a href="team-project.html#backlog">backlog builder</a> copies it as Markdown). Check that Sprint 1 touches at least two HOS end to end, and that every HOS appears somewhere in the backlog.</li>
-    <li><b>Mid Week 9:</b> read standups for "blocked" lines older than a day — that's where to spend office hours.</li>
-    <li><b>Early Week 10:</b> feature freeze. Anything not working now gets named in the demo as "didn't make it," not rushed.</li>
-    <li><b>Demo day:</b> require a backup recording or screenshots — tunnels and Wi-Fi fail live, and a network failure shouldn't cost a Presentation grade. Ask each team "show me where HOS 2 is" — it tests Synthesis &amp; Scope in one question.</li>
-    <li><b>Collaboration (15%):</b> teams submit individual contribution notes linked to commits or issues; solo students submit a process reflection from their daily log.</li>
-  </ul>
-  <p class="small">Student-facing guide: <a href="team-project.html">Team/Term Project: Plan, Build &amp; Demo</a>.</p>
-</section>
-
-<section class="card">
-  <h2>Related</h2>
-  <ul>
-    <li><a href="../AI-410.html">AI 410 course schedule</a> · <a href="../AI-410-syllabus.html">Syllabus</a> · <a href="../AI-410-tracker.html">Materials tracker</a></li>
-    <li><a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a></li>
-    <li><a href="index.html">Interactive lessons &amp; simulators</a></li>
-  </ul>
-</section>
-
+    @field_validator("send_at")
+    def in_the_future_and_soon(cls, v):
+        now = datetime.now(timezone.utc)
+        if v.tzinfo is None: raise ValueError("send_at needs a timezone")
+        if not (now &lt; v &lt; now + timedelta(days=90)): raise ValueError("send_at must be within the next 90 days")
+        return v</code></pre>
+<p><b>Validate first: <code>send_at</code>.</b> Models are unreliable with relative dates ("next Tuesday at 9") and time zones. Skip this and you get reminders scheduled in the past (they fire instantly, or never), or at 9 AM UTC — 2 AM for a student in Seattle the night before an exam. Both look like success in the logs.</p>
+<p><b>What the schema can't check:</b> whether the student actually has an exam then, or wants 40 reminders. A per-user rate limit (a lookup against existing reminders) belongs in the tool itself, not the schema.</p></blockquote>
+<ul class="why"><li><b>Judgment:</b> the chosen field has a specific, realistic failure, and it's silent — exactly the HOS 3 lesson.</li><li><b>Transfer:</b> a new tool whose risks differ from <code>calculate</code>'s (time, time zones, spam).</li><li><b>Understands the limit</b> of schemas and names where the remaining check should live.</li></ul></div><div class="ex weak"><div class="hd"><b>Typical answer — partial credit · book_room</b><span class="score">≈ 62 / 100</span></div>
+<blockquote><p>For a <code>book_room(room, time)</code> tool I would use Pydantic to make sure <code>room</code> and <code>time</code> are both present and are strings. If they're missing the guardrail retries twice and then returns an error, just like our calculate guardrail. This matters because the model is nondeterministic and might forget a field.</p></blockquote>
+<ul class="why"><li><b>Judgment (partial):</b> "present and a string" is the weakest possible check; <code>time</code> as a free string lets "tomorrowish" through.</li><li><b>Transfer (partial):</b> the retry description is the lecture's; nothing is specific to booking rooms (double-booking, past times, rooms that don't exist).</li><li><b>Missing:</b> the "one field first, and what goes wrong" argument.</li><li><b>Feedback to give:</b> "Give me one value for <code>time</code> that passes your schema and still breaks the booking."</li></ul></div></section><section class="module card" id="hos4"><div class="module-head"><div class="module-icon">📡</div><div><h2>HOS 4 — An observability plan for a different AI feature</h2><div class="module-meta"><span class="tag">Week 8</span><span class="tag">O4 · O5</span></div></div></div><p class="prompt"><b>Prompt:</b> propose an observability plan — what to trace, what to score, what alert you'd want — for a different kind of AI feature, and argue what's worth watching versus what's noise.</p><p class="small muted">Rubric for every Application Challenge: Judgment &amp; reasoning 50 · Transfer to the new scenario 35 · Clarity 15. Scores below are suggestions to calibrate against, not answer keys — a different design argued well deserves full credit.</p><div class="ex strong"><div class="hd"><b>Strong answer · Meeting-notes summarizer</b><span class="score">≈ 95 / 100</span></div>
+<blockquote><p><b>Feature:</b> after a recorded meeting, an agent summarizes the transcript and emails action items to attendees.</p>
+<p><b>Trace:</b> one trace per meeting with spans for transcript fetch, summarization (model call), action-item extraction (model call), recipient lookup, and email send. Splitting summarization from extraction matters: if action items are wrong, I want to know whether the summary was already wrong.</p>
+<p><b>Score:</b> action-item recall — for a weekly sample of 20 meetings, a person marks the real action items, and the score is the fraction the agent found. Word overlap would reward copying the transcript; recall measures what people actually use the email for.</p>
+<p><b>Alert:</b> any email sent to an address that wasn't a meeting attendee → page the on-call engineer immediately. It's rare, it's a privacy incident, and someone has to act now.</p>
+<p><b>Not alerting on:</b> summary length, or per-meeting latency. Long summaries and a slow day are annoying, not urgent; both go on a weekly dashboard.</p></blockquote>
+<ul class="why"><li><b>Judgment:</b> one alert, clearly justified as rare + urgent + actionable; explicitly declines to alert on noise.</li><li><b>Transfer:</b> the score is designed for this feature's purpose, and the student explains why the course's word-overlap faithfulness wouldn't fit.</li><li><b>Clarity:</b> the span split is motivated by a debugging question, not listed for completeness.</li></ul></div><div class="ex weak"><div class="hd"><b>Typical answer — partial credit · Chatbot for a bank</b><span class="score">≈ 58 / 100</span></div>
+<blockquote><p>I would use Langfuse to trace every request and add a faithfulness score like in HOS 4. I would set alerts for latency over 3 seconds, faithfulness under 0.7, errors, token usage, and cost, so we know right away if anything goes wrong.</p></blockquote>
+<ul class="why"><li><b>Judgment (partial):</b> alerting on five metrics means alerting on everything; the prompt asked what is <em>not</em> worth watching.</li><li><b>Transfer (low):</b> "a chatbot" with faithfulness is the course's own feature; a bank raises new risks (account data, transactions) the plan never touches.</li><li><b>Feedback to give:</b> "If only one of these could page someone at 3 AM, which one — and why?"</li></ul></div></section><section class="card"><h2>Related</h2><ul>
+<li><a href="teaching-guide.html#grading">Teaching guide — grading signals</a></li>
+<li>Lessons: <a href="hos-01-lesson.html#challenge">HOS 1</a> · <a href="hos-02-lesson.html#challenge">HOS 2</a> · <a href="hos-03-lesson.html#challenge">HOS 3</a> · <a href="hos-04-lesson.html#challenge">HOS 4</a></li>
+<li><a href="../AI-410-syllabus.html">Syllabus — Application Challenge criteria</a></li></ul></section>
 </main>
 <footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
 <script>
@@ -399,22 +320,12 @@ details.hos h4 { margin-top:10px; font-size:.85rem; text-transform:uppercase; le
 })();
 </script>
 <script>
-function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){ return null; } }
 (function(){
   var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
   links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
   if(!('IntersectionObserver' in window)) return;
-  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest',inline:'center'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a) a.classList.add('active'); } }); },{rootMargin:'-45% 0px -50% 0px'});
   Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
-})();
-(function(){
-  var boxes=[].slice.call(document.querySelectorAll('#setupList input')), key='ai410-teach-setup';
-  var saved=(store(key)||'').split(',');
-  boxes.forEach(function(b,i){ if(saved[i]==='1') b.checked=true; b.addEventListener('change',upd); });
-  function upd(){ boxes.forEach(function(b){ b.parentNode.classList.toggle('done',b.checked); });
-    document.getElementById('setupProgress').textContent=boxes.filter(function(b){return b.checked;}).length+' / '+boxes.length+' done';
-    store(key,boxes.map(function(b){return b.checked?'1':'0';}).join(',')); }
-  upd();
 })();
 </script>
 </body>

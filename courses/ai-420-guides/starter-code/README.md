@@ -17,7 +17,7 @@ plus a portfolio template. Each HOS folder is a complete, standalone snapshot: c
    (Codespaces only reads a `.devcontainer/` at the repo root. The portfolio template's covers all four HOS.
    Each HOS folder also has its own, for opening it as a repo by itself.)
 2. In the HOS folder: `cp .env.example .env`, then paste your free Gemini API key as `GOOGLE_API_KEY`. Never commit `.env`.
-3. HOS 2–4 build their database automatically in Codespaces. Anywhere else, run `python data/seed_db.py` once.
+3. HOS 2–4 build `data/harbor.db` automatically the first time a tool needs it. `python data/seed_db.py` rebuilds it from scratch any time.
 4. Read that HOS's guide before you start. It says exactly what to build and submit.
 
 Everything here runs on free tiers with no credit card: the Gemini API free tier, Wikipedia, Open-Meteo, local SQLite and Chroma, and Langfuse's free cloud plan.

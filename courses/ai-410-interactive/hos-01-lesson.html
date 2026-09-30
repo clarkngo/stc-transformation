@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 410 HOS 1 (Weeks 1-2): lecture, Muddiest Point, Concept Debate, CEAU stages, Application Challenge and knowledge check for Foundations & the Agentic Loop.">
+<title>HOS 1 Interactive Lesson</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#1e8449; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#0e2a1c 0%,#155e37 60%,#1e8449 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --maxw:1100px; }
+
+.secnav { position:sticky; top:var(--header-h,62px); z-index:150; background:var(--surface); border-bottom:1px solid var(--border); box-shadow:var(--shadow); }
+.secnav-inner { max-width:var(--maxw); margin:0 auto; padding:8px 16px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:thin; }
+.secnav a { flex:none; font-size:.76rem; font-weight:600; text-decoration:none; color:var(--muted); padding:4px 10px; border-radius:16px; border:1px solid transparent; white-space:nowrap; }
+.secnav a:hover, .secnav a.active { color:var(--accent2); background:var(--accent-light); border-color:var(--accent); }
+.secnav .sep { flex:none; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:5px 4px 0 10px; }
+section.module { scroll-margin-top:calc(var(--header-h,62px) + 56px); }
+.part-banner { margin:30px 0 16px; padding:12px 18px; border-radius:var(--radius); background:var(--header-bg); color:var(--header-text); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:baseline; }
+.part-banner b { font-size:1.02rem; } .part-banner span { font-size:.8rem; opacity:.8; }
+.module-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; }
+.module-icon { width:40px; height:40px; flex:none; border-radius:10px; background:var(--accent-light); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+.module-head h2 { margin:0; }
+.module-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+.flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:6px 0 4px; }
+.flow a { text-decoration:none; color:inherit; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:block; }
+.flow a:hover { border-color:var(--accent); box-shadow:var(--shadow-hover); }
+.flow .n { font-size:.68rem; font-weight:800; color:var(--accent2); letter-spacing:.06em; text-transform:uppercase; }
+.flow .t { font-weight:700; font-size:.88rem; display:block; }
+.flow .w { font-size:.74rem; color:var(--muted); }
+.lo li { margin-bottom:6px; }
+.lecture-part { border-top:1px dashed var(--border); padding-top:14px; margin-top:16px; }
+.lecture-part:first-of-type { border-top:none; padding-top:0; margin-top:0; }
+.lecture-part h3 { margin-top:0; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.lecture-part h3 small { font-weight:600; color:var(--muted); font-size:.76rem; }
+.arch { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:10px 0 14px; }
+.arch .box { flex:1 1 150px; border:2px solid var(--border); border-radius:10px; padding:10px 12px; background:var(--surface2); font-size:.84rem; }
+.arch .box b { display:block; font-size:.9rem; }
+.arch .box.key { border-color:var(--accent); }
+.arch .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.seq { counter-reset:s; list-style:none; margin:10px 0 14px; padding:0; }
+.seq li { counter-increment:s; position:relative; padding:8px 12px 8px 44px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; background:var(--surface); font-size:.88rem; }
+.seq li::before { content:counter(s); position:absolute; left:10px; top:8px; width:24px; height:24px; border-radius:50%; background:var(--accent); color:var(--on-accent); font-weight:800; font-size:.78rem; display:flex; align-items:center; justify-content:center; }
+.seq li.loopback { border-style:dashed; border-color:var(--amber); }
+dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted); font-size:.88rem; }
+.two { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+.eg { border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; background:var(--surface2); }
+.eg.weak { border-left:5px solid var(--bad); } .eg.strong { border-left:5px solid var(--ok); }
+.eg .label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+.eg.weak .label { color:var(--bad); } .eg.strong .label { color:var(--ok); }
+.counter { font-size:.72rem; color:var(--muted); text-align:right; }
+.spec-meter { display:flex; gap:10px; align-items:center; margin:12px 0 6px; font-size:.84rem; }
+.spec-track { flex:1; height:10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.spec-fill { height:100%; width:0; background:var(--bad); transition:width .25s, background .25s; }
+.hints { font-size:.8rem; margin:4px 0 10px 1.1em; color:var(--muted); }
+.hints li.ok { color:var(--ok); } .hints li.no { color:var(--bad); }
+.stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:10px 0 16px; }
+.stage { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface2); font-size:.85rem; }
+.stage .day { font-size:.7rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--violet); }
+.side { border:2px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; }
+.side.a { border-color:var(--blue); } .side.b { border-color:var(--rose); }
+.side.mine { box-shadow:0 0 0 4px var(--accent-light); }
+.side h4 { display:flex; justify-content:space-between; gap:6px; }
+.checklist label { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; background:var(--surface); font-size:.88rem; }
+.checklist input { margin-top:4px; accent-color:var(--accent); width:16px; height:16px; flex:none; }
+.checklist label.done { background:var(--ok-bg); border-color:var(--ok); }
+.progress-line { font-size:.8rem; font-weight:700; color:var(--accent2); margin-bottom:8px; }
+.pick { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:12px; }
+.pick button { text-align:left; background:var(--surface2); border:2px solid var(--border); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:.85rem; color:var(--text); cursor:pointer; }
+.pick button[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-light); }
+.pick button b { display:block; }
+.sorter-row { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:.86rem; background:var(--surface); }
+.sorter-row .opts { display:flex; gap:4px; flex-wrap:wrap; }
+.sorter-row .opts button { font-family:inherit; font-size:.72rem; font-weight:700; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:6px; padding:4px 8px; cursor:pointer; }
+.sorter-row .opts button[aria-pressed="true"].auto { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+.sorter-row .opts button[aria-pressed="true"].confirm { background:var(--amber-bg); border-color:var(--amber); color:var(--amber); }
+.sorter-row .opts button[aria-pressed="true"].never { background:var(--bad-bg); border-color:var(--bad); color:var(--bad); }
+.sorter-row .why { grid-column:1/-1; font-size:.8rem; color:var(--muted); display:none; }
+.sorter-row.revealed .why { display:block; }
+@media (max-width:560px){ .sorter-row { grid-template-columns:1fr; } }
+.q { border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:10px; background:var(--surface); }
+.q .stem { font-weight:700; font-size:.9rem; margin-bottom:8px; }
+.q .opt { display:block; width:100%; text-align:left; font-family:inherit; font-size:.86rem; color:var(--text); background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:7px 10px; margin-bottom:6px; cursor:pointer; }
+.q .opt.right { background:var(--ok-bg); border-color:var(--ok); }
+.q .opt.wrong { background:var(--bad-bg); border-color:var(--bad); }
+.q .fb { font-size:.82rem; margin-top:4px; display:none; }
+.q.answered .fb { display:block; }
+.score { font-weight:800; color:var(--accent2); }
+.project-map td:first-child { font-weight:700; white-space:nowrap; }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">410</span><span><b>AI 410: AI Engineering</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-410.html">← AI 410</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 410 · HOS 1 · Weeks 1–2 · Sample interactive lesson</div>
+    <h1>Foundations &amp; the Agentic Loop</h1>
+    <p class="lede">What a full-stack AI app is actually made of, what an LLM actually does, and the loop that lets a model ask your code to run a real function — built fast in Week 1, explained and extended by hand in Week 2.</p>
+    <div class="chips"><span class="chip">Outcome O1</span><span class="chip">2 weeks</span><span class="chip">Lecture · MP · CD</span><span class="chip">CEAU: Create → Evaluate → Analyze → Refine</span><span class="chip">Application Challenge</span><span class="chip">Codespaces · free tier</span></div>
+  </div>
+</section>
+<main id="main">
+
+<nav class="secnav no-print" aria-label="Lesson sections">
+  <div class="secnav-inner">
+    <a href="#overview">Overview</a>
+    <span class="sep">Week 1</span>
+    <a href="#lecture">Lecture</a>
+    <a href="#muddiest">Muddiest Point</a>
+    <a href="#debate">Concept Debate</a>
+    <a href="#create">Create / Scaffold</a>
+    <a href="#evaluate">Evaluate</a>
+    <span class="sep">Week 2</span>
+    <a href="#analyze">Analyze</a>
+    <a href="#refine">Understand &amp; Refine</a>
+    <a href="#challenge">Application Challenge</a>
+    <a href="#check">Knowledge Check</a>
+    <a href="#project">Team Project</a>
+  </div>
+</nav>
+
+<div class="callout amber" style="margin-top:20px">
+  <span class="label">Course design constraints</span>
+  <p>This lesson follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>: it adapts to AI 410's official description and Outcome O1 (never the reverse), every hands-on step runs in GitHub Codespaces, and everything uses free tiers — the Gemini API key is free and needs no credit card. See the <a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a>.</p>
+</div>
+
+<section class="module card" id="overview">
+  <div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag">Outcome O1</span><span class="tag blue">12.5% HOS + MP + CD + AC</span></div></div></div>
+  <p>Most people meet a large language model through a chat box, and it's easy to think the chat box <em>is</em> the model. It isn't. Behind every AI product there are at least three separate pieces — a <strong>frontend</strong> the user sees, a <strong>backend</strong> that holds secrets and makes decisions, and the <strong>LLM</strong> itself, which only ever turns text into more text. This first HOS is about seeing those pieces clearly, and then about the one idea that turns a chat app into an <em>agent</em>: letting the model ask your code to run a real function and wait for the answer.</p>
+  <p>You'll spend Week 1 getting a working app running quickly with an AI coding assistant and then judging it on purpose. Week 2 is the harder half: explaining exactly how the loop works, extending it by hand, and applying the same judgment to a business you've never built for.</p>
+  <div class="callout blue">
+    <span class="label">Anchoring analogy</span>
+    <p>Think of the LLM as a very well-read consultant on a phone line. They can reason, explain, and draft — but they can't touch anything. A <em>tool</em> is you, on the other end, offering "I can look that up / run that calculation for you." The agentic loop is the conversation where the consultant says "please run <code>calculate('342*87')</code> and tell me what you get," waits for your answer, and only then replies to the customer. The consultant never sees your filing cabinet; they only ever see what you read back to them.</p>
+  </div>
+  <h3>Learning objectives</h3>
+  <p class="small muted">By the end of the two weeks you will be able to:</p>
+  <ol class="lo">
+    <li>Identify the frontend, backend, and LLM in a full-stack AI app, and explain why the API key belongs only in the backend. <span class="tag">O1</span></li>
+    <li>Describe what an LLM actually produces — tokens predicted from a context window — and why the same input can give different outputs. <span class="tag">O1</span></li>
+    <li>Distinguish prompt engineering (wording the request) from context engineering (deciding what information the model sees). <span class="tag">O1</span></li>
+    <li>Trace the agentic loop step by step: model → function call → backend executes → result returned → final answer. <span class="tag">O1</span></li>
+    <li>Judge which functions a model should be allowed to call on its own, and which need a human in the loop. <span class="tag">O1</span></li>
+  </ol>
+  <h3>Your two weeks at a glance</h3>
+  <div class="flow">
+    <a href="#lecture"><span class="n">Wk 1 · Mon</span><span class="t">Lecture</span><span class="w">~75 min, 3 parts</span></a>
+    <a href="#muddiest"><span class="n">Wk 1 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a>
+    <a href="#debate"><span class="n">Wk 1 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a>
+    <a href="#create"><span class="n">Wk 1 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">not graded</span></a>
+    <a href="#evaluate"><span class="n">Wk 1 · Fri–Sun</span><span class="t">Evaluate</span><span class="w">30% of HOS</span></a>
+    <a href="#analyze"><span class="n">Wk 2 · Mon–Tue</span><span class="t">Analyze</span><span class="w">30% of HOS</span></a>
+    <a href="#refine"><span class="n">Wk 2 · Wed–Thu</span><span class="t">Understand &amp; Refine</span><span class="w">40% of HOS · no AI</span></a>
+    <a href="#challenge"><span class="n">Wk 2 · Fri–Sun</span><span class="t">Application Challenge</span><span class="w">5% of course</span></a>
+    <a href="#check"><span class="n">Wk 2 · any time</span><span class="t">Knowledge Check</span><span class="w">self-check</span></a>
+  </div>
+  <p class="small muted" style="margin-top:10px">Days are a suggested pacing for an online term, not fixed deadlines — your instructor's LMS dates win.</p>
+</section>
+
+<!-- ========================= WEEK 1 ========================= -->
+<div class="part-banner"><b>Week 1 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div>
+
+<section class="module card" id="lecture">
+  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: from chat box to agent</h2><div class="module-meta"><span class="tag">≈ 75 min</span><span class="tag blue">3 short parts</span><span class="tag">O1</span></div></div></div>
+  <p class="small muted">Three short segments instead of one long one — pause after each and try the linked check before moving on. If something stays fuzzy, that's exactly what your <a href="#muddiest">Muddiest Point</a> is for.</p>
+
+  <div class="lecture-part">
+    <h3>Part 1 — Anatomy of a full-stack AI app <small>≈ 20 min</small></h3>
+    <p>Every app you build this term has the same three-piece shape. The <strong>frontend</strong> (a Streamlit page now, an Expo mobile app in HOS 4) collects the user's message and shows the reply. The <strong>backend</strong> (a FastAPI server) receives that message over HTTP, adds anything the model needs, calls the LLM, and runs any tools. The <strong>LLM</strong> (Google's Gemini, via the free API) receives text and returns text — or, as you'll see in Part 3, a structured request to run a function.</p>
+    <div class="arch" aria-label="Frontend to backend to LLM">
+      <div class="box"><b>Frontend</b>Streamlit chat page. Runs on the user's machine / browser. <em>Anyone can inspect it.</em></div>
+      <div class="arrow">⇄</div>
+      <div class="box key"><b>Backend 🔑</b>FastAPI <code>POST /chat</code>. Holds <code>GEMINI_API_KEY</code> in <code>.env</code>. Runs tools.</div>
+      <div class="arrow">⇄</div>
+      <div class="box"><b>LLM</b>Gemini API. Sees only what the backend sends it.</div>
+    </div>
+    <div class="callout">
+      <span class="label">Worked example</span>
+      <p>A classmate ships a quick demo that calls Gemini directly from the frontend, with the API key pasted into the JavaScript. It works — and within an hour of posting the link, anyone who opens the browser's developer tools can copy the key and spend its quota. Moving the call behind a backend endpoint doesn't make the app smarter; it makes the secret unreachable. That's the first reason the backend exists. The second is that tools (Part 3) have to run somewhere trustworthy too.</p>
+    </div>
+  </div>
+
+  <div class="lecture-part">
+    <h3>Part 2 — What an LLM actually does <small>≈ 25 min</small></h3>
+    <p>An LLM reads a sequence of <strong>tokens</strong> (word pieces) and predicts the next one, over and over, until it decides to stop. Everything it "knows" about your conversation is whatever fits in its <strong>context window</strong> for that single request — the system instruction, the chat history your backend chose to resend, any retrieved documents, and the user's latest message. It doesn't remember the last request unless you send it again.</p>
+    <p>Because each next token is <em>sampled</em> from a probability distribution, the same input can produce different outputs. That <strong>nondeterminism</strong> is a feature for writing and a hazard for software — it's why HOS 3 adds guardrails, and why "it worked once" is never a complete Evaluate.</p>
+    <div class="table-wrap"><table class="t">
+      <tr><th></th><th>Prompt engineering</th><th>Context engineering</th></tr>
+      <tr><td><b>Question it answers</b></td><td>How should I word the request?</td><td>What information should the model see at all?</td></tr>
+      <tr><td><b>Where it lives</b></td><td>The instruction text</td><td>The backend code that assembles each request</td></tr>
+      <tr><td><b>Example</b></td><td>"Answer in two sentences, cite the policy."</td><td>Resend only the last 6 turns; attach the 3 most relevant policy chunks; list the tools available.</td></tr>
+      <tr><td><b>Where you'll see it</b></td><td>Every HOS</td><td>Tool declarations (HOS 1), retrieval (HOS 2), trace review (HOS 4)</td></tr>
+    </table></div>
+    <div class="callout violet">
+      <span class="label">Quick check</span>
+      <p>If you delete the chat-history list in your backend, does the model "forget" the conversation — or does it still remember? Decide, then confirm by trying it in Week 1's build.</p>
+    </div>
+  </div>
+
+  <div class="lecture-part">
+    <h3>Part 3 — The agentic loop &amp; tool calling <small>≈ 30 min</small></h3>
+    <p>A plain chat app is one round trip: message in, text out. An <strong>agent</strong> adds a loop. Your backend tells the model which functions exist (a name, a description, and a parameter schema). When the model decides a function would help, it doesn't reply with text — it replies with a <strong>function call</strong>: a name and arguments. Your backend runs the real function, sends the result back, and asks again. The loop ends when the model replies with plain text.</p>
+    <ol class="seq">
+      <li>User types <em>"What's 342 times 87?"</em>; the frontend POSTs it to <code>/chat</code>.</li>
+      <li>Backend sends the message + the <code>calculate</code> tool declaration to Gemini.</li>
+      <li>Gemini replies with <code>function_call: calculate(expression="342*87")</code> — no text yet.</li>
+      <li>Backend runs the real Python function → <code>29754</code>.</li>
+      <li class="loopback">Backend sends the <code>function_response</code> back to Gemini, along with the history so far. <em>(This is the "loop" — it can repeat.)</em></li>
+      <li>Gemini replies with text: <em>"342 × 87 = 29,754."</em> Backend returns it to the frontend.</li>
+    </ol>
+<pre><code># the shape of a tool declaration (simplified)
+calculate_tool = {
+    "name": "calculate",
+    "description": "Evaluate a basic arithmetic expression. Use for any math.",
+    "parameters": {
+        "type": "object",
+        "properties": {"expression": {"type": "string", "description": "e.g. '342*87'"}},
+        "required": ["expression"],
+    },
+}</code></pre>
+    <p>Notice what the model <em>never</em> does: it never runs the function. It only asks. That's the property that makes tool calling safe to reason about — and it's why deciding <em>which</em> functions to expose is an engineering judgment, not a detail (you'll practice that in the <a href="#challenge">Application Challenge</a>).</p>
+    <div class="callout">
+      <span class="label">Try it before the build</span>
+      <p>Open the <a href="sim01-agentic-loop.html"><strong>Agentic Loop Simulator</strong></a> and step through "What's 342 times 87?", then "Tell me a joke", then "Calculate 12 / (3 -". Watch where each one exits the loop.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Teaching note</span>
+      <p>Students new to backends often assume the model "has" the calculator. Have them point, on the step list above, to the exact line where Python runs — it's the moment the misconception breaks. Seed the Muddiest Point with it if nobody raises it.</p>
+    </div>
+  </div>
+
+  <h3>New words this week</h3>
+  <dl class="gloss">
+    <dt>Frontend / backend</dt><dd>What the user sees vs. the server that holds your API key and runs tools.</dd>
+    <dt>Token &amp; context window</dt><dd>The word pieces a model reads and writes, and the maximum amount of them it can consider in one request.</dd>
+    <dt>Agentic loop</dt><dd>The cycle of model → function call → your code runs it → result back to the model, repeated until the model answers in text.</dd>
+    <dt>Tool / function declaration</dt><dd>The name, description, and parameter schema you give the model so it knows a function exists and how to ask for it.</dd>
+  </dl>
+</section>
+
+<section class="module card" id="muddiest">
+  <div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag rose">Graded · part of 5% MP category</span><span class="tag">Due before the build begins</span></div></div></div>
+  <p>Not a blank box. Four short fields, because a specific confusion is much easier for your instructor to fix than "this week was confusing." Draft it here — your draft stays in this browser only — then <strong>copy it into the LMS submission</strong>.</p>
+  <div class="two" style="margin-bottom:14px">
+    <div class="eg weak"><span class="label">Doesn't meet the bar</span>"I didn't really get the agent loop part. Tool calling is confusing."</div>
+    <div class="eg strong"><span class="label">Meets the bar</span>"In Part 3, step 5: why does the backend have to resend the whole history with the function result? Couldn't it just send <code>29754</code>? I re-read step 5 and tried the simulator — the log shows the history growing but not why."</div>
+  </div>
+  <form id="mpForm" onsubmit="return false">
+    <label class="field" for="mp1">1 · What were you doing right before you got confused?</label>
+    <input type="text" id="mp1" placeholder="e.g. Lecture Part 3, step 5 — or a line in the hands-on guide">
+    <label class="field" for="mp2">2 · The exact place you got stuck</label>
+    <textarea id="mp2" placeholder="Not 'I don't get agents' — the specific thing that doesn't add up."></textarea>
+    <div class="counter" id="mp2count">0 words</div>
+    <label class="field" for="mp3">3 · What you already tried</label>
+    <textarea id="mp3" placeholder="Re-read a section, searched something specific, asked a classmate, tried the simulator…"></textarea>
+    <label class="field" for="mp4">4 · Optional: your best guess at the answer</label>
+    <textarea id="mp4" placeholder="Even if you think it's wrong."></textarea>
+  </form>
+  <div class="spec-meter"><b>Specificity</b><div class="spec-track"><div class="spec-fill" id="specFill"></div></div><span id="specLabel">—</span></div>
+  <ul class="hints" id="specHints"></ul>
+  <div class="row"><button class="btn" id="mpCopy" type="button">Copy for submission</button><button class="btn secondary" id="mpClear" type="button">Clear draft</button><span class="small muted" id="mpStatus" aria-live="polite"></span></div>
+  <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — on time, addresses a genuine confusion (80%) · Writing — clear, specific, not generic (20%). The meter above is a nudge, not your grade.</p>
+</section>
+
+<section class="module card" id="debate">
+  <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag">Discussion board · 3 stages</span></div></div></div>
+  <div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>When a request might need a tool, who should decide — the model, or deterministic backend code?</strong></p></div>
+  <p>You'll argue a side you're <em>assigned</em>, then argue the other one, then drop advocacy and synthesize. Nobody gets to post "I agree" — by Stage 3 everyone has argued both sides.</p>
+  <div class="row" style="margin-bottom:10px">
+    <label for="sidInput" class="small"><b>Find your assigned side:</b> last digit of your student ID</label>
+    <select id="sidInput" style="width:auto"><option value="">—</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select>
+    <span class="small" id="sideResult" aria-live="polite"></span>
+  </div>
+  <div class="two">
+    <div class="side a" id="sideA">
+      <h4><span>Side A — Let the model decide</span><span class="tag blue">even digits</span></h4>
+      <p>Declare the tools and let the LLM choose when to call them.</p>
+      <ul class="small">
+        <li>Handles phrasing no rule anticipated ("what's a 15% tip on $48?").</li>
+        <li>Adding a tool is one declaration, not a new routing rule.</li>
+        <li>This is how the Gemini function-calling API is designed to work.</li>
+      </ul>
+    </div>
+    <div class="side b" id="sideB">
+      <h4><span>Side B — Backend code decides</span><span class="tag rose">odd digits</span></h4>
+      <p>Use rules (regex, keywords, a classifier) to decide, and only ask the model to phrase the answer.</p>
+      <ul class="small">
+        <li>Deterministic: the same input always takes the same path — testable.</li>
+        <li>The model can't call a tool it was never routed to.</li>
+        <li>Cheaper: fewer model round trips per request.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="stages">
+    <div class="stage"><span class="day">Stage 1 · by Tue</span><h4>Initial position</h4>Argue your assigned side with one specific claim and one piece of evidence — a test you ran, a line of the guide, a simulator run. Not a topic summary.</div>
+    <div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>Before replying to anyone, post the <em>strongest</em> version of the side you didn't hold.</div>
+    <div class="stage"><span class="day">Stage 3 · by Sat</span><h4>Synthesis</h4>Drop advocacy. State a real position (it can be "it depends on X"), citing at least one specific point from a classmate's post.</div>
+  </div>
+  <div class="two">
+    <div class="eg weak"><span class="label">Weak synthesis</span>"Great points everyone, I think both sides are right and it depends on the situation."</div>
+    <div class="eg strong"><span class="label">Strong synthesis</span>"Priya's point that a routing rule is testable changed my mind for anything that writes data. I'd let the model choose read-only tools like <code>calculate</code>, but route anything that sends email or charges money through backend code that checks the request first — which is roughly what HOS 3's guardrails do."</div>
+  </div>
+  <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%). A reply that only affirms agreement without citing what it agrees with doesn't meet the Writing criterion.</p>
+</section>
+
+<section class="module card" id="create">
+  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag">Not graded on its own</span><span class="tag blue">GitHub Codespaces</span></div></div></div>
+  <p>Get a working app running fast with an AI coding assistant. This is the starting point, not the deliverable — you don't hand-edit anything yet.</p>
+  <ol>
+    <li>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-01-foundations-agentic-loop" target="_blank" rel="noopener">the HOS 1 starter-code folder</a> in GitHub Codespaces (its <code>.devcontainer</code> sets up Python for you).</li>
+    <li>Put your free Gemini key in <code>backend/.env</code> as <code>GEMINI_API_KEY=…</code> — never in the frontend.</li>
+    <li>Give your assistant the starting prompt below, and iterate until the chat app calls at least one tool.</li>
+  </ol>
+<pre><code>Build a full-stack chat app in this folder:
+- backend/: a FastAPI server with a POST /chat endpoint that calls the Gemini API
+  (google-genai), reading GEMINI_API_KEY from a .env file. Give it an agentic loop:
+  the model should be able to call a real tool (e.g. a calculator) via function
+  calling, and the tool's result should go back to the model before it replies.
+- frontend/: a Streamlit chat app that calls the backend's /chat endpoint over HTTP.
+- requirements.txt files for both.</code></pre>
+  <p class="small">Full step-by-step instructions, troubleshooting, and the exact submission list are in the <a href="../ai-410-guides/hos-01-foundations-agentic-loop.html">HOS 1 hands-on guide</a>. Unsure what a generated file does? <a href="../ai-410-guides/starter-code-walkthrough.html#hos1">Starter code walkthrough →</a></p>
+</section>
+
+<section class="module card" id="evaluate">
+  <div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag">30% of HOS grade</span></div></div></div>
+  <p>Is the AI-produced result actually right? Test it <em>on purpose</em>. Tick each test as you run it and jot what happened — this becomes your Evaluate note.</p>
+  <div class="progress-line" id="evalProgress">0 / 4 tests run</div>
+  <div class="checklist" id="evalList">
+    <label><input type="checkbox"><span><b>Needs the tool:</b> "What's 342 times 87?" — did the backend log show a real <code>calculate</code> call, or did the model guess the number in text?</span></label>
+    <label><input type="checkbox"><span><b>Doesn't need the tool:</b> "Say hi in French" — did it answer directly instead of forcing a tool call?</span></label>
+    <label><input type="checkbox"><span><b>Breaks the tool:</b> "Calculate 12 / (3 -" — does it fail gracefully, or crash the whole request with a 500?</span></label>
+    <label><input type="checkbox"><span><b>Your own test:</b> one input you chose because you suspect the AI got something wrong. Say why you suspected it.</span></label>
+  </div>
+  <label class="field" for="evalNote">Draft your Evaluate note (stays in this browser)</label>
+  <textarea id="evalNote" placeholder="What I tested · what I found · what the AI got wrong, missed, or handled surprisingly well"></textarea>
+  <p class="small muted">Submit: a screenshot of the working app + this note, via the LMS.</p>
+</section>
+
+<!-- ========================= WEEK 2 ========================= -->
+<div class="part-banner"><b>Week 2 · Explain &amp; Master</b><span>Analyze → Understand &amp; Refine → Application Challenge → Knowledge Check</span></div>
+
+<section class="module card" id="analyze">
+  <div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does this work?</h2><div class="module-meta"><span class="tag">30% of HOS grade</span></div></div></div>
+  <p>Pick <strong>one</strong> specific piece of the AI-generated code and explain, in your own words, exactly how it works. Depth beats breadth: one function explained well scores higher than a tour of every file.</p>
+  <div class="pick" id="analyzePick">
+    <button type="button" aria-pressed="false" data-k="loop"><b>The loop in <code>agent.py</code></b>What stops it? What happens if the model calls a tool twice in a row?</button>
+    <button type="button" aria-pressed="false" data-k="decl"><b>The tool declaration</b>How does the model know <code>expression</code> is a string, and what does the description change?</button>
+    <button type="button" aria-pressed="false" data-k="flow"><b>The <code>/chat</code> request flow</b>From Streamlit's HTTP call to the JSON the backend returns — every hop.</button>
+  </div>
+  <div class="callout blue" id="analyzeFrame"><span class="label">Explain-it frame</span><p>Pick a piece above to see prompts that make a strong Analyze.</p></div>
+  <p class="small muted">Common trap: pasting the AI's own explanation of the code. Your instructor will ask a follow-up about one line — write it so you could answer.</p>
+</section>
+
+<section class="module card" id="refine">
+  <div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag">40% of HOS grade</span><span class="tag bad">No AI assistant for this part</span></div></div></div>
+  <p>Add a <strong>second tool</strong> yourself — for example <code>get_current_time(timezone)</code> or <code>convert_units(value, from_unit, to_unit)</code> — and prove the agent chooses the right tool for the right question.</p>
+  <div class="progress-line" id="refineProgress">0 / 5 done</div>
+  <div class="checklist" id="refineList">
+    <label><input type="checkbox"><span>Write the Python function and test it on its own (no model involved).</span></label>
+    <label><input type="checkbox"><span>Write its declaration: name, a description that says <em>when</em> to use it, and a parameter schema.</span></label>
+    <label><input type="checkbox"><span>Register it alongside <code>calculate</code> and add it to the backend's dispatch (name → function).</span></label>
+    <label><input type="checkbox"><span>Ask one question for each tool and one needing neither — screenshot the backend log for all three.</span></label>
+    <label><input type="checkbox"><span>Write 2–3 sentences: what you changed, and one thing that surprised you.</span></label>
+  </div>
+  <p class="small muted">This is the mastery check: can you change the system correctly without the assistant doing it for you? Rehearse first in the <a href="sim01-agentic-loop.html">simulator</a> — toggle a second tool on and watch the routing change.</p>
+</section>
+
+<section class="module card" id="challenge">
+  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — tools for a business you've never built for</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Design &amp; justify — not a full build</span></div></div></div>
+  <p>Pick a business, then design the tool schemas (not implementations) its agent would need. The hard part isn't the JSON — it's the judgment call: <em>should the model be able to call this at all?</em></p>
+  <div class="pick" id="bizPick">
+    <button type="button" aria-pressed="true" data-b="vet"><b>🐾 Neighborhood vet clinic</b>Appointment booking &amp; pet records</button>
+    <button type="button" aria-pressed="false" data-b="bike"><b>🚲 City bike-share</b>Station availability &amp; rider accounts</button>
+    <button type="button" aria-pressed="false" data-b="lib"><b>📚 Community library</b>Catalog, holds &amp; fines</button>
+  </div>
+  <h3>Warm-up: sort the proposed tools</h3>
+  <p class="small">For each tool, decide: can the model call it <b>automatically</b>, does it need <b>user confirmation</b> first, or should it <b>never</b> be exposed to the model? Then reveal the reasoning.</p>
+  <div id="sorter"></div>
+  <div class="row" style="margin:8px 0 16px"><button class="btn" id="sorterReveal" type="button">Reveal reasoning</button><span class="small" id="sorterScore" aria-live="polite"></span></div>
+  <div class="callout"><span class="label">What to submit</span>
+    <ul>
+      <li>3–4 tool declarations (name, description, parameters) for your chosen business.</li>
+      <li>For each: auto / confirm / never, and one sentence on what could go wrong if you chose wrong.</li>
+      <li>One tool you considered and <em>rejected</em>, and why.</li>
+    </ul>
+  </div>
+  <p class="small muted"><b>Grading:</b> Judgment &amp; reasoning (50%) · Transfer to the new scenario, not a restatement of the calculator build (35%) · Clarity (15%).</p>
+</section>
+
+<section class="module card" id="check">
+  <div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag">Self-check · not graded</span></div></div></div>
+  <p>Five quick questions. Then answer the two open questions below out loud or in a notes file — they're the ones your instructor will ask in the Week 2 check-in.</p>
+  <div id="quiz"></div>
+  <p class="score" id="quizScore" aria-live="polite"></p>
+  <h3>Open questions</h3>
+  <ol>
+    <li>What's the difference between the frontend and backend, and why does the API key live in the backend only?</li>
+    <li>Walk through what happens, step by step, from typing a message to the agent deciding to call a tool.</li>
+  </ol>
+</section>
+
+<section class="module card" id="project">
+  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Team/Term Project — introduced this week</h2><div class="module-meta"><span class="tag">20% of course</span><span class="tag amber">Nothing due yet</span></div></div></div>
+  <p>The capstone combines all 4 HOS into one app, presented in Week 10. There's no deliverable now — just start carrying an idea. A good first question: <strong>what are the 2–4 tools your project's agent would need, and which of them should require confirmation?</strong> That's this week's Application Challenge, pointed at your own idea.</p>
+  <div class="table-wrap"><table class="t project-map">
+    <tr><th>HOS</th><th>What it contributes to your project</th><th>Rehearse it in</th></tr>
+    <tr><td>HOS 1</td><td>The agent and its tools</td><td><a href="sim01-agentic-loop.html">Agentic Loop Simulator</a></td></tr>
+    <tr><td>HOS 2</td><td>Answers grounded in your project's own documents</td><td><a href="sim02-rag-pipeline.html">RAG Pipeline Simulator</a></td></tr>
+    <tr><td>HOS 3</td><td>Validated tool calls and slow work moved to a background job</td><td><a href="sim03-guardrails-queue.html">Guardrails &amp; Queue Simulator</a></td></tr>
+    <tr><td>HOS 4</td><td>A mobile client, push notifications, and traces you can debug from</td><td><a href="sim04-push-observability.html">Push &amp; Observability Simulator</a></td></tr>
+  </table></div>
+  <p class="small">Full description, the "Study Buddy" example, and the Scrum-lite planning framework: <a href="../AI-410-syllabus.html#team-project">syllabus → Team/Term Project</a>.</p>
+</section>
+
+<section class="card">
+  <h2>Resources</h2>
+  <ul>
+    <li><a href="../ai-410-guides/hos-01-foundations-agentic-loop.html">HOS 1 hands-on guide</a> — the full build, stage by stage</li>
+    <li><a href="../ai-410-guides/week-01-foundations.html">Week 1 guide</a> · <a href="../ai-410-guides/week-02-agentic-loop.html">Week 2 guide</a></li>
+    <li><a href="../ai-410-guides/concept-companion.html">Concept Companion</a> — every concept to know before starting a HOS</li>
+    <li><a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a> — free Gemini key, GitHub, Codespaces</li>
+    <li><a href="sim01-agentic-loop.html">Agentic Loop Simulator</a></li>
+  </ul>
+</section>
+
+</main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai410-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai410-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){ return null; } }
+
+/* section nav highlight */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a'));
+  var map={}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest',inline:'center'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+
+/* Muddiest Point */
+(function(){
+  var ids=['mp1','mp2','mp3','mp4'], els=ids.map(function(i){return document.getElementById(i);});
+  els.forEach(function(el){ var v=store('ai410-l1-'+el.id); if(v) el.value=v; el.addEventListener('input',update); });
+  var vague=/\b(confus(ing|ed)|everything|all of it|the whole|in general|not sure about anything|kind of|stuff)\b/i;
+  var concrete=/(`|\(|\)|\.py|\/|step \d|part \d|line|function|endpoint|api|key|token|schema|history|loop|tool|call|json|backend|frontend|model|declar)/i;
+  function words(s){ return (s.trim().match(/\S+/g)||[]).length; }
+  function update(){
+    els.forEach(function(el){ store('ai410-l1-'+el.id, el.value); });
+    var ctx=els[0].value, stuck=els[1].value, tried=els[2].value;
+    var w=words(stuck); document.getElementById('mp2count').textContent=w+' words';
+    var checks=[
+      [words(ctx)>=3,'Context names where you were (a part, step, or line)'],
+      [w>=15,'Stuck point is at least ~15 words'],
+      [concrete.test(stuck),'Stuck point mentions a concrete thing (a step, function, file, term)'],
+      [!vague.test(stuck)||w>=30,'Avoids vague catch-alls like "confusing" or "everything"'],
+      [words(tried)>=5,'Says what you already tried']
+    ];
+    var n=checks.filter(function(c){return c[0];}).length, pct=n/checks.length*100;
+    var f=document.getElementById('specFill'); f.style.width=pct+'%';
+    f.style.background= pct>=80?'var(--ok)':pct>=40?'var(--amber)':'var(--bad)';
+    document.getElementById('specLabel').textContent= pct>=80?'Specific':pct>=40?'Getting there':'Too vague';
+    document.getElementById('specHints').innerHTML=checks.map(function(c){return '<li class="'+(c[0]?'ok':'no')+'">'+(c[0]?'✓ ':'○ ')+c[1]+'</li>';}).join('');
+  }
+  update();
+  document.getElementById('mpCopy').addEventListener('click',function(){
+    var t='MUDDIEST POINT — AI 410 HOS 1\n\n1. Right before I got confused: '+els[0].value+'\n\n2. Where I got stuck: '+els[1].value+'\n\n3. What I already tried: '+els[2].value+'\n\n4. My best guess: '+(els[3].value||'(none)');
+    var s=document.getElementById('mpStatus');
+    if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into the LMS.'; },function(){ s.textContent='Copy blocked — select the fields manually.'; }); }
+    else s.textContent='Copy not supported — select the fields manually.';
+  });
+  document.getElementById('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); document.getElementById('mpStatus').textContent='Draft cleared.'; });
+})();
+
+/* Debate side */
+(function(){
+  var sel=document.getElementById('sidInput'), out=document.getElementById('sideResult');
+  var v=store('ai410-l1-side'); if(v) sel.value=v;
+  function upd(){
+    var a=document.getElementById('sideA'), b=document.getElementById('sideB');
+    a.classList.remove('mine'); b.classList.remove('mine');
+    if(sel.value===''){ out.textContent=''; return; }
+    store('ai410-l1-side',sel.value);
+    var even=parseInt(sel.value,10)%2===0;
+    (even?a:b).classList.add('mine');
+    out.innerHTML='You argue <b>'+(even?'Side A — Let the model decide':'Side B — Backend code decides')+'</b> in Stage 1.';
+  }
+  sel.addEventListener('change',upd); upd();
+})();
+
+/* checklists */
+function wireChecklist(listId, progId, suffix, key){
+  var boxes=[].slice.call(document.querySelectorAll('#'+listId+' input'));
+  var saved=(store(key)||'').split(',');
+  boxes.forEach(function(b,i){ if(saved[i]==='1') b.checked=true; b.addEventListener('change',upd); });
+  function upd(){
+    boxes.forEach(function(b){ b.parentNode.classList.toggle('done',b.checked); });
+    var n=boxes.filter(function(b){return b.checked;}).length;
+    document.getElementById(progId).textContent=n+' / '+boxes.length+' '+suffix;
+    store(key, boxes.map(function(b){return b.checked?'1':'0';}).join(','));
+  }
+  upd();
+}
+wireChecklist('evalList','evalProgress','tests run','ai410-l1-eval');
+wireChecklist('refineList','refineProgress','done','ai410-l1-refine');
+(function(){ var t=document.getElementById('evalNote'); var v=store('ai410-l1-evalnote'); if(v) t.value=v; t.addEventListener('input',function(){ store('ai410-l1-evalnote',t.value); }); })();
+
+/* Analyze frames */
+(function(){
+  var frames={
+    loop:['What condition ends the loop? Point to the exact line.','What does the backend append to the history after each tool call, and why must the model see it?','What would happen with no maximum-iteration limit if the model kept calling tools?'],
+    decl:['Which parts of the declaration does the model actually read when deciding to call it?','Change the description to something vague — predict what changes in behavior, then test it.','Why is the parameter a schema rather than free text?'],
+    flow:['List every hop: browser → Streamlit → HTTP → FastAPI → Gemini → back. What data shape crosses each hop?','Where exactly is the API key read, and could the frontend ever see it?','If Gemini is slow, which component is waiting, and what does the user see?']
+  };
+  var btns=[].slice.call(document.querySelectorAll('#analyzePick button')), box=document.getElementById('analyzeFrame');
+  btns.forEach(function(b){ b.addEventListener('click',function(){
+    btns.forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true');
+    box.innerHTML='<span class="label">Explain-it frame</span><ul>'+frames[b.dataset.k].map(function(q){return '<li>'+q+'</li>';}).join('')+'</ul><p class="small">Aim for 250–400 words. Quote the line(s) you are explaining.</p>';
+  }); });
+})();
+
+/* Application Challenge sorter */
+(function(){
+  var biz={
+    vet:[
+      ['check_open_slots(date, service)','auto','Read-only and harmless — the worst case is a wrong answer the user can see.'],
+      ['book_appointment(pet_id, slot)','confirm','Creates a real commitment. The model should propose it; the owner confirms.'],
+      ['get_vaccination_record(pet_id)','confirm','Read-only, but it is a private record — confirm the caller actually owns the pet.'],
+      ['issue_refund(invoice_id, amount)','never','Moves money. Keep it with staff; the agent can explain the refund policy instead.']
+    ],
+    bike:[
+      ['find_nearest_station(lat, lng)','auto','Public, read-only data. Safe to call freely.'],
+      ['reserve_bike(station_id)','confirm','Holds inventory other riders need; confirm before committing.'],
+      ['end_ride(ride_id)','confirm','Ends billing — a mistaken call strands or overcharges the rider.'],
+      ['update_payment_method(card)','never','Card numbers should never pass through a model. Link to the secure account page.']
+    ],
+    lib:[
+      ['search_catalog(query)','auto','Public catalog search — the textbook safe tool.'],
+      ['place_hold(item_id)','confirm','Low stakes, but it acts on the patron\'s account; a one-tap confirm is cheap.'],
+      ['renew_items(patron_id)','confirm','Usually fine, but a wrong patron_id renews someone else\'s items.'],
+      ['waive_fine(patron_id, amount)','never','A policy decision with money attached — staff only.']
+    ]
+  };
+  var cur='vet', answers={};
+  var host=document.getElementById('sorter'), score=document.getElementById('sorterScore');
+  function render(){
+    answers={}; score.textContent='';
+    host.innerHTML=biz[cur].map(function(t,i){
+      return '<div class="sorter-row" data-i="'+i+'"><code>'+t[0]+'</code><div class="opts">'+
+        ['auto','confirm','never'].map(function(o){return '<button type="button" class="'+o+'" aria-pressed="false" data-o="'+o+'">'+(o==='auto'?'Auto':o==='confirm'?'Confirm first':'Never')+'</button>';}).join('')+
+        '</div><div class="why"></div></div>';
+    }).join('');
+    [].slice.call(host.querySelectorAll('.opts button')).forEach(function(b){ b.addEventListener('click',function(){
+      var row=b.closest('.sorter-row'); [].slice.call(row.querySelectorAll('button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+      b.setAttribute('aria-pressed','true'); answers[row.dataset.i]=b.dataset.o;
+    }); });
+  }
+  [].slice.call(document.querySelectorAll('#bizPick button')).forEach(function(b){ b.addEventListener('click',function(){
+    [].slice.call(document.querySelectorAll('#bizPick button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); cur=b.dataset.b; render();
+  }); });
+  document.getElementById('sorterReveal').addEventListener('click',function(){
+    var right=0;
+    [].slice.call(host.querySelectorAll('.sorter-row')).forEach(function(row){
+      var t=biz[cur][row.dataset.i], mine=answers[row.dataset.i];
+      if(mine===t[1]) right++;
+      var lbl=t[1]==='auto'?'Auto':t[1]==='confirm'?'Confirm first':'Never';
+      row.querySelector('.why').innerHTML='<b>Suggested: '+lbl+'.</b> '+t[2];
+      row.classList.add('revealed');
+    });
+    score.textContent=right+' / '+biz[cur].length+' match the suggested call — disagreeing is fine if you can defend it in your write-up.';
+  });
+  render();
+})();
+
+/* Quiz */
+(function(){
+  var qs=[
+    ['Where should GEMINI_API_KEY live in the HOS 1 app?',['In the Streamlit frontend so it can call Gemini directly','In the backend .env file, read only by the FastAPI server','In the tool declaration so the model can see it','In the chat history'],1,'The backend is the only piece users can\'t inspect. Anything shipped to the frontend is public.'],
+    ['When the model "calls" the calculate tool, what actually happens first?',['Gemini runs the Python function on Google\'s servers','The model returns a structured function call; your backend runs the function','Streamlit evaluates the expression','The tool result is guessed and verified later'],1,'The model only asks. Your code runs the function and sends the result back.'],
+    ['Why can the same question get two different answers?',['The API key rotates','Tokens are sampled from a probability distribution','The tool declaration changes','FastAPI caches responses'],1,'Nondeterminism comes from sampling — it\'s why a single successful test isn\'t a full Evaluate.'],
+    ['Which is context engineering rather than prompt engineering?',['Rewording "be concise" as "answer in two sentences"','Choosing to resend only the last 6 turns and attach the tool list','Adding "please" to the instruction','Using a friendlier tone'],1,'Context engineering decides what information reaches the model at all.'],
+    ['What normally ends the agentic loop?',['The model returns plain text instead of a function call','The tool returns a number','The frontend times out','The user sends a second message'],0,'No function call means the model is done — return its text to the user. A max-iteration cap is the safety net.']
+  ];
+  var host=document.getElementById('quiz'), right=0, done=0;
+  host.innerHTML=qs.map(function(q,i){
+    return '<div class="q" data-i="'+i+'"><div class="stem">'+(i+1)+'. '+q[0]+'</div>'+q[1].map(function(o,j){return '<button type="button" class="opt" data-j="'+j+'">'+o+'</button>';}).join('')+'<div class="fb"></div></div>';
+  }).join('');
+  [].slice.call(host.querySelectorAll('.q')).forEach(function(card){
+    var q=qs[card.dataset.i];
+    [].slice.call(card.querySelectorAll('.opt')).forEach(function(b){ b.addEventListener('click',function(){
+      if(card.classList.contains('answered')) return;
+      card.classList.add('answered'); done++;
+      var j=+b.dataset.j, ok=j===q[2]; if(ok) right++;
+      b.classList.add(ok?'right':'wrong'); card.querySelectorAll('.opt')[q[2]].classList.add('right');
+      card.querySelector('.fb').innerHTML=(ok?'✓ ':'✗ ')+q[3];
+      document.getElementById('quizScore').textContent= done===qs.length ? 'Score: '+right+' / '+qs.length+(right===qs.length?' — ready for the Week 2 check-in.':' — revisit the lecture parts you missed.') : '';
+    }); });
+  });
+})();
+</script>
+</body>
+</html>

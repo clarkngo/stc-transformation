@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 410 HOS 2 (Weeks 3-4): lecture, Muddiest Point, Concept Debate, CEAU stages, Application Challenge and knowledge check for Embeddings, Chunking & RAG.">
+<title>HOS 2 Interactive Lesson</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#1e8449; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#0e2a1c 0%,#155e37 60%,#1e8449 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --maxw:1100px; }
+
+.secnav { position:sticky; top:var(--header-h,62px); z-index:150; background:var(--surface); border-bottom:1px solid var(--border); box-shadow:var(--shadow); }
+.secnav-inner { max-width:var(--maxw); margin:0 auto; padding:8px 16px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:thin; }
+.secnav a { flex:none; font-size:.76rem; font-weight:600; text-decoration:none; color:var(--muted); padding:4px 10px; border-radius:16px; border:1px solid transparent; white-space:nowrap; }
+.secnav a:hover, .secnav a.active { color:var(--accent2); background:var(--accent-light); border-color:var(--accent); }
+.secnav .sep { flex:none; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:5px 4px 0 10px; }
+section.module { scroll-margin-top:calc(var(--header-h,62px) + 56px); }
+.part-banner { margin:30px 0 16px; padding:12px 18px; border-radius:var(--radius); background:var(--header-bg); color:var(--header-text); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:baseline; }
+.part-banner b { font-size:1.02rem; } .part-banner span { font-size:.8rem; opacity:.8; }
+.module-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; }
+.module-icon { width:40px; height:40px; flex:none; border-radius:10px; background:var(--accent-light); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+.module-head h2 { margin:0; }
+.module-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+.flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:6px 0 4px; }
+.flow a { text-decoration:none; color:inherit; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:block; }
+.flow a:hover { border-color:var(--accent); box-shadow:var(--shadow-hover); }
+.flow .n { font-size:.68rem; font-weight:800; color:var(--accent2); letter-spacing:.06em; text-transform:uppercase; }
+.flow .t { font-weight:700; font-size:.88rem; display:block; }
+.flow .w { font-size:.74rem; color:var(--muted); }
+.lo li { margin-bottom:6px; }
+.lecture-part { border-top:1px dashed var(--border); padding-top:14px; margin-top:16px; }
+.lecture-part:first-of-type { border-top:none; padding-top:0; margin-top:0; }
+.lecture-part h3 { margin-top:0; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.lecture-part h3 small { font-weight:600; color:var(--muted); font-size:.76rem; }
+.arch { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:10px 0 14px; }
+.arch .box { flex:1 1 150px; border:2px solid var(--border); border-radius:10px; padding:10px 12px; background:var(--surface2); font-size:.84rem; }
+.arch .box b { display:block; font-size:.9rem; }
+.arch .box.key { border-color:var(--accent); }
+.arch .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.seq { counter-reset:s; list-style:none; margin:10px 0 14px; padding:0; }
+.seq li { counter-increment:s; position:relative; padding:8px 12px 8px 44px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; background:var(--surface); font-size:.88rem; }
+.seq li::before { content:counter(s); position:absolute; left:10px; top:8px; width:24px; height:24px; border-radius:50%; background:var(--accent); color:var(--on-accent); font-weight:800; font-size:.78rem; display:flex; align-items:center; justify-content:center; }
+.seq li.loopback { border-style:dashed; border-color:var(--amber); }
+dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted); font-size:.88rem; }
+.two { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+.eg { border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; background:var(--surface2); }
+.eg.weak { border-left:5px solid var(--bad); } .eg.strong { border-left:5px solid var(--ok); }
+.eg .label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+.eg.weak .label { color:var(--bad); } .eg.strong .label { color:var(--ok); }
+.counter { font-size:.72rem; color:var(--muted); text-align:right; }
+.spec-meter { display:flex; gap:10px; align-items:center; margin:12px 0 6px; font-size:.84rem; }
+.spec-track { flex:1; height:10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.spec-fill { height:100%; width:0; background:var(--bad); transition:width .25s, background .25s; }
+.hints { font-size:.8rem; margin:4px 0 10px 1.1em; color:var(--muted); }
+.hints li.ok { color:var(--ok); } .hints li.no { color:var(--bad); }
+.stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:10px 0 16px; }
+.stage { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface2); font-size:.85rem; }
+.stage .day { font-size:.7rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--violet); }
+.side { border:2px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; }
+.side.a { border-color:var(--blue); } .side.b { border-color:var(--rose); }
+.side.mine { box-shadow:0 0 0 4px var(--accent-light); }
+.side h4 { display:flex; justify-content:space-between; gap:6px; }
+.checklist label { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; background:var(--surface); font-size:.88rem; }
+.checklist input { margin-top:4px; accent-color:var(--accent); width:16px; height:16px; flex:none; }
+.checklist label.done { background:var(--ok-bg); border-color:var(--ok); }
+.progress-line { font-size:.8rem; font-weight:700; color:var(--accent2); margin-bottom:8px; }
+.pick { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:12px; }
+.pick button { text-align:left; background:var(--surface2); border:2px solid var(--border); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:.85rem; color:var(--text); cursor:pointer; }
+.pick button[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-light); }
+.pick button b { display:block; }
+.sorter-row { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:.86rem; background:var(--surface); }
+.sorter-row .opts { display:flex; gap:4px; flex-wrap:wrap; }
+.sorter-row .opts button { font-family:inherit; font-size:.72rem; font-weight:700; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:6px; padding:4px 8px; cursor:pointer; }
+.sorter-row .opts button[aria-pressed="true"].auto { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+.sorter-row .opts button[aria-pressed="true"].confirm { background:var(--amber-bg); border-color:var(--amber); color:var(--amber); }
+.sorter-row .opts button[aria-pressed="true"].never { background:var(--bad-bg); border-color:var(--bad); color:var(--bad); }
+.sorter-row .why { grid-column:1/-1; font-size:.8rem; color:var(--muted); display:none; }
+.sorter-row.revealed .why { display:block; }
+@media (max-width:560px){ .sorter-row { grid-template-columns:1fr; } }
+.q { border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:10px; background:var(--surface); }
+.q .stem { font-weight:700; font-size:.9rem; margin-bottom:8px; }
+.q .opt { display:block; width:100%; text-align:left; font-family:inherit; font-size:.86rem; color:var(--text); background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:7px 10px; margin-bottom:6px; cursor:pointer; }
+.q .opt.right { background:var(--ok-bg); border-color:var(--ok); }
+.q .opt.wrong { background:var(--bad-bg); border-color:var(--bad); }
+.q .fb { font-size:.82rem; margin-top:4px; display:none; }
+.q.answered .fb { display:block; }
+.score { font-weight:800; color:var(--accent2); }
+.project-map td:first-child { font-weight:700; white-space:nowrap; }
+
+.pipe-row { display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin:6px 0; }
+.pipe-row .box { flex:1 1 120px; border:2px solid var(--border); border-radius:10px; padding:8px 10px; background:var(--surface2); font-size:.8rem; }
+.pipe-row .box b { display:block; font-size:.84rem; }
+.pipe-row .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.pipe-label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:10px; }
+.vec-demo { display:grid; grid-template-columns:1fr auto; gap:6px 12px; font-size:.84rem; align-items:center; margin:8px 0 12px; }
+.vec-demo .s { font-weight:800; color:var(--accent2); }
+.review-code { counter-reset:ln; }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">410</span><span><b>AI 410: AI Engineering</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-410.html">← AI 410</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 410 · HOS 2 · Weeks 3–4 · Interactive lesson</div>
+    <h1>Embeddings, Chunking &amp; RAG</h1>
+    <p class="lede">Give your HOS 1 agent the right few paragraphs of your own documents at the moment it answers — chunk, embed, store, retrieve, inject. Built and tested in Week 3; explained and extended by hand in Week 4.</p>
+    <div class="chips"><span class="chip">Outcome O2</span><span class="chip">2 weeks</span><span class="chip">Lecture · MP · CD</span><span class="chip">CEAU: Create → Evaluate → Analyze → Refine</span><span class="chip">Application Challenge</span><span class="chip">Codespaces · free tier</span></div>
+  </div>
+</section>
+<main id="main">
+
+<nav class="secnav no-print" aria-label="Lesson sections">
+  <div class="secnav-inner">
+    <a href="#overview">Overview</a>
+    <span class="sep">Week 3</span>
+    <a href="#lecture">Lecture</a>
+    <a href="#muddiest">Muddiest Point</a>
+    <a href="#debate">Concept Debate</a>
+    <a href="#create">Create / Scaffold</a>
+    <a href="#evaluate">Evaluate</a>
+    <span class="sep">Week 4</span>
+    <a href="#analyze">Analyze</a>
+    <a href="#refine">Understand &amp; Refine</a>
+    <a href="#challenge">Application Challenge</a>
+    <a href="#check">Knowledge Check</a>
+    <a href="#project">Team Project</a>
+  </div>
+</nav>
+
+<div class="callout amber" style="margin-top:20px">
+  <span class="label">Course design constraints</span>
+  <p>This lesson follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>. It adapts to AI 410's official description and Outcome O2, everything runs in GitHub Codespaces, and everything is free. Embeddings use the same free Gemini key from HOS 1, and Chroma is a Python library that writes to a folder on disk, so there's no account or connection string.</p>
+</div>
+
+<section class="module card" id="overview">
+  <div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag">Outcome O2</span><span class="tag blue">12.5% HOS + MP + CD + AC</span></div></div></div>
+  <p>Your HOS 1 agent can reason and call tools, but it knows nothing about <em>your</em> business. Ask it how long Northwind Outfitters gives customers to return a tent and it will answer anyway — with a typical return window it has seen somewhere, stated confidently. This HOS fixes that by giving the model the right few paragraphs of your own documents at the moment it answers. That's <strong>Retrieval-Augmented Generation (RAG)</strong>: retrieve first, then generate.</p>
+  <p>Week 3 gets the pipeline working (chunk, embed, store, retrieve, inject) and tests it deliberately, including the bug where adding RAG quietly breaks the tool calling you built in HOS 1. Week 4 is about understanding <em>why</em> retrieval works: why the query and the documents are embedded differently, and whether you can add knowledge to the system by hand.</p>
+  <div class="callout blue">
+    <span class="label">Anchoring analogy</span>
+    <p>HOS 1's consultant is still on the phone, and still can't see your filing cabinet. RAG gives you a very fast assistant who, the moment a question comes in, pulls the three most relevant pages out of the cabinet and slides them across the desk before the consultant answers. The consultant's skill doesn't change; what changes is what's on the desk. If the assistant pulls the wrong pages, the consultant gives a confident answer from the wrong pages — which is why most RAG bugs are retrieval bugs, not model bugs.</p>
+  </div>
+  <h3>Learning objectives</h3>
+  <p class="small muted">By the end of the two weeks you will be able to:</p>
+  <ol class="lo">
+    <li>Explain what an embedding is and why similar meanings produce nearby vectors, even with different wording. <span class="tag">O2</span></li>
+    <li>Justify a chunking choice (size and overlap) and describe what goes wrong when chunks are too big or too small. <span class="tag">O2</span></li>
+    <li>Design and implement a RAG pipeline: chunk → embed → store in a vector database → retrieve top-k → inject as context. <span class="tag">O2</span></li>
+    <li>Explain why documents and queries use different embedding task types, and what quietly degrades if they don't. <span class="tag">O2</span></li>
+    <li>Test whether retrieval is actually helping, including when the documents don't cover the question and when a tool should still be called. <span class="tag">O2</span></li>
+  </ol>
+  <h3>Your two weeks at a glance</h3>
+  <div class="flow">
+    <a href="#lecture"><span class="n">Wk 3 · Mon</span><span class="t">Lecture</span><span class="w">~70 min, 3 parts</span></a>
+    <a href="#muddiest"><span class="n">Wk 3 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a>
+    <a href="#debate"><span class="n">Wk 3 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a>
+    <a href="#create"><span class="n">Wk 3 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">not graded</span></a>
+    <a href="#evaluate"><span class="n">Wk 3 · Fri–Sun</span><span class="t">Evaluate</span><span class="w">30% of HOS</span></a>
+    <a href="#analyze"><span class="n">Wk 4 · Mon–Tue</span><span class="t">Analyze</span><span class="w">30% of HOS</span></a>
+    <a href="#refine"><span class="n">Wk 4 · Wed–Thu</span><span class="t">Understand &amp; Refine</span><span class="w">40% of HOS · no AI</span></a>
+    <a href="#challenge"><span class="n">Wk 4 · Fri–Sun</span><span class="t">Application Challenge</span><span class="w">5% of course</span></a>
+    <a href="#check"><span class="n">Wk 4 · any time</span><span class="t">Knowledge Check</span><span class="w">self-check</span></a>
+  </div>
+  <p class="small muted" style="margin-top:10px">Days are a suggested pacing for an online term, not fixed deadlines — your instructor's Brightspace dates win.</p>
+</section>
+
+<!-- ========================= WEEK 3 ========================= -->
+<div class="part-banner"><b>Week 3 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div>
+
+<section class="module card" id="lecture">
+  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: grounding answers in your own documents</h2><div class="module-meta"><span class="tag">≈ 70 min</span><span class="tag blue">3 short parts</span><span class="tag">O2</span></div></div></div>
+  <p class="small muted">Three short segments. Pause after each and try the quick check. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p>
+
+  <div class="lecture-part">
+    <h3>Part 1 — Why the model needs your context <small>≈ 15 min</small></h3>
+    <p>An LLM's knowledge is fixed at training time and general by design. It has never seen Northwind Outfitters' return policy, and it can't tell you that it hasn't — it predicts a likely-sounding answer either way. HOS 1 gave the model <em>tools</em> for things it can't compute; HOS 2 gives it <em>context</em> for things it can't know.</p>
+    <p>The obvious fix is to paste every document into every request. That works for five short documents and stops working quickly: every token you send costs time and money, the context window has a limit, and a model handed fifty pages answers worse than one handed the right three paragraphs. So the real task is selection — deciding, per question, which few pieces of text the model should see. That's the context engineering you met in HOS 1, now done automatically.</p>
+    <div class="callout">
+      <span class="label">Worked example</span>
+      <p>A customer asks, "Can I send back a tent I bought three weeks ago?" Without retrieval, the model says something like "Most retailers allow 14 to 30 days." With retrieval, the backend first finds the chunk from <code>return-policy.md</code> — "returns within 30 days of delivery … unused and in its original packaging" — and puts it in the system instruction. The model's answer is now Northwind's actual policy, including the condition about packaging that a generic answer would have skipped.</p>
+    </div>
+  </div>
+
+  <div class="lecture-part">
+    <h3>Part 2 — Embeddings: turning meaning into numbers <small>≈ 25 min</small></h3>
+    <p>An <strong>embedding</strong> is a list of numbers (a <em>vector</em>) that represents the meaning of a piece of text. Gemini's <code>gemini-embedding-001</code> model turns any text into such a vector. Texts with similar meaning get vectors that point in similar directions, and we measure that with <strong>cosine similarity</strong>: close to 1 means "about the same thing," close to 0 means unrelated.</p>
+    <p>This is why RAG beats keyword search. A customer who types "sending an item back" never uses the word "return," but its embedding still lands near the return-policy chunk.</p>
+    <div class="vec-demo" aria-label="Illustrative similarity scores">
+      <span>"Can I send back a tent?" ↔ return-policy chunk</span><span class="s">high</span>
+      <span>"Can I send back a tent?" ↔ product-tents chunk</span><span class="s">medium</span>
+      <span>"Can I send back a tent?" ↔ shipping chunk</span><span class="s">low</span>
+    </div>
+    <p class="small muted">Illustrative — the tent guide shares the word "tent," but the return policy shares the <em>meaning</em>.</p>
+    <p>Two settings matter in the HOS 2 code. First, Gemini lets you say what a text is <em>for</em>: documents are embedded with <code>task_type="RETRIEVAL_DOCUMENT"</code> and questions with <code>task_type="RETRIEVAL_QUERY"</code>. Why that helps is your Week 4 Analyze question — for now, notice that nothing crashes if you get it wrong. Second, <code>EMBED_DIM</code>, the vector length, must be identical at ingest time and question time, or the comparison is meaningless.</p>
+    <div class="callout violet">
+      <span class="label">Quick check</span>
+      <p>If you embed the question "What's your refund window?" and the only document chunk says "returns within 30 days," would keyword search find it? Would embeddings? Why?</p>
+    </div>
+  </div>
+
+  <div class="lecture-part">
+    <h3>Part 3 — Chunking and the RAG pipeline <small>≈ 30 min</small></h3>
+    <p>You don't embed whole documents. A document covering shipping times <em>and</em> customs fees produces one vector that's a blurry average of both — a mediocre match for either question. So you <strong>chunk</strong> first: split each document into focused pieces (about 400 words in the HOS 2 starter), and optionally <strong>overlap</strong> neighboring chunks so a key sentence isn't cut in half.</p>
+    <div class="pipe-label">Once, at ingest time — <code>ingest.py</code></div>
+    <div class="pipe-row">
+      <div class="box"><b>sample_docs/*.md</b>5 Northwind docs</div><div class="arrow">→</div>
+      <div class="box"><b>chunk</b>~400 words each</div><div class="arrow">→</div>
+      <div class="box"><b>embed</b>RETRIEVAL_DOCUMENT</div><div class="arrow">→</div>
+      <div class="box"><b>Chroma</b><code>documents</code> collection on disk</div>
+    </div>
+    <div class="pipe-label">Every question — <code>retrieval.py</code> + <code>agent.py</code></div>
+    <div class="pipe-row">
+      <div class="box"><b>user question</b></div><div class="arrow">→</div>
+      <div class="box"><b>embed</b>RETRIEVAL_QUERY</div><div class="arrow">→</div>
+      <div class="box"><b>retrieve(k=5)</b>nearest chunks</div><div class="arrow">→</div>
+      <div class="box"><b>system instruction</b>"use this context…"</div><div class="arrow">→</div>
+      <div class="box"><b>Gemini</b>+ HOS 1 tools</div>
+    </div>
+    <p>Notice the last box: your tools are still there. The most common HOS 2 bug is a system instruction like "only answer from the context; otherwise say you don't know." Applied broadly, it makes the model refuse to call <code>calculate</code>, because arithmetic isn't in the context either. Nothing errors — tool calls just stop happening. Scope the instruction to content questions and say tools are exempt.</p>
+    <div class="callout">
+      <span class="label">Try it before the build</span>
+      <p>Open the <a href="sim02-rag-pipeline.html"><strong>RAG Pipeline Simulator</strong></a>. Ask the return question at chunk size 30, then at 10 with top-k 1. Then turn on the buggy prompt and ask "What's 25 times 4?"</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Teaching note</span>
+      <p>Students tend to blame the model when an answer is wrong. Train the reflex early: <em>first</em> print what <code>retrieve()</code> returned. If the right chunk isn't there, no prompt wording will fix it. HOS 4's traces formalize this same habit.</p>
+    </div>
+  </div>
+
+  <h3>New words this week</h3>
+  <dl class="gloss">
+    <dt>Embedding &amp; cosine similarity</dt><dd>A vector representing a text's meaning, and the score (roughly 0 to 1) for how closely two vectors point the same way.</dd>
+    <dt>Chunking &amp; overlap</dt><dd>Splitting documents into focused pieces before embedding them, with a few words shared between neighbors so nothing important is cut in half.</dd>
+    <dt>Vector database (Chroma)</dt><dd>A store built to hold embeddings and quickly return the ones nearest a query. Chroma writes to a local folder, like SQLite.</dd>
+    <dt>RAG &amp; top-k</dt><dd>Retrieval-Augmented Generation: fetch the k most similar chunks, then let the model answer using them.</dd>
+  </dl>
+</section>
+
+<section class="module card" id="muddiest">
+  <div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag rose">Graded · part of 5% MP category</span><span class="tag">Due before the build begins</span></div></div></div>
+  <p>Four short fields, not a blank box. Draft it here — your draft stays in this browser only — then <strong>copy it into the Brightspace submission</strong>.</p>
+  <div class="two" style="margin-bottom:14px">
+    <div class="eg weak"><span class="label">Doesn't meet the bar</span>"Embeddings are confusing. I don't really get RAG."</div>
+    <div class="eg strong"><span class="label">Meets the bar</span>"Lecture Part 2: if the documents and the question are both embedded by the same model, why does the <code>task_type</code> need to be different? Wouldn't the same setting make them easier to compare? I re-read Part 2 and searched the Gemini docs but only found the list of values, not why."</div>
+  </div>
+  <form onsubmit="return false">
+    <label class="field" for="mp1">1 · What were you doing right before you got confused?</label>
+    <input type="text" id="mp1" placeholder="e.g. Lecture Part 3, the ingest-time pipeline — or a line in ingest.py">
+    <label class="field" for="mp2">2 · The exact place you got stuck</label>
+    <textarea id="mp2" placeholder="Not 'I don't get RAG' — the specific thing that doesn't add up."></textarea>
+    <div class="counter" id="mp2count">0 words</div>
+    <label class="field" for="mp3">3 · What you already tried</label>
+    <textarea id="mp3" placeholder="Re-read a section, searched something specific, asked a classmate, tried the simulator…"></textarea>
+    <label class="field" for="mp4">4 · Optional: your best guess at the answer</label>
+    <textarea id="mp4" placeholder="Even if you think it's wrong."></textarea>
+  </form>
+  <div class="spec-meter"><b>Specificity</b><div class="spec-track"><div class="spec-fill" id="specFill"></div></div><span id="specLabel">—</span></div>
+  <ul class="hints" id="specHints"></ul>
+  <div class="row"><button class="btn" id="mpCopy" type="button">Copy for submission</button><button class="btn secondary" id="mpClear" type="button">Clear draft</button><span class="small muted" id="mpStatus" aria-live="polite"></span></div>
+  <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — on time, addresses a genuine confusion (80%) · Writing — clear, specific, not generic (20%). The meter above is a nudge, not your grade.</p>
+</section>
+
+<section class="module card" id="debate">
+  <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag">Discussion board · 3 stages</span></div></div></div>
+  <div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>When retrieval finds nothing relevant, should the assistant refuse ("I don't have that information"), or answer from general knowledge with a clear caveat?</strong></p></div>
+  <p>You'll argue the side your debate team is assigned, then argue the other one, then drop advocacy and synthesize.</p>
+  <div class="callout blue">
+    <span class="label">Your side this HOS</span>
+    <p>Sides rotate each HOS. <b>In HOS 2, Debate Team 1 argues Side B and Debate Team 2 argues Side A</b> — the reverse of HOS 1. Find your team under <b>Communication → Groups</b> in Brightspace. Not in a team? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A. <a href="../AI-410-syllabus.html#cd-sides">How sides are assigned →</a></p>
+  </div>
+  <div class="row" style="margin-bottom:10px">
+    <label for="teamInput" class="small"><b>My Brightspace team:</b></label>
+    <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select>
+    <span class="small" id="sideResult" aria-live="polite"></span>
+  </div>
+  <div class="two">
+    <div class="side a" id="sideA">
+      <h4><span>Side A — Refuse when retrieval comes up empty</span><span class="tag blue">Team 2 this HOS</span></h4>
+      <p>If no chunk clears the similarity threshold, say so and point to a human or a source.</p>
+      <ul class="small">
+        <li>A made-up policy ("yes, we gift wrap") creates a promise the business has to honor or retract.</li>
+        <li>Users can't tell a grounded answer from a general one unless the system is strict.</li>
+        <li>Refusals are testable: an uncovered question should always produce the same safe answer.</li>
+      </ul>
+    </div>
+    <div class="side b" id="sideB">
+      <h4><span>Side B — Answer from general knowledge, with a caveat</span><span class="tag rose">Team 1 this HOS</span></h4>
+      <p>Give the best general answer, clearly labeled as not from company documents.</p>
+      <ul class="small">
+        <li>"I don't know" to every uncovered question makes the assistant feel broken.</li>
+        <li>Many questions ("how do I waterproof a tent?") are general, and the model's knowledge is genuinely useful.</li>
+        <li>A clear caveat keeps the user informed without leaving them with nothing.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="stages">
+    <div class="stage"><span class="day">Stage 1 · by Tue</span><h4>Initial position</h4>Argue your assigned side with one specific claim and one piece of evidence — a test question you ran, a sample doc, a simulator run. Not a topic summary.</div>
+    <div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>Before replying to anyone, post the <em>strongest</em> version of the side you didn't hold.</div>
+    <div class="stage"><span class="day">Stage 3 · by Sat</span><h4>Synthesis</h4>Drop advocacy. State a real position, citing at least one specific point from a classmate's post.</div>
+  </div>
+  <div class="two">
+    <div class="eg weak"><span class="label">Weak synthesis</span>"Both sides make good points. It depends on the use case."</div>
+    <div class="eg strong"><span class="label">Strong synthesis</span>"Marcus showed that 'do you gift wrap?' got an invented yes in his build — that's a policy question, and I now think policy questions must refuse. But Dana's waterproofing example is general advice, not policy. My position: refuse on anything that sounds like a commitment (prices, returns, availability), allow caveated general answers for how-to questions. The hard part is telling them apart, which is a classifier problem, not a prompt problem."</div>
+  </div>
+  <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%).</p>
+</section>
+
+<section class="module card" id="create">
+  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag">Not graded on its own</span><span class="tag blue">GitHub Codespaces</span></div></div></div>
+  <p>Add retrieval to your working HOS 1 app with an AI coding assistant. As before, this is the starting point — no hand edits yet.</p>
+  <ol>
+    <li>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-02-embeddings-rag" target="_blank" rel="noopener">the HOS 2 starter-code folder</a> in GitHub Codespaces. It's your HOS 1 app plus five Northwind Outfitters sample documents in <code>backend/sample_docs/</code>.</li>
+    <li>Keep the same <code>GEMINI_API_KEY</code> in <code>backend/.env</code> — embeddings use the same free key.</li>
+    <li>Give your assistant the prompt below, then run <code>python ingest.py</code> once and test in the chat app.</li>
+  </ol>
+<pre><code>Add RAG to this app:
+- backend/ingest.py: chunk each .md file in backend/sample_docs/ into ~400-word
+  pieces and embed them (Gemini's embedding model, task_type="RETRIEVAL_DOCUMENT")
+  into a local Chroma collection.
+- backend/retrieval.py: a retrieve(query, k=5) function that embeds the query
+  (task_type="RETRIEVAL_QUERY") and returns the k nearest chunks from that collection.
+- Wire retrieve() into backend/agent.py: inject the retrieved chunks as a system
+  instruction before the model answers, so it grounds its reply in the documents.
+Keep the existing tool-calling loop working alongside this — don't let the new
+instruction suppress tool use.</code></pre>
+  <p class="small">Step-by-step details and common snags (the <code>EMBED_DIM</code> mismatch, forgetting to re-run ingest) are in the <a href="../ai-410-guides/hos-02-embeddings-rag.html">HOS 2 hands-on guide</a>. Unsure what a file does? <a href="../ai-410-guides/starter-code-walkthrough.html#hos2">Starter code walkthrough →</a></p>
+</section>
+
+<section class="module card" id="evaluate">
+  <div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag">30% of HOS grade</span></div></div></div>
+  <p>Test on purpose. Print or log what <code>retrieve()</code> returned for each test — the chunks are your evidence, not just the final answer.</p>
+  <div class="progress-line" id="evalProgress">0 / 4 tests run</div>
+  <div class="checklist" id="evalList">
+    <label><input type="checkbox"><span><b>Answerable only from the docs:</b> "How long do I have to return an item?" — does it say <em>30 days of delivery</em> (Northwind's figure), and did the return-policy chunk actually appear in the retrieved set?</span></label>
+    <label><input type="checkbox"><span><b>Needs an HOS 1 tool:</b> "What's 25 times 4?" — does it still call <code>calculate</code>, or did the new RAG instruction silently swallow tool use?</span></label>
+    <label><input type="checkbox"><span><b>Not covered by the docs:</b> "Do you offer gift wrapping?" — does it say it doesn't know, or invent a plausible policy?</span></label>
+    <label><input type="checkbox"><span><b>Your own test:</b> a question worded differently from the docs (e.g. "can I send back a tent?"). Does meaning-based retrieval still find the right chunk?</span></label>
+  </div>
+  <label class="field" for="evalNote">Draft your Evaluate note (stays in this browser)</label>
+  <textarea id="evalNote" placeholder="What I tested · which chunks came back · what the AI got wrong, missed, or handled surprisingly well"></textarea>
+  <p class="small muted">Submit: a screenshot of the working app + this note, via Brightspace.</p>
+</section>
+
+<!-- ========================= WEEK 4 ========================= -->
+<div class="part-banner"><b>Week 4 · Explain &amp; Master</b><span>Analyze → Understand &amp; Refine → Application Challenge → Knowledge Check</span></div>
+
+<section class="module card" id="analyze">
+  <div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does retrieval work?</h2><div class="module-meta"><span class="tag">30% of HOS grade</span></div></div></div>
+  <p>Pick <strong>one</strong> piece and explain, in your own words, exactly how it works. The first option is the strongest choice.</p>
+  <div class="pick" id="analyzePick">
+    <button type="button" aria-pressed="false" data-k="task"><b>Recommended: the two <code>task_type</code> values</b>Why <code>ingest.py</code> and <code>retrieval.py</code> call the same API differently.</button>
+    <button type="button" aria-pressed="false" data-k="chunk"><b>The chunking function</b>Why ~400 words, and what the boundaries do to retrieval.</button>
+    <button type="button" aria-pressed="false" data-k="inject"><b>Where retrieved chunks go</b>How <code>agent.py</code> injects context without breaking tool calls.</button>
+  </div>
+  <div class="callout blue" id="analyzeFrame"><span class="label">Explain-it frame</span><p>Pick a piece above to see prompts that make a strong Analyze.</p></div>
+  <p class="small muted">Common trap: "it makes the search better." Say <em>how</em>, and what would get quietly worse — not crash — if it were changed.</p>
+</section>
+
+<section class="module card" id="refine">
+  <div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag">40% of HOS grade</span><span class="tag bad">No AI assistant for this part</span></div></div></div>
+  <p>Write a <strong>sixth sample document</strong> yourself — for example <code>product-sleeping-bags.md</code> or <code>care-and-repair.md</code> — in the same style as the other five, and prove the whole path works for knowledge you added.</p>
+  <div class="progress-line" id="refineProgress">0 / 5 done</div>
+  <div class="checklist" id="refineList">
+    <label><input type="checkbox"><span>Write the document by hand: a <code>#</code> title and 2–4 short paragraphs with at least one specific, checkable detail (a temperature rating, a price, a time limit).</span></label>
+    <label><input type="checkbox"><span>Re-run <code>python ingest.py</code> — the vector database doesn't know about new files until you do.</span></label>
+    <label><input type="checkbox"><span>Ask a question that can <em>only</em> be answered from your new document, and confirm the answer includes your specific detail.</span></label>
+    <label><input type="checkbox"><span>Confirm your new chunk appears in the retrieved set, and that an old question (the return window) still works.</span></label>
+    <label><input type="checkbox"><span>Write 2–3 sentences: what you changed, and one thing about retrieval that surprised you.</span></label>
+  </div>
+  <p class="small muted">Rehearse first in the <a href="sim02-rag-pipeline.html">simulator</a>: add a <code>## Title</code> section to its document box and ask about it.</p>
+</section>
+
+<section class="module card" id="challenge">
+  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — review someone else's RAG pipeline</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Evaluate &amp; critique — don't run it</span></div></div></div>
+  <p>A campus IT help-desk team built the pipeline below to answer student questions from their knowledge base. It runs without errors. Your job: find one thing it gets right, one thing likely to <em>quietly underperform</em> (answer worse, not crash), and explain how you'd confirm your suspicion <em>without running it</em>.</p>
+<pre><code># helpdesk_rag.py  (someone else's code)
+kb = chromadb.PersistentClient(path="./kb_db")
+col = kb.get_or_create_collection("articles")
+
+def ingest(article_id, text):
+    for i in range(0, len(text), 2000):              # split every 2000 characters
+        piece = text[i:i+2000]
+        vec = embed(piece, task_type="RETRIEVAL_QUERY")
+        col.add(ids=[f"{article_id}-{i}"], embeddings=[vec],
+                documents=[piece], metadatas=[{"source": article_id}])
+
+def answer(question):
+    q = embed(question, task_type="RETRIEVAL_QUERY")
+    hits = col.query(query_embeddings=[q], n_results=1)
+    context = hits["documents"][0][0]
+    return gemini(f"{question}\n\nAnswer using this: {context}")</code></pre>
+  <h3>Warm-up: classify each observation</h3>
+  <p class="small">Is each one something the code gets <b>right</b>, something that will <b>quietly underperform</b>, or a <b>crash risk</b>? Then reveal the reasoning.</p>
+  <div id="sorter"></div>
+  <div class="row" style="margin:8px 0 16px"><button class="btn" id="sorterReveal" type="button">Reveal reasoning</button><span class="small" id="sorterScore" aria-live="polite"></span></div>
+  <div class="callout"><span class="label">What to submit</span>
+    <ul>
+      <li>One thing the pipeline gets right, and why it matters.</li>
+      <li>One thing likely to quietly underperform, with the specific question type it would get wrong.</li>
+      <li>How you'd confirm it without running the code — what you'd read, compare, or ask for.</li>
+    </ul>
+  </div>
+  <p class="small muted"><b>Grading:</b> Judgment &amp; reasoning (50%) · Transfer to the new pipeline, not a restatement of your own build (35%) · Clarity (15%).</p>
+</section>
+
+<section class="module card" id="check">
+  <div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag">Self-check · not graded</span></div></div></div>
+  <p>Five quick questions, then the two open questions your instructor will ask in the Week 4 check-in.</p>
+  <div id="quiz"></div>
+  <p class="score" id="quizScore" aria-live="polite"></p>
+  <h3>Open questions</h3>
+  <ol>
+    <li>Why chunk a document before embedding it?</li>
+    <li>Where do retrieved chunks go before the model generates its answer, and how would you prove retrieval is actually helping?</li>
+  </ol>
+</section>
+
+<section class="module card" id="project">
+  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Team/Term Project — what HOS 2 adds</h2><div class="module-meta"><span class="tag">20% of course</span><span class="tag amber">Nothing due yet · checkpoint at end of Week 6</span></div></div></div>
+  <p>Your project's HOS 2 piece is the <strong>documents your agent answers from</strong>. The syllabus's litmus test applies directly here: can you point to it and say "this is actually retrieval, not a hardcoded FAQ"? Two questions to settle before the Week 6 checkpoint:</p>
+  <ul>
+    <li><b>What are the documents?</b> Where do they come from, how many, and who updates them? (In the "Study Buddy" example, it's the student's own uploaded notes and syllabi.)</li>
+    <li><b>What should happen when retrieval finds nothing?</b> This week's Concept Debate, applied to your users.</li>
+  </ul>
+  <div class="table-wrap"><table class="t project-map">
+    <tr><th>HOS</th><th>What it contributes to your project</th><th>Rehearse it in</th></tr>
+    <tr><td>HOS 1</td><td>The agent and its tools</td><td><a href="sim01-agentic-loop.html">Agentic Loop Simulator</a></td></tr>
+    <tr><td><b>HOS 2 · now</b></td><td><b>Answers grounded in your project's own documents</b></td><td><a href="sim02-rag-pipeline.html">RAG Pipeline Simulator</a></td></tr>
+    <tr><td>HOS 3</td><td>Validated tool calls and slow work moved to a background job</td><td><a href="sim03-guardrails-queue.html">Guardrails &amp; Queue Simulator</a></td></tr>
+    <tr><td>HOS 4</td><td>A mobile client, push notifications, and traces you can debug from</td><td><a href="sim04-push-observability.html">Push &amp; Observability Simulator</a></td></tr>
+  </table></div>
+  <p class="small">Full description and planning framework: <a href="../AI-410-syllabus.html#team-project">syllabus → Team/Term Project</a>.</p>
+</section>
+
+<section class="card">
+  <h2>Resources</h2>
+  <ul>
+    <li><a href="../ai-410-guides/hos-02-embeddings-rag.html">HOS 2 hands-on guide</a> — the full build, stage by stage</li>
+    <li><a href="../ai-410-guides/week-03-embeddings-chunking.html">Week 3 guide</a> · <a href="../ai-410-guides/week-04-vector-db-rag.html">Week 4 guide</a></li>
+    <li><a href="../ai-410-guides/concept-companion.html">Concept Companion</a> — every concept to know before starting a HOS</li>
+    <li><a href="sim02-rag-pipeline.html">RAG Pipeline Simulator</a></li>
+    <li>← <a href="hos-01-lesson.html">HOS 1 lesson</a> · <a href="index.html">All lessons &amp; simulators</a></li>
+  </ul>
+</section>
+
+</main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai410-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai410-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>
+var LESSON='l2';
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){ return null; } }
+
+/* section nav highlight */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a'));
+  var map={}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest',inline:'center'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+
+/* Muddiest Point */
+(function(){
+  var els=['mp1','mp2','mp3','mp4'].map(function(i){return document.getElementById(i);});
+  els.forEach(function(el){ var v=store('ai410-'+LESSON+'-'+el.id); if(v) el.value=v; el.addEventListener('input',update); });
+  var vague=/\b(confus(ing|ed)|everything|all of it|the whole|in general|kind of|stuff)\b/i;
+  var concrete=/(`|\(|\)|\.py|\/|step \d|part \d|line|function|embed|vector|chunk|overlap|task_type|cosine|similar|chroma|retriev|top-k|\bk\b|context|instruction|tool|dimension)/i;
+  function words(s){ return (s.trim().match(/\S+/g)||[]).length; }
+  function update(){
+    els.forEach(function(el){ store('ai410-'+LESSON+'-'+el.id, el.value); });
+    var stuck=els[1].value, w=words(stuck);
+    document.getElementById('mp2count').textContent=w+' words';
+    var checks=[
+      [words(els[0].value)>=3,'Context names where you were (a part, step, or line)'],
+      [w>=15,'Stuck point is at least ~15 words'],
+      [concrete.test(stuck),'Stuck point mentions a concrete thing (a step, function, file, term)'],
+      [!vague.test(stuck)||w>=30,'Avoids vague catch-alls like "confusing" or "everything"'],
+      [words(els[2].value)>=5,'Says what you already tried']
+    ];
+    var n=checks.filter(function(c){return c[0];}).length, pct=n/checks.length*100;
+    var f=document.getElementById('specFill'); f.style.width=pct+'%';
+    f.style.background= pct>=80?'var(--ok)':pct>=40?'var(--amber)':'var(--bad)';
+    document.getElementById('specLabel').textContent= pct>=80?'Specific':pct>=40?'Getting there':'Too vague';
+    document.getElementById('specHints').innerHTML=checks.map(function(c){return '<li class="'+(c[0]?'ok':'no')+'">'+(c[0]?'✓ ':'○ ')+c[1]+'</li>';}).join('');
+  }
+  update();
+  document.getElementById('mpCopy').addEventListener('click',function(){
+    var t='MUDDIEST POINT — AI 410 HOS 2\n\n1. Right before I got confused: '+els[0].value+'\n\n2. Where I got stuck: '+els[1].value+'\n\n3. What I already tried: '+els[2].value+'\n\n4. My best guess: '+(els[3].value||'(none)');
+    var s=document.getElementById('mpStatus');
+    if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into Brightspace.'; },function(){ s.textContent='Copy blocked — select the fields manually.'; }); }
+    else s.textContent='Copy not supported — select the fields manually.';
+  });
+  document.getElementById('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); document.getElementById('mpStatus').textContent='Draft cleared.'; });
+})();
+
+/* Debate side: HOS 2 rotation — Team 1 = Side B, Team 2 = Side A */
+(function(){
+  var sel=document.getElementById('teamInput'), out=document.getElementById('sideResult');
+  var v=store('ai410-team'); if(v) sel.value=v;
+  function upd(){
+    var a=document.getElementById('sideA'), b=document.getElementById('sideB');
+    a.classList.remove('mine'); b.classList.remove('mine');
+    if(sel.value===''){ out.textContent=''; return; }
+    store('ai410-team',sel.value);
+    var sideA=sel.value==='2';
+    (sideA?a:b).classList.add('mine');
+    out.innerHTML='In HOS 2 you argue <b>'+(sideA?'Side A — Refuse when retrieval comes up empty':'Side B — Answer with a caveat')+'</b> in Stage 1.';
+  }
+  sel.addEventListener('change',upd); upd();
+})();
+
+/* checklists */
+function wireChecklist(listId, progId, suffix, key){
+  var boxes=[].slice.call(document.querySelectorAll('#'+listId+' input'));
+  var saved=(store(key)||'').split(',');
+  boxes.forEach(function(b,i){ if(saved[i]==='1') b.checked=true; b.addEventListener('change',upd); });
+  function upd(){
+    boxes.forEach(function(b){ b.parentNode.classList.toggle('done',b.checked); });
+    var n=boxes.filter(function(b){return b.checked;}).length;
+    document.getElementById(progId).textContent=n+' / '+boxes.length+' '+suffix;
+    store(key, boxes.map(function(b){return b.checked?'1':'0';}).join(','));
+  }
+  upd();
+}
+wireChecklist('evalList','evalProgress','tests run','ai410-'+LESSON+'-eval');
+wireChecklist('refineList','refineProgress','done','ai410-'+LESSON+'-refine');
+(function(){ var t=document.getElementById('evalNote'), k='ai410-'+LESSON+'-evalnote'; var v=store(k); if(v) t.value=v; t.addEventListener('input',function(){ store(k,t.value); }); })();
+
+/* Analyze frames */
+(function(){
+  var frames={
+    task:['What does task_type tell the embedding model about the text it is embedding?','A question ("how long do I have to return a tent?") and the chunk that answers it look very different as text. How does embedding them for different purposes help them land near each other?','If both used RETRIEVAL_DOCUMENT, what would get worse — and why would nothing crash? How would you notice?'],
+    chunk:['Why roughly 400 words, and not one chunk per document or one per sentence?','Find a chunk boundary in the sample docs. What happens to a question whose answer spans it?','What would overlap change, and what does it cost?'],
+    inject:['Show exactly where the retrieved text ends up in the request to Gemini — system instruction or user message — and why that placement.','How is the instruction worded so the model still calls calculate? Quote it.','If retrieve() returns 5 chunks and only one is relevant, what does the model do with the other four?']
+  };
+  var btns=[].slice.call(document.querySelectorAll('#analyzePick button')), box=document.getElementById('analyzeFrame');
+  btns.forEach(function(b){ b.addEventListener('click',function(){
+    btns.forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true');
+    box.innerHTML='<span class="label">Explain-it frame</span><ul>'+frames[b.dataset.k].map(function(q){return '<li>'+q+'</li>';}).join('')+'</ul><p class="small">Aim for 250–400 words. Quote the line(s) you are explaining.</p>';
+  }); });
+})();
+
+/* Application Challenge: classify observations about someone else's pipeline */
+(function(){
+  var OPTS=[['right','Gets it right'],['quiet','Quietly underperforms'],['crash','Crash risk']];
+  var items=[
+    ['Stores <code>metadatas={"source": article_id}</code> with every chunk','right','Keeping the source lets the answer cite which article it came from — and lets you debug which article retrieval picked.'],
+    ['Uses a persistent Chroma client with <code>get_or_create_collection</code>','right','Same pattern as HOS 2: the vector store survives restarts and reopens the existing collection instead of re-creating it.'],
+    ['Embeds document chunks with <code>task_type="RETRIEVAL_QUERY"</code>','quiet','Documents should be embedded as RETRIEVAL_DOCUMENT. Using the query type for both still "works," but similarity scores get less reliable — answers get worse with no error.'],
+    ['Splits every 2,000 characters, with no overlap','quiet','Fixed character cuts land mid-sentence, even mid-word, and a step split across two chunks is never retrieved whole. No overlap means nothing repairs the cut.'],
+    ['Retrieves only <code>n_results=1</code>','quiet','If the single best chunk is slightly off, the model has nothing else to work with. Multi-part questions ("reset my password and set up MFA") lose half the answer.'],
+    ['Takes <code>hits["documents"][0][0]</code> with no check for an empty result','crash','On an empty collection (e.g. before the first ingest), indexing [0][0] raises an IndexError. It\'s the one real crash risk here.'],
+    ['Pastes the context into the user message with "Answer using this"','quiet','No instruction for what to do when the context is irrelevant, so the model will stretch whatever came back into an answer — exactly this week\'s Concept Debate.']
+  ];
+  var answers={}, host=document.getElementById('sorter'), score=document.getElementById('sorterScore');
+  host.innerHTML=items.map(function(t,i){
+    return '<div class="sorter-row" data-i="'+i+'"><span>'+t[0]+'</span><div class="opts">'+
+      OPTS.map(function(o){ var cls=o[0]==='right'?'auto':o[0]==='quiet'?'confirm':'never'; return '<button type="button" class="'+cls+'" aria-pressed="false" data-o="'+o[0]+'">'+o[1]+'</button>'; }).join('')+
+      '</div><div class="why"></div></div>';
+  }).join('');
+  [].slice.call(host.querySelectorAll('.opts button')).forEach(function(b){ b.addEventListener('click',function(){
+    var row=b.closest('.sorter-row'); [].slice.call(row.querySelectorAll('button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); answers[row.dataset.i]=b.dataset.o;
+  }); });
+  document.getElementById('sorterReveal').addEventListener('click',function(){
+    var right=0;
+    [].slice.call(host.querySelectorAll('.sorter-row')).forEach(function(row){
+      var t=items[row.dataset.i]; if(answers[row.dataset.i]===t[1]) right++;
+      var lbl=OPTS.filter(function(o){return o[0]===t[1];})[0][1];
+      row.querySelector('.why').innerHTML='<b>Suggested: '+lbl+'.</b> '+t[2];
+      row.classList.add('revealed');
+    });
+    score.textContent=right+' / '+items.length+' match the suggested call. Your submission only needs one "right" and one "quietly underperforms" — pick the ones you can argue best.';
+  });
+})();
+
+/* Quiz */
+(function(){
+  var qs=[
+    ['Why does meaning-based retrieval find "can I send back a tent?" when the doc only says "returns"?',['The embeddings of the two texts point in similar directions','Chroma stems words automatically','Gemini rewrites the question into keywords','It doesn\'t — you need exact word matches'],0,'Embeddings capture meaning, so different wording can still land close together.'],
+    ['What is the main problem with embedding a whole multi-topic document as one vector?',['It exceeds Chroma\'s storage','Embeddings only accept one sentence','The vector blurs several topics together and matches none of them well','It is slower to retrieve'],2,'Focused chunks give focused vectors — that\'s the point of chunking.'],
+    ['You add a sixth document but questions about it get generic answers. What\'s the most likely cause?',['The model needs retraining','top-k is too high','The API key expired','You didn\'t re-run ingest.py, so it isn\'t in Chroma'],3,'The vector store only knows what you ingested. New files need a new ingest.'],
+    ['After adding RAG, "what\'s 25 times 4?" gets "I don\'t know." Why?',['Chroma blocks tool calls','A broad "only answer from context" instruction suppressed tool use','The calculator tool was deleted by ingest.py','Embeddings can\'t represent numbers'],1,'Scope the grounding instruction to content questions and exempt tools.'],
+    ['Where do retrieved chunks go in the HOS 2 build?',['Into the frontend\'s chat history','Into the tool declaration','Into a system instruction sent with the request to Gemini','Into a separate model call that summarizes them first'],2,'retrieve() runs first; its chunks are injected as a system instruction before the model answers.']
+  ];
+  var host=document.getElementById('quiz'), right=0, done=0;
+  host.innerHTML=qs.map(function(q,i){
+    return '<div class="q" data-i="'+i+'"><div class="stem">'+(i+1)+'. '+q[0]+'</div>'+q[1].map(function(o,j){return '<button type="button" class="opt" data-j="'+j+'">'+o+'</button>';}).join('')+'<div class="fb"></div></div>';
+  }).join('');
+  [].slice.call(host.querySelectorAll('.q')).forEach(function(card){
+    var q=qs[card.dataset.i];
+    [].slice.call(card.querySelectorAll('.opt')).forEach(function(b){ b.addEventListener('click',function(){
+      if(card.classList.contains('answered')) return;
+      card.classList.add('answered'); done++;
+      var ok=+b.dataset.j===q[2]; if(ok) right++;
+      b.classList.add(ok?'right':'wrong'); card.querySelectorAll('.opt')[q[2]].classList.add('right');
+      card.querySelector('.fb').innerHTML=(ok?'✓ ':'✗ ')+q[3];
+      document.getElementById('quizScore').textContent= done===qs.length ? 'Score: '+right+' / '+qs.length+(right===qs.length?' — ready for the Week 4 check-in.':' — revisit the lecture parts you missed.') : '';
+    }); });
+  });
+})();
+</script>
+</body>
+</html>

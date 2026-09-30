@@ -97,13 +97,14 @@
         <div class="plain-terms-box"><strong>In plain terms:</strong> you'll build the same kind of app all term — a chat assistant that gets smarter over time — but each unit you'll start from an AI-assisted working version and spend your time judging, explaining, and improving it, not just typing it from scratch. No prior backend experience assumed.</div>
 
         <p><a href="AI-410-syllabus.html">View the full syllabus →</a> — credits, prerequisites, outcomes, grading breakdown, and the course schedule in one page.</p>
-        <p><a href="ai-410-interactive/index.html">Interactive Lessons &amp; HOS Simulators →</a> — two-week interactive lessons for HOS 1 and HOS 2 (Lecture, Muddiest Point, Concept Debate, CEAU stages, Application Challenge) plus four browser simulators for previewing each HOS and planning the Team/Term Project.</p>
+        <p><a href="ai-410-interactive/index.html">Interactive Lessons &amp; HOS Simulators →</a> — two-week interactive lessons for all 4 HOS (Lecture, Muddiest Point, Concept Debate, CEAU stages, Application Challenge) plus four browser simulators for previewing each HOS and planning the Team/Term Project.</p>
         <p><a href="ai-410-guides/concept-companion.html">Concept Companion →</a> — every concept you should know before starting a HOS, gathered in one place.</p>
         <p><a href="ai-410-guides/starter-code-walkthrough.html">Starter Code Walkthrough →</a> — what every file in each HOS's starter code does, explained one HOS at a time.</p>
         <p><a href="ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide →</a> — how to sign up for GitHub, get a Gemini API key, and set up Redis, Expo, and Langfuse when each is needed.</p>
         <p><a href="AI-410-market-research.html">Comparable Courses Research →</a> — how other universities, companies, and creators teach similar material, and what informed this course's own design choices.</p>
         <p><a href="AI-410-vs-AI-420.html">Compare with AI 420 →</a> — side-by-side: outcomes, HOS, stack, and assessment for the two courses.</p>
         <p><a href="../bsai-course-design-constraints.html">Course Design Constraints →</a> — the standing rules for every AI-track course: the official description is fixed, everything runs in GitHub Codespaces, free tiers first.</p>
+        <p><a href="ai-410-interactive/teaching-guide.html">Teaching Guide →</a> — how to run the course week to week: Brightspace setup, responding to Muddiest Points, running Concept Debates, grading, and where students get stuck in each HOS (instructor reference).</p>
         <p><a href="AI-410-tracker.html">Materials Tracker →</a> — every version and piece of material for this course in one place (internal/instructor reference).</p>
 
         <p><strong>Course Description:</strong> AI Engineering applies rigorous software engineering principles to the development and deployment of autonomous, learning-based systems. This course emphasizes leveraging Large Language Models (LLMs) within purpose-built software solutions to address real-world business challenges. Students will explore system architecture for agent development and integration, context engineering through Retrieval-Augmented Generation (RAG) and vector databases, and best practices for deploying and monitoring AI models in production environments. The curriculum also covers probabilistic logic for handling nondeterministic outputs. Learners gain hands-on experience building a full-stack AI solution, focusing on asynchronous data processing, push-based AI notifications, and seamless integration of vector stores for dynamic RAG applications. Mastery of these concepts will equip students to design and implement robust AI-powered applications using full-stack AI.</p>
@@ -289,7 +290,7 @@
             <p>Handling nondeterministic output (validation/retry guardrails) and moving long-running work off the request path (background jobs) — the two reliability concerns that show up together in any real production agent.</p>
             <span class="outcome-tag">Outcome 3</span>
             <a class="guide-link" href="ai-410-guides/hos-03-guardrails-async.html">Open hands-on guide →</a>
-            <a class="guide-link" href="ai-410-interactive/sim03-guardrails-queue.html">Simulator →</a>
+            <a class="guide-link" href="ai-410-interactive/hos-03-lesson.html">Interactive lesson →</a><a class="guide-link" href="ai-410-interactive/sim03-guardrails-queue.html">Simulator →</a>
             <div class="glossary-box"><h5>New words this week</h5><dl>
                 <dt>Nondeterministic &amp; guardrail —</dt><dd>the same input can produce a different output each time (nondeterministic); a guardrail checks that output and retries or fixes it if something's wrong.</dd>
                 <dt>Asynchronous (async), queue &amp; worker —</dt><dd>work that runs in the background instead of making the user wait, held in a waiting line (queue) and picked up by a separate process (worker).</dd>
@@ -314,7 +315,7 @@
                 <li>Why can't you trust every model response without checking it first?</li>
                 <li>Why move long-running work to a background job instead of making the user wait?</li>
             </ul></div>
-            <div class="challenge-box" style="background:#f0fdf4;border-left-color:#22c55e"><h5>Team/Term Project — mid-course checkpoint</h5><p style="margin:0">Not graded on depth — just confirms you're not starting Week 9 from zero. Submit: your team (or confirm going solo), and a one-paragraph project idea naming which HOS pieces it'll combine.</p></div>
+            <div class="challenge-box" style="background:#f0fdf4;border-left-color:#22c55e"><h5>Team/Term Project — mid-course checkpoint</h5><p style="margin:0">Not graded on depth — just confirms you're not starting Week 9 from zero. Submit: your team (or confirm going solo), and a one-paragraph project idea naming which HOS pieces it'll combine. <a href="ai-410-interactive/hos-03-lesson.html#checkpoint">Draft it with the checkpoint helper →</a></p></div>
         </div>
 
         <div class="week-block">
@@ -324,7 +325,7 @@
             <span class="outcome-tag">Outcome 4</span>
             <span class="outcome-tag">Outcome 5</span>
             <a class="guide-link" href="ai-410-guides/hos-04-mobile-observability.html">Open hands-on guide →</a>
-            <a class="guide-link" href="ai-410-interactive/sim04-push-observability.html">Simulator →</a>
+            <a class="guide-link" href="ai-410-interactive/hos-04-lesson.html">Interactive lesson →</a><a class="guide-link" href="ai-410-interactive/sim04-push-observability.html">Simulator →</a>
             <div class="glossary-box"><h5>New words this week</h5><dl>
                 <dt>Push notification &amp; push token —</dt><dd>a message sent to a device even when the app isn't open, addressed using a unique ID (push token) for that device.</dd>
                 <dt>Observability &amp; trace —</dt><dd>being able to see what a running system is actually doing (observability), via a recorded record of one request's full journey (trace).</dd>
@@ -353,12 +354,13 @@
             <div class="check-box"><h5>Architecture &amp; Bottleneck Review (folded in)</h5><ul>
                 <li>Can you draw, from memory, the path a message takes across all 4 HOS, start to finish?</li>
                 <li>Where in that path could something slow down or fail?</li>
-            </ul></div>
-            <div class="challenge-box" style="background:#eff6ff;border-left-color:#3b82f6"><h5>Integration Concept Debate — connecting all 4 HOS</h5><p style="margin:0">A structured, staged debate the same format as every HOS's CD, but its topic connects all 4 HOS together rather than one unit's material — e.g. "which of the 4 HOS is safest to cut a corner on under a deadline, and which one can't be shortchanged?"</p></div>
+            </ul><p style="margin:6px 0 0"><a href="ai-410-interactive/hos-04-lesson.html#review">Practice both paths interactively →</a></p></div>
+            <div class="challenge-box" style="background:#eff6ff;border-left-color:#3b82f6"><h5>Integration Concept Debate — connecting all 4 HOS</h5><p style="margin:0">A structured, staged debate the same format as every HOS's CD, but its topic connects all 4 HOS together rather than one unit's material — e.g. "which of the 4 HOS is safest to cut a corner on under a deadline, and which one can't be shortchanged?" <a href="ai-410-interactive/hos-04-lesson.html#integration">Debate sides and stages →</a></p></div>
         </div>
 
         <div class="week-block project-block">
             <h3>Week 9 — Team/Term Project: Plan &amp; Build Begins</h3>
+            <a class="guide-link" style="margin-left:0" href="ai-410-interactive/team-project.html">Interactive project guide (backlog builder) →</a>
             <p>Students (team or individual, their choice) analyze and apply the 4 HOS together — the project is explicitly a synthesis of what was built in Weeks 1–8, not a new concept. A few days of lightweight planning (you've had the idea since Week 1, so this isn't starting cold), then straight into building. Use the <a href="https://clarkngo.github.io/prompt-builder/builders/term-project.html" target="_blank" rel="noopener">Term Project Prompt Builder</a> to help scope what you're asking an AI assistant to scaffold. Full framework: <a href="AI-410-syllabus.html#team-project">syllabus's Team/Term Project section</a>.</p>
             <div class="check-box"><h5>Progress check</h5><ul>
                 <li><strong>Early Week 9:</strong> Scope locked as a short backlog — which HOS pieces your project combines and why, roles assigned if it's a team, PM tool set up. No dedicated planning week this time, so keep this brief and get building.</li>
@@ -367,6 +369,7 @@
 
         <div class="week-block demo-block">
             <h3>Week 10 — Team/Term Project: Build &amp; Final Demo</h3>
+            <a class="guide-link" style="margin-left:0" href="ai-410-interactive/team-project.html#freeze">Freeze checklist &amp; demo plan →</a>
             <p>Finish the build, then live demonstration of the Team/Term Project, touching every outcome the course covered.</p>
             <div class="check-box"><h5>Progress check &amp; self-check</h5><ul>
                 <li><strong>Early Week 10:</strong> Feature-complete and rehearsed — remaining time goes to polish and practicing the demo, not new features.</li>

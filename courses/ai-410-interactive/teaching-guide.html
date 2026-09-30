@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 410 instructor teaching guide: one-time Brightspace setup, the two-week HOS rhythm, responding to Muddiest Points, running Concept Debates, grading, verifying hand-written Refine work, per-HOS snags, and running the Team/Term Project.">
+<title>AI 410 Teaching Guide</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#1e8449; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#0e2a1c 0%,#155e37 60%,#1e8449 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --maxw:1100px; }
+
+.secnav { position:sticky; top:var(--header-h,62px); z-index:150; background:var(--surface); border-bottom:1px solid var(--border); box-shadow:var(--shadow); }
+.secnav-inner { max-width:var(--maxw); margin:0 auto; padding:8px 16px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:thin; }
+.secnav a { flex:none; font-size:.76rem; font-weight:600; text-decoration:none; color:var(--muted); padding:4px 10px; border-radius:16px; border:1px solid transparent; white-space:nowrap; }
+.secnav a:hover, .secnav a.active { color:var(--accent2); background:var(--accent-light); border-color:var(--accent); }
+.secnav .sep { flex:none; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:5px 4px 0 10px; }
+section.module { scroll-margin-top:calc(var(--header-h,62px) + 56px); }
+.part-banner { margin:30px 0 16px; padding:12px 18px; border-radius:var(--radius); background:var(--header-bg); color:var(--header-text); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:baseline; }
+.part-banner b { font-size:1.02rem; } .part-banner span { font-size:.8rem; opacity:.8; }
+.module-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; }
+.module-icon { width:40px; height:40px; flex:none; border-radius:10px; background:var(--accent-light); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+.module-head h2 { margin:0; }
+.module-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+.flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:6px 0 4px; }
+.flow a { text-decoration:none; color:inherit; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:block; }
+.flow a:hover { border-color:var(--accent); box-shadow:var(--shadow-hover); }
+.flow .n { font-size:.68rem; font-weight:800; color:var(--accent2); letter-spacing:.06em; text-transform:uppercase; }
+.flow .t { font-weight:700; font-size:.88rem; display:block; }
+.flow .w { font-size:.74rem; color:var(--muted); }
+.lo li { margin-bottom:6px; }
+.lecture-part { border-top:1px dashed var(--border); padding-top:14px; margin-top:16px; }
+.lecture-part:first-of-type { border-top:none; padding-top:0; margin-top:0; }
+.lecture-part h3 { margin-top:0; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.lecture-part h3 small { font-weight:600; color:var(--muted); font-size:.76rem; }
+.arch { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:10px 0 14px; }
+.arch .box { flex:1 1 150px; border:2px solid var(--border); border-radius:10px; padding:10px 12px; background:var(--surface2); font-size:.84rem; }
+.arch .box b { display:block; font-size:.9rem; }
+.arch .box.key { border-color:var(--accent); }
+.arch .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.seq { counter-reset:s; list-style:none; margin:10px 0 14px; padding:0; }
+.seq li { counter-increment:s; position:relative; padding:8px 12px 8px 44px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; background:var(--surface); font-size:.88rem; }
+.seq li::before { content:counter(s); position:absolute; left:10px; top:8px; width:24px; height:24px; border-radius:50%; background:var(--accent); color:var(--on-accent); font-weight:800; font-size:.78rem; display:flex; align-items:center; justify-content:center; }
+.seq li.loopback { border-style:dashed; border-color:var(--amber); }
+dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted); font-size:.88rem; }
+.two { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+.eg { border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; background:var(--surface2); }
+.eg.weak { border-left:5px solid var(--bad); } .eg.strong { border-left:5px solid var(--ok); }
+.eg .label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+.eg.weak .label { color:var(--bad); } .eg.strong .label { color:var(--ok); }
+.counter { font-size:.72rem; color:var(--muted); text-align:right; }
+.spec-meter { display:flex; gap:10px; align-items:center; margin:12px 0 6px; font-size:.84rem; }
+.spec-track { flex:1; height:10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.spec-fill { height:100%; width:0; background:var(--bad); transition:width .25s, background .25s; }
+.hints { font-size:.8rem; margin:4px 0 10px 1.1em; color:var(--muted); }
+.hints li.ok { color:var(--ok); } .hints li.no { color:var(--bad); }
+.stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:10px 0 16px; }
+.stage { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface2); font-size:.85rem; }
+.stage .day { font-size:.7rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--violet); }
+.side { border:2px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; }
+.side.a { border-color:var(--blue); } .side.b { border-color:var(--rose); }
+.side.mine { box-shadow:0 0 0 4px var(--accent-light); }
+.side h4 { display:flex; justify-content:space-between; gap:6px; }
+.checklist label { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; background:var(--surface); font-size:.88rem; }
+.checklist input { margin-top:4px; accent-color:var(--accent); width:16px; height:16px; flex:none; }
+.checklist label.done { background:var(--ok-bg); border-color:var(--ok); }
+.progress-line { font-size:.8rem; font-weight:700; color:var(--accent2); margin-bottom:8px; }
+.pick { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:12px; }
+.pick button { text-align:left; background:var(--surface2); border:2px solid var(--border); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:.85rem; color:var(--text); cursor:pointer; }
+.pick button[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-light); }
+.pick button b { display:block; }
+.sorter-row { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:.86rem; background:var(--surface); }
+.sorter-row .opts { display:flex; gap:4px; flex-wrap:wrap; }
+.sorter-row .opts button { font-family:inherit; font-size:.72rem; font-weight:700; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:6px; padding:4px 8px; cursor:pointer; }
+.sorter-row .opts button[aria-pressed="true"].auto { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+.sorter-row .opts button[aria-pressed="true"].confirm { background:var(--amber-bg); border-color:var(--amber); color:var(--amber); }
+.sorter-row .opts button[aria-pressed="true"].never { background:var(--bad-bg); border-color:var(--bad); color:var(--bad); }
+.sorter-row .why { grid-column:1/-1; font-size:.8rem; color:var(--muted); display:none; }
+.sorter-row.revealed .why { display:block; }
+@media (max-width:560px){ .sorter-row { grid-template-columns:1fr; } }
+.q { border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:10px; background:var(--surface); }
+.q .stem { font-weight:700; font-size:.9rem; margin-bottom:8px; }
+.q .opt { display:block; width:100%; text-align:left; font-family:inherit; font-size:.86rem; color:var(--text); background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:7px 10px; margin-bottom:6px; cursor:pointer; }
+.q .opt.right { background:var(--ok-bg); border-color:var(--ok); }
+.q .opt.wrong { background:var(--bad-bg); border-color:var(--bad); }
+.q .fb { font-size:.82rem; margin-top:4px; display:none; }
+.q.answered .fb { display:block; }
+.score { font-weight:800; color:var(--accent2); }
+.project-map td:first-child { font-weight:700; white-space:nowrap; }
+
+.pipe-row { display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin:6px 0; }
+.pipe-row .box { flex:1 1 120px; border:2px solid var(--border); border-radius:10px; padding:8px 10px; background:var(--surface2); font-size:.8rem; }
+.pipe-row .box b { display:block; font-size:.84rem; }
+.pipe-row .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.pipe-label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:10px; }
+.vec-demo { display:grid; grid-template-columns:1fr auto; gap:6px 12px; font-size:.84rem; align-items:center; margin:8px 0 12px; }
+.vec-demo .s { font-weight:800; color:var(--accent2); }
+.review-code { counter-reset:ln; }
+
+details.hos { border:1px solid var(--border); border-radius:10px; padding:10px 14px; margin-bottom:8px; background:var(--surface); }
+details.hos summary { cursor:pointer; font-weight:700; }
+details.hos[open] summary { margin-bottom:8px; }
+details.hos h4 { margin-top:10px; font-size:.85rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+.internal { background:var(--amber-bg); border:1px solid var(--amber); color:var(--amber); font-weight:700; font-size:.82rem; padding:8px 14px; border-radius:8px; margin:20px 0 0; }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">410</span><span><b>AI 410: AI Engineering</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-410.html">← AI 410</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 410 · Instructor reference</div>
+    <h1>Teaching Guide</h1>
+    <p class="lede">How to run AI 410 week to week: one-time setup, the two-week rhythm, responding to Muddiest Points, running Concept Debates, grading quickly, checking that Refine work was done by hand, and where students get stuck in each HOS.</p>
+    <div class="chips"><span class="chip">Internal</span><span class="chip">Brightspace</span><span class="chip">Two-week HOS rhythm</span><span class="chip">Grading</span><span class="chip">Per-HOS snags</span></div>
+  </div>
+</section>
+<main id="main">
+
+<div class="internal">Internal — instructor and SME reference, not for students. AI 410 is an upcoming course; this guide describes how it's designed to run.</div>
+
+<nav class="secnav no-print" aria-label="Guide sections" style="margin-top:14px">
+  <div class="secnav-inner">
+    <a href="#setup">Before the term</a>
+    <a href="#rhythm">Two-week rhythm</a>
+    <a href="#mp">Muddiest Points</a>
+    <a href="#cd">Concept Debates</a>
+    <a href="#grading">Grading quickly</a>
+    <a href="#refine">"No AI" check</a>
+    <a href="#hos">Per-HOS notes</a>
+    <a href="#project">Weeks 9–10</a>
+  </div>
+</nav>
+
+<section class="module card" id="setup" style="margin-top:18px">
+  <div class="module-head"><div class="module-icon">🧰</div><div><h2>Before the term: one-time setup</h2><div class="module-meta"><span class="tag">≈ 1 hour, once</span></div></div></div>
+  <div class="progress-line" id="setupProgress">0 / 6 done</div>
+  <div class="checklist" id="setupList">
+    <label><input type="checkbox"><span><b>Debate teams:</b> create the auto-enrolled, randomized "Concept Debate Teams" group category in Brightspace. Step-by-step: <a href="../AI-410.html#cd-team-setup">AI 410 schedule, Week 1 instructor setup</a>.</span></label>
+    <label><input type="checkbox"><span><b>Five Concept Debate topics</b> (HOS 1–4 plus the Week 8 Integration debate), each a single whole-class discussion topic with the three stage dates in its description. The sides and prompts are in each <a href="index.html">interactive lesson</a>.</span></label>
+    <label><input type="checkbox"><span><b>Four Muddiest Point submissions</b>, one per HOS, due before that HOS's build begins. Use four required fields (context, stuck point, what you tried, optional guess), not one free-text box.</span></label>
+    <label><input type="checkbox"><span><b>HOS, Application Challenge and project assignments</b> with the CEAU rubric (30/30/40), the AC rubric (50/35/15), and the project rubric (25/35/25/15) from the <a href="../AI-410-syllabus.html">syllabus</a>.</span></label>
+    <label><input type="checkbox"><span><b>Account timeline in the Week 1 announcement:</b> GitHub + Gemini key (Week 1), Upstash Redis (Week 5), Expo + EAS + Langfuse (Week 7). All free, no credit card. Source: <a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a>.</span></label>
+    <label><input type="checkbox"><span><b>Codespaces hours:</b> remind students that a verified GitHub student account (GitHub Education) can raise the free Codespaces allowance, and to stop Codespaces they aren't using.</span></label>
+  </div>
+</section>
+
+<section class="module card" id="rhythm">
+  <div class="module-head"><div class="module-icon">🗓️</div><div><h2>The two-week rhythm — what you do, when</h2><div class="module-meta"><span class="tag">Repeats for each HOS</span></div></div></div>
+  <div class="table-wrap"><table class="t">
+    <tr><th>When</th><th>Students</th><th>You</th></tr>
+    <tr><td>Wk A · Mon</td><td>Lecture (3 parts), simulator</td><td>Release the lesson; post the CD question and each team's side for this HOS.</td></tr>
+    <tr><td>Wk A · Tue</td><td>CD Stage 1</td><td>Skim for posts that only summarize the topic; nudge publicly with one example of a specific claim.</td></tr>
+    <tr><td>Wk A · Wed</td><td>Muddiest Point due; start Create/Scaffold</td><td>Read the MPs the same day; cluster them (see below).</td></tr>
+    <tr><td>Wk A · Thu</td><td>CD Stage 2; build</td><td>Post the "Top 3 muddiest points" response before students reach Evaluate.</td></tr>
+    <tr><td>Wk A · Fri–Sun</td><td>Evaluate; CD Stage 3</td><td>Office hours target environment snags (see per-HOS notes).</td></tr>
+    <tr><td>Wk B · Mon–Thu</td><td>Analyze, Understand &amp; Refine (no AI)</td><td>Run the short "one line" follow-ups for the Refine check (below).</td></tr>
+    <tr><td>Wk B · Fri–Sun</td><td>Application Challenge; knowledge check; HOS artifact submitted</td><td>Grade the HOS and CD; reuse one strong AC answer (anonymized) in the next lecture.</td></tr>
+  </table></div>
+  <p class="small muted">Week 6 also has the project checkpoint; Week 8 also has the Architecture Review and Integration debate — plan for Week 8 to be the heaviest grading week.</p>
+</section>
+
+<section class="module card" id="mp">
+  <div class="module-head"><div class="module-icon">🌫️</div><div><h2>Responding to Muddiest Points</h2><div class="module-meta"><span class="tag">≈ 30 min per HOS</span></div></div></div>
+  <ol>
+    <li><b>Cluster, don't reply one by one.</b> Most submissions fall into three or four groups. Tag each with its lecture part or file.</li>
+    <li><b>Answer the top three in one post</b> (or a 5-minute video) before students reach Evaluate. Quote a submission (anonymized) for each — students see their confusion was shared and specific questions get rewarded.</li>
+    <li><b>Feed the rest forward.</b> A cluster you couldn't answer well is a lecture-part rewrite for next term.</li>
+  </ol>
+  <p>The lessons' specificity meter nudges students toward the four-field format, but grading stays with the rubric: participation — on time and genuine (80%) — and writing — specific, not generic (20%). A vague submission on time still earns most of the participation credit; the goal is better questions, not fewer points.</p>
+</section>
+
+<section class="module card" id="cd">
+  <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Running Concept Debates</h2><div class="module-meta"><span class="tag">3 stages per HOS</span></div></div></div>
+  <ul>
+    <li><b>Sides rotate automatically:</b> Team 1 argues Side A in HOS 1, HOS 3 and the Integration debate, and Side B in HOS 2 and HOS 4. You never assign individuals. Late adds without a team join the side with fewer Stage 1 posts.</li>
+    <li><b>Stage 2 is the one students skip.</b> Posting the strongest version of the other side before replying to anyone is what prevents "I agree" threads. Check for it first when grading.</li>
+    <li><b>Stage 3 must cite a classmate's specific point.</b> A synthesis that only affirms agreement doesn't meet the Writing criterion.</li>
+    <li><b>Evidence from the build counts most.</b> A test the student ran, a trace, a simulator setting — reward it over general claims.</li>
+  </ul>
+</section>
+
+<section class="module card" id="grading">
+  <div class="module-head"><div class="module-icon">📝</div><div><h2>Grading quickly — what full credit looks like</h2><div class="module-meta"><span class="tag">Rubrics from the syllabus</span></div></div></div>
+  <div class="table-wrap"><table class="t">
+    <tr><th>Item</th><th>Weights</th><th>Fast signals of full credit</th></tr>
+    <tr><td>Muddiest Point</td><td>Participation 80 · Writing 20</td><td>Names a specific step, file, or line; says what was tried.</td></tr>
+    <tr><td>Concept Debate</td><td>Participation 50 · Writing 50</td><td>All three stages posted; Stage 2 is a genuine best case for the other side; Stage 3 quotes a peer.</td></tr>
+    <tr><td>HOS — Evaluate</td><td>30%</td><td>Every required test run, including the failure cases; at least one thing the AI got wrong or missed, with evidence.</td></tr>
+    <tr><td>HOS — Analyze</td><td>30%</td><td>One mechanism explained in the student's own words, naming the failure the design prevents — not a paraphrase of AI output.</td></tr>
+    <tr><td>HOS — Understand &amp; Refine</td><td>40%</td><td>The hand-written extension works, is shown working, and the student can explain any line of it.</td></tr>
+    <tr><td>Application Challenge</td><td>Judgment 50 · Transfer 35 · Clarity 15</td><td>Applies the HOS judgment to the new scenario — not a restatement of the week's build.</td></tr>
+  </table></div>
+  <p class="small muted">Create/Scaffold is never graded on its own.</p>
+</section>
+
+<section class="module card" id="refine">
+  <div class="module-head"><div class="module-icon">✋</div><div><h2>Checking that Understand &amp; Refine was done by hand</h2><div class="module-meta"><span class="tag">40% of each HOS</span></div></div></div>
+  <p>The Refine stage is the mastery check, so it's where AI use matters most. AI-text detectors are unreliable and shouldn't be the basis of a grade. These checks are cheaper and fairer — pick one or two that suit your section:</p>
+  <ul>
+    <li><b>One-line follow-up.</b> Pick one line of the student's Refine code and ask them to explain it — a two-minute async video, a discussion reply, or live in office hours. Someone who wrote it can answer immediately.</li>
+    <li><b>A separate commit.</b> Ask for the Refine work as its own commit (or small series of commits) after the scaffold. Small, incremental diffs with a clear message look very different from one large pasted block.</li>
+    <li><b>"One thing your version still gets wrong."</b> Every Refine checklist ends with a limitation question (a bad input the schema misses, a case the faithfulness heuristic is fooled by). Students who built it by hand tend to know; generated explanations tend to claim completeness.</li>
+    <li><b>Spot live checks.</b> In office hours, ask a student to make a tiny change to their Refine code (rename a field, add one validation rule) while sharing their screen.</li>
+  </ul>
+  <p class="small muted">State the policy in Week 1 and repeat it in each lesson — every Refine section is labeled "No AI assistant for this part."</p>
+</section>
+
+<section class="module card" id="hos">
+  <div class="module-head"><div class="module-icon">📚</div><div><h2>Per-HOS notes: likely confusions and snags</h2><div class="module-meta"><span class="tag">Plan support time around these</span></div></div></div>
+  <details class="hos" open><summary>HOS 1 — Foundations &amp; the Agentic Loop (Weeks 1–2)</summary>
+    <h4>Likely muddiest points</h4>
+    <ul><li>Where the tool actually runs (many assume the model runs it).</li><li>Why the backend resends the whole history with every call.</li><li>Why the API key can't sit in the frontend "just for a demo."</li></ul>
+    <h4>Snags</h4>
+    <ul><li>First-time Codespaces and <code>.env</code> setup; a missing or mistyped <code>GEMINI_API_KEY</code>.</li><li>Streamlit and uvicorn both need to run — two terminals.</li></ul>
+    <p class="small"><a href="hos-01-lesson.html">Lesson</a> · <a href="sim01-agentic-loop.html">Simulator</a> · <a href="../ai-410-guides/hos-01-foundations-agentic-loop.html">Hands-on guide</a></p>
+  </details>
+  <details class="hos"><summary>HOS 2 — Embeddings, Chunking &amp; RAG (Weeks 3–4)</summary>
+    <h4>Likely muddiest points</h4>
+    <ul><li>Why documents and queries use different <code>task_type</code> values.</li><li>Why chunk at all, and how big.</li><li>Why the model still invents answers when retrieval finds nothing relevant (this week's debate).</li></ul>
+    <h4>Snags</h4>
+    <ul><li>RAG instruction suppresses tool calls — the most common silent bug.</li><li><code>EMBED_DIM</code> mismatch between ingest and retrieval.</li><li>Forgetting to re-run <code>ingest.py</code> after adding the sixth document.</li></ul>
+    <p class="small"><a href="hos-02-lesson.html">Lesson</a> · <a href="sim02-rag-pipeline.html">Simulator</a> · <a href="../ai-410-guides/hos-02-embeddings-rag.html">Hands-on guide</a></p>
+  </details>
+  <details class="hos"><summary>HOS 3 — Guardrails &amp; Async Processing (Weeks 5–6)</summary>
+    <h4>Likely muddiest points</h4>
+    <ul><li>Why the worker must be a separate process rather than a function or thread.</li><li>Why the validation error goes into the retry.</li><li>Why a schema can't catch "valid but wrong."</li></ul>
+    <h4>Snags</h4>
+    <ul><li>Jobs stuck on <code>queued</code> — the worker isn't running. By far the most common.</li><li>macOS + RQ fork issue when running locally (use Codespaces, or the env var in the guide).</li><li>Retries that repeat the same error because the hint isn't fed back.</li></ul>
+    <h4>Also this unit</h4>
+    <p>Week 6 project checkpoint: not graded on depth. Flag any student with no team decision and no idea — they're the ones at risk in Week 9.</p>
+    <p class="small"><a href="hos-03-lesson.html">Lesson</a> · <a href="sim03-guardrails-queue.html">Simulator</a> · <a href="../ai-410-guides/hos-03-guardrails-async.html">Hands-on guide</a></p>
+  </details>
+  <details class="hos"><summary>HOS 4 — Mobile, Push &amp; Observability (Weeks 7–8)</summary>
+    <h4>Likely muddiest points</h4>
+    <ul><li>How nested spans are decided.</li><li>Why push is addressed to a device token, not a user.</li><li>What a faithfulness score can and can't detect.</li></ul>
+    <h4>Snags — budget the most support time here</h4>
+    <ul><li><code>npm</code> missing in an older Codespace — rebuild the container.</li><li>Expo SDK mismatch with Expo Go — <code>npx expo install expo@latest</code> then <code>--fix</code>.</li><li>iOS Expo Go requires the same Expo account signed in on the terminal and the phone.</li><li>Push token crash without an EAS project ID — <code>npx eas init</code>.</li><li><b>Android Expo Go no longer supports push (SDK 53+).</b> Tell Android-only students in advance: iPhone or a development build for the push proof step.</li><li>Expo push returns 200 OK for stale tokens — the error is in the response body.</li></ul>
+    <h4>Also this unit</h4>
+    <p>Week 8 Architecture Review and Integration Concept Debate — the heaviest week. Consider moving the HOS 4 Application Challenge deadline to the start of Week 9 if your section is struggling.</p>
+    <p class="small"><a href="hos-04-lesson.html">Lesson</a> · <a href="sim04-push-observability.html">Simulator</a> · <a href="../ai-410-guides/hos-04-mobile-observability.html">Hands-on guide</a></p>
+  </details>
+</section>
+
+<section class="module card" id="project">
+  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Weeks 9–10: running the Team/Term Project</h2><div class="module-meta"><span class="tag">20% of course</span></div></div></div>
+  <ul>
+    <li><b>Early Week 9:</b> ask every team for its Sprint 1 list (the <a href="team-project.html#backlog">backlog builder</a> copies it as Markdown). Check that Sprint 1 touches at least two HOS end to end, and that every HOS appears somewhere in the backlog.</li>
+    <li><b>Mid Week 9:</b> read standups for "blocked" lines older than a day — that's where to spend office hours.</li>
+    <li><b>Early Week 10:</b> feature freeze. Anything not working now gets named in the demo as "didn't make it," not rushed.</li>
+    <li><b>Demo day:</b> require a backup recording or screenshots — tunnels and Wi-Fi fail live, and a network failure shouldn't cost a Presentation grade. Ask each team "show me where HOS 2 is" — it tests Synthesis &amp; Scope in one question.</li>
+    <li><b>Collaboration (15%):</b> teams submit individual contribution notes linked to commits or issues; solo students submit a process reflection from their daily log.</li>
+  </ul>
+  <p class="small">Student-facing guide: <a href="team-project.html">Team/Term Project: Plan, Build &amp; Demo</a>.</p>
+</section>
+
+<section class="card">
+  <h2>Related</h2>
+  <ul>
+    <li><a href="../AI-410.html">AI 410 course schedule</a> · <a href="../AI-410-syllabus.html">Syllabus</a> · <a href="../AI-410-tracker.html">Materials tracker</a></li>
+    <li><a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a></li>
+    <li><a href="index.html">Interactive lessons &amp; simulators</a></li>
+  </ul>
+</section>
+
+</main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai410-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai410-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){ return null; } }
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest',inline:'center'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+(function(){
+  var boxes=[].slice.call(document.querySelectorAll('#setupList input')), key='ai410-teach-setup';
+  var saved=(store(key)||'').split(',');
+  boxes.forEach(function(b,i){ if(saved[i]==='1') b.checked=true; b.addEventListener('change',upd); });
+  function upd(){ boxes.forEach(function(b){ b.parentNode.classList.toggle('done',b.checked); });
+    document.getElementById('setupProgress').textContent=boxes.filter(function(b){return b.checked;}).length+' / '+boxes.length+' done';
+    store(key,boxes.map(function(b){return b.checked?'1':'0';}).join(',')); }
+  upd();
+})();
+</script>
+</body>
+</html>

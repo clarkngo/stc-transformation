@@ -180,7 +180,7 @@ footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.
   <div class="hero-inner">
     <div class="eyebrow">Simulator 2 · Pairs with HOS 2 (Weeks 3–4)</div>
     <h1>RAG Pipeline Simulator</h1>
-    <p class="lede">Chunk a set of store-policy documents, score every chunk against a question, and see exactly what the model receives — and whether the answer it can give is grounded, a guess, or an honest "I don't know."</p>
+    <p class="lede">Chunk Northwind Outfitters' five sample documents (the same ones in the HOS 2 starter code), score every chunk against a question, and see exactly what the model receives — and whether the answer it can give is grounded, a guess, or an honest "I don't know."</p>
     <div class="chips"><span class="chip">Outcome O2</span><span class="chip">Chunking</span><span class="chip">Top-k &amp; threshold</span><span class="chip">Grounding</span><span class="chip">RAG vs tool calling</span></div>
   </div>
 </section>
@@ -206,8 +206,8 @@ footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.
       <div class="presets" id="presets">
         <button type="button">How long do I have to return an item?</button>
         <button type="button">Do you offer gift wrapping?</button>
-        <button type="button">How much does shipping to Canada cost?</button>
-        <button type="button">Can members get free shipping?</button>
+        <button type="button">How much is expedited shipping?</button>
+        <button type="button">How heavy is the Ridgeline tent?</button>
         <button type="button">What's 25 times 4?</button>
       </div>
       <label class="field" for="topk">Top-k: <span id="topkV"></span></label>
@@ -240,7 +240,7 @@ footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.
   <h2>What this teaches</h2>
   <ul>
     <li><b>Chunk size is a trade-off.</b> Set chunk size to 10 and top-k to 1, then ask the return question: the best-scoring chunk mentions returns, but "30 days" landed in the chunk next to it. Push chunk size to 80 instead and it's found — but every chunk now drags ~80 words of mostly irrelevant text into the prompt. Watch the "What the model receives" box grow.</li>
-    <li><b>The threshold decides whether the model can say "I don't know."</b> Ask the gift-wrapping question with the threshold at 0 — weakly related chunks get through and the answer drifts. Raise it and the model gets nothing, so it can say so honestly.</li>
+    <li><b>The threshold decides whether the model can say "I don't know."</b> Ask the gift-wrapping question: the "Gift cards are non-refundable" chunk scores just high enough to get through, because the two share a <em>word</em>, not a meaning, and the model is tempted to stretch it into a policy. Raise the threshold to 0.20 and nothing gets through, so the model can say so honestly.</li>
     <li><b>RAG can break tool calling.</b> Turn on the buggy prompt and ask the math question — the model obeys "only the documents" and refuses to calculate. Evaluate should always include one tool question.</li>
     <li><b>Real embeddings compare meaning, not words.</b> This toy only matches shared words (plus a few synonyms). In HOS 2, Gemini's embeddings use <code>task_type="RETRIEVAL_DOCUMENT"</code> at ingest and <code>"RETRIEVAL_QUERY"</code> at question time — the Analyze stage asks you why.</li>
   </ul>
@@ -272,7 +272,7 @@ footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.
 </script>
 <script>
 var $=function(id){return document.getElementById(id);};
-var DOCS="## Returns policy\nYou can return most items within 30 days of delivery for a full refund. Items must be unused and in original packaging. Final-sale items marked with a red tag cannot be returned. Refunds go back to the original payment method within 5 business days after we receive the item.\n\n## Shipping\nStandard shipping within the United States costs $5.99 and arrives in 3 to 5 business days. Orders over $50 ship free. International shipping to Canada costs $14.99 and takes 7 to 10 business days. We do not currently ship to other countries.\n\n## Warranty\nElectronics include a one-year limited warranty covering manufacturing defects. The warranty does not cover accidental damage, water damage, or normal wear. To start a warranty claim, contact support with your order number and a photo of the defect.\n\n## Membership\nMembers pay $49 per year. Membership includes free standard shipping on every order with no minimum, early access to sales, and an extended 60-day return window.\n\n## Contact\nSupport is available by chat from 8 AM to 6 PM Pacific time, Monday through Friday. Email support replies within one business day. We do not offer phone support.";
+var DOCS="## Return Policy\nNorthwind Outfitters accepts returns within 30 days of delivery for a full refund, provided the item is unused and in its original packaging. Worn or washed items cannot be returned unless defective.\nTo start a return, use the return portal on our website with your order number. We provide a prepaid shipping label for domestic returns. Refunds are issued to the original payment method within 5-7 business days of us receiving the item.\nSale items marked final sale cannot be returned or exchanged. Gift cards are non-refundable.\n\n## Shipping Information\nStandard shipping takes 5-7 business days and is free on orders over $75. Expedited shipping (2-3 business days) is available for a flat $15 fee. We do not currently ship internationally outside the US and Canada.\nOrders placed before 1pm PT ship the same business day. You'll receive a tracking number by email once your order ships.\nCanadian orders may be subject to customs fees collected by the carrier on delivery; Northwind Outfitters does not cover these fees.\n\n## Warranty Overview\nMost Northwind Outfitters hardgoods (tents, packs, sleeping bags) carry a warranty against manufacturing defects. See each product guide for the exact term, since it varies by category. Warranty claims require proof of purchase and photos of the defect.\n\n## Product Guide: Tents\nThe Ridgeline 2P is our best-selling backpacking tent, weighing 3.2 lbs with a freestanding double-wall design rated for 3-season use. It sets up in under 5 minutes with color-coded poles.\nThe Basecamp 4P is a heavier, more spacious option for car camping, with a full-coverage rainfly. It is not recommended for backpacking due to its 8.5 lb weight.\nBoth tents include a 2-year manufacturer warranty covering material defects.\n\n## Product Guide: Backpacks\nThe Traverse 55L is designed for multi-day backpacking trips, with an adjustable torso length, a ventilated back panel, and a rain cover included. Recommended load range is 30-45 lbs.\nThe Daytrekker 22L is a lighter option for single-day hikes, with a hydration bladder sleeve and hip belt pockets. It is not designed to carry loads over 20 lbs comfortably.\nBoth packs include a lifetime warranty against manufacturing defects in stitching and zippers.";
 $('docs').value=DOCS;
 var COLORS=['#1e8449','#1d4ed8','#b45309','#7e22ce','#be185d','#0e7490','#6b7280'];
 var STOP='a an the and or of to in on for with by at is are be can do does you your we our i it this that from how much what when where who which as if not no any most have has get over per'.split(' ');
@@ -303,7 +303,7 @@ function ingest(){
 function renderChunks(hits){
   $('chunks').innerHTML=store.map(function(c,i){ return '<span class="chunk'+(hits.indexOf(i)>=0?' hit':'')+'" style="--c:'+COLORS[c.di%COLORS.length]+'" title="'+esc(c.text)+'"><b>'+esc(c.doc)+'</b> · '+esc(c.text.slice(0,48))+'…</span>'; }).join('');
 }
-var FACTS=[[/return/i,/30 days/],[/canada/i,/\$14\.99/],[/member.*ship|ship.*member|free shipping/i,/free standard shipping/],[/gift/i,null]];
+var FACTS=[[/return/i,/30 days/],[/expedited/i,/\$15/],[/ridgeline|tent/i,/3\.2 lbs/],[/gift/i,null]];
 var lastQ='';
 function ask(){
   if(!store.length) ingest();
@@ -331,9 +331,9 @@ function ask(){
     if(ragOn && $('ragSwallow').checked){ kind='bad'; text='Model: "I don\'t know — that isn\'t in the documents." <br><b>Bug:</b> the retrieval instruction swallowed the calculator. No error was raised; the tool just stopped being used.'; }
     else { kind='ok'; text='Model calls <code>calculate("25*4")</code> → 100. Retrieval ran too, but the model correctly ignored irrelevant chunks and used the tool.'; }
   } else if(!ragOn){
-    kind='bad'; text='Model (from memory): "Most stores allow returns within 14 days, and shipping is usually free." <br><b>Ungrounded:</b> plausible, confident, and not this store\'s policy.';
+    kind='bad'; text='Model (from memory): "Most outdoor retailers allow returns within 60 days, and shipping is usually free." <br><b>Ungrounded:</b> plausible, confident, and not this store\'s policy.';
   } else if(!hits.length){
-    kind='ok'; text='Model: "I don\'t see that in our policies — please contact support." <br>Nothing cleared the threshold, so the model had no context and said so. That\'s the correct behavior for an uncovered question.';
+    kind='ok'; text='Model: "I don\'t see that in Northwind\'s policies — please contact support." <br>Nothing cleared the threshold, so the model had no context and said so. That\'s the correct behavior for an uncovered question.';
   } else if(fact && fact[1]){
     if(fact[1].test(joined)){ kind='ok'; text='Grounded ✓ — the key fact (<code>'+joined.match(fact[1])[0]+'</code>) is in the retrieved context, so the model can cite it.'; }
     else { kind='warn'; text='Key fact missing ✗ — the chunk containing the answer didn\'t make the top-'+k+'. The model will either hedge or guess. Try a different chunk size, overlap, or top-k.'; }

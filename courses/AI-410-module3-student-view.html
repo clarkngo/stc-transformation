@@ -33,6 +33,7 @@
         .tag-due { background:#fee2e2; color:#b91c1c; }
         .tag-points { background:#dcfce7; color:#15803d; }
         .tag-time { background:#e0f2fe; color:#0369a1; }
+        .tag-ungraded { background:#f1f5f9; color:#475569; }
         .item-body { padding:16px 18px; font-size:0.9rem; color:#334155; }
         .item-body p:first-child { margin-top:0; }
         .item-body p:last-child { margin-bottom:0; }
@@ -42,10 +43,11 @@
         .stage-mini .snum { font-weight:700; color:#15803d; }
         .cd-stage { background:#faf5ff; border-radius:6px; padding:10px 14px; margin:8px 0; font-size:0.85rem; }
         .cd-stage strong { color:#7e22ce; }
-        .kc-q { background:#eef2ff; border-radius:6px; padding:10px 14px; margin:6px 0; font-size:0.88rem; }
         .rail-note { font-size:0.78rem; color:#94a3b8; font-style:italic; margin-top:4px; }
         .module-nav { display:flex; justify-content:space-between; margin-top:18px; font-size:0.9rem; }
         .module-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+        .up-next { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:14px 18px; margin-top:18px; font-size:0.9rem; }
+        .up-next a { font-weight:700; }
     </style>
 </head>
 <body class="course-page">
@@ -58,7 +60,7 @@
       <a href="AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
     </nav>
 
-    <div class="internal-banner"><strong>Internal review tool — not a real course page.</strong> A simulation of what a student would actually see opening "Module 3" in the online course menu, built from the real content already in <a href="AI-410.html">AI-410.html</a>, <a href="AI-410-syllabus.html">AI-410-syllabus.html</a>, and the <a href="ai-410-guides/hos-03-guardrails-async.html">HOS 3 guide</a>.</div>
+    <div class="internal-banner"><strong>Internal review tool — not a real course page.</strong> A simulation of what a student would actually see opening "Module 3" (Week 3) — HOS 2's first week, built from the real content in <a href="AI-410.html">AI-410.html</a> and the <a href="ai-410-guides/hos-02-embeddings-rag.html">HOS 2 guide</a>.</div>
 
     <h1>Student View Simulation — Module 3</h1>
 
@@ -68,18 +70,24 @@
             <span class="student-name">Viewing as: Student</span>
         </div>
         <div class="lms-progress-bar">
-            <div class="label">Course Progress — Module 3 of 4</div>
+            <div class="label">Course Progress — Week 3 of 10</div>
             <div class="module-track">
                 <div class="module-pip done"></div>
                 <div class="module-pip done"></div>
                 <div class="module-pip active"></div>
                 <div class="module-pip"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
+                <div class="module-pip"></div>
             </div>
         </div>
 
         <div class="lms-body">
-            <div class="module-title">Module 3 — Guardrails &amp; Asynchronous Processing</div>
-            <p class="module-sub">HOS 3 · Outcome 3 · 12.5% of your final grade · Estimated 2.5–3 hrs of build time, plus MP/CD</p>
+            <div class="module-title">Module 3 — HOS 2 (1 of 2): Embeddings, Chunking &amp; RAG</div>
+            <p class="module-sub">Build &amp; Evaluate week · Outcome 2 · 12.5% of your final grade across both weeks</p>
 
             <div class="item">
                 <div class="item-head">
@@ -90,8 +98,7 @@
                     </div>
                 </div>
                 <div class="item-body">
-                    <p><strong>Goal:</strong> Make your app reliable under two different kinds of unpredictability: a model that sometimes calls a tool with bad arguments, and document ingestion that's slow enough to block the whole app if it runs inline.</p>
-                    <p>Same four-stage grading as before: <strong>Create/Scaffold → Evaluate → Analyze → Understand &amp; Refine.</strong></p>
+                    <p><strong>Goal this week:</strong> Extend your HOS 1 app with retrieval: chunk and embed a set of documents into a vector database, then ground the agent's answers in them. Same four-stage grading as HOS 1, split the same way: build and judge this week, explain and master next week in Module 4.</p>
                 </div>
             </div>
 
@@ -100,12 +107,12 @@
                     <span class="item-icon">🎥</span>
                     <div class="item-meta">
                         <div class="item-type">Lecture / Pre-work</div>
-                        <div class="item-title">Probabilistic Logic, Guardrails &amp; Asynchronous Processing</div>
+                        <div class="item-title">Embeddings, Chunking &amp; Retrieval-Augmented Generation</div>
                     </div>
                     <div class="item-tags"><span class="item-tag tag-time">~20 min</span></div>
                 </div>
                 <div class="item-body">
-                    <p>Covers why model output is nondeterministic (the same input can give a different output), how a guardrail validates and retries against that, and why slow work (like document ingestion) needs to move to a background job/queue instead of blocking the request. Watch before starting your Muddiest Point below.</p>
+                    <p>Covers what an embedding actually is (a list of numbers representing meaning), why documents get chunked before embedding, and how RAG grounds an answer in retrieved text instead of the model's own memory. Watch before starting your Muddiest Point below.</p>
                 </div>
             </div>
 
@@ -120,7 +127,7 @@
                 </div>
                 <div class="item-body">
                     <p>Open now, stays open all week — post as soon as you hit something confusing. Fill in all four fields:</p>
-                    <div class="student-field"><span class="fname">1. What were you doing right before you got confused?</span>e.g. "Reading about why the worker has to run as a separate OS process…"</div>
+                    <div class="student-field"><span class="fname">1. What were you doing right before you got confused?</span>e.g. "Reading about why ingest.py and retrieval.py use different task_type values…"</div>
                     <div class="student-field"><span class="fname">2. The exact place you got stuck</span>Be specific.</div>
                     <div class="student-field"><span class="fname">3. What did you already try?</span>Show your attempt.</div>
                     <div class="student-field"><span class="fname">4. (Optional) Your best guess</span>Even if you think it's wrong.</div>
@@ -133,7 +140,7 @@
                     <span class="item-icon">💬</span>
                     <div class="item-meta">
                         <div class="item-type">Discussion — Concept Debate</div>
-                        <div class="item-title">When a guardrail catches bad model output, should it retry automatically — or immediately surface the failure to a human instead of trying again?</div>
+                        <div class="item-title">Should a RAG assistant always say "I don't know" when its retrieved context doesn't cover a question — or is it fine to fill the gap with the model's own general knowledge?</div>
                     </div>
                     <div class="item-tags"><span class="item-tag tag-points">5% of grade</span></div>
                 </div>
@@ -142,7 +149,7 @@
                     <div class="cd-stage"><strong>Stage 1 — Initial position (Mon–Tue):</strong> Argue your assigned side with a specific claim and evidence.</div>
                     <div class="cd-stage"><strong>Stage 2 — Argue the opposite (Wed–Thu):</strong> Post the strongest version of the <em>other</em> side's argument before responding to a classmate.</div>
                     <div class="cd-stage"><strong>Stage 3 — Synthesis (Fri):</strong> Drop advocacy. State a genuine synthesis, citing a specific point from a classmate's post.</div>
-                    <p class="rail-note">Your assigned side this week: <strong>Group A — Retry automatically, up to a limit</strong>.</p>
+                    <p class="rail-note">Your assigned side this week: <strong>Group A — Strict grounding ("I don't know" is always correct when context is missing)</strong>.</p>
                 </div>
             </div>
 
@@ -150,51 +157,23 @@
                 <div class="item-head">
                     <span class="item-icon">🛠️</span>
                     <div class="item-meta">
-                        <div class="item-type">Hands-On Skill (HOS) Build</div>
-                        <div class="item-title">HOS 3 — Guardrails &amp; Asynchronous Processing</div>
+                        <div class="item-type">Hands-On Skill (HOS) Build — this week's stages</div>
+                        <div class="item-title">HOS 2 — Embeddings, Chunking &amp; RAG Pipelines</div>
                     </div>
-                    <div class="item-tags"><span class="item-tag tag-points">12.5% of grade</span><span class="item-tag tag-time">~2.5–3 hrs</span></div>
+                    <div class="item-tags"><span class="item-tag tag-time">~2–2.5 hrs</span></div>
                 </div>
                 <div class="item-body">
-                    <p>Full guide: <a href="ai-410-guides/hos-03-guardrails-async.html">HOS 3 Hands-On Guide →</a> — starter code, exact prompts, and submission details.</p>
-                    <div class="stage-mini"><span class="snum">1. Create/Scaffold</span> — prompt an AI assistant to add a validate/retry guardrail around a tool call, plus a Redis-backed queue and worker for document ingestion.</div>
-                    <div class="stage-mini"><span class="snum">2. Evaluate</span> — test a malformed tool call, confirm a document upload returns a job ID instantly and reports status correctly, and confirm chat stays responsive while a job runs.</div>
-                    <div class="stage-mini"><span class="snum">3. Analyze</span> — explain why the retry feeds the validation error back into the next attempt, or why the worker runs as a separate process.</div>
-                    <div class="stage-mini"><span class="snum">4. Understand &amp; Refine</span> — by hand: extend the guardrail pattern to your second tool from Module 1.</div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="item-head">
-                    <span class="item-icon">🎯</span>
-                    <div class="item-meta">
-                        <div class="item-type">Application Challenge</div>
-                        <div class="item-title">Design a guardrail for a tool this course hasn't built</div>
-                    </div>
-                    <div class="item-tags"><span class="item-tag tag-points">5% of grade</span></div>
-                </div>
-                <div class="item-body">
-                    <p>Design (schema + validation rule, not necessarily working code) a guardrail for a tool this course hasn't built — argue for the one field you'd validate first and what specifically could go wrong if you skipped it.</p>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="item-head">
-                    <span class="item-icon">✅</span>
-                    <div class="item-meta">
-                        <div class="item-type">Knowledge Check</div>
-                        <div class="item-title">Self-check before you move on</div>
-                    </div>
-                    <div class="item-tags"><span class="item-tag tag-time">Ungraded</span></div>
-                </div>
-                <div class="item-body">
-                    <div class="kc-q">Why can't you trust every model response without checking it first?</div>
-                    <div class="kc-q">Why move long-running work to a background job instead of making the user wait?</div>
+                    <p>Full guide: <a href="ai-410-guides/hos-02-embeddings-rag.html">HOS 2 Hands-On Guide →</a> — starter code, exact prompts, and submission details.</p>
+                    <div class="stage-mini"><span class="snum">1. Create/Scaffold</span> — prompt an AI assistant to chunk/embed sample documents into a vector database and wire retrieval into your HOS 1 agent.</div>
+                    <div class="stage-mini"><span class="snum">2. Evaluate</span> — test a document-grounded question, a question needing your HOS 1 tool (does RAG silently break tool-calling?), and a question the docs don't cover.</div>
+                    <p class="rail-note">Analyze and Understand &amp; Refine happen next week in Module 4.</p>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <div class="up-next">Next: <strong>Module 4</strong> — finish HOS 2: Analyze, Understand &amp; Refine, Application Challenge, Knowledge Check.</div>
 
     <div class="module-nav">
         <a href="AI-410-module2-student-view.html">← Module 2</a>

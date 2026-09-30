@@ -380,14 +380,34 @@ calculate_tool = {
   <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag">Discussion board · 3 stages</span></div></div></div>
   <div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>When a request might need a tool, who should decide — the model, or deterministic backend code?</strong></p></div>
   <p>You'll argue a side you're <em>assigned</em>, then argue the other one, then drop advocacy and synthesize. Nobody gets to post "I agree" — by Stage 3 everyone has argued both sides.</p>
+  <div class="callout blue">
+    <span class="label">How your side is assigned</span>
+    <p>In Week 1 Brightspace places you in <b>Debate Team 1</b> or <b>Debate Team 2</b>. It splits the class randomly and evenly, and you stay on that team all term. Find yours under <b>Communication → Groups</b>. The sides rotate each HOS, so nobody argues the same kind of position all term:</p>
+    <div class="table-wrap"><table class="t" style="margin:6px 0 8px;background:var(--surface)">
+      <tr><th></th><th>HOS 1</th><th>HOS 2</th><th>HOS 3</th><th>HOS 4</th><th>Integration (Wk 8)</th></tr>
+      <tr><td><b>Team 1</b></td><td>Side A</td><td>Side B</td><td>Side A</td><td>Side B</td><td>Side A</td></tr>
+      <tr><td><b>Team 2</b></td><td>Side B</td><td>Side A</td><td>Side B</td><td>Side A</td><td>Side B</td></tr>
+    </table></div>
+    <p class="small"><b>Not in a team?</b> (for example, you added the course late) Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A.</p>
+  </div>
+  <details class="callout amber" style="margin-bottom:14px">
+    <summary style="cursor:pointer;font-weight:700">Instructor setup: a one-time step in Week 1, about 2 minutes</summary>
+    <ol class="small" style="margin-top:8px">
+      <li>In Brightspace, go to <b>Communication → Groups → New Category</b>. Name it "Concept Debate Teams".</li>
+      <li>Set <b>Enrollment Type</b> to <b># of Groups – Auto Enrollment</b>, set <b>Number of Groups</b> to <b>2</b>, and set the group prefix to "Debate Team".</li>
+      <li>Under Advanced Properties, check <b>Randomize users in groups</b> and <b>Auto-enroll new users</b>, so late adds are placed automatically.</li>
+      <li>Skip the "set up discussion areas" option. Each debate stays <b>one whole-class topic</b>, because students need to read the other side's posts for Stages 2 and 3.</li>
+    </ol>
+    <p class="small" style="margin:0">That's it for the term. The rotation table above handles every later HOS, so there's no manual assigning. The same steps are in the <a href="../AI-410.html#cd-team-setup">AI 410 schedule, Week 1</a>.</p>
+  </details>
   <div class="row" style="margin-bottom:10px">
-    <label for="sidInput" class="small"><b>Find your assigned side:</b> last digit of your student ID</label>
-    <select id="sidInput" style="width:auto"><option value="">—</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select>
+    <label for="teamInput" class="small"><b>My Brightspace team:</b></label>
+    <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select>
     <span class="small" id="sideResult" aria-live="polite"></span>
   </div>
   <div class="two">
     <div class="side a" id="sideA">
-      <h4><span>Side A — Let the model decide</span><span class="tag blue">even digits</span></h4>
+      <h4><span>Side A — Let the model decide</span><span class="tag blue">Team 1 this HOS</span></h4>
       <p>Declare the tools and let the LLM choose when to call them.</p>
       <ul class="small">
         <li>Handles phrasing no rule anticipated ("what's a 15% tip on $48?").</li>
@@ -396,7 +416,7 @@ calculate_tool = {
       </ul>
     </div>
     <div class="side b" id="sideB">
-      <h4><span>Side B — Backend code decides</span><span class="tag rose">odd digits</span></h4>
+      <h4><span>Side B — Backend code decides</span><span class="tag rose">Team 2 this HOS</span></h4>
       <p>Use rules (regex, keywords, a classifier) to decide, and only ask the model to phrase the answer.</p>
       <ul class="small">
         <li>Deterministic: the same input always takes the same path — testable.</li>
@@ -603,18 +623,18 @@ function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); loca
   document.getElementById('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); document.getElementById('mpStatus').textContent='Draft cleared.'; });
 })();
 
-/* Debate side */
+/* Debate side: Brightspace team -> side for HOS 1 (Team 1 = A) */
 (function(){
-  var sel=document.getElementById('sidInput'), out=document.getElementById('sideResult');
-  var v=store('ai410-l1-side'); if(v) sel.value=v;
+  var sel=document.getElementById('teamInput'), out=document.getElementById('sideResult');
+  var v=store('ai410-team'); if(v) sel.value=v;
   function upd(){
     var a=document.getElementById('sideA'), b=document.getElementById('sideB');
     a.classList.remove('mine'); b.classList.remove('mine');
     if(sel.value===''){ out.textContent=''; return; }
-    store('ai410-l1-side',sel.value);
-    var even=parseInt(sel.value,10)%2===0;
-    (even?a:b).classList.add('mine');
-    out.innerHTML='You argue <b>'+(even?'Side A — Let the model decide':'Side B — Backend code decides')+'</b> in Stage 1.';
+    store('ai410-team',sel.value);
+    var sideA=sel.value==='1';
+    (sideA?a:b).classList.add('mine');
+    out.innerHTML='In HOS 1 you argue <b>'+(sideA?'Side A — Let the model decide':'Side B — Backend code decides')+'</b> in Stage 1.';
   }
   sel.addEventListener('change',upd); upd();
 })();

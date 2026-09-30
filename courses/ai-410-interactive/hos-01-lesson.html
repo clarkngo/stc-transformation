@@ -554,6 +554,7 @@ calculate_tool = {
     <li><a href="../ai-410-guides/concept-companion.html">Concept Companion</a> — every concept to know before starting a HOS</li>
     <li><a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a> — free Gemini key, GitHub, Codespaces</li>
     <li><a href="sim01-agentic-loop.html">Agentic Loop Simulator</a></li>
+    <li>Next: <a href="hos-02-lesson.html">HOS 2 lesson — Embeddings, Chunking &amp; RAG</a> →</li>
   </ul>
 </section>
 
@@ -728,9 +729,9 @@ wireChecklist('refineList','refineProgress','done','ai410-l1-refine');
 (function(){
   var qs=[
     ['Where should GEMINI_API_KEY live in the HOS 1 app?',['In the Streamlit frontend so it can call Gemini directly','In the backend .env file, read only by the FastAPI server','In the tool declaration so the model can see it','In the chat history'],1,'The backend is the only piece users can\'t inspect. Anything shipped to the frontend is public.'],
-    ['When the model "calls" the calculate tool, what actually happens first?',['Gemini runs the Python function on Google\'s servers','The model returns a structured function call; your backend runs the function','Streamlit evaluates the expression','The tool result is guessed and verified later'],1,'The model only asks. Your code runs the function and sends the result back.'],
-    ['Why can the same question get two different answers?',['The API key rotates','Tokens are sampled from a probability distribution','The tool declaration changes','FastAPI caches responses'],1,'Nondeterminism comes from sampling — it\'s why a single successful test isn\'t a full Evaluate.'],
-    ['Which is context engineering rather than prompt engineering?',['Rewording "be concise" as "answer in two sentences"','Choosing to resend only the last 6 turns and attach the tool list','Adding "please" to the instruction','Using a friendlier tone'],1,'Context engineering decides what information reaches the model at all.'],
+    ['When the model "calls" the calculate tool, what actually happens first?',['Gemini runs the Python function on Google\'s servers','Streamlit evaluates the expression','The tool result is guessed and verified later','The model returns a structured function call; your backend runs the function'],3,'The model only asks. Your code runs the function and sends the result back.'],
+    ['Why can the same question get two different answers?',['Tokens are sampled from a probability distribution','The API key rotates','The tool declaration changes','FastAPI caches responses'],0,'Nondeterminism comes from sampling — it\'s why a single successful test isn\'t a full Evaluate.'],
+    ['Which is context engineering rather than prompt engineering?',['Rewording "be concise" as "answer in two sentences"','Adding "please" to the instruction','Choosing to resend only the last 6 turns and attach the tool list','Using a friendlier tone'],2,'Context engineering decides what information reaches the model at all.'],
     ['What normally ends the agentic loop?',['The model returns plain text instead of a function call','The tool returns a number','The frontend times out','The user sends a second message'],0,'No function call means the model is done — return its text to the user. A max-iteration cap is the safety net.']
   ];
   var host=document.getElementById('quiz'), right=0, done=0;

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 420 HOS 1 simulator: compare a single model call with a ReAct loop and plan-and-execute, with a step budget and a calculator toggle.">
+<title>Agent Loop Simulator</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#6d28d9; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#1e1236 0%,#4c1d95 60%,#6d28d9 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --bg:#f6f4fb;--surface2:#f1eef9;--border:#ddd6f0;--text:#1c1530;--muted:#5f5675;--accent:#6d28d9;--accent2:#5b21b6;--accent-light:#f1ebff;--header-bg:#1e1236; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0f0b1a;--surface:#181127;--surface2:#211836;--border:#342a4d;--text:#ece8f7;--muted:#a79fbf;--accent:#c4b5fd;--accent2:#ddd6fe;--accent-light:#221640;--on-accent:#1e1236;--header-bg:#0a0612; } }
+:root[data-theme="dark"] { --bg:#0f0b1a;--surface:#181127;--surface2:#211836;--border:#342a4d;--text:#ece8f7;--muted:#a79fbf;--accent:#c4b5fd;--accent2:#ddd6fe;--accent-light:#221640;--on-accent:#1e1236;--header-bg:#0a0612; }
+
+:root { --maxw:1100px; }
+.draftbar { background:var(--amber-bg); color:var(--amber); border-bottom:1px solid var(--amber); font-size:.8rem; font-weight:700; text-align:center; padding:7px 16px; }
+
+.sim-layout { display:grid; grid-template-columns:minmax(260px,340px) 1fr; gap:16px; align-items:start; }
+@media (max-width:860px){ .sim-layout { grid-template-columns:1fr; } }
+.panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); margin-bottom:16px; min-width:0; }
+.panel h2 { font-size:1.02rem; margin-bottom:10px; }
+.panel h3 { font-size:.9rem; margin:14px 0 6px; }
+.presets { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 4px; }
+.presets button { font-family:inherit; font-size:.74rem; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:14px; padding:4px 10px; cursor:pointer; }
+.presets button:hover { border-color:var(--accent); }
+.toggle { display:flex; gap:8px; align-items:flex-start; font-size:.85rem; margin:6px 0; cursor:pointer; }
+.toggle input { accent-color:var(--accent); margin-top:4px; }
+.toggle small { display:block; color:var(--muted); font-size:.74rem; }
+.lanes { display:grid; grid-template-columns:repeat(var(--lanes,4),1fr); gap:8px; margin-bottom:12px; }
+.lane { border:2px solid var(--border); border-radius:10px; padding:10px; text-align:center; font-size:.8rem; background:var(--surface2); transition:all .2s; min-width:0; }
+.lane b { display:block; font-size:.86rem; }
+.lane .ic { font-size:1.3rem; display:block; }
+.lane.from { border-color:var(--blue); background:var(--blue-bg); }
+.lane.to { border-color:var(--accent); background:var(--accent-light); box-shadow:0 0 0 3px var(--accent-light); }
+.lane.err { border-color:var(--bad); background:var(--bad-bg); }
+@media (max-width:520px){ .lanes { grid-template-columns:repeat(2,1fr); } }
+.stepbox { border:1px solid var(--border); border-left:5px solid var(--accent); border-radius:8px; padding:10px 14px; background:var(--surface2); margin-bottom:12px; min-height:84px; }
+.stepbox.err { border-left-color:var(--bad); } .stepbox.warn { border-left-color:var(--amber); }
+.stepbox .k { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.steps-list { list-style:none; margin:0; padding:0; font-size:.8rem; }
+.steps-list li { padding:5px 8px; border-radius:6px; color:var(--muted); display:flex; gap:8px; }
+.steps-list li.cur { background:var(--accent-light); color:var(--text); font-weight:700; }
+.steps-list li.past { color:var(--text); }
+.steps-list li .n { flex:none; width:20px; text-align:right; }
+.steps-list li.bad { color:var(--bad); }
+.verdict { border-radius:8px; padding:10px 14px; font-size:.86rem; margin-top:10px; }
+.verdict.ok { background:var(--ok-bg); color:var(--ok); } .verdict.bad { background:var(--bad-bg); color:var(--bad); } .verdict.warn { background:var(--amber-bg); color:var(--amber); }
+.kv { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; font-size:.82rem; }
+.kv dt { color:var(--muted); } .kv dd { margin:0; font-weight:600; }
+.bar-row { display:grid; grid-template-columns:70px 1fr 48px; gap:8px; align-items:center; font-size:.78rem; margin-bottom:4px; }
+.bar-track { height:12px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; position:relative; }
+.bar-fill { height:100%; background:var(--accent); }
+.project-tip { border:1px dashed var(--accent); border-radius:var(--radius); padding:14px 18px; background:var(--accent-light); font-size:.88rem; }
+.project-tip b.h { display:block; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); margin-bottom:4px; }
+
+.stepcard { border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:.84rem; background:var(--surface); }
+.stepcard .k { font-size:.68rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
+.stepcard.tool { border-left-color:var(--blue); } .stepcard.final { border-left-color:var(--ok); } .stepcard.stop { border-left-color:var(--amber); } .stepcard.bad { border-left-color:var(--bad); background:var(--bad-bg); }
+.stepcard.pick { cursor:pointer; } .stepcard.pick:hover { box-shadow:0 0 0 2px var(--accent-light); } .stepcard.chosen { box-shadow:0 0 0 3px var(--accent); }
+.metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0; }
+@media (max-width:560px){ .metrics { grid-template-columns:repeat(2,1fr); } }
+.metric { border:1px solid var(--border); border-radius:8px; padding:8px; text-align:center; background:var(--surface2); }
+.metric b { display:block; font-size:1.2rem; } .metric span { font-size:.72rem; color:var(--muted); }
+.seg { display:inline-flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; flex-wrap:wrap; }
+.seg button { font-family:inherit; font-size:.8rem; font-weight:700; padding:6px 12px; border:none; background:var(--surface2); color:var(--text); cursor:pointer; }
+.seg button[aria-pressed="true"] { background:var(--accent); color:var(--on-accent); }
+.tbl { width:100%; border-collapse:collapse; font-size:.8rem; }
+.tbl th, .tbl td { border:1px solid var(--border); padding:5px 8px; text-align:left; }
+.tbl th { background:var(--surface2); font-size:.7rem; text-transform:uppercase; color:var(--muted); }
+.ok { color:var(--ok); font-weight:700; } .no { color:var(--bad); font-weight:700; }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">420</span><span><b>AI 420: Agentic AI</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-420.html">← AI 420</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+  
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Simulator 1 · Pairs with HOS 1 (Weeks 1–2)</div>
+    <h1>Agent Loop Simulator</h1>
+    <p class="lede">Ask a multi-step research question three ways — one model call, a ReAct loop, and plan-and-execute — and compare what each costs, how it got its answer, and whether it stopped honestly.</p>
+    <div class="chips"><span class="chip">Outcome O1</span><span class="chip">Inference vs. agent</span><span class="chip">ReAct</span><span class="chip">Plan-and-execute</span><span class="chip">Step budget</span></div>
+  </div>
+</section>
+<main id="main">
+<div class="row no-print" style="margin-bottom:16px"><span class="small muted"><b>Simulators:</b></span><span class="tag">1 · Agent Loop</span><a class="tag blue" href="sim02-tool-schemas.html" style="text-decoration:none">2 · Tool Schemas &amp; MCP</a><a class="tag blue" href="sim03-trace-detective.html" style="text-decoration:none">3 · Trace Detective</a><a class="tag blue" href="sim04-eval-lab.html" style="text-decoration:none">4 · Multi-Agent Eval Lab</a></div><p class="sim-note">⚠ Simulation only — scripted behavior standing in for Gemini. No API key, no network calls.</p>
+<div class="sim-layout">
+  <div>
+    <div class="panel">
+      <h2>1 · Question &amp; approach</h2>
+      <label class="field" for="q">Research question</label>
+      <select id="q"></select>
+      <h3>Approach</h3>
+      <div class="seg" role="group" aria-label="Approach"><button type="button" data-m="single" aria-pressed="false">Single call</button><button type="button" data-m="react" aria-pressed="true">ReAct loop</button><button type="button" data-m="plan" aria-pressed="false">Plan-and-execute</button></div>
+      <label class="field" for="budget">Step budget (max_steps): <span id="budgetV">8</span></label>
+      <input type="range" id="budget" min="1" max="8" value="8">
+      <label class="toggle"><input type="checkbox" id="calc" checked><span>Calculator tool available<small>Off = the model does arithmetic in its reply</small></span></label>
+      <div class="row" style="margin-top:10px"><button class="btn" id="run" type="button">Run</button><button class="btn secondary" id="runAll" type="button">Run all 3 approaches</button></div>
+    </div>
+    <div class="panel">
+      <h2>Runs so far</h2>
+      <div style="overflow-x:auto"><table class="tbl" id="hist"><tr><th>Approach</th><th>Answer</th><th>Steps</th><th>Tools</th><th>Tokens</th></tr></table></div>
+      <p class="small muted" style="margin-top:6px">Run the same question several times: the single call's answers vary; the agent's evidence doesn't.</p>
+    </div>
+  </div>
+  <div>
+    <div class="panel">
+      <h2>2 · What happened</h2>
+      <div class="metrics"><div class="metric"><b id="mSteps">—</b><span>steps</span></div><div class="metric"><b id="mTools">—</b><span>tool calls</span></div><div class="metric"><b id="mTok">—</b><span>tokens</span></div><div class="metric"><b id="mSec">—</b><span>seconds (est.)</span></div></div>
+      <div id="steps"><p class="small muted">Pick a question and run it.</p></div>
+      <div id="verdict"></div>
+    </div>
+    <div class="panel">
+      <h2>3 · Memory: what the model receives on its last call</h2>
+      <div class="log" id="mem">—</div>
+    </div>
+  </div>
+</div>
+<div class="card"><h2>What this teaches</h2><ul>
+<li><b>A single call's right and wrong answers look the same.</b> Run it five times: the confidence never changes, the answer sometimes does.</li>
+<li><b>The loop is where the four components live:</b> each model call is reasoning, the tool calls are tool use, the growing message list is memory, and plan-and-execute makes planning visible.</li>
+<li><b>Agents cost more.</b> Compare tokens across approaches — then ask whether the question needed an agent at all.</li>
+<li><b>The step budget is a promise to stop honestly.</b> Set it to 2: the loop says it couldn't finish instead of guessing.</li>
+<li><b>Without a calculator, "right" can be luck.</b> Turn it off and the agent does math in its reply — usually right, occasionally not, never checked.</li></ul></div>
+<div class="project-tip"><b class="h">For your Team/Term Project</b>Pick one step of your business process and run it through this question: does it need a loop, or is it a single call or a script? The minimum bar needs agents where they earn their cost, not everywhere.</div>
+
+</main>
+<footer class="foot">AI 420: Agentic AI · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai420-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai420-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>
+var $=function(id){return document.getElementById(id);};
+var Q=[
+ {q:"How many years before the first iPhone was the Space Needle completed?", a:["Space Needle","1962","Completed in 1962 for the Seattle World's Fair."],b:["iPhone (1st generation)","2007","Released June 29, 2007."],op:"2007 - 1962",ans:45,unit:"years",wrong:[47,43,45,45]},
+ {q:"How much taller is Mount Rainier than Mount Fuji, in feet?", a:["Mount Rainier","14411","Elevation 14,411 ft (4,392 m)."],b:["Mount Fuji","12388","Elevation 12,388 ft (3,776 m)."],op:"14411 - 12388",ans:2023,unit:"feet",wrong:[2033,1811,2023,2023]},
+ {q:"How many years passed between the founding of Seattle and the Klondike Gold Rush?", a:["Seattle","1851","Founded by the Denny Party, who landed at Alki Point in 1851."],b:["Klondike Gold Rush","1896","Gold discovered in the Klondike in August 1896."],op:"1896 - 1851",ans:45,unit:"years",wrong:[46,48,45,45]}
+];
+var mode='react', runs=[], seed=1;
+Q.forEach(function(x,i){ var o=document.createElement('option'); o.value=i; o.textContent=x.q; $('q').appendChild(o); });
+$('budget').addEventListener('input',function(){ $('budgetV').textContent=this.value; });
+[].slice.call(document.querySelectorAll('.seg button')).forEach(function(b){ b.addEventListener('click',function(){ [].slice.call(document.querySelectorAll('.seg button')).forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true'); mode=b.dataset.m; }); });
+function rnd(){ seed=(seed*9301+49297)%233280; return seed/233280; }
+function card(kind,k,html){ return '<div class="stepcard '+kind+'"><div class="k">'+k+'</div>'+html+'</div>'; }
+function run(m){
+  var x=Q[+$('q').value], budget=+$('budget').value, calc=$('calc').checked, steps=[], tok=0, tools=0, mem=['USER: '+x.q], answer, ok, stopped=false;
+  if(m==='single'){
+    var pick=x.wrong[Math.floor(rnd()*x.wrong.length)]; tok=180; answer=pick+' '+x.unit+'.'; ok=pick===x.ans;
+    steps.push(card('final','Step 1 · one model call, no tools','"'+answer+'" — answered from training data, with no way to check.'));
+    mem.push('MODEL: '+answer);
+    return fin(m,x,steps,1,0,tok,answer,ok,false,mem);
+  }
+  var plan = m==='plan';
+  var seq=[['search',x.a[0]],['summary',x.a],['summary',x.b],['calc']];
+  var n=0;
+  if(plan){
+    n++; tok+=220; steps.push(card('','Step 1 · planning call','PLAN: 1) find when/what for '+x.a[0]+' 2) find '+x.b[0]+' 3) compute '+x.op));
+    mem.push('PLAN: ['+x.a[0]+', '+x.b[0]+', compute]');
+  }
+  for(var i=0;i<seq.length;i++){
+    if(n>=budget){ stopped=true; break; }
+    n++; var s=seq[i]; tok+=plan?140:190+i*60;
+    if(s[0]==='search'){ tools++; steps.push(card('tool','Step '+n+' · reason → act','<b>Thought:</b> I need the article title.<br><b>Action:</b> <code>wiki_search("'+s[1]+'")</code><br><b>Observation:</b> ["'+s[1]+'", "'+s[1]+' (disambiguation)"]')); mem.push('CALL wiki_search → titles'); }
+    else if(s[0]==='summary'){ tools++; steps.push(card('tool','Step '+n+' · reason → act','<b>Thought:</b> Read the facts for '+s[1][0]+'.<br><b>Action:</b> <code>wiki_summary("'+s[1][0]+'")</code><br><b>Observation:</b> "…'+s[1][2]+'…"')); mem.push('CALL wiki_summary('+s[1][0]+') → '+s[1][1]); }
+    else {
+      if(calc){ tools++; steps.push(card('tool','Step '+n+' · reason → act','<b>Thought:</b> Compute, don\'t guess.<br><b>Action:</b> <code>calculator("'+x.op+'")</code><br><b>Observation:</b> {"result": '+x.ans+'}')); mem.push('CALL calculator → '+x.ans); }
+      else { n--; }
+    }
+  }
+  if(stopped){ answer="I couldn't finish within "+budget+" steps. Partial findings are in the step log."; steps.push(card('stop','Budget reached','Honest stop: '+answer)); return fin(m,x,steps,n,tools,tok,answer,null,true,mem); }
+  n++; tok+=160;
+  var val=x.ans; if(!calc && rnd()<0.25) val=x.wrong[0];
+  answer=val+' '+x.unit+(calc?' (computed with the calculator).':' (arithmetic done in the reply — not checked).'); ok=val===x.ans;
+  steps.push(card(ok?'final':'bad','Step '+n+' · final answer',(plan?'<b>Synthesis</b> from the findings: ':'')+answer)); mem.push('MODEL: '+answer);
+  return fin(m,x,steps,n,tools,tok,answer,ok,false,mem);
+}
+function fin(m,x,steps,n,tools,tok,answer,ok,stopped,mem){
+  $('steps').innerHTML=steps.join(''); $('mSteps').textContent=n; $('mTools').textContent=tools; $('mTok').textContent=tok; $('mSec').textContent=(n*1.1).toFixed(1);
+  $('mem').textContent=mem.join('\n');
+  var v= stopped ? ['warn','Stopped honestly at the step budget. Raise it to let the loop finish.'] :
+         m==='single' ? (ok?['warn','Right — from memory. Run it again: nothing tells you whether the next answer will be.']:['bad','Wrong, stated just as confidently as a right answer. No tool, no evidence, no way to notice.']) :
+         (ok ? ['ok','Right, from evidence: every fact came from a tool result'+( $('calc').checked?' and the arithmetic from the calculator.':'. The arithmetic, though, was unchecked.')] : ['bad','Wrong: without the calculator the model did the math in its reply and slipped.']);
+  $('verdict').innerHTML='<div class="verdict '+v[0]+'">'+v[1]+'</div>';
+  var name={single:'Single call',react:'ReAct',plan:'Plan-and-execute'}[m];
+  var row=document.createElement('tr'); row.innerHTML='<td>'+name+'</td><td class="'+(stopped?'':(ok?'ok':'no'))+'">'+(stopped?'stopped':(ok?'✓ ':'✗ ')+answer.split(' (')[0])+'</td><td>'+n+'</td><td>'+tools+'</td><td>'+tok+'</td>';
+  $('hist').appendChild(row);
+}
+$('run').addEventListener('click',function(){ run(mode); });
+$('runAll').addEventListener('click',function(){ ['single','react','plan'].forEach(run); });
+</script>
+</body>
+</html>

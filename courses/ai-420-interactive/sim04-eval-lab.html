@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 420 HOS 4 simulator: agent-on-agent evaluation of a single agent vs. a coordinator with specialists — success rate, cost per task, p50/p95 latency, and judge agreement.">
+<title>Multi-Agent Eval Lab</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#6d28d9; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#1e1236 0%,#4c1d95 60%,#6d28d9 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --bg:#f6f4fb;--surface2:#f1eef9;--border:#ddd6f0;--text:#1c1530;--muted:#5f5675;--accent:#6d28d9;--accent2:#5b21b6;--accent-light:#f1ebff;--header-bg:#1e1236; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0f0b1a;--surface:#181127;--surface2:#211836;--border:#342a4d;--text:#ece8f7;--muted:#a79fbf;--accent:#c4b5fd;--accent2:#ddd6fe;--accent-light:#221640;--on-accent:#1e1236;--header-bg:#0a0612; } }
+:root[data-theme="dark"] { --bg:#0f0b1a;--surface:#181127;--surface2:#211836;--border:#342a4d;--text:#ece8f7;--muted:#a79fbf;--accent:#c4b5fd;--accent2:#ddd6fe;--accent-light:#221640;--on-accent:#1e1236;--header-bg:#0a0612; }
+
+:root { --maxw:1100px; }
+.draftbar { background:var(--amber-bg); color:var(--amber); border-bottom:1px solid var(--amber); font-size:.8rem; font-weight:700; text-align:center; padding:7px 16px; }
+
+.sim-layout { display:grid; grid-template-columns:minmax(260px,340px) 1fr; gap:16px; align-items:start; }
+@media (max-width:860px){ .sim-layout { grid-template-columns:1fr; } }
+.panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); margin-bottom:16px; min-width:0; }
+.panel h2 { font-size:1.02rem; margin-bottom:10px; }
+.panel h3 { font-size:.9rem; margin:14px 0 6px; }
+.presets { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 4px; }
+.presets button { font-family:inherit; font-size:.74rem; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:14px; padding:4px 10px; cursor:pointer; }
+.presets button:hover { border-color:var(--accent); }
+.toggle { display:flex; gap:8px; align-items:flex-start; font-size:.85rem; margin:6px 0; cursor:pointer; }
+.toggle input { accent-color:var(--accent); margin-top:4px; }
+.toggle small { display:block; color:var(--muted); font-size:.74rem; }
+.lanes { display:grid; grid-template-columns:repeat(var(--lanes,4),1fr); gap:8px; margin-bottom:12px; }
+.lane { border:2px solid var(--border); border-radius:10px; padding:10px; text-align:center; font-size:.8rem; background:var(--surface2); transition:all .2s; min-width:0; }
+.lane b { display:block; font-size:.86rem; }
+.lane .ic { font-size:1.3rem; display:block; }
+.lane.from { border-color:var(--blue); background:var(--blue-bg); }
+.lane.to { border-color:var(--accent); background:var(--accent-light); box-shadow:0 0 0 3px var(--accent-light); }
+.lane.err { border-color:var(--bad); background:var(--bad-bg); }
+@media (max-width:520px){ .lanes { grid-template-columns:repeat(2,1fr); } }
+.stepbox { border:1px solid var(--border); border-left:5px solid var(--accent); border-radius:8px; padding:10px 14px; background:var(--surface2); margin-bottom:12px; min-height:84px; }
+.stepbox.err { border-left-color:var(--bad); } .stepbox.warn { border-left-color:var(--amber); }
+.stepbox .k { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.steps-list { list-style:none; margin:0; padding:0; font-size:.8rem; }
+.steps-list li { padding:5px 8px; border-radius:6px; color:var(--muted); display:flex; gap:8px; }
+.steps-list li.cur { background:var(--accent-light); color:var(--text); font-weight:700; }
+.steps-list li.past { color:var(--text); }
+.steps-list li .n { flex:none; width:20px; text-align:right; }
+.steps-list li.bad { color:var(--bad); }
+.verdict { border-radius:8px; padding:10px 14px; font-size:.86rem; margin-top:10px; }
+.verdict.ok { background:var(--ok-bg); color:var(--ok); } .verdict.bad { background:var(--bad-bg); color:var(--bad); } .verdict.warn { background:var(--amber-bg); color:var(--amber); }
+.kv { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; font-size:.82rem; }
+.kv dt { color:var(--muted); } .kv dd { margin:0; font-weight:600; }
+.bar-row { display:grid; grid-template-columns:70px 1fr 48px; gap:8px; align-items:center; font-size:.78rem; margin-bottom:4px; }
+.bar-track { height:12px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; position:relative; }
+.bar-fill { height:100%; background:var(--accent); }
+.project-tip { border:1px dashed var(--accent); border-radius:var(--radius); padding:14px 18px; background:var(--accent-light); font-size:.88rem; }
+.project-tip b.h { display:block; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); margin-bottom:4px; }
+
+.stepcard { border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:.84rem; background:var(--surface); }
+.stepcard .k { font-size:.68rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
+.stepcard.tool { border-left-color:var(--blue); } .stepcard.final { border-left-color:var(--ok); } .stepcard.stop { border-left-color:var(--amber); } .stepcard.bad { border-left-color:var(--bad); background:var(--bad-bg); }
+.stepcard.pick { cursor:pointer; } .stepcard.pick:hover { box-shadow:0 0 0 2px var(--accent-light); } .stepcard.chosen { box-shadow:0 0 0 3px var(--accent); }
+.metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0; }
+@media (max-width:560px){ .metrics { grid-template-columns:repeat(2,1fr); } }
+.metric { border:1px solid var(--border); border-radius:8px; padding:8px; text-align:center; background:var(--surface2); }
+.metric b { display:block; font-size:1.2rem; } .metric span { font-size:.72rem; color:var(--muted); }
+.seg { display:inline-flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; flex-wrap:wrap; }
+.seg button { font-family:inherit; font-size:.8rem; font-weight:700; padding:6px 12px; border:none; background:var(--surface2); color:var(--text); cursor:pointer; }
+.seg button[aria-pressed="true"] { background:var(--accent); color:var(--on-accent); }
+.tbl { width:100%; border-collapse:collapse; font-size:.8rem; }
+.tbl th, .tbl td { border:1px solid var(--border); padding:5px 8px; text-align:left; }
+.tbl th { background:var(--surface2); font-size:.7rem; text-transform:uppercase; color:var(--muted); }
+.ok { color:var(--ok); font-weight:700; } .no { color:var(--bad); font-weight:700; }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">420</span><span><b>AI 420: Agentic AI</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-420.html">← AI 420</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+  
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Simulator 4 · Pairs with HOS 4 (Weeks 7–8)</div>
+    <h1>Multi-Agent Eval Lab</h1>
+    <p class="lede">Run 12 simulated-customer scenarios against a single agent and a coordinator-plus-specialists team. Tune routing, the judge's strictness, and prices — and compare the success rate you'd report with the one that's actually true.</p>
+    <div class="chips"><span class="chip">Outcome O4</span><span class="chip">Success · cost · latency</span><span class="chip">LLM judge</span><span class="chip">Single vs. team</span></div>
+  </div>
+</section>
+<main id="main">
+<div class="row no-print" style="margin-bottom:16px"><span class="small muted"><b>Simulators:</b></span><a class="tag blue" href="sim01-agent-loop.html" style="text-decoration:none">1 · Agent Loop</a><a class="tag blue" href="sim02-tool-schemas.html" style="text-decoration:none">2 · Tool Schemas &amp; MCP</a><a class="tag blue" href="sim03-trace-detective.html" style="text-decoration:none">3 · Trace Detective</a><span class="tag">4 · Multi-Agent Eval Lab</span></div><p class="sim-note">⚠ Simulation only — scripted behavior standing in for Gemini. No API key, no network calls.</p>
+<div class="sim-layout">
+  <div>
+    <div class="panel">
+      <h2>1 · Systems</h2>
+      <label class="field" for="sAcc">Single agent: chance of picking the right tool: <span id="sAccV"></span>%</label>
+      <input type="range" id="sAcc" min="50" max="99" value="82">
+      <label class="field" for="rAcc">Team: coordinator routes correctly: <span id="rAccV"></span>%</label>
+      <input type="range" id="rAcc" min="50" max="100" value="92">
+      <label class="field" for="tAcc">Team: specialist picks the right tool: <span id="tAccV"></span>%</label>
+      <input type="range" id="tAcc" min="50" max="99" value="95">
+      <h2 style="margin-top:14px">2 · Judge &amp; simulator</h2>
+      <label class="field" for="lenient">Judge leniency: <span id="lenientV"></span></label>
+      <input type="range" id="lenient" min="-30" max="30" value="10">
+      <p class="small muted">Positive = passes some failures; negative = fails some successes.</p>
+      <label class="field" for="simStop">Simulated customer stops when done: <span id="simStopV"></span>%</label>
+      <input type="range" id="simStop" min="50" max="100" value="90">
+      <h2 style="margin-top:14px">3 · Prices (US$ per 1M tokens)</h2>
+      <div class="row"><label class="small">Input <input type="text" id="pin" value="0.30" style="width:70px"></label><label class="small">Output <input type="text" id="pout" value="2.50" style="width:70px"></label></div>
+      <div class="row" style="margin-top:12px"><button class="btn" id="run" type="button">Run both systems</button><label class="small">Seed <input type="text" id="seed" value="1" style="width:50px"></label></div><p class="small muted" style="margin-top:6px">Change the seed and rerun: real agent evals vary run to run, which is why one run of 12 scenarios is weak evidence.</p><div></div>
+    </div>
+  </div>
+  <div>
+    <div class="panel">
+      <h2>Side-by-side report</h2>
+      <div style="overflow-x:auto"><table class="tbl" id="report"><tr><td class="muted">Run both systems to see the report.</td></tr></table></div>
+      <div id="verdict"></div>
+    </div>
+    <div class="panel">
+      <h2>Scenario detail (team)</h2>
+      <div style="overflow-x:auto"><table class="tbl" id="detail"></table></div>
+    </div>
+  </div>
+</div>
+<div class="card"><h2>What this teaches</h2><ul>
+<li><b>Reported ≠ true.</b> A lenient judge inflates success rate; the gap only shows when you grade some transcripts yourself (agreement).</li>
+<li><b>Teams cost more per task.</b> The coordinator adds a routing call to every turn and a hand-off for every second topic. Did success go up enough to pay for it?</li>
+<li><b>p95 tells the story averages hide.</b> A few multi-hand-off scenarios drive the slow tail.</li>
+<li><b>A simulator that won't stop</b> pads turns, tokens, and cost — check transcripts before trusting the numbers.</li></ul></div>
+<div class="project-tip"><b class="h">For your Team/Term Project</b>Your eval suite needs 15+ scenarios reporting success rate, cost per task, and latency. Decide now how you'll check your judge: which 6 transcripts will you grade by hand?</div>
+
+</main>
+<footer class="foot">AI 420: Agentic AI · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai420-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai420-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>
+var $=function(id){return document.getElementById(id);};
+['sAcc','rAcc','tAcc','lenient','simStop'].forEach(function(id){ var f=function(){ $(id+'V').textContent=$(id).value; }; $(id).addEventListener('input',f); f(); });
+var SCEN=['order-status','refund-cancelled','where-is-it','vhf-price','safety-list','monthly-total','two-part','wrong-number','restock','hashtag-order','price-and-order','polite-chitchat'];
+var TWO={'two-part':1,'price-and-order':1};
+function rng(seed){ var s=seed; return function(){ s=(s*16807)%2147483647; return (s-1)/2147483646; }; }
+function pct(v,p){ var o=v.slice().sort(function(a,b){return a-b;}); return o[Math.max(0,Math.ceil(p/100*o.length)-1)]; }
+function run(system,R){
+  var rows=[], sA=+$('sAcc').value/100, rA=+$('rAcc').value/100, tA=+$('tAcc').value/100, len=+$('lenient').value/100, stop=+$('simStop').value/100;
+  SCEN.forEach(function(id){
+    var two=!!TWO[id], turns=1+(two?1:0)+(R()>stop?2:0), inTok=0, outTok=0, lat=[], ok=true;
+    for(var t=0;t<turns;t++){
+      if(system==='single'){ var calls=2+(R()<0.3?1:0); inTok+=calls*900; outTok+=calls*90; lat.push(+(calls*0.9+R()*0.6).toFixed(2)); if(t<1+(two?1:0) && R()>sA) ok=false; }
+      else { var hand=(two&&t===1)?2:1, calls=1+hand+2; inTok+=calls*800; outTok+=calls*80; lat.push(+(calls*0.85+R()*0.8).toFixed(2)); if(t<1+(two?1:0)){ if(R()>rA) ok=false; else if(R()>tA) ok=false; } }
+    }
+    var judged= ok ? (len<0 && R()< -len ? false : true) : (len>0 && R()<len ? true : false);
+    rows.push({id:id,ok:ok,judged:judged,turns:turns,inTok:inTok,outTok:outTok,lat:lat});
+  });
+  var pin=parseFloat($('pin').value)||0, pout=parseFloat($('pout').value)||0, n=rows.length;
+  var tin=rows.reduce(function(a,r){return a+r.inTok;},0), tout=rows.reduce(function(a,r){return a+r.outTok;},0), L=[].concat.apply([],rows.map(function(r){return r.lat;}));
+  return {rows:rows, reported:rows.filter(function(r){return r.judged;}).length/n, truth:rows.filter(function(r){return r.ok;}).length/n,
+          cost:(tin/1e6*pin+tout/1e6*pout)/n, tokens:Math.round((tin+tout)/n), p50:pct(L,50), p95:pct(L,95),
+          agree:rows.filter(function(r){return r.ok===r.judged;}).length/n};
+}
+$('run').addEventListener('click',function(){
+  var seed=parseInt($('seed').value,10)||1, a=run('single',rng(seed)), b=run('team',rng(seed+1));
+  function f(v){ return (v*100).toFixed(0)+'%'; }
+  var rows=[['Success rate (judge — what you\'d report)',f(a.reported),f(b.reported)],['Success rate (true)',f(a.truth),f(b.truth)],['Judge agreement with truth',f(a.agree),f(b.agree)],
+            ['Cost per task (US$)','$'+a.cost.toFixed(5),'$'+b.cost.toFixed(5)],['Tokens per task',a.tokens.toLocaleString(),b.tokens.toLocaleString()],['Latency p50 (s)',a.p50,b.p50],['Latency p95 (s)',a.p95,b.p95]];
+  $('report').innerHTML='<tr><th>Metric</th><th>Single</th><th>Team</th></tr>'+rows.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>';}).join('');
+  $('detail').innerHTML='<tr><th>Scenario</th><th>True</th><th>Judge</th><th>Turns</th><th>Reply times (s)</th></tr>'+b.rows.map(function(r){ return '<tr><td>'+r.id+'</td><td class="'+(r.ok?'ok':'no')+'">'+(r.ok?'pass':'fail')+'</td><td class="'+(r.judged===r.ok?'':'no')+'">'+(r.judged?'pass':'fail')+(r.judged!==r.ok?' ⚠':'')+'</td><td>'+r.turns+'</td><td>'+r.lat.join(', ')+'</td></tr>'; }).join('');
+  var gain=b.truth-a.truth, extra=b.cost/a.cost-1, msgs=[];
+  msgs.push(gain>0.05 ? 'The team really is better: +'+(gain*100).toFixed(0)+' points of true success for '+(extra*100).toFixed(0)+'% more cost per task.' : 'The team costs '+(extra*100).toFixed(0)+'% more per task without a meaningful gain in true success — "just cost more."');
+  if(Math.abs(a.reported-a.truth)>0.05||Math.abs(b.reported-b.truth)>0.05) msgs.push('The judge is off by '+Math.round(Math.max(Math.abs(a.reported-a.truth),Math.abs(b.reported-b.truth))*100)+' points somewhere — you\'d only know by grading transcripts yourself.');
+  $('verdict').innerHTML='<div class="verdict '+(gain>0.05?'ok':'warn')+'">'+msgs.join(' ')+'</div>';
+});
+</script>
+</body>
+</html>

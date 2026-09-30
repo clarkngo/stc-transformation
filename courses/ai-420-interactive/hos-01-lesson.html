@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 420 HOS 1 (Weeks 1-2): inference vs. the agent loop, the four agent components, and agentic patterns.">
+<title>HOS 1 Interactive Lesson</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#6d28d9; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#1e1236 0%,#4c1d95 60%,#6d28d9 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --bg:#f6f4fb;--surface2:#f1eef9;--border:#ddd6f0;--text:#1c1530;--muted:#5f5675;--accent:#6d28d9;--accent2:#5b21b6;--accent-light:#f1ebff;--header-bg:#1e1236; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0f0b1a;--surface:#181127;--surface2:#211836;--border:#342a4d;--text:#ece8f7;--muted:#a79fbf;--accent:#c4b5fd;--accent2:#ddd6fe;--accent-light:#221640;--on-accent:#1e1236;--header-bg:#0a0612; } }
+:root[data-theme="dark"] { --bg:#0f0b1a;--surface:#181127;--surface2:#211836;--border:#342a4d;--text:#ece8f7;--muted:#a79fbf;--accent:#c4b5fd;--accent2:#ddd6fe;--accent-light:#221640;--on-accent:#1e1236;--header-bg:#0a0612; }
+
+:root { --maxw:1100px; }
+.draftbar { background:var(--amber-bg); color:var(--amber); border-bottom:1px solid var(--amber); font-size:.8rem; font-weight:700; text-align:center; padding:7px 16px; }
+
+.secnav { position:sticky; top:var(--header-h,62px); z-index:150; background:var(--surface); border-bottom:1px solid var(--border); box-shadow:var(--shadow); }
+.secnav-inner { max-width:var(--maxw); margin:0 auto; padding:8px 16px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:thin; }
+.secnav a { flex:none; font-size:.76rem; font-weight:600; text-decoration:none; color:var(--muted); padding:4px 10px; border-radius:16px; border:1px solid transparent; white-space:nowrap; }
+.secnav a:hover, .secnav a.active { color:var(--accent2); background:var(--accent-light); border-color:var(--accent); }
+.secnav .sep { flex:none; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:5px 4px 0 10px; }
+section.module { scroll-margin-top:calc(var(--header-h,62px) + 56px); }
+.part-banner { margin:30px 0 16px; padding:12px 18px; border-radius:var(--radius); background:var(--header-bg); color:var(--header-text); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:baseline; }
+.part-banner b { font-size:1.02rem; } .part-banner span { font-size:.8rem; opacity:.8; }
+.module-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; }
+.module-icon { width:40px; height:40px; flex:none; border-radius:10px; background:var(--accent-light); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+.module-head h2 { margin:0; }
+.module-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+.flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:6px 0 4px; }
+.flow a { text-decoration:none; color:inherit; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:block; }
+.flow a:hover { border-color:var(--accent); box-shadow:var(--shadow-hover); }
+.flow .n { font-size:.68rem; font-weight:800; color:var(--accent2); letter-spacing:.06em; text-transform:uppercase; }
+.flow .t { font-weight:700; font-size:.88rem; display:block; }
+.flow .w { font-size:.74rem; color:var(--muted); }
+.lo li { margin-bottom:6px; }
+.lecture-part { border-top:1px dashed var(--border); padding-top:14px; margin-top:16px; }
+.lecture-part:first-of-type { border-top:none; padding-top:0; margin-top:0; }
+.lecture-part h3 { margin-top:0; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.lecture-part h3 small { font-weight:600; color:var(--muted); font-size:.76rem; }
+.arch { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:10px 0 14px; }
+.arch .box { flex:1 1 150px; border:2px solid var(--border); border-radius:10px; padding:10px 12px; background:var(--surface2); font-size:.84rem; }
+.arch .box b { display:block; font-size:.9rem; }
+.arch .box.key { border-color:var(--accent); }
+.arch .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.seq { counter-reset:s; list-style:none; margin:10px 0 14px; padding:0; }
+.seq li { counter-increment:s; position:relative; padding:8px 12px 8px 44px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; background:var(--surface); font-size:.88rem; }
+.seq li::before { content:counter(s); position:absolute; left:10px; top:8px; width:24px; height:24px; border-radius:50%; background:var(--accent); color:var(--on-accent); font-weight:800; font-size:.78rem; display:flex; align-items:center; justify-content:center; }
+.seq li.loopback { border-style:dashed; border-color:var(--amber); }
+dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted); font-size:.88rem; }
+.two { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+.eg { border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; background:var(--surface2); }
+.eg.weak { border-left:5px solid var(--bad); } .eg.strong { border-left:5px solid var(--ok); }
+.eg .label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+.eg.weak .label { color:var(--bad); } .eg.strong .label { color:var(--ok); }
+.counter { font-size:.72rem; color:var(--muted); text-align:right; }
+.spec-meter { display:flex; gap:10px; align-items:center; margin:12px 0 6px; font-size:.84rem; }
+.spec-track { flex:1; height:10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.spec-fill { height:100%; width:0; background:var(--bad); transition:width .25s, background .25s; }
+.hints { font-size:.8rem; margin:4px 0 10px 1.1em; color:var(--muted); }
+.hints li.ok { color:var(--ok); } .hints li.no { color:var(--bad); }
+.stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:10px 0 16px; }
+.stage { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface2); font-size:.85rem; }
+.stage .day { font-size:.7rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--violet); }
+.side { border:2px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; }
+.side.a { border-color:var(--blue); } .side.b { border-color:var(--rose); }
+.side.mine { box-shadow:0 0 0 4px var(--accent-light); }
+.side h4 { display:flex; justify-content:space-between; gap:6px; }
+.checklist label { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; background:var(--surface); font-size:.88rem; }
+.checklist input { margin-top:4px; accent-color:var(--accent); width:16px; height:16px; flex:none; }
+.checklist label.done { background:var(--ok-bg); border-color:var(--ok); }
+.progress-line { font-size:.8rem; font-weight:700; color:var(--accent2); margin-bottom:8px; }
+.pick { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:12px; }
+.pick button { text-align:left; background:var(--surface2); border:2px solid var(--border); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:.85rem; color:var(--text); cursor:pointer; }
+.pick button[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-light); }
+.pick button b { display:block; }
+.sorter-row { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:.86rem; background:var(--surface); }
+.sorter-row .opts { display:flex; gap:4px; flex-wrap:wrap; }
+.sorter-row .opts button { font-family:inherit; font-size:.72rem; font-weight:700; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:6px; padding:4px 8px; cursor:pointer; }
+.sorter-row .opts button[aria-pressed="true"].auto { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+.sorter-row .opts button[aria-pressed="true"].confirm { background:var(--amber-bg); border-color:var(--amber); color:var(--amber); }
+.sorter-row .opts button[aria-pressed="true"].never { background:var(--bad-bg); border-color:var(--bad); color:var(--bad); }
+.sorter-row .why { grid-column:1/-1; font-size:.8rem; color:var(--muted); display:none; }
+.sorter-row.revealed .why { display:block; }
+@media (max-width:560px){ .sorter-row { grid-template-columns:1fr; } }
+.q { border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:10px; background:var(--surface); }
+.q .stem { font-weight:700; font-size:.9rem; margin-bottom:8px; }
+.q .opt { display:block; width:100%; text-align:left; font-family:inherit; font-size:.86rem; color:var(--text); background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:7px 10px; margin-bottom:6px; cursor:pointer; }
+.q .opt.right { background:var(--ok-bg); border-color:var(--ok); }
+.q .opt.wrong { background:var(--bad-bg); border-color:var(--bad); }
+.q .fb { font-size:.82rem; margin-top:4px; display:none; }
+.q.answered .fb { display:block; }
+.score { font-weight:800; color:var(--accent2); }
+.project-map td:first-child { font-weight:700; white-space:nowrap; }
+
+.pipe-row { display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin:6px 0; }
+.pipe-row .box { flex:1 1 120px; border:2px solid var(--border); border-radius:10px; padding:8px 10px; background:var(--surface2); font-size:.8rem; }
+.pipe-row .box b { display:block; font-size:.84rem; }
+.pipe-row .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.pipe-label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:10px; }
+.vec-demo { display:grid; grid-template-columns:1fr auto; gap:6px 12px; font-size:.84rem; align-items:center; margin:8px 0 12px; }
+.vec-demo .s { font-weight:800; color:var(--accent2); }
+.review-code { counter-reset:ln; }
+
+.wf-demo { font-size:.8rem; margin:8px 0 12px; }
+.wf-demo .r { display:grid; grid-template-columns:150px 1fr 60px; gap:8px; align-items:center; margin-bottom:4px; }
+.wf-demo .t { position:relative; height:14px; background:var(--surface2); border-radius:4px; }
+.wf-demo .b { position:absolute; top:2px; bottom:2px; border-radius:3px; background:var(--accent); }
+.wf-demo .b.g { background:var(--violet); } .wf-demo .b.root { background:var(--muted); }
+@media (max-width:520px){ .wf-demo .r { grid-template-columns:100px 1fr 50px; } }
+.order-pool { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.order-pool button { font-family:inherit; font-size:.8rem; text-align:left; background:var(--surface2); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 10px; cursor:pointer; }
+.order-pool button:hover { border-color:var(--accent); }
+.order-pool button.shake { border-color:var(--bad); background:var(--bad-bg); }
+.order-done { list-style:none; margin:0; padding:0; }
+.order-done li { display:grid; grid-template-columns:26px 1fr auto; gap:8px; align-items:start; border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:7px 10px; margin-bottom:5px; font-size:.84rem; background:var(--surface); }
+.order-done li .n { font-weight:800; color:var(--accent2); }
+.order-done li .risk { grid-column:2/4; font-size:.78rem; color:var(--muted); display:none; }
+.order-done.revealed li .risk { display:block; }
+.faith-out .sent { font-size:.82rem; padding:5px 10px; border-radius:6px; margin-bottom:4px; }
+.faith-out .sent.ok { background:var(--ok-bg); } .faith-out .sent.bad { background:var(--bad-bg); }
+
+.hos-tick { display:grid; grid-template-columns:auto 1fr; gap:6px 10px; align-items:start; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; background:var(--surface); }
+.hos-tick input[type=checkbox] { margin-top:5px; accent-color:var(--accent); width:16px; height:16px; }
+.hos-tick input[type=text] { grid-column:2; }
+.litmus li.ok { color:var(--ok); } .litmus li.no { color:var(--muted); }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">420</span><span><b>AI 420: Agentic AI</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-420.html">← AI 420</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+  
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 420 · HOS 1 · Weeks 1–2 · Interactive lesson</div>
+    <h1>Anatomy of an Agent</h1>
+    <p class="lede">Solve the same research task twice — once with a single model call, once with an agent loop you write by hand — and find reasoning, planning, tool use, and memory in your own code before a framework hides them.</p>
+    <div class="chips"><span class="chip">Outcome O1</span><span class="chip">2 weeks</span><span class="chip">Lecture · MP · CD</span><span class="chip">Hand-built ReAct loop</span><span class="chip">Google ADK</span><span class="chip">Portfolio agent #1</span></div>
+  </div>
+</section>
+<main id="main">
+<nav class="secnav no-print" aria-label="Lesson sections"><div class="secnav-inner"><a href="#overview">Overview</a><span class="sep">Week 1</span><a href="#lecture">Lecture</a><a href="#muddiest">Muddiest Point</a><a href="#debate">Concept Debate</a><a href="#create">Create / Scaffold</a><a href="#evaluate">Evaluate</a><span class="sep">Week 2</span><a href="#analyze">Analyze</a><a href="#refine">Understand &amp; Refine</a><a href="#challenge">Application Challenge</a><a href="#check">Knowledge Check</a><a href="#project">Team Project</a></div></nav><div class="callout amber" style="margin-top:20px"><span class="label">Course design constraints</span><p>This lesson follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>. It adapts to AI 420's official description and Outcome O1, everything runs in GitHub Codespaces from your portfolio repo, and everything is free: the same Gemini key as AI 410, plus services that need no key at all.</p></div><section class="module card" id="overview"><div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag ">O1</span><span class="tag blue">12.5% HOS + MP + CD + AC</span></div></div></div><p>In AI 410 you built an app with a model inside it. In AI 420 the model decides what happens next. That difference is the whole course, and this HOS makes it concrete: the same five research questions go to a single Gemini call and to a loop you write yourself, and you compare what comes back — including how often the single call confidently guesses.</p><p>Week 1 builds the loop (about 60 lines, no framework) and rebuilds it in Google ADK. Week 2 explains it line by line, adds plan-and-execute by hand, and asks when a business problem needs an agent at all.</p><div class="callout blue"><span class="label">Anchoring analogy</span><p>A single model call is asking a well-read colleague a question in the hallway: you get an answer from memory, right or wrong, and they walk off. An agent is the same colleague at a desk with a browser and a calculator, allowed to look things up and check their math before answering — and to keep going until they're done. The desk, the browser, and the permission to keep going are code you write.</p></div><h3>Learning objectives</h3><p class="small muted">By the end of the two weeks you will be able to:</p><ol class="lo"><li>Distinguish standard LLM inference from an agentic loop, with evidence from your own runs. <span class="tag">O1</span></li><li>Point to where reasoning, planning, tool use, and memory each live in an agent's code. <span class="tag">O1</span></li><li>Build a ReAct loop by hand with a step budget, then match it to a framework's event view. <span class="tag">O1</span></li><li>Compare ReAct and plan-and-execute on accuracy, steps, tokens, and time. <span class="tag">O1</span></li><li>Decide whether a business workflow needs an agent, a single call, or a fixed script. <span class="tag">O1</span></li></ol><h3>Your two weeks at a glance</h3><div class="flow"><a href="#lecture"><span class="n">Wk 1 · Mon</span><span class="t">Lecture</span><span class="w">~75 min, 3 parts</span></a><a href="#muddiest"><span class="n">Wk 1 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a><a href="#debate"><span class="n">Wk 1 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a><a href="#create"><span class="n">Wk 1 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">not graded</span></a><a href="#evaluate"><span class="n">Wk 1 · Fri–Sun</span><span class="t">Evaluate</span><span class="w">30% of HOS</span></a><a href="#analyze"><span class="n">Wk 2 · Mon–Tue</span><span class="t">Analyze</span><span class="w">30% of HOS</span></a><a href="#refine"><span class="n">Wk 2 · Wed–Thu</span><span class="t">Understand &amp; Refine</span><span class="w">40% of HOS · no AI</span></a><a href="#challenge"><span class="n">Wk 2 · Fri–Sun</span><span class="t">Application Challenge</span><span class="w">5% of course</span></a><a href="#check"><span class="n">Wk 2 · any time</span><span class="t">Knowledge Check</span><span class="w">self-check</span></a></div><p class="small muted" style="margin-top:10px">Days are a suggested pacing for an online term, not fixed deadlines — your instructor's Brightspace dates win.</p></section>
+<div class="part-banner"><b>Week 1 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div><section class="module card" id="lecture"><div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: from one call to an agent</h2><div class="module-meta"><span class="tag ">≈ 75 min</span><span class="tag blue">3 short parts</span><span class="tag ">O1</span></div></div></div><p class="small muted">Three short segments. Pause after each and try the quick check. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p><div class="lecture-part"><h3>Part 1 — Inference vs. an agent <small>≈ 20 min</small></h3><p><strong>Inference</strong> is one request and one response. The model answers from whatever it learned in training, with no way to check anything. An <strong>agent</strong> puts the model in a loop: it can ask for an action (a tool call), see the result (an observation), and decide what to do next — until it decides it's done or runs out of steps.</p>
+<div class="callout"><span class="label">Worked example</span><p>"How many years before the first iPhone was the Space Needle completed?" A single call often answers correctly from memory — and sometimes says 47, or confuses the Needle's opening with its design year, with the same confidence. The agent looks up the Space Needle (1962), looks up the iPhone (2007), and calls the calculator: 45. The interesting finding isn't that the agent is right; it's that the single call's right answers and wrong answers look identical.</p></div></div><div class="lecture-part"><h3>Part 2 — The four components, in about 60 lines <small>≈ 25 min</small></h3><p>The course description names four components. In a hand-built loop you can point at each one:</p>
+<pre><code>contents = [user_question]                      # MEMORY: the growing history
+for step in range(max_steps):                   # the loop, with a budget
+    response = model.generate(contents, tools)  # REASONING: decide the next move
+    if not response.function_calls:
+        return response.text                    # done
+    contents.append(response)                   # remember what it decided
+    for call in response.function_calls:        # TOOL USE: your code runs it
+        result = TOOLS[call.name](**call.args)
+        contents.append(function_response(result))   # the OBSERVATION
+return "I couldn't finish within max_steps."    # honest stop</code></pre>
+<p><strong>Planning</strong> is the one you can't see here: in ReAct it happens implicitly, one step at a time, inside each reasoning call. Plan-and-execute (your Week 2 build) makes it an explicit, inspectable list.</p>
+<div class="callout violet"><span class="label">Quick check</span><p>Delete the <code>max_steps</code> limit. What's the worst case — and who pays for it?</p></div></div><div class="lecture-part"><h3>Part 3 — Agentic patterns and frameworks <small>≈ 30 min</small></h3><div class="table-wrap"><table class="t">
+<tr><th>Pattern</th><th>How it works</th><th>Good for</th><th>Cost</th></tr>
+<tr><td><b>ReAct</b></td><td>Reason, act, observe — one step at a time</td><td>Open-ended lookups where the next step depends on the last result</td><td>Many small model calls</td></tr>
+<tr><td><b>Plan-and-execute</b></td><td>Write the whole plan first, then run each step</td><td>Tasks whose steps are predictable; plans you want to review</td><td>One planning call + steps</td></tr>
+<tr><td><b>Reflection</b></td><td>Review your own output, then retry or accept</td><td>Quality checks (HOS 3)</td><td>An extra call per review</td></tr>
+<tr><td><b>Routing</b></td><td>Classify the request, send it to a specialist</td><td>Different kinds of requests (HOS 4)</td><td>A routing call per request</td></tr>
+</table></div>
+<p>Google ADK runs the loop for you. That's the point of building it by hand first: when you open <code>adk web</code>'s Events tab, every event should map to a line of your loop. If you can't make that mapping, you're using a framework you can't debug.</p>
+<div class="callout"><span class="label">Try it before the build</span><p>Open the <a href="sim01-agent-loop.html"><strong>Agent Loop Simulator</strong></a>. Run the same question as a single call, as ReAct, and as plan-and-execute; then drop the step budget to 2.</p></div>
+<div class="callout amber"><span class="label">Teaching note</span><p>The lesson depends on the baseline getting some questions wrong. If a new model version answers all five from memory, swap in a question about something recent or obscure before class.</p></div></div><h3>New words this week</h3><dl class="gloss"><dt>Inference</dt><dd>One request to the model, one response back. No actions, no second chances.</dd><dt>Agent</dt><dd>A model in a loop where it can take actions (tool calls), see the results, and decide what to do next until done.</dd><dt>ReAct</dt><dd>Reason + Act: alternating between deciding the next step and taking it.</dd><dt>Plan-and-execute</dt><dd>Write the full plan first, then work through it step by step.</dd><dt>Step budget</dt><dd>The most loop iterations allowed before the agent must stop and say so.</dd></dl></section>
+<section class="module card" id="muddiest"><div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag rose">Graded · part of 5% MP category</span><span class="tag ">Due before the build begins</span></div></div></div><p>Four short fields, not a blank box. Draft it here — your draft stays in this browser only — then <strong>copy it into the Brightspace submission</strong>.</p><div class="two" style="margin-bottom:14px"><div class="eg weak"><span class="label">Doesn't meet the bar</span>"I don't really understand how agents work."</div><div class="eg strong"><span class="label">Meets the bar</span>"Lecture Part 2: why does the loop append the model's own function-call turn to <code>contents</code> before the tool results? It already knows what it asked for. I tried removing that line in the simulator's code view and re-read the guide's Stage 1 prompt, but neither says what breaks."</div></div><form onsubmit="return false"><label class="field" for="mp1">1 · What were you doing right before you got confused?</label><input type="text" id="mp1" placeholder="e.g. Lecture Part 2, the contents.append line — or Stage 1 of the guide"><label class="field" for="mp2">2 · The exact place you got stuck</label><textarea id="mp2" placeholder="Not 'I don't get agents' — the specific thing that doesn't add up."></textarea><div class="counter" id="mp2count">0 words</div><label class="field" for="mp3">3 · What you already tried</label><textarea id="mp3" placeholder="Re-read a section, searched something specific, asked a classmate, tried the simulator…"></textarea><label class="field" for="mp4">4 · Optional: your best guess at the answer</label><textarea id="mp4" placeholder="Even if you think it's wrong."></textarea></form><div class="spec-meter"><b>Specificity</b><div class="spec-track"><div class="spec-fill" id="specFill"></div></div><span id="specLabel">—</span></div><ul class="hints" id="specHints"></ul><div class="row"><button class="btn" id="mpCopy" type="button">Copy for submission</button><button class="btn secondary" id="mpClear" type="button">Clear draft</button><span class="small muted" id="mpStatus" aria-live="polite"></span></div><p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — on time, addresses a genuine confusion (80%) · Writing — clear, specific, not generic (20%). The meter above is a nudge, not your grade.</p></section>
+<section class="module card" id="debate"><div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag ">Discussion board · 3 stages</span></div></div></div><div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>For a multi-step business task, should you build an agent that decides its own steps, or a fixed workflow that calls the model only where needed?</strong></p></div><p>You'll argue the side your debate team is assigned, then argue the other one, then drop advocacy and synthesize.</p><div class="callout blue"><span class="label">Your side this HOS</span><p>Sides rotate each HOS. <b>In HOS 1, Debate Team 1 argues Side A and Debate Team 2 argues Side B.</b> Find your team under <b>Communication → Groups</b> in Brightspace. Not in a team? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A.</p></div><div class="row" style="margin-bottom:10px"><label for="team" class="small"><b>My Brightspace team:</b></label><select class="team" id="team" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select><span class="small" id="sideResult" aria-live="polite"></span></div><div class="two"><div class="side a" id="sideA"><h4><span>Side A — Let an agent decide the steps</span><span class="tag blue">Team 1 this HOS</span></h4><p>Give the model tools and a goal; let it choose the path.</p><ul class="small"><li>Real requests vary; a fixed script breaks on the first unexpected case.</li><li>Adding a capability is adding a tool, not rewriting control flow.</li><li>The agent can recover from a failed step by trying another route.</li></ul></div><div class="side b" id="sideB"><h4><span>Side B — A fixed workflow with LLM steps</span><span class="tag rose">Team 2 this HOS</span></h4><p>Hard-code the steps; use the model only for the parts that need language.</p><ul class="small"><li>Predictable: the same input takes the same path, so it's testable.</li><li>Cheaper and faster — no model calls spent deciding what to do.</li><li>Easier to audit when something goes wrong.</li></ul></div></div><div class="stages"><div class="stage"><span class="day">Stage 1 · by Tue</span><h4>Initial position</h4>Argue your assigned side with one specific claim and one piece of evidence — a run, a trace, a simulator setting. Not a topic summary.</div><div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>Before replying to anyone, post the <em>strongest</em> version of the side you didn't hold.</div><div class="stage"><span class="day">Stage 3 · by Sat</span><h4>Synthesis</h4>Drop advocacy. State a real position, citing at least one specific point from a classmate's post.</div></div><div class="two"><div class="eg weak"><span class="label">Weak synthesis</span>"Agents are more flexible but workflows are more reliable, so it depends."</div><div class="eg strong"><span class="label">Strong synthesis</span>"Kai's compare.py table convinced me: ReAct used 4x the tokens of the baseline on questions a two-step script could answer. My position: start with a fixed workflow, and promote a step to an agent only when the requests it handles genuinely vary — which is Priya's support-email example, not the weekly report."</div></div><p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%).</p></section>
+<section class="module card" id="create"><div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag ">Not graded on its own</span><span class="tag blue">GitHub Codespaces</span></div></div></div><p>Get the baseline and a hand-built loop running. This is the only HOS where the guide gives you the full prompt.</p>
+<ol><li><b>Week 1 only:</b> create your portfolio repo from the portfolio template and open it in GitHub Codespaces. It installs everything all four HOS need.</li>
+<li>Copy <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-420-guides/starter-code/hos-01-agent-anatomy" target="_blank" rel="noopener">the HOS 1 starter folder</a> into your portfolio repo. In it: <code>cp .env.example .env</code> and paste your free Gemini key as <code>GOOGLE_API_KEY</code>.</li>
+<li>Run the baseline first: <code>python -m research.baseline "How many years before the first iPhone was the Space Needle completed?"</code></li>
+<li>Give your AI assistant the Stage 1 prompt from the guide to build <code>research/react_loop.py</code>, then run <code>python compare.py --verbose</code>.</li></ol>
+<p class="small">The full prompt, expected output, and common snags (429 rate limits, the devcontainer) are in the <a href="../ai-420-guides/hos-01-agent-anatomy.html">HOS 1 hands-on guide</a>.</p></section>
+<section class="module card" id="evaluate"><div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag ">30% of HOS grade</span></div></div></div><p>Check every answer against the expected line <code>compare.py</code> prints — and check <em>how</em> each answer was reached, not just whether it's right.</p><div class="progress-line" id="evalProgress">0 / 4 tests run</div><div class="checklist" data-key="eval" data-prog="evalProgress" data-suffix="tests run"><label><input type="checkbox"><span><b>Right from memory vs. right from evidence:</b> which questions did the baseline get right anyway? Which did it get wrong with total confidence?</span></label><label><input type="checkbox"><span><b>Calculator use:</b> in the <code>--verbose</code> log, did the agent call the calculator for every piece of arithmetic, or do some math in its reply?</span></label><label><input type="checkbox"><span><b>Cost:</b> compare steps, tokens, and seconds against the baseline in the summary table. What did the agent cost you?</span></label><label><input type="checkbox"><span><b>Honest stop:</b> set <code>max_steps=2</code> and rerun one question. Does it say it couldn't finish, or pretend?</span></label></div><label class="field" for="evalNote">Draft your Evaluate note (stays in this browser)</label><textarea id="evalNote" data-save="evalnote" placeholder="What I tested · what I found · what the AI got wrong, missed, or handled surprisingly well"></textarea><p class="small muted">Submit: evidence (screenshots, a trace or a results table) + this note, via Brightspace.</p></section>
+<div class="part-banner"><b>Week 2 · Explain &amp; Master</b><span>Analyze → Understand &amp; Refine → Application Challenge → Knowledge Check</span></div><section class="module card" id="analyze"><div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does this work?</h2><div class="module-meta"><span class="tag ">30% of HOS grade</span></div></div></div><p>Pick <strong>one</strong> piece and explain, in your own words, exactly how it works.</p><div class="pick" id="analyzePick"><button type="button" aria-pressed="false" data-k="components"><b>The four components</b>Point to the exact lines for each.</button><button type="button" aria-pressed="false" data-k="adk"><b>Your loop vs. ADK's Events</b>Map the framework back to your code.</button><button type="button" aria-pressed="false" data-k="budget"><b>The step budget</b>What it prevents, and what it costs.</button></div><div class="callout blue" id="analyzeFrame"><span class="label">Explain-it frame</span><p>Pick a piece above to see prompts that make a strong Analyze.</p></div></section>
+<section class="module card" id="refine"><div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag ">40% of HOS grade</span><span class="tag bad">No AI assistant for this part</span></div></div></div><p>By hand: write <code>research/plan_execute.py</code> — a planner call that returns 2–4 steps, each step run with your loop, and a final synthesis — then compare it to ReAct on the same five tasks.</p><div class="progress-line" id="refineProgress">0 / 5 done</div><div class="checklist" data-key="refine" data-prog="refineProgress" data-suffix="done"><label><input type="checkbox"><span>Write the planner call so it returns a list of steps (structured output, not free text).</span></label><label><input type="checkbox"><span>Run each plan step with your ReAct loop, passing the findings so far.</span></label><label><input type="checkbox"><span>Add a final synthesis call that answers only from the findings.</span></label><label><input type="checkbox"><span>Run <code>python compare.py --with-plan</code> and record accuracy, steps, tokens, and time for all three approaches.</span></label><label><input type="checkbox"><span>Commit <code>hos-01-agent-anatomy/</code> to your portfolio with a README: what it does, a trace screenshot, one lesson learned.</span></label></div></section>
+<section class="module card" id="challenge"><div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — does this workflow need an agent?</h2><div class="module-meta"><span class="tag ">5% of course</span><span class="tag blue">Design &amp; justify — no build</span></div></div></div><p>You'll get three short workflow descriptions from a real business. Decide which need an agent, which are better as a single LLM call, and which are a fixed script — and justify each with the four components. "No agent needed" with a good reason is a strong answer.</p><h3>Warm-up: agent, single call, or script?</h3><p class="small">For each workflow, pick the simplest thing that would work.</p><div id="sorter"></div><div class="row" style="margin:8px 0 16px"><button class="btn" id="sorterReveal" type="button">Reveal reasoning</button><span class="small" id="sorterScore" aria-live="polite"></span></div><div class="callout"><span class="label">What to submit</span><ul><li>For each of the three workflows: agent, single call, or fixed script — and why, using reasoning, planning, tool use, and memory.</li><li>For any you called an agent: which tools it needs and a sensible step budget.</li><li>One workflow where you'd change your answer if the requirements shifted, and which requirement.</li></ul></div><p class="small muted"><b>Grading:</b> Judgment &amp; reasoning (50%) · Transfer to the new scenario (35%) · Clarity (15%).</p></section>
+<section class="module card" id="check"><div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag ">Self-check · not graded</span></div></div></div><p>Five quick questions, then the two open questions your instructor will ask in the Week 2 check-in.</p><div id="quiz"></div><p class="score" id="quizScore" aria-live="polite"></p><h3>Open questions</h3><ol><li>Point to the line in your loop where "reasoning" happens, and to the line where "memory" grows.</li><li>What would happen to your agent if you removed the step cap?</li></ol></section>
+<section class="module card" id="project"><div class="module-head"><div class="module-icon">🚀</div><div><h2>Team/Term Project — introduced this week</h2><div class="module-meta"><span class="tag ">20% of course</span><span class="tag amber">Nothing due yet</span></div></div></div>
+<p>The project automates <strong>one real, multi-step business process</strong> with a team of agents, and reports how well they do it (Weeks 9–10). No deliverable yet — start noticing manual processes around you: at work, in an internship, in a CityU office. A good candidate has several steps, some judgment, and someone who does it by hand today.</p>
+<div class="callout"><span class="label">Example — an autonomous marketing department</span><p>"Promote next month's workshop" becomes research → draft → brand review → schedule. HOS 1 gives the plan-and-execute coordinator; HOS 2 the tools and brand-voice memory; HOS 3 a review step that catches off-voice drafts; HOS 4 the team and the eval suite.</p></div>
+<p class="small">Litmus test for any idea: can you point to one part and say "this is HOS 3, and here's the trace showing it recover"? Full description: <a href="../AI-420.html">AI 420 → Weeks 9–10</a> · <a href="team-project.html">Project guide</a>.</p></section>
+<section class="card"><h2>Resources</h2><ul><li><a href="../ai-420-guides/hos-01-agent-anatomy.html">HOS 1 hands-on guide</a></li><li><a href="../ai-420-guides/index.html">All AI 420 hands-on guides</a></li><li><a href="sim01-agent-loop.html">Agent Loop Simulator</a></li><li><a href="index.html">All lessons &amp; simulators</a> · Next: <a href="hos-02-lesson.html">HOS 2 lesson</a> →</li></ul></section>
+</main>
+<footer class="foot">AI 420: Agentic AI · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai420-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai420-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>window.LESSON={"slug": "ai420", "code": "AI 420", "hos": 1, "weekB": 2, "concrete": "(`|\\(|\\)|\\.py|\\/|step \\d|part \\d|line|function|loop|contents|memory|tool|call|observation|react|plan|adk|event|max_steps|budget|token)", "debates": [{"a": "sideA", "b": "sideB", "out": "sideResult", "team1": "A", "prefix": "In HOS 1 you argue ", "nameA": "Side A \u2014 Agent decides the steps", "nameB": "Side B \u2014 Fixed workflow"}], "frames": {"components": ["Quote the line where reasoning happens, and explain what the model receives at that moment.", "Where does memory grow, and what exactly is appended each step \u2014 in what order?", "Where is planning in ReAct, given there's no plan variable?"], "adk": ["Take one question in <code>adk web</code>. For each event in the Events tab, which line of your loop produced the equivalent?", "What does ADK do that your loop doesn't (sessions, retries, callbacks)?", "What would be harder to debug if you had started with ADK?"], "budget": ["Walk through a run that hits the budget. What does the user see?", "Why is 'couldn't finish' better than returning the last partial answer silently?", "How would you choose the budget for a real product?"]}, "sorter": {"opts": [["script", "Fixed script"], ["call", "Single LLM call"], ["agent", "Agent loop"]], "items": [["Every Friday, pull last week's sales from the database and email the same 5-row table to managers.", "script", "No language judgment and no variation: a SQL query and an email template. Adding a model adds cost and a way to be wrong."], ["Translate each incoming support email into English before it's filed.", "call", "One input, one output, no lookups. A single call is all the reasoning it needs."], ["Answer \"will my order arrive before my trip on the 14th?\" by checking order status, carrier tracking, and the holiday calendar as needed.", "agent", "Which lookups are needed depends on what the first one returns (not shipped? no need for tracking). That's a loop."], ["Match an invoice's line items to the purchase order and flag any mismatch over $50.", "script", "The matching rule is exact and auditable. At most, use a single call to extract line items from a messy PDF, then let code compare."], ["Compare three competitors' pricing pages and summarize the differences.", "agent", "Finding the right pages and following links varies per competitor \u2014 several tool calls whose order isn't known in advance."], ["Draft a reply to a customer email for a human to edit before sending.", "call", "Language, but no actions and no lookups. A human is already the check."]], "after": "The strongest answers pick the simplest option that works and name what would change the call."}, "quiz": [["What most distinguishes an agent from standard inference?", ["It uses a bigger model", "It runs in a loop, taking actions and observing results until done", "It has a system prompt", "It streams its response"], 1, "The loop \u2014 act, observe, decide again \u2014 is the difference."], ["In a hand-built loop, where does memory live?", ["In the growing contents list resent on each call", "Inside the model's weights", "In the tool functions", "In the step budget"], 0, "The model remembers nothing between calls; the history you resend is the memory."], ["The agent returns 45 but the log shows no calculator call. What does that tell you?", ["The calculator is broken", "The answer is definitely wrong", "It did the arithmetic in its reply \u2014 right this time, but not from evidence", "The step budget was too low"], 2, "Right for the wrong reason is exactly what Evaluate is for."], ["Why build the loop by hand before using ADK?", ["ADK is slower", "ADK can't call tools", "Hand-built loops are required in production", "So you can map ADK's events to steps you understand and debug"], 3, "A framework you can't map to its mechanism is one you can't debug."], ["Which task is best as a fixed script rather than an agent?", ["A weekly report with the same query and format every time", "Researching competitors' pricing", "Answering varied customer questions", "Debugging a failing test"], 0, "No variation, no judgment: no agent needed."]], "paths": null, "cpNeed": "for", "cpNeedLabel": "Says who it's for"};
+
+var L=window.LESSON;
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){ return null; } }
+function $(id){ return document.getElementById(id); }
+function K(k){ return L.slug+'-'+L.hos+'-'+k; }
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest',inline:'center'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+/* Muddiest Point */
+(function(){
+  var els=['mp1','mp2','mp3','mp4'].map($); if(!els[0]) return;
+  els.forEach(function(el){ var v=store(K(el.id)); if(v) el.value=v; el.addEventListener('input',update); });
+  var vague=/\b(confus(ing|ed)|everything|all of it|the whole|in general|kind of|stuff)\b/i, concrete=new RegExp(L.concrete,'i');
+  function words(s){ return (s.trim().match(/\S+/g)||[]).length; }
+  function update(){
+    els.forEach(function(el){ store(K(el.id), el.value); });
+    var stuck=els[1].value, w=words(stuck); $('mp2count').textContent=w+' words';
+    var checks=[[words(els[0].value)>=3,'Context names where you were (a part, step, or line)'],[w>=15,'Stuck point is at least ~15 words'],
+      [concrete.test(stuck),'Stuck point mentions a concrete thing (a step, function, file, term)'],[!vague.test(stuck)||w>=30,'Avoids vague catch-alls like "confusing" or "everything"'],
+      [words(els[2].value)>=5,'Says what you already tried']];
+    var n=checks.filter(function(c){return c[0];}).length, pct=n/checks.length*100, f=$('specFill');
+    f.style.width=pct+'%'; f.style.background= pct>=80?'var(--ok)':pct>=40?'var(--amber)':'var(--bad)';
+    $('specLabel').textContent= pct>=80?'Specific':pct>=40?'Getting there':'Too vague';
+    $('specHints').innerHTML=checks.map(function(c){return '<li class="'+(c[0]?'ok':'no')+'">'+(c[0]?'✓ ':'○ ')+c[1]+'</li>';}).join('');
+  }
+  update();
+  $('mpCopy').addEventListener('click',function(){
+    var t='MUDDIEST POINT — '+L.code+' HOS '+L.hos+'\n\n1. Right before I got confused: '+els[0].value+'\n\n2. Where I got stuck: '+els[1].value+'\n\n3. What I already tried: '+els[2].value+'\n\n4. My best guess: '+(els[3].value||'(none)');
+    var s=$('mpStatus'); if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into Brightspace.'; },function(){ s.textContent='Copy blocked — select the fields manually.'; }); } else s.textContent='Copy not supported — select the fields manually.';
+  });
+  $('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); $('mpStatus').textContent='Draft cleared.'; });
+})();
+/* Debate sides (shared team across lessons) */
+(function(){
+  var sels=[].slice.call(document.querySelectorAll('select.team')); if(!sels.length) return;
+  var v=store(L.slug+'-team');
+  function upd(val){
+    sels.forEach(function(s){ s.value=val; }); if(val) store(L.slug+'-team',val);
+    (L.debates||[]).forEach(function(d){
+      var a=$(d.a), b=$(d.b), out=$(d.out); a.classList.remove('mine'); b.classList.remove('mine');
+      if(!val){ out.textContent=''; return; }
+      var sideA=(val==='1')===(d.team1==='A'); (sideA?a:b).classList.add('mine');
+      out.innerHTML=d.prefix+'<b>'+(sideA?d.nameA:d.nameB)+'</b> in Stage 1.';
+    });
+  }
+  sels.forEach(function(s){ s.addEventListener('change',function(){ upd(s.value); }); }); upd(v||'');
+})();
+/* checklists */
+[].slice.call(document.querySelectorAll('.checklist[data-key]')).forEach(function(list){
+  var boxes=[].slice.call(list.querySelectorAll('input')), key=K(list.dataset.key), prog=$(list.dataset.prog), suffix=list.dataset.suffix;
+  var saved=(store(key)||'').split(',');
+  boxes.forEach(function(b,i){ if(saved[i]==='1') b.checked=true; b.addEventListener('change',upd); });
+  function upd(){ boxes.forEach(function(b){ b.parentNode.classList.toggle('done',b.checked); });
+    if(prog) prog.textContent=boxes.filter(function(b){return b.checked;}).length+' / '+boxes.length+' '+suffix;
+    store(key,boxes.map(function(b){return b.checked?'1':'0';}).join(',')); }
+  upd();
+});
+[].slice.call(document.querySelectorAll('textarea[data-save]')).forEach(function(t){ var k=K(t.dataset.save); var v=store(k); if(v) t.value=v; t.addEventListener('input',function(){ store(k,t.value); }); });
+/* Analyze frames */
+(function(){
+  var btns=[].slice.call(document.querySelectorAll('#analyzePick button')), box=$('analyzeFrame'); if(!box) return;
+  btns.forEach(function(b){ b.addEventListener('click',function(){
+    btns.forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true');
+    box.innerHTML='<span class="label">Explain-it frame</span><ul>'+L.frames[b.dataset.k].map(function(q){return '<li>'+q+'</li>';}).join('')+'</ul><p class="small">Aim for 250–400 words. Quote the line(s) or trace step(s) you are explaining.</p>';
+  }); });
+})();
+/* Sorter */
+(function(){
+  var S=L.sorter, host=$('sorter'); if(!S||!host) return;
+  var answers={}, score=$('sorterScore'), cls=['auto','confirm','never'];
+  host.innerHTML=S.items.map(function(t,i){
+    return '<div class="sorter-row" data-i="'+i+'"><span>'+t[0]+'</span><div class="opts">'+S.opts.map(function(o,j){ return '<button type="button" class="'+cls[j]+'" aria-pressed="false" data-o="'+o[0]+'">'+o[1]+'</button>'; }).join('')+'</div><div class="why"></div></div>';
+  }).join('');
+  [].slice.call(host.querySelectorAll('.opts button')).forEach(function(b){ b.addEventListener('click',function(){
+    var row=b.closest('.sorter-row'); [].slice.call(row.querySelectorAll('button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); answers[row.dataset.i]=b.dataset.o; }); });
+  $('sorterReveal').addEventListener('click',function(){
+    var right=0;
+    [].slice.call(host.querySelectorAll('.sorter-row')).forEach(function(row){
+      var t=S.items[row.dataset.i]; if(answers[row.dataset.i]===t[1]) right++;
+      var lbl=S.opts.filter(function(o){return o[0]===t[1];})[0][1];
+      row.querySelector('.why').innerHTML='<b>Suggested: '+lbl+'.</b> '+t[2]; row.classList.add('revealed'); });
+    score.textContent=right+' / '+S.items.length+' match the suggested call. '+(S.after||'');
+  });
+})();
+/* Quiz */
+(function(){
+  var host=$('quiz'); if(!host) return; var qs=L.quiz, right=0, done=0;
+  host.innerHTML=qs.map(function(q,i){ return '<div class="q" data-i="'+i+'"><div class="stem">'+(i+1)+'. '+q[0]+'</div>'+q[1].map(function(o,j){return '<button type="button" class="opt" data-j="'+j+'">'+o+'</button>';}).join('')+'<div class="fb"></div></div>'; }).join('');
+  [].slice.call(host.querySelectorAll('.q')).forEach(function(card){
+    var q=qs[card.dataset.i];
+    [].slice.call(card.querySelectorAll('.opt')).forEach(function(b){ b.addEventListener('click',function(){
+      if(card.classList.contains('answered')) return; card.classList.add('answered'); done++;
+      var ok=+b.dataset.j===q[2]; if(ok) right++;
+      b.classList.add(ok?'right':'wrong'); card.querySelectorAll('.opt')[q[2]].classList.add('right');
+      card.querySelector('.fb').innerHTML=(ok?'✓ ':'✗ ')+q[3];
+      $('quizScore').textContent= done===qs.length ? 'Score: '+right+' / '+qs.length+(right===qs.length?' — ready for the Week '+L.weekB+' check-in.':' — revisit the lecture parts you missed.') : '';
+    }); });
+  });
+})();
+/* Project checkpoint drafter (HOS 3) */
+(function(){
+  var team=$('cpTeam'); if(!team) return; var idea=$('cpIdea'), rows=[].slice.call(document.querySelectorAll('#cpHos .hos-tick'));
+  function key(k){ return L.slug+'-checkpoint-'+k; }
+  var v=store(key('team')); if(v) team.value=v; v=store(key('idea')); if(v) idea.value=v;
+  rows.forEach(function(r){ var cb=r.querySelector('input[type=checkbox]'), tx=r.querySelector('input[type=text]'), h=cb.dataset.h;
+    if(store(key('h'+h))==='1') cb.checked=true; var t=store(key('t'+h)); if(t) tx.value=t;
+    cb.addEventListener('change',upd); tx.addEventListener('input',function(){ if(tx.value && !cb.checked) cb.checked=true; upd(); }); });
+  team.addEventListener('input',upd); idea.addEventListener('input',upd);
+  function words(s){ return (s.trim().match(/\S+/g)||[]).length; }
+  function upd(){
+    store(key('team'),team.value); store(key('idea'),idea.value); var ticked=0, described=0;
+    rows.forEach(function(r){ var cb=r.querySelector('input[type=checkbox]'), tx=r.querySelector('input[type=text]'), h=cb.dataset.h;
+      store(key('h'+h),cb.checked?'1':'0'); store(key('t'+h),tx.value); if(cb.checked){ ticked++; if(words(tx.value)>=3) described++; } });
+    var checks=[[team.value.trim().length>0,'Team named (or "Solo")'],[words(idea.value)>=30,'Idea is a real paragraph (~30+ words)'],
+      [new RegExp(L.cpNeed,'i').test(idea.value),L.cpNeedLabel],[ticked>=2,'Combines at least two HOS pieces (all four by Week 10)'],
+      [ticked>0 && described===ticked,'Each ticked HOS says what it does in your project']];
+    $('cpLitmus').innerHTML=checks.map(function(c){return '<li class="'+(c[0]?'ok':'no')+'">'+(c[0]?'✓ ':'○ ')+c[1]+'</li>';}).join('');
+  }
+  upd();
+  $('cpCopy').addEventListener('click',function(){
+    var parts=rows.filter(function(r){return r.querySelector('input[type=checkbox]').checked;}).map(function(r){ return '- '+r.querySelector('b').textContent+': '+r.querySelector('input[type=text]').value; });
+    var t='TEAM/TERM PROJECT CHECKPOINT — '+L.code+' (Week 6)\n\nTeam: '+team.value+'\n\nIdea: '+idea.value+'\n\nHOS pieces it combines:\n'+(parts.join('\n')||'(none yet)');
+    var s=$('cpStatus'); if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into Brightspace.'; },function(){ s.textContent='Copy blocked.'; }); } else s.textContent='Copy not supported.';
+  });
+})();
+/* Architecture path ordering (HOS 4) */
+(function(){
+  var pool=$('orderPool'); if(!pool) return; var P=L.paths, cur=Object.keys(P)[0], next=0, done=$('orderDone'), hint=$('orderHint'), reveal=$('orderReveal');
+  function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=a[i]; a[i]=a[j]; a[j]=x; } return a; }
+  function reset(){
+    next=0; done.innerHTML=''; done.classList.remove('revealed'); reveal.disabled=true; hint.textContent='Click the first step.';
+    pool.innerHTML=shuffle(P[cur].map(function(s,i){return {s:s,i:i};})).map(function(o){ return '<button type="button" data-i="'+o.i+'">'+o.s[0]+'</button>'; }).join('');
+    [].slice.call(pool.querySelectorAll('button')).forEach(function(b){ b.addEventListener('click',function(){
+      if(+b.dataset.i===next){ var s=P[cur][next], li=document.createElement('li');
+        li.innerHTML='<span class="n">'+(next+1)+'</span><span>'+s[0]+'</span><span class="tag">'+s[1]+'</span><span class="risk">⚠ '+s[2]+'</span>';
+        done.appendChild(li); b.remove(); next++;
+        hint.textContent= next===P[cur].length ? 'Path complete. Now reveal where each step can slow down or fail.' : 'Correct — what happens next?';
+        if(next===P[cur].length) reveal.disabled=false;
+      } else { b.classList.add('shake'); hint.textContent='Not yet — what must happen first?'; setTimeout(function(){ b.classList.remove('shake'); },600); }
+    }); });
+  }
+  [].slice.call(document.querySelectorAll('#pathPick button')).forEach(function(b){ b.addEventListener('click',function(){
+    [].slice.call(document.querySelectorAll('#pathPick button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); cur=b.dataset.p; reset(); }); });
+  reveal.addEventListener('click',function(){ done.classList.add('revealed'); }); $('orderReset').addEventListener('click',reset); reset();
+})();
+</script>
+</body>
+</html>

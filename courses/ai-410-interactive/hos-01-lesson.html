@@ -268,7 +268,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
     <a href="#challenge"><span class="n">Wk 2 · Fri–Sun</span><span class="t">Application Challenge</span><span class="w">5% of course</span></a>
     <a href="#check"><span class="n">Wk 2 · any time</span><span class="t">Knowledge Check</span><span class="w">self-check</span></a>
   </div>
-  <p class="small muted" style="margin-top:10px">Days are a suggested pacing for an online term, not fixed deadlines — your instructor's LMS dates win.</p>
+  <p class="small muted" style="margin-top:10px">Days are a suggested pacing for an online term, not fixed deadlines — your instructor's Brightspace dates win.</p>
 </section>
 
 <!-- ========================= WEEK 1 ========================= -->
@@ -354,7 +354,7 @@ calculate_tool = {
 
 <section class="module card" id="muddiest">
   <div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag rose">Graded · part of 5% MP category</span><span class="tag">Due before the build begins</span></div></div></div>
-  <p>Not a blank box. Four short fields, because a specific confusion is much easier for your instructor to fix than "this week was confusing." Draft it here — your draft stays in this browser only — then <strong>copy it into the LMS submission</strong>.</p>
+  <p>Not a blank box. Four short fields, because a specific confusion is much easier for your instructor to fix than "this week was confusing." Draft it here — your draft stays in this browser only — then <strong>copy it into the Brightspace submission</strong>.</p>
   <div class="two" style="margin-bottom:14px">
     <div class="eg weak"><span class="label">Doesn't meet the bar</span>"I didn't really get the agent loop part. Tool calling is confusing."</div>
     <div class="eg strong"><span class="label">Meets the bar</span>"In Part 3, step 5: why does the backend have to resend the whole history with the function result? Couldn't it just send <code>29754</code>? I re-read step 5 and tried the simulator — the log shows the history growing but not why."</div>
@@ -467,7 +467,7 @@ calculate_tool = {
   </div>
   <label class="field" for="evalNote">Draft your Evaluate note (stays in this browser)</label>
   <textarea id="evalNote" placeholder="What I tested · what I found · what the AI got wrong, missed, or handled surprisingly well"></textarea>
-  <p class="small muted">Submit: a screenshot of the working app + this note, via the LMS.</p>
+  <p class="small muted">Submit: a screenshot of the working app + this note, via Brightspace.</p>
 </section>
 
 <!-- ========================= WEEK 2 ========================= -->
@@ -550,7 +550,7 @@ calculate_tool = {
   <h2>Resources</h2>
   <ul>
     <li><a href="../ai-410-guides/hos-01-foundations-agentic-loop.html">HOS 1 hands-on guide</a> — the full build, stage by stage</li>
-    <li><a href="../ai-410-guides/week-01-foundations.html">Week 1 guide</a> · <a href="../ai-410-guides/week-02-agentic-loop.html">Week 2 guide</a></li>
+    <li><span class="muted">Legacy background reading:</span> <a href="../ai-410-guides/week-01-foundations.html">Foundations</a> · <a href="../ai-410-guides/week-02-agentic-loop.html">Agentic loop</a> <span class="small muted">— from the original 8-HOS, week-by-week schedule, so their week numbers and some steps differ. For this course, follow the HOS hands-on guide above.</span></li>
     <li><a href="../ai-410-guides/concept-companion.html">Concept Companion</a> — every concept to know before starting a HOS</li>
     <li><a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a> — free Gemini key, GitHub, Codespaces</li>
     <li><a href="sim01-agentic-loop.html">Agentic Loop Simulator</a></li>
@@ -618,7 +618,7 @@ function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); loca
   document.getElementById('mpCopy').addEventListener('click',function(){
     var t='MUDDIEST POINT — AI 410 HOS 1\n\n1. Right before I got confused: '+els[0].value+'\n\n2. Where I got stuck: '+els[1].value+'\n\n3. What I already tried: '+els[2].value+'\n\n4. My best guess: '+(els[3].value||'(none)');
     var s=document.getElementById('mpStatus');
-    if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into the LMS.'; },function(){ s.textContent='Copy blocked — select the fields manually.'; }); }
+    if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into Brightspace.'; },function(){ s.textContent='Copy blocked — select the fields manually.'; }); }
     else s.textContent='Copy not supported — select the fields manually.';
   });
   document.getElementById('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); document.getElementById('mpStatus').textContent='Draft cleared.'; });

@@ -10,7 +10,7 @@ Each folder is one working agent built during AI 420. Every one runs in GitHub C
 | 02 | [Operations agent](hos-02-tools-mcp-memory/) | Runs a marine supply store's lookups through its own MCP tool server, with long-term memory | Custom tools, MCP, memory |
 | 03 | [Self-correcting support agent](hos-03-traces-self-correction/) | A broken agent, diagnosed from traces and repaired to recover on its own | Trace analysis, self-correction |
 | 04 | [Support team + evaluation](hos-04-multi-agent-evaluation/) | A coordinator with specialist agents, tested by a simulated customer and an LLM judge | Multi-agent orchestration, agent evaluation |
-| ★ | Capstone (Weeks 7–9) | | |
+| ★ | Capstone (Weeks 9–10) | | |
 
 ## Running any agent
 

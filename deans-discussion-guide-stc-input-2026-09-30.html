@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>STC Input — Deans &amp; Program Leadership Discussion Guide, September 30 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--blue-dim); border: 1px solid rgba(29,78,216,0.2); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-body { padding: 6px 24px 10px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .qa { padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .qa:last-child { border-bottom: none; }
+    .q { display: flex; gap: 12px; font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; }
+    .qnum { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: var(--slate); }
+    .a { margin: 0 0 0 40px; color: var(--ink); }
+    .team { margin: 12px 0 0 40px; background: var(--teal-dim); border-left: 4px solid var(--teal); border-radius: var(--radius-sm);
+      padding: 10px 14px; font-size: 0.9rem; color: var(--slate); }
+    .team strong { color: var(--teal); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 2px; }
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.92rem; }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout ul { margin: 6px 0 0; padding-left: 20px; }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } .a, .team { margin-left: 0; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Leadership &amp; Strategy · STC Input</div>
+    <h1>CityU Deans &amp; Program Leadership — Facilitated Discussion Guide</h1>
+    <p class="subtitle">STC's short answers to the 15 discussion questions. Every answer is based on programs and activities STC runs today. Teammates will add their own answers alongside these.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Sep 30, 2026</span>
+      <span class="meta-chip">🏫 School of Technology &amp; Computing</span>
+      <span class="meta-chip">❓ 15 questions</span>
+    </div>
+  </header>
+
+  <div class="tldr">
+    <h2>STC's core message</h2>
+    <ul>
+      <li><strong>Built for working adults:</strong> evening and flexible formats, preparatory courses for career changers, and STC student workers who help their classmates.</li>
+      <li><strong>AI and security in every program:</strong> every bachelor's core includes AI, cloud, cybersecurity, and cyber ethics. At the master's level, students work with NLP, RAG, and ML/deep learning.</li>
+      <li><strong>Applied research students present in public:</strong> the quarterly Applied Research Symposium, the DIT Forum, and student publications in conferences and journals.</li>
+      <li><strong>One path, start to finish:</strong> preparatory courses, graduate certificates, master's degrees, and the Doctor of Information Technology, all within STC.</li>
+    </ul>
+  </div>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">🎯</div><div><h2>What CityU Does Differently</h2></div></div>
+    <div class="section-body">
+      <div class="qa">
+        <div class="q"><span class="qnum">1</span><span>What does CityU understand about today's students that many traditional universities still don't? How does that shape how CityU teaches and operates?</span></div>
+        <p class="a">Most of our students are working adults who need skills they can use at work right away. So our programs are built around hands-on, applied work: building full-stack apps, running security labs, and analyzing real datasets. We schedule them around full-time jobs.</p>
+      </div>
+      <div class="qa">
+        <div class="q"><span class="qnum">2</span><span>Beyond flexibility and accessibility, what is genuinely different about the education a student receives at CityU?</span></div>
+        <p class="a">Students don't just take classes; they join an academic community. Beyond the courses, they have invited talks, tech clubs, a research group that publishes with students, and quarterly forums where they present their work to people outside CityU.</p>
+      </div>
+      <div class="qa">
+        <div class="q"><span class="qnum">3</span><span>What would you tell a prospective student also considering Seattle U, SPU, WGU, or other alternatives?</span></div>
+        <p class="a">You get flexibility without studying alone. Your instructors work in the field, the courses are hands-on (AI, NLP, cloud, ethical hacking, full-stack development), and you can move from certificate to master's to doctorate within one school.</p>
+      </div>
+      <div class="qa">
+        <div class="q"><span class="qnum">4</span><span>What aspects of CityU are particularly strong but not well understood or recognized outside the institution?</span></div>
+        <p class="a">Many people outside CityU don't know that our students do and present applied research. Capstone students present every quarter at the Applied Research Symposium, co-hosted with the Center for Cybersecurity Innovation. DIT students present at the DIT Forum, and our research group produces student publications for conferences and journals.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">🛠️</div><div><h2>Audience Relevance + Practitioner Expertise</h2></div></div>
+    <div class="section-body">
+      <div class="qa">
+        <div class="q"><span class="qnum">5</span><span>What does "real-world relevance" actually mean at CityU? How does it show up in curriculum, teaching, assignments, and the student experience?</span></div>
+        <p class="a">Students do the work, not just study it. They build and deploy apps, run security labs, and build AI applications with NLP and RAG. They then present the results at a public symposium open to professionals and other universities.</p>
+      </div>
+      <div class="qa">
+        <div class="q"><span class="qnum">6</span><span>How does having faculty with current or recent professional experience change what students learn? Specific examples?</span></div>
+        <p class="a">Faculty who work in the field teach how things are done now. For example, as generative AI moved into the workplace, faculty brought NLP, RAG, and cloud-based AI into courses like AI 520 and AI 510 while those practices were still new.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">📈</div><div><h2>Outcomes</h2></div></div>
+    <div class="section-body">
+      <div class="qa">
+        <div class="q"><span class="qnum">7</span><span>When CityU is at its best, how is a student changed when they leave?</span></div>
+        <p class="a">They leave confident that they can learn any new technology on their own. They also have a portfolio of real projects, and many have already presented their work to other professionals.</p>
+      </div>
+      <div class="qa">
+        <div class="q"><span class="qnum">8</span><span>What evidence do we have that CityU prepares students for where industries and careers are going, not just where they are today?</span></div>
+        <p class="a">AI and security are becoming part of every tech role, so we teach them to every student, starting at the undergraduate core. We're now planning a BS in AI to go further into where the field is heading.</p>
+      </div>
+      <div class="qa">
+        <div class="q"><span class="qnum">9</span><span>Which programs, faculty, employer relationships, alumni outcomes, or student stories best show CityU's ability to create career progress?</span></div>
+        <p class="a">Student publications in conferences and journals, capstone projects presented at the quarterly Applied Research Symposium, and DIT research shared at the DIT Forum. To make the case on career progress, we need to track alumni promotions and career moves more consistently.</p>
+      </div>
+      <div class="qa">
+        <div class="q"><span class="qnum">10</span><span>Are there programs, industries, or areas of expertise where CityU has an unusually strong competitive advantage the market doesn't currently recognize?</span></div>
+        <p class="a">Every one of our technology graduates, whatever their major, knows AI, cybersecurity, and cloud. We also offer a complete path in one school, from preparatory courses through certificates, master's degrees, and the Doctor of Information Technology.</p>
+        <div class="team"><strong>Team input</strong>One key strength of the STC at CityU is that it has been designed for adult learners who are currently pursuing their careers. Our evening in-person courses allow students to work full time while advancing their education in full time, which is particularly valuable for veterans and nontraditional students. The structure enables veterans to make effective use of their education benefits while getting a technology degree without putting their careers on hold.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">🧑‍💻</div><div><h2>The Student Experience</h2></div></div>
+    <div class="section-body">
+      <div class="qa">
+        <div class="q"><span class="qnum">11</span><span>What do CityU students need that differs from a traditional 18–22-year-old residential student? How has CityU designed around that?</span></div>
+        <p class="a">Our students need schedules they can predict, work they can apply right away, and support that fits around a job. We offer evening and flexible formats, preparatory courses for career changers, and STC student workers who help classmates. Tech clubs and STC events give working students the community a residential campus would.</p>
+      </div>
+      <div class="qa">
+        <div class="q"><span class="qnum">12</span><span>Where does CityU's commitment to flexibility stop? What standards, rigor, or expectations are non-negotiable?</span></div>
+        <p class="a">We're flexible about when and where students learn, never about what they have to show at the end. Every student still has to meet the program outcomes, produce working deliverables (code, analyses, security assessments), and uphold academic integrity.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-amber">🔭</div><div><h2>A Look Ahead at CityU</h2></div></div>
+    <div class="section-body">
+      <div class="qa">
+        <div class="q"><span class="qnum">13</span><span>How are your programs changing in response to AI, emerging technologies, employer expectations, and evolving career paths?</span></div>
+        <p class="a">AI already runs through our programs: AI fundamentals in every bachelor's core, and NLP, RAG, machine learning, and AI in the cloud at the master's level. We can update course content within weeks. The planned BS in AI will add agentic AI, MLOps, and physical AI.</p>
+        <div class="team"><strong>Team input</strong>One of the strengths of our technology programs is curricular agility. Because we operate with a focused and collaborative team, we can respond quickly to emerging technologies and changing industry expectations. When areas such as generative AI, cloud computing, or other emerging technologies become relevant to the workforce, we can evaluate and integrate them into course content, assignments, and learning activities within a relatively short timeframe—sometimes within weeks. This enables us to maintain strong alignment between our curriculum and the evolving needs of the technology industry.</div>
+      </div>
+      <div class="qa">
+        <div class="q"><span class="qnum">14</span><span>Looking three to five years ahead, where does CityU have the greatest opportunity to become known as a leader rather than simply another option?</span></div>
+        <p class="a">Applied AI and cybersecurity education for working adults, delivered through degrees, stackable certificates, and micro-credentials, with the planned BS in AI as the flagship.</p>
+      </div>
+      <div class="qa">
+        <div class="q"><span class="qnum">15</span><span>What is the strongest claim CityU could credibly make about the value of a CityU education, and what evidence would we need to prove it?</span></div>
+        <p class="a">"CityU technology graduates can apply AI, data, and security skills on the job right away, and can present and defend their work in front of professionals." Symposium presentations and student publications already support the second half. For the first half we'd need job-placement and promotion data and employer feedback.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="callout amber">
+    <strong>Before submitting:</strong>
+    <ul>
+      <li>#3 and #4 say our certificates and master's degrees form one path. The certificate courses match the MS cores, but whether certificate credits officially carry into the MS is a policy question. Confirm it first.</li>
+      <li>#6 uses AI 520 and AI 510 as examples of courses where faculty added NLP, RAG, and cloud-based AI. Swap in whichever courses actually made those updates.</li>
+      <li>These answers leave out the planned BS in AI (except as "planned") and unlaunched presidential initiatives.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

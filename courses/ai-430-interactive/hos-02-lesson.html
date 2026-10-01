@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 430 HOS 2 (draft): CI/CD/CT for models and agents — test on push, evaluate before deploy, retrain on drift.">
+<title>HOS 2 Interactive Lesson</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#0e7490; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#0b2530 0%,#155e75 60%,#0e7490 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --bg:#f2f7f8;--surface2:#eaf3f5;--border:#cfe0e4;--text:#0f2229;--muted:#50666d;--accent:#0e7490;--accent2:#155e75;--accent-light:#e0f2f5;--header-bg:#0b2530; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#081317;--surface:#0f1f25;--surface2:#152a31;--border:#243e47;--text:#e3f0f3;--muted:#8fa9b0;--accent:#67e8f9;--accent2:#a5f3fc;--accent-light:#0c2c33;--on-accent:#082f35;--header-bg:#050d10; } }
+:root[data-theme="dark"] { --bg:#081317;--surface:#0f1f25;--surface2:#152a31;--border:#243e47;--text:#e3f0f3;--muted:#8fa9b0;--accent:#67e8f9;--accent2:#a5f3fc;--accent-light:#0c2c33;--on-accent:#082f35;--header-bg:#050d10; }
+
+:root { --maxw:1100px; }
+.draftbar { background:var(--amber-bg); color:var(--amber); border-bottom:1px solid var(--amber); font-size:.8rem; font-weight:700; text-align:center; padding:7px 16px; }
+
+.secnav { position:sticky; top:var(--header-h,62px); z-index:150; background:var(--surface); border-bottom:1px solid var(--border); box-shadow:var(--shadow); }
+.secnav-inner { max-width:var(--maxw); margin:0 auto; padding:8px 16px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:thin; }
+.secnav a { flex:none; font-size:.76rem; font-weight:600; text-decoration:none; color:var(--muted); padding:4px 10px; border-radius:16px; border:1px solid transparent; white-space:nowrap; }
+.secnav a:hover, .secnav a.active { color:var(--accent2); background:var(--accent-light); border-color:var(--accent); }
+.secnav .sep { flex:none; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:5px 4px 0 10px; }
+section.module { scroll-margin-top:calc(var(--header-h,62px) + 56px); }
+.part-banner { margin:30px 0 16px; padding:12px 18px; border-radius:var(--radius); background:var(--header-bg); color:var(--header-text); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:baseline; }
+.part-banner b { font-size:1.02rem; } .part-banner span { font-size:.8rem; opacity:.8; }
+.module-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; }
+.module-icon { width:40px; height:40px; flex:none; border-radius:10px; background:var(--accent-light); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+.module-head h2 { margin:0; }
+.module-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+.flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:6px 0 4px; }
+.flow a { text-decoration:none; color:inherit; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:block; }
+.flow a:hover { border-color:var(--accent); box-shadow:var(--shadow-hover); }
+.flow .n { font-size:.68rem; font-weight:800; color:var(--accent2); letter-spacing:.06em; text-transform:uppercase; }
+.flow .t { font-weight:700; font-size:.88rem; display:block; }
+.flow .w { font-size:.74rem; color:var(--muted); }
+.lo li { margin-bottom:6px; }
+.lecture-part { border-top:1px dashed var(--border); padding-top:14px; margin-top:16px; }
+.lecture-part:first-of-type { border-top:none; padding-top:0; margin-top:0; }
+.lecture-part h3 { margin-top:0; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.lecture-part h3 small { font-weight:600; color:var(--muted); font-size:.76rem; }
+.arch { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:10px 0 14px; }
+.arch .box { flex:1 1 150px; border:2px solid var(--border); border-radius:10px; padding:10px 12px; background:var(--surface2); font-size:.84rem; }
+.arch .box b { display:block; font-size:.9rem; }
+.arch .box.key { border-color:var(--accent); }
+.arch .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.seq { counter-reset:s; list-style:none; margin:10px 0 14px; padding:0; }
+.seq li { counter-increment:s; position:relative; padding:8px 12px 8px 44px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; background:var(--surface); font-size:.88rem; }
+.seq li::before { content:counter(s); position:absolute; left:10px; top:8px; width:24px; height:24px; border-radius:50%; background:var(--accent); color:var(--on-accent); font-weight:800; font-size:.78rem; display:flex; align-items:center; justify-content:center; }
+.seq li.loopback { border-style:dashed; border-color:var(--amber); }
+dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted); font-size:.88rem; }
+.two { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+.eg { border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; background:var(--surface2); }
+.eg.weak { border-left:5px solid var(--bad); } .eg.strong { border-left:5px solid var(--ok); }
+.eg .label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+.eg.weak .label { color:var(--bad); } .eg.strong .label { color:var(--ok); }
+.counter { font-size:.72rem; color:var(--muted); text-align:right; }
+.spec-meter { display:flex; gap:10px; align-items:center; margin:12px 0 6px; font-size:.84rem; }
+.spec-track { flex:1; height:10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.spec-fill { height:100%; width:0; background:var(--bad); transition:width .25s, background .25s; }
+.hints { font-size:.8rem; margin:4px 0 10px 1.1em; color:var(--muted); }
+.hints li.ok { color:var(--ok); } .hints li.no { color:var(--bad); }
+.stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:10px 0 16px; }
+.stage { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface2); font-size:.85rem; }
+.stage .day { font-size:.7rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--violet); }
+.side { border:2px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; }
+.side.a { border-color:var(--blue); } .side.b { border-color:var(--rose); }
+.side.mine { box-shadow:0 0 0 4px var(--accent-light); }
+.side h4 { display:flex; justify-content:space-between; gap:6px; }
+.checklist label { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; background:var(--surface); font-size:.88rem; }
+.checklist input { margin-top:4px; accent-color:var(--accent); width:16px; height:16px; flex:none; }
+.checklist label.done { background:var(--ok-bg); border-color:var(--ok); }
+.progress-line { font-size:.8rem; font-weight:700; color:var(--accent2); margin-bottom:8px; }
+.pick { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:12px; }
+.pick button { text-align:left; background:var(--surface2); border:2px solid var(--border); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:.85rem; color:var(--text); cursor:pointer; }
+.pick button[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-light); }
+.pick button b { display:block; }
+.sorter-row { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:.86rem; background:var(--surface); }
+.sorter-row .opts { display:flex; gap:4px; flex-wrap:wrap; }
+.sorter-row .opts button { font-family:inherit; font-size:.72rem; font-weight:700; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:6px; padding:4px 8px; cursor:pointer; }
+.sorter-row .opts button[aria-pressed="true"].auto { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+.sorter-row .opts button[aria-pressed="true"].confirm { background:var(--amber-bg); border-color:var(--amber); color:var(--amber); }
+.sorter-row .opts button[aria-pressed="true"].never { background:var(--bad-bg); border-color:var(--bad); color:var(--bad); }
+.sorter-row .why { grid-column:1/-1; font-size:.8rem; color:var(--muted); display:none; }
+.sorter-row.revealed .why { display:block; }
+@media (max-width:560px){ .sorter-row { grid-template-columns:1fr; } }
+.q { border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:10px; background:var(--surface); }
+.q .stem { font-weight:700; font-size:.9rem; margin-bottom:8px; }
+.q .opt { display:block; width:100%; text-align:left; font-family:inherit; font-size:.86rem; color:var(--text); background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:7px 10px; margin-bottom:6px; cursor:pointer; }
+.q .opt.right { background:var(--ok-bg); border-color:var(--ok); }
+.q .opt.wrong { background:var(--bad-bg); border-color:var(--bad); }
+.q .fb { font-size:.82rem; margin-top:4px; display:none; }
+.q.answered .fb { display:block; }
+.score { font-weight:800; color:var(--accent2); }
+.project-map td:first-child { font-weight:700; white-space:nowrap; }
+
+.pipe-row { display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin:6px 0; }
+.pipe-row .box { flex:1 1 120px; border:2px solid var(--border); border-radius:10px; padding:8px 10px; background:var(--surface2); font-size:.8rem; }
+.pipe-row .box b { display:block; font-size:.84rem; }
+.pipe-row .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.pipe-label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:10px; }
+.vec-demo { display:grid; grid-template-columns:1fr auto; gap:6px 12px; font-size:.84rem; align-items:center; margin:8px 0 12px; }
+.vec-demo .s { font-weight:800; color:var(--accent2); }
+.review-code { counter-reset:ln; }
+
+.wf-demo { font-size:.8rem; margin:8px 0 12px; }
+.wf-demo .r { display:grid; grid-template-columns:150px 1fr 60px; gap:8px; align-items:center; margin-bottom:4px; }
+.wf-demo .t { position:relative; height:14px; background:var(--surface2); border-radius:4px; }
+.wf-demo .b { position:absolute; top:2px; bottom:2px; border-radius:3px; background:var(--accent); }
+.wf-demo .b.g { background:var(--violet); } .wf-demo .b.root { background:var(--muted); }
+@media (max-width:520px){ .wf-demo .r { grid-template-columns:100px 1fr 50px; } }
+.order-pool { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.order-pool button { font-family:inherit; font-size:.8rem; text-align:left; background:var(--surface2); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 10px; cursor:pointer; }
+.order-pool button:hover { border-color:var(--accent); }
+.order-pool button.shake { border-color:var(--bad); background:var(--bad-bg); }
+.order-done { list-style:none; margin:0; padding:0; }
+.order-done li { display:grid; grid-template-columns:26px 1fr auto; gap:8px; align-items:start; border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:7px 10px; margin-bottom:5px; font-size:.84rem; background:var(--surface); }
+.order-done li .n { font-weight:800; color:var(--accent2); }
+.order-done li .risk { grid-column:2/4; font-size:.78rem; color:var(--muted); display:none; }
+.order-done.revealed li .risk { display:block; }
+.faith-out .sent { font-size:.82rem; padding:5px 10px; border-radius:6px; margin-bottom:4px; }
+.faith-out .sent.ok { background:var(--ok-bg); } .faith-out .sent.bad { background:var(--bad-bg); }
+
+.hos-tick { display:grid; grid-template-columns:auto 1fr; gap:6px 10px; align-items:start; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; background:var(--surface); }
+.hos-tick input[type=checkbox] { margin-top:5px; accent-color:var(--accent); width:16px; height:16px; }
+.hos-tick input[type=text] { grid-column:2; }
+.litmus li.ok { color:var(--ok); } .litmus li.no { color:var(--muted); }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">430</span><span><b>AI 430: MLOps and AgentOps</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-430.html">← AI 430</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+  <div class="draftbar">Draft — built from the course outline. Tools, labs and starter code are not built or tested yet; Create/Scaffold steps describe the planned build.</div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 430 · HOS 2 · Weeks 3–4 · Draft interactive lesson</div>
+    <h1>CI/CD/CT for Models &amp; Agents</h1>
+    <p class="lede">Make every change ship the same safe way: tests on every push, an evaluation gate before anything deploys, and continuous training that retrains when the data drifts — for a model and for an agent.</p>
+    <div class="chips"><span class="chip">Outcome O2</span><span class="chip">Draft</span><span class="chip">2 weeks</span><span class="chip">Lecture · MP · CD</span><span class="chip">GitHub Actions</span><span class="chip">Quality gates</span></div>
+  </div>
+</section>
+<main id="main">
+<nav class="secnav no-print" aria-label="Lesson sections"><div class="secnav-inner"><a href="#overview">Overview</a><span class="sep">Week 3</span><a href="#lecture">Lecture</a><a href="#muddiest">Muddiest Point</a><a href="#debate">Concept Debate</a><a href="#create">Create / Scaffold</a><a href="#evaluate">Evaluate</a><span class="sep">Week 4</span><a href="#analyze">Analyze</a><a href="#refine">Understand &amp; Refine</a><a href="#challenge">Application Challenge</a><a href="#check">Knowledge Check</a><a href="#project">Team Project</a></div></nav><div class="callout amber" style="margin-top:20px"><span class="label">Course design constraints</span><p>This draft follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>: it adapts to AI 430's official description and Outcome O2, everything must run in GitHub Codespaces, and free tiers come first. Every tool named here is a <strong>proposal</strong> that must pass the <a href="../AI-430.html">outline's feasibility test</a> before a lab is written.</p></div><section class="module card" id="overview"><div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag ">O2</span><span class="tag blue">12.5% HOS + MP + CD + AC</span></div></div></div><p>Continuous integration tests every change. Continuous delivery deploys every change that passes. ML adds a third C — <strong>continuous training</strong> — because a model can go stale while the code sits still. This HOS automates all three with GitHub Actions and deploys to free CPU hosting, then applies the same gates to an agent, where "tests" become evaluation scores.</p><p>Week 3 builds the workflow: test on push, evaluate and deploy on merge, retrain on a schedule or on drift. Week 4 explains the gates and adds one by hand.</p><div class="callout blue"><span class="label">Anchoring analogy</span><p>An airport. Every bag goes through the same scanner (CI), only cleared bags reach the plane (CD with a quality gate), and the scanner's rules get updated when threats change (CT). Nobody hand-carries a bag past security because it's urgent — and when someone does, that's the incident everyone remembers.</p></div><h3>Learning objectives</h3><p class="small muted">By the end of the two weeks you will be able to:</p><ol class="lo"><li>Apply CI/CD/CT principles to automate deployment of a machine learning model. <span class="tag">O2</span></li><li>Apply the same pipeline to an agentic workflow, with evaluation scores as the quality gate. <span class="tag">O2</span></li><li>Design a quality gate that blocks a worse model or agent from deploying. <span class="tag">O2</span></li><li>Decide when to retrain: on a schedule, on drift, or on demand. <span class="tag">O2</span></li><li>Keep secrets out of the repository in an automated pipeline. <span class="tag">O2</span></li></ol><h3>Your two weeks at a glance</h3><div class="flow"><a href="#lecture"><span class="n">Wk 3 · Mon</span><span class="t">Lecture</span><span class="w">~75 min, 3 parts</span></a><a href="#muddiest"><span class="n">Wk 3 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a><a href="#debate"><span class="n">Wk 3 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a><a href="#create"><span class="n">Wk 3 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">not graded</span></a><a href="#evaluate"><span class="n">Wk 3 · Fri–Sun</span><span class="t">Evaluate</span><span class="w">30% of HOS</span></a><a href="#analyze"><span class="n">Wk 4 · Mon–Tue</span><span class="t">Analyze</span><span class="w">30% of HOS</span></a><a href="#refine"><span class="n">Wk 4 · Wed–Thu</span><span class="t">Understand &amp; Refine</span><span class="w">40% of HOS · no AI</span></a><a href="#challenge"><span class="n">Wk 4 · Fri–Sun</span><span class="t">Application Challenge</span><span class="w">5% of course</span></a><a href="#check"><span class="n">Wk 4 · any time</span><span class="t">Knowledge Check</span><span class="w">self-check</span></a></div><p class="small muted" style="margin-top:10px">Days are a suggested pacing for an online term, not fixed deadlines — your instructor's Brightspace dates win.</p></section>
+<div class="part-banner"><b>Week 3 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div><section class="module card" id="lecture"><div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: shipping every change the same safe way</h2><div class="module-meta"><span class="tag ">≈ 75 min</span><span class="tag blue">3 short parts</span><span class="tag ">O2</span></div></div></div><p class="small muted">Three short segments. Pause after each and try the quick check. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p><div class="lecture-part"><h3>Part 1 — CI, CD, and the third C <small>≈ 25 min</small></h3><p><b>CI:</b> on every push, run tests — for ML that includes data validation and a quick training smoke test. <b>CD:</b> on merge, deploy what passed. <b>CT:</b> retrain when it's time — on a schedule, when new data arrives, or when monitoring detects drift. Proposed tools: <b>GitHub Actions</b> (free minutes; unlimited on public repos) and <b>Hugging Face Spaces</b> (free CPU hosting).</p>
+<pre><code>on: push          → lint, unit tests, validate data, smoke-train
+on: merge to main → train, evaluate, [quality gate] → deploy
+on: schedule      → check drift → retrain if needed → same gate</code></pre></div><div class="lecture-part"><h3>Part 2 — Quality gates for models and agents <small>≈ 25 min</small></h3><p>A <strong>quality gate</strong> is a rule a candidate must pass before it replaces what's deployed: accuracy ≥ the current model's, no worse on a key slice, latency under a limit. For an agent the gate is an evaluation run — success rate, cost per task, and latency on a fixed scenario set (the AI 420 kind of harness).</p>
+<div class="callout"><span class="label">Worked example</span><p>A prompt tweak raises the agent's success rate from 81% to 84% — and doubles cost per task because it now calls a tool twice. A gate on success rate alone ships it. A gate on success <em>and</em> cost blocks it and says why.</p></div>
+<div class="callout violet"><span class="label">Quick check</span><p>Your gate compares the candidate to the deployed model on a test set. What happens if the test set itself is stale?</p></div></div><div class="lecture-part"><h3>Part 3 — Secrets, rollbacks, and continuous training <small>≈ 25 min</small></h3><p>Automated pipelines need credentials (a Hugging Face token, a Gemini key). They go in <strong>repository secrets</strong>, never in the code or the logs. Every deploy needs a <strong>rollback</strong>: redeploy the previous registered version in one step.</p>
+<p>Continuous training is where MLOps and AgentOps differ most: models retrain on new data; agents rarely retrain, but their prompts, tools, and underlying model version change — and each change should trigger the same evaluate-then-deploy gate.</p>
+<div class="callout"><span class="label">Try it before the build</span><p>Open the <a href="sim02-cicd-pipeline.html"><strong>CI/CD/CT Pipeline Simulator</strong></a>. Push a change that improves accuracy but breaks latency, with and without the gate.</p></div></div><h3>New words this week</h3><dl class="gloss"><dt>CI / CD / CT</dt><dd>Continuous integration (test every change), delivery (deploy what passes), training (retrain when it's time).</dd><dt>Quality gate</dt><dd>A rule a candidate must pass before it replaces what's deployed.</dd><dt>Repository secret</dt><dd>A credential stored by the CI system and injected at run time, never committed.</dd><dt>Rollback</dt><dd>Redeploying the previous known-good version.</dd></dl></section>
+<section class="module card" id="muddiest"><div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag rose">Graded · part of 5% MP category</span><span class="tag ">Due before the build begins</span></div></div></div><p>Four short fields, not a blank box. Draft it here — your draft stays in this browser only — then <strong>copy it into the Brightspace submission</strong>.</p><div class="two" style="margin-bottom:14px"><div class="eg weak"><span class="label">Doesn't meet the bar</span>"I don't understand GitHub Actions."</div><div class="eg strong"><span class="label">Meets the bar</span>"Lecture Part 2: the gate compares the candidate to the deployed model. But on the very first deploy there's nothing deployed — does the gate pass automatically? I read the workflow sketch and tried the simulator's first push, and it deployed, but I'm not sure that's safe."</div></div><form onsubmit="return false"><label class="field" for="mp1">1 · What were you doing right before you got confused?</label><input type="text" id="mp1" placeholder="e.g. Lecture Part 2, the quality gate"><label class="field" for="mp2">2 · The exact place you got stuck</label><textarea id="mp2" placeholder="Not 'CI/CD is confusing' — the specific step that doesn't add up."></textarea><div class="counter" id="mp2count">0 words</div><label class="field" for="mp3">3 · What you already tried</label><textarea id="mp3" placeholder="Re-read a section, searched something specific, asked a classmate, tried the simulator…"></textarea><label class="field" for="mp4">4 · Optional: your best guess at the answer</label><textarea id="mp4" placeholder="Even if you think it's wrong."></textarea></form><div class="spec-meter"><b>Specificity</b><div class="spec-track"><div class="spec-fill" id="specFill"></div></div><span id="specLabel">—</span></div><ul class="hints" id="specHints"></ul><div class="row"><button class="btn" id="mpCopy" type="button">Copy for submission</button><button class="btn secondary" id="mpClear" type="button">Clear draft</button><span class="small muted" id="mpStatus" aria-live="polite"></span></div><p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — on time, addresses a genuine confusion (80%) · Writing — clear, specific, not generic (20%). The meter above is a nudge, not your grade.</p></section>
+<section class="module card" id="debate"><div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag ">Discussion board · 3 stages</span></div></div></div><div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>Should a model or agent deploy automatically when it passes the gate, or should a person approve every production deploy?</strong></p></div><p>You'll argue the side your debate team is assigned, then argue the other one, then drop advocacy and synthesize.</p><div class="callout blue"><span class="label">Your side this HOS</span><p>Sides rotate each HOS. <b>In HOS 2, Debate Team 1 argues Side B and Debate Team 2 argues Side A.</b> Find your team under <b>Communication → Groups</b> in Brightspace. Not in a team? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A.</p></div><div class="row" style="margin-bottom:10px"><label for="team" class="small"><b>My Brightspace team:</b></label><select class="team" id="team" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select><span class="small" id="sideResult" aria-live="polite"></span></div><div class="two"><div class="side a" id="sideA"><h4><span>Side A — Deploy automatically</span><span class="tag blue">Team 2 this HOS</span></h4><p>If the gate passes, ship it.</p><ul class="small"><li>Humans rubber-stamp approvals they don't have time to check.</li><li>Automatic deploys are small and frequent, so each one is less risky.</li><li>The gate encodes the judgment; improve the gate, not the approval step.</li></ul></div><div class="side b" id="sideB"><h4><span>Side B — A person approves production</span><span class="tag rose">Team 1 this HOS</span></h4><p>The gate recommends; a named person decides.</p><ul class="small"><li>Gates only check what someone thought to measure.</li><li>Agents can act in the world — a bad deploy has real consequences.</li><li>Accountability needs a name.</li></ul></div></div><div class="stages"><div class="stage"><span class="day">Stage 1 · by Tue</span><h4>Initial position</h4>Argue your assigned side with one specific claim and one piece of evidence — a run, a trace, a simulator setting. Not a topic summary.</div><div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>Before replying to anyone, post the <em>strongest</em> version of the side you didn't hold.</div><div class="stage"><span class="day">Stage 3 · by Sat</span><h4>Synthesis</h4>Drop advocacy. State a real position, citing at least one specific point from a classmate's post.</div></div><div class="two"><div class="eg weak"><span class="label">Weak synthesis</span>"Automation is efficient but humans add safety. Both have value."</div><div class="eg strong"><span class="label">Strong synthesis</span>"Lin's example of the agent that passed every metric and still emailed customers twice changed my mind: for anything that <em>acts</em>, a person approves. For a classifier that only labels tickets, automatic deploy behind a gate is fine — Omar's point that approvals become rubber stamps is real."</div></div><p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%).</p></section>
+<section class="module card" id="create"><div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag ">Not graded on its own</span><span class="tag blue">GitHub Codespaces</span><span class="tag amber">Planned — labs not built yet</span></div></div></div><div class="callout amber"><span class="label">Planned — no lab or starter code yet</span><p>This stage describes the planned build. The proposed tools (GitHub Actions, Hugging Face Spaces, repository secrets) are awaiting the feasibility test on a 2-core Codespace and free tiers; if one fails, it gets swapped for another that meets the same outcome.</p></div>
+<p><b>Planned build:</b></p><ul><li>A workflow that runs tests and data validation on every push.</li><li>On merge: train, evaluate, and deploy to a free Hugging Face Space only if the quality gate passes.</li><li>A scheduled job that checks for drift and retrains when needed.</li><li>The same pipeline for a small agent, with an evaluation run as its gate.</li></ul>
+<p><b>What the Create/Scaffold prompt will ask for:</b> scaffold the workflow files and deployment script, leaving the gate's thresholds for students to judge and defend.</p></section>
+<section class="module card" id="evaluate"><div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag ">30% of HOS grade</span></div></div></div><p>Planned Evaluate tests — each tries to sneak something past the pipeline.</p><div class="progress-line" id="evalProgress">0 / 4 tests run</div><div class="checklist" data-key="eval" data-prog="evalProgress" data-suffix="tests run"><label><input type="checkbox"><span><b>Push a breaking change.</b> Does CI fail before anything deploys?</span></label><label><input type="checkbox"><span><b>A better-but-slower model:</b> does the gate catch the latency regression, or only look at accuracy?</span></label><label><input type="checkbox"><span><b>A leaked secret:</b> could the token appear in a log? Check the workflow output.</span></label><label><input type="checkbox"><span><b>Roll back:</b> redeploy the previous version. How long does it take, and what breaks?</span></label></div><label class="field" for="evalNote">Draft your Evaluate note (stays in this browser)</label><textarea id="evalNote" data-save="evalnote" placeholder="What I tested · what I found · what the AI got wrong, missed, or handled surprisingly well"></textarea><p class="small muted">Submit: evidence (screenshots, a trace or a results table) + this note, via Brightspace.</p></section>
+<div class="part-banner"><b>Week 4 · Explain &amp; Master</b><span>Analyze → Understand &amp; Refine → Application Challenge → Knowledge Check</span></div><section class="module card" id="analyze"><div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does this work?</h2><div class="module-meta"><span class="tag ">30% of HOS grade</span></div></div></div><p>Pick <strong>one</strong> piece and explain, in your own words, exactly how it works.</p><div class="pick" id="analyzePick"><button type="button" aria-pressed="false" data-k="gate"><b>The quality gate</b>What it compares.</button><button type="button" aria-pressed="false" data-k="ct"><b>When to retrain</b>Schedule vs. drift.</button><button type="button" aria-pressed="false" data-k="secret"><b>Secrets in CI</b>Where the token lives.</button></div><div class="callout blue" id="analyzeFrame"><span class="label">Explain-it frame</span><p>Pick a piece above to see prompts that make a strong Analyze.</p></div></section>
+<section class="module card" id="refine"><div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag ">40% of HOS grade</span><span class="tag bad">No AI assistant for this part</span></div></div></div><p>By hand (planned): add one gate condition beyond accuracy — latency, cost, or a key data slice — and show it blocking a candidate the old gate would have shipped.</p><div class="progress-line" id="refineProgress">0 / 5 done</div><div class="checklist" data-key="refine" data-prog="refineProgress" data-suffix="done"><label><input type="checkbox"><span>Choose a condition and write why it matters in one sentence.</span></label><label><input type="checkbox"><span>Add it to the gate by hand.</span></label><label><input type="checkbox"><span>Build a candidate that passes the old gate and fails the new one.</span></label><label><input type="checkbox"><span>Show both workflow runs.</span></label><label><input type="checkbox"><span>Write what else the gate still can't see.</span></label></div></section>
+<section class="module card" id="challenge"><div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — review a team's deploy pipeline</h2><div class="module-meta"><span class="tag ">5% of course</span><span class="tag blue">Critique — no build</span></div></div></div><p>You'll get a short description of a team's deploy process for a model or agent. Find the step where a bad change could reach production, and design the smallest gate that would stop it.</p><h3>Warm-up: does this belong in the pipeline?</h3><p class="small">For each check, decide where it belongs: on every push (CI), before deploy (the gate), or not in the pipeline.</p><div id="sorter"></div><div class="row" style="margin:8px 0 16px"><button class="btn" id="sorterReveal" type="button">Reveal reasoning</button><span class="small" id="sorterScore" aria-live="polite"></span></div><div class="callout"><span class="label">What to submit</span><ul><li>The step where a bad change could slip through, and the change that would.</li><li>Your smallest gate: the condition, the baseline, and the threshold.</li><li>What your gate still can't catch.</li></ul></div><p class="small muted"><b>Grading:</b> Judgment &amp; reasoning (50%) · Transfer to the new scenario (35%) · Clarity (15%).</p></section>
+<section class="module card" id="check"><div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag ">Self-check · not graded</span></div></div></div><p>Five quick questions, then the two open questions your instructor will ask in the Week 4 check-in.</p><div id="quiz"></div><p class="score" id="quizScore" aria-live="polite"></p><h3>Open questions</h3><ol><li>How does a CI/CD/CT pipeline for an agent differ from one for a classic ML model?</li><li>What would your quality gate miss, and how would you find out?</li></ol></section>
+<section class="module card" id="project"><div class="module-head"><div class="module-icon">🚀</div><div><h2>Team/Term Project — what HOS 2 adds</h2><div class="module-meta"><span class="tag ">20% of course</span><span class="tag amber">Checkpoint at end of Week 6</span></div></div></div>
+<p>The minimum bar says your project <strong>runs deployed, not just in the Codespace, and redeploys automatically on merge</strong>. Sketch now: what's your gate? Which number, measured how, would stop a worse version of your agent from shipping?</p>
+<p class="small"><a href="team-project.html">Project guide</a></p></section>
+<section class="card"><h2>Resources</h2><ul><li><a href="../AI-430.html">AI 430 course outline</a></li><li><a href="sim02-cicd-pipeline.html">CI/CD/CT Pipeline Simulator</a></li><li>← <a href="hos-01-lesson.html">HOS 1 lesson</a> · <a href="index.html">All lessons &amp; simulators</a> · Next: <a href="hos-03-lesson.html">HOS 3 lesson</a> →</li></ul></section>
+</main>
+<footer class="foot">AI 430: MLOps and AgentOps · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — not yet offered.<br>Draft built from the course outline — nothing here has been tested with real tools yet.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai430-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai430-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>window.LESSON={"slug": "ai430", "code": "AI 430", "hos": 2, "weekB": 4, "concrete": "(`|\\(|\\)|\\.ya?ml|\\/|part \\d|line|workflow|action|job|push|merge|gate|deploy|rollback|secret|token|retrain|drift|schedule|eval)", "debates": [{"a": "sideA", "b": "sideB", "out": "sideResult", "team1": "B", "prefix": "In HOS 2 you argue ", "nameA": "Side A \u2014 Deploy automatically", "nameB": "Side B \u2014 Human approves"}], "frames": {"gate": ["What exactly does the gate compare, against what baseline?", "What regression would it miss?", "Why must the gate's test set be versioned too?"], "ct": ["What triggers retraining in your pipeline?", "What's the cost of retraining too often, or too rarely?", "How does this differ for an agent?"], "secret": ["Trace the Hugging Face token from repository secret to the deploy step.", "Where could it leak?", "What should happen if it does?"]}, "sorter": {"opts": [["ci", "Every push"], ["gate", "Before deploy"], ["no", "Not in the pipeline"]], "items": [["Unit tests and linting", "ci", "Fast and cheap: run on every push."], ["Data validation on the training set", "ci", "Catches a bad batch as early as possible."], ["Full evaluation on the held-out test set vs. the deployed model", "gate", "Expensive, and only meaningful for a deploy candidate."], ["Agent success rate and cost per task on 20 scenarios", "gate", "The agent's version of an accuracy gate."], ["A manager's weekly review of the dashboard", "no", "Valuable, but it's monitoring, not a pipeline step."], ["Scanning the logs for the deploy token", "ci", "Leaked secrets should fail the build immediately."]], "after": ""}, "quiz": [["What does CT add that CI/CD doesn't have?", ["Faster tests", "Code review", "Secrets", "Retraining when data drifts or on a schedule"], 3, "Models go stale even when code doesn't change."], ["Where should a deploy token live?", ["In the workflow file", "In a repository secret injected at run time", "In the README", "In a notebook"], 1, "Never in code or logs."], ["What's a quality gate for an agent?", ["A code linter", "An evaluation run (success, cost, latency) the candidate must pass", "A manual checklist", "A Docker build"], 1, "Agent tests are evaluations."], ["A candidate is more accurate but twice as slow. A gate that checks only accuracy will:", ["Block it", "Roll back", "Ship it", "Retrain"], 2, "Gates only see what they measure."], ["Why version the gate's test set?", ["To save space", "GitHub requires it", "So comparisons between candidates are fair and repeatable", "It's faster"], 2, "A changing test set makes every comparison meaningless."]], "paths": null, "cpNeed": "for", "cpNeedLabel": "Says who it's for"};
+
+var L=window.LESSON;
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){ return null; } }
+function $(id){ return document.getElementById(id); }
+function K(k){ return L.slug+'-'+L.hos+'-'+k; }
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest',inline:'center'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+/* Muddiest Point */
+(function(){
+  var els=['mp1','mp2','mp3','mp4'].map($); if(!els[0]) return;
+  els.forEach(function(el){ var v=store(K(el.id)); if(v) el.value=v; el.addEventListener('input',update); });
+  var vague=/\b(confus(ing|ed)|everything|all of it|the whole|in general|kind of|stuff)\b/i, concrete=new RegExp(L.concrete,'i');
+  function words(s){ return (s.trim().match(/\S+/g)||[]).length; }
+  function update(){
+    els.forEach(function(el){ store(K(el.id), el.value); });
+    var stuck=els[1].value, w=words(stuck); $('mp2count').textContent=w+' words';
+    var checks=[[words(els[0].value)>=3,'Context names where you were (a part, step, or line)'],[w>=15,'Stuck point is at least ~15 words'],
+      [concrete.test(stuck),'Stuck point mentions a concrete thing (a step, function, file, term)'],[!vague.test(stuck)||w>=30,'Avoids vague catch-alls like "confusing" or "everything"'],
+      [words(els[2].value)>=5,'Says what you already tried']];
+    var n=checks.filter(function(c){return c[0];}).length, pct=n/checks.length*100, f=$('specFill');
+    f.style.width=pct+'%'; f.style.background= pct>=80?'var(--ok)':pct>=40?'var(--amber)':'var(--bad)';
+    $('specLabel').textContent= pct>=80?'Specific':pct>=40?'Getting there':'Too vague';
+    $('specHints').innerHTML=checks.map(function(c){return '<li class="'+(c[0]?'ok':'no')+'">'+(c[0]?'✓ ':'○ ')+c[1]+'</li>';}).join('');
+  }
+  update();
+  $('mpCopy').addEventListener('click',function(){
+    var t='MUDDIEST POINT — '+L.code+' HOS '+L.hos+'\n\n1. Right before I got confused: '+els[0].value+'\n\n2. Where I got stuck: '+els[1].value+'\n\n3. What I already tried: '+els[2].value+'\n\n4. My best guess: '+(els[3].value||'(none)');
+    var s=$('mpStatus'); if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into Brightspace.'; },function(){ s.textContent='Copy blocked — select the fields manually.'; }); } else s.textContent='Copy not supported — select the fields manually.';
+  });
+  $('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); $('mpStatus').textContent='Draft cleared.'; });
+})();
+/* Debate sides (shared team across lessons) */
+(function(){
+  var sels=[].slice.call(document.querySelectorAll('select.team')); if(!sels.length) return;
+  var v=store(L.slug+'-team');
+  function upd(val){
+    sels.forEach(function(s){ s.value=val; }); if(val) store(L.slug+'-team',val);
+    (L.debates||[]).forEach(function(d){
+      var a=$(d.a), b=$(d.b), out=$(d.out); a.classList.remove('mine'); b.classList.remove('mine');
+      if(!val){ out.textContent=''; return; }
+      var sideA=(val==='1')===(d.team1==='A'); (sideA?a:b).classList.add('mine');
+      out.innerHTML=d.prefix+'<b>'+(sideA?d.nameA:d.nameB)+'</b> in Stage 1.';
+    });
+  }
+  sels.forEach(function(s){ s.addEventListener('change',function(){ upd(s.value); }); }); upd(v||'');
+})();
+/* checklists */
+[].slice.call(document.querySelectorAll('.checklist[data-key]')).forEach(function(list){
+  var boxes=[].slice.call(list.querySelectorAll('input')), key=K(list.dataset.key), prog=$(list.dataset.prog), suffix=list.dataset.suffix;
+  var saved=(store(key)||'').split(',');
+  boxes.forEach(function(b,i){ if(saved[i]==='1') b.checked=true; b.addEventListener('change',upd); });
+  function upd(){ boxes.forEach(function(b){ b.parentNode.classList.toggle('done',b.checked); });
+    if(prog) prog.textContent=boxes.filter(function(b){return b.checked;}).length+' / '+boxes.length+' '+suffix;
+    store(key,boxes.map(function(b){return b.checked?'1':'0';}).join(',')); }
+  upd();
+});
+[].slice.call(document.querySelectorAll('textarea[data-save]')).forEach(function(t){ var k=K(t.dataset.save); var v=store(k); if(v) t.value=v; t.addEventListener('input',function(){ store(k,t.value); }); });
+/* Analyze frames */
+(function(){
+  var btns=[].slice.call(document.querySelectorAll('#analyzePick button')), box=$('analyzeFrame'); if(!box) return;
+  btns.forEach(function(b){ b.addEventListener('click',function(){
+    btns.forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true');
+    box.innerHTML='<span class="label">Explain-it frame</span><ul>'+L.frames[b.dataset.k].map(function(q){return '<li>'+q+'</li>';}).join('')+'</ul><p class="small">Aim for 250–400 words. Quote the line(s) or trace step(s) you are explaining.</p>';
+  }); });
+})();
+/* Sorter */
+(function(){
+  var S=L.sorter, host=$('sorter'); if(!S||!host) return;
+  var answers={}, score=$('sorterScore'), cls=['auto','confirm','never'];
+  host.innerHTML=S.items.map(function(t,i){
+    return '<div class="sorter-row" data-i="'+i+'"><span>'+t[0]+'</span><div class="opts">'+S.opts.map(function(o,j){ return '<button type="button" class="'+cls[j]+'" aria-pressed="false" data-o="'+o[0]+'">'+o[1]+'</button>'; }).join('')+'</div><div class="why"></div></div>';
+  }).join('');
+  [].slice.call(host.querySelectorAll('.opts button')).forEach(function(b){ b.addEventListener('click',function(){
+    var row=b.closest('.sorter-row'); [].slice.call(row.querySelectorAll('button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); answers[row.dataset.i]=b.dataset.o; }); });
+  $('sorterReveal').addEventListener('click',function(){
+    var right=0;
+    [].slice.call(host.querySelectorAll('.sorter-row')).forEach(function(row){
+      var t=S.items[row.dataset.i]; if(answers[row.dataset.i]===t[1]) right++;
+      var lbl=S.opts.filter(function(o){return o[0]===t[1];})[0][1];
+      row.querySelector('.why').innerHTML='<b>Suggested: '+lbl+'.</b> '+t[2]; row.classList.add('revealed'); });
+    score.textContent=right+' / '+S.items.length+' match the suggested call. '+(S.after||'');
+  });
+})();
+/* Quiz */
+(function(){
+  var host=$('quiz'); if(!host) return; var qs=L.quiz, right=0, done=0;
+  host.innerHTML=qs.map(function(q,i){ return '<div class="q" data-i="'+i+'"><div class="stem">'+(i+1)+'. '+q[0]+'</div>'+q[1].map(function(o,j){return '<button type="button" class="opt" data-j="'+j+'">'+o+'</button>';}).join('')+'<div class="fb"></div></div>'; }).join('');
+  [].slice.call(host.querySelectorAll('.q')).forEach(function(card){
+    var q=qs[card.dataset.i];
+    [].slice.call(card.querySelectorAll('.opt')).forEach(function(b){ b.addEventListener('click',function(){
+      if(card.classList.contains('answered')) return; card.classList.add('answered'); done++;
+      var ok=+b.dataset.j===q[2]; if(ok) right++;
+      b.classList.add(ok?'right':'wrong'); card.querySelectorAll('.opt')[q[2]].classList.add('right');
+      card.querySelector('.fb').innerHTML=(ok?'✓ ':'✗ ')+q[3];
+      $('quizScore').textContent= done===qs.length ? 'Score: '+right+' / '+qs.length+(right===qs.length?' — ready for the Week '+L.weekB+' check-in.':' — revisit the lecture parts you missed.') : '';
+    }); });
+  });
+})();
+/* Project checkpoint drafter (HOS 3) */
+(function(){
+  var team=$('cpTeam'); if(!team) return; var idea=$('cpIdea'), rows=[].slice.call(document.querySelectorAll('#cpHos .hos-tick'));
+  function key(k){ return L.slug+'-checkpoint-'+k; }
+  var v=store(key('team')); if(v) team.value=v; v=store(key('idea')); if(v) idea.value=v;
+  rows.forEach(function(r){ var cb=r.querySelector('input[type=checkbox]'), tx=r.querySelector('input[type=text]'), h=cb.dataset.h;
+    if(store(key('h'+h))==='1') cb.checked=true; var t=store(key('t'+h)); if(t) tx.value=t;
+    cb.addEventListener('change',upd); tx.addEventListener('input',function(){ if(tx.value && !cb.checked) cb.checked=true; upd(); }); });
+  team.addEventListener('input',upd); idea.addEventListener('input',upd);
+  function words(s){ return (s.trim().match(/\S+/g)||[]).length; }
+  function upd(){
+    store(key('team'),team.value); store(key('idea'),idea.value); var ticked=0, described=0;
+    rows.forEach(function(r){ var cb=r.querySelector('input[type=checkbox]'), tx=r.querySelector('input[type=text]'), h=cb.dataset.h;
+      store(key('h'+h),cb.checked?'1':'0'); store(key('t'+h),tx.value); if(cb.checked){ ticked++; if(words(tx.value)>=3) described++; } });
+    var checks=[[team.value.trim().length>0,'Team named (or "Solo")'],[words(idea.value)>=30,'Idea is a real paragraph (~30+ words)'],
+      [new RegExp(L.cpNeed,'i').test(idea.value),L.cpNeedLabel],[ticked>=2,'Combines at least two HOS pieces (all four by Week 10)'],
+      [ticked>0 && described===ticked,'Each ticked HOS says what it does in your project']];
+    $('cpLitmus').innerHTML=checks.map(function(c){return '<li class="'+(c[0]?'ok':'no')+'">'+(c[0]?'✓ ':'○ ')+c[1]+'</li>';}).join('');
+  }
+  upd();
+  $('cpCopy').addEventListener('click',function(){
+    var parts=rows.filter(function(r){return r.querySelector('input[type=checkbox]').checked;}).map(function(r){ return '- '+r.querySelector('b').textContent+': '+r.querySelector('input[type=text]').value; });
+    var t='TEAM/TERM PROJECT CHECKPOINT — '+L.code+' (Week 6)\n\nTeam: '+team.value+'\n\nIdea: '+idea.value+'\n\nHOS pieces it combines:\n'+(parts.join('\n')||'(none yet)');
+    var s=$('cpStatus'); if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into Brightspace.'; },function(){ s.textContent='Copy blocked.'; }); } else s.textContent='Copy not supported.';
+  });
+})();
+/* Architecture path ordering (HOS 4) */
+(function(){
+  var pool=$('orderPool'); if(!pool) return; var P=L.paths, cur=Object.keys(P)[0], next=0, done=$('orderDone'), hint=$('orderHint'), reveal=$('orderReveal');
+  function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=a[i]; a[i]=a[j]; a[j]=x; } return a; }
+  function reset(){
+    next=0; done.innerHTML=''; done.classList.remove('revealed'); reveal.disabled=true; hint.textContent='Click the first step.';
+    pool.innerHTML=shuffle(P[cur].map(function(s,i){return {s:s,i:i};})).map(function(o){ return '<button type="button" data-i="'+o.i+'">'+o.s[0]+'</button>'; }).join('');
+    [].slice.call(pool.querySelectorAll('button')).forEach(function(b){ b.addEventListener('click',function(){
+      if(+b.dataset.i===next){ var s=P[cur][next], li=document.createElement('li');
+        li.innerHTML='<span class="n">'+(next+1)+'</span><span>'+s[0]+'</span><span class="tag">'+s[1]+'</span><span class="risk">⚠ '+s[2]+'</span>';
+        done.appendChild(li); b.remove(); next++;
+        hint.textContent= next===P[cur].length ? 'Path complete. Now reveal where each step can slow down or fail.' : 'Correct — what happens next?';
+        if(next===P[cur].length) reveal.disabled=false;
+      } else { b.classList.add('shake'); hint.textContent='Not yet — what must happen first?'; setTimeout(function(){ b.classList.remove('shake'); },600); }
+    }); });
+  }
+  [].slice.call(document.querySelectorAll('#pathPick button')).forEach(function(b){ b.addEventListener('click',function(){
+    [].slice.call(document.querySelectorAll('#pathPick button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); cur=b.dataset.p; reset(); }); });
+  reveal.addEventListener('click',function(){ done.classList.add('revealed'); }); $('orderReset').addEventListener('click',reset); reset();
+})();
+</script>
+</body>
+</html>

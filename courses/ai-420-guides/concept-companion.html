@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 420 — Concept Companion</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .intro-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
+        .intro-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+
+        /* Map table — the "modular" jump nav */
+        table.map-table { width:100%; border-collapse:collapse; margin:14px 0 6px; font-size:0.85rem; }
+        table.map-table th, table.map-table td { border:1px solid #e2e8f0; padding:9px 12px; text-align:left; vertical-align:top; }
+        table.map-table th { background:#f8fafc; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        table.map-table td.mod-name { font-weight:700; color:#1e8449; white-space:nowrap; }
+        table.map-table a.jump { font-weight:600; text-decoration:none; color:#1d4ed8; }
+        table.map-table a.jump:hover { text-decoration:underline; }
+
+        /* Module blocks */
+        .module { border:1px solid #e2e8f0; border-radius:10px; padding:22px 24px 26px; margin:26px 0; scroll-margin-top:16px; }
+        .module.mod0 { background:#fafafa; }
+        .module-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-bottom:6px; }
+        .module-head h2 { margin:0; border-bottom:none; padding-bottom:0; }
+        .module-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+        .mod-pill { font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; }
+        .mod-pill.hos { background:#ede9fe; color:#6d28d9; }
+        .mod-pill.wk { background:#e0f2fe; color:#0369a1; }
+        .mod-pill.outcome { background:#dcfce7; color:#15803d; }
+        .why-line { font-size:0.92rem; color:#334155; margin:0 0 18px; }
+        .why-line strong { color:#0f172a; }
+
+        /* Concept cards */
+        .concept-grid { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+        .concept-card { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:13px 16px; }
+        .concept-card h4 { margin:0 0 5px; font-size:0.95rem; color:#0f172a; }
+        .concept-card p { margin:0; font-size:0.88rem; color:#334155; }
+        .concept-card .why { margin-top:6px; font-size:0.82rem; color:#64748b; }
+        .concept-card .why strong { color:#475569; }
+
+        /* Diagrams */
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
+        .flow-line { stroke-dasharray:6 4; animation:flowdash 1s linear infinite; }
+        .flow-line.slow { animation-duration:1.8s; }
+        @keyframes flowdash { to { stroke-dashoffset:-20; } }
+        .flow-dot { animation:dotmove linear infinite; }
+        .pulse-box { animation:pulsebox 2.2s ease-in-out infinite; }
+        @keyframes pulsebox { 0%,100% { opacity:1; } 50% { opacity:0.45; } }
+        @media (prefers-reduced-motion: reduce) {
+            .flow-line, .flow-dot, .pulse-box { animation:none !important; }
+        }
+
+        /* Glossary / self-check boxes — matching AI-410.html's vocabulary */
+        .glossary-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px 16px; margin:14px 0; font-size:0.85rem; }
+        .glossary-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; }
+        .glossary-box dl { margin:0; }
+        .glossary-box dt { font-weight:700; color:#334155; display:inline; }
+        .glossary-box dd { display:inline; margin:0 0 0 4px; color:#475569; }
+        .glossary-box dd::after { content:""; display:block; margin-bottom:4px; }
+        .check-box { background:#eef2ff; border-left:5px solid #6366f1; padding:12px 16px; margin:16px 0 0; border-radius:0 4px 4px 0; font-size:0.85rem; }
+        .check-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#4338ca; }
+        .check-box ul { margin:0; padding-left:18px; }
+        .check-box li { margin-bottom:4px; }
+
+        .module-nav { text-align:right; margin-top:16px; font-size:0.82rem; }
+        .module-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+        .back-to-top { display:inline-block; margin-top:34px; font-size:0.85rem; color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+    <style>.draft-box { background:#fffbeb; border:1px solid #fcd34d; border-left:5px solid #f59e0b; padding:12px 16px; margin:0 0 20px; border-radius:0 6px 6px 0; font-size:0.9rem; } .draft-box strong { color:#b45309; }</style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-420.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 420</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
+    </nav>
+
+        <h1 id="top">AI 420 — Concept Companion</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Read before you start, not while you're debugging</span>
+            <span class="meta-pill">One module per HOS</span>
+            <span class="meta-pill">5 standalone modules</span>
+        </div>
+
+        <div class="intro-box">
+            <h4>What this page is</h4>
+            <p>The <a href="index.html">Hands-On Guides</a> tell you <em>what to build, step by step</em>. This page is every concept and piece of vocabulary you should already understand <strong>before</strong> you open one of them, gathered in one place. AI 420 assumes you finished AI 410 — where a concept carries over (the agentic loop, tracing), this page says what's new about it here.</p>
+            <p style="margin-bottom:0"><strong>Modular by design:</strong> one module per HOS of the <a href="../AI-420.html">AI 420</a> schedule, plus Module 0 for the tooling every HOS uses. See any concept in motion in the <a href="../ai-420-interactive/index.html">simulators</a>: <a href="../ai-420-interactive/sim01-agent-loop.html">agent loop</a>, <a href="../ai-420-interactive/sim02-tool-schemas.html">tool schemas &amp; MCP</a>, <a href="../ai-420-interactive/sim03-trace-detective.html">trace detective</a>, <a href="../ai-420-interactive/sim04-eval-lab.html">eval lab</a>.</p>
+        </div>
+
+        <h2>Find your module</h2>
+        <table class="map-table">
+            <tr><th>Module</th><th>When</th><th>Outcome(s)</th><th>Jump</th></tr>
+            <tr>
+                <td class="mod-name">0 — Universal Tooling</td>
+                <td>Before HOS 1</td>
+                <td>—</td>
+                <td><a class="jump" href="#module-0">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">A — Anatomy of an Agent</td>
+                <td>Before HOS 1</td>
+                <td>O1</td>
+                <td><a class="jump" href="#module-a">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">B — Custom Tools, MCP &amp; Memory</td>
+                <td>Before HOS 2</td>
+                <td>O2, O1</td>
+                <td><a class="jump" href="#module-b">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">C — Traces, Failure Diagnosis &amp; Self-Correction</td>
+                <td>Before HOS 3</td>
+                <td>O3</td>
+                <td><a class="jump" href="#module-c">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">D — Multi-Agent Orchestration &amp; Evaluation</td>
+                <td>Before HOS 4</td>
+                <td>O4</td>
+                <td><a class="jump" href="#module-d">Read →</a></td>
+            </tr>
+        </table>
+        <p style="font-size:0.85rem;color:#6b7280;margin-top:6px">Skipped a module and got confused later? That's the signal to come back and read it.</p>
+
+        <!-- ══════════════════ MODULE 0 ══════════════════ -->
+        <div class="module mod0" id="module-0">
+            <div class="module-head"><h2>Module 0 — Universal Tooling</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 1</span>
+            </div>
+            <p class="why-line">These show up in <strong>every</strong> HOS. Most carry over from AI 410; two things are new: a single <strong>portfolio repo</strong> for the whole term, and <strong>Google ADK</strong>'s <code>adk web</code> developer UI.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arr0" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Portfolio repo</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">from the template</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Codespace</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">deps preinstalled</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Copy HOS folder</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">starter code</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">.env</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">GOOGLE_API_KEY</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Run</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">python / adk web</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Every HOS starts the same way: copy the starter folder into your portfolio repo and add your key.</text></g></svg>
+                <div class="diagram-caption">The setup path you'll repeat at the start of each HOS.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Your portfolio repo</h4>
+                    <p>Created once in Week 1 from the course's portfolio template. Each HOS adds one folder — one working agent — with a README: what it does, a trace screenshot, and one lesson learned.</p>
+                    <div class="why"><strong>Why it matters:</strong> By Week 8 you already have four working agents to show an employer; the Team/Term Project adds the centerpiece.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Codespaces reads only the root <code>.devcontainer/</code></h4>
+                    <p>The portfolio template's devcontainer installs everything all four HOS need. A <code>.devcontainer/</code> inside a HOS folder is ignored unless that folder is the root of its own repo.</p>
+                    <div class="why"><strong>Why it matters:</strong> If packages are missing, you're probably in a Codespace that wasn't built from the portfolio template.</div>
+                </div>
+                <div class="concept-card">
+                    <h4><code>GOOGLE_API_KEY</code> (not <code>GEMINI_API_KEY</code>)</h4>
+                    <p>Same free key as AI 410, under the variable name Google ADK and the google-genai SDK look for. Each HOS folder has a <code>.env.example</code> to copy to <code>.env</code>.</p>
+                    <div class="why"><strong>Why it matters:</strong> A key stored under the old name looks like "no key set."</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Free-tier rate limits (HTTP 429)</h4>
+                    <p>The free Gemini tier limits calls per minute. Agents make many calls, so you'll hit it — especially in HOS 4's evaluations. The scripts have a <code>--pause</code> option; waiting a minute also works.</p>
+                    <div class="why"><strong>Why it matters:</strong> A 429 is a pacing problem, not a bug in your agent.</div>
+                </div>
+                <div class="concept-card">
+                    <h4><code>adk web</code></h4>
+                    <p>Google ADK's local developer UI: run it from a HOS folder, pick an agent, chat with it, and open the <strong>Events</strong> tab to see every model call and tool call. It runs on port 8000; Codespaces forwards it to a browser tab.</p>
+                    <div class="why"><strong>Why it matters:</strong> It's your first trace viewer — the habit of reading every step starts here.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Working with an AI coding assistant</h4>
+                    <p>Create/Scaffold is AI-driven. The help in the prompt fades across the term: HOS 1 gives the full prompt, HOS 2 a partial one, HOS 3 a spec, and HOS 4 only the goal.</p>
+                    <div class="why"><strong>Why it matters:</strong> By HOS 4 you're directing the assistant with your own design — which is what the job looks like.</div>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Portfolio template</dt><dd>the repo skeleton every student starts from in Week 1.</dd>
+                    <dt>Events tab</dt><dd>adk web's step-by-step view of a run.</dd>
+                    <dt>429</dt><dd>"too many requests" — slow down and retry.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>Do you know which <code>.devcontainer/</code> your Codespace was built from?</li>
+                    <li>Where does your <code>GOOGLE_API_KEY</code> live, and why isn't it in a <code>.py</code> file?</li>
+                    <li>What will you do the first time you see a 429?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-a">Next: Module A — Anatomy of an Agent →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE A ══════════════════ -->
+        <div class="module" id="module-a">
+            <div class="module-head"><h2>Module A — Anatomy of an Agent</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 1</span><span class="mod-pill outcome">Outcome 1</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> AI 420's whole idea is the difference between asking a model once and putting it in a loop. If you can point at the loop's parts, every later HOS is "the same loop, plus one more thing."</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 175" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arra" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Question</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">the task</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Model reasons</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">decides the next step</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Tool call</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">your code runs it</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Observation</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">result added to memory</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Final answer</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">when done</text><path d="M 650 98 C 650 128, 70 128, 70 102" fill="none" class="flow-line slow" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arra)"/><text x="360" y="138" text-anchor="middle" font-size="10" fill="#64748b">loop: the history grows each step (memory), capped by max_steps</text><text x="360" y="163" text-anchor="middle" font-size="11" fill="#94a3b8">Reason → act → observe, until the model answers or the step budget runs out.</text></g></svg>
+                <div class="diagram-caption">An agent loop: the model decides, your code acts, the result goes back in.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Inference vs. an agent</h4>
+                    <p><strong>Inference</strong> is one request and one response: an answer from training data, with no way to check anything. An <strong>agent</strong> is a model in a loop that can take actions (tool calls), see the results, and decide what to do next.</p>
+                    <div class="why"><strong>Why it matters:</strong> A single call's right and wrong answers look equally confident; an agent's answer comes with evidence.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>The four components</h4>
+                    <p><strong>Reasoning</strong> — the model's decision at each step. <strong>Planning</strong> — how it breaks the task down. <strong>Tool use</strong> — the function calls your code executes. <strong>Memory</strong> — the growing message history resent each call.</p>
+                    <div class="why"><strong>Why it matters:</strong> Outcome O1 asks you to point at each one in real code.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>The model never runs the tool</h4>
+                    <p>It replies with a function call (a name and arguments). Your code runs the function and sends the result back as a function response — the observation.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Step budget (<code>max_steps</code>)</h4>
+                    <p>The most loop iterations allowed. When it runs out, the agent should say it couldn't finish — not return a half-answer as if it were done.</p>
+                    <div class="why"><strong>Why it matters:</strong> Without it, a confused agent loops until it runs out of quota.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Agentic patterns</h4>
+                    <p><strong>ReAct</strong>: one step at a time. <strong>Plan-and-execute</strong>: a full plan first, then each step. <strong>Reflection</strong>: review your own output and retry. <strong>Routing</strong>: send each request to a specialist.</p>
+                    <div class="why"><strong>Why it matters:</strong> You build ReAct by hand in Week 1 and plan-and-execute in Week 2; reflection and routing return in HOS 3–4.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>When <em>not</em> to use an agent</h4>
+                    <p>A fixed workflow is cheaper, faster, and testable. Use an agent when the next step genuinely depends on what the last one returned.</p>
+                    <div class="why"><strong>Why it matters:</strong> "No agent needed" with a good reason is a strong Application Challenge answer.</div>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Observation</dt><dd>what a tool call returned, fed back to the model.</dd>
+                    <dt>ReAct</dt><dd>Reason + Act, alternating.</dd>
+                    <dt>Function response</dt><dd>the message that carries a tool's result back.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>Where in a hand-written loop does memory grow?</li>
+                    <li>What should happen when the step budget runs out?</li>
+                    <li>Name a task where a single call is better than an agent.</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-b">Next: Module B — Custom Tools, MCP &amp; Memory →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE B ══════════════════ -->
+        <div class="module" id="module-b">
+            <div class="module-head"><h2>Module B — Custom Tools, MCP &amp; Memory</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 2</span><span class="mod-pill outcome">Outcome 2</span><span class="mod-pill outcome">Outcome 1</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> the model never sees your tool's code — only its schema. Writing schemas the model reads correctly, and packaging tools so any agent can use them, is most of HOS 2.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">ADK agent</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">decides to call a tool</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">McpToolset</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">forwards the call</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">MCP server</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">separate process</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">API · web · SQLite</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">the real world</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Result</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">back as data</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Tools run in their own process and speak MCP over stdio.</text></g></svg>
+                <div class="diagram-caption">One tool call across the process boundary.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Tool schema</h4>
+                    <p>The name, description, and typed parameters the model reads to decide whether and how to call a tool. The description is instructions to the model.</p>
+                    <div class="why"><strong>Why it matters:</strong> A vague description ("Look up stuff") steals requests from the right tool.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Three kinds of external tools</h4>
+                    <p>The course description names <strong>APIs</strong>, <strong>web browsers</strong>, and <strong>databases</strong>. HOS 2 builds one of each: marine weather (Open-Meteo), a page reader (httpx + trafilatura), and read-only SQL against a store database.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Errors as data</h4>
+                    <p>A tool returns <code>{"status": "error", "error": "..."}</code> instead of raising. The model can read the error and fix its input; an exception just ends the run.</p>
+                    <div class="why"><strong>Why it matters:</strong> This is the first self-correction mechanism — HOS 3 builds on it.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>MCP (Model Context Protocol)</h4>
+                    <p>A standard way to package tools so any compatible agent can discover and call them. Your server runs as a separate process; ADK's <code>McpToolset</code> starts it, asks for its tool list, and forwards calls over stdio.</p>
+                    <div class="why"><strong>Why it matters:</strong> mcp 2.x uses <code>MCPServer</code>; older tutorials (and many assistants) write <code>FastMCP</code>.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Read-only, twice</h4>
+                    <p>The database tool refuses anything but one SELECT <em>and</em> opens SQLite read-only. Either alone can be bypassed by a mistake; together, "cancel order 1003" can't change data.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Short-term vs. long-term memory</h4>
+                    <p>Short-term: ADK session state, for this conversation. Long-term: facts saved to a local Chroma store and recalled by meaning later — scoped to the customer, and never secrets.</p>
+                    <div class="why"><strong>Why it matters:</strong> Unscoped memory leaks one customer's facts to another.</div>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>stdio</dt><dd>standard input/output — how the agent and the MCP server exchange messages.</dd>
+                    <dt>Narrow, typed tool</dt><dd>a tool like <code>order_status(order_id: int)</code> instead of free-form SQL.</dd>
+                    <dt>Recall by meaning</dt><dd>finding a saved fact by embedding similarity, not exact words.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>What exactly does the model read when choosing a tool?</li>
+                    <li>Why protect the database in two places?</li>
+                    <li>What should never go into long-term memory?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-c">Next: Module C — Traces, Failure Diagnosis &amp; Self-Correction →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE C ══════════════════ -->
+        <div class="module" id="module-c">
+            <div class="module-head"><h2>Module C — Traces, Failure Diagnosis &amp; Self-Correction</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 3</span><span class="mod-pill outcome">Outcome 3</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> HOS 3's agent looks fine and fails in five ways — three of them without any error. You'll diagnose them from traces alone, so know what to look for first.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Run scenario</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">run_scenarios.py</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Trace</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">every call &amp; result</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Failure log</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">type · first step · symptom</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Fix root cause</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">tools &amp; instruction</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Guards</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">callbacks</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Diagnose from the trace before reading the code.</text></g></svg>
+                <div class="diagram-caption">The HOS 3 workflow.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Reasoning trace</h4>
+                    <p>The step-by-step record of a run: each model input and output, each tool call with arguments and result, with timing and tokens. Locally from <code>run_scenarios.py</code>; in Langfuse once tracing is on.</p>
+                    <div class="why"><strong>Why it matters:</strong> In production you usually have the trace, not the code.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Five failure types</h4>
+                    <p><strong>Tool-call error</strong> (bad arguments crash a tool) · <strong>invented action</strong> (claims something no tool did) · <strong>logic loop</strong> (same call, no progress) · <strong>wrong data</strong> (incomplete results, trusted) · <strong>wrong tool</strong> (a vague description matched better).</p>
+                </div>
+                <div class="concept-card">
+                    <h4>The confident wrong answer</h4>
+                    <p>A run that finishes politely and is wrong: nothing in the trace is red. You catch it only by checking each number the agent states against what the tools returned.</p>
+                    <div class="why"><strong>Why it matters:</strong> It's the most dangerous failure because nobody notices.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Guards as ADK callbacks</h4>
+                    <p><code>on_tool_error_callback</code> turns a raised exception into an error the model can read; a <code>before_tool_callback</code> blocks the same call with the same arguments after two repeats. They don't know about any specific bug.</p>
+                    <div class="why"><strong>Why it matters:</strong> Guards cure failure <em>shapes</em> (crashes, loops); confident wrong answers need root-cause fixes.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Loop vs. legitimate retry</h4>
+                    <p>A retry changes something — the arguments or the approach. A loop repeats without progress. Short cycles (A → B → A → B) slip past a simple identical-call check; a step budget still catches them.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Reflection</h4>
+                    <p>A step where the agent reviews its own last result before accepting it. It catches some wrong-data failures, at the cost of an extra model call.</p>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Span</dt><dd>one timed step inside a trace.</dd>
+                    <dt>Root cause</dt><dd>the line of code or instruction that makes the failure happen.</dd>
+                    <dt>Failure log</dt><dd>scenario, type, first step, symptom, root cause — written before reading the source.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>Why diagnose from the trace before opening the code?</li>
+                    <li>Which failure types never crash?</li>
+                    <li>What can a guard fix, and what can't it?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-d">Next: Module D — Multi-Agent Orchestration &amp; Evaluation →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE D ══════════════════ -->
+        <div class="module" id="module-d">
+            <div class="module-head"><h2>Module D — Multi-Agent Orchestration &amp; Evaluation</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 4</span><span class="mod-pill outcome">Outcome 4</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> HOS 4 asks whether a team of agents actually beats one agent — and answers with numbers. Know how the numbers are made, and how they can lie, before you trust any.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 175" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Scenario</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">persona · goal · rule</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Simulated user</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">an LLM in character</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Agent system</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">single or team</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Judge</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">LLM, JSON verdict</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Metrics</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">success · cost · latency</text><path d="M 650 98 C 650 128, 70 128, 70 102" fill="none" class="flow-line slow" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrd)"/><text x="360" y="138" text-anchor="middle" font-size="10" fill="#64748b">repeat for every scenario, for both systems</text><text x="360" y="163" text-anchor="middle" font-size="11" fill="#94a3b8">Agent-on-agent testing: one model plays the user, another grades.</text></g></svg>
+                <div class="diagram-caption">An evaluation run.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Orchestration</h4>
+                    <p>The logic that decides which agent runs when — in sequence, in parallel, in a loop, or by an LLM's choice. ADK's <code>sub_agents</code> lets a coordinator transfer each request to a specialist.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Coordinator + specialists</h4>
+                    <p>The coordinator only routes; each specialist (orders, catalog, reports) holds only the tools it needs.</p>
+                    <div class="why"><strong>Why it matters:</strong> Fewer tools per agent means fewer wrong-tool errors — but every hand-off is another model call.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Agent-on-agent testing</h4>
+                    <p>A <strong>simulated user</strong> plays each scenario's persona toward its goal; a <strong>judge</strong> grades the transcript against the success rule. Hundreds of conversations, no person in the loop.</p>
+                    <div class="why"><strong>Why it matters:</strong> Both are models, so both can be wrong.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Success rate · cost per task · latency</h4>
+                    <p>Success rate = scenarios passed ÷ run. Cost per task = (input tokens × input price + output tokens × output price) ÷ scenarios, at list price even on the free tier. Latency per reply as p50 (typical) and p95 (slow case).</p>
+                    <div class="why"><strong>Why it matters:</strong> Simulator and judge tokens are the cost of testing — count them separately.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Judge agreement</h4>
+                    <p>Grade a sample of transcripts yourself and measure how often the judge agrees — and which way it errs (lenient or strict).</p>
+                    <div class="why"><strong>Why it matters:</strong> An unchecked judge can't support any success-rate claim.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>When more agents make it worse</h4>
+                    <p>Extra routing calls add cost and latency; two-part questions can get half-answered; a misroute sends a request to an agent without the right tool.</p>
+                    <div class="why"><strong>Why it matters:</strong> The honest result is often "the team cost more without helping."</div>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Transfer</dt><dd>a coordinator handing a conversation to a specialist.</dd>
+                    <dt>p95</dt><dd>the reply time 95% of replies beat — the slow case users remember.</dd>
+                    <dt>Shadow cost</dt><dd>what a free-tier run would cost at paid list prices.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>Why count simulator and judge tokens separately?</li>
+                    <li>How would you know whether your judge is lenient?</li>
+                    <li>Name a request a team handles worse than a single agent.</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#top">Back to top ↑</a></p>
+        </div>
+
+        <a class="back-to-top" href="#top">↑ Back to top</a>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

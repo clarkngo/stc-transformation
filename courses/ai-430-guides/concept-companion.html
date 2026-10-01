@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 430 — Concept Companion</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .intro-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
+        .intro-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+
+        /* Map table — the "modular" jump nav */
+        table.map-table { width:100%; border-collapse:collapse; margin:14px 0 6px; font-size:0.85rem; }
+        table.map-table th, table.map-table td { border:1px solid #e2e8f0; padding:9px 12px; text-align:left; vertical-align:top; }
+        table.map-table th { background:#f8fafc; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        table.map-table td.mod-name { font-weight:700; color:#1e8449; white-space:nowrap; }
+        table.map-table a.jump { font-weight:600; text-decoration:none; color:#1d4ed8; }
+        table.map-table a.jump:hover { text-decoration:underline; }
+
+        /* Module blocks */
+        .module { border:1px solid #e2e8f0; border-radius:10px; padding:22px 24px 26px; margin:26px 0; scroll-margin-top:16px; }
+        .module.mod0 { background:#fafafa; }
+        .module-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-bottom:6px; }
+        .module-head h2 { margin:0; border-bottom:none; padding-bottom:0; }
+        .module-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+        .mod-pill { font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; }
+        .mod-pill.hos { background:#ede9fe; color:#6d28d9; }
+        .mod-pill.wk { background:#e0f2fe; color:#0369a1; }
+        .mod-pill.outcome { background:#dcfce7; color:#15803d; }
+        .why-line { font-size:0.92rem; color:#334155; margin:0 0 18px; }
+        .why-line strong { color:#0f172a; }
+
+        /* Concept cards */
+        .concept-grid { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+        .concept-card { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:13px 16px; }
+        .concept-card h4 { margin:0 0 5px; font-size:0.95rem; color:#0f172a; }
+        .concept-card p { margin:0; font-size:0.88rem; color:#334155; }
+        .concept-card .why { margin-top:6px; font-size:0.82rem; color:#64748b; }
+        .concept-card .why strong { color:#475569; }
+
+        /* Diagrams */
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
+        .flow-line { stroke-dasharray:6 4; animation:flowdash 1s linear infinite; }
+        .flow-line.slow { animation-duration:1.8s; }
+        @keyframes flowdash { to { stroke-dashoffset:-20; } }
+        .flow-dot { animation:dotmove linear infinite; }
+        .pulse-box { animation:pulsebox 2.2s ease-in-out infinite; }
+        @keyframes pulsebox { 0%,100% { opacity:1; } 50% { opacity:0.45; } }
+        @media (prefers-reduced-motion: reduce) {
+            .flow-line, .flow-dot, .pulse-box { animation:none !important; }
+        }
+
+        /* Glossary / self-check boxes — matching AI-410.html's vocabulary */
+        .glossary-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px 16px; margin:14px 0; font-size:0.85rem; }
+        .glossary-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; }
+        .glossary-box dl { margin:0; }
+        .glossary-box dt { font-weight:700; color:#334155; display:inline; }
+        .glossary-box dd { display:inline; margin:0 0 0 4px; color:#475569; }
+        .glossary-box dd::after { content:""; display:block; margin-bottom:4px; }
+        .check-box { background:#eef2ff; border-left:5px solid #6366f1; padding:12px 16px; margin:16px 0 0; border-radius:0 4px 4px 0; font-size:0.85rem; }
+        .check-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#4338ca; }
+        .check-box ul { margin:0; padding-left:18px; }
+        .check-box li { margin-bottom:4px; }
+
+        .module-nav { text-align:right; margin-top:16px; font-size:0.82rem; }
+        .module-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+        .back-to-top { display:inline-block; margin-top:34px; font-size:0.85rem; color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+    <style>.draft-box { background:#fffbeb; border:1px solid #fcd34d; border-left:5px solid #f59e0b; padding:12px 16px; margin:0 0 20px; border-radius:0 6px 6px 0; font-size:0.9rem; } .draft-box strong { color:#b45309; }</style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-430.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 430</a>
+      &nbsp;/&nbsp;
+      <a href="../ai-430-interactive/index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Interactive (draft)</a>
+    </nav>
+
+        <h1 id="top">AI 430 — Concept Companion</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Read before you start, not while you're debugging</span>
+            <span class="meta-pill">One module per HOS</span>
+            <span class="meta-pill">5 standalone modules</span>
+            <span class="meta-pill">Draft</span>
+        </div>
+        <div class="draft-box"><strong>Draft.</strong> AI 430 has a course outline but no hands-on labs yet. The concepts below follow the official outcomes and the outline's planned units; tool names are <strong>proposals</strong> pending the <a href="../AI-430.html">feasibility test</a>, so a tool may change before the course runs — the concepts won't.</div>
+
+        <div class="intro-box">
+            <h4>What this page is</h4>
+            <p>Every concept and piece of vocabulary you should understand <strong>before</strong> each AI 430 HOS, gathered in one place. AI 430 operates the kinds of systems AI 410 and AI 420 built — a model and an agent — so this page focuses on what changes once something has to run, be updated, and be trusted over time.</p>
+            <p style="margin-bottom:0">See the concepts in motion in the draft <a href="../ai-430-interactive/index.html">simulators</a>: <a href="../ai-430-interactive/sim01-data-pipeline.html">data &amp; experiments</a>, <a href="../ai-430-interactive/sim02-cicd-pipeline.html">CI/CD/CT</a>, <a href="../ai-430-interactive/sim03-observability.html">observability &amp; RAG</a>, <a href="../ai-430-interactive/sim04-red-team.html">red-team &amp; guardrails</a>.</p>
+        </div>
+
+        <h2>Find your module</h2>
+        <table class="map-table">
+            <tr><th>Module</th><th>When</th><th>Outcome(s)</th><th>Jump</th></tr>
+            <tr>
+                <td class="mod-name">0 — Universal Tooling</td>
+                <td>Before HOS 1</td>
+                <td>—</td>
+                <td><a class="jump" href="#module-0">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">A — Pipelines, DataOps &amp; Experiment Tracking</td>
+                <td>Before HOS 1</td>
+                <td>O1</td>
+                <td><a class="jump" href="#module-a">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">B — CI/CD/CT for Models &amp; Agents</td>
+                <td>Before HOS 2</td>
+                <td>O2</td>
+                <td><a class="jump" href="#module-b">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">C — Observability, Evaluation &amp; RAG Performance</td>
+                <td>Before HOS 3</td>
+                <td>O3, O4</td>
+                <td><a class="jump" href="#module-c">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">D — Security, Guardrails &amp; Agent-to-Agent</td>
+                <td>Before HOS 4</td>
+                <td>O5</td>
+                <td><a class="jump" href="#module-d">Read →</a></td>
+            </tr>
+        </table>
+        <p style="font-size:0.85rem;color:#6b7280;margin-top:6px">Skipped a module and got confused later? That's the signal to come back and read it.</p>
+
+        <!-- ══════════════════ MODULE 0 ══════════════════ -->
+        <div class="module mod0" id="module-0">
+            <div class="module-head"><h2>Module 0 — Universal Tooling</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 1</span>
+            </div>
+            <p class="why-line">Operations work happens in configuration files and containers as much as in Python. These show up in every HOS.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arr0" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Git repo</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">code + config</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Docker</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">services in containers</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">YAML config</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">pipelines &amp; compose</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Secrets</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">never in the repo</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Codespace</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">where it all runs</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Most of AI 430's work is wiring these together.</text></g></svg>
+                <div class="diagram-caption">The tooling under every HOS.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Containers and Docker</h4>
+                    <p>A container packages a service with everything it needs, so it runs the same anywhere. Several services (a vector database, a tracking server) run side by side with Docker Compose.</p>
+                    <div class="why"><strong>Why it matters:</strong> A 2-core Codespace has limited memory — the feasibility test checks which combinations fit.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>YAML</h4>
+                    <p>The indentation-sensitive format used by GitHub Actions workflows and Docker Compose files. A wrong indent is a broken pipeline.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Secrets management</h4>
+                    <p>Tokens (a Hugging Face deploy token, a Gemini key) live in <code>.env</code> locally and in <strong>repository secrets</strong> in CI — never in code, never printed in logs.</p>
+                    <div class="why"><strong>Why it matters:</strong> Automated pipelines are where keys most often leak.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Forwarded ports</h4>
+                    <p>Web UIs running in the Codespace (an experiment tracker, a dashboard) are reached through Codespaces' forwarded ports.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Reproducibility as a habit</h4>
+                    <p>Pin versions, record seeds, and write down what produced every result. Operations is mostly about being able to answer "what changed?"</p>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Image vs. container</dt><dd>the packaged recipe vs. a running instance of it.</dd>
+                    <dt>Repository secret</dt><dd>a credential stored by GitHub and injected at run time.</dd>
+                    <dt>Pinning</dt><dd>fixing exact versions so reruns match.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>Where does a deploy token live in a CI pipeline?</li>
+                    <li>Why might two services that each work fail together in a Codespace?</li>
+                    <li>What does "pin a version" protect you from?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-a">Next: Module A — Pipelines, DataOps &amp; Experiment Tracking →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE A ══════════════════ -->
+        <div class="module" id="module-a">
+            <div class="module-head"><h2>Module A — Pipelines, DataOps &amp; Experiment Tracking</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 1</span><span class="mod-pill outcome">Outcome 1</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> a model's behavior depends on code <em>and</em> data <em>and</em> trained weights; an agent's also on prompts, tools, and the model version. You can't operate what you can't trace back.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arra" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Data batch</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">arrives weekly</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Validate</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">schema checks</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Version</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">data v3</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Train &amp; track</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">params · metrics</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Registry</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">staged, promoted</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Every model can be traced to the exact data and settings that made it.</text></g></svg>
+                <div class="diagram-caption">The MLOps pipeline's first half.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Software vs. MLOps vs. AgentOps</h4>
+                    <p>Software ships code. MLOps ships code, data, and a trained model — any can change results. AgentOps adds prompts, tools, memory, and model versions — and outputs vary run to run.</p>
+                    <div class="why"><strong>Why it matters:</strong> Outcome O1 asks you to explain these architectural differences.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Data versioning</h4>
+                    <p>Giving each dataset a version (proposed: DVC), so "model v7" can point to "data v3" and any result can be reproduced.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Data validation</h4>
+                    <p>Checking a batch against a schema — types, ranges, allowed values — before it trains anything (proposed: pandera). A failure should stop the pipeline, not degrade the model quietly.</p>
+                    <div class="why"><strong>Why it matters:</strong> A renamed column trains a worse model with no error unless something checks.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Experiment tracking</h4>
+                    <p>Each run records parameters, metrics, the data version, and the artifact it produced (proposed: MLflow).</p>
+                    <div class="why"><strong>Why it matters:</strong> It turns "accuracy dropped" into "run 14 used data v4."</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Model registry</h4>
+                    <p>A catalog of trained models with stages (candidate → staging → production). Deployments pick a named version, which makes rollback one step.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Reproducibility for agents</h4>
+                    <p>Agents can't be reproduced exactly; their outputs vary. You track the prompt, tools, and model version, and evaluate distributions of outcomes rather than single runs.</p>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>DataOps</dt><dd>version control, testing, and automation applied to data.</dd>
+                    <dt>Artifact</dt><dd>a file a run produced, such as a trained model.</dd>
+                    <dt>Promotion</dt><dd>moving a model to the next registry stage.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>What three things can change a model's behavior?</li>
+                    <li>Why validate before training rather than after?</li>
+                    <li>What would you track for an agent instead of training data?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-b">Next: Module B — CI/CD/CT for Models &amp; Agents →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE B ══════════════════ -->
+        <div class="module" id="module-b">
+            <div class="module-head"><h2>Module B — CI/CD/CT for Models &amp; Agents</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 2</span><span class="mod-pill outcome">Outcome 2</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> automation is what makes every change ship the same safe way — but a gate only checks what someone thought to measure.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 175" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Push</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">a change</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">CI</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">tests · secret scan</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Train &amp; eval</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">candidate</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Quality gate</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">vs. production</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Deploy</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">or block</text><path d="M 650 98 C 650 128, 70 128, 70 102" fill="none" class="flow-line slow" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrb)"/><text x="360" y="138" text-anchor="middle" font-size="10" fill="#64748b">CT: drift or a schedule triggers retraining → the same gate</text><text x="360" y="163" text-anchor="middle" font-size="11" fill="#94a3b8">Continuous training sends retrained candidates through the same gate.</text></g></svg>
+                <div class="diagram-caption">CI, CD, and CT in one pipeline.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>CI / CD / CT</h4>
+                    <p><strong>Continuous integration</strong>: test every change. <strong>Continuous delivery</strong>: deploy what passes. <strong>Continuous training</strong>: retrain when data drifts or on a schedule.</p>
+                    <div class="why"><strong>Why it matters:</strong> Models go stale even when code doesn't change.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Quality gate</h4>
+                    <p>A rule a candidate must pass before replacing production: accuracy at least as good, latency and cost within limits, no worse on a key slice. For an agent, an evaluation run (success, cost, latency).</p>
+                    <div class="why"><strong>Why it matters:</strong> A gate on accuracy alone ships a slower or pricier candidate.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>GitHub Actions workflows</h4>
+                    <p>YAML files that run jobs on events: push, merge, schedule (proposed for CI/CD/CT, with deployment to Hugging Face Spaces).</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Rollback</h4>
+                    <p>Redeploying the previous registered version in one step.</p>
+                    <div class="why"><strong>Why it matters:</strong> Every deploy plan needs one before it's needed.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Versioned test sets</h4>
+                    <p>The data the gate evaluates on must be versioned too, or comparisons between candidates mean nothing.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Human approval</h4>
+                    <p>Some teams require a person to approve production deploys; others trust the gate. Agents that act in the world raise the stakes.</p>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Workflow</dt><dd>an automated pipeline defined in YAML.</dd>
+                    <dt>Candidate</dt><dd>a newly trained model or changed agent awaiting the gate.</dd>
+                    <dt>Drift-triggered retrain</dt><dd>retraining because monitoring saw inputs change.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>What does CT add to CI/CD?</li>
+                    <li>What would an accuracy-only gate miss?</li>
+                    <li>Why version the gate's test set?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-c">Next: Module C — Observability, Evaluation &amp; RAG Performance →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE C ══════════════════ -->
+        <div class="module" id="module-c">
+            <div class="module-head"><h2>Module C — Observability, Evaluation &amp; RAG Performance</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 3</span><span class="mod-pill outcome">Outcome 3</span><span class="mod-pill outcome">Outcome 4</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> after deployment, systems degrade quietly. Know which signal warns about which problem — and how each signal can mislead.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Production traffic</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">model &amp; agent</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Drift report</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">inputs vs. training</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Traces</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">judge scores · latency</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">RAG benchmark</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">relevance vs. speed</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Alerts</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">only what's actionable</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Different signals for different failures.</text></g></svg>
+                <div class="diagram-caption">What gets monitored, and how.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Data drift vs. concept drift</h4>
+                    <p>Data drift: inputs no longer look like the training data. Concept drift: the right answer for the same input changed. Drift reports compare distributions feature by feature (proposed: Evidently).</p>
+                    <div class="why"><strong>Why it matters:</strong> Drift often warns before accuracy drops.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Reasoning accuracy with an LLM judge</h4>
+                    <p>Each agent trace gets a judge score: did it reach the right answer for the right reasons? (Langfuse.) A judge is a model, so check it against human grading.</p>
+                    <div class="why"><strong>Why it matters:</strong> A judge's own model version can change its scores without the agent changing.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Latency, per span</h4>
+                    <p>Report p50 and p95, and per span, so a slow retriever doesn't hide inside a slow total.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Context relevance</h4>
+                    <p>Whether retrieved chunks contain what the answer needs — measured on a fixed benchmark of questions (proposed: Ragas-style metrics).</p>
+                    <div class="why"><strong>Why it matters:</strong> Fast retrieval of the wrong chunks is still wrong.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>The retrieval trade-off</h4>
+                    <p>Higher top-k and bigger chunks raise relevance and cost latency and prompt tokens; vector databases differ in speed (proposed: Chroma vs. Qdrant).</p>
+                    <div class="why"><strong>Why it matters:</strong> Tokens often cost more than the retrieval itself.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Alerts vs. dashboards</h4>
+                    <p>Alert only on what's rare, urgent, and actionable; everything else belongs on a dashboard.</p>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>PSI</dt><dd>Population Stability Index — one common drift score.</dd>
+                    <dt>Benchmark</dt><dd>a fixed set of questions run against each setting.</dd>
+                    <dt>Top-k</dt><dd>how many chunks retrieval returns.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>Which signal would warn first about a new customer segment?</li>
+                    <li>How would you notice your judge got more lenient?</li>
+                    <li>What does raising top-k cost besides latency?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-d">Next: Module D — Security, Guardrails &amp; Agent-to-Agent →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE D ══════════════════ -->
+        <div class="module" id="module-d">
+            <div class="module-head"><h2>Module D — Security, Guardrails &amp; Agent-to-Agent</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 4</span><span class="mod-pill outcome">Outcome 5</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> an agent that can act can be talked into acting. You'll attack your own agent in HOS 4 — know the attacks and the layers that stop them.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Untrusted input</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">user, document, web page</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Agent</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">reads it all</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Guardrail layers</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">privilege · checks</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Tools &amp; actions</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">least privilege</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Audit log</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">who did what</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Defense in layers, because each layer alone fails.</text></g></svg>
+                <div class="diagram-caption">Where guardrails sit around an agent.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Prompt injection, direct and indirect</h4>
+                    <p>Direct: the user types instructions that override yours. Indirect: instructions hidden in content the agent reads — a document, a web page, an email.</p>
+                    <div class="why"><strong>Why it matters:</strong> Indirect injection means any retrieved text can carry instructions.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Excessive agency</h4>
+                    <p>An agent with more tools or permissions than its task needs. One successful injection then does real damage.</p>
+                    <div class="why"><strong>Why it matters:</strong> The strongest guardrail removes the capability, not the instruction.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Guardrail layers</h4>
+                    <p>Least privilege · mark retrieved text as data · action checks before writes (high-impact actions need a human) · output checks for secrets and other people's data.</p>
+                    <div class="why"><strong>Why it matters:</strong> Marking alone is unreliable; layers together hold.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Red-teaming</h4>
+                    <p>Attacking your own system on purpose before others do (proposed: promptfoo or garak), and reporting findings with fixes and residual risk.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Enterprise frameworks</h4>
+                    <p>The <strong>OWASP Top 10 for LLM Applications</strong> names the risk categories; the <strong>NIST AI Risk Management Framework</strong> organizes the response (Govern, Map, Measure, Manage).</p>
+                    <div class="why"><strong>Why it matters:</strong> Outcome O5 asks you to evaluate risks within an enterprise framework.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Agent-to-agent (A2A) communication</h4>
+                    <p>When agents send each other tasks, each message is a request: check the caller's identity, what it's permitted to ask for, and treat its content as data (proposed: a2a-sdk).</p>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Residual risk</dt><dd>what's still possible after your fixes.</dd>
+                    <dt>Least privilege</dt><dd>only the access a task needs.</dd>
+                    <dt>Agent card</dt><dd>how an A2A agent describes what it can do.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>Why can't a better system prompt alone stop prompt injection?</li>
+                    <li>Which guardrail layer stops an injected "email this to…" most reliably?</li>
+                    <li>What should an A2A receiver check first?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#top">Back to top ↑</a></p>
+        </div>
+
+        <a class="back-to-top" href="#top">↑ Back to top</a>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

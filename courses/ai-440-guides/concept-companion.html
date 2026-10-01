@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 440 — Concept Companion</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .intro-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
+        .intro-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+
+        /* Map table — the "modular" jump nav */
+        table.map-table { width:100%; border-collapse:collapse; margin:14px 0 6px; font-size:0.85rem; }
+        table.map-table th, table.map-table td { border:1px solid #e2e8f0; padding:9px 12px; text-align:left; vertical-align:top; }
+        table.map-table th { background:#f8fafc; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        table.map-table td.mod-name { font-weight:700; color:#1e8449; white-space:nowrap; }
+        table.map-table a.jump { font-weight:600; text-decoration:none; color:#1d4ed8; }
+        table.map-table a.jump:hover { text-decoration:underline; }
+
+        /* Module blocks */
+        .module { border:1px solid #e2e8f0; border-radius:10px; padding:22px 24px 26px; margin:26px 0; scroll-margin-top:16px; }
+        .module.mod0 { background:#fafafa; }
+        .module-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-bottom:6px; }
+        .module-head h2 { margin:0; border-bottom:none; padding-bottom:0; }
+        .module-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+        .mod-pill { font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; }
+        .mod-pill.hos { background:#ede9fe; color:#6d28d9; }
+        .mod-pill.wk { background:#e0f2fe; color:#0369a1; }
+        .mod-pill.outcome { background:#dcfce7; color:#15803d; }
+        .why-line { font-size:0.92rem; color:#334155; margin:0 0 18px; }
+        .why-line strong { color:#0f172a; }
+
+        /* Concept cards */
+        .concept-grid { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+        .concept-card { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:13px 16px; }
+        .concept-card h4 { margin:0 0 5px; font-size:0.95rem; color:#0f172a; }
+        .concept-card p { margin:0; font-size:0.88rem; color:#334155; }
+        .concept-card .why { margin-top:6px; font-size:0.82rem; color:#64748b; }
+        .concept-card .why strong { color:#475569; }
+
+        /* Diagrams */
+        .diagram-box { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:#6b7280; margin-top:6px; }
+        .flow-line { stroke-dasharray:6 4; animation:flowdash 1s linear infinite; }
+        .flow-line.slow { animation-duration:1.8s; }
+        @keyframes flowdash { to { stroke-dashoffset:-20; } }
+        .flow-dot { animation:dotmove linear infinite; }
+        .pulse-box { animation:pulsebox 2.2s ease-in-out infinite; }
+        @keyframes pulsebox { 0%,100% { opacity:1; } 50% { opacity:0.45; } }
+        @media (prefers-reduced-motion: reduce) {
+            .flow-line, .flow-dot, .pulse-box { animation:none !important; }
+        }
+
+        /* Glossary / self-check boxes — matching AI-410.html's vocabulary */
+        .glossary-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px 16px; margin:14px 0; font-size:0.85rem; }
+        .glossary-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; }
+        .glossary-box dl { margin:0; }
+        .glossary-box dt { font-weight:700; color:#334155; display:inline; }
+        .glossary-box dd { display:inline; margin:0 0 0 4px; color:#475569; }
+        .glossary-box dd::after { content:""; display:block; margin-bottom:4px; }
+        .check-box { background:#eef2ff; border-left:5px solid #6366f1; padding:12px 16px; margin:16px 0 0; border-radius:0 4px 4px 0; font-size:0.85rem; }
+        .check-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:#4338ca; }
+        .check-box ul { margin:0; padding-left:18px; }
+        .check-box li { margin-bottom:4px; }
+
+        .module-nav { text-align:right; margin-top:16px; font-size:0.82rem; }
+        .module-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+        .back-to-top { display:inline-block; margin-top:34px; font-size:0.85rem; color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+    <style>.draft-box { background:#fffbeb; border:1px solid #fcd34d; border-left:5px solid #f59e0b; padding:12px 16px; margin:0 0 20px; border-radius:0 6px 6px 0; font-size:0.9rem; } .draft-box strong { color:#b45309; }</style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-440.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 440</a>
+      &nbsp;/&nbsp;
+      <a href="../ai-440-interactive/index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Interactive (draft)</a>
+    </nav>
+
+        <h1 id="top">AI 440 — Concept Companion</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Read before you start, not while you're debugging</span>
+            <span class="meta-pill">One module per HOS</span>
+            <span class="meta-pill">5 standalone modules</span>
+            <span class="meta-pill">Draft</span>
+        </div>
+        <div class="draft-box"><strong>Draft.</strong> AI 440 has a course outline but no hands-on labs yet. The concepts below follow the official outcomes and the outline's planned units; tool names are <strong>proposals</strong> pending the <a href="../AI-440.html">feasibility test</a>, so a tool may change before the course runs — the concepts won't.</div>
+
+        <div class="intro-box">
+            <h4>What this page is</h4>
+            <p>Every concept and piece of vocabulary you should understand <strong>before</strong> each AI 440 HOS, gathered in one place. AI 440 moves AI from text into the physical world, so some concepts here come from physics and engineering, not software — each is explained from scratch.</p>
+            <p style="margin-bottom:0">See the concepts in motion in the draft <a href="../ai-440-interactive/index.html">simulators</a>: <a href="../ai-440-interactive/sim01-sensor-pipeline.html">sensor pipeline</a>, <a href="../ai-440-interactive/sim02-pinn.html">PINN</a>, <a href="../ai-440-interactive/sim03-sim2real.html">sim-to-real</a>, <a href="../ai-440-interactive/sim04-safety-envelope.html">what-if &amp; safety envelope</a>.</p>
+        </div>
+
+        <h2>Find your module</h2>
+        <table class="map-table">
+            <tr><th>Module</th><th>When</th><th>Outcome(s)</th><th>Jump</th></tr>
+            <tr>
+                <td class="mod-name">0 — Universal Tooling &amp; Physical Basics</td>
+                <td>Before HOS 1</td>
+                <td>—</td>
+                <td><a class="jump" href="#module-0">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">A — Digital Shadows, Twins &amp; Real-Time Pipelines</td>
+                <td>Before HOS 1</td>
+                <td>O1, O3</td>
+                <td><a class="jump" href="#module-a">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">B — Physics-Informed Neural Networks</td>
+                <td>Before HOS 2</td>
+                <td>O2</td>
+                <td><a class="jump" href="#module-b">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">C — Simulation, Synthetic Data &amp; Sim-to-Real</td>
+                <td>Before HOS 3</td>
+                <td>O4</td>
+                <td><a class="jump" href="#module-c">Read →</a></td>
+            </tr>
+            <tr>
+                <td class="mod-name">D — What-If Testing &amp; Safe Autonomous Decisions</td>
+                <td>Before HOS 4</td>
+                <td>O5</td>
+                <td><a class="jump" href="#module-d">Read →</a></td>
+            </tr>
+        </table>
+        <p style="font-size:0.85rem;color:#6b7280;margin-top:6px">Skipped a module and got confused later? That's the signal to come back and read it.</p>
+
+        <!-- ══════════════════ MODULE 0 ══════════════════ -->
+        <div class="module mod0" id="module-0">
+            <div class="module-head"><h2>Module 0 — Universal Tooling &amp; Physical Basics</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 1</span>
+            </div>
+            <p class="why-line">Two kinds of groundwork: the tooling every HOS uses, and a few physics habits — units, time steps, uncertainty — that software courses usually skip.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arr0" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Docker Compose</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">several services</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Simulated sensors</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">Python or browser</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Units</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">°C, m/s, kg</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Time steps</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">simulate forward</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arr0)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">CPU only</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">no GPU</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Everything runs in a CPU Codespace; real hardware is out of scope.</text></g></svg>
+                <div class="diagram-caption">The groundwork under every HOS.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Docker Compose</h4>
+                    <p>Runs several containers together from one YAML file — in HOS 1, a message broker, a flow tool, a time-series database, and a dashboard.</p>
+                    <div class="why"><strong>Why it matters:</strong> A 2-core Codespace has limited memory; the feasibility test checks what fits.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Simulated sensors</h4>
+                    <p>A small program that publishes realistic readings — with noise and the occasional fault — in place of real hardware.</p>
+                    <div class="why"><strong>Why it matters:</strong> Real hardware is out of scope; the data connection is real.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Units</h4>
+                    <p>Every number has a unit. Mixing Celsius and Fahrenheit, or meters and feet, is the classic physical-system bug.</p>
+                    <div class="why"><strong>Why it matters:</strong> A twin acting on a wrong-unit reading acts wrongly with full confidence.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Time steps</h4>
+                    <p>Simulations move the world forward in small steps of time. Too large a step and physics becomes unstable or inaccurate.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Measurement noise and uncertainty</h4>
+                    <p>Every reading is approximate. Models should expect noise; decisions should leave margin for it.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>CPU-only constraints</h4>
+                    <p>No GPU in a Codespace. Training and rendering are sized to finish in minutes; any GPU path is optional, never required.</p>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Service</dt><dd>one running program in a Compose stack.</dd>
+                    <dt>Time step (Δt)</dt><dd>how far a simulation advances per update.</dd>
+                    <dt>Noise</dt><dd>random variation in a measurement.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>What's the unit of every number your system will act on?</li>
+                    <li>Why might a simulation with a large time step misbehave?</li>
+                    <li>What does "sensors are simulated" change, and what doesn't it?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-a">Next: Module A — Digital Shadows, Twins &amp; Real-Time Pipelines →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE A ══════════════════ -->
+        <div class="module" id="module-a">
+            <div class="module-head"><h2>Module A — Digital Shadows, Twins &amp; Real-Time Pipelines</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 1</span><span class="mod-pill outcome">Outcome 1</span><span class="mod-pill outcome">Outcome 3</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> the difference between a shadow and a twin is one arrow — and that arrow decides how much correctness, latency, and safety matter.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 175" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arra" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Physical entity</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">the real thing</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Sensor</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">publishes readings</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">MQTT broker</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">data connection</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Time-series store</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">history</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arra)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Virtual entity</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">model &amp; dashboard</text><path d="M 650 98 C 650 128, 70 128, 70 102" fill="none" class="flow-line slow" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arra)"/><text x="360" y="138" text-anchor="middle" font-size="10" fill="#64748b">twin only: the virtual side acts back on the physical</text><text x="360" y="163" text-anchor="middle" font-size="11" fill="#94a3b8">Physical → virtual makes a shadow; virtual → physical makes it a twin.</text></g></svg>
+                <div class="diagram-caption">A digital twin's three components.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Digital model, shadow, twin</h4>
+                    <p><strong>Model</strong>: updated by hand. <strong>Shadow</strong>: updated automatically, one way. <strong>Twin</strong>: the virtual side can also act on the physical system.</p>
+                    <div class="why"><strong>Why it matters:</strong> Outcome O1 asks you to explain the difference.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>The three components</h4>
+                    <p>The <strong>physical entity</strong>, the <strong>virtual entity</strong>, and the <strong>data connection</strong> between them.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>MQTT</h4>
+                    <p>A lightweight publish/subscribe protocol. Sensors publish to topics (<code>building/floor3/room12/temp</code>); subscribers receive what they listen for (proposed broker: Mosquitto).</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Time-series database and dashboard</h4>
+                    <p>Storage built for timestamped measurements, and a live view of them (proposed: InfluxDB and Grafana, with Node-RED flows in between).</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Real-time is a number</h4>
+                    <p>End-to-end latency from reading to virtual model, plus data loss. A thermostat tolerates seconds; a drone does not.</p>
+                    <div class="why"><strong>Why it matters:</strong> Outcome O3 asks for pipelines that synchronize in real time — for your use case.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Sensor faults</h4>
+                    <p>Stuck values, impossible jumps, dropouts, clock skew. A stuck reading looks calm and normal.</p>
+                    <div class="why"><strong>Why it matters:</strong> A twin acting on a stuck sensor keeps doing the wrong thing.</div>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Topic</dt><dd>the named channel an MQTT message is published to.</dd>
+                    <dt>Publish / subscribe</dt><dd>senders and receivers don't know about each other; the broker connects them.</dd>
+                    <dt>End-to-end latency</dt><dd>time from a physical reading to its effect.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>What one change turns a shadow into a twin?</li>
+                    <li>Which sensor fault looks exactly like a real reading?</li>
+                    <li>How would you measure end-to-end latency?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-b">Next: Module B — Physics-Informed Neural Networks →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE B ══════════════════ -->
+        <div class="module" id="module-b">
+            <div class="module-head"><h2>Module B — Physics-Informed Neural Networks</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 2</span><span class="mod-pill outcome">Outcome 2</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> a twin needs predictions where no sensor is. A network fit only to data can predict physically impossible things there; a PINN can't, as long as its physics is right.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Network</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">predicts u(x, t)</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Data loss</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">fit the readings</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Physics residual</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">obey the equation</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Boundary terms</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">known edges</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrb)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Total loss</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">weighted sum, λ</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Breaking physics costs as much as missing data.</text></g></svg>
+                <div class="diagram-caption">What a PINN minimizes.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Governing equation</h4>
+                    <p>The physical law a system obeys — the heat equation, a damped spring's <code>m·x″ + c·x′ + k·x = 0</code>.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Data-only models between the data</h4>
+                    <p>With sparse, noisy readings a flexible network fits the noise and does anything between and beyond the points — including the impossible.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>The physics residual</h4>
+                    <p>How far the network's prediction is from satisfying the equation, evaluated at sampled points (collocation points). Derivatives come from automatic differentiation of the network itself.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>λ, the balance</h4>
+                    <p>Weights the physics term against the data term. Too small: a data-only model. Too large: physics wins even when the data says your equation is wrong.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Boundary and initial conditions</h4>
+                    <p>Known values at the edges of space or the start of time the solution must match.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>When a PINN is the wrong tool</h4>
+                    <p>When the equation is unknown or wrong, when there's plenty of data and no trusted physics, or when training on CPU takes hours.</p>
+                    <div class="why"><strong>Why it matters:</strong> Wrong physics makes a PINN confidently wrong.</div>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Collocation points</dt><dd>where the physics residual is evaluated.</dd>
+                    <dt>Automatic differentiation</dt><dd>exact derivatives computed through the network.</dd>
+                    <dt>Residual</dt><dd>how much an equation fails to hold.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>What does the physics term add that more data can't?</li>
+                    <li>What happens at a very large λ?</li>
+                    <li>When would you not use a PINN?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-c">Next: Module C — Simulation, Synthetic Data &amp; Sim-to-Real →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE C ══════════════════ -->
+        <div class="module" id="module-c">
+            <div class="module-head"><h2>Module C — Simulation, Synthetic Data &amp; Sim-to-Real</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 3</span><span class="mod-pill outcome">Outcome 4</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> simulation lets you practice the rare and dangerous — but only if what's learned there transfers. This is also the course's highest-risk unit on CPU.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Scene</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">3D model, physics</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Randomize</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">lighting, friction, mass</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Render &amp; label</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">synthetic data</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Train</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">a policy or detector</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrc)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Test on altered physics</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">the reality stand-in</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Learn in simulation, prove it on worlds the model never saw.</text></g></svg>
+                <div class="diagram-caption">From simulation to a measured sim-to-real gap.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Physically accurate simulation</h4>
+                    <p>A physics engine steps the world forward: masses, joints, friction, contact (proposed: MuJoCo, headless on CPU).</p>
+                </div>
+                <div class="concept-card">
+                    <h4>High-fidelity 3D scenes</h4>
+                    <p>Scene descriptions (proposed: OpenUSD) rendered into images (proposed: BlenderProc). How photorealistic a CPU can get is what the feasibility test decides.</p>
+                    <div class="why"><strong>Why it matters:</strong> Outcome O4 says "photorealistic" — on a CPU, that's a real constraint.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Synthetic data generation</h4>
+                    <p>Labeled training data from simulation: boxes, masks, and depth come free and perfect for every image.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Domain randomization</h4>
+                    <p>Varying lighting, textures, friction, and mass on purpose so the model learns what's invariant instead of the simulator's quirks. Too wide, and the task becomes unlearnable.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>The sim-to-real gap</h4>
+                    <p>The performance lost moving from simulation to reality — measured here against held-out worlds with altered physics, since real hardware is out of scope.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Policy</h4>
+                    <p>The learned mapping from observations to actions (proposed: Gymnasium environments with stable-baselines3 on CPU).</p>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Headless</dt><dd>running without a display.</dd>
+                    <dt>Held-out world</dt><dd>a test environment the model never trained on.</dd>
+                    <dt>Invariant</dt><dd>what stays true across variations.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>What does a synthetic label give you that a real one costs?</li>
+                    <li>Why can randomizing too widely hurt?</li>
+                    <li>How will you measure the gap without hardware?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#module-d">Next: Module D — What-If Testing &amp; Safe Autonomous Decisions →</a></p>
+        </div>
+        <!-- ══════════════════ MODULE D ══════════════════ -->
+        <div class="module" id="module-d">
+            <div class="module-head"><h2>Module D — What-If Testing &amp; Safe Autonomous Decisions</h2></div>
+            <div class="module-pills">
+                <span class="mod-pill hos">Before HOS 4</span><span class="mod-pill outcome">Outcome 5</span>
+            </div>
+            <p class="why-line"><strong>Why before you start:</strong> the point of a twin is asking questions you can't safely ask the real system — and then letting an agent act only where those answers proved it's safe.</p>
+
+            <div class="diagram-box">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#334155"/></marker></defs><g font-family="Inter,system-ui,sans-serif"><rect x="10" y="40" width="119" height="58" rx="8" fill="#eff6ff" stroke="#3b82f6"/><text x="70" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">What-if question</text><text x="70" y="82" text-anchor="middle" font-size="9.5" fill="#334155">a failure, an extreme</text><line x1="129" y1="69" x2="151" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="155" y="40" width="119" height="58" rx="8" fill="#ecfdf5" stroke="#10b981"/><text x="215" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Parameter sweep</text><text x="215" y="82" text-anchor="middle" font-size="9.5" fill="#334155">many simulations</text><line x1="274" y1="69" x2="296" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="300" y="40" width="119" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b"/><text x="360" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">Unsafe boundary</text><text x="360" y="82" text-anchor="middle" font-size="9.5" fill="#334155">where it breaks</text><line x1="420" y1="69" x2="442" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="446" y="40" width="119" height="58" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="505" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">Safety envelope</text><text x="505" y="82" text-anchor="middle" font-size="9.5" fill="#334155">limits on states &amp; actions</text><line x1="565" y1="69" x2="587" y2="69" class="flow-line" stroke="#334155" stroke-width="1.5" marker-end="url(#arrd)"/><rect x="591" y="40" width="119" height="58" rx="8" fill="#fce7f3" stroke="#ec4899"/><text x="650" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="#be185d">Agent acts inside it</text><text x="650" y="82" text-anchor="middle" font-size="9.5" fill="#334155">every action logged</text><text x="360" y="138" text-anchor="middle" font-size="11" fill="#94a3b8">Sweeps find the boundary; the envelope enforces it.</text></g></svg>
+                <div class="diagram-caption">From what-if testing to safe autonomy.</div>
+            </div>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>What-if scenario</h4>
+                    <p>A simulation run with a failure or extreme condition introduced on purpose — an HVAC unit failing on the hottest day.</p>
+                    <div class="why"><strong>Why it matters:</strong> Outcome O5 asks you to predict failures before deployment.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Parameter sweep</h4>
+                    <p>Running many what-ifs systematically across ranges (outside temperature × equipment capacity × occupancy) to find where outcomes become unsafe (proposed: SimPy or MuJoCo).</p>
+                    <div class="why"><strong>Why it matters:</strong> Single-failure sweeps miss combined failures.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Safety envelope</h4>
+                    <p>Limits on states (room temperature 18–27 °C) and actions (setpoint changes ≤ 2 °C per 10 minutes) proven safe in simulation. An action outside it is blocked and a person is notified.</p>
+                    <div class="why"><strong>Why it matters:</strong> An envelope is only as good as the model and sensors it relies on.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>An agent acting on the twin</h4>
+                    <p>An agent reads the twin and acts over MQTT, with the envelope check running before every action (proposed: Google ADK, with the check as a callback).</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Action logs</h4>
+                    <p>Every autonomous action recorded with its inputs, decision, and reason.</p>
+                    <div class="why"><strong>Why it matters:</strong> The log is what lets you tell whether the sensor, the model, the envelope, or the agent failed.</div>
+                </div>
+                <div class="concept-card">
+                    <h4>Ethics in safety-critical domains</h4>
+                    <p>Who is accountable when the twin is wrong? Which decisions must never be made without a person? Physical harm can't be rolled back.</p>
+                </div>
+            </div>
+
+            <div class="glossary-box">
+                <h5>Vocabulary check</h5>
+                <dl>
+                    <dt>Envelope check</dt><dd>the test every action must pass before it reaches the device.</dd>
+                    <dt>Combined failure</dt><dd>two or more things going wrong at once.</dd>
+                    <dt>Accountability</dt><dd>who answers for an outcome, separate from which layer caused it.</dd>
+                </dl>
+            </div>
+
+            <div class="check-box">
+                <h5>Quick self-check before you continue</h5>
+                <ul>
+                    <li>What does a parameter sweep find that a single what-if can't?</li>
+                    <li>Why can an envelope give false confidence?</li>
+                    <li>Who should be accountable for your twin's actions?</li>
+                </ul>
+            </div>
+            <p class="module-nav"><a href="#top">Back to top ↑</a></p>
+        </div>
+
+        <a class="back-to-top" href="#top">↑ Back to top</a>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

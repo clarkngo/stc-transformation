@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 440 HOS 4 (draft): what-if scenario testing in a digital twin and safe autonomous decisions inside a tested safety envelope, plus the Week 8 architecture review and Integration debate.">
+<title>HOS 4 Interactive Lesson</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#b45309; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#2a1706 0%,#92400e 60%,#b45309 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --bg:#faf6f0;--surface2:#f6efe4;--border:#e8dac5;--text:#271a0c;--muted:#6b5a45;--accent:#b45309;--accent2:#92400e;--accent-light:#fdf1e2;--header-bg:#2a1706; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#140e07;--surface:#1f160c;--surface2:#2a1e10;--border:#43321c;--text:#f5ecdf;--muted:#b8a488;--accent:#fbbf24;--accent2:#fcd34d;--accent-light:#2e1f08;--on-accent:#2a1706;--header-bg:#0c0803; } }
+:root[data-theme="dark"] { --bg:#140e07;--surface:#1f160c;--surface2:#2a1e10;--border:#43321c;--text:#f5ecdf;--muted:#b8a488;--accent:#fbbf24;--accent2:#fcd34d;--accent-light:#2e1f08;--on-accent:#2a1706;--header-bg:#0c0803; }
+
+:root { --maxw:1100px; }
+.draftbar { background:var(--amber-bg); color:var(--amber); border-bottom:1px solid var(--amber); font-size:.8rem; font-weight:700; text-align:center; padding:7px 16px; }
+
+.secnav { position:sticky; top:var(--header-h,62px); z-index:150; background:var(--surface); border-bottom:1px solid var(--border); box-shadow:var(--shadow); }
+.secnav-inner { max-width:var(--maxw); margin:0 auto; padding:8px 16px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:thin; }
+.secnav a { flex:none; font-size:.76rem; font-weight:600; text-decoration:none; color:var(--muted); padding:4px 10px; border-radius:16px; border:1px solid transparent; white-space:nowrap; }
+.secnav a:hover, .secnav a.active { color:var(--accent2); background:var(--accent-light); border-color:var(--accent); }
+.secnav .sep { flex:none; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:5px 4px 0 10px; }
+section.module { scroll-margin-top:calc(var(--header-h,62px) + 56px); }
+.part-banner { margin:30px 0 16px; padding:12px 18px; border-radius:var(--radius); background:var(--header-bg); color:var(--header-text); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:baseline; }
+.part-banner b { font-size:1.02rem; } .part-banner span { font-size:.8rem; opacity:.8; }
+.module-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; }
+.module-icon { width:40px; height:40px; flex:none; border-radius:10px; background:var(--accent-light); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+.module-head h2 { margin:0; }
+.module-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+.flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:6px 0 4px; }
+.flow a { text-decoration:none; color:inherit; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; display:block; }
+.flow a:hover { border-color:var(--accent); box-shadow:var(--shadow-hover); }
+.flow .n { font-size:.68rem; font-weight:800; color:var(--accent2); letter-spacing:.06em; text-transform:uppercase; }
+.flow .t { font-weight:700; font-size:.88rem; display:block; }
+.flow .w { font-size:.74rem; color:var(--muted); }
+.lo li { margin-bottom:6px; }
+.lecture-part { border-top:1px dashed var(--border); padding-top:14px; margin-top:16px; }
+.lecture-part:first-of-type { border-top:none; padding-top:0; margin-top:0; }
+.lecture-part h3 { margin-top:0; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.lecture-part h3 small { font-weight:600; color:var(--muted); font-size:.76rem; }
+.arch { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:10px 0 14px; }
+.arch .box { flex:1 1 150px; border:2px solid var(--border); border-radius:10px; padding:10px 12px; background:var(--surface2); font-size:.84rem; }
+.arch .box b { display:block; font-size:.9rem; }
+.arch .box.key { border-color:var(--accent); }
+.arch .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.seq { counter-reset:s; list-style:none; margin:10px 0 14px; padding:0; }
+.seq li { counter-increment:s; position:relative; padding:8px 12px 8px 44px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; background:var(--surface); font-size:.88rem; }
+.seq li::before { content:counter(s); position:absolute; left:10px; top:8px; width:24px; height:24px; border-radius:50%; background:var(--accent); color:var(--on-accent); font-weight:800; font-size:.78rem; display:flex; align-items:center; justify-content:center; }
+.seq li.loopback { border-style:dashed; border-color:var(--amber); }
+dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted); font-size:.88rem; }
+.two { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+.eg { border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; background:var(--surface2); }
+.eg.weak { border-left:5px solid var(--bad); } .eg.strong { border-left:5px solid var(--ok); }
+.eg .label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+.eg.weak .label { color:var(--bad); } .eg.strong .label { color:var(--ok); }
+.counter { font-size:.72rem; color:var(--muted); text-align:right; }
+.spec-meter { display:flex; gap:10px; align-items:center; margin:12px 0 6px; font-size:.84rem; }
+.spec-track { flex:1; height:10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.spec-fill { height:100%; width:0; background:var(--bad); transition:width .25s, background .25s; }
+.hints { font-size:.8rem; margin:4px 0 10px 1.1em; color:var(--muted); }
+.hints li.ok { color:var(--ok); } .hints li.no { color:var(--bad); }
+.stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:10px 0 16px; }
+.stage { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface2); font-size:.85rem; }
+.stage .day { font-size:.7rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--violet); }
+.side { border:2px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.86rem; }
+.side.a { border-color:var(--blue); } .side.b { border-color:var(--rose); }
+.side.mine { box-shadow:0 0 0 4px var(--accent-light); }
+.side h4 { display:flex; justify-content:space-between; gap:6px; }
+.checklist label { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; background:var(--surface); font-size:.88rem; }
+.checklist input { margin-top:4px; accent-color:var(--accent); width:16px; height:16px; flex:none; }
+.checklist label.done { background:var(--ok-bg); border-color:var(--ok); }
+.progress-line { font-size:.8rem; font-weight:700; color:var(--accent2); margin-bottom:8px; }
+.pick { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:12px; }
+.pick button { text-align:left; background:var(--surface2); border:2px solid var(--border); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:.85rem; color:var(--text); cursor:pointer; }
+.pick button[aria-pressed="true"] { border-color:var(--accent); background:var(--accent-light); }
+.pick button b { display:block; }
+.sorter-row { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:.86rem; background:var(--surface); }
+.sorter-row .opts { display:flex; gap:4px; flex-wrap:wrap; }
+.sorter-row .opts button { font-family:inherit; font-size:.72rem; font-weight:700; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:6px; padding:4px 8px; cursor:pointer; }
+.sorter-row .opts button[aria-pressed="true"].auto { background:var(--ok-bg); border-color:var(--ok); color:var(--ok); }
+.sorter-row .opts button[aria-pressed="true"].confirm { background:var(--amber-bg); border-color:var(--amber); color:var(--amber); }
+.sorter-row .opts button[aria-pressed="true"].never { background:var(--bad-bg); border-color:var(--bad); color:var(--bad); }
+.sorter-row .why { grid-column:1/-1; font-size:.8rem; color:var(--muted); display:none; }
+.sorter-row.revealed .why { display:block; }
+@media (max-width:560px){ .sorter-row { grid-template-columns:1fr; } }
+.q { border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:10px; background:var(--surface); }
+.q .stem { font-weight:700; font-size:.9rem; margin-bottom:8px; }
+.q .opt { display:block; width:100%; text-align:left; font-family:inherit; font-size:.86rem; color:var(--text); background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:7px 10px; margin-bottom:6px; cursor:pointer; }
+.q .opt.right { background:var(--ok-bg); border-color:var(--ok); }
+.q .opt.wrong { background:var(--bad-bg); border-color:var(--bad); }
+.q .fb { font-size:.82rem; margin-top:4px; display:none; }
+.q.answered .fb { display:block; }
+.score { font-weight:800; color:var(--accent2); }
+.project-map td:first-child { font-weight:700; white-space:nowrap; }
+
+.pipe-row { display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin:6px 0; }
+.pipe-row .box { flex:1 1 120px; border:2px solid var(--border); border-radius:10px; padding:8px 10px; background:var(--surface2); font-size:.8rem; }
+.pipe-row .box b { display:block; font-size:.84rem; }
+.pipe-row .arrow { align-self:center; font-weight:900; color:var(--muted); }
+.pipe-label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:10px; }
+.vec-demo { display:grid; grid-template-columns:1fr auto; gap:6px 12px; font-size:.84rem; align-items:center; margin:8px 0 12px; }
+.vec-demo .s { font-weight:800; color:var(--accent2); }
+.review-code { counter-reset:ln; }
+
+.wf-demo { font-size:.8rem; margin:8px 0 12px; }
+.wf-demo .r { display:grid; grid-template-columns:150px 1fr 60px; gap:8px; align-items:center; margin-bottom:4px; }
+.wf-demo .t { position:relative; height:14px; background:var(--surface2); border-radius:4px; }
+.wf-demo .b { position:absolute; top:2px; bottom:2px; border-radius:3px; background:var(--accent); }
+.wf-demo .b.g { background:var(--violet); } .wf-demo .b.root { background:var(--muted); }
+@media (max-width:520px){ .wf-demo .r { grid-template-columns:100px 1fr 50px; } }
+.order-pool { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.order-pool button { font-family:inherit; font-size:.8rem; text-align:left; background:var(--surface2); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 10px; cursor:pointer; }
+.order-pool button:hover { border-color:var(--accent); }
+.order-pool button.shake { border-color:var(--bad); background:var(--bad-bg); }
+.order-done { list-style:none; margin:0; padding:0; }
+.order-done li { display:grid; grid-template-columns:26px 1fr auto; gap:8px; align-items:start; border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:7px 10px; margin-bottom:5px; font-size:.84rem; background:var(--surface); }
+.order-done li .n { font-weight:800; color:var(--accent2); }
+.order-done li .risk { grid-column:2/4; font-size:.78rem; color:var(--muted); display:none; }
+.order-done.revealed li .risk { display:block; }
+.faith-out .sent { font-size:.82rem; padding:5px 10px; border-radius:6px; margin-bottom:4px; }
+.faith-out .sent.ok { background:var(--ok-bg); } .faith-out .sent.bad { background:var(--bad-bg); }
+
+.hos-tick { display:grid; grid-template-columns:auto 1fr; gap:6px 10px; align-items:start; border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; background:var(--surface); }
+.hos-tick input[type=checkbox] { margin-top:5px; accent-color:var(--accent); width:16px; height:16px; }
+.hos-tick input[type=text] { grid-column:2; }
+.litmus li.ok { color:var(--ok); } .litmus li.no { color:var(--muted); }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">440</span><span><b>AI 440: Digital Twins and Physical AI</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-440.html">← AI 440</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+  <div class="draftbar">Draft — built from the course outline. Tools, labs and starter code are not built or tested yet; Create/Scaffold steps describe the planned build.</div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 440 · HOS 4 · Weeks 7–8 · Draft interactive lesson</div>
+    <h1>What-If Testing &amp; Safe Autonomous Decisions</h1>
+    <p class="lede">Use the twin to break things safely: sweep through failure scenarios to find where the system becomes unsafe, turn that into a safety envelope — and let an agent act on the real system only inside it.</p>
+    <div class="chips"><span class="chip">Outcome O5</span><span class="chip">Draft</span><span class="chip">2 weeks</span><span class="chip">Lecture · MP · CD</span><span class="chip">What-if sweeps</span><span class="chip">Safety envelope</span><span class="chip">Architecture Review</span><span class="chip">Integration CD</span></div>
+  </div>
+</section>
+<main id="main">
+<nav class="secnav no-print" aria-label="Lesson sections"><div class="secnav-inner"><a href="#overview">Overview</a><span class="sep">Week 7</span><a href="#lecture">Lecture</a><a href="#muddiest">Muddiest Point</a><a href="#debate">Concept Debate</a><a href="#create">Create / Scaffold</a><a href="#evaluate">Evaluate</a><span class="sep">Week 8</span><a href="#analyze">Analyze</a><a href="#refine">Understand &amp; Refine</a><a href="#challenge">Application Challenge</a><a href="#check">Knowledge Check</a><a href="#review">Architecture Review</a><a href="#integration">Integration Debate</a><a href="#project">Next: Project</a></div></nav><div class="callout amber" style="margin-top:20px"><span class="label">Course design constraints</span><p>This draft follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>: it adapts to AI 440's official description and Outcome O5, everything must run in GitHub Codespaces on CPU, and free tiers come first. Every tool named here is a <strong>proposal</strong> that must pass the <a href="../AI-440.html">outline's feasibility test</a> before a lab is written. Real hardware is out of scope; sensors are simulated.</p></div><section class="module card" id="overview"><div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag ">O5</span><span class="tag blue">12.5% HOS + MP + CD + AC</span><span class="tag amber">+ Architecture Review &amp; Integration CD</span></div></div></div><p>The point of a twin is asking questions you can't safely ask the real system: what if an HVAC unit fails on the hottest day? What if a sensor lies? This HOS runs those what-ifs as parameter sweeps, finds the boundaries where the system becomes unsafe, and turns them into a <strong>safety envelope</strong> — the set of states and actions proven safe in simulation.</p><p>Then an agent reads the twin and acts over MQTT, but every action passes the envelope check first, and every action is logged. Week 8 connects all four HOS in an architecture review and the Integration Concept Debate — and asks who is accountable when the twin is wrong.</p><div class="callout blue"><span class="label">Anchoring analogy</span><p>A pilot's flight envelope. Aircraft are tested — mostly in simulation, carefully in reality — to find the speeds, altitudes, and angles where they stay controllable. Autopilot can do a lot, but it won't command anything outside the envelope, no matter what it's asked. The envelope is the result of the what-if testing.</p></div><h3>Learning objectives</h3><p class="small muted">By the end of the two weeks you will be able to:</p><ol class="lo"><li>Conduct what-if scenario testing within a digital twin to predict system failures. <span class="tag">O5</span></li><li>Turn what-if results into a safety envelope for autonomous actions. <span class="tag">O5</span></li><li>Assess the safety of autonomous actions before deployment, and block unsafe ones. <span class="tag">O5</span></li><li>Log and explain every autonomous action. <span class="tag">O5</span></li><li>Weigh the ethics of autonomous systems in safety-critical domains: who is accountable? <span class="tag">O5</span></li></ol><h3>Your two weeks at a glance</h3><div class="flow"><a href="#lecture"><span class="n">Wk 7 · Mon</span><span class="t">Lecture</span><span class="w">~75 min, 3 parts</span></a><a href="#muddiest"><span class="n">Wk 7 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a><a href="#debate"><span class="n">Wk 7 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a><a href="#create"><span class="n">Wk 7 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">not graded</span></a><a href="#evaluate"><span class="n">Wk 7 · Fri–Sun</span><span class="t">Evaluate</span><span class="w">30% of HOS</span></a><a href="#analyze"><span class="n">Wk 8 · Mon–Tue</span><span class="t">Analyze</span><span class="w">30% of HOS</span></a><a href="#refine"><span class="n">Wk 8 · Wed–Thu</span><span class="t">Understand &amp; Refine</span><span class="w">40% of HOS · no AI</span></a><a href="#challenge"><span class="n">Wk 8 · Fri–Sun</span><span class="t">Application Challenge</span><span class="w">5% of course</span></a><a href="#check"><span class="n">Wk 8 · any time</span><span class="t">Knowledge Check</span><span class="w">self-check</span></a><a href="#review"><span class="n">Wk 8 · Fri</span><span class="t">Architecture Review</span><span class="w">all 4 HOS</span></a><a href="#integration"><span class="n">Wk 8 · Tue–Sun</span><span class="t">Integration Debate</span><span class="w">graded · CD category</span></a></div><p class="small muted" style="margin-top:10px">Days are a suggested pacing for an online term, not fixed deadlines — your instructor's Brightspace dates win.</p></section>
+<div class="part-banner"><b>Week 7 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div><section class="module card" id="lecture"><div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: breaking things safely, then acting carefully</h2><div class="module-meta"><span class="tag ">≈ 75 min</span><span class="tag blue">3 short parts</span><span class="tag ">O5</span></div></div></div><p class="small muted">Three short segments. Pause after each and try the quick check. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p><div class="lecture-part"><h3>Part 1 — What-if testing as parameter sweeps <small>≈ 25 min</small></h3><p>A what-if is a simulation run with something changed: a failed component, an extreme input, a lying sensor. A <strong>sweep</strong> runs many of them systematically — outside temperature from 20 to 45 °C × HVAC capacity from 100% to 0% — and records where outcomes become unsafe. Proposed tools: <b>SimPy</b> or <b>MuJoCo</b> parameter sweeps.</p>
+<div class="callout violet"><span class="label">Quick check</span><p>Your sweep never tested two failures at once. What kind of incident would it miss?</p></div></div><div class="lecture-part"><h3>Part 2 — Safety envelopes <small>≈ 25 min</small></h3><p>The sweep's safe region becomes the <strong>envelope</strong>: limits on states (room temperature 18–27 °C) and on actions (setpoint changes ≤ 2 °C per 10 minutes; never disable cooling above 30 °C outside). Before any action reaches the device, a check verifies it stays inside. Outside the envelope, the action is blocked and a person is notified.</p>
+<div class="callout"><span class="label">Worked example</span><p>An agent optimizing energy proposes raising the setpoint to 29 °C during a heat wave. It's cheaper — and the sweep showed occupied rooms exceed 32 °C within an hour at that setting. The envelope blocks it, logs why, and the agent falls back to the best allowed action.</p></div></div><div class="lecture-part"><h3>Part 3 — Autonomous decisions and accountability <small>≈ 25 min</small></h3><p>A <strong>Google ADK agent</strong> reads the twin and acts over MQTT — the proposed design — with the envelope check as a callback before every action, and every decision logged with its inputs and reason. That log is what makes accountability possible: when the twin is wrong, you can tell whether the sensor lied, the model mispredicted, the envelope was too loose, or the agent chose badly.</p>
+<div class="callout"><span class="label">Try it before the build</span><p>Open the <a href="sim04-safety-envelope.html"><strong>What-If &amp; Safety Envelope Simulator</strong></a>: run a heat-wave sweep, set the envelope, and let the agent loose.</p></div></div><h3>New words this week</h3><dl class="gloss"><dt>What-if scenario</dt><dd>A simulation run with a failure or extreme condition introduced on purpose.</dd><dt>Parameter sweep</dt><dd>Running many what-ifs systematically across ranges of parameters.</dd><dt>Safety envelope</dt><dd>The states and actions proven safe; autonomous actions must stay inside.</dd><dt>Action log</dt><dd>A record of every autonomous action with its inputs and reason.</dd></dl></section>
+<section class="module card" id="muddiest"><div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag rose">Graded · part of 5% MP category</span><span class="tag ">Due before the build begins</span></div></div></div><p>Four short fields, not a blank box. Draft it here — your draft stays in this browser only — then <strong>copy it into the Brightspace submission</strong>.</p><div class="two" style="margin-bottom:14px"><div class="eg weak"><span class="label">Doesn't meet the bar</span>"I don't understand safety envelopes."</div><div class="eg strong"><span class="label">Meets the bar</span>"Lecture Part 2: the envelope comes from the sweep, but the sweep used the twin's model of the building. If that model is wrong, isn't the envelope wrong too? I tried the simulator with a mis-tuned model and the envelope still 'held', which seems like false confidence."</div></div><form onsubmit="return false"><label class="field" for="mp1">1 · What were you doing right before you got confused?</label><input type="text" id="mp1" placeholder="e.g. Lecture Part 2, the envelope check"><label class="field" for="mp2">2 · The exact place you got stuck</label><textarea id="mp2" placeholder="Not 'it's confusing' — the specific thing that doesn't add up."></textarea><div class="counter" id="mp2count">0 words</div><label class="field" for="mp3">3 · What you already tried</label><textarea id="mp3" placeholder="Re-read a section, searched something specific, asked a classmate, tried the simulator…"></textarea><label class="field" for="mp4">4 · Optional: your best guess at the answer</label><textarea id="mp4" placeholder="Even if you think it's wrong."></textarea></form><div class="spec-meter"><b>Specificity</b><div class="spec-track"><div class="spec-fill" id="specFill"></div></div><span id="specLabel">—</span></div><ul class="hints" id="specHints"></ul><div class="row"><button class="btn" id="mpCopy" type="button">Copy for submission</button><button class="btn secondary" id="mpClear" type="button">Clear draft</button><span class="small muted" id="mpStatus" aria-live="polite"></span></div><p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — on time, addresses a genuine confusion (80%) · Writing — clear, specific, not generic (20%). The meter above is a nudge, not your grade.</p></section>
+<section class="module card" id="debate"><div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag ">Discussion board · 3 stages</span></div></div></div><div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>When a digital twin's autonomous decision causes harm, who is accountable?</strong></p></div><p>You'll argue the side your debate team is assigned, then argue the other one, then drop advocacy and synthesize.</p><div class="callout blue"><span class="label">Your side this HOS</span><p>Sides rotate each HOS. <b>In HOS 4, Debate Team 1 argues Side B and Debate Team 2 argues Side A.</b> Find your team under <b>Communication → Groups</b> in Brightspace. Not in a team? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A.</p></div><div class="row" style="margin-bottom:10px"><label for="team" class="small"><b>My Brightspace team:</b></label><select class="team" id="team" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select><span class="small" id="sideResult" aria-live="polite"></span></div><div class="two"><div class="side a" id="sideA"><h4><span>Side A — The operator who deployed it</span><span class="tag blue">Team 2 this HOS</span></h4><p>Whoever chose to let it act owns the outcome.</p><ul class="small"><li>Deployment is a decision a person made.</li><li>The operator controls the envelope and can turn it off.</li><li>Accountability must sit with someone who can act.</li></ul></div><div class="side b" id="sideB"><h4><span>Side B — Shared, traced through the logs</span><span class="tag rose">Team 1 this HOS</span></h4><p>Responsibility follows the failure: sensor vendor, model builder, envelope designer, or operator.</p><ul class="small"><li>The log shows which part failed.</li><li>Blaming the operator alone discourages honest reporting.</li><li>Each layer's designer made a decision that mattered.</li></ul></div></div><div class="stages"><div class="stage"><span class="day">Stage 1 · by Tue</span><h4>Initial position</h4>Argue your assigned side with one specific claim and one piece of evidence — a run, a trace, a simulator setting. Not a topic summary.</div><div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>Before replying to anyone, post the <em>strongest</em> version of the side you didn't hold.</div><div class="stage"><span class="day">Stage 3 · by Sat</span><h4>Synthesis</h4>Drop advocacy. State a real position, citing at least one specific point from a classmate's post.</div></div><div class="two"><div class="eg weak"><span class="label">Weak synthesis</span>"Everyone shares responsibility."</div><div class="eg strong"><span class="label">Strong synthesis</span>"Rosa pointed out that 'shared' often means nobody acts. Ken showed the logs can name the failed layer. My position: one named owner is accountable for the twin acting at all, and the logs assign the follow-up fix to whichever layer failed — accountability and root cause are different questions."</div></div><p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%).</p></section>
+<section class="module card" id="create"><div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag ">Not graded on its own</span><span class="tag blue">GitHub Codespaces</span><span class="tag amber">Planned — labs not built yet</span></div></div></div><div class="callout amber"><span class="label">Planned — no lab or starter code yet</span><p>This stage describes the planned build. The proposed tools (SimPy or MuJoCo sweeps; a Google ADK agent acting over MQTT; a safety-envelope callback) are awaiting the feasibility test on a 2-core Codespace, CPU only; if one fails, it gets swapped for another that meets the same outcome.</p></div>
+<p><b>Planned build:</b></p><ul><li>A what-if sweep over the HOS 1–2 building floor: outside temperature × HVAC capacity × occupancy.</li><li>A safety envelope derived from the sweep's safe region.</li><li>An ADK agent that reads the twin and proposes setpoints, with an envelope check before every MQTT action.</li><li>An action log with inputs, decision, and reason.</li></ul>
+<p><b>What the Create/Scaffold prompt will ask for:</b> scaffold the sweep runner and the agent; students derive the envelope and write the check themselves.</p></section>
+<section class="module card" id="evaluate"><div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag ">30% of HOS grade</span></div></div></div><p>Planned Evaluate tests — try to make the agent do something unsafe.</p><div class="progress-line" id="evalProgress">0 / 4 tests run</div><div class="checklist" data-key="eval" data-prog="evalProgress" data-suffix="tests run"><label><input type="checkbox"><span><b>Run the sweep:</b> where does the floor become unsafe?</span></label><label><input type="checkbox"><span><b>Ask the agent to save energy</b> during a heat wave. Is anything blocked?</span></label><label><input type="checkbox"><span><b>Feed it a lying sensor.</b> What does the envelope check see?</span></label><label><input type="checkbox"><span><b>Read the log</b> for one blocked action. Is the reason clear to someone who wasn't there?</span></label></div><label class="field" for="evalNote">Draft your Evaluate note (stays in this browser)</label><textarea id="evalNote" data-save="evalnote" placeholder="What I tested · what I found · what the AI got wrong, missed, or handled surprisingly well"></textarea><p class="small muted">Submit: evidence (screenshots, a trace or a results table) + this note, via Brightspace.</p></section>
+<div class="part-banner"><b>Week 8 · Explain &amp; Master</b><span>Analyze → Understand &amp; Refine → Application Challenge → Knowledge Check → Architecture Review → Integration CD</span></div><section class="module card" id="analyze"><div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does this work?</h2><div class="module-meta"><span class="tag ">30% of HOS grade</span></div></div></div><p>Pick <strong>one</strong> piece and explain, in your own words, exactly how it works.</p><div class="pick" id="analyzePick"><button type="button" aria-pressed="false" data-k="sweep"><b>What the sweep covered</b>And what it didn't.</button><button type="button" aria-pressed="false" data-k="envelope"><b>The envelope</b>Too tight vs. too loose.</button><button type="button" aria-pressed="false" data-k="account"><b>Accountability</b>From the log.</button></div><div class="callout blue" id="analyzeFrame"><span class="label">Explain-it frame</span><p>Pick a piece above to see prompts that make a strong Analyze.</p></div></section>
+<section class="module card" id="refine"><div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag ">40% of HOS grade</span><span class="tag bad">No AI assistant for this part</span></div></div></div><p>By hand (planned): write the envelope check yourself — at least one state limit and one rate limit — and show it blocking an unsafe action while allowing a safe one.</p><div class="progress-line" id="refineProgress">0 / 5 done</div><div class="checklist" data-key="refine" data-prog="refineProgress" data-suffix="done"><label><input type="checkbox"><span>Write the limits with their source in the sweep.</span></label><label><input type="checkbox"><span>Implement the check by hand as a callback before every action.</span></label><label><input type="checkbox"><span>Show an unsafe action blocked, with a clear log entry.</span></label><label><input type="checkbox"><span>Show a safe action allowed.</span></label><label><input type="checkbox"><span>Write what your envelope assumes about the model's accuracy.</span></label></div></section>
+<section class="module card" id="challenge"><div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — what-if test a twin you didn't build</h2><div class="module-meta"><span class="tag ">5% of course</span><span class="tag blue">Evaluate — no build</span></div></div></div><p>You'll get a description of a twin for a drone or a manufacturing cell. Propose the what-if scenarios you'd run, the envelope you'd expect, and one autonomous action that must always need a human.</p><h3>Warm-up: inside or outside the envelope?</h3><p class="small">A manufacturing cell's twin controls a conveyor and a robot arm. For each proposed action, decide: allow, block, or ask a human.</p><div id="sorter"></div><div class="row" style="margin:8px 0 16px"><button class="btn" id="sorterReveal" type="button">Reveal reasoning</button><span class="small" id="sorterScore" aria-live="polite"></span></div><div class="callout"><span class="label">What to submit</span><ul><li>The what-if scenarios you'd run, including one combined failure.</li><li>The envelope you'd expect: state limits and rate limits.</li><li>One action that must always need a human, and why.</li></ul></div><p class="small muted"><b>Grading:</b> Judgment &amp; reasoning (50%) · Transfer to the new scenario (35%) · Clarity (15%).</p></section>
+<section class="module card" id="check"><div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag ">Self-check · not graded</span></div></div></div><p>Five quick questions, then the two open questions your instructor will ask in the Week 8 check-in.</p><div id="quiz"></div><p class="score" id="quizScore" aria-live="polite"></p><h3>Open questions</h3><ol><li>How would you use what-if testing to predict failures and assess an autonomous action's safety before deployment?</li><li>Who is accountable when the twin is wrong, and how does your design make that clear?</li></ol></section>
+<section class="module card" id="review"><div class="module-head"><div class="module-icon">🗺️</div><div><h2>Architecture &amp; Bottleneck Review — all 4 HOS</h2><div class="module-meta"><span class="tag ">Folded into Week 8</span><span class="tag blue">Whole-course review</span></div></div></div><p>Draw the twin's three parts — physical entity, virtual entity, and data connection — for the system built across HOS 1–4, and say exactly what would have to change to turn a digital shadow into a twin. Rebuild the path below by clicking the steps <strong>in order</strong>, then reveal where each one can go wrong.</p><div class="pick" id="pathPick" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))"><button type="button" aria-pressed="true" data-p="loop"><b>One control cycle</b>A sensor reading → an action</button><button type="button" aria-pressed="false" data-p="whatif"><b>A what-if study</b>From question to envelope</button></div><p class="small muted" id="orderHint">Click the first step.</p><div class="order-pool" id="orderPool"></div><ol class="order-done" id="orderDone"></ol><div class="row"><button class="btn" id="orderReveal" type="button" disabled>Reveal bottlenecks &amp; failure points</button><button class="btn secondary" id="orderReset" type="button">Start over</button></div><div class="callout" style="margin-top:14px"><span class="label">For the review</span><p>Draw your project's twin with its three components, mark the arrow that makes it a twin, and circle the step where a wrong reading is most likely to become a wrong action.</p></div></section>
+<section class="module card" id="integration"><div class="module-head"><div class="module-icon">🔗</div><div><h2>Integration Concept Debate — connecting all 4 HOS</h2><div class="module-meta"><span class="tag violet">Graded · CD category</span><span class="tag ">Same 3-stage format</span></div></div></div><div class="callout violet"><span class="label">The question</span><p style="font-size:1.02rem"><strong>Which is the bigger risk in a digital twin: an inaccurate model, or an autonomous agent acting on an accurate one?</strong></p></div><div class="callout blue"><span class="label">Your side</span><p>For the Integration debate, <b>Debate Team 1 argues Side A and Debate Team 2 argues Side B.</b> In Stage 3, your synthesis must say what you'll do in <em>your</em> project.</p></div><div class="row" style="margin-bottom:10px"><label for="team2" class="small"><b>My Brightspace team:</b></label><select class="team" id="team2" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select><span class="small" id="sideResult2" aria-live="polite"></span></div><div class="two"><div class="side a" id="sideA2"><h4><span>Side A — An inaccurate model</span><span class="tag blue">Team 1 </span></h4><p></p><ul class="small"><li>Every decision inherits the model's error.</li><li>Envelopes derived from a wrong model are wrong too.</li><li>Inaccuracy is silent; it looks like a normal prediction.</li></ul></div><div class="side b" id="sideB2"><h4><span>Side B — Autonomy on an accurate model</span><span class="tag rose">Team 2 </span></h4><p></p><ul class="small"><li>An accurate model still can't anticipate every situation.</li><li>Autonomy removes the human sanity check.</li><li>Optimizers find the edges of any envelope.</li></ul></div></div><div class="stages"><div class="stage"><span class="day">Stage 1 · by Tue</span><h4>Initial position</h4>Argue your assigned side using evidence from <em>your own</em> builds across the term.</div><div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>The strongest version of the other side.</div><div class="stage"><span class="day">Stage 3 · by Sun</span><h4>Synthesis</h4>A real position for your project, citing a classmate's point. It becomes a Week 9 planning decision.</div></div></section>
+<section class="module card" id="project"><div class="module-head"><div class="module-icon">🚀</div><div><h2>Next: Team/Term Project — Weeks 9–10</h2><div class="module-meta"><span class="tag ">20% of course</span></div></div></div>
+<p>Weeks 9–10 design and deploy your twin. Bring your three-component drawing, your Integration Debate synthesis, and your Week 6 use case — updated with the envelope idea from this week.</p>
+<p><a class="btn" style="text-decoration:none;display:inline-block" href="team-project.html">Open the Weeks 9–10 project guide →</a></p></section>
+<section class="card"><h2>Resources</h2><ul><li><a href="../AI-440.html">AI 440 course outline</a></li><li><a href="sim04-safety-envelope.html">What-If &amp; Safety Envelope Simulator</a></li><li>← <a href="hos-03-lesson.html">HOS 3 lesson</a> · <a href="index.html">All lessons &amp; simulators</a> · Next: <a href="team-project.html">Team/Term Project guide</a> →</li></ul></section>
+</main>
+<footer class="foot">AI 440: Digital Twins and Physical AI · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — not yet offered.<br>Draft built from the course outline — nothing here has been tested with real tools yet.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai440-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai440-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>window.LESSON={"slug": "ai440", "code": "AI 440", "hos": 4, "weekB": 8, "concrete": "(`|\\(|\\)|\\/|part \\d|what-?if|sweep|scenario|envelope|limit|setpoint|block|log|agent|mqtt|accountab|unsafe|failure|hvac)", "debates": [{"a": "sideA", "b": "sideB", "out": "sideResult", "team1": "B", "prefix": "In HOS 4 you argue ", "nameA": "Side A \u2014 The operator", "nameB": "Side B \u2014 Shared, via the logs"}, {"a": "sideA2", "b": "sideB2", "out": "sideResult2", "team1": "A", "prefix": "In the Integration debate you argue ", "nameA": "Side A \u2014 Inaccurate model", "nameB": "Side B \u2014 Autonomy"}], "frames": {"sweep": ["Which combinations did you test, and which did you skip?", "Where's the boundary least certain?", "What would a combined failure do?"], "envelope": ["How did you turn sweep results into limits?", "What does a too-tight envelope cost?", "What does a too-loose one risk?"], "account": ["Take one bad outcome. Which layer failed?", "Who should fix it?", "What's missing from your log?"]}, "sorter": {"opts": [["allow", "Allow"], ["block", "Block"], ["human", "Ask a human"]], "items": [["Slow the conveyor 10% because the arm is falling behind", "allow", "Slow, reversible, and inside tested limits."], ["Raise the arm's speed above its tested maximum to clear a backlog", "block", "Outside the envelope by definition."], ["Restart the line after an emergency stop", "human", "Someone must confirm the cause is cleared."], ["Ignore a proximity sensor reading 'person present' because it's been noisy all day", "block", "Never trade a safety sensor for throughput."], ["Shift a maintenance window by 30 minutes", "allow", "Low-risk scheduling."]], "after": ""}, "quiz": [["What is a safety envelope?", ["A firewall", "An MQTT topic", "The states and actions proven safe, which autonomous actions must stay inside", "A dashboard"], 2, "Derived from what-if testing."], ["Why run what-ifs in the twin rather than the real system?", ["It's faster to code", "Twins are more accurate", "It's required by MQTT", "Failures in the twin harm nothing"], 3, "That's the point of a twin."], ["The sweep only tested one failure at a time. What might it miss?", ["Combined failures that interact", "Nothing", "Latency", "Sensor IDs"], 0, "Real incidents often combine failures."], ["What makes accountability possible after a bad decision?", ["A faster model", "More sensors", "A log of each action's inputs, decision, and reason", "A bigger envelope"], 2, "You can trace which layer failed."], ["The twin's model is wrong. What happens to an envelope derived from it?", ["It's unaffected", "It becomes tighter", "It disappears", "It can be wrong too \u2014 it's only as good as the model"], 3, "Envelopes inherit the model's assumptions."]], "paths": {"loop": [["Sensor publishes a temperature reading", "HOS 1", "A stuck sensor looks normal."], ["Pipeline validates and stores it", "HOS 1", "Validation rules only catch faults you wrote rules for."], ["Virtual model updates; PINN predicts the next hour", "HOS 2", "Wrong physics parameters \u2192 confident wrong predictions."], ["Agent proposes an action", "HOS 4", "Optimizing one goal (energy) can trade away another (comfort)."], ["Envelope check", "HOS 4", "Only as good as the sweep and model it came from."], ["Action sent over MQTT to the device", "HOS 1 \u00b7 4", "Lost or delayed messages; out-of-order commands."], ["Action logged with inputs and reason", "HOS 4", "An incomplete log makes accountability guesswork."]], "whatif": [["Pick the question (HVAC failure in a heat wave)", "HOS 4", "Untested combined failures."], ["Configure the simulated world", "HOS 3", "Simulator quirks the real building doesn't share."], ["Randomize what reality varies", "HOS 3", "Ranges too narrow to matter."], ["Run the sweep", "HOS 4", "Compute limits on CPU cut the sweep short."], ["Find the unsafe boundary", "HOS 4", "Coarse grids miss sharp boundaries."], ["Write the envelope", "HOS 4", "Too tight: useless. Too loose: unsafe."]]}, "cpNeed": "for", "cpNeedLabel": "Says who it's for"};
+
+var L=window.LESSON;
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){ return null; } }
+function $(id){ return document.getElementById(id); }
+function K(k){ return L.slug+'-'+L.hos+'-'+k; }
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest',inline:'center'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+/* Muddiest Point */
+(function(){
+  var els=['mp1','mp2','mp3','mp4'].map($); if(!els[0]) return;
+  els.forEach(function(el){ var v=store(K(el.id)); if(v) el.value=v; el.addEventListener('input',update); });
+  var vague=/\b(confus(ing|ed)|everything|all of it|the whole|in general|kind of|stuff)\b/i, concrete=new RegExp(L.concrete,'i');
+  function words(s){ return (s.trim().match(/\S+/g)||[]).length; }
+  function update(){
+    els.forEach(function(el){ store(K(el.id), el.value); });
+    var stuck=els[1].value, w=words(stuck); $('mp2count').textContent=w+' words';
+    var checks=[[words(els[0].value)>=3,'Context names where you were (a part, step, or line)'],[w>=15,'Stuck point is at least ~15 words'],
+      [concrete.test(stuck),'Stuck point mentions a concrete thing (a step, function, file, term)'],[!vague.test(stuck)||w>=30,'Avoids vague catch-alls like "confusing" or "everything"'],
+      [words(els[2].value)>=5,'Says what you already tried']];
+    var n=checks.filter(function(c){return c[0];}).length, pct=n/checks.length*100, f=$('specFill');
+    f.style.width=pct+'%'; f.style.background= pct>=80?'var(--ok)':pct>=40?'var(--amber)':'var(--bad)';
+    $('specLabel').textContent= pct>=80?'Specific':pct>=40?'Getting there':'Too vague';
+    $('specHints').innerHTML=checks.map(function(c){return '<li class="'+(c[0]?'ok':'no')+'">'+(c[0]?'✓ ':'○ ')+c[1]+'</li>';}).join('');
+  }
+  update();
+  $('mpCopy').addEventListener('click',function(){
+    var t='MUDDIEST POINT — '+L.code+' HOS '+L.hos+'\n\n1. Right before I got confused: '+els[0].value+'\n\n2. Where I got stuck: '+els[1].value+'\n\n3. What I already tried: '+els[2].value+'\n\n4. My best guess: '+(els[3].value||'(none)');
+    var s=$('mpStatus'); if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into Brightspace.'; },function(){ s.textContent='Copy blocked — select the fields manually.'; }); } else s.textContent='Copy not supported — select the fields manually.';
+  });
+  $('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); $('mpStatus').textContent='Draft cleared.'; });
+})();
+/* Debate sides (shared team across lessons) */
+(function(){
+  var sels=[].slice.call(document.querySelectorAll('select.team')); if(!sels.length) return;
+  var v=store(L.slug+'-team');
+  function upd(val){
+    sels.forEach(function(s){ s.value=val; }); if(val) store(L.slug+'-team',val);
+    (L.debates||[]).forEach(function(d){
+      var a=$(d.a), b=$(d.b), out=$(d.out); a.classList.remove('mine'); b.classList.remove('mine');
+      if(!val){ out.textContent=''; return; }
+      var sideA=(val==='1')===(d.team1==='A'); (sideA?a:b).classList.add('mine');
+      out.innerHTML=d.prefix+'<b>'+(sideA?d.nameA:d.nameB)+'</b> in Stage 1.';
+    });
+  }
+  sels.forEach(function(s){ s.addEventListener('change',function(){ upd(s.value); }); }); upd(v||'');
+})();
+/* checklists */
+[].slice.call(document.querySelectorAll('.checklist[data-key]')).forEach(function(list){
+  var boxes=[].slice.call(list.querySelectorAll('input')), key=K(list.dataset.key), prog=$(list.dataset.prog), suffix=list.dataset.suffix;
+  var saved=(store(key)||'').split(',');
+  boxes.forEach(function(b,i){ if(saved[i]==='1') b.checked=true; b.addEventListener('change',upd); });
+  function upd(){ boxes.forEach(function(b){ b.parentNode.classList.toggle('done',b.checked); });
+    if(prog) prog.textContent=boxes.filter(function(b){return b.checked;}).length+' / '+boxes.length+' '+suffix;
+    store(key,boxes.map(function(b){return b.checked?'1':'0';}).join(',')); }
+  upd();
+});
+[].slice.call(document.querySelectorAll('textarea[data-save]')).forEach(function(t){ var k=K(t.dataset.save); var v=store(k); if(v) t.value=v; t.addEventListener('input',function(){ store(k,t.value); }); });
+/* Analyze frames */
+(function(){
+  var btns=[].slice.call(document.querySelectorAll('#analyzePick button')), box=$('analyzeFrame'); if(!box) return;
+  btns.forEach(function(b){ b.addEventListener('click',function(){
+    btns.forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true');
+    box.innerHTML='<span class="label">Explain-it frame</span><ul>'+L.frames[b.dataset.k].map(function(q){return '<li>'+q+'</li>';}).join('')+'</ul><p class="small">Aim for 250–400 words. Quote the line(s) or trace step(s) you are explaining.</p>';
+  }); });
+})();
+/* Sorter */
+(function(){
+  var S=L.sorter, host=$('sorter'); if(!S||!host) return;
+  var answers={}, score=$('sorterScore'), cls=['auto','confirm','never'];
+  host.innerHTML=S.items.map(function(t,i){
+    return '<div class="sorter-row" data-i="'+i+'"><span>'+t[0]+'</span><div class="opts">'+S.opts.map(function(o,j){ return '<button type="button" class="'+cls[j]+'" aria-pressed="false" data-o="'+o[0]+'">'+o[1]+'</button>'; }).join('')+'</div><div class="why"></div></div>';
+  }).join('');
+  [].slice.call(host.querySelectorAll('.opts button')).forEach(function(b){ b.addEventListener('click',function(){
+    var row=b.closest('.sorter-row'); [].slice.call(row.querySelectorAll('button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); answers[row.dataset.i]=b.dataset.o; }); });
+  $('sorterReveal').addEventListener('click',function(){
+    var right=0;
+    [].slice.call(host.querySelectorAll('.sorter-row')).forEach(function(row){
+      var t=S.items[row.dataset.i]; if(answers[row.dataset.i]===t[1]) right++;
+      var lbl=S.opts.filter(function(o){return o[0]===t[1];})[0][1];
+      row.querySelector('.why').innerHTML='<b>Suggested: '+lbl+'.</b> '+t[2]; row.classList.add('revealed'); });
+    score.textContent=right+' / '+S.items.length+' match the suggested call. '+(S.after||'');
+  });
+})();
+/* Quiz */
+(function(){
+  var host=$('quiz'); if(!host) return; var qs=L.quiz, right=0, done=0;
+  host.innerHTML=qs.map(function(q,i){ return '<div class="q" data-i="'+i+'"><div class="stem">'+(i+1)+'. '+q[0]+'</div>'+q[1].map(function(o,j){return '<button type="button" class="opt" data-j="'+j+'">'+o+'</button>';}).join('')+'<div class="fb"></div></div>'; }).join('');
+  [].slice.call(host.querySelectorAll('.q')).forEach(function(card){
+    var q=qs[card.dataset.i];
+    [].slice.call(card.querySelectorAll('.opt')).forEach(function(b){ b.addEventListener('click',function(){
+      if(card.classList.contains('answered')) return; card.classList.add('answered'); done++;
+      var ok=+b.dataset.j===q[2]; if(ok) right++;
+      b.classList.add(ok?'right':'wrong'); card.querySelectorAll('.opt')[q[2]].classList.add('right');
+      card.querySelector('.fb').innerHTML=(ok?'✓ ':'✗ ')+q[3];
+      $('quizScore').textContent= done===qs.length ? 'Score: '+right+' / '+qs.length+(right===qs.length?' — ready for the Week '+L.weekB+' check-in.':' — revisit the lecture parts you missed.') : '';
+    }); });
+  });
+})();
+/* Project checkpoint drafter (HOS 3) */
+(function(){
+  var team=$('cpTeam'); if(!team) return; var idea=$('cpIdea'), rows=[].slice.call(document.querySelectorAll('#cpHos .hos-tick'));
+  function key(k){ return L.slug+'-checkpoint-'+k; }
+  var v=store(key('team')); if(v) team.value=v; v=store(key('idea')); if(v) idea.value=v;
+  rows.forEach(function(r){ var cb=r.querySelector('input[type=checkbox]'), tx=r.querySelector('input[type=text]'), h=cb.dataset.h;
+    if(store(key('h'+h))==='1') cb.checked=true; var t=store(key('t'+h)); if(t) tx.value=t;
+    cb.addEventListener('change',upd); tx.addEventListener('input',function(){ if(tx.value && !cb.checked) cb.checked=true; upd(); }); });
+  team.addEventListener('input',upd); idea.addEventListener('input',upd);
+  function words(s){ return (s.trim().match(/\S+/g)||[]).length; }
+  function upd(){
+    store(key('team'),team.value); store(key('idea'),idea.value); var ticked=0, described=0;
+    rows.forEach(function(r){ var cb=r.querySelector('input[type=checkbox]'), tx=r.querySelector('input[type=text]'), h=cb.dataset.h;
+      store(key('h'+h),cb.checked?'1':'0'); store(key('t'+h),tx.value); if(cb.checked){ ticked++; if(words(tx.value)>=3) described++; } });
+    var checks=[[team.value.trim().length>0,'Team named (or "Solo")'],[words(idea.value)>=30,'Idea is a real paragraph (~30+ words)'],
+      [new RegExp(L.cpNeed,'i').test(idea.value),L.cpNeedLabel],[ticked>=2,'Combines at least two HOS pieces (all four by Week 10)'],
+      [ticked>0 && described===ticked,'Each ticked HOS says what it does in your project']];
+    $('cpLitmus').innerHTML=checks.map(function(c){return '<li class="'+(c[0]?'ok':'no')+'">'+(c[0]?'✓ ':'○ ')+c[1]+'</li>';}).join('');
+  }
+  upd();
+  $('cpCopy').addEventListener('click',function(){
+    var parts=rows.filter(function(r){return r.querySelector('input[type=checkbox]').checked;}).map(function(r){ return '- '+r.querySelector('b').textContent+': '+r.querySelector('input[type=text]').value; });
+    var t='TEAM/TERM PROJECT CHECKPOINT — '+L.code+' (Week 6)\n\nTeam: '+team.value+'\n\nIdea: '+idea.value+'\n\nHOS pieces it combines:\n'+(parts.join('\n')||'(none yet)');
+    var s=$('cpStatus'); if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ s.textContent='Copied — paste it into Brightspace.'; },function(){ s.textContent='Copy blocked.'; }); } else s.textContent='Copy not supported.';
+  });
+})();
+/* Architecture path ordering (HOS 4) */
+(function(){
+  var pool=$('orderPool'); if(!pool) return; var P=L.paths, cur=Object.keys(P)[0], next=0, done=$('orderDone'), hint=$('orderHint'), reveal=$('orderReveal');
+  function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=a[i]; a[i]=a[j]; a[j]=x; } return a; }
+  function reset(){
+    next=0; done.innerHTML=''; done.classList.remove('revealed'); reveal.disabled=true; hint.textContent='Click the first step.';
+    pool.innerHTML=shuffle(P[cur].map(function(s,i){return {s:s,i:i};})).map(function(o){ return '<button type="button" data-i="'+o.i+'">'+o.s[0]+'</button>'; }).join('');
+    [].slice.call(pool.querySelectorAll('button')).forEach(function(b){ b.addEventListener('click',function(){
+      if(+b.dataset.i===next){ var s=P[cur][next], li=document.createElement('li');
+        li.innerHTML='<span class="n">'+(next+1)+'</span><span>'+s[0]+'</span><span class="tag">'+s[1]+'</span><span class="risk">⚠ '+s[2]+'</span>';
+        done.appendChild(li); b.remove(); next++;
+        hint.textContent= next===P[cur].length ? 'Path complete. Now reveal where each step can slow down or fail.' : 'Correct — what happens next?';
+        if(next===P[cur].length) reveal.disabled=false;
+      } else { b.classList.add('shake'); hint.textContent='Not yet — what must happen first?'; setTimeout(function(){ b.classList.remove('shake'); },600); }
+    }); });
+  }
+  [].slice.call(document.querySelectorAll('#pathPick button')).forEach(function(b){ b.addEventListener('click',function(){
+    [].slice.call(document.querySelectorAll('#pathPick button')).forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true'); cur=b.dataset.p; reset(); }); });
+  reveal.addEventListener('click',function(){ done.classList.add('revealed'); }); $('orderReset').addEventListener('click',reset); reset();
+})();
+</script>
+</body>
+</html>

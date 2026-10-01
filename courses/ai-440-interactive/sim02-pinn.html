@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 440 HOS 2 draft simulator: fit a damped spring from sparse noisy readings with a data-only model and a physics-informed one, and see what happens when the assumed physics is wrong.">
+<title>PINN Simulator</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#b45309; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#2a1706 0%,#92400e 60%,#b45309 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --bg:#faf6f0;--surface2:#f6efe4;--border:#e8dac5;--text:#271a0c;--muted:#6b5a45;--accent:#b45309;--accent2:#92400e;--accent-light:#fdf1e2;--header-bg:#2a1706; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#140e07;--surface:#1f160c;--surface2:#2a1e10;--border:#43321c;--text:#f5ecdf;--muted:#b8a488;--accent:#fbbf24;--accent2:#fcd34d;--accent-light:#2e1f08;--on-accent:#2a1706;--header-bg:#0c0803; } }
+:root[data-theme="dark"] { --bg:#140e07;--surface:#1f160c;--surface2:#2a1e10;--border:#43321c;--text:#f5ecdf;--muted:#b8a488;--accent:#fbbf24;--accent2:#fcd34d;--accent-light:#2e1f08;--on-accent:#2a1706;--header-bg:#0c0803; }
+
+:root { --maxw:1100px; }
+.draftbar { background:var(--amber-bg); color:var(--amber); border-bottom:1px solid var(--amber); font-size:.8rem; font-weight:700; text-align:center; padding:7px 16px; }
+
+.sim-layout { display:grid; grid-template-columns:minmax(260px,340px) 1fr; gap:16px; align-items:start; }
+@media (max-width:860px){ .sim-layout { grid-template-columns:1fr; } }
+.panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); margin-bottom:16px; min-width:0; }
+.panel h2 { font-size:1.02rem; margin-bottom:10px; }
+.panel h3 { font-size:.9rem; margin:14px 0 6px; }
+.presets { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 4px; }
+.presets button { font-family:inherit; font-size:.74rem; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:14px; padding:4px 10px; cursor:pointer; }
+.presets button:hover { border-color:var(--accent); }
+.toggle { display:flex; gap:8px; align-items:flex-start; font-size:.85rem; margin:6px 0; cursor:pointer; }
+.toggle input { accent-color:var(--accent); margin-top:4px; }
+.toggle small { display:block; color:var(--muted); font-size:.74rem; }
+.lanes { display:grid; grid-template-columns:repeat(var(--lanes,4),1fr); gap:8px; margin-bottom:12px; }
+.lane { border:2px solid var(--border); border-radius:10px; padding:10px; text-align:center; font-size:.8rem; background:var(--surface2); transition:all .2s; min-width:0; }
+.lane b { display:block; font-size:.86rem; }
+.lane .ic { font-size:1.3rem; display:block; }
+.lane.from { border-color:var(--blue); background:var(--blue-bg); }
+.lane.to { border-color:var(--accent); background:var(--accent-light); box-shadow:0 0 0 3px var(--accent-light); }
+.lane.err { border-color:var(--bad); background:var(--bad-bg); }
+@media (max-width:520px){ .lanes { grid-template-columns:repeat(2,1fr); } }
+.stepbox { border:1px solid var(--border); border-left:5px solid var(--accent); border-radius:8px; padding:10px 14px; background:var(--surface2); margin-bottom:12px; min-height:84px; }
+.stepbox.err { border-left-color:var(--bad); } .stepbox.warn { border-left-color:var(--amber); }
+.stepbox .k { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.steps-list { list-style:none; margin:0; padding:0; font-size:.8rem; }
+.steps-list li { padding:5px 8px; border-radius:6px; color:var(--muted); display:flex; gap:8px; }
+.steps-list li.cur { background:var(--accent-light); color:var(--text); font-weight:700; }
+.steps-list li.past { color:var(--text); }
+.steps-list li .n { flex:none; width:20px; text-align:right; }
+.steps-list li.bad { color:var(--bad); }
+.verdict { border-radius:8px; padding:10px 14px; font-size:.86rem; margin-top:10px; }
+.verdict.ok { background:var(--ok-bg); color:var(--ok); } .verdict.bad { background:var(--bad-bg); color:var(--bad); } .verdict.warn { background:var(--amber-bg); color:var(--amber); }
+.kv { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; font-size:.82rem; }
+.kv dt { color:var(--muted); } .kv dd { margin:0; font-weight:600; }
+.bar-row { display:grid; grid-template-columns:70px 1fr 48px; gap:8px; align-items:center; font-size:.78rem; margin-bottom:4px; }
+.bar-track { height:12px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; position:relative; }
+.bar-fill { height:100%; background:var(--accent); }
+.project-tip { border:1px dashed var(--accent); border-radius:var(--radius); padding:14px 18px; background:var(--accent-light); font-size:.88rem; }
+.project-tip b.h { display:block; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); margin-bottom:4px; }
+
+.stepcard { border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:.84rem; background:var(--surface); }
+.stepcard .k { font-size:.68rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
+.stepcard.tool { border-left-color:var(--blue); } .stepcard.final { border-left-color:var(--ok); } .stepcard.stop { border-left-color:var(--amber); } .stepcard.bad { border-left-color:var(--bad); background:var(--bad-bg); }
+.stepcard.pick { cursor:pointer; } .stepcard.pick:hover { box-shadow:0 0 0 2px var(--accent-light); } .stepcard.chosen { box-shadow:0 0 0 3px var(--accent); }
+.metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0; }
+@media (max-width:560px){ .metrics { grid-template-columns:repeat(2,1fr); } }
+.metric { border:1px solid var(--border); border-radius:8px; padding:8px; text-align:center; background:var(--surface2); }
+.metric b { display:block; font-size:1.2rem; } .metric span { font-size:.72rem; color:var(--muted); }
+.seg { display:inline-flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; flex-wrap:wrap; }
+.seg button { font-family:inherit; font-size:.8rem; font-weight:700; padding:6px 12px; border:none; background:var(--surface2); color:var(--text); cursor:pointer; }
+.seg button[aria-pressed="true"] { background:var(--accent); color:var(--on-accent); }
+.tbl { width:100%; border-collapse:collapse; font-size:.8rem; }
+.tbl th, .tbl td { border:1px solid var(--border); padding:5px 8px; text-align:left; }
+.tbl th { background:var(--surface2); font-size:.7rem; text-transform:uppercase; color:var(--muted); }
+.ok { color:var(--ok); font-weight:700; } .no { color:var(--bad); font-weight:700; }
+
+.bars { display:flex; align-items:flex-end; gap:6px; height:120px; border-bottom:1px solid var(--border); padding:4px 0; }
+.bars div { flex:1; background:var(--accent); border-radius:4px 4px 0 0; position:relative; min-width:14px; }
+.bars div.alert { background:var(--bad); } .bars div span { position:absolute; top:-16px; left:0; right:0; text-align:center; font-size:.68rem; color:var(--muted); }
+.stage-pipe { display:flex; gap:6px; flex-wrap:wrap; margin:8px 0; }
+.stage-pipe .st { flex:1 1 110px; border:2px solid var(--border); border-radius:8px; padding:8px; font-size:.8rem; text-align:center; background:var(--surface2); }
+.stage-pipe .st.pass { border-color:var(--ok); background:var(--ok-bg); } .stage-pipe .st.fail { border-color:var(--bad); background:var(--bad-bg); } .stage-pipe .st.skip { opacity:.45; }
+
+svg.chart { width:100%; height:220px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; }
+svg.chart text { fill:var(--muted); font-size:10px; }
+.legend { display:flex; gap:12px; flex-wrap:wrap; font-size:.78rem; margin-top:6px; }
+.legend i { display:inline-block; width:12px; height:3px; vertical-align:middle; margin-right:4px; }
+.grid-heat { display:grid; gap:3px; font-size:.7rem; }
+.grid-heat div { padding:6px 2px; text-align:center; border-radius:4px; }
+.grid-heat .h { background:none; color:var(--muted); font-weight:700; }
+.grid-heat .safe { background:var(--ok-bg); color:var(--ok); } .grid-heat .warn { background:var(--amber-bg); color:var(--amber); } .grid-heat .unsafe { background:var(--bad-bg); color:var(--bad); }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="brand-icon">440</span><span><b>AI 440: Digital Twins and Physical AI</b><small>Interactive lessons &amp; HOS simulators</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-440.html">← AI 440</a><a class="pill-btn" href="index.html">Interactive home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+  <div class="draftbar">Draft — built from the course outline. Tools, labs and starter code are not built or tested yet; Create/Scaffold steps describe the planned build.</div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Simulator 2 · Pairs with HOS 2 (Weeks 3–4)</div>
+    <h1>PINN Simulator</h1>
+    <p class="lede">A damped spring, a few noisy readings, and two models: a flexible data-only fit and a physics-informed one that must obey the spring equation. Change the data, the balance λ, and the damping you assume.</p>
+    <div class="chips"><span class="chip">Outcome O2</span><span class="chip">Data term vs. physics term</span><span class="chip">λ balance</span><span class="chip">Wrong physics</span></div>
+  </div>
+</section>
+<main id="main">
+<div class="row no-print" style="margin-bottom:16px"><span class="small muted"><b>Simulators:</b></span><a class="tag blue" href="sim01-sensor-pipeline.html" style="text-decoration:none">1 · Sensor Pipeline</a><span class="tag">2 · PINN</span><a class="tag blue" href="sim03-sim2real.html" style="text-decoration:none">3 · Sim-to-Real</a><a class="tag blue" href="sim04-safety-envelope.html" style="text-decoration:none">4 · What-If &amp; Safety Envelope</a></div><p class="sim-note">⚠ Simulation only — an illustrative model of the planned lab, with simplified physics. The real tools are proposals pending the feasibility test.</p>
+<div class="sim-layout">
+  <div class="panel">
+    <h2>Controls</h2>
+    <label class="field" for="n">Readings (in the first 4 s): <span id="nV"></span></label><input type="range" id="n" min="3" max="20" value="8">
+    <label class="field" for="noise">Sensor noise: <span id="noiseV"></span></label><input type="range" id="noise" min="0" max="30" value="8">
+    <label class="field" for="lam">Physics weight λ: <span id="lamV"></span></label><input type="range" id="lam" min="0" max="40" value="20">
+    <label class="field" for="damp">Damping assumed in the equation (true = 0.40): <span id="dampV"></span></label><input type="range" id="damp" min="10" max="90" value="40">
+    <p class="small muted" style="margin-top:8px">Illustrative: instead of training a network, the "PINN" here is a physics-form fit, pulled toward the data by (1 − λ-weight) only where readings exist — enough to show the trade-off.</p>
+  </div>
+  <div class="panel">
+    <h2>Position over 8 seconds</h2>
+    <svg class="chart" id="ch" role="img" aria-label="Spring position chart"></svg>
+    <div class="legend"><span><i style="background:var(--muted)"></i>true motion</span><span><i style="background:var(--amber)"></i>data-only model</span><span><i style="background:var(--accent)"></i>physics-informed</span><span><i style="background:var(--text)"></i>readings</span></div>
+    <div class="metrics"><div class="metric"><b id="e1">—</b><span>data-only error (0–4 s)</span></div><div class="metric"><b id="e2">—</b><span>data-only error (4–8 s)</span></div><div class="metric"><b id="e3">—</b><span>PINN error (0–4 s)</span></div><div class="metric"><b id="e4">—</b><span>PINN error (4–8 s)</span></div></div>
+    <div id="v"></div>
+  </div>
+</div>
+<div class="card"><h2>What this teaches</h2><ul><li><b>Data-only models fit the noise and extrapolate wildly.</b> Watch the 4–8 s error with few readings.</li><li><b>The physics term holds the shape</b> where there's no data — the PINN's sweet spot is sparse, noisy readings.</li><li><b>Wrong physics makes the PINN confidently wrong.</b> Mis-set the damping and turn λ up.</li></ul></div>
+
+</main>
+<footer class="foot">AI 440: Digital Twins and Physical AI · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — not yet offered.<br>Draft built from the course outline — nothing here has been tested with real tools yet.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai440-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai440-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script>
+function chart(svg, series, ymin, ymax, opts){
+  opts=opts||{}; var W=600,H=220,P=28, n=Math.max.apply(null,series.map(function(s){return s.pts.length;}))||1, xs=opts.xs||null;
+  function X(i,x){ return xs? P+(x-xs[0])/(xs[1]-xs[0])*(W-2*P) : P+i/(Math.max(1,n-1))*(W-2*P); }
+  function Y(v){ return H-P-(v-ymin)/(ymax-ymin)*(H-2*P); }
+  var h='<line x1="'+P+'" y1="'+(H-P)+'" x2="'+(W-P)+'" y2="'+(H-P)+'" stroke="currentColor" opacity=".25"/>';
+  (opts.hlines||[]).forEach(function(l){ h+='<line x1="'+P+'" y1="'+Y(l[0])+'" x2="'+(W-P)+'" y2="'+Y(l[0])+'" stroke="'+l[1]+'" stroke-dasharray="4 3"/><text x="'+(W-P-2)+'" y="'+(Y(l[0])-3)+'" text-anchor="end">'+l[2]+'</text>'; });
+  (opts.vbands||[]).forEach(function(b){ h+='<rect x="'+X(0,b[0])+'" y="'+P+'" width="'+(X(0,b[1])-X(0,b[0]))+'" height="'+(H-2*P)+'" fill="'+b[2]+'" opacity=".12"/>'; });
+  series.forEach(function(s){
+    if(s.dots){ s.pts.forEach(function(p,i){ if(p==null) return; var x=xs?p[0]:i, y=xs?p[1]:p; h+='<circle cx="'+X(i,x)+'" cy="'+Y(y)+'" r="3.5" fill="'+s.color+'"/>'; }); return; }
+    var d='', pen=false; s.pts.forEach(function(p,i){ if(p==null){ pen=false; return; } var x=xs?p[0]:i, y=xs?p[1]:p; y=Math.max(ymin,Math.min(ymax,y)); d+=(pen?'L':'M')+X(i,x).toFixed(1)+' '+Y(y).toFixed(1)+' '; pen=true; });
+    h+='<path d="'+d+'" fill="none" stroke="'+s.color+'" stroke-width="'+(s.w||2)+'"'+(s.dash?' stroke-dasharray="5 4"':'')+'/>';
+  });
+  h+='<text x="4" y="'+(P+4)+'">'+ymax+'</text><text x="4" y="'+(H-P)+'">'+ymin+'</text>';
+  svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.innerHTML=h;
+}
+var CS=getComputedStyle(document.documentElement); function col(v){ return CS.getPropertyValue(v).trim()||'#888'; }
+
+var $=function(id){return document.getElementById(id);};
+var W0=2.4, Z=0.40/(2*W0);
+function truth(t){ var b=0.40/2, wd=Math.sqrt(W0*W0-b*b); return Math.exp(-b*t)*Math.cos(wd*t); }
+function solve(A,y){ var n=A[0].length, M=[], i,j,k; for(i=0;i<n;i++){ M.push([]); for(j=0;j<n;j++){ var s=0; for(k=0;k<A.length;k++) s+=A[k][i]*A[k][j]; M[i].push(s+(i===j?1e-6:0)); } var r=0; for(k=0;k<A.length;k++) r+=A[k][i]*y[k]; M[i].push(r); }
+  for(i=0;i<n;i++){ var p=i; for(j=i+1;j<n;j++) if(Math.abs(M[j][i])>Math.abs(M[p][i])) p=j; var tmp=M[i]; M[i]=M[p]; M[p]=tmp; for(j=i+1;j<n;j++){ var f=M[j][i]/M[i][i]; for(k=i;k<=n;k++) M[j][k]-=f*M[i][k]; } }
+  var x=new Array(n); for(i=n-1;i>=0;i--){ var s=M[i][n]; for(j=i+1;j<n;j++) s-=M[i][j]*x[j]; x[i]=s/M[i][i]; } return x; }
+function rnd(s){ return function(){ s=(s*16807)%2147483647; return (s-1)/2147483646; }; }
+function upd(){
+  var n=+$('n').value, sig=+$('noise').value/100, lam=+$('lam').value/10, damp=+$('damp').value/100;
+  $('nV').textContent=n; $('noiseV').textContent=sig.toFixed(2); $('lamV').textContent=lam.toFixed(1); $('dampV').textContent=damp.toFixed(2);
+  var R=rnd(11), data=[]; for(var i=0;i<n;i++){ var t=0.1+i*(3.9/(Math.max(1,n-1))); data.push([t,truth(t)+(R()-0.5)*2*sig]); }
+  var deg=Math.min(n-1,6); function sc(t){ return t/2-1; }
+  var A=data.map(function(d){ var r=[]; for(var p=0;p<=deg;p++) r.push(Math.pow(sc(d[0]),p)); return r; }), cp=solve(A,data.map(function(d){return d[1];}));
+  function poly(t){ var s=0; for(var p=0;p<=deg;p++) s+=cp[p]*Math.pow(sc(t),p); return Math.max(-1.6,Math.min(1.6,s)); }
+  var b=damp/2, wd=Math.sqrt(Math.max(0.01,W0*W0-b*b));
+  var B=data.map(function(d){ return [Math.exp(-b*d[0])*Math.cos(wd*d[0]),Math.exp(-b*d[0])*Math.sin(wd*d[0])]; }), cf=solve(B,data.map(function(d){return d[1];}));
+  function phys(t){ return Math.exp(-b*t)*(cf[0]*Math.cos(wd*t)+cf[1]*Math.sin(wd*t)); }
+  // Physics term applies everywhere; the data term only pulls where data exists (0-4 s), fading beyond it.
+  var w=lam/(1+lam);
+  function pinn(t){ if(lam===0) return poly(t); var d=Math.max(-0.5,Math.min(0.5,poly(t)-phys(t))); var reach=t<=4?1:Math.exp(-(t-4)*3); return phys(t)+(1-w)*d*reach; }
+  var T=[],P=[],Q=[],G=[]; for(var k=0;k<=160;k++){ var tt=k*0.05; T.push([tt,truth(tt)]); P.push([tt,poly(tt)]); Q.push([tt,pinn(tt)]); }
+  function err(f,a,c){ var s=0,m=0; for(var tt=a;tt<=c;tt+=0.05){ s+=Math.abs(f(tt)-truth(tt)); m++; } return (s/m).toFixed(3); }
+  chart($('ch'),[{pts:T,color:col('--muted'),w:3},{pts:P,color:col('--amber'),dash:1},{pts:Q,color:col('--accent')},{pts:data,color:col('--text'),dots:1}],-1.5,1.5,{xs:[0,8],vbands:[[0,4,col('--accent')]]});
+  var e=[err(poly,0,4),err(poly,4,8),err(pinn,0,4),err(pinn,4,8)]; ['e1','e2','e3','e4'].forEach(function(id,i){ $(id).textContent=e[i]; });
+  var wrong=Math.abs(damp-0.40)>0.12;
+  $('v').innerHTML='<div class="verdict '+(wrong&&lam>1?'bad':+e[3]<+e[1]?'ok':'warn')+'">'+(wrong&&lam>1?'The assumed damping is wrong, and λ makes the model trust it: confidently wrong beyond the data.':(+e[3]<+e[1]?'Beyond the data, the physics-informed model is '+(e[1]/Math.max(e[3],0.001)).toFixed(1)+'× more accurate.':(lam===0?'λ = 0 means no physics term at all: this "PINN" is just the data-only model.':'Close here — compare the in-range errors too.')))+'</div>';
+}
+['n','noise','lam','damp'].forEach(function(id){ $(id).addEventListener('input',upd); }); upd();
+</script>
+</body>
+</html>

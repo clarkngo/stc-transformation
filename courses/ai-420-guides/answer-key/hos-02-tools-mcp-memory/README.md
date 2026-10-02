@@ -16,5 +16,5 @@ Guide: https://clarkngo.github.io/stc-transformation/courses/ai-420-guides/hos-0
 ```bash
 cp .env.example .env        # paste your GOOGLE_API_KEY
 python data/seed_db.py      # Codespaces does this for you
-adk web                     # pick ops_agent
+adk web --allow_origins "*"   # pick ops_agent
 ```

@@ -157,6 +157,7 @@
                 <li><strong>The judge's output won't parse</strong> — ask for structured output (<code>response_mime_type="application/json"</code> with a schema) rather than parsing free text.</li>
                 <li><strong>Your costs look impossibly low</strong> — <code>pricing.json</code> ships with <em>example</em> prices. Look up your model's current list price and update it before you report cost per task.</li>
                 <li><strong><code>429 RESOURCE_EXHAUSTED</code></strong> — you hit the free tier's per-minute limit. Wait a minute and rerun; the scripts' <code>--pause</code> option adds a gap between runs.</li>
+                <li><strong><code>adk web</code> opens a blank page, and the terminal shows <code>403 Forbidden</code> for <code>/dev-ui/...js</code> files</strong> — ADK blocks requests that arrive through Codespaces' forwarded URL. Stop it and start it as <code>adk web --allow_origins "*"</code>, then hard-refresh the tab. That's safe here: Codespace ports are private to your GitHub account by default.</li>
                 <li><strong>Codespaces doesn't pick up the devcontainer</strong> — Codespaces only reads <code>.devcontainer/</code> at the <em>root</em> of a repo. Use the portfolio template (its devcontainer covers all four HOS), or make this HOS folder the root of its own repo.</li>
             </ul>
         </div>

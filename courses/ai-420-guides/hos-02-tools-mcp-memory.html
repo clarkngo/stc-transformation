@@ -89,7 +89,7 @@
         <div class="stage-block">
             <h2><span class="stage-num">1</span>Create / Scaffold</h2>
             <p class="stage-tagline">Not graded on its own — this is the starting point, not the deliverable.</p>
-            <p>What's already working: <code>data/harbor.db</code> (built automatically; rebuild any time with <code>python data/seed_db.py</code>), an MCP server with one finished tool (<code>get_marine_weather</code>, your worked example), and an ADK agent already connected to that server. Try it first: run <code>adk web</code>, pick <code>ops_agent</code>, and ask about the wind in Anacortes.</p>
+            <p>What's already working: <code>data/harbor.db</code> (built automatically; rebuild any time with <code>python data/seed_db.py</code>), an MCP server with one finished tool (<code>get_marine_weather</code>, your worked example), and an ADK agent already connected to that server. Try it first: run <code>adk web --allow_origins "*"</code>, pick <code>ops_agent</code>, and ask about the wind in Anacortes.</p>
             <p>This time the prompt only says <em>what</em> to build. You and your assistant decide how:</p>
 <pre>Using mcp_server/server.py's get_marine_weather as the pattern, add to
 the MCP server:
@@ -173,6 +173,7 @@ Tools should return errors as data the model can read, not raise.</pre>
                 <li><strong>Memory "forgets" after you rebuild the Codespace</strong> — <code>.memory/</code> is gitignored on purpose (it can hold customer data). It survives restarts, not rebuilds.</li>
                 <li><strong>A page comes back with no text</strong> — some sites build their content with JavaScript, which a plain HTTP fetch never runs. Try a different page; a headless browser (Playwright) is the heavier fix.</li>
                 <li><strong><code>429 RESOURCE_EXHAUSTED</code></strong> — you hit the free tier's per-minute limit. Wait a minute and rerun; the scripts' <code>--pause</code> option adds a gap between runs.</li>
+                <li><strong><code>adk web</code> opens a blank page, and the terminal shows <code>403 Forbidden</code> for <code>/dev-ui/...js</code> files</strong> — ADK blocks requests that arrive through Codespaces' forwarded URL. Stop it and start it as <code>adk web --allow_origins "*"</code>, then hard-refresh the tab. That's safe here: Codespace ports are private to your GitHub account by default.</li>
                 <li><strong>Codespaces doesn't pick up the devcontainer</strong> — Codespaces only reads <code>.devcontainer/</code> at the <em>root</em> of a repo. Use the portfolio template (its devcontainer covers all four HOS), or make this HOS folder the root of its own repo.</li>
             </ul>
         </div>

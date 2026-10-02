@@ -6,7 +6,7 @@ and can use whatever tools it serves — right now, just get_marine_weather.
 Stage 1 adds the browser and database tools to the server, plus memory:
 short-term (ADK session state) and long-term (a local Chroma store).
 
-Run from the HOS folder:  adk web   (then pick "ops_agent")
+Run from the HOS folder:  adk web --allow_origins "*"   (then pick "ops_agent")
 """
 
 import os

@@ -1,7 +1,7 @@
 """The same research agent, rebuilt in Google ADK.
 
 Same model, same three tools, same instructions as research/react_loop.py,
-but ADK runs the loop for you. Run it with `adk web` from the HOS folder and
+but ADK runs the loop for you. Run it with `adk web --allow_origins "*"` from the HOS folder and
 open the Events tab to find the loop you wrote by hand.
 Pattern follows agent-development's hos01/hos02 examples.
 """

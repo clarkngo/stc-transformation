@@ -6,7 +6,7 @@ Guide: https://clarkngo.github.io/stc-transformation/courses/ai-420-guides/hos-0
 - `research/tools.py`: three tools (Wikipedia search, Wikipedia intro, calculator). Free, no key.
 - `research/baseline.py`: one plain LLM call, no tools. The "before" picture.
 - `tasks.json` + `compare.py`: five multi-step questions, run through each approach side by side.
-- `adk_research_agent/`: the same agent in Google ADK. Run `adk web` here and pick it.
+- `adk_research_agent/`: the same agent in Google ADK. Run `adk web --allow_origins "*"` here and pick it.
 
 **You build**
 - Stage 1: `research/react_loop.py`, an agent loop by hand (the guide gives the prompt).

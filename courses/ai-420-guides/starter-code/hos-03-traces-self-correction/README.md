@@ -6,7 +6,7 @@ Guide: https://clarkngo.github.io/stc-transformation/courses/ai-420-guides/hos-0
 
 **Already working**
 - `run_scenarios.py`: runs the six scenarios in `scenarios.json`, prints a trace of each, and saves it to `traces/`.
-- `support_agent/`: Harbor Supply Co.'s customer-support agent (plus `adk web` if you want to poke at it).
+- `support_agent/`: Harbor Supply Co.'s customer-support agent (plus `adk web --allow_origins "*"` if you want to poke at it).
 
 **You build**
 - Stage 1: Langfuse tracing (a `tracing.py` module that `run_scenarios.py` picks up). You write the prompt.

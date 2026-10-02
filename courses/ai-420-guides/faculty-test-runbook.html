@@ -146,7 +146,7 @@ python -c "import os; from google import genai; print(genai.Client().models.gene
 python -m research.baseline "How many years before the first iPhone was the Space Needle completed?"
 python compare.py --with-plan --verbose
 python -c "from research import react_loop as r; print(r.run('How tall is Mount Rainier in feet, divided by the height of Mount Fuji in feet?', max_steps=2)['answer'])"
-adk web      # pick adk_research_agent, ask one question, open the Events tab</code></pre>
+adk web --allow_origins "*"      # pick adk_research_agent, ask one question, open the Events tab</code></pre>
             <div class="watch"><strong>Watch for:</strong> the baseline must get some of the five questions wrong or guess, or the lesson doesn't land. The agent should use the calculator rather than doing math in its reply (check the <code>--verbose</code> log). With <code>max_steps=2</code> it should say it couldn't finish, not pretend. In <code>adk web</code>, can you match the Events view to the loop steps?</div>
             <div class="record"><h4>Record</h4><div class="fields">
                 <label>Baseline correct (of 5)<input type="number" data-k="h1_base" min="0" max="5"></label>
@@ -165,7 +165,7 @@ adk web      # pick adk_research_agent, ask one question, open the Events tab</c
             <h2>HOS 2 — Custom Tools, MCP &amp; Memory</h2>
             <p class="when"><span class="path-tag">Answer key</span>≈ 25 minutes · interactive in <code>adk web</code> · <a href="hos-02-tools-mcp-memory.html">Guide</a></p>
 <pre><code>cd answer-key/hos-02-tools-mcp-memory     # from the repo root
-adk web                                   # pick ops_agent</code></pre>
+adk web --allow_origins "*"               # pick ops_agent</code></pre>
             <p>In <code>adk web</code>, send these in one session:</p>
             <div class="table-scroll"><table class="t">
                 <tr><th>Send</th><th>Expect</th></tr>

@@ -2,7 +2,7 @@
 
 Run it one of two ways from the HOS folder:
     python run_scenarios.py      # all scenarios, traces printed and saved to traces/
-    adk web                      # interactive, with the Events/Trace view
+    adk web --allow_origins "*"  # interactive, with the Events/Trace view
 """
 
 import os

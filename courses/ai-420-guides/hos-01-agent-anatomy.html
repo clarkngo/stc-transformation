@@ -134,7 +134,7 @@ google-genai SDK. Do not use any agent framework.
             <p>Pick <strong>one</strong> of these and explain it in your own words:</p>
             <ul>
                 <li>Point to the exact line in <code>react_loop.py</code> where each of the four components lives: reasoning, planning, tool use, and memory. For memory, explain why the whole history is sent again on every step, and what that does to token count as the loop goes on.</li>
-                <li>Run the ADK version (<code>adk web</code> from the HOS folder, pick <code>adk_research_agent</code>) on the same question, and open its <strong>Events</strong> tab. Match each event to the step in your own loop that does the same job. What does ADK do that your loop doesn't?</li>
+                <li>Run the ADK version (<code>adk web --allow_origins "*"</code> from the HOS folder, pick <code>adk_research_agent</code>) on the same question, and open its <strong>Events</strong> tab. Match each event to the step in your own loop that does the same job. What does ADK do that your loop doesn't?</li>
             </ul>
             <div class="submit-box"><h5>Submit</h5>
                 <ul>
@@ -175,6 +175,7 @@ google-genai SDK. Do not use any agent framework.
                 <li><strong><code>GOOGLE_API_KEY is not set</code></strong> — the <code>.env</code> file must sit in the HOS folder itself (next to <code>tasks.json</code>), not in <code>research/</code>.</li>
                 <li><strong><code>adk web</code> lists folders that aren't agents</strong> — that's expected. It shows every folder in the directory you started it from. Pick <code>adk_research_agent</code>.</li>
                 <li><strong><code>429 RESOURCE_EXHAUSTED</code></strong> — you hit the free tier's per-minute limit. Wait a minute and rerun; the scripts' <code>--pause</code> option adds a gap between runs.</li>
+                <li><strong><code>adk web</code> opens a blank page, and the terminal shows <code>403 Forbidden</code> for <code>/dev-ui/...js</code> files</strong> — ADK blocks requests that arrive through Codespaces' forwarded URL. Stop it and start it as <code>adk web --allow_origins "*"</code>, then hard-refresh the tab. That's safe here: Codespace ports are private to your GitHub account by default.</li>
                 <li><strong>Codespaces doesn't pick up the devcontainer</strong> — Codespaces only reads <code>.devcontainer/</code> at the <em>root</em> of a repo. Use the portfolio template (its devcontainer covers all four HOS), or make this HOS folder the root of its own repo.</li>
             </ul>
         </div>

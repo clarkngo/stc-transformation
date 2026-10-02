@@ -5,7 +5,7 @@ Tools come from two places:
   - plain Python function tools for memory (ops_agent/memory.py)
 Short-term memory is ADK session state (set_current_customer); long-term memory is Chroma.
 
-Run from the HOS folder:  adk web   (then pick "ops_agent")
+Run from the HOS folder:  adk web --allow_origins "*"   (then pick "ops_agent")
 """
 
 import os

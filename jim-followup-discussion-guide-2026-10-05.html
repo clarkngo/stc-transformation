@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Jim Follow-up — Discussion Guide, October 5 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--teal); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--teal-dim); border: 1px solid rgba(13,148,136,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p:first-child { margin-top: 0; }
+    .icon-teal { background: var(--teal-dim); } .icon-blue { background: var(--blue-dim); }
+    .icon-violet { background: var(--violet-dim); } .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); }
+    .answer { font-weight: 700; color: var(--teal); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px solid var(--border); }
+    th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); background: var(--bg); }
+    td:first-child { font-weight: 600; white-space: nowrap; }
+    .pill { display: inline-block; font-size: 0.72rem; font-weight: 700; border-radius: 12px; padding: 2px 9px; }
+    .pill.go { background: var(--green-dim); color: var(--green); }
+    .pill.later { background: var(--amber-dim); color: var(--amber); }
+    .uc { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 14px; }
+    .uc h3 { margin: 0 0 6px; font-size: 1rem; }
+    .uc dl { margin: 0; display: grid; grid-template-columns: 150px 1fr; gap: 4px 12px; font-size: 0.88rem; }
+    .uc dt { font-weight: 700; color: var(--slate); }
+    .uc dd { margin: 0; }
+    @media (max-width: 600px) { .uc dl { grid-template-columns: 1fr; } .uc dd { margin-bottom: 6px; } .doc-header { padding: 22px 18px; } td:first-child { white-space: normal; } }
+    ol.steps li, ul.tight li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="meeting-notes-habitat-emba-ai-2026-09-28.html">Sep 28 meeting notes</a><span>·</span><a href="agentic-ai-pilot-discussion-2026-09-28.html">Pilot prep</a><span>·</span><a href="corporate-partnerships-hub.html">Corporate Partnerships Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">1-1 Prep · Follow-up · Outside STC, adjacent to it</div>
+    <h1>Jim Follow-up — Discussion Guide</h1>
+    <p class="subtitle">What to cover, what to ask, and what to offer at the Monday follow-up with Jim O'Farrell. Builds on the Sep 28 conversation (Habitat technology, EMBA AI fluency, demos) and the Agentic AI pilot prep.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Mon, Oct 5, 2026 · 11:00 AM</span>
+      <span class="meta-chip">👥 Jim O'Farrell · Clark Ngo</span>
+      <span class="meta-chip">🗂 Discussion guide · draft</span>
+    </div>
+  </header>
+
+  <div class="tldr">
+    <h2>TL;DR — three things to leave the room with</h2>
+    <ul>
+      <li><strong>A pilot decision.</strong> Which pilot (Project Leo brief, MBA 551 refresh, or BAM pathway), a start date, and the next step on the written agreement with VMI LLC.</li>
+      <li><strong>One concrete EMBA deliverable.</strong> Agree on a single EMV 582 module where I draft a sample AI-fluency challenge before our next meeting.</li>
+      <li><strong>A first Habitat step that isn't AI.</strong> Find out where the IT audit stands and whether a requirements/inventory template from me would help.</li>
+    </ul>
+  </div>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">🔁</div><div><h2>Open threads from Sep 28</h2><div class="section-sub">Check these off in the first five minutes</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Item</th><th>Owner</th><th>Ask or report</th></tr></thead>
+        <tbody>
+          <tr><td>Portfolio review</td><td>Jim</td><td>"Did you get a chance to look at the repo and blueprints? What stood out, and what was confusing?"</td></tr>
+          <tr><td>EMV 582 syllabus + AI Fluency drafts</td><td>Jim</td><td>If they arrived, bring 2–3 specific reactions. If not, ask when, and which module to start with.</td></tr>
+          <tr><td>LinkedIn + portfolio links</td><td>Clark</td><td>Report done (or say when). Ask how Jim would position the data science and agentic work for his network.</td></tr>
+          <tr><td>Habitat leadership alignment</td><td>Jim</td><td>"Where did the conversation with Scott and Brett land on audit scope?"</td></tr>
+          <tr><td>Pilot answers (5 questions)</td><td>Both</td><td>Did the <a href="agentic-ai-pilot-discussion-2026-09-28.html">draft answers</a> match what Jim had in mind? What would he change?</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">🧪</div><div><h2>1. Agentic AI pilot — getting to a decision</h2><div class="section-sub">Move from "interested" to "starting on a date"</div></div></div>
+    <div class="section-body">
+      <p><strong>Questions to ask</strong></p>
+      <ul class="tight">
+        <li>Of Project Leo, MBA 551, and BAM, which one would <em>he</em> be most excited to show someone in six weeks?</li>
+        <li>Is there a real deadline coming (board meeting, program review, Amazon conversation) that a first brief could feed?</li>
+        <li>What tools does he use today, and on which accounts: personal, CityU, or Habitat? Any policies he already knows about?</li>
+        <li>How hands-on does he want to be? Is the goal his own fluency, or getting work done for him?</li>
+        <li>What would make him call the pilot a failure? (This surfaces the real success criteria.)</li>
+        <li>Who at CityU should hear about the arrangement, and should that happen before or after the SOW?</li>
+      </ul>
+      <p><strong>What I can offer on the spot</strong></p>
+      <ul class="tight">
+        <li>Run a 10-minute live demo: one deep-research prompt on the space economy, fed into a brief template, with a citation check.</li>
+        <li>Offer to draft the one-page SOW myself (scope, hours cap, data rules, IP, separation from coursework) for his review.</li>
+      </ul>
+      <div class="callout amber"><strong>Guardrail reminder:</strong> nothing paid starts until the written agreement exists and the separation from any course Jim evaluates is settled. Keep using public data only until an approval covers anything else.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">🎓</div><div><h2>2. EMBA and AI fluency — going deeper</h2><div class="section-sub">Where STC's teaching approach can help most</div></div></div>
+    <div class="section-body">
+      <p><strong>Understand the course first</strong></p>
+      <ul class="tight">
+        <li>How is EMV 582 laid out: how many modules, how long, and in what format (live, async, hybrid)?</li>
+        <li>How does the Baldridge Framework shape it? Is each module tied to a Baldridge category, or is it the program-level lens?</li>
+        <li>Who are the students (roles, industries, comfort with AI), and what do they struggle with most today?</li>
+        <li>Who is the instructional designer, and what is their timeline? Where can AI challenges still be added without rework?</li>
+        <li>What is SBM's current policy on students using AI in assignments and assessments?</li>
+      </ul>
+      <p><strong>Bucket A (course operations): questions to sharpen scope</strong></p>
+      <ul class="tight">
+        <li>Which operational task takes the most instructor time right now: feedback, announcements, grading, or answering student questions?</li>
+        <li>What LMS integrations are actually allowed, and who approves them?</li>
+        <li>Where does he want a human always in the loop (for example, final grades)?</li>
+      </ul>
+      <p><strong>Bucket B (AI-fluency challenges): what I can bring</strong></p>
+      <ul class="tight">
+        <li><strong>A sample challenge:</strong> break-even or cash-flow analysis done with AI, where students must check the AI's math and assumptions and explain any errors they find. The skill being graded is judgment, not the prompt.</li>
+        <li><strong>A Socratic-tutor prompt</strong> for pre-class prep that asks questions instead of handing over answers.</li>
+        <li><strong>A scenario knowledge-check template:</strong> ungraded, spaced, practice-first, matching the flipped-Bloom approach he described.</li>
+        <li>A short <strong>AI-fluency rubric</strong> (use, verify, disclose, decide) that could be shared across modules.</li>
+      </ul>
+      <div class="callout blue"><strong>Proposal to test:</strong> "Pick one module. I'll draft the challenge, the tutor prompt, and a knowledge check for it by our next meeting, and you tell me what doesn't fit the executive audience." This connects to STC's <a href="teaching-framework-hub.html">teaching framework</a> work.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">🏠</div><div><h2>3. Habitat technology — the groundwork before AI</h2><div class="section-sub">Audit → requirements → data → process → automation</div></div></div>
+    <div class="section-body">
+      <p><strong>Questions to ask</strong></p>
+      <ul class="tight">
+        <li><strong>Audit:</strong> Is the IT audit funded and scoped? Who does it (internal staff, Jim's contracted talent, or an outside firm)? When should it be done?</li>
+        <li><strong>Current systems:</strong> What runs today for finance, the 99-year land trust, homeowner records, volunteers, and donors? Which are cloud and which are on-premise?</li>
+        <li><strong>Pain points:</strong> Which process causes the most double entry or manual work? That is probably the first process-improvement target.</li>
+        <li><strong>Data ownership:</strong> Who owns data governance, and what does it take to approve a dataset or tool for AI use?</li>
+        <li><strong>Knowledge repository:</strong> Which staff members hold the most knowledge that isn't written down? Is anyone retiring or leaving soon?</li>
+        <li><strong>Affiliate product:</strong> Which affiliates have said they're interested (Pierce, Snohomish)? Does Habitat International have standards or a preferred stack already?</li>
+        <li><strong>Year-1 success:</strong> What does the board need to see in 12 months to keep backing the 3–5 year plan?</li>
+      </ul>
+      <p><strong>What I can offer (none of it needs sensitive data)</strong></p>
+      <ul class="tight">
+        <li>A <strong>systems inventory and requirements template</strong> that affiliates could fill in the same way.</li>
+        <li>A <strong>knowledge-capture interview guide</strong> for documenting what staff know. AI transcription and summarizing come later, once approved.</li>
+        <li>A public-data <strong>housing-policy monitor</strong> for King and Kittitas counties as a low-risk early win.</li>
+      </ul>
+      <div class="callout amber"><strong>Clarify my role:</strong> ask whether Jim sees me as an advisor, a builder, or a teacher for his contracted talent. Also ask whether Habitat work goes through VMI LLC or directly through Habitat.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-amber">🛰</div><div><h2>4. Project LEO and bigger-picture threads</h2><div class="section-sub">Topics that keep the relationship going past the pilot</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>Project LEO:</strong> What stage is it at with Dr. Pors and Amazon? Which courses or certificates are planned first? Could technology and computing content (for example, AI literacy or digital twins) be part of it? Would Jim introduce me to Dr. Pors?</li>
+        <li><strong>SBM × STC collaboration:</strong> Would SBM be open to a co-designed module or a joint faculty workshop on AI-fluency challenges? Who in SBM leadership would need to sponsor it?</li>
+        <li><strong>Case study:</strong> Can a sanitized version of the pilot become a teaching case for the upcoming AI 420 and for STC's corporate AI-enablement playbook?</li>
+        <li><strong>His network:</strong> Which other organizations in his board and advisory circles face the same "audit before AI" problem? This is a lead for <a href="corporate-partnerships-hub.html">corporate partnerships</a>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">💬</div><div><h2>Conversation-keepers</h2><div class="section-sub">Open questions to use if the conversation stalls</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li>"What's one thing about AI you're still skeptical of?"</li>
+        <li>"In your ERP experience, what made the rollouts that worked different from the ones that failed?"</li>
+        <li>"If Habitat had its data cleaned up tomorrow, what's the first question you'd want it to answer?"</li>
+        <li>"What do executive students push back on most when AI shows up in a course?"</li>
+        <li>"What's something you've seen work in industry that universities still get wrong?"</li>
+        <li>"What should I be learning in the next year to be more useful to you?"</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">🧳</div><div><h2>Before Monday</h2><div class="section-sub">Prep checklist</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li>☐ Update LinkedIn and send the portfolio/GitHub links if not done yet.</li>
+        <li>☐ If EMBA materials have arrived, write 2–3 notes per module on where an AI-fluency challenge fits.</li>
+        <li>☐ Prepare the 10-minute research-to-brief demo (public space-economy topic).</li>
+        <li>☐ Sketch a one-page SOW outline to show, not send.</li>
+        <li>☐ Draft a one-page systems inventory template for Habitat.</li>
+        <li>☐ After the meeting, write meeting notes and link them from this page and the hub.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</body>
+</html>

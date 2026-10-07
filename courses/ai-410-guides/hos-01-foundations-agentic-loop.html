@@ -27,6 +27,14 @@
         .submit-box ul { margin:0; padding-left:20px; }
         .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        .shot { margin:14px 0; }
+        .shot img { max-width:100%; height:auto; border:1px solid #e2e8f0; border-radius:6px; display:block; }
+        .shot figcaption { font-size:0.84rem; color:#475569; margin-top:6px; }
+        .shot-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap:14px; align-items:start; }
+        .shot-grid .shot { margin:0; }
+        details.sample-run { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 16px; margin:16px 0; }
+        details.sample-run summary { cursor:pointer; font-weight:600; color:#334155; }
+        details.sample-run > p { font-size:0.88rem; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
         .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
     </style>
@@ -58,7 +66,7 @@
         <ul class="needs-list">
             <li><strong>Starter code:</strong> <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-01-foundations-agentic-loop" target="_blank" rel="noopener">this HOS's starter-code folder</a> — deliberately close to empty; see its README for why. Not sure what a file does? See the <a href="starter-code-walkthrough.html#hos1">starter code walkthrough for this HOS</a>.</li>
             <li>Python 3.11+ and a terminal (or GitHub Codespaces — recommended, see the folder's <code>.devcontainer</code>)</li>
-            <li>An AI coding assistant available in your environment (Claude Code, or equivalent)</li>
+            <li>An AI coding assistant available in your environment — GitHub Copilot Chat (built into Codespaces, use <strong>Agent</strong> mode), Claude Code, or equivalent</li>
             <li>A free Gemini API key (no credit card required) from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></li>
         </ul>
 
@@ -68,15 +76,36 @@
             <h2><span class="stage-num">1</span>Create / Scaffold</h2>
             <p class="stage-tagline">Not graded on its own — this is the starting point, not the deliverable.</p>
             <p>Open your starter-code folder in Codespaces (or locally) and prompt your AI assistant to build the app. A reasonable starting prompt:</p>
-<pre>Build a full-stack chat app in this folder:
+<pre>Build a full-stack chat app in THIS existing workspace (the starter-code
+folder that's already open) — edit files here; do not create a new
+workspace or project:
 - backend/: a FastAPI server with a POST /chat endpoint that calls the
-  Gemini API (google-genai), reading GEMINI_API_KEY from a .env file.
+  Gemini API (google-genai) with model "gemini-3.8-flash" (kept in one
+  MODEL constant), reading GEMINI_API_KEY from backend/.env.
   Give it an agentic loop: the model should be able to call a real
   tool (e.g. a calculator) via function calling, and the tool's result
   should go back to the model before it replies.
 - frontend/: a Streamlit chat app that calls the backend's /chat
   endpoint over HTTP.
 - requirements.txt files for both.</pre>
+            <p><strong>Two things the prompt pins down on purpose</strong> (both caught in testing — see Common snags): <em>where</em> the files go, and <em>which</em> Gemini model to call. Keep both lines if you rewrite the prompt.</p>
+            <details class="sample-run">
+                <summary>Sample run: Stage 1 in a faculty test Codespace (GitHub Copilot Chat, Agent mode)</summary>
+                <p>One run, start to finish, so you know what to expect. Your assistant will produce different code. Click a screenshot to open it full size.</p>
+                <figure class="shot"><a href="images/hos-01-sample-run/01-codespace-agent-mode-prompt.webp" target="_blank" rel="noopener"><img src="images/hos-01-sample-run/01-codespace-agent-mode-prompt.webp" alt="A fresh Codespace with the starter folder open in Explorer and the starter prompt pasted into the Copilot Chat panel, with Agent mode selected" loading="lazy"></a><figcaption><strong>Start here.</strong> The starter folder is open as the workspace (Explorer shows <code>.devcontainer</code>, <code>backend</code>, <code>README.md</code>). The prompt goes into the Chat panel with <strong>Agent</strong> mode selected at the bottom. This test used the earlier prompt (“in this folder”), which is how the new-workspace snag showed up. Use the current prompt above.</figcaption></figure>
+                <div class="shot-grid">
+                <figure class="shot"><a href="images/hos-01-sample-run/02-copilot-create-file-allow.webp" target="_blank" rel="noopener"><img src="images/hos-01-sample-run/02-copilot-create-file-allow.webp" alt="Copilot dialog: Create file? Create app.py, 1 file created, +43 -0, with an Allow button" loading="lazy"></a><figcaption><strong>Copilot asks before it writes files.</strong> Click <strong>Allow</strong>, but first check the file is going into <em>this</em> workspace (<code>backend/</code> or <code>frontend/</code>), not a new folder.</figcaption></figure>
+                <figure class="shot"><a href="images/hos-01-sample-run/03-python-environment-picker.webp" target="_blank" rel="noopener"><img src="images/hos-01-sample-run/03-python-environment-picker.webp" alt="VS Code prompt: Configure a Python Environment, with Create Virtual Environment (Recommended) and Select an existing Python Environment" loading="lazy"></a><figcaption><strong>Python environment prompt.</strong> If VS Code asks, pick <strong>Create Virtual Environment</strong>. That is the <code>.venv</code> folder you will see in Explorer next.</figcaption></figure>
+                </div>
+                <div class="shot-grid">
+                <figure class="shot"><a href="images/hos-01-sample-run/05-scaffold-in-existing-workspace.webp" target="_blank" rel="noopener"><img src="images/hos-01-sample-run/05-scaffold-in-existing-workspace.webp" alt="Explorer shows backend/main.py, backend/requirements.txt, frontend/app.py, frontend/requirements.txt inside the starter workspace; the editor shows a calculator function and its CALCULATOR_TOOL declaration" loading="lazy"></a><figcaption><strong>The right result: files in the starter workspace.</strong> <code>backend/</code> and <code>frontend/</code> sit next to <code>.devcontainer</code>. Note the tool description, “Evaluate a basic arithmetic expression.” Is that specific enough? (See Common snags.)</figcaption></figure>
+                <figure class="shot"><a href="images/hos-01-sample-run/04-copilot-run-instructions.webp" target="_blank" rel="noopener"><img src="images/hos-01-sample-run/04-copilot-run-instructions.webp" alt="Copilot Chat summary: run commands for backend and frontend, and a note that live Gemini integration was not exercised because no API key was available" loading="lazy"></a><figcaption><strong>Copilot finishes with run commands.</strong> Read the last line: it checked syntax only and <em>never called Gemini</em>. “It compiles” is not “it works.” That is what Stage 2 is for.</figcaption></figure>
+                </div>
+                <div class="shot-grid">
+                <figure class="shot"><a href="images/hos-01-sample-run/06-streamlit-running.webp" target="_blank" rel="noopener"><img src="images/hos-01-sample-run/06-streamlit-running.webp" alt="Terminal: streamlit run frontend/app.py, showing Local URL http://localhost:8501" loading="lazy"></a><figcaption><strong>Second terminal: Streamlit running.</strong> Open the forwarded port 8501 (Ports tab) to see the app. The backend (<code>uvicorn backend.main:app --reload</code>) must be running in the first terminal.</figcaption></figure>
+                <figure class="shot"><a href="images/hos-01-sample-run/07-working-chat.webp" target="_blank" rel="noopener"><img src="images/hos-01-sample-run/07-working-chat.webp" alt="Gemini Chat app: hi, do you have a calculator?, and what is 342 times 87 answered 29,754" loading="lazy"></a><figcaption><strong>Working.</strong> After switching to <code>gemini-3.8-flash</code>, the chat answers. But did “342 times 87” actually call the calculator, or did the model just know the answer? The screen can’t tell you. Check the backend log. That is your first Evaluate test.</figcaption></figure>
+                </div>
+            </details>
             <p>Iterate with it until you have a working chat app that can call at least one tool. Don't hand-edit anything yet — this stage is entirely AI-driven.</p>
         </div>
 
@@ -122,6 +151,9 @@
         <div class="snag-box">
             <h4>Common snags</h4>
             <ul>
+                <li><strong>Copilot Chat builds the app somewhere other than your starter folder</strong> — in Codespaces, the default Copilot Chat agent tends to scaffold a brand-new workspace/folder of its own (and may offer to open it) instead of editing the starter-code workspace that's already open — so your <code>.devcontainer</code> and <code>backend/.env.example</code> get left behind. Use <strong>Agent</strong> mode with the starter folder open, and say explicitly “in this existing workspace, don't create a new one” (the starter prompt above does). If it already happened, delete the stray folder and re-prompt; don't try to merge the two.</li>
+                <li><strong><code>502 Bad Gateway</code> (or a 404 / “model not found”) from <code>/chat</code></strong> — almost always the model name. AI assistants default to whatever model was current in their training data — e.g. <code>gemini-2.5-flash</code>, which is no longer available to new API keys. The backend's Gemini call fails, and the frontend reports it as a 502. Set the model to <code>gemini-3.8-flash</code> (tested working in Codespaces with a fresh free key), restart <code>uvicorn</code>, and try again. If that ever stops working too, check the current list at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a> and use the current Flash model — this is exactly why the model name belongs in one constant.
+                    <figure class="shot"><a href="images/hos-01-sample-run/08-chat-502-bad-gateway.webp" target="_blank" rel="noopener"><img src="images/hos-01-sample-run/08-chat-502-bad-gateway.webp" alt="uvicorn log: POST /chat returns 502 Bad Gateway three times while GET /health returns 200 OK" loading="lazy"></a><figcaption>What it looks like in the <code>uvicorn</code> terminal: <code>/health</code> is <code>200 OK</code>, so the server is up, but every <code>POST /chat</code> is <code>502 Bad Gateway</code>, because the call to Gemini is failing. (The <code>404</code>s for <code>/</code> and <code>/favicon.ico</code> are harmless. The backend has no home page.)</figcaption></figure></li>
                 <li><strong>The AI assistant adds CORS middleware</strong> — you don't need it. The Streamlit frontend calls the backend server-side (Python to Python), not from JavaScript in a browser, so CORS is irrelevant here. Fine to remove if you notice it.</li>
                 <li><strong>The agent always calls the tool, even when it shouldn't</strong> — check the tool's description in its schema. A vague description ("does math") makes the model over-eager; a specific one narrows it down.</li>
                 <li><strong>Two terminals, easy to forget</strong> — the backend (<code>uvicorn</code>) and frontend (<code>streamlit run</code>) are separate processes. If the frontend can't reach the backend, check both are actually running.</li>

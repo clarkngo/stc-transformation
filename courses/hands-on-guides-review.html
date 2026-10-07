@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSAI Hands-On Guides Review</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; margin:30px 0 4px; font-size:1.2rem; }
+        .course-sub { color:#64748b; font-size:0.85rem; margin:0 0 10px; }
+        .course-sub a { color:#1e8449; font-weight:600; text-decoration:none; }
+        .intro-box { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:14px 18px; margin:0 0 18px; font-size:0.9rem; }
+        .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:0 0 6px; }
+        .progress { font-weight:700; color:#334155; font-size:0.9rem; margin-right:auto; }
+        .filter { display:flex; flex-wrap:wrap; gap:6px; }
+        .filter button { font:inherit; font-size:0.8rem; font-weight:600; padding:5px 12px; border-radius:999px; border:1px solid #cbd5e1; background:#fff; color:#334155; cursor:pointer; }
+        .filter button[aria-pressed="true"] { background:#1e8449; border-color:#1e8449; color:#fff; }
+        .guide { border:1px solid #e2e8f0; border-left:5px solid #cbd5e1; border-radius:8px; padding:14px 16px; margin:10px 0; background:#fff; }
+        .guide[data-status="reviewed"] { border-left-color:#10b981; }
+        .guide[data-status="changes"] { border-left-color:#f59e0b; }
+        .guide-top { display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; }
+        .hos-num { font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#1e8449; }
+        .guide h3 { margin:0; font-size:1rem; flex:1 1 260px; }
+        .guide h3 a { color:#0f172a; text-decoration:none; }
+        .guide h3 a:hover { color:#1e8449; text-decoration:underline; }
+        .updated { font-size:0.76rem; color:#94a3b8; font-weight:600; white-space:nowrap; }
+        .goal { font-size:0.86rem; color:#475569; margin:6px 0 10px; }
+        .guide-foot { display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; }
+        .links { display:flex; flex-wrap:wrap; gap:6px; }
+        .links a { font-size:0.78rem; font-weight:600; padding:3px 10px; border-radius:999px; background:#f1f5f9; color:#334155; text-decoration:none; }
+        .links a.primary { background:#dcfce7; color:#15803d; }
+        .links a:hover { background:#e2e8f0; }
+        .status { margin-left:auto; font:inherit; font-size:0.8rem; padding:4px 8px; border-radius:6px; border:1px solid #cbd5e1; background:#fff; color:#334155; }
+        .note { display:block; width:100%; box-sizing:border-box; margin-top:10px; font:inherit; font-size:0.84rem; padding:7px 10px; border:1px solid #e2e8f0; border-radius:6px; resize:vertical; min-height:36px; }
+        .empty { background:#f8fafc; border:1px dashed #cbd5e1; border-radius:8px; padding:12px 16px; font-size:0.86rem; color:#64748b; }
+        .muted { color:#94a3b8; font-size:0.8rem; }
+        .hidden { display:none; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../bsai-hub.html" style="color:#1e8449;text-decoration:none;font-weight:500">BSAI Hub</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+    </nav>
+
+        <h1>BSAI Hands-On Guides: Review List</h1>
+        <div class="intro-box">
+            Every hands-on (HOS) guide across AI 410–440 on one page, with links to its starter code, answer key, and interactive lesson. Mark each one as you review it and jot notes; your marks and notes are saved in this browser only. Course rules the guides must follow: <a href="../bsai-course-design-constraints.html">BSAI Course Design Constraints</a>.
+        </div>
+
+        <div class="toolbar">
+            <span class="progress" id="progress">0 of 0 reviewed</span>
+            <div class="filter" role="group" aria-label="Filter guides">
+                <button type="button" data-filter="all" aria-pressed="true">All</button>
+                <button type="button" data-filter="none" aria-pressed="false">Not reviewed</button>
+                <button type="button" data-filter="changes" aria-pressed="false">Needs changes</button>
+                <button type="button" data-filter="reviewed" aria-pressed="false">Reviewed</button>
+            </div>
+        </div>
+
+        <div id="courses"></div>
+        <p class="muted" style="margin-top:28px">To add a guide, add an entry to the <code>COURSES</code> list at the bottom of this file.</p>
+    </div>
+
+<script>
+const GH = 'https://github.com/clarkngo/stc-transformation/tree/main/courses/';
+const COURSES = [
+  { code:'AI 410', name:'AI Engineering', index:'ai-410-guides/index.html', dir:'ai-410-guides', lessons:'ai-410-interactive', guides:[
+    { id:'410-1', num:'HOS 1 · Weeks 1–2', title:'Foundations & the Agentic Loop', slug:'hos-01-foundations-agentic-loop', updated:'Oct 7, 2026',
+      goal:'Build a full-stack chat app that calls a real tool, scaffolded with an AI assistant, then prove you understand what it built.', lesson:'hos-01-lesson.html' },
+    { id:'410-2', num:'HOS 2 · Weeks 3–4', title:'Embeddings, Chunking & RAG Pipelines', slug:'hos-02-embeddings-rag', updated:'Sep 24, 2026',
+      goal:'Add retrieval to the HOS 1 app: chunk and embed documents into a vector database and ground answers in them.', lesson:'hos-02-lesson.html' },
+    { id:'410-3', num:'HOS 3 · Weeks 5–6', title:'Guardrails & Asynchronous Processing', slug:'hos-03-guardrails-async', updated:'Sep 24, 2026',
+      goal:'Handle bad tool arguments from the model, and move slow document ingestion off the request path.', lesson:'hos-03-lesson.html' },
+    { id:'410-4', num:'HOS 4 · Weeks 7–8', title:'Mobile Client, Push & Observability', slug:'hos-04-mobile-observability', updated:'Sep 24, 2026',
+      goal:'A mobile client notified when work finishes, plus full visibility into what the agent does on every request.', lesson:'hos-04-lesson.html' },
+    { id:'410-ag', num:'Pilot · not graded', title:'Antigravity, GitHub & GitHub Pages', page:'antigravity-hos-01-github-pages.html', updated:'Sep 22, 2026',
+      goal:'Single-HOS pilot of Google Antigravity as an alternative to Claude Code, deploying to GitHub Pages.', noCode:true },
+  ]},
+  { code:'AI 420', name:'Agentic AI', index:'ai-420-guides/index.html', dir:'ai-420-guides', lessons:'ai-420-interactive', guides:[
+    { id:'420-1', num:'HOS 1 · Weeks 1–2', title:'Anatomy of an Agent', slug:'hos-01-agent-anatomy', updated:'Oct 1, 2026',
+      goal:'Answer multi-step questions with a plain LLM call, then with a no-framework agent loop you build yourself.', lesson:'hos-01-lesson.html' },
+    { id:'420-2', num:'HOS 2 · Weeks 3–4', title:'Custom Tools, MCP & Memory', slug:'hos-02-tools-mcp-memory', updated:'Oct 1, 2026',
+      goal:'Give the Harbor Supply Co. agent API, browser, and database tools from your own MCP server, plus memory.', lesson:'hos-02-lesson.html' },
+    { id:'420-3', num:'HOS 3 · Weeks 5–6', title:'Traces, Failure Diagnosis & Self-Correction', slug:'hos-03-traces-self-correction', updated:'Oct 1, 2026',
+      goal:'Find every failure in a support agent from the traces alone, before reading its source code.', lesson:'hos-03-lesson.html' },
+    { id:'420-4', num:'HOS 4 · Weeks 7–8', title:'Multi-Agent Orchestration & Agent-on-Agent Evaluation', slug:'hos-04-multi-agent-evaluation', updated:'Oct 1, 2026',
+      goal:'Split the support agent into a coordinator plus specialists, then measure whether the team is actually better.', lesson:'hos-04-lesson.html' },
+  ]},
+  { code:'AI 430', name:'MLOps and AgentOps', outline:'AI-430.html', guides:[] },
+  { code:'AI 440', name:'Digital Twins and Physical AI', outline:'AI-440.html', guides:[] },
+];
+
+const KEY = 'bsai-hos-review-v1';
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { state = {}; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const root = document.getElementById('courses');
+let filter = 'all';
+
+COURSES.forEach(c => {
+  const sec = document.createElement('section');
+  const sub = c.index
+    ? `${c.guides.length} guide${c.guides.length === 1 ? '' : 's'} · <a href="${c.index}">Course guide index →</a>`
+    : `<a href="${c.outline}">Course outline →</a>`;
+  sec.innerHTML = `<h2>${esc(c.code)}: ${esc(c.name)}</h2><p class="course-sub">${sub}</p>`;
+  if (!c.guides.length) {
+    sec.insertAdjacentHTML('beforeend', '<div class="empty">No hands-on guides written yet.</div>');
+  }
+  c.guides.forEach(g => {
+    const page = `${c.dir}/${g.page || g.slug + '.html'}`;
+    const links = [`<a class="primary" href="${page}">Guide</a>`];
+    if (!g.noCode) {
+      links.push(`<a href="${GH}${c.dir}/starter-code/${g.slug}" target="_blank" rel="noopener">Starter code</a>`);
+      links.push(`<a href="${GH}${c.dir}/answer-key/${g.slug}" target="_blank" rel="noopener">Answer key</a>`);
+    }
+    if (g.lesson) links.push(`<a href="${c.lessons}/${g.lesson}">Interactive lesson</a>`);
+    const s = state[g.id] || {};
+    const el = document.createElement('div');
+    el.className = 'guide';
+    el.dataset.status = s.status || 'none';
+    el.innerHTML = `
+      <div class="guide-top">
+        <span class="hos-num">${esc(g.num)}</span>
+        <h3><a href="${page}">${esc(g.title)}</a></h3>
+        <span class="updated">Updated ${esc(g.updated)}</span>
+      </div>
+      <p class="goal">${esc(g.goal)}</p>
+      <div class="guide-foot">
+        <div class="links">${links.join('')}</div>
+        <select class="status" aria-label="Review status for ${esc(c.code)} ${esc(g.title)}">
+          <option value="none">Not reviewed</option>
+          <option value="changes">Needs changes</option>
+          <option value="reviewed">Reviewed</option>
+        </select>
+      </div>
+      <textarea class="note" rows="1" placeholder="Review notes…" aria-label="Review notes for ${esc(c.code)} ${esc(g.title)}"></textarea>`;
+    const sel = el.querySelector('.status'), note = el.querySelector('.note');
+    sel.value = el.dataset.status;
+    note.value = s.note || '';
+    sel.addEventListener('change', () => { state[g.id] = { ...state[g.id], status: sel.value }; el.dataset.status = sel.value; save(); refresh(); });
+    note.addEventListener('input', () => { state[g.id] = { ...state[g.id], note: note.value }; save(); });
+    sec.appendChild(el);
+  });
+  root.appendChild(sec);
+});
+
+function refresh() {
+  const all = [...document.querySelectorAll('.guide')];
+  const done = all.filter(e => e.dataset.status === 'reviewed').length;
+  document.getElementById('progress').textContent = `${done} of ${all.length} reviewed`;
+  all.forEach(e => e.classList.toggle('hidden', filter !== 'all' && e.dataset.status !== filter));
+}
+document.querySelectorAll('.filter button').forEach(b => b.addEventListener('click', () => {
+  filter = b.dataset.filter;
+  document.querySelectorAll('.filter button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  refresh();
+}));
+refresh();
+</script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -445,13 +445,16 @@ calculate_tool = {
     <li>Put your free Gemini key in <code>backend/.env</code> as <code>GEMINI_API_KEY=…</code> — never in the frontend.</li>
     <li>Give your assistant the starting prompt below, and iterate until the chat app calls at least one tool.</li>
   </ol>
-<pre><code>Build a full-stack chat app in this folder:
+<pre><code>Build a full-stack chat app in THIS existing workspace (the starter-code folder
+that's already open) — edit files here; do not create a new workspace or project:
 - backend/: a FastAPI server with a POST /chat endpoint that calls the Gemini API
-  (google-genai), reading GEMINI_API_KEY from a .env file. Give it an agentic loop:
+  (google-genai) with model "gemini-3.8-flash" (kept in one MODEL constant),
+  reading GEMINI_API_KEY from backend/.env. Give it an agentic loop:
   the model should be able to call a real tool (e.g. a calculator) via function
   calling, and the tool's result should go back to the model before it replies.
 - frontend/: a Streamlit chat app that calls the backend's /chat endpoint over HTTP.
 - requirements.txt files for both.</code></pre>
+  <p class="small"><b>Two gotchas caught in testing:</b> (1) Codespaces' default Copilot Chat agent likes to build in a <em>new</em> workspace instead of your starter folder — use Agent mode and say “this existing workspace” (the prompt does). (2) A <code>502 Bad Gateway</code> usually means the assistant picked a retired model like <code>gemini-2.5-flash</code>, which new keys can't use — set it to <code>gemini-3.8-flash</code> and restart the backend.</p>
   <p class="small">Full step-by-step instructions, troubleshooting, and the exact submission list are in the <a href="../ai-410-guides/hos-01-foundations-agentic-loop.html">HOS 1 hands-on guide</a>. Unsure what a generated file does? <a href="../ai-410-guides/starter-code-walkthrough.html#hos1">Starter code walkthrough →</a></p>
 </section>
 

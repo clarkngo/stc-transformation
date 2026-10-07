@@ -18,4 +18,9 @@ A full-stack chat app — a FastAPI backend that calls Gemini, and a Streamlit f
 
 Get a free Gemini API key (no credit card required) at [aistudio.google.com/apikey](https://aistudio.google.com/apikey) before you start — your AI assistant will need somewhere to put it.
 
+## Two gotchas (caught in testing)
+
+- **Build here, not in a new workspace.** In Codespaces, the default Copilot Chat agent tends to scaffold a brand-new workspace instead of editing this folder. Use Agent mode with this folder open and tell it "in this existing workspace — don't create a new one."
+- **Use `gemini-3.8-flash`.** Assistants often default to `gemini-2.5-flash`, which is no longer available to new API keys — the backend call fails and you see `502 Bad Gateway`. Set the model to `gemini-3.8-flash` (in one `MODEL` constant) and restart `uvicorn`.
+
 See the guide for the full walkthrough, including a starter prompt for Create/Scaffold and exactly what to submit for each stage.

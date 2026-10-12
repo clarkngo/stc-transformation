@@ -382,32 +382,32 @@ calculate_tool = {
   <p>You'll argue a side you're <em>assigned</em>, then argue the other one, then drop advocacy and synthesize. Nobody gets to post "I agree" — by Stage 3 everyone has argued both sides.</p>
   <div class="callout blue">
     <span class="label">How your side is assigned</span>
-    <p>In Week 1 Brightspace places you in <b>Debate Team 1</b> or <b>Debate Team 2</b>. It splits the class randomly and evenly, and you stay on that team all term. Find yours under <b>Communication → Groups</b>. The sides rotate each HOS, so nobody argues the same kind of position all term:</p>
+    <p>In Week 1 Brightspace places you in <b>Debate Group 1</b> or <b>Debate Group 2</b>. It splits the class randomly and evenly, and you stay in that group all term. Find yours under <b>Communication → Groups</b>. The sides rotate each HOS, so nobody argues the same kind of position all term:</p>
     <div class="table-wrap"><table class="t" style="margin:6px 0 8px;background:var(--surface)">
       <tr><th></th><th>HOS 1</th><th>HOS 2</th><th>HOS 3</th><th>HOS 4</th><th>Integration (Wk 8)</th></tr>
-      <tr><td><b>Team 1</b></td><td>Side A</td><td>Side B</td><td>Side A</td><td>Side B</td><td>Side A</td></tr>
-      <tr><td><b>Team 2</b></td><td>Side B</td><td>Side A</td><td>Side B</td><td>Side A</td><td>Side B</td></tr>
+      <tr><td><b>Group 1</b></td><td>Side A</td><td>Side B</td><td>Side A</td><td>Side B</td><td>Side A</td></tr>
+      <tr><td><b>Group 2</b></td><td>Side B</td><td>Side A</td><td>Side B</td><td>Side A</td><td>Side B</td></tr>
     </table></div>
-    <p class="small"><b>Not in a team?</b> (for example, you added the course late) Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A.</p>
+    <p class="small"><b>Not in a group?</b> (for example, you added the course late) Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A.</p>
   </div>
   <details class="callout amber" style="margin-bottom:14px">
     <summary style="cursor:pointer;font-weight:700">Instructor setup: a one-time step in Week 1, about 2 minutes</summary>
     <ol class="small" style="margin-top:8px">
-      <li>In Brightspace, go to <b>Communication → Groups → New Category</b>. Name it "Concept Debate Teams".</li>
-      <li>Set <b>Enrollment Type</b> to <b># of Groups – Auto Enrollment</b>, set <b>Number of Groups</b> to <b>2</b>, and set the group prefix to "Debate Team".</li>
+      <li>In Brightspace, go to <b>Communication → Groups → New Category</b>. Name it "Concept Debate Groups".</li>
+      <li>Set <b>Enrollment Type</b> to <b># of Groups – Auto Enrollment</b>, set <b>Number of Groups</b> to <b>2</b>, and set the group prefix to "Debate Group".</li>
       <li>Under Advanced Properties, check <b>Randomize users in groups</b> and <b>Auto-enroll new users</b>, so late adds are placed automatically.</li>
       <li>Skip the "set up discussion areas" option. Each debate stays <b>one whole-class topic</b>, because students need to read the other side's posts for Stages 2 and 3.</li>
     </ol>
     <p class="small" style="margin:0">That's it for the term. The rotation table above handles every later HOS, so there's no manual assigning. The same steps are in the <a href="../AI-410.html#cd-team-setup">AI 410 schedule, Week 1</a>.</p>
   </details>
   <div class="row" style="margin-bottom:10px">
-    <label for="teamInput" class="small"><b>My Brightspace team:</b></label>
-    <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select>
+    <label for="teamInput" class="small"><b>My Brightspace group:</b></label>
+    <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Group 1</option><option value="2">Debate Group 2</option></select>
     <span class="small" id="sideResult" aria-live="polite"></span>
   </div>
   <div class="two">
     <div class="side a" id="sideA">
-      <h4><span>Side A — Let the model decide</span><span class="tag blue">Team 1 this HOS</span></h4>
+      <h4><span>Side A — Let the model decide</span><span class="tag blue">Group 1 this HOS</span></h4>
       <p>Declare the tools and let the LLM choose when to call them.</p>
       <ul class="small">
         <li>Handles phrasing no rule anticipated ("what's a 15% tip on $48?").</li>
@@ -416,7 +416,7 @@ calculate_tool = {
       </ul>
     </div>
     <div class="side b" id="sideB">
-      <h4><span>Side B — Backend code decides</span><span class="tag rose">Team 2 this HOS</span></h4>
+      <h4><span>Side B — Backend code decides</span><span class="tag rose">Group 2 this HOS</span></h4>
       <p>Use rules (regex, keywords, a classifier) to decide, and only ask the model to phrase the answer.</p>
       <ul class="small">
         <li>Deterministic: the same input always takes the same path — testable.</li>
@@ -434,7 +434,7 @@ calculate_tool = {
     <div class="eg weak"><span class="label">Weak synthesis</span>"Great points everyone, I think both sides are right and it depends on the situation."</div>
     <div class="eg strong"><span class="label">Strong synthesis</span>"Priya's point that a routing rule is testable changed my mind for anything that writes data. I'd let the model choose read-only tools like <code>calculate</code>, but route anything that sends email or charges money through backend code that checks the request first — which is roughly what HOS 3's guardrails do."</div>
   </div>
-  <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%). A reply that only affirms agreement without citing what it agrees with doesn't meet the Writing criterion.</p>
+  <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%). <a href="concept-debate-example.html">See a worked example: four students through one debate, with a timeline →</a> A reply that only affirms agreement without citing what it agrees with doesn't meet the Writing criterion.</p>
 </section>
 
 <section class="module card" id="create">
@@ -503,8 +503,9 @@ that's already open) — edit files here; do not create a new workspace or proje
 </section>
 
 <section class="module card" id="challenge">
-  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — tools for a business you've never built for</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Design &amp; justify — not a full build</span></div></div></div>
-  <p>Pick a business, then design the tool schemas (not implementations) its agent would need. The hard part isn't the JSON — it's the judgment call: <em>should the model be able to call this at all?</em></p>
+  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — a clinic's booking agent</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Build to spec · 60–90 min</span></div></div></div>
+  <p>Build the tools for Cascade Family Clinic's booking agent from a written spec with provided tests, make the one call the spec leaves open (what happens to a cancellation inside the $40 late-fee window), and argue which other tools the model should never get. Everything you need is in the <a href="../ai-410-guides/ac-01-clinic-booking.html"><b>AC 1 guide</b></a>: the spec, the starter code, and the rubric.</p>
+  <p class="small">Warm up first: the judgment is the same one the challenge asks for. Pick a business and sort its proposed tools.</p>
   <div class="pick" id="bizPick">
     <button type="button" aria-pressed="true" data-b="vet"><b>🐾 Neighborhood vet clinic</b>Appointment booking &amp; pet records</button>
     <button type="button" aria-pressed="false" data-b="bike"><b>🚲 City bike-share</b>Station availability &amp; rider accounts</button>
@@ -516,12 +517,13 @@ that's already open) — edit files here; do not create a new workspace or proje
   <div class="row" style="margin:8px 0 16px"><button class="btn" id="sorterReveal" type="button">Reveal reasoning</button><span class="small" id="sorterScore" aria-live="polite"></span></div>
   <div class="callout"><span class="label">What to submit</span>
     <ul>
-      <li>3–4 tool declarations (name, description, parameters) for your chosen business.</li>
-      <li>For each: auto / confirm / never, and one sentence on what could go wrong if you chose wrong.</li>
-      <li>One tool you considered and <em>rejected</em>, and why.</li>
+      <li><code>tools.py</code> and <code>tests/test_my_rules.py</code></li>
+      <li>The output of <code>pytest</code>, all tests passing (including yours)</li>
+      <li><code>TRANSCRIPT.md</code>: two chat sessions with the tool calls showing</li>
+      <li><code>DECISIONS.md</code>: your late-cancellation rule, and your call on two more tools</li>
     </ul>
   </div>
-  <p class="small muted"><b>Grading:</b> Judgment &amp; reasoning (50%) · Transfer to the new scenario, not a restatement of the calculator build (35%) · Clarity (15%).</p>
+  <p class="small muted"><b>Grading:</b> Application — genuinely applied to the new scenario, not a restatement of the calculator build (10%) · Analysis — break the problem into its parts (20%) · Evaluation — justify your call against clear criteria (30%) · Design — your own original solution (40%).</p>
 </section>
 
 <section class="module card" id="check">
@@ -627,7 +629,7 @@ function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); loca
   document.getElementById('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); document.getElementById('mpStatus').textContent='Draft cleared.'; });
 })();
 
-/* Debate side: Brightspace team -> side for HOS 1 (Team 1 = A) */
+/* Debate side: Brightspace group -> side for HOS 1 (Group 1 = A) */
 (function(){
   var sel=document.getElementById('teamInput'), out=document.getElementById('sideResult');
   var v=store('ai410-team'); if(v) sel.value=v;

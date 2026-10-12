@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Application Challenge 1: Cascade Family Clinic Booking Agent</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color:#27ae60; font-size:1.15rem; margin:28px 0 8px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .draft-banner { background:#fef3c7; border:2px solid #f59e0b; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; }
+        .draft-banner strong { color:#b45309; }
+        .draft-banner p { margin:6px 0 0; }
+        .rules-box { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:0 0 18px; font-size:0.85rem; border-radius:0 4px 4px 0; color:#475569; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .goal-box p { margin:0; }
+        .scenario { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px 20px; margin:12px 0; }
+        .scenario p:last-child { margin-bottom:0; }
+        .decision-box { background:#fdf4ff; border:1px solid #e9d5ff; border-left:5px solid #a855f7; padding:15px 18px; margin:14px 0; border-radius:4px; }
+        .decision-box h4 { margin:0 0 6px; color:#7e22ce; }
+        .stage-block { border:1px solid #e2e8f0; border-radius:8px; padding:18px 22px; margin-bottom:14px; }
+        .stage-block h3 { margin:0 0 6px; font-size:1.02rem; }
+        .stage-num { display:inline-block; width:26px; height:26px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.85rem; text-align:center; line-height:26px; margin-right:8px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code, td code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        p code, li code, td code { overflow-wrap:anywhere; }
+        table.mini { width:100%; border-collapse:collapse; font-size:0.86rem; margin:10px 0; }
+        table.mini th, table.mini td { border:1px solid #e2e8f0; padding:8px 10px; text-align:left; vertical-align:top; }
+        table.mini th { background:#f8fafc; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        table.mini td.wt { white-space:nowrap; font-weight:700; color:#1e8449; }
+        .table-scroll { overflow-x:auto; }
+        table.rubric { min-width:760px; }
+        table.rubric td:nth-child(n+4) { width:22%; }
+        .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul, .submit-box ol { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        details.faculty { background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px 16px; margin:22px 0; }
+        details.faculty summary { cursor:pointer; font-weight:700; color:#334155; }
+        details.faculty h4 { margin:16px 0 6px; font-size:0.92rem; color:#334155; }
+        details.faculty p, details.faculty li { font-size:0.88rem; }
+        .guide-nav { display:flex; justify-content:space-between; gap:12px; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+    </nav>
+
+        <h1>Application Challenge 1 — Cascade Family Clinic Booking Agent</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 60–90 min</span>
+            <span class="meta-pill">Outcome 1</span>
+            <span class="meta-pill">After HOS 1 · end of Week 2</span>
+            <span class="meta-pill">Individual</span>
+            <span class="meta-pill">AI assistant allowed — disclose it</span>
+            <span class="meta-pill">5% of final grade</span>
+        </div>
+
+
+        <div class="rules-box">This challenge follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>: it adapts to AI 410's official Outcome 1, runs entirely in GitHub Codespaces, and uses only free tiers. The tests need no API key; the chat demo uses your free Gemini key from HOS 1.</div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Take the tool-calling skill from HOS 1 to a business you haven't seen: build the tools a clinic's booking agent needs from a written spec, make one decision the spec leaves open, and defend which capabilities the model should, and shouldn't, be able to call.</p>
+        </div>
+
+        <h2>The scenario</h2>
+        <div class="scenario">
+            <p><strong>Cascade Family Clinic</strong> (fictional) has two providers and a front desk that is overwhelmed with scheduling calls. They want a chat assistant patients can use to find a time, book it, and cancel. A teammate already wrote the chat app (the same agentic loop you built in HOS 1) and the clinic's data. The tools are missing. That's your job.</p>
+            <p>Two things about the app you should know before you start:</p>
+            <ul>
+                <li><strong>The app knows who is logged in.</strong> <code>agent.py</code> passes the logged-in patient's ID into every tool call itself. Your schemas must not let the model choose a patient.</li>
+                <li><strong>The clinic runs on a fixed clock:</strong> Monday, November 2, 2026, 9:00 a.m. Use <code>clinic_data.now()</code>, never <code>datetime.now()</code>, so the tests always agree.</li>
+            </ul>
+        </div>
+
+        <h2>The spec</h2>
+        <p>Every requirement below is checked by a provided test in <code>tests/test_tools.py</code>.</p>
+        <div class="table-scroll">
+        <table class="mini">
+            <tr><th>Tool</th><th>Must do</th><th>Must refuse (as an error the model can read)</th></tr>
+            <tr><td><code>find_open_slots(date, provider_id?)</code></td><td>Return one day's open slots, sorted by time, optionally for one provider. Skip booked slots and slots that already started. No openings is an empty list, not an error.</td><td>A date that isn't <code>YYYY-MM-DD</code>; an unknown provider.</td></tr>
+            <tr><td><code>book_appointment(slot_id)</code></td><td>Book an open slot for the logged-in patient.</td><td>Unknown slot or patient; a slot that's taken; a slot that already started.</td></tr>
+            <tr><td><code>cancel_appointment(slot_id)</code></td><td>Cancel the patient's own appointment when it's more than 24 hours away, and reopen the slot.</td><td>A slot that doesn't exist or isn't this patient's.</td></tr>
+            <tr><td>Schemas in <code>TOOLS</code></td><td>One per tool, with a real description (the model reads it to decide <em>when</em> to call the tool).</td><td>Any schema that exposes <code>patient_id</code>.</td></tr>
+        </table>
+        </div>
+        <p>Every error returns <code>{"error": "..."}</code> and changes nothing. That's the HOS 1 rule: a tool that fails should tell the model, not crash the request.</p>
+
+        <div class="decision-box">
+            <h4>The open decision: late cancellations</h4>
+            <p>The front desk's only instruction was: <em>"Patients should be able to cancel through the chat."</em> The clinic charges a <strong>$40 fee</strong> for cancelling less than 24 hours ahead. Nobody said what the assistant should do inside that window. Should it cancel and charge? Refuse? Something else?</p>
+            <p style="margin-bottom:0">There's no single right answer, and no provided test for this case. You decide, implement your rule in <code>cancel_appointment</code>, prove it with your own tests, and defend it in <code>DECISIONS.md</code>.</p>
+        </div>
+
+        <h2>The rest of the wish list</h2>
+        <p>The clinic manager also asked for two more tools. You <strong>don't build them</strong>. In your memo, decide for each: expose it to the model, expose it with limits, or don't expose it, and write the schema for anything you'd expose. "Don't expose it" with a good reason is a strong answer.</p>
+        <ul>
+            <li><code>view_patient_record</code>: "so the assistant can answer questions about a patient's history."</li>
+            <li><code>send_sms</code>: "so the assistant can text patients reminders."</li>
+        </ul>
+        <p>Look at what's actually in a patient record in <code>clinic_data.py</code> before you decide.</p>
+
+        <h2>Steps</h2>
+        <div class="stage-block">
+            <h3><span class="stage-num">1</span>Open it and run the tests</h3>
+            <p>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/ac-01-clinic-booking" target="_blank" rel="noopener">the AC 1 starter-code folder</a> in GitHub Codespaces. It installs everything for you. Then run:</p>
+<pre>pytest</pre>
+            <p>Almost everything fails with <code>NotImplementedError</code>. That's your to-do list.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">2</span>Build the tools and schemas</h3>
+            <p>Fill in <code>tools.py</code> until <code>pytest</code> passes. You may use an AI assistant (Copilot Chat in Agent mode, or another). If you do, tell it to work in this existing workspace, not a new one. Read what it writes: you'll defend it.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">3</span>Make the late-cancellation call</h3>
+            <p>Implement your rule for appointments less than 24 hours away. Write at least two tests in <code>tests/test_my_rules.py</code>: one showing your rule, and one for the edge you think is most likely to go wrong. The file lists slots that are useful for this.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">4</span>Run the assistant</h3>
+            <p>Put your free Gemini key in <code>.env</code> (copied from <code>.env.example</code>), then send these messages. The app prints every tool call, so the transcript shows what actually ran.</p>
+<pre>python agent.py --patient P1001
+you&gt; What does Dr. Patel have open tomorrow?
+you&gt; Book the 10 a.m. one.
+you&gt; quit
+
+python agent.py --patient P1002
+you&gt; I need to cancel my appointment today.</pre>
+            <p>Copy both sessions, tool lines included, into <code>TRANSCRIPT.md</code>. If the assistant does something you didn't expect, keep it in and say so in your memo.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">5</span>Write the memo</h3>
+            <p>Fill in <code>DECISIONS.md</code>, about one page: your late-cancellation rule and why, your call on each wish-list tool, and what your AI assistant wrote, got wrong, or missed.</p>
+        </div>
+
+        <div class="submit-box">
+            <h5>Submit (via Brightspace)</h5>
+            <ul>
+                <li><code>tools.py</code> and <code>tests/test_my_rules.py</code></li>
+                <li>The output of <code>pytest</code>, pasted as text (all tests passing, including yours)</li>
+                <li><code>TRANSCRIPT.md</code></li>
+                <li><code>DECISIONS.md</code></li>
+            </ul>
+        </div>
+
+        <h2>How it's graded</h2>
+        <p>Each criterion is graded on one part of your submission, at one of three levels.</p>
+        <div class="table-scroll">
+        <table class="mini rubric">
+            <tr><th>Criterion</th><th>Weight</th><th>Graded on</th><th>Full</th><th>Partial</th><th>Missing</th></tr>
+            <tr><td><strong>Application</strong></td><td class="wt">10%</td><td><code>TRANSCRIPT.md</code></td><td>Your solution runs in the clinic scenario, and the right tool fires for each message.</td><td>It runs, but one message misbehaves and you don't explain why.</td><td>It restates the HOS 1 build, or doesn't run.</td></tr>
+            <tr><td><strong>Analysis</strong></td><td class="wt">20%</td><td><code>DECISIONS.md</code>, section 2 (wish list)</td><td>For each wish-list tool, you break down what it would actually let the model do: what data it could see and what actions it could take.</td><td>You name a risk, but only in general terms ("privacy").</td><td>No breakdown.</td></tr>
+            <tr><td><strong>Evaluation</strong></td><td class="wt">30%</td><td><code>DECISIONS.md</code>, section 1 (late cancellations)</td><td>A clear rule, judged against stated criteria (who it protects, what it costs), with an alternative you rejected and why.</td><td>A rule with a reason, but no criteria or no rejected alternative.</td><td>No rule, or no justification.</td></tr>
+            <tr><td><strong>Design</strong></td><td class="wt">40%</td><td><code>tools.py</code>, your tests, and the <code>pytest</code> output</td><td>All provided tests pass, and your own tests check your rule, including an edge case.</td><td>Most provided tests pass, or your own tests cover only the easy case.</td><td>It doesn't run, or you wrote no tests of your own.</td></tr>
+        </table>
+        </div>
+        <p style="font-size:0.88rem;color:#475569">How this differs from HOS 1's Understand &amp; Refine: there you extended code you already understood, by hand, with no AI. Here the business, the code, and the decisions are new, AI help is allowed, and half the grade (Analysis and Evaluation) is for the calls you make, not the typing.</p>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong><code>test_model_cannot_choose_the_patient</code> fails.</strong> A schema lists <code>patient_id</code> as a parameter. Remove it from the schema. The function still takes it, because the app passes it in.</li>
+                <li><strong>A time test fails by one slot.</strong> Somewhere you used <code>datetime.now()</code>. Use <code>clinic_data.now()</code>.</li>
+                <li><strong>An error test says "an error must not change any data".</strong> Check for the error <em>before</em> you change <code>booked_by</code>, not after.</li>
+                <li><strong><code>agent.py</code> fails with 502 or "model not found".</strong> The model is set to <code>gemini-3.8-flash</code>. If your assistant changed it, change it back. See the <a href="hos-01-foundations-agentic-loop.html">HOS 1 guide's</a> Common snags.</li>
+            </ul>
+        </div>
+
+        <details class="faculty">
+            <summary>Faculty notes: what strong answers look like, and grading</summary>
+
+            <h4>The late-cancellation decision</h4>
+            <p>Three common rules, all defensible. Grade the reasoning, not the choice.</p>
+            <ul>
+                <li><strong>Refuse inside 24 hours and send the patient to the front desk.</strong> A person decides whether to charge or waive the fee. The cost is friction for the patient. (This is the answer key's rule.)</li>
+                <li><strong>Cancel and record the fee.</strong> Convenient, and the slot reopens for someone else. The risk is that a chatbot charges a patient money, and disputes go to the front desk anyway.</li>
+                <li><strong>Ask the patient to confirm the fee first.</strong> The strongest answers notice the trap: a <code>confirm_fee: true</code> parameter is filled in by the <em>model</em>, so it isn't real confirmation unless the app enforces it outside the model. Students who spot this are showing exactly the "should the model control this?" judgment HOS 1 teaches.</li>
+            </ul>
+            <p><strong>Typical answers</strong> pick a rule without saying who it protects, or test only the easy case. The boundary is in the data on purpose: S06 is 23.5 hours away and S05 is 25 hours away.</p>
+
+            <h4>The wish list</h4>
+            <ul>
+                <li><strong><code>view_patient_record</code>:</strong> strong answers don't expose it, or expose only the logged-in patient's own non-clinical fields. They point out that the record's <code>notes</code> hold health information the model could repeat back, and that the assistant isn't supposed to give medical advice anyway.</li>
+                <li><strong><code>send_sms</code>:</strong> strong answers reject a free-form <code>(phone, message)</code> tool, which would let the model text anyone anything, in favor of something narrow like <code>send_reminder(slot_id)</code>: a fixed template sent to the number on file for the patient's own appointment.</li>
+                <li><strong>Typical answers</strong> say "expose both, they're useful," or "don't, privacy," without naming what the model could actually do with the tool.</li>
+            </ul>
+
+            <h4>Grading quickly (about 8–10 minutes per student)</h4>
+            <p>Each criterion maps to one part of the submission, so read each part once, in this order, and pick a level:</p>
+            <ol>
+                <li><strong>Design (40):</strong> the pasted <code>pytest</code> output (all passing?), then <code>test_my_rules.py</code> (does a test sit at the 24-hour edge, using S05 or S06?).</li>
+                <li><strong>Application (10):</strong> the transcript. Did each message trigger the right tool, and did the P1002 session apply the student's late-cancel rule?</li>
+                <li><strong>Evaluation (30):</strong> memo section 1.</li>
+                <li><strong>Analysis (20):</strong> memo section 2.</li>
+            </ol>
+            <p>You don't need to run the code. Load the table above into Brightspace as a rubric with levels (Full = 100%, Partial = 50%, Missing = 0% of the criterion), so grading is one click per criterion. A reference submission is in the <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/ac-01-clinic-booking" target="_blank" rel="noopener">answer key</a>, with steps to check it against the provided tests.</p>
+
+            <h4>Worth checking in the first term</h4>
+            <ul>
+                <li>Do a faculty test run in a fresh Codespace (AC 1 is the only challenge that calls Gemini live). Does it fit in 60–90 minutes with an AI assistant?</li>
+                <li>Do the memos actually differ on the late-cancel rule, or does everyone copy the same AI suggestion?</li>
+                <li>Does grading actually take 8–10 minutes per student? Do two instructors give the same levels to the same submission?</li>
+                <li>Is the transcript worth its 10 points, or should it become a single screenshot?</li>
+            </ul>
+        </details>
+
+        <div class="guide-nav">
+            <a href="hos-01-foundations-agentic-loop.html">← HOS 1 guide</a>
+            <a href="../AI-410.html">Back to the schedule →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

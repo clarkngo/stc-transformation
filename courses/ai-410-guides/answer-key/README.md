@@ -11,6 +11,17 @@ to run it — same layout and run instructions as the matching starter-code
 folder, so anything in the [top-level starter-code README](../starter-code/README.md)
 about Codespaces, local venvs, or the Week 8 mobile app applies here too.
 
+## Application Challenges (current course)
+
+One complete, passing reference submission per challenge. The open decision in each (late cancellations, the abstain threshold, refund routing, paging) is solved one defensible way; grade students on their reasoning, not on matching it. Each folder's README says how to check it against the provided tests.
+
+| Folder | Solves |
+|---|---|
+| `ac-01-clinic-booking/` | `tools.py`'s three clinic tools and schemas, plus a late-cancellation rule |
+| `ac-02-helpdesk-retrieval/` | `evaluate.py`'s `hit_rate`, section chunking, and an abstain threshold |
+| `ac-03-refund-guardrail/` | `refunds.py`'s `RefundArgs` schema, order checks, and refund routing |
+| `ac-04-substitution-observability/` | `instrumented.py`'s traced `run_order`, quality score, and paging rule |
+
 ## Production schedule (8 individually-graded weeks)
 
 Complete — every week from the reviewed 10-week schedule that has a build task.

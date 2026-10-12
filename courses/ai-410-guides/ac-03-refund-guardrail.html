@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Application Challenge 3: Pacific Bean Refund Guardrail</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color:#27ae60; font-size:1.15rem; margin:28px 0 8px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .draft-banner { background:#fef3c7; border:2px solid #f59e0b; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; }
+        .draft-banner strong { color:#b45309; }
+        .draft-banner p { margin:6px 0 0; }
+        .rules-box { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:0 0 18px; font-size:0.85rem; border-radius:0 4px 4px 0; color:#475569; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .goal-box p { margin:0; }
+        .scenario { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px 20px; margin:12px 0; }
+        .scenario p:last-child { margin-bottom:0; }
+        .decision-box { background:#fdf4ff; border:1px solid #e9d5ff; border-left:5px solid #a855f7; padding:15px 18px; margin:14px 0; border-radius:4px; }
+        .decision-box h4 { margin:0 0 6px; color:#7e22ce; }
+        .stage-block { border:1px solid #e2e8f0; border-radius:8px; padding:18px 22px; margin-bottom:14px; }
+        .stage-block h3 { margin:0 0 6px; font-size:1.02rem; }
+        .stage-num { display:inline-block; width:26px; height:26px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.85rem; text-align:center; line-height:26px; margin-right:8px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code, td code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        p code, li code, td code { overflow-wrap:anywhere; }
+        table.mini { width:100%; border-collapse:collapse; font-size:0.86rem; margin:10px 0; }
+        table.mini th, table.mini td { border:1px solid #e2e8f0; padding:8px 10px; text-align:left; vertical-align:top; }
+        table.mini th { background:#f8fafc; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        table.mini td.wt { white-space:nowrap; font-weight:700; color:#1e8449; }
+        .table-scroll { overflow-x:auto; }
+        table.rubric { min-width:760px; }
+        table.rubric td:nth-child(n+4) { width:22%; }
+        .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul, .submit-box ol { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        details.faculty { background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px 16px; margin:22px 0; }
+        details.faculty summary { cursor:pointer; font-weight:700; color:#334155; }
+        details.faculty h4 { margin:16px 0 6px; font-size:0.92rem; color:#334155; }
+        details.faculty p, details.faculty li { font-size:0.88rem; }
+        .guide-nav { display:flex; justify-content:space-between; gap:12px; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+    </nav>
+
+        <h1>Application Challenge 3 — Pacific Bean Coffee Refund Guardrail</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 60–90 min</span><span class="meta-pill">Outcome 3</span><span class="meta-pill">After HOS 3 · end of Week 6</span><span class="meta-pill">Individual</span><span class="meta-pill">AI assistant allowed — disclose it</span><span class="meta-pill">5% of final grade</span>
+        </div>
+
+        <div class="rules-box">This challenge follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>: it adapts to AI 410's official Outcome 3, runs entirely in GitHub Codespaces, and uses only free tiers. Everything runs offline with no API key or Redis instance.</div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Take the guardrail and background-job skills from HOS 3 to a tool that moves money: validate every call the model makes to a refund tool, route good calls either straight through or to a human review queue, and decide what the bot may refund on its own.</p>
+        </div>
+
+        <h2>The scenario</h2>
+        <div class="scenario">
+            <p><strong>Pacific Bean Coffee Co.</strong> (fictional) sells beans and equipment online, to home customers and to cafes. Its support chatbot can call one tool: <code>issue_refund(order_id, amount, reason, note?)</code>. In testing, the model filled in those arguments wrong in a dozen ways. They're all in <code>recorded_calls.json</code>: an amount of "twenty dollars", a negative amount, an order number without its prefix, a made-up <code>"approved": true</code> field, someone else's order.</p>
+            <ul>
+                <li><strong>The app knows who is logged in.</strong> Like AC 1, the customer ID comes from the app, never from the model.</li>
+                <li><strong>The review queue stands in for HOS 3's Redis queue.</strong> <code>enqueue</code> returns a job ID immediately, and a person at Pacific Bean works through the jobs later.</li>
+            </ul>
+        </div>
+
+        <h2>The spec</h2>
+        <p>Every requirement below is checked by a provided test in <code>tests/test_refunds.py</code>. Your code goes in <code>refunds.py</code>.</p>
+        <div class="table-scroll">
+        <table class="mini">
+            <tr><th>Layer</th><th>Must do</th></tr>
+            <tr><td><strong>Schema</strong> (<code>RefundArgs</code>, Pydantic)</td><td>Order ID is <code>PB-</code> plus 4 digits; amount is a number above 0 with at most 2 decimals; reason is one of four; note is optional, at most 200 characters; any other field is rejected.</td></tr>
+            <tr><td><strong>Lookup</strong> (the order data)</td><td>Reject an order that doesn't exist or isn't this customer's, with the same message for both. Reject orders older than 30 days. Reject an amount above what's left to refund, and say what's left.</td></tr>
+            <tr><td><strong>Routing</strong></td><td>Over $500 is never applied: it goes to the review queue. Otherwise your rules decide. A small "damaged" refund on a recent order goes straight through.</td></tr>
+            <tr><td><strong>Every error</strong></td><td>Returns <code>{"error": ...}</code> naming every bad field, so the model can retry (the HOS 3 pattern), and changes nothing.</td></tr>
+        </table>
+        </div>
+
+        <div class="decision-box">
+            <h4>The open decision: what the bot may refund on its own</h4>
+            <p>The owner: <em>"Handle refunds so I don't have to. But never let the bot refund more than $500 on its own."</em> Everything at or under $500 is your call.</p>
+            <p style="margin-bottom:0">Set <code>AUTO_REFUND_LIMIT</code>, and add any other rule that sends a refund to a person: a reason, a repeat refund on the same order, an account type. Prove your rules with your own tests and defend them in <code>DECISIONS.md</code>.</p>
+        </div>
+
+        <h2>Where each check belongs</h2>
+        <p>In your memo, take the bad calls in <code>recorded_calls.json</code> and say which layer stops each one in your code (schema, lookup, or person), and why an earlier layer can't. Then name one call that could pass every check you wrote and still be a refund the owner wouldn't want.</p>
+
+        <h2>Steps</h2>
+        <div class="stage-block">
+            <h3><span class="stage-num">1</span>Open it and run the tests</h3>
+            <p>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/ac-03-refund-guardrail" target="_blank" rel="noopener">the AC 3 starter-code folder</a> in GitHub Codespaces. It installs everything for you. Then run:</p>
+<pre>pytest</pre>
+            <p>Almost everything fails. That's your to-do list.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">2</span>Build the schema</h3>
+            <p>Write <code>RefundArgs</code> until the schema tests pass. You may use an AI assistant; read what it writes, because you'll defend it.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">3</span>Build the lookup and routing</h3>
+            <p>Write <code>issue_refund</code>: validate, check the order, then route. Make sure an error or a queued refund never changes the order.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">4</span>Make the routing call</h3>
+            <p>Set <code>AUTO_REFUND_LIMIT</code> and any other rules. Write at least two tests in <code>tests/test_my_rules.py</code>: one refund that goes straight through and one that's queued, plus the case closest to your limit.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">5</span>Replay the recorded calls</h3>
+            <p>Run every recorded tool call through your code:</p>
+<pre>python run_cases.py</pre>
+            <p>Paste the output into <code>REPORT.md</code> and fill in <code>DECISIONS.md</code>.</p>
+        </div>
+
+        <div class="submit-box">
+            <h5>Submit (via Brightspace)</h5>
+            <ul>
+                <li><code>refunds.py</code> and <code>tests/test_my_rules.py</code></li>
+                <li>The output of <code>pytest</code>, pasted as text (all tests passing, including yours)</li>
+                <li><code>REPORT.md</code></li>
+                <li><code>DECISIONS.md</code></li>
+            </ul>
+        </div>
+
+        <h2>How it's graded</h2>
+        <p>Each criterion is graded on one part of your submission, at one of three levels.</p>
+        <div class="table-scroll">
+        <table class="mini rubric">
+            <tr><th>Criterion</th><th>Weight</th><th>Graded on</th><th>Full</th><th>Partial</th><th>Missing</th></tr>
+            <tr><td><strong>Application</strong></td><td class="wt">10%</td><td><code>REPORT.md</code></td><td>Every recorded call is handled: bad ones rejected with a useful message, good ones refunded or queued by your rules.</td><td>It runs, but a recorded call is handled in a way you don't explain.</td><td>It restates the HOS build, or doesn't run.</td></tr>
+            <tr><td><strong>Analysis</strong></td><td class="wt">20%</td><td><code>DECISIONS.md</code>, section 2 (where each check belongs)</td><td>Each bad call is assigned to a layer, with why an earlier layer can't catch it, plus a call that would still get through.</td><td>Layers are named, but not tied to the recorded calls.</td><td>No breakdown.</td></tr>
+            <tr><td><strong>Evaluation</strong></td><td class="wt">30%</td><td><code>DECISIONS.md</code>, section 1</td><td>Clear routing rules, judged against stated criteria (who they protect, what they cost), with an alternative you rejected and why.</td><td>Rules with a reason, but no criteria or no rejected alternative.</td><td>No rule, or no justification.</td></tr>
+            <tr><td><strong>Design</strong></td><td class="wt">40%</td><td><code>refunds.py</code>, your tests, and the <code>pytest</code> output</td><td>All provided tests pass, and your own tests check your rules, including the edge closest to your limit.</td><td>Most provided tests pass, or your own tests cover only the easy case.</td><td>It doesn't run, or you wrote no tests of your own.</td></tr>
+        </table>
+        </div>
+
+        <p style="font-size:0.88rem;color:#475569">How this differs from HOS 3's Understand &amp; Refine: there you guarded your own second tool, by hand. Here the tool moves real money, the bad calls are someone else's, AI help is allowed, and half the grade (Analysis and Evaluation) is for the calls you make.</p>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong><code>"twenty dollars"</code> or <code>12.833</code> gets through.</strong> Pydantic turns numeric strings into numbers on its own, but not words. Use <code>Field(gt=0)</code> for the sign and a <code>field_validator</code> for the decimals.</li>
+                <li><strong><code>"approved": true</code> gets through.</strong> Pydantic ignores unknown fields by default. Set <code>model_config = ConfigDict(extra="forbid")</code>.</li>
+                <li><strong>The error only names one field.</strong> Catch the <code>ValidationError</code> and loop over <code>e.errors()</code>, so the model can fix every field in one retry.</li>
+                <li><strong>A test says an error changed an order.</strong> Do every check before you add to <code>refunded</code>, not after.</li>
+            </ul>
+        </div>
+
+        <details class="faculty">
+            <summary>Faculty notes: what strong answers look like, and grading</summary>
+            <h4>The open decision</h4>
+            <p>Several rules are defensible. Grade the reasoning, not the choice.</p>
+            <ul>
+                <li><strong>Low dollar limit (about $50–$100), the answer key uses $75:</strong> most home-customer refunds go through; equipment and wholesale go to a person.</li>
+                <li><strong>Percentage of the order</strong> (for example up to 50%): scales with order size. Strong answers notice it lets a $1,240 order refund $500+ automatically unless the hard limit catches it.</li>
+                <li><strong>Extra routing rules:</strong> queue any repeat refund on the same order (the answer key does; repeat small refunds are how a limit gets gamed), or queue every wholesale account, or every "not as described".</li>
+            </ul>
+            <p><strong>Typical answers</strong> pick a dollar figure with no criteria ("$100 seems reasonable"), or test only $5 and $1,000 and never the edge.</p>
+
+            <h4>The analysis</h4>
+            <ul>
+                <li><strong>Schema:</strong> "twenty dollars", 12.833, -18, "1001", "broken", <code>approved: true</code>. Strong answers explain the extra field is the dangerous one: a model that invents an approval flag is trying to authorize itself.</li>
+                <li><strong>Lookup:</strong> the October order, the whole grinder (only $104 left), the friend's order. A schema can't know who owns an order or what's been refunded.</li>
+                <li><strong>Person:</strong> the $1,240 espresso machine, the $155 stale beans. Strong answers name a call that passes everything, like the last one, a $104 refund because the grinder "doesn't grind fine enough for espresso", which is buyer's remorse labelled <code>not_as_described</code>.</li>
+            </ul>
+            <p>With the answer key's rules, the replay ends: 1 refunded ($12.00), 3 queued, 8 rejected. A <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/ac-03-refund-guardrail" target="_blank" rel="noopener">reference submission</a> is in the answer key, with steps to check it.</p>
+
+            <h4>Grading quickly (about 8–10 minutes per student)</h4>
+            <p>Each criterion maps to one part of the submission, so read each part once, in this order, and pick a level:</p>
+            <ol>
+                <li><strong>Design (40):</strong> the pasted <code>pytest</code> output, then <code>test_my_rules.py</code> (is the edge of the limit tested?).</li>
+                <li><strong>Application (10):</strong> <code>REPORT.md</code>. Is every recorded call handled the way the student's rules say?</li>
+                <li><strong>Evaluation (30):</strong> memo section 1.</li>
+                <li><strong>Analysis (20):</strong> memo section 2.</li>
+            </ol>
+            <p>You don't need to run the code. In Brightspace, use the rubric above with levels (Full = 100%, Partial = 50%, Missing = 0% of the criterion).</p>
+
+        </details>
+
+        <div class="guide-nav">
+            <a href="hos-03-guardrails-async.html">← HOS 3 guide</a>
+            <a href="../AI-410.html">Back to the schedule →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

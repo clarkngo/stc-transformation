@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Application Challenge 4: Puget Pantry Substitution Observability</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color:#27ae60; font-size:1.15rem; margin:28px 0 8px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .draft-banner { background:#fef3c7; border:2px solid #f59e0b; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; }
+        .draft-banner strong { color:#b45309; }
+        .draft-banner p { margin:6px 0 0; }
+        .rules-box { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:0 0 18px; font-size:0.85rem; border-radius:0 4px 4px 0; color:#475569; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .goal-box p { margin:0; }
+        .scenario { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px 20px; margin:12px 0; }
+        .scenario p:last-child { margin-bottom:0; }
+        .decision-box { background:#fdf4ff; border:1px solid #e9d5ff; border-left:5px solid #a855f7; padding:15px 18px; margin:14px 0; border-radius:4px; }
+        .decision-box h4 { margin:0 0 6px; color:#7e22ce; }
+        .stage-block { border:1px solid #e2e8f0; border-radius:8px; padding:18px 22px; margin-bottom:14px; }
+        .stage-block h3 { margin:0 0 6px; font-size:1.02rem; }
+        .stage-num { display:inline-block; width:26px; height:26px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.85rem; text-align:center; line-height:26px; margin-right:8px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code, td code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        p code, li code, td code { overflow-wrap:anywhere; }
+        table.mini { width:100%; border-collapse:collapse; font-size:0.86rem; margin:10px 0; }
+        table.mini th, table.mini td { border:1px solid #e2e8f0; padding:8px 10px; text-align:left; vertical-align:top; }
+        table.mini th { background:#f8fafc; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        table.mini td.wt { white-space:nowrap; font-weight:700; color:#1e8449; }
+        .table-scroll { overflow-x:auto; }
+        table.rubric { min-width:760px; }
+        table.rubric td:nth-child(n+4) { width:22%; }
+        .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul, .submit-box ol { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        details.faculty { background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px 16px; margin:22px 0; }
+        details.faculty summary { cursor:pointer; font-weight:700; color:#334155; }
+        details.faculty h4 { margin:16px 0 6px; font-size:0.92rem; color:#334155; }
+        details.faculty p, details.faculty li { font-size:0.88rem; }
+        .guide-nav { display:flex; justify-content:space-between; gap:12px; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+    </nav>
+
+        <h1>Application Challenge 4 — Puget Pantry Substitution Observability</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 60–90 min</span><span class="meta-pill">Outcomes 4 &amp; 5</span><span class="meta-pill">After HOS 4 · end of Week 8</span><span class="meta-pill">Individual</span><span class="meta-pill">AI assistant allowed — disclose it</span><span class="meta-pill">5% of final grade</span>
+        </div>
+
+        <div class="rules-box">This challenge follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>: it adapts to AI 410's official Outcomes 4 and 5, runs entirely in GitHub Codespaces, and uses only free tiers. Everything runs offline: no API key, Langfuse project, or phone needed.</div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Take the tracing and scoring skills from HOS 4 to someone else's AI feature: instrument it so every order shows what happened at each step, score each AI decision, and decide what's worth waking the on-call engineer for.</p>
+        </div>
+
+        <h2>The scenario</h2>
+        <div class="scenario">
+            <p><strong>Puget Pantry</strong> (fictional) delivers groceries. When an item in an order is out of stock, an AI feature picks a replacement from the same category and pushes the change to the customer's phone. It's been in production for a month. It works, and nobody can see inside it.</p>
+            <p>You get the feature (four steps: look up stock, find candidates, ask the model, notify), the catalog, the customers and their allergies, and one day of orders.</p>
+            <ul>
+                <li><strong>The model is recorded.</strong> <code>fake_model.py</code> replays what the model chose in a test run, so everyone's traces match. Like the real model, it isn't told about allergies or price.</li>
+                <li><strong>The tracer is shaped like Langfuse</strong> (HOS 4): traces, spans inside them, and scores attached. It records in memory instead of sending anywhere.</li>
+            </ul>
+        </div>
+
+        <h2>The spec</h2>
+        <p>Every requirement below is checked by a provided test in <code>tests/test_instrumented.py</code>. Your code goes in <code>instrumented.py</code>.</p>
+        <div class="table-scroll">
+        <table class="mini">
+            <tr><th>Function</th><th>Must do</th></tr>
+            <tr><td><code>score_substitution(original, substitute, customer)</code></td><td>0.0 for no substitute, or one with an allergen the customer listed; 0.5 if it costs more than 20% above the original; otherwise 1.0.</td></tr>
+            <tr><td><code>run_order(order)</code></td><td>One trace per order. A <code>lookup_stock</code> span, one <code>choose_substitute</code> span per out-of-stock item (the item, how many candidates, what was chosen, how long the model took), and a <code>notify</code> span with the message, when anything was swapped. One quality score per swap. The customer gets exactly what the untraced feature would send.</td></tr>
+            <tr><td><code>should_page(trace)</code></td><td>True or False for every order. An order with nothing out of stock never pages.</td></tr>
+        </table>
+        </div>
+
+        <div class="decision-box">
+            <h4>The open decision: what pages the on-call engineer</h4>
+            <p>The operations lead: <em>"Page us if substitutions go wrong. But if the pager goes off for nothing, people start ignoring it, and then it's useless."</em> Nobody said what "go wrong" means.</p>
+            <p style="margin-bottom:0">Write <code>should_page</code>. Everything that doesn't page belongs on a dashboard. Prove your rule with your own tests and defend it in <code>DECISIONS.md</code>.</p>
+        </div>
+
+        <h2>What the trace lets you see</h2>
+        <p>In your memo, break the feature into its four steps. For each problem in the day's report (a quality 0.0, a quality 0.5, the slow model call), say which span shows it, and what you'd have known from one "order processed" log line instead. Then name one thing the feature gets wrong that your trace still can't show.</p>
+
+        <h2>Steps</h2>
+        <div class="stage-block">
+            <h3><span class="stage-num">1</span>Open it and run the tests</h3>
+            <p>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/ac-04-substitution-observability" target="_blank" rel="noopener">the AC 4 starter-code folder</a> in GitHub Codespaces. It installs everything for you. Then run:</p>
+<pre>pytest</pre>
+            <p>Almost everything fails. That's your to-do list.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">2</span>Score a substitution</h3>
+            <p>Write <code>score_substitution</code> from the spec. You may use an AI assistant; read what it writes, because you'll defend it.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">3</span>Trace an order</h3>
+            <p>Write <code>run_order</code>: call the feature's four steps yourself, each inside its span, and attach the scores. Don't change what the customer gets: <code>test_tracing_does_not_change_what_customers_get</code> checks.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">4</span>Make the paging call</h3>
+            <p>Write <code>should_page</code> and at least two tests in <code>tests/test_my_rules.py</code>: an order from the day that must page and one that must not, plus the case closest to your rule. You can build a trace by hand for a case the day doesn't contain.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">5</span>Run the day</h3>
+            <p>Run every order through your instrumented feature:</p>
+<pre>python run_day.py</pre>
+            <p>Paste the output into <code>REPORT.md</code> and fill in <code>DECISIONS.md</code>.</p>
+        </div>
+
+        <div class="submit-box">
+            <h5>Submit (via Brightspace)</h5>
+            <ul>
+                <li><code>instrumented.py</code> and <code>tests/test_my_rules.py</code></li>
+                <li>The output of <code>pytest</code>, pasted as text (all tests passing, including yours)</li>
+                <li><code>REPORT.md</code></li>
+                <li><code>DECISIONS.md</code></li>
+            </ul>
+        </div>
+
+        <h2>How it's graded</h2>
+        <p>Each criterion is graded on one part of your submission, at one of three levels.</p>
+        <div class="table-scroll">
+        <table class="mini rubric">
+            <tr><th>Criterion</th><th>Weight</th><th>Graded on</th><th>Full</th><th>Partial</th><th>Missing</th></tr>
+            <tr><td><strong>Application</strong></td><td class="wt">10%</td><td><code>REPORT.md</code></td><td>Every order is traced and scored, and the pages match your rule.</td><td>It runs, but an order is paged (or not) in a way you don't explain.</td><td>It restates the HOS build, or doesn't run.</td></tr>
+            <tr><td><strong>Analysis</strong></td><td class="wt">20%</td><td><code>DECISIONS.md</code>, section 2 (what the trace lets you see)</td><td>Each problem in the report is tied to the span that shows it, compared with a single log line, plus one thing the trace still can't show.</td><td>Spans are listed, but not tied to the day's problems.</td><td>No breakdown.</td></tr>
+            <tr><td><strong>Evaluation</strong></td><td class="wt">30%</td><td><code>DECISIONS.md</code>, section 1</td><td>A clear paging rule, judged against stated criteria (how rare, how harmful, can someone act now), with a condition you put on the dashboard instead and why.</td><td>A rule with a reason, but no criteria or no dashboard alternative.</td><td>No rule, or no justification.</td></tr>
+            <tr><td><strong>Design</strong></td><td class="wt">40%</td><td><code>instrumented.py</code>, your tests, and the <code>pytest</code> output</td><td>All provided tests pass, and your own tests check your rule, including a hand-built edge case.</td><td>Most provided tests pass, or your own tests cover only the day's obvious orders.</td><td>It doesn't run, or you wrote no tests of your own.</td></tr>
+        </table>
+        </div>
+
+        <p style="font-size:0.88rem;color:#475569">How this differs from HOS 4's Understand &amp; Refine: there you wrote a faithfulness score for your own app, by hand. Here the feature, its failures, and the paging call are someone else's, AI help is allowed, and half the grade (Analysis and Evaluation) is for the calls you make.</p>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong>The span order is wrong.</strong> Open each span with <code>with trace.span(...)</code> right before the step it measures. Don't create them all at the end.</li>
+                <li><strong><code>test_tracing_does_not_change_what_customers_get</code> fails.</strong> You're calling <code>notify</code> once per item, or calling <code>run_order_plain</code> as well. Collect the swaps, then notify once.</li>
+                <li><strong>Oat milk scores 1.0.</strong> 4.29 against 3.49 is 23% more, so it's a 0.5. Compare against the original price times 1.2.</li>
+                <li><strong>Everything pages.</strong> That's the failure the operations lead warned about. Re-read the open decision.</li>
+            </ul>
+        </div>
+
+        <details class="faculty">
+            <summary>Faculty notes: what strong answers look like, and grading</summary>
+            <h4>The open decision</h4>
+            <p>Several rules are defensible. Grade the reasoning, not the choice.</p>
+            <ul>
+                <li><strong>Page only when an allergen was pushed to the customer</strong> (the answer key): O-502, O-505, O-506. Rare, can hurt someone, and someone can act now (call the customer, stop the delivery).</li>
+                <li><strong>Page on any quality 0.0:</strong> the same orders today, but it would also page for "no substitute found", which isn't urgent. Strong answers notice the score lumps the two together.</li>
+                <li><strong>Page on a slow model call</strong> (O-505, O-507 at 3,900 ms): usually weak. Slowness is a dashboard trend unless orders are failing.</li>
+            </ul>
+            <p><strong>Typical answers</strong> page on everything that looks bad (price jumps, slow calls, low averages), which is exactly what the lead said makes people ignore the pager.</p>
+
+            <h4>The analysis</h4>
+            <ul>
+                <li><strong>Which span shows what:</strong> allergen problems show in <code>choose_substitute</code> (what was chosen) plus the customer's allergies; the price jump shows in the score; the slow call shows in <code>model_ms</code>. One log line would show only "order processed" for all ten.</li>
+                <li><strong>Strong answers</strong> point out that the push is sent <em>before</em> anyone could check: by the time the allergen page fires, the customer already has the message. That's a design flaw the trace reveals but can't fix.</li>
+                <li><strong>What the trace can't show:</strong> whether the customer accepted or returned the substitute, or whether a cheaper, safe candidate existed (the span records the count, not the options).</li>
+            </ul>
+            <p>The recorded day: 10 orders, 13 substitutions, 8 pushes, average quality 0.58 (three 0.0s, five 0.5s, five 1.0s). A <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/ac-04-substitution-observability" target="_blank" rel="noopener">reference submission</a> is in the answer key, with steps to check it.</p>
+
+            <h4>Grading quickly (about 8–10 minutes per student)</h4>
+            <p>Each criterion maps to one part of the submission, so read each part once, in this order, and pick a level:</p>
+            <ol>
+                <li><strong>Design (40):</strong> the pasted <code>pytest</code> output, then <code>test_my_rules.py</code> (is there a hand-built edge case?).</li>
+                <li><strong>Application (10):</strong> <code>REPORT.md</code>. Do the pages match the rule the student describes?</li>
+                <li><strong>Evaluation (30):</strong> memo section 1.</li>
+                <li><strong>Analysis (20):</strong> memo section 2.</li>
+            </ol>
+            <p>You don't need to run the code. In Brightspace, use the rubric above with levels (Full = 100%, Partial = 50%, Missing = 0% of the criterion).</p>
+
+        </details>
+
+        <div class="guide-nav">
+            <a href="hos-04-mobile-observability.html">← HOS 4 guide</a>
+            <a href="../AI-410.html">Back to the schedule →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

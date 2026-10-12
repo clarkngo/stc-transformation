@@ -394,19 +394,19 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 <section class="module card" id="debate">
   <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag">Discussion board · 3 stages</span></div></div></div>
   <div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>When a model's output fails validation, should the system keep retrying for a better answer, or fail fast and tell the user?</strong></p></div>
-  <p>You'll argue the side your debate team is assigned, then argue the other one, then drop advocacy and synthesize.</p>
+  <p>You'll argue the side your debate group is assigned, then argue the other one, then drop advocacy and synthesize.</p>
   <div class="callout blue">
     <span class="label">Your side this HOS</span>
-    <p>Sides rotate each HOS. <b>In HOS 3, Debate Team 1 argues Side A and Debate Team 2 argues Side B</b> — the same as HOS 1. Find your team under <b>Communication → Groups</b> in Brightspace. Not in a team? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A. <a href="../AI-410-syllabus.html#cd-sides">How sides are assigned →</a></p>
+    <p>Sides rotate each HOS. <b>In HOS 3, Debate Group 1 argues Side A and Debate Group 2 argues Side B</b> — the same as HOS 1. Find your group under <b>Communication → Groups</b> in Brightspace. Not in a group? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A. <a href="../AI-410-syllabus.html#cd-sides">How sides are assigned →</a></p>
   </div>
   <div class="row" style="margin-bottom:10px">
-    <label for="teamInput" class="small"><b>My Brightspace team:</b></label>
-    <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select>
+    <label for="teamInput" class="small"><b>My Brightspace group:</b></label>
+    <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Group 1</option><option value="2">Debate Group 2</option></select>
     <span class="small" id="sideResult" aria-live="polite"></span>
   </div>
   <div class="two">
     <div class="side a" id="sideA">
-      <h4><span>Side A — Retry until it's right (within a budget)</span><span class="tag blue">Team 1 this HOS</span></h4>
+      <h4><span>Side A — Retry until it's right (within a budget)</span><span class="tag blue">Group 1 this HOS</span></h4>
       <p>Retry with the validation error fed back, up to a sensible limit, before giving up.</p>
       <ul class="small">
         <li>Most validation failures are one-off; a second roll with feedback usually succeeds.</li>
@@ -415,7 +415,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
       </ul>
     </div>
     <div class="side b" id="sideB">
-      <h4><span>Side B — Fail fast and tell the user</span><span class="tag rose">Team 2 this HOS</span></h4>
+      <h4><span>Side B — Fail fast and tell the user</span><span class="tag rose">Group 2 this HOS</span></h4>
       <p>Validate once; on failure, return a clear error and let the user rephrase or try again.</p>
       <ul class="small">
         <li>Every retry adds latency and model cost, and multiplies at scale.</li>
@@ -433,7 +433,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
     <div class="eg weak"><span class="label">Weak synthesis</span>"Retrying is good but not too much. Balance is key."</div>
     <div class="eg strong"><span class="label">Strong synthesis</span>"Jordan's simulator numbers convinced me: with the error fed back, 2 retries recovered almost every failure, but a third retry recovered almost nothing extra. So: retry exactly twice with feedback for read-only tools, and fail fast on the first failure for anything that changes data — Kai's point that a confused model is a signal matters most when the tool isn't reversible."</div>
   </div>
-  <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%).</p>
+  <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%). <a href="concept-debate-example.html">See a worked example: four students through one debate, with a timeline →</a></p>
 </section>
 
 <section class="module card" id="create">
@@ -504,20 +504,22 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <section class="module card" id="challenge">
-  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — design a guardrail for a tool we haven't built</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Schema + validation rule — working code optional</span></div></div></div>
-  <p>Pick a tool this course hasn't built and design its guardrail: the schema, and the <strong>one field you'd validate first</strong> — with what specifically goes wrong if you skip it.</p>
+  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — a guardrail for a refund tool</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Build to spec · 60–90 min</span></div></div></div>
+  <p>Pacific Bean Coffee's support bot can issue refunds, and in testing the model filled in the refund tool's arguments wrong a dozen ways. Build the guardrail (a Pydantic schema, checks against the order data, and a human review queue), replay every recorded call through it, and decide what the bot may refund without a person. The spec, starter code, and rubric are in the <a href="../ai-410-guides/ac-03-refund-guardrail.html"><b>AC 3 guide</b></a>.</p>
+  <p class="small">Warm up first: the question of which layer catches what is the same one the challenge asks.</p>
   <h3>Warm-up: what can a schema actually catch?</h3>
   <p class="small">A clinic's agent has a tool <code>book_appointment(pet_id, service, start_time, notes)</code>. For each proposed check, decide: can a <b>schema</b> catch it, does it need a <b>lookup</b> (database or API), or does it need a <b>human</b>?</p>
   <div id="sorter"></div>
   <div class="row" style="margin:8px 0 16px"><button class="btn" id="sorterReveal" type="button">Reveal reasoning</button><span class="small" id="sorterScore" aria-live="polite"></span></div>
   <div class="callout"><span class="label">What to submit</span>
     <ul>
-      <li>Your tool's name, purpose, and a Pydantic-style schema (fields, types, rules).</li>
-      <li>The one field you'd validate first, and the concrete failure if you skipped it.</li>
-      <li>One check your schema <em>can't</em> do, and where it should happen instead (lookup or human).</li>
+      <li><code>refunds.py</code> and <code>tests/test_my_rules.py</code></li>
+      <li>The output of <code>pytest</code>, all tests passing (including yours)</li>
+      <li><code>REPORT.md</code>: the output of <code>python run_cases.py</code></li>
+      <li><code>DECISIONS.md</code>: your routing rules, and which layer stops each bad call</li>
     </ul>
   </div>
-  <p class="small muted"><b>Grading:</b> Judgment &amp; reasoning (50%) · Transfer to a new tool, not a restatement of <code>calculate</code> (35%) · Clarity (15%).</p>
+  <p class="small muted"><b>Grading:</b> Application — genuinely applied to a new tool, not a restatement of <code>calculate</code> (10%) · Analysis — break the problem into its parts (20%) · Evaluation — justify your call against clear criteria (30%) · Design — your own original solution (40%).</p>
 </section>
 
 <section class="module card" id="check">
@@ -632,7 +634,7 @@ function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); loca
   document.getElementById('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); document.getElementById('mpStatus').textContent='Draft cleared.'; });
 })();
 
-/* Debate side: HOS 3 rotation — Team 1 = Side A, Team 2 = Side B */
+/* Debate side: HOS 3 rotation — Group 1 = Side A, Group 2 = Side B */
 (function(){
   var sel=document.getElementById('teamInput'), out=document.getElementById('sideResult');
   var v=store('ai410-team'); if(v) sel.value=v;

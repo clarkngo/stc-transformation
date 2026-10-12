@@ -379,19 +379,19 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 <section class="module card" id="debate">
   <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag">Discussion board · 3 stages</span></div></div></div>
   <div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>When retrieval finds nothing relevant, should the assistant refuse ("I don't have that information"), or answer from general knowledge with a clear caveat?</strong></p></div>
-  <p>You'll argue the side your debate team is assigned, then argue the other one, then drop advocacy and synthesize.</p>
+  <p>You'll argue the side your debate group is assigned, then argue the other one, then drop advocacy and synthesize.</p>
   <div class="callout blue">
     <span class="label">Your side this HOS</span>
-    <p>Sides rotate each HOS. <b>In HOS 2, Debate Team 1 argues Side B and Debate Team 2 argues Side A</b> — the reverse of HOS 1. Find your team under <b>Communication → Groups</b> in Brightspace. Not in a team? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A. <a href="../AI-410-syllabus.html#cd-sides">How sides are assigned →</a></p>
+    <p>Sides rotate each HOS. <b>In HOS 2, Debate Group 1 argues Side B and Debate Group 2 argues Side A</b> — the reverse of HOS 1. Find your group under <b>Communication → Groups</b> in Brightspace. Not in a group? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A. <a href="../AI-410-syllabus.html#cd-sides">How sides are assigned →</a></p>
   </div>
   <div class="row" style="margin-bottom:10px">
-    <label for="teamInput" class="small"><b>My Brightspace team:</b></label>
-    <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select>
+    <label for="teamInput" class="small"><b>My Brightspace group:</b></label>
+    <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Group 1</option><option value="2">Debate Group 2</option></select>
     <span class="small" id="sideResult" aria-live="polite"></span>
   </div>
   <div class="two">
     <div class="side a" id="sideA">
-      <h4><span>Side A — Refuse when retrieval comes up empty</span><span class="tag blue">Team 2 this HOS</span></h4>
+      <h4><span>Side A — Refuse when retrieval comes up empty</span><span class="tag blue">Group 2 this HOS</span></h4>
       <p>If no chunk clears the similarity threshold, say so and point to a human or a source.</p>
       <ul class="small">
         <li>A made-up policy ("yes, we gift wrap") creates a promise the business has to honor or retract.</li>
@@ -400,7 +400,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
       </ul>
     </div>
     <div class="side b" id="sideB">
-      <h4><span>Side B — Answer from general knowledge, with a caveat</span><span class="tag rose">Team 1 this HOS</span></h4>
+      <h4><span>Side B — Answer from general knowledge, with a caveat</span><span class="tag rose">Group 1 this HOS</span></h4>
       <p>Give the best general answer, clearly labeled as not from company documents.</p>
       <ul class="small">
         <li>"I don't know" to every uncovered question makes the assistant feel broken.</li>
@@ -418,7 +418,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
     <div class="eg weak"><span class="label">Weak synthesis</span>"Both sides make good points. It depends on the use case."</div>
     <div class="eg strong"><span class="label">Strong synthesis</span>"Marcus showed that 'do you gift wrap?' got an invented yes in his build — that's a policy question, and I now think policy questions must refuse. But Dana's waterproofing example is general advice, not policy. My position: refuse on anything that sounds like a commitment (prices, returns, availability), allow caveated general answers for how-to questions. The hard part is telling them apart, which is a classifier problem, not a prompt problem."</div>
   </div>
-  <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%).</p>
+  <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%). <a href="concept-debate-example.html">See a worked example: four students through one debate, with a timeline →</a></p>
 </section>
 
 <section class="module card" id="create">
@@ -487,15 +487,16 @@ instruction suppress tool use.</code></pre>
 </section>
 
 <section class="module card" id="challenge">
-  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — review someone else's RAG pipeline</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Evaluate &amp; critique — don't run it</span></div></div></div>
-  <p>A campus IT help-desk team built the pipeline below to answer student questions from their knowledge base. It runs without errors. Your job: find one thing it gets right, one thing likely to <em>quietly underperform</em> (answer worse, not crash), and explain how you'd confirm your suspicion <em>without running it</em>.</p>
+  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — measure someone else's RAG pipeline</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Measure &amp; improve · 60–90 min</span></div></div></div>
+  <p>A campus IT help-desk team built the pipeline below to answer student questions from their knowledge base. It runs without errors, and nobody knows how often it answers from the wrong passage. In the challenge you get a runnable copy, six articles, and 20 questions with known answers: measure how often it finds the answer, beat it with your own chunking, and decide when the bot should say "I don't know". The spec, starter code, and rubric are in the <a href="../ai-410-guides/ac-02-helpdesk-retrieval.html"><b>AC 2 guide</b></a>.</p>
+  <p class="small">Warm up first: read the production code and predict what will go wrong. The challenge then measures it.</p>
 <pre><code># helpdesk_rag.py  (someone else's code)
 kb = chromadb.PersistentClient(path="./kb_db")
 col = kb.get_or_create_collection("articles")
 
 def ingest(article_id, text):
-    for i in range(0, len(text), 2000):              # split every 2000 characters
-        piece = text[i:i+2000]
+    for i in range(0, len(text), 500):               # split every 500 characters
+        piece = text[i:i+500]
         vec = embed(piece, task_type="RETRIEVAL_QUERY")
         col.add(ids=[f"{article_id}-{i}"], embeddings=[vec],
                 documents=[piece], metadatas=[{"source": article_id}])
@@ -511,12 +512,13 @@ def answer(question):
   <div class="row" style="margin:8px 0 16px"><button class="btn" id="sorterReveal" type="button">Reveal reasoning</button><span class="small" id="sorterScore" aria-live="polite"></span></div>
   <div class="callout"><span class="label">What to submit</span>
     <ul>
-      <li>One thing the pipeline gets right, and why it matters.</li>
-      <li>One thing likely to quietly underperform, with the specific question type it would get wrong.</li>
-      <li>How you'd confirm it without running the code — what you'd read, compare, or ask for.</li>
+      <li><code>evaluate.py</code> and <code>tests/test_my_rules.py</code></li>
+      <li>The output of <code>pytest</code>, all tests passing (including yours)</li>
+      <li><code>REPORT.md</code>: the output of <code>python run_eval.py</code></li>
+      <li><code>DECISIONS.md</code>: your threshold, and why each miss happens</li>
     </ul>
   </div>
-  <p class="small muted"><b>Grading:</b> Judgment &amp; reasoning (50%) · Transfer to the new pipeline, not a restatement of your own build (35%) · Clarity (15%).</p>
+  <p class="small muted"><b>Grading:</b> Application — genuinely applied to the new pipeline, not a restatement of your own build (10%) · Analysis — break the problem into its parts (20%) · Evaluation — justify your call against clear criteria (30%) · Design — your own original solution (40%).</p>
 </section>
 
 <section class="module card" id="check">
@@ -626,7 +628,7 @@ function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); loca
   document.getElementById('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); document.getElementById('mpStatus').textContent='Draft cleared.'; });
 })();
 
-/* Debate side: HOS 2 rotation — Team 1 = Side B, Team 2 = Side A */
+/* Debate side: HOS 2 rotation — Group 1 = Side B, Group 2 = Side A */
 (function(){
   var sel=document.getElementById('teamInput'), out=document.getElementById('sideResult');
   var v=store('ai410-team'); if(v) sel.value=v;
@@ -680,7 +682,7 @@ wireChecklist('refineList','refineProgress','done','ai410-'+LESSON+'-refine');
     ['Stores <code>metadatas={"source": article_id}</code> with every chunk','right','Keeping the source lets the answer cite which article it came from — and lets you debug which article retrieval picked.'],
     ['Uses a persistent Chroma client with <code>get_or_create_collection</code>','right','Same pattern as HOS 2: the vector store survives restarts and reopens the existing collection instead of re-creating it.'],
     ['Embeds document chunks with <code>task_type="RETRIEVAL_QUERY"</code>','quiet','Documents should be embedded as RETRIEVAL_DOCUMENT. Using the query type for both still "works," but similarity scores get less reliable — answers get worse with no error.'],
-    ['Splits every 2,000 characters, with no overlap','quiet','Fixed character cuts land mid-sentence, even mid-word, and a step split across two chunks is never retrieved whole. No overlap means nothing repairs the cut.'],
+    ['Splits every 500 characters, with no overlap','quiet','Fixed character cuts land mid-sentence, even mid-word, and a step split across two chunks is never retrieved whole. No overlap means nothing repairs the cut.'],
     ['Retrieves only <code>n_results=1</code>','quiet','If the single best chunk is slightly off, the model has nothing else to work with. Multi-part questions ("reset my password and set up MFA") lose half the answer.'],
     ['Takes <code>hits["documents"][0][0]</code> with no check for an empty result','crash','On an empty collection (e.g. before the first ingest), indexing [0][0] raises an IndexError. It\'s the one real crash risk here.'],
     ['Pastes the context into the user message with "Answer using this"','quiet','No instruction for what to do when the context is irrelevant, so the model will stretch whatever came back into an answer — exactly this week\'s Concept Debate.']

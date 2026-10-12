@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 410 — Application Challenge 2: Riverbend Help-Desk Retrieval</title>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color:#27ae60; font-size:1.15rem; margin:28px 0 8px; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .draft-banner { background:#fef3c7; border:2px solid #f59e0b; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; }
+        .draft-banner strong { color:#b45309; }
+        .draft-banner p { margin:6px 0 0; }
+        .rules-box { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:0 0 18px; font-size:0.85rem; border-radius:0 4px 4px 0; color:#475569; }
+        .goal-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .goal-box p { margin:0; }
+        .scenario { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px 20px; margin:12px 0; }
+        .scenario p:last-child { margin-bottom:0; }
+        .decision-box { background:#fdf4ff; border:1px solid #e9d5ff; border-left:5px solid #a855f7; padding:15px 18px; margin:14px 0; border-radius:4px; }
+        .decision-box h4 { margin:0 0 6px; color:#7e22ce; }
+        .stage-block { border:1px solid #e2e8f0; border-radius:8px; padding:18px 22px; margin-bottom:14px; }
+        .stage-block h3 { margin:0 0 6px; font-size:1.02rem; }
+        .stage-num { display:inline-block; width:26px; height:26px; border-radius:50%; background:#dcfce7; color:#15803d; font-weight:700; font-size:0.85rem; text-align:center; line-height:26px; margin-right:8px; }
+        pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code, td code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        p code, li code, td code { overflow-wrap:anywhere; }
+        table.mini { width:100%; border-collapse:collapse; font-size:0.86rem; margin:10px 0; }
+        table.mini th, table.mini td { border:1px solid #e2e8f0; padding:8px 10px; text-align:left; vertical-align:top; }
+        table.mini th { background:#f8fafc; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
+        table.mini td.wt { white-space:nowrap; font-weight:700; color:#1e8449; }
+        .table-scroll { overflow-x:auto; }
+        table.rubric { min-width:760px; }
+        table.rubric td:nth-child(n+4) { width:22%; }
+        .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul, .submit-box ol { margin:0; padding-left:20px; }
+        .snag-box { background:#fffbeb; border-left:5px solid #fbbf24; padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:#b45309; }
+        details.faculty { background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px 16px; margin:22px 0; }
+        details.faculty summary { cursor:pointer; font-weight:700; color:#334155; }
+        details.faculty h4 { margin:16px 0 6px; font-size:0.92rem; color:#334155; }
+        details.faculty p, details.faculty li { font-size:0.88rem; }
+        .guide-nav { display:flex; justify-content:space-between; gap:12px; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
+        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
+    </nav>
+
+        <h1>Application Challenge 2 — Riverbend College Help-Desk Retrieval</h1>
+        <div class="meta-strip">
+            <span class="meta-pill">Est. 60–90 min</span><span class="meta-pill">Outcome 2</span><span class="meta-pill">After HOS 2 · end of Week 4</span><span class="meta-pill">Individual</span><span class="meta-pill">AI assistant allowed — disclose it</span><span class="meta-pill">5% of final grade</span>
+        </div>
+
+        <div class="rules-box">This challenge follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>: it adapts to AI 410's official Outcome 2, runs entirely in GitHub Codespaces, and uses only free tiers. Everything runs offline with no API key. Real Gemini embeddings are an optional comparison.</div>
+
+        <div class="goal-box">
+            <h4>Goal</h4>
+            <p>Take the retrieval skill from HOS 2 to someone else's pipeline: measure how often it actually finds the answer, improve it with your own chunking, and decide when the bot should stop answering and send the student to a person.</p>
+        </div>
+
+        <h2>The scenario</h2>
+        <div class="scenario">
+            <p><strong>Riverbend College</strong> (fictional) has an IT help-desk bot that answers student questions from six knowledge-base articles: passwords, MFA, Wi-Fi, printing, software, and Canvas. It's the same pipeline you reviewed in the HOS 2 lesson's warm-up, now runnable. It never crashes, and nobody knows how often it answers from the wrong passage.</p>
+            <p>You get the pipeline, the articles, and <code>eval_set.json</code>: 16 real student questions with the article and phrase that answers each one, plus 4 questions the articles <em>can't</em> answer.</p>
+            <ul>
+                <li><strong>The tests use an offline embedder</strong> (<code>LocalEmbedder</code> counts words) so everyone gets the same numbers. It's cruder than Gemini's, on purpose: some of its misses are ones real embeddings would fix, and telling those apart is part of the challenge.</li>
+            </ul>
+        </div>
+
+        <h2>The spec</h2>
+        <p>Every requirement below is checked by a provided test in <code>tests/test_evaluate.py</code>. Your code goes in <code>evaluate.py</code>.</p>
+        <div class="table-scroll">
+        <table class="mini">
+            <tr><th>Function</th><th>Must do</th></tr>
+            <tr><td><code>hit_rate(eval_set, search_fn, k)</code></td><td>Count a question as a hit when one of its top-k results has the right article <em>and</em> contains the answer phrase. Skip the unanswerable questions. Return the rate and the IDs of the misses. On the vendor's pipeline at k=1 it must report 0.5625.</td></tr>
+            <tr><td><code>chunk_article(article_id, text)</code></td><td>Your chunking. Every chunk is labelled with its article, non-empty, and at most 800 characters (the chat model's prompt budget). No answer may be lost. It must beat the vendor's hit rate at k=1.</td></tr>
+            <tr><td><code>answer_or_abstain(question, search_fn, min_score)</code></td><td>Look at the top result. Below <code>min_score</code>, or no result: abstain. Otherwise answer from it. Defaults to your <code>MIN_SCORE</code>.</td></tr>
+        </table>
+        </div>
+
+        <div class="decision-box">
+            <h4>The open decision: when to say "I don't know"</h4>
+            <p>The help desk lead: <em>"A wrong answer sends a student to the wrong office, or makes them miss a deadline. But 'I don't know' sends them to the ticket queue, and that's a two-day wait right now."</em> Nobody set a threshold.</p>
+            <p style="margin-bottom:0">Choose <code>MIN_SCORE</code>. <code>python run_eval.py</code> prints a sweep showing, for each threshold, how many questions are answered right, answered wrong, and declined when they were answerable. There's no single right row. Prove your choice with your own tests and defend it in <code>DECISIONS.md</code>.</p>
+        </div>
+
+        <h2>Why the misses happen</h2>
+        <p>In your memo, sort the misses (the vendor's and your remaining ones) by cause: <strong>chunking</strong> (the answer was cut off or diluted), <strong>vocabulary</strong> (the student's words aren't the article's words, like "Xbox" or "jammed"), or something else. Say which causes your chunking could fix, and which need something else.</p>
+
+        <h2>Steps</h2>
+        <div class="stage-block">
+            <h3><span class="stage-num">1</span>Open it and run the tests</h3>
+            <p>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/ac-02-helpdesk-retrieval" target="_blank" rel="noopener">the AC 2 starter-code folder</a> in GitHub Codespaces. It installs everything for you. Then run:</p>
+<pre>pytest</pre>
+            <p>Almost everything fails with <code>NotImplementedError</code>. That's your to-do list.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">2</span>Measure the vendor</h3>
+            <p>Write <code>hit_rate</code> until <code>test_vendor_baseline_on_the_real_questions</code> passes. You may use an AI assistant; read what it writes, because you'll defend it.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">3</span>Chunk it your way</h3>
+            <p>Write <code>chunk_article</code>. Try at least two strategies and keep the one that measures best:</p>
+<pre>python run_eval.py</pre>
+            <p>Adding the article title to every chunk sounds helpful. Measure it before you assume.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">4</span>Make the threshold call</h3>
+            <p>Write <code>answer_or_abstain</code>, set <code>MIN_SCORE</code>, and write at least two tests in <code>tests/test_my_rules.py</code> on the real questions: one the bot must still answer, one it must decline. The file shows how to build a real <code>search_fn</code>.</p>
+        </div>
+        <div class="stage-block">
+            <h3><span class="stage-num">5</span>Report and memo</h3>
+            <p>Paste the output of <code>python run_eval.py</code> into <code>REPORT.md</code> and fill in <code>DECISIONS.md</code>. Optional: add your Gemini key to <code>.env</code>, run <code>python run_eval.py --gemini</code>, and note what changed.</p>
+        </div>
+
+        <div class="submit-box">
+            <h5>Submit (via Brightspace)</h5>
+            <ul>
+                <li><code>evaluate.py</code> and <code>tests/test_my_rules.py</code></li>
+                <li>The output of <code>pytest</code>, pasted as text (all tests passing, including yours)</li>
+                <li><code>REPORT.md</code></li>
+                <li><code>DECISIONS.md</code></li>
+            </ul>
+        </div>
+
+        <h2>How it's graded</h2>
+        <p>Each criterion is graded on one part of your submission, at one of three levels.</p>
+        <div class="table-scroll">
+        <table class="mini rubric">
+            <tr><th>Criterion</th><th>Weight</th><th>Graded on</th><th>Full</th><th>Partial</th><th>Missing</th></tr>
+            <tr><td><strong>Application</strong></td><td class="wt">10%</td><td><code>REPORT.md</code></td><td>Your chunking runs on the help desk's articles and beats the vendor, with the misses listed.</td><td>It runs, but the report is missing the sweep or the misses.</td><td>It restates the HOS build, or doesn't run.</td></tr>
+            <tr><td><strong>Analysis</strong></td><td class="wt">20%</td><td><code>DECISIONS.md</code>, section 2 (why the misses happen)</td><td>Every miss is sorted by cause, with a specific question for each cause and what would fix it.</td><td>Causes are named, but not tied to specific questions.</td><td>No breakdown.</td></tr>
+            <tr><td><strong>Evaluation</strong></td><td class="wt">30%</td><td><code>DECISIONS.md</code>, section 1</td><td>A clear threshold, judged against stated criteria (which mistake is worse, for whom), using the sweep's numbers, with a threshold you rejected and why.</td><td>A threshold with a reason, but no numbers or no rejected alternative.</td><td>No rule, or no justification.</td></tr>
+            <tr><td><strong>Design</strong></td><td class="wt">40%</td><td><code>evaluate.py</code>, your tests, and the <code>pytest</code> output</td><td>All provided tests pass, and your own tests check your threshold on real questions, including the closest call.</td><td>Most provided tests pass, or your own tests use only easy questions.</td><td>It doesn't run, or you wrote no tests of your own.</td></tr>
+        </table>
+        </div>
+
+        <p style="font-size:0.88rem;color:#475569">How this differs from HOS 2's Understand &amp; Refine: there you added a document to your own pipeline, by hand. Here the pipeline, the articles, and the decisions are someone else's, AI help is allowed, and half the grade (Analysis and Evaluation) is for the calls you make.</p>
+
+        <div class="snag-box">
+            <h4>Common snags</h4>
+            <ul>
+                <li><strong><code>test_vendor_baseline</code> says 0.625 or 0.5.</strong> Check both conditions: the right <em>source</em> and the answer phrase in the text, ignoring upper/lower case. And skip questions whose source is <code>None</code>.</li>
+                <li><strong><code>test_no_answer_is_lost</code> fails.</strong> Your chunker dropped text, often the last piece of an article or the line right after a heading.</li>
+                <li><strong>Your chunks score worse than you expected.</strong> With a word-count embedder, extra words in a chunk (titles, headings, overlap) dilute it. That's a finding worth a sentence in your memo, not a bug.</li>
+                <li><strong><code>--gemini</code> fails.</strong> It needs <code>GEMINI_API_KEY</code> in <code>.env</code>. It's optional; everything graded runs without it.</li>
+            </ul>
+        </div>
+
+        <details class="faculty">
+            <summary>Faculty notes: what strong answers look like, and grading</summary>
+            <h4>The open decision</h4>
+            <p>Several rules are defensible. Grade the reasoning, not the choice.</p>
+            <ul>
+                <li><strong>Low threshold (about 0.15–0.20): answer almost everything.</strong> Lowest wait for students; accepts 4–5 wrong answers on this set.</li>
+                <li><strong>Middle (about 0.25, the answer key):</strong> 10 right, 3 wrong, 4 declined. The closest call is out-of-scope x04 ("change my password on the Wi-Fi printer") at 0.28, which still slips through. Strong answers name it.</li>
+                <li><strong>High (0.30+): almost never wrong,</strong> but declines 6 or more answerable questions into a two-day queue. Defensible if the student argues wrong answers cost more (a missed deadline).</li>
+            </ul>
+            <p><strong>Typical answers</strong> pick a number without using the sweep, or treat "declined" as free. The best answers say who bears each kind of mistake: a wrong answer costs the student, a decline costs the student <em>and</em> the help desk.</p>
+
+            <h4>The analysis</h4>
+            <ul>
+                <li><strong>Chunking misses</strong> (the vendor's, fixed by section chunking): q01, q08, q14, q15, where the answer sat in a 500-character slice cut mid-section or mixed with another section.</li>
+                <li><strong>Vocabulary misses</strong> (left after good chunking): q09 "Xbox" (the article says "gaming consoles"), q05 "didn't start" (the article says "did not start"), q16 "largest" (the article says "larger"). Chunking can't fix these; real embeddings or synonyms would. Strong students say so, and may show it with <code>--gemini</code>.</li>
+                <li><strong>A strong extra:</strong> noticing that adding titles or headings to chunks <em>lowers</em> the offline score, and explaining why (word-count dilution).</li>
+            </ul>
+            <p>Answer-key numbers: section chunking (body only) scores hit@1 0.81 against the vendor's 0.56. A <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/ac-02-helpdesk-retrieval" target="_blank" rel="noopener">reference submission</a> is in the answer key, with steps to check it.</p>
+
+            <h4>Grading quickly (about 8–10 minutes per student)</h4>
+            <p>Each criterion maps to one part of the submission, so read each part once, in this order, and pick a level:</p>
+            <ol>
+                <li><strong>Design (40):</strong> the pasted <code>pytest</code> output, then <code>test_my_rules.py</code> (real questions? one near the threshold?).</li>
+                <li><strong>Application (10):</strong> <code>REPORT.md</code>. Does it beat 0.56 at k=1, and are the sweep and misses there?</li>
+                <li><strong>Evaluation (30):</strong> memo section 1.</li>
+                <li><strong>Analysis (20):</strong> memo section 2.</li>
+            </ol>
+            <p>You don't need to run the code. In Brightspace, use the rubric above with levels (Full = 100%, Partial = 50%, Missing = 0% of the criterion).</p>
+
+        </details>
+
+        <div class="guide-nav">
+            <a href="hos-02-embeddings-rag.html">← HOS 2 guide</a>
+            <a href="../AI-410.html">Back to the schedule →</a>
+        </div>
+    </div>
+    <script src="../../assets/nav.js"></script>
+</body>
+</html>

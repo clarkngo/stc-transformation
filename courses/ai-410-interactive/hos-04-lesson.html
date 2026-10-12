@@ -392,19 +392,19 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 <section class="module card" id="debate">
   <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag">Discussion board · 3 stages</span></div></div></div>
   <div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>Should a production AI app trace and score every request, or only a sample of them?</strong></p></div>
-  <p>You'll argue the side your debate team is assigned, then argue the other one, then drop advocacy and synthesize.</p>
+  <p>You'll argue the side your debate group is assigned, then argue the other one, then drop advocacy and synthesize.</p>
   <div class="callout blue">
     <span class="label">Your side this HOS</span>
-    <p>Sides rotate each HOS. <b>In HOS 4, Debate Team 1 argues Side B and Debate Team 2 argues Side A.</b> Find your team under <b>Communication → Groups</b> in Brightspace. Not in a team? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A. <a href="../AI-410-syllabus.html#cd-sides">How sides are assigned →</a></p>
+    <p>Sides rotate each HOS. <b>In HOS 4, Debate Group 1 argues Side B and Debate Group 2 argues Side A.</b> Find your group under <b>Communication → Groups</b> in Brightspace. Not in a group? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A. <a href="../AI-410-syllabus.html#cd-sides">How sides are assigned →</a></p>
   </div>
   <div class="row" style="margin-bottom:10px">
-    <label for="teamInput" class="small"><b>My Brightspace team:</b></label>
-    <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select>
+    <label for="teamInput" class="small"><b>My Brightspace group:</b></label>
+    <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Group 1</option><option value="2">Debate Group 2</option></select>
     <span class="small" id="sideResult" aria-live="polite"></span>
   </div>
   <div class="two">
     <div class="side a" id="sideA">
-      <h4><span>Side A — Trace and score everything</span><span class="tag blue">Team 2 this HOS</span></h4>
+      <h4><span>Side A — Trace and score everything</span><span class="tag blue">Group 2 this HOS</span></h4>
       <p>Every request gets a full trace and a faithfulness score.</p>
       <ul class="small">
         <li>The one wrong answer a user complains about is exactly the one a 10% sample will have missed.</li>
@@ -413,7 +413,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
       </ul>
     </div>
     <div class="side b" id="sideB">
-      <h4><span>Side B — Sample a fraction of requests</span><span class="tag rose">Team 1 this HOS</span></h4>
+      <h4><span>Side B — Sample a fraction of requests</span><span class="tag rose">Group 1 this HOS</span></h4>
       <p>Trace and score a representative sample, plus every request that errors.</p>
       <ul class="small">
         <li>Every trace stores user questions and retrieved documents — more data kept means more privacy risk.</li>
@@ -427,7 +427,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
     <div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>Before replying to anyone, post the <em>strongest</em> version of the side you didn't hold.</div>
     <div class="stage"><span class="day">Stage 3 · by Sat</span><h4>Synthesis</h4>Drop advocacy. State a real position, citing at least one specific point from a classmate's post.</div>
   </div>
-  <p class="small muted"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%).</p>
+  <p class="small muted"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%). <a href="concept-debate-example.html">See a worked example: four students through one debate, with a timeline →</a></p>
 </section>
 
 <section class="module card" id="create">
@@ -503,20 +503,22 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <section class="module card" id="challenge">
-  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — an observability plan for a different AI feature</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Plan &amp; justify — no build</span></div></div></div>
-  <p>Propose an observability plan — what to trace, what to score, what alert you'd want — for a different kind of AI feature than this course built. Argue for what's worth watching versus what's just noise.</p>
+  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — make someone else's AI feature observable</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Build to spec · 60–90 min</span></div></div></div>
+  <p>Puget Pantry's AI feature swaps out-of-stock groceries and pushes the change to the customer's phone, and nobody can see inside it. Instrument it with traces, spans, and a quality score per swap, run a recorded day of orders through it, and decide what's worth paging the on-call engineer for. The spec, starter code, and rubric are in the <a href="../ai-410-guides/ac-04-substitution-observability.html"><b>AC 4 guide</b></a>.</p>
+  <p class="small">Warm up first: signal versus noise is the same call the challenge asks you to make.</p>
   <h3>Warm-up: signal or noise?</h3>
   <p class="small">A support team uses an AI feature that <b>drafts replies to customer emails for a human agent to approve and send</b>. For each proposed metric, decide: <b>alert</b> someone, put it on a <b>dashboard</b>, or it's <b>noise</b>.</p>
   <div id="sorter"></div>
   <div class="row" style="margin:8px 0 16px"><button class="btn" id="sorterReveal" type="button">Reveal reasoning</button><span class="small" id="sorterScore" aria-live="polite"></span></div>
   <div class="callout"><span class="label">What to submit</span>
     <ul>
-      <li>The AI feature you chose (not a chat assistant over documents), in two sentences.</li>
-      <li>What you'd trace (which spans), and one quality score beyond latency — with how you'd compute it.</li>
-      <li>One alert (condition + who gets it), and one metric you deliberately <em>wouldn't</em> alert on, and why.</li>
+      <li><code>instrumented.py</code> and <code>tests/test_my_rules.py</code></li>
+      <li>The output of <code>pytest</code>, all tests passing (including yours)</li>
+      <li><code>REPORT.md</code>: the output of <code>python run_day.py</code></li>
+      <li><code>DECISIONS.md</code>: your paging rule, and what each span lets you see</li>
     </ul>
   </div>
-  <p class="small muted"><b>Grading:</b> Judgment &amp; reasoning (50%) · Transfer to a new feature (35%) · Clarity (15%).</p>
+  <p class="small muted"><b>Grading:</b> Application — genuinely applied to a new feature (10%) · Analysis — break the problem into its parts (20%) · Evaluation — justify your call against clear criteria (30%) · Design — your own original solution (40%).</p>
 </section>
 
 <section class="module card" id="check">
@@ -552,16 +554,16 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
   <div class="callout violet"><span class="label">The question</span><p style="font-size:1.02rem"><strong>Under a Team/Term Project deadline, which of the 4 HOS is safest to cut a corner on — and which one can't be shortchanged?</strong></p></div>
   <div class="callout blue">
     <span class="label">Your side</span>
-    <p>For the Integration debate, <b>Debate Team 1 argues Side A and Debate Team 2 argues Side B.</b> In Stage 3, your synthesis must name <em>both</em> the safest corner to cut and the one you'd never shortchange.</p>
+    <p>For the Integration debate, <b>Debate Group 1 argues Side A and Debate Group 2 argues Side B.</b> In Stage 3, your synthesis must name <em>both</em> the safest corner to cut and the one you'd never shortchange.</p>
   </div>
   <div class="row" style="margin-bottom:10px">
-    <label for="teamInput2" class="small"><b>My Brightspace team:</b></label>
-    <select id="teamInput2" style="width:auto"><option value="">—</option><option value="1">Debate Team 1</option><option value="2">Debate Team 2</option></select>
+    <label for="teamInput2" class="small"><b>My Brightspace group:</b></label>
+    <select id="teamInput2" style="width:auto"><option value="">—</option><option value="1">Debate Group 1</option><option value="2">Debate Group 2</option></select>
     <span class="small" id="sideResult2" aria-live="polite"></span>
   </div>
   <div class="two">
     <div class="side a" id="iSideA">
-      <h4><span>Side A — Observability (HOS 4) is the safest corner to cut</span><span class="tag blue">Team 1</span></h4>
+      <h4><span>Side A — Observability (HOS 4) is the safest corner to cut</span><span class="tag blue">Group 1</span></h4>
       <ul class="small">
         <li>Users never see traces; a demo works without them.</li>
         <li>Tracing can be added after launch without changing behavior.</li>
@@ -569,7 +571,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
       </ul>
     </div>
     <div class="side b" id="iSideB">
-      <h4><span>Side B — Never cut observability; cut async (HOS 3's queue) instead</span><span class="tag rose">Team 2</span></h4>
+      <h4><span>Side B — Never cut observability; cut async (HOS 3's queue) instead</span><span class="tag rose">Group 2</span></h4>
       <ul class="small">
         <li>Without traces, every bug in demo week becomes guesswork.</li>
         <li>At project scale, uploads are small — inline ingestion is slow but tolerable.</li>
@@ -675,7 +677,7 @@ function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); loca
   document.getElementById('mpClear').addEventListener('click',function(){ els.forEach(function(el){ el.value=''; }); update(); document.getElementById('mpStatus').textContent='Draft cleared.'; });
 })();
 
-/* Debate sides: HOS 4 (Team 1 = B) and Integration CD (Team 1 = A) */
+/* Debate sides: HOS 4 (Group 1 = B) and Integration CD (Group 1 = A) */
 (function(){
   var sels=[document.getElementById('teamInput'),document.getElementById('teamInput2')];
   var v=store('ai410-team'); sels.forEach(function(s){ if(v) s.value=v; });

@@ -66,7 +66,7 @@
   </ol>
   <h3>Your two weeks at a glance</h3>
   <div class="flow">
-    <a href="#lecture"><span class="n">Wk 1 · Mon</span><span class="t">Lecture</span><span class="w">~75 min, 3 parts</span></a>
+    <a href="#lecture"><span class="n">Wk 1 · Mon</span><span class="t">Lecture</span><span class="w">~35 min, 3 parts</span></a>
     <a href="#muddiest"><span class="n">Wk 1 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a>
     <a href="#debate"><span class="n">Wk 1 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a>
     <a href="#create"><span class="n">Wk 1 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">Engagement · 20% of HOS</span></a>
@@ -87,11 +87,16 @@
 
 
 <section class="module card" id="lecture">
-  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: from chat box to agent</h2><div class="module-meta"><span class="tag">≈ 75 min</span><span class="tag blue">3 short parts</span><span class="tag">O1</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: from chat box to agent</h2><div class="module-meta"><span class="tag">≈ 35 min with videos</span><span class="tag blue">3 short parts</span><span class="tag">O1</span></div></div></div>
   <p class="small muted">Three short segments instead of one long one — pause after each and try the linked check before moving on. If something stays fuzzy, that's exactly what your <a href="#muddiest">Muddiest Point</a> is for.</p>
 
   <div class="lecture-part">
-    <h3>Part 1 — Anatomy of a full-stack AI app <small>≈ 20 min</small></h3>
+    <h3>Part 1 — Anatomy of a full-stack AI app <small>≈ 5 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Watch first</span><span class="small muted">1:15 · Codecademy</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/1mXrxc_sv1o" title="Front-end vs back-end: What's the difference? (Codecademy)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">A quick picture of the two halves of every app you'll build. Watch for what each half is responsible for, then read on for the part the video skips: why the API key has to live in the backend. <a href="https://www.youtube.com/watch?v=1mXrxc_sv1o" target="_blank" rel="noopener">Open on YouTube</a> (captions available).</p>
+    </div>
     <p>Every app you build this term has the same three-piece shape. The <strong>frontend</strong> (a Streamlit page now, an Expo mobile app in HOS 4) collects the user's message and shows the reply. The <strong>backend</strong> (a FastAPI server) receives that message over HTTP, adds anything the model needs, calls the LLM, and runs any tools. The <strong>LLM</strong> (Google's Gemini, via the free API) receives text and returns text — or, as you'll see in Part 3, a structured request to run a function.</p>
     <div class="arch" aria-label="Frontend to backend to LLM">
       <div class="box"><b>Frontend</b>Streamlit chat page. Runs on the user's machine / browser. <em>Anyone can inspect it.</em></div>
@@ -107,7 +112,13 @@
   </div>
 
   <div class="lecture-part">
-    <h3>Part 2 — What an LLM actually does <small>≈ 25 min</small></h3>
+    <h3>Part 2 — What an LLM actually does <small>≈ 15 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Watch first</span><span class="small muted">7:58 · 3Blue1Brown</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/LPZh9BOjkQs" title="Large Language Models explained briefly (3Blue1Brown)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">Watch for two ideas this lesson builds on: the model predicts the next word piece from probabilities, and it samples, so the same input can give different answers. <a href="https://www.youtube.com/watch?v=LPZh9BOjkQs" target="_blank" rel="noopener">Open on YouTube</a> (captions available).</p>
+      <p class="deeper"><b>Go deeper (optional):</b> IBM Technology, <a href="https://www.youtube.com/watch?v=vD0E3EUb8-8" target="_blank" rel="noopener">Context Engineering vs. Prompt Engineering</a> (7:52). It explains the difference in the table below, then goes on to retrieval and agents, which you'll meet in Module 2 and later courses.</p>
+    </div>
     <p>An LLM reads a sequence of <strong>tokens</strong> (word pieces) and predicts the next one, over and over, until it decides to stop. Everything it "knows" about your conversation is whatever fits in its <strong>context window</strong> for that single request — the system instruction, the chat history your backend chose to resend, any retrieved documents, and the user's latest message. It doesn't remember the last request unless you send it again.</p>
     <p>Because each next token is <em>sampled</em> from a probability distribution, the same input can produce different outputs. That <strong>nondeterminism</strong> is a feature for writing and a hazard for software — it's why HOS 3 adds guardrails, and why "it worked once" is never a complete Evaluate.</p>
     <div class="table-wrap"><table class="t">
@@ -124,7 +135,13 @@
   </div>
 
   <div class="lecture-part">
-    <h3>Part 3 — The agentic loop &amp; tool calling <small>≈ 30 min</small></h3>
+    <h3>Part 3 — The agentic loop &amp; tool calling <small>≈ 15 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Watch first</span><span class="small muted">2:55 · Google Cloud Tech</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/mVXrdvXplj0" title="Function calling with the Gemini API (Google Cloud Tech)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">The same Gemini API you'll use in the build. Watch for the moment the model asks for a function instead of answering, and who actually runs it. The model names in the video may be older; use <code>gemini-3.8-flash</code>, as in the hands-on guide. <a href="https://www.youtube.com/watch?v=mVXrdvXplj0" target="_blank" rel="noopener">Open on YouTube</a> (captions available).</p>
+      <p class="deeper"><b>Go deeper (optional):</b> IBM Technology, <a href="https://www.youtube.com/watch?v=h8gMhXYAv1k" target="_blank" rel="noopener">What is Tool Calling?</a> (4:56). The same idea without tying it to one vendor; its second half covers a variation that's beyond this module.</p>
+    </div>
     <p>A plain chat app is one round trip: message in, text out. An <strong>agent</strong> adds a loop. Your backend tells the model which functions exist (a name, a description, and a parameter schema). When the model decides a function would help, it doesn't reply with text — it replies with a <strong>function call</strong>: a name and arguments. Your backend runs the real function, sends the result back, and asks again. The loop ends when the model replies with plain text.</p>
     <ol class="seq">
       <li>User types <em>"What's 342 times 87?"</em>; the frontend POSTs it to <code>/chat</code>.</li>

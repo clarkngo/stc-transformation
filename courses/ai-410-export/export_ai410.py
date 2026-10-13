@@ -76,11 +76,38 @@ def is_external(u):
     return bool(re.match(r"^(?:[a-z][a-z0-9+.-]*:|//)", u, re.I))
 
 
+YT = re.compile(r"(?:youtube(?:-nocookie)?\.com/(?:watch\?v=|embed/)|youtu\.be/)([\w-]{11})")
+
+
+def check_videos(sources):
+    """A YouTube video that was removed or made private makes oEmbed return an error."""
+    import json
+    import urllib.error
+    import urllib.request
+    found = {}
+    for src, text in sources.items():
+        for vid in YT.findall(text):
+            found.setdefault(vid, src)
+    problems = []
+    for vid, src in sorted(found.items()):
+        url = "https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v=" + vid
+        try:
+            with urllib.request.urlopen(url, timeout=15) as r:
+                title = json.load(r).get("title", "")
+            print(f"video ok: {vid} {title}")
+        except urllib.error.HTTPError as e:
+            problems.append(f"{src}: YouTube video {vid} is unavailable (HTTP {e.code})")
+        except OSError as e:
+            problems.append(f"{src}: couldn't reach YouTube to check video {vid} ({e})")
+    return problems
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", help="output folder, e.g. ../stc/ai-410")
     ap.add_argument("--check", action="store_true", help="verify only; write nothing")
     ap.add_argument("--strict", action="store_true", help="treat warnings as errors")
+    ap.add_argument("--check-videos", action="store_true", help="also confirm every embedded/linked YouTube video still exists (needs network)")
     a = ap.parse_args()
     if not a.check and not a.out:
         ap.error("give --out FOLDER, or --check")
@@ -148,6 +175,9 @@ def main():
             return SCRIPT_HTML.sub(lit, m.group(0))
         new = re.sub(r"<script\b(?![^>]*\bsrc=)[^>]*>.*?</script>", script_block, new, flags=re.S)
         out_pages[dst] = new
+
+    if a.check_videos:
+        errors += check_videos(sources)
 
     for w in warnings:
         print("WARNING", w)

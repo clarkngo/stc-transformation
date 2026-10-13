@@ -4,65 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 410 — Starter Code Walkthrough</title>
-    <link rel="stylesheet" href="../../assets/styles.css">
+    <link rel="stylesheet" href="../ai-410-assets/course.css">
     <style>
-        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
-        h2 { color: #1e8449; margin-top: 34px; }
+        h1 { color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:10px; }
+        h2 { color:var(--accent); margin-top: 34px; }
         .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
-        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
-        .rule-box { background:#f0fdf4; border-left:5px solid #22c55e; padding:13px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.9rem; }
-        .rule-box strong { color:#15803d; }
-        .spoiler-box { background:#fffbeb; border:2px solid #f59e0b; border-radius:8px; padding:14px 18px; margin:18px 0; font-size:0.9rem; }
-        .spoiler-box strong { color:#b45309; }
-        .intro-box { background:#eff6ff; border-left:5px solid #3b82f6; padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
-        .intro-box h4 { margin:0 0 6px; color:#1d4ed8; font-size:0.95rem; }
+        .meta-pill { background:var(--surface2); color:var(--text); font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .rule-box { background:var(--accent-light); border-left:5px solid var(--accent); padding:13px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.9rem; }
+        .rule-box strong { color:var(--accent2); }
+        .spoiler-box { background:var(--amber-bg); border:2px solid var(--amber); border-radius:8px; padding:14px 18px; margin:18px 0; font-size:0.9rem; }
+        .spoiler-box strong { color:var(--amber); }
+        .intro-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
+        .intro-box h4 { margin:0 0 6px; color:var(--blue); font-size:0.95rem; }
         .jump-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:0.86rem; }
-        .jump-table th, .jump-table td { border:1px solid #e2e8f0; padding:9px 12px; text-align:left; vertical-align:top; }
-        .jump-table th { background:#f8fafc; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#475569; }
-        .jump-table td.hos { font-weight:700; color:#1e8449; white-space:nowrap; }
-        .hos-block { border:1px solid #e2e8f0; border-radius:10px; padding:22px 24px 24px; margin:26px 0; scroll-margin-top:16px; }
+        .jump-table th, .jump-table td { border:1px solid var(--border); padding:9px 12px; text-align:left; vertical-align:top; }
+        .jump-table th { background:var(--surface2); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:var(--muted); }
+        .jump-table td.hos { font-weight:700; color:var(--accent); white-space:nowrap; }
+        .hos-block { border:1px solid var(--border); border-radius:10px; padding:22px 24px 24px; margin:26px 0; scroll-margin-top:16px; }
         .hos-block > h2 { margin:0 0 4px; }
-        .hos-tag { display:inline-block; font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; background:#dcfce7; color:#15803d; margin-bottom:12px; }
-        .hos-tag.empty { background:#f1f5f9; color:#475569; }
+        .hos-tag { display:inline-block; font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; background:var(--accent-light); color:var(--accent2); margin-bottom:12px; }
+        .hos-tag.empty { background:var(--surface2); color:var(--muted); }
         .have-list { margin:8px 0 14px; padding-left:20px; font-size:0.9rem; }
         .have-list li { margin-bottom:4px; }
-        details.file-block { border:1px solid #e2e8f0; border-radius:8px; margin:10px 0; background:#fff; }
+        details.file-block { border:1px solid var(--border); border-radius:8px; margin:10px 0; background:var(--surface); }
         details.file-block > summary { cursor:pointer; padding:11px 16px; font-weight:700; font-size:0.93rem; list-style:none; display:flex; flex-wrap:wrap; gap:6px 12px; align-items:baseline; }
         details.file-block > summary::-webkit-details-marker { display:none; }
-        details.file-block > summary::before { content:"▸"; color:#1e8449; font-size:0.85rem; }
+        details.file-block > summary::before { content:"▸"; color:var(--accent); font-size:0.85rem; }
         details.file-block[open] > summary::before { content:"▾"; }
-        details.file-block > summary .role { font-weight:400; color:#64748b; font-size:0.85rem; }
+        details.file-block > summary .role { font-weight:400; color:var(--muted); font-size:0.85rem; }
         .file-body { padding:2px 18px 16px; font-size:0.9rem; }
         .file-body p { margin:8px 0; }
         .file-body ul { margin:6px 0 8px; padding-left:20px; }
         .file-body li { margin-bottom:5px; }
-        .watch { background:#fffbeb; border-left:4px solid #fbbf24; padding:9px 14px; margin:10px 0; border-radius:0 4px 4px 0; font-size:0.86rem; }
-        .watch strong { color:#b45309; }
-        .think { background:#f5f3ff; border-left:4px solid #8b5cf6; padding:9px 14px; margin:10px 0; border-radius:0 4px 4px 0; font-size:0.86rem; }
-        .think strong { color:#6d28d9; }
-        pre { background:#0f172a; color:#e2e8f0; padding:13px 15px; border-radius:6px; overflow-x:auto; font-size:0.78rem; line-height:1.5; }
+        .watch { background:var(--amber-bg); border-left:4px solid var(--amber); padding:9px 14px; margin:10px 0; border-radius:0 4px 4px 0; font-size:0.86rem; }
+        .watch strong { color:var(--amber); }
+        .think { background:var(--blue-bg); border-left:4px solid var(--blue); padding:9px 14px; margin:10px 0; border-radius:0 4px 4px 0; font-size:0.86rem; }
+        .think strong { color:var(--violet); }
+        pre { background:var(--code-bg); color:var(--code-text); padding:13px 15px; border-radius:6px; overflow-x:auto; font-size:0.78rem; line-height:1.5; }
         code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
-        p code, li code, td code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
-        .diagram { border:1px solid #e2e8f0; border-radius:8px; background:#f8fafc; padding:10px; margin:14px 0; overflow-x:auto; }
+        p code, li code, td code { background:var(--surface2); color:var(--rose); padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .diagram { border:1px solid var(--border); border-radius:8px; background:var(--surface2); padding:10px; margin:14px 0; overflow-x:auto; }
         .diagram svg { display:block; min-width:640px; width:100%; height:auto; }
-        .diagram-cap { font-size:0.8rem; color:#64748b; margin:6px 4px 0; }
+        .diagram-cap { font-size:0.8rem; color:var(--muted); margin:6px 4px 0; }
         .flow-list { font-size:0.9rem; padding-left:22px; }
         .flow-list li { margin-bottom:6px; }
-        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid #e2e8f0; font-size:0.9rem; }
-        .guide-nav a { color:#1e8449; text-decoration:none; font-weight:600; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:0.9rem; }
+        .guide-nav a { color:var(--accent); text-decoration:none; font-weight:600; }
     </style>
 </head>
-<body class="course-page">
+<body class="guide">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="../ai-410-interactive/index.html"><span class="brand-icon">410</span><span><b>AI 410: AI Engineering</b><small>Course guides</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../ai-410-interactive/index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+</header>
+<main id="main">
     <div class="container">
-    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
-      <a href="../../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
-      &nbsp;/&nbsp;
-      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
-      &nbsp;/&nbsp;
-      <a href="../AI-410.html" style="color:#1e8449;text-decoration:none;font-weight:500">AI 410</a>
-      &nbsp;/&nbsp;
-      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Hands-On Guides</a>
-    </nav>
 
         <h1>AI 410 — Starter Code Walkthrough</h1>
         <div class="meta-strip">
@@ -72,7 +71,7 @@
         </div>
 
         <div class="rule-box">
-            <strong>Course rules this page follows:</strong> everything below runs in a GitHub Codespace and needs no credit card (Gemini, Upstash, Langfuse, and Expo all have free tiers). See the <a href="../../bsai-course-design-constraints.html">BSAI Course Design Constraints</a>.
+            <strong>Course rules this page follows:</strong> everything below runs in a GitHub Codespace and needs no credit card (Gemini, Upstash, Langfuse, and Expo all have free tiers).
         </div>
 
         <div class="intro-box">
@@ -127,43 +126,43 @@
                 <li><code>backend/sample_docs/</code> — five markdown documents for a fictional outdoor-gear company (Northwind Outfitters): backpacks, tents, return policy, shipping, warranty. This is the raw material for HOS 2's retrieval work.</li>
             </ul>
 
-            <h3 style="font-size:1rem;color:#334155">How one chat message travels</h3>
+            <h3 style="font-size:1rem;color:var(--text)">How one chat message travels</h3>
             <div class="diagram">
 <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A chat message flows from the Streamlit frontend to the FastAPI backend, into the agent loop, out to Gemini, and back through tools">
   <defs>
-    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--blue)"/></marker>
   </defs>
-  <g font-family="Inter,system-ui,sans-serif" font-size="12" fill="#0f172a">
-    <rect x="10" y="30" width="150" height="60" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+  <g font-family="Inter,system-ui,sans-serif" font-size="12" style="fill:var(--code-bg)">
+    <rect x="10" y="30" width="150" height="60" rx="8" style="fill:var(--surface);stroke:var(--border)"/>
     <text x="85" y="55" text-anchor="middle" font-weight="700">frontend/app.py</text>
-    <text x="85" y="74" text-anchor="middle" fill="#64748b" font-size="11">Streamlit · :8501</text>
+    <text x="85" y="74" text-anchor="middle" style="fill:var(--muted)" font-size="11">Streamlit · :8501</text>
 
-    <rect x="205" y="30" width="150" height="60" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+    <rect x="205" y="30" width="150" height="60" rx="8" style="fill:var(--surface);stroke:var(--border)"/>
     <text x="280" y="55" text-anchor="middle" font-weight="700">backend/main.py</text>
-    <text x="280" y="74" text-anchor="middle" fill="#64748b" font-size="11">POST /chat · :8000</text>
+    <text x="280" y="74" text-anchor="middle" style="fill:var(--muted)" font-size="11">POST /chat · :8000</text>
 
-    <rect x="400" y="30" width="150" height="60" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+    <rect x="400" y="30" width="150" height="60" rx="8" style="fill:var(--accent-light);stroke:var(--accent)"/>
     <text x="475" y="55" text-anchor="middle" font-weight="700">backend/agent.py</text>
-    <text x="475" y="74" text-anchor="middle" fill="#166534" font-size="11">run_agent() — the loop</text>
+    <text x="475" y="74" text-anchor="middle" style="fill:var(--accent2)" font-size="11">run_agent() — the loop</text>
 
-    <rect x="595" y="30" width="150" height="60" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+    <rect x="595" y="30" width="150" height="60" rx="8" style="fill:var(--surface);stroke:var(--border)"/>
     <text x="670" y="55" text-anchor="middle" font-weight="700">Gemini API</text>
-    <text x="670" y="74" text-anchor="middle" fill="#64748b" font-size="11">free-tier key</text>
+    <text x="670" y="74" text-anchor="middle" style="fill:var(--muted)" font-size="11">free-tier key</text>
 
-    <rect x="400" y="140" width="150" height="56" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+    <rect x="400" y="140" width="150" height="56" rx="8" style="fill:var(--surface);stroke:var(--border)"/>
     <text x="475" y="164" text-anchor="middle" font-weight="700">backend/tools.py</text>
-    <text x="475" y="182" text-anchor="middle" fill="#64748b" font-size="11">calculate · word_count</text>
+    <text x="475" y="182" text-anchor="middle" style="fill:var(--muted)" font-size="11">calculate · word_count</text>
 
-    <line x1="160" y1="60" x2="205" y2="60" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
-    <line x1="355" y1="60" x2="400" y2="60" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
-    <line x1="550" y1="48" x2="595" y2="48" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
-    <line x1="595" y1="72" x2="550" y2="72" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
-    <line x1="462" y1="90" x2="462" y2="140" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
-    <line x1="488" y1="140" x2="488" y2="90" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah)"/>
-    <text x="85" y="20" text-anchor="middle" fill="#64748b" font-size="11">you type here</text>
-    <text x="572" y="108" text-anchor="middle" fill="#64748b" font-size="11">ask / answer</text>
-    <text x="430" y="121" text-anchor="end" fill="#64748b" font-size="11">tool call</text>
-    <text x="500" y="121" text-anchor="start" fill="#64748b" font-size="11">result</text>
+    <line x1="160" y1="60" x2="205" y2="60" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah)"/>
+    <line x1="355" y1="60" x2="400" y2="60" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah)"/>
+    <line x1="550" y1="48" x2="595" y2="48" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah)"/>
+    <line x1="595" y1="72" x2="550" y2="72" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah)"/>
+    <line x1="462" y1="90" x2="462" y2="140" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah)"/>
+    <line x1="488" y1="140" x2="488" y2="90" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah)"/>
+    <text x="85" y="20" text-anchor="middle" style="fill:var(--muted)" font-size="11">you type here</text>
+    <text x="572" y="108" text-anchor="middle" style="fill:var(--muted)" font-size="11">ask / answer</text>
+    <text x="430" y="121" text-anchor="end" style="fill:var(--muted)" font-size="11">tool call</text>
+    <text x="500" y="121" text-anchor="start" style="fill:var(--muted)" font-size="11">result</text>
   </g>
 </svg>
                 <p class="diagram-cap">The green box is the heart of the app. The loop between <code>agent.py</code> and Gemini repeats until Gemini replies with plain text instead of asking for a tool.</p>
@@ -238,7 +237,7 @@
                     </ul>
                 </div>
             </details>
-            <p style="font-size:0.85rem;color:#64748b;margin-top:10px">A few header comments in this code still name the HOS it was first written in (for example, <code>main.py</code> may say "HOS 1"). The code is what counts.</p>
+            <p style="font-size:0.85rem;color:var(--muted);margin-top:10px">A few header comments in this code still name the HOS it was first written in (for example, <code>main.py</code> may say "HOS 1"). The code is what counts.</p>
         </div>
 
         <!-- ═════════════ HOS 3 ═════════════ -->
@@ -247,45 +246,45 @@
             <span class="hos-tag">Reference HOS 2 result, carried forward</span>
             <p>Everything from HOS 2, plus retrieval. The agent can now answer questions about the Northwind documents instead of guessing. New this time: <code>backend/ingest.py</code>, <code>backend/retrieval.py</code>, a changed <code>agent.py</code>, and <code>chromadb</code> in <code>requirements.txt</code>.</p>
 
-            <h3 style="font-size:1rem;color:#334155">Two phases: prepare once, then look up per question</h3>
+            <h3 style="font-size:1rem;color:var(--text)">Two phases: prepare once, then look up per question</h3>
             <div class="diagram">
 <svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ingest reads sample docs, chunks and embeds them into Chroma. At question time, retrieval embeds the question and finds the closest chunks, which agent.py adds to the prompt.">
   <defs>
-    <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker>
+    <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--blue)"/></marker>
   </defs>
-  <g font-family="Inter,system-ui,sans-serif" font-size="12" fill="#0f172a">
-    <text x="10" y="18" font-weight="700" fill="#475569">Once (and whenever docs change): python ingest.py</text>
-    <rect x="10" y="30" width="150" height="56" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+  <g font-family="Inter,system-ui,sans-serif" font-size="12" style="fill:var(--code-bg)">
+    <text x="10" y="18" font-weight="700" style="fill:var(--muted)">Once (and whenever docs change): python ingest.py</text>
+    <rect x="10" y="30" width="150" height="56" rx="8" style="fill:var(--surface);stroke:var(--border)"/>
     <text x="85" y="54" text-anchor="middle" font-weight="700">sample_docs/*.md</text>
-    <text x="85" y="72" text-anchor="middle" fill="#64748b" font-size="11">five Northwind docs</text>
+    <text x="85" y="72" text-anchor="middle" style="fill:var(--muted)" font-size="11">five Northwind docs</text>
 
-    <rect x="230" y="30" width="150" height="56" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+    <rect x="230" y="30" width="150" height="56" rx="8" style="fill:var(--accent-light);stroke:var(--accent)"/>
     <text x="305" y="54" text-anchor="middle" font-weight="700">ingest.py</text>
-    <text x="305" y="72" text-anchor="middle" fill="#166534" font-size="11">chunk → embed → store</text>
+    <text x="305" y="72" text-anchor="middle" style="fill:var(--accent2)" font-size="11">chunk → embed → store</text>
 
-    <rect x="470" y="30" width="150" height="56" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+    <rect x="470" y="30" width="150" height="56" rx="8" style="fill:var(--surface);stroke:var(--border)"/>
     <text x="545" y="54" text-anchor="middle" font-weight="700">chroma_db/</text>
-    <text x="545" y="72" text-anchor="middle" fill="#64748b" font-size="11">local vector database</text>
+    <text x="545" y="72" text-anchor="middle" style="fill:var(--muted)" font-size="11">local vector database</text>
 
-    <line x1="160" y1="58" x2="230" y2="58" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah2)"/>
-    <line x1="380" y1="58" x2="470" y2="58" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah2)"/>
+    <line x1="160" y1="58" x2="230" y2="58" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah2)"/>
+    <line x1="380" y1="58" x2="470" y2="58" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah2)"/>
 
-    <text x="10" y="140" font-weight="700" fill="#475569">Every question: agent.py → retrieval.py</text>
-    <rect x="10" y="152" width="150" height="56" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+    <text x="10" y="140" font-weight="700" style="fill:var(--muted)">Every question: agent.py → retrieval.py</text>
+    <rect x="10" y="152" width="150" height="56" rx="8" style="fill:var(--accent-light);stroke:var(--accent)"/>
     <text x="85" y="176" text-anchor="middle" font-weight="700">agent.py</text>
-    <text x="85" y="194" text-anchor="middle" fill="#166534" font-size="11">adds context to prompt</text>
+    <text x="85" y="194" text-anchor="middle" style="fill:var(--accent2)" font-size="11">adds context to prompt</text>
 
-    <rect x="230" y="152" width="150" height="56" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+    <rect x="230" y="152" width="150" height="56" rx="8" style="fill:var(--accent-light);stroke:var(--accent)"/>
     <text x="305" y="176" text-anchor="middle" font-weight="700">retrieval.py</text>
-    <text x="305" y="194" text-anchor="middle" fill="#166534" font-size="11">retrieve(query, k=5)</text>
+    <text x="305" y="194" text-anchor="middle" style="fill:var(--accent2)" font-size="11">retrieve(query, k=5)</text>
 
-    <line x1="160" y1="172" x2="230" y2="172" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah2)"/>
-    <line x1="230" y1="190" x2="160" y2="190" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah2)"/>
-    <line x1="380" y1="180" x2="545" y2="180" stroke="#64748b" stroke-width="1.5"/>
-    <line x1="545" y1="180" x2="545" y2="88" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah2)" stroke-dasharray="4 3"/>
-    <text x="462" y="172" text-anchor="middle" fill="#64748b" font-size="11">closest chunks</text>
-    <text x="195" y="164" text-anchor="middle" fill="#64748b" font-size="11">question</text>
-    <text x="195" y="206" text-anchor="middle" fill="#64748b" font-size="11">5 chunks</text>
+    <line x1="160" y1="172" x2="230" y2="172" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah2)"/>
+    <line x1="230" y1="190" x2="160" y2="190" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah2)"/>
+    <line x1="380" y1="180" x2="545" y2="180" style="stroke:var(--border)" stroke-width="1.5"/>
+    <line x1="545" y1="180" x2="545" y2="88" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah2)" stroke-dasharray="4 3"/>
+    <text x="462" y="172" text-anchor="middle" style="fill:var(--muted)" font-size="11">closest chunks</text>
+    <text x="195" y="164" text-anchor="middle" style="fill:var(--muted)" font-size="11">question</text>
+    <text x="195" y="206" text-anchor="middle" style="fill:var(--muted)" font-size="11">5 chunks</text>
   </g>
 </svg>
                 <p class="diagram-cap">Both phases use the same embedding model, which is why a few settings in <code>ingest.py</code> and <code>retrieval.py</code> have to match exactly.</p>
@@ -351,50 +350,50 @@
                 </div>
             </details>
 
-            <h3 style="font-size:1rem;color:#334155">Why ingestion moved to a queue</h3>
+            <h3 style="font-size:1rem;color:var(--text)">Why ingestion moved to a queue</h3>
             <div class="diagram">
 <svg viewBox="0 0 780 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A client posts a document to main.py, which enqueues a job in Redis and returns a job id at once. A separate worker process pulls the job from Redis and runs jobs.py, which embeds the document into Chroma. The client polls the job status.">
   <defs>
-    <marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker>
+    <marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--blue)"/></marker>
   </defs>
-  <g font-family="Inter,system-ui,sans-serif" font-size="12" fill="#0f172a">
-    <rect x="8" y="50" width="104" height="60" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+  <g font-family="Inter,system-ui,sans-serif" font-size="12" style="fill:var(--code-bg)">
+    <rect x="8" y="50" width="104" height="60" rx="8" style="fill:var(--surface);stroke:var(--border)"/>
     <text x="60" y="76" text-anchor="middle" font-weight="700">Client</text>
-    <text x="60" y="94" text-anchor="middle" fill="#64748b" font-size="11">app / curl</text>
+    <text x="60" y="94" text-anchor="middle" style="fill:var(--muted)" font-size="11">app / curl</text>
 
-    <rect x="170" y="50" width="120" height="60" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+    <rect x="170" y="50" width="120" height="60" rx="8" style="fill:var(--accent-light);stroke:var(--accent)"/>
     <text x="230" y="72" text-anchor="middle" font-weight="700">main.py</text>
-    <text x="230" y="90" text-anchor="middle" fill="#166534" font-size="11">POST /documents</text>
+    <text x="230" y="90" text-anchor="middle" style="fill:var(--accent2)" font-size="11">POST /documents</text>
 
-    <rect x="350" y="50" width="130" height="60" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+    <rect x="350" y="50" width="130" height="60" rx="8" style="fill:var(--surface);stroke:var(--border)"/>
     <text x="415" y="72" text-anchor="middle" font-weight="700">Redis queue</text>
-    <text x="415" y="90" text-anchor="middle" fill="#64748b" font-size="11">Upstash Redis</text>
+    <text x="415" y="90" text-anchor="middle" style="fill:var(--muted)" font-size="11">Upstash Redis</text>
 
-    <rect x="540" y="50" width="100" height="60" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+    <rect x="540" y="50" width="100" height="60" rx="8" style="fill:var(--accent-light);stroke:var(--accent)"/>
     <text x="590" y="72" text-anchor="middle" font-weight="700">worker.py</text>
-    <text x="590" y="90" text-anchor="middle" fill="#166534" font-size="11">own terminal</text>
+    <text x="590" y="90" text-anchor="middle" style="fill:var(--accent2)" font-size="11">own terminal</text>
 
-    <rect x="672" y="50" width="100" height="60" rx="8" fill="#dcfce7" stroke="#22c55e"/>
+    <rect x="672" y="50" width="100" height="60" rx="8" style="fill:var(--accent-light);stroke:var(--accent)"/>
     <text x="722" y="72" text-anchor="middle" font-weight="700">jobs.py</text>
-    <text x="722" y="90" text-anchor="middle" fill="#166534" font-size="11">embed + store</text>
+    <text x="722" y="90" text-anchor="middle" style="fill:var(--accent2)" font-size="11">embed + store</text>
 
-    <rect x="672" y="160" width="100" height="50" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+    <rect x="672" y="160" width="100" height="50" rx="8" style="fill:var(--surface);stroke:var(--border)"/>
     <text x="722" y="182" text-anchor="middle" font-weight="700">chroma_db/</text>
-    <text x="722" y="198" text-anchor="middle" fill="#64748b" font-size="11">vector DB</text>
+    <text x="722" y="198" text-anchor="middle" style="fill:var(--muted)" font-size="11">vector DB</text>
 
-    <line x1="112" y1="72" x2="170" y2="72" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah3)"/>
-    <line x1="290" y1="72" x2="350" y2="72" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah3)"/>
-    <line x1="540" y1="72" x2="480" y2="72" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah3)"/>
-    <line x1="640" y1="80" x2="672" y2="80" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah3)"/>
-    <line x1="722" y1="110" x2="722" y2="160" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah3)"/>
-    <path d="M 230 110 C 230 190, 415 190, 415 112" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ah3)"/>
-    <line x1="170" y1="98" x2="112" y2="98" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah3)"/>
+    <line x1="112" y1="72" x2="170" y2="72" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah3)"/>
+    <line x1="290" y1="72" x2="350" y2="72" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah3)"/>
+    <line x1="540" y1="72" x2="480" y2="72" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah3)"/>
+    <line x1="640" y1="80" x2="672" y2="80" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah3)"/>
+    <line x1="722" y1="110" x2="722" y2="160" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah3)"/>
+    <path d="M 230 110 C 230 190, 415 190, 415 112" fill="none" style="stroke:var(--border)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ah3)"/>
+    <line x1="170" y1="98" x2="112" y2="98" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#ah3)"/>
 
-    <text x="141" y="64" text-anchor="middle" fill="#64748b" font-size="11">upload</text>
-    <text x="141" y="114" text-anchor="middle" fill="#64748b" font-size="11">job_id</text>
-    <text x="320" y="64" text-anchor="middle" fill="#64748b" font-size="11">enqueue</text>
-    <text x="510" y="64" text-anchor="middle" fill="#64748b" font-size="11">pulls</text>
-    <text x="322" y="180" text-anchor="middle" fill="#64748b" font-size="11">GET /jobs/{id} reads status</text>
+    <text x="141" y="64" text-anchor="middle" style="fill:var(--muted)" font-size="11">upload</text>
+    <text x="141" y="114" text-anchor="middle" style="fill:var(--muted)" font-size="11">job_id</text>
+    <text x="320" y="64" text-anchor="middle" style="fill:var(--muted)" font-size="11">enqueue</text>
+    <text x="510" y="64" text-anchor="middle" style="fill:var(--muted)" font-size="11">pulls</text>
+    <text x="322" y="180" text-anchor="middle" style="fill:var(--muted)" font-size="11">GET /jobs/{id} reads status</text>
   </g>
 </svg>
                 <p class="diagram-cap">Embedding a big document can take a while. Instead of making the request wait, <code>main.py</code> hands the work to a queue and answers immediately with a job id; a separate process does the slow part.</p>
@@ -478,10 +477,11 @@ python worker.py</pre>
         <p>This is the same habit the Evaluate and Analyze stages of every HOS are training.</p>
 
         <div class="guide-nav">
-            <a href="index.html">← Back to Hands-On Guides</a>
+            <a href="../ai-410-interactive/index.html">← Course home</a>
             <a href="account-setup-guide.html">Account &amp; Service Setup Guide →</a>
         </div>
     </div>
-    <script src="../../assets/nav.js"></script>
+</main>
+<script src="../ai-410-assets/course.js"></script>
 </body>
 </html>

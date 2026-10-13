@@ -269,9 +269,9 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </div>
 
 <section class="module card" id="overview">
-  <div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag">Outcomes O4 &amp; O5</span><span class="tag blue">12.5% HOS + MP + CD + AC</span><span class="tag amber">+ Architecture Review &amp; Integration CD</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag">Outcomes O4 &amp; O5</span><span class="tag blue">10% HOS + MP + CD + AC + KC</span><span class="tag amber">+ Architecture Review &amp; Integration CD</span></div></div></div>
   <p>Three HOS in, your app reasons, retrieves, validates, and works in the background — and you can only see any of that from a browser tab and a terminal. This last HOS takes it to production shape. A <strong>mobile client</strong> puts the app on a real phone. <strong>Push notifications</strong> tell the user when background work finishes, even with the app closed. And <strong>observability</strong> lets you see what the agent actually did on every request, so "it gave a wrong answer" becomes a specific span you can open and fix.</p>
-  <p>Week 7 builds and tests all three. Week 8 is the last HOS week, and it does double duty: finish HOS 4, then step back and connect all four HOS in an architecture review and a final Integration Concept Debate — the bridge into your Team/Term Project.</p>
+  <p>Week 7 builds and tests all three. Week 8 is the last HOS week, and it does double duty: finish HOS 4, then step back and connect all four HOS in an architecture review and a final Integration Concept Debate — the bridge into your Team Project.</p>
   <div class="callout blue">
     <span class="label">Anchoring analogy</span>
     <p>Think of a package delivery service. The mobile app is the storefront in the customer's pocket. The push notification is the "your package has arrived" text — sent to a specific <em>phone</em>, not just a name. And observability is the tracking page: every scan at every depot, with a timestamp. When a package is late, nobody guesses; they open the tracking history and see exactly which depot held it. A trace is that tracking history for one request.</p>
@@ -290,10 +290,10 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
     <a href="#lecture"><span class="n">Wk 7 · Mon</span><span class="t">Lecture</span><span class="w">~75 min, 3 parts</span></a>
     <a href="#muddiest"><span class="n">Wk 7 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a>
     <a href="#debate"><span class="n">Wk 7 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a>
-    <a href="#create"><span class="n">Wk 7 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">not graded</span></a>
-    <a href="#evaluate"><span class="n">Wk 7 · Fri–Sun</span><span class="t">Evaluate</span><span class="w">30% of HOS</span></a>
-    <a href="#analyze"><span class="n">Wk 8 · Mon</span><span class="t">Analyze</span><span class="w">30% of HOS</span></a>
-    <a href="#refine"><span class="n">Wk 8 · Tue–Wed</span><span class="t">Understand &amp; Refine</span><span class="w">40% of HOS · no AI</span></a>
+    <a href="#create"><span class="n">Wk 7 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">Engagement · 20% of HOS</span></a>
+    <a href="#evaluate"><span class="n">Wk 7 · Fri–Sun</span><span class="t">Evaluate</span><span class="w">part of Skills (80%)</span></a>
+    <a href="#analyze"><span class="n">Wk 8 · Mon</span><span class="t">Analyze</span><span class="w">part of Skills (80%)</span></a>
+    <a href="#refine"><span class="n">Wk 8 · Tue–Wed</span><span class="t">Understand &amp; Refine</span><span class="w">part of Skills · no AI</span></a>
     <a href="#challenge"><span class="n">Wk 8 · Thu</span><span class="t">Application Challenge</span><span class="w">5% of course</span></a>
     <a href="#review"><span class="n">Wk 8 · Fri</span><span class="t">Architecture Review</span><span class="w">all 4 HOS</span></a>
     <a href="#integration"><span class="n">Wk 8 · Tue–Sun</span><span class="t">Integration Debate</span><span class="w">graded · CD category</span></a>
@@ -431,7 +431,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <section class="module card" id="create">
-  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag">Not graded on its own</span><span class="tag blue">GitHub Codespaces</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag">Engagement · 20% of HOS</span><span class="tag blue">GitHub Codespaces</span></div></div></div>
   <p>Add the mobile client, push, and tracing to your HOS 3 app with an AI coding assistant.</p>
   <ol>
     <li>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-04-mobile-observability" target="_blank" rel="noopener">the HOS 4 starter-code folder</a> in GitHub Codespaces — your HOS 3 app, already working. If <code>npm</code> is missing, rebuild the container.</li>
@@ -448,10 +448,11 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 - backend/agent.py and retrieval.py: add Langfuse tracing (@observe()) so each request
   produces a trace with retrieval and generation as separate spans.</code></pre>
   <p class="small">Every snag this week has a documented fix in the <a href="../ai-410-guides/hos-04-mobile-observability.html">HOS 4 hands-on guide</a>. Unsure what a file does? <a href="../ai-410-guides/starter-code-walkthrough.html#hos4">Starter code walkthrough →</a></p>
+  <p class="small"><b>Graded as Engagement (20% of this HOS):</b> submit the prompt you gave your AI assistant and a screenshot of the scaffolded app running.</p>
 </section>
 
 <section class="module card" id="evaluate">
-  <div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag">30% of HOS grade</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span></div></div></div>
   <p>This week "the API returned 200" is not evidence. Check what actually happened on the phone and in the trace.</p>
   <div class="progress-line" id="evalProgress">0 / 4 tests run</div>
   <div class="checklist" id="evalList">
@@ -469,7 +470,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 <div class="part-banner"><b>Week 8 · Explain, Master &amp; Connect</b><span>Analyze → Refine → Application Challenge → Knowledge Check → Architecture Review → Integration CD</span></div>
 
 <section class="module card" id="analyze">
-  <div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why is it built this way?</h2><div class="module-meta"><span class="tag">30% of HOS grade</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why is it built this way?</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span></div></div></div>
   <p>Pick <strong>one</strong> piece and explain what it lets you do that the alternative wouldn't.</p>
   <div class="pick" id="analyzePick">
     <button type="button" aria-pressed="false" data-k="token"><b>Device token, not user ID</b>Why push is addressed to a device.</button>
@@ -480,7 +481,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <section class="module card" id="refine">
-  <div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag">40% of HOS grade</span><span class="tag bad">No AI assistant for this part</span></div></div></div>
+  <div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span><span class="tag bad">No AI assistant for this part</span></div></div></div>
   <p>Write your own <code>score_faithfulness(answer, context)</code> — a heuristic or cheap check for whether the answer is grounded in what was retrieved — call it from <code>run_agent()</code>, and log the score against the current trace.</p>
   <div class="progress-line" id="refineProgress">0 / 5 done</div>
   <div class="checklist" id="refineList">
@@ -522,7 +523,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <section class="module card" id="check">
-  <div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag">Self-check · not graded</span></div></div></div>
+  <div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag">Practice here · graded quiz in Brightspace (10% KC)</span></div></div></div>
   <p>Five quick questions, then the two open questions your instructor will ask in the Week 8 check-in.</p>
   <div id="quiz"></div>
   <p class="score" id="quizScore" aria-live="polite"></p>
@@ -546,12 +547,12 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
   <div class="order-pool" id="orderPool"></div>
   <ol class="order-done" id="orderDone"></ol>
   <div class="row"><button class="btn" id="orderReveal" type="button" disabled>Reveal bottlenecks &amp; failure points</button><button class="btn secondary" id="orderReset" type="button">Start over</button></div>
-  <div class="callout" style="margin-top:14px"><span class="label">For the review</span><p>Draw both paths yourself (paper, whiteboard, or a diagram tool) and bring them to the Week 8 check-in. Label every arrow with the HOS it came from, and circle the one step you think is the riskiest for <em>your</em> Team/Term Project.</p></div>
+  <div class="callout" style="margin-top:14px"><span class="label">For the review</span><p>Draw both paths yourself (paper, whiteboard, or a diagram tool) and bring them to the Week 8 check-in. Label every arrow with the HOS it came from, and circle the one step you think is the riskiest for <em>your</em> Team Project.</p></div>
 </section>
 
 <section class="module card" id="integration">
   <div class="module-head"><div class="module-icon">🔗</div><div><h2>Integration Concept Debate — connecting all 4 HOS</h2><div class="module-meta"><span class="tag violet">Graded · CD category</span><span class="tag">Same 3-stage format</span></div></div></div>
-  <div class="callout violet"><span class="label">The question</span><p style="font-size:1.02rem"><strong>Under a Team/Term Project deadline, which of the 4 HOS is safest to cut a corner on — and which one can't be shortchanged?</strong></p></div>
+  <div class="callout violet"><span class="label">The question</span><p style="font-size:1.02rem"><strong>Under a Team Project deadline, which of the 4 HOS is safest to cut a corner on — and which one can't be shortchanged?</strong></p></div>
   <div class="callout blue">
     <span class="label">Your side</span>
     <p>For the Integration debate, <b>Debate Group 1 argues Side A and Debate Group 2 argues Side B.</b> In Stage 3, your synthesis must name <em>both</em> the safest corner to cut and the one you'd never shortchange.</p>
@@ -587,15 +588,15 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <section class="module card" id="project">
-  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Next: Team/Term Project — Weeks 9–10</h2><div class="module-meta"><span class="tag">20% of course</span></div></div></div>
-  <p>Every technical piece you need, you've now built once. Weeks 9–10 are synthesis: a few days of Scrum-lite planning, then build, then a live demo. Bring three things from this week into Week 9:</p>
+  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Team Project — Phase 2 due this week, Phase 3 next</h2><div class="module-meta"><span class="tag">20% of course</span><span class="tag amber">Phase 2 due end of Week 8</span></div></div></div>
+  <p>Every technical piece you need, you've now built once. <b>Due end of this week (Phase 2):</b> System v0.8 in your shared GitHub repository, with its architecture shown in the README, and a 2–3 page progress report with at least 12 references. <b>Weeks 9–10 are Phase 3:</b> no new build. The class reviews the architecture across all 4 HOS, then your team finishes, polishes and rehearses; Week 10 brings System v1.0, the final report, a presentation and a demo video. Bring three things into Week 9:</p>
   <ul>
     <li>Your two architecture diagrams from the <a href="#review">review</a>, redrawn for <em>your</em> project.</li>
     <li>Your Integration Debate synthesis — the corner you'll cut if time runs short, and the one you won't.</li>
-    <li>Your Week 6 checkpoint idea, updated with what you learned in HOS 4.</li>
+    <li>The open issues from your Phase 2 progress report. They're your Phase 3 to-do list.</li>
   </ul>
   <p><a class="btn" style="text-decoration:none;display:inline-block" href="team-project.html">Open the Weeks 9–10 project guide →</a></p>
-  <p class="small">Full description and planning framework: <a href="../AI-410-syllabus.html#team-project">syllabus → Team/Term Project</a>.</p>
+  <p class="small">Phases, deliverables and rubrics: <a href="../AI-410-syllabus.html#team-project">syllabus → Team Project</a>.</p>
 </section>
 
 <section class="card">
@@ -606,7 +607,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
     <li><a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a> — Expo, EAS project ID, Langfuse</li>
     <li><a href="../ai-410-guides/concept-companion.html">Concept Companion</a></li>
     <li><a href="sim04-push-observability.html">Push &amp; Observability Simulator</a></li>
-    <li>← <a href="hos-03-lesson.html">HOS 3 lesson</a> · <a href="index.html">All lessons &amp; simulators</a> · Next: <a href="team-project.html">Team/Term Project guide</a> →</li>
+    <li>← <a href="hos-03-lesson.html">HOS 3 lesson</a> · <a href="index.html">All lessons &amp; simulators</a> · Next: <a href="team-project.html">Team Project guide</a> →</li>
   </ul>
 </section>
 

@@ -249,7 +249,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </div>
 
 <section class="module card" id="overview">
-  <div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag">Outcome O2</span><span class="tag blue">12.5% HOS + MP + CD + AC</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag">Outcome O2</span><span class="tag blue">10% HOS + MP + CD + AC + KC</span></div></div></div>
   <p>Your HOS 1 agent can reason and call tools, but it knows nothing about <em>your</em> business. Ask it how long Northwind Outfitters gives customers to return a tent and it will answer anyway — with a typical return window it has seen somewhere, stated confidently. This HOS fixes that by giving the model the right few paragraphs of your own documents at the moment it answers. That's <strong>Retrieval-Augmented Generation (RAG)</strong>: retrieve first, then generate.</p>
   <p>Week 3 gets the pipeline working (chunk, embed, store, retrieve, inject) and tests it deliberately, including the bug where adding RAG quietly breaks the tool calling you built in HOS 1. Week 4 is about understanding <em>why</em> retrieval works: why the query and the documents are embedded differently, and whether you can add knowledge to the system by hand.</p>
   <div class="callout blue">
@@ -270,12 +270,12 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
     <a href="#lecture"><span class="n">Wk 3 · Mon</span><span class="t">Lecture</span><span class="w">~70 min, 3 parts</span></a>
     <a href="#muddiest"><span class="n">Wk 3 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a>
     <a href="#debate"><span class="n">Wk 3 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a>
-    <a href="#create"><span class="n">Wk 3 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">not graded</span></a>
-    <a href="#evaluate"><span class="n">Wk 3 · Fri–Sun</span><span class="t">Evaluate</span><span class="w">30% of HOS</span></a>
-    <a href="#analyze"><span class="n">Wk 4 · Mon–Tue</span><span class="t">Analyze</span><span class="w">30% of HOS</span></a>
-    <a href="#refine"><span class="n">Wk 4 · Wed–Thu</span><span class="t">Understand &amp; Refine</span><span class="w">40% of HOS · no AI</span></a>
+    <a href="#create"><span class="n">Wk 3 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">Engagement · 20% of HOS</span></a>
+    <a href="#evaluate"><span class="n">Wk 3 · Fri–Sun</span><span class="t">Evaluate</span><span class="w">part of Skills (80%)</span></a>
+    <a href="#analyze"><span class="n">Wk 4 · Mon–Tue</span><span class="t">Analyze</span><span class="w">part of Skills (80%)</span></a>
+    <a href="#refine"><span class="n">Wk 4 · Wed–Thu</span><span class="t">Understand &amp; Refine</span><span class="w">part of Skills · no AI</span></a>
     <a href="#challenge"><span class="n">Wk 4 · Fri–Sun</span><span class="t">Application Challenge</span><span class="w">5% of course</span></a>
-    <a href="#check"><span class="n">Wk 4 · any time</span><span class="t">Knowledge Check</span><span class="w">self-check</span></a>
+    <a href="#check"><span class="n">Wk 4 · any time</span><span class="t">Knowledge Check</span><span class="w">graded · 10% pool</span></a>
   </div>
   <p class="small muted" style="margin-top:10px">Days are a suggested pacing for an online term, not fixed deadlines — your instructor's Brightspace dates win.</p>
 </section>
@@ -422,7 +422,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <section class="module card" id="create">
-  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag">Not graded on its own</span><span class="tag blue">GitHub Codespaces</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag">Engagement · 20% of HOS</span><span class="tag blue">GitHub Codespaces</span></div></div></div>
   <p>Add retrieval to your working HOS 1 app with an AI coding assistant. As before, this is the starting point — no hand edits yet.</p>
   <ol>
     <li>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-02-embeddings-rag" target="_blank" rel="noopener">the HOS 2 starter-code folder</a> in GitHub Codespaces. It's your HOS 1 app plus five Northwind Outfitters sample documents in <code>backend/sample_docs/</code>.</li>
@@ -440,10 +440,11 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 Keep the existing tool-calling loop working alongside this — don't let the new
 instruction suppress tool use.</code></pre>
   <p class="small">Step-by-step details and common snags (the <code>EMBED_DIM</code> mismatch, forgetting to re-run ingest) are in the <a href="../ai-410-guides/hos-02-embeddings-rag.html">HOS 2 hands-on guide</a>. Unsure what a file does? <a href="../ai-410-guides/starter-code-walkthrough.html#hos2">Starter code walkthrough →</a></p>
+  <p class="small"><b>Graded as Engagement (20% of this HOS):</b> submit the prompt you gave your AI assistant and a screenshot of the scaffolded app running.</p>
 </section>
 
 <section class="module card" id="evaluate">
-  <div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag">30% of HOS grade</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span></div></div></div>
   <p>Test on purpose. Print or log what <code>retrieve()</code> returned for each test — the chunks are your evidence, not just the final answer.</p>
   <div class="progress-line" id="evalProgress">0 / 4 tests run</div>
   <div class="checklist" id="evalList">
@@ -461,7 +462,7 @@ instruction suppress tool use.</code></pre>
 <div class="part-banner"><b>Week 4 · Explain &amp; Master</b><span>Analyze → Understand &amp; Refine → Application Challenge → Knowledge Check</span></div>
 
 <section class="module card" id="analyze">
-  <div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does retrieval work?</h2><div class="module-meta"><span class="tag">30% of HOS grade</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does retrieval work?</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span></div></div></div>
   <p>Pick <strong>one</strong> piece and explain, in your own words, exactly how it works. The first option is the strongest choice.</p>
   <div class="pick" id="analyzePick">
     <button type="button" aria-pressed="false" data-k="task"><b>Recommended: the two <code>task_type</code> values</b>Why <code>ingest.py</code> and <code>retrieval.py</code> call the same API differently.</button>
@@ -473,7 +474,7 @@ instruction suppress tool use.</code></pre>
 </section>
 
 <section class="module card" id="refine">
-  <div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag">40% of HOS grade</span><span class="tag bad">No AI assistant for this part</span></div></div></div>
+  <div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span><span class="tag bad">No AI assistant for this part</span></div></div></div>
   <p>Write a <strong>sixth sample document</strong> yourself — for example <code>product-sleeping-bags.md</code> or <code>care-and-repair.md</code> — in the same style as the other five, and prove the whole path works for knowledge you added.</p>
   <div class="progress-line" id="refineProgress">0 / 5 done</div>
   <div class="checklist" id="refineList">
@@ -522,7 +523,7 @@ def answer(question):
 </section>
 
 <section class="module card" id="check">
-  <div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag">Self-check · not graded</span></div></div></div>
+  <div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag">Practice here · graded quiz in Brightspace (10% KC)</span></div></div></div>
   <p>Five quick questions, then the two open questions your instructor will ask in the Week 4 check-in.</p>
   <div id="quiz"></div>
   <p class="score" id="quizScore" aria-live="polite"></p>
@@ -534,8 +535,8 @@ def answer(question):
 </section>
 
 <section class="module card" id="project">
-  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Team/Term Project — what HOS 2 adds</h2><div class="module-meta"><span class="tag">20% of course</span><span class="tag amber">Nothing due yet · checkpoint at end of Week 6</span></div></div></div>
-  <p>Your project's HOS 2 piece is the <strong>documents your agent answers from</strong>. The syllabus's litmus test applies directly here: can you point to it and say "this is actually retrieval, not a hardcoded FAQ"? Two questions to settle before the Week 6 checkpoint:</p>
+  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Team Project — what HOS 2 adds</h2><div class="module-meta"><span class="tag">20% of course</span><span class="tag amber">Phase 1 due end of Week 3 · Phase 2 due end of Week 8</span></div></div></div>
+  <p>Your project's HOS 2 piece is the <strong>documents your agent answers from</strong>. The syllabus's litmus test applies directly here: can you point to it and say "this is actually retrieval, not a hardcoded FAQ"? Two questions to settle in your Week 3 proposal, before Phase 2 starts:</p>
   <ul>
     <li><b>What are the documents?</b> Where do they come from, how many, and who updates them? (In the "Study Buddy" example, it's the student's own uploaded notes and syllabi.)</li>
     <li><b>What should happen when retrieval finds nothing?</b> This week's Concept Debate, applied to your users.</li>
@@ -547,7 +548,7 @@ def answer(question):
     <tr><td>HOS 3</td><td>Validated tool calls and slow work moved to a background job</td><td><a href="sim03-guardrails-queue.html">Guardrails &amp; Queue Simulator</a></td></tr>
     <tr><td>HOS 4</td><td>A mobile client, push notifications, and traces you can debug from</td><td><a href="sim04-push-observability.html">Push &amp; Observability Simulator</a></td></tr>
   </table></div>
-  <p class="small">Full description and planning framework: <a href="../AI-410-syllabus.html#team-project">syllabus → Team/Term Project</a>.</p>
+  <p class="small">Phases, deliverables and rubrics: <a href="../AI-410-syllabus.html#team-project">syllabus → Team Project</a>.</p>
 </section>
 
 <section class="card">

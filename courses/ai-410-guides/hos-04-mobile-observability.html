@@ -21,6 +21,7 @@
         pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
         code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
         p code, li code { background:#f1f5f9; color:#be185d; padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        p code, li code { overflow-wrap:anywhere; }
         .not-graded { background:#f8fafc; border-left:3px solid #94a3b8; padding:8px 14px; margin:10px 0; font-size:0.85rem; border-radius:0 4px 4px 0; color:#475569; }
         .submit-box { background:#ecfdf5; border-left:5px solid #10b981; padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
         .submit-box h5 { margin:0 0 8px; color:#047857; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
@@ -46,7 +47,7 @@
             <span class="meta-pill">Est. 2.5–3 hrs</span>
             <span class="meta-pill">Outcomes 4 &amp; 5</span>
             <span class="meta-pill">Merges old Weeks 8–9</span>
-            <span class="meta-pill">12.5% of final grade</span>
+            <span class="meta-pill">10% of final grade</span>
         </div>
 
         <div class="goal-box">
@@ -63,11 +64,11 @@
             <li>An AI coding assistant available in your environment</li>
         </ul>
 
-        <p>This HOS is graded across four stages instead of on code correctness alone. Each stage below says exactly what to submit.</p>
+        <p>This HOS is graded across four stages instead of on code correctness alone: <strong>Engagement</strong> (Create/Scaffold) is 20% of the HOS grade, and <strong>Skills</strong> (Evaluate, Analyze, Understand &amp; Refine) is 80%. Each stage below says exactly what to submit.</p>
 
         <div class="stage-block">
             <h2><span class="stage-num">1</span>Create / Scaffold</h2>
-            <p class="stage-tagline">Not graded on its own — this is the starting point, not the deliverable.</p>
+            <p class="stage-tagline">Graded as Engagement: 20% of this HOS. The AI-assisted starting point, not the deliverable.</p>
             <p>Prompt your AI assistant to add both pieces:</p>
 <pre>Add a mobile client and observability to this app:
 - mobile/: an Expo (React Native) chat screen that calls this
@@ -82,6 +83,10 @@
   separate spans.</pre>
             <p>Run <code>npx expo start --tunnel</code> in <code>mobile/</code> and scan the QR code with Expo Go to test on your own phone. <strong>In Codespaces, always use <code>--tunnel</code></strong> — the plain command uses LAN mode, which can't work since your phone and the Codespace aren't on the same network (it'll look like it's hanging, not actually connect). The very first time you run <code>--tunnel</code>, Expo installs a small tunneling package on the spot, which takes a minute or two — after that, it starts fast. (Note: <code>--tunnel</code> itself doesn't need any login — but current Expo Go on iOS separately requires the same Expo account logged in on both your terminal and the phone app just to load the project at all; see the <a href="account-setup-guide.html#expo">Account &amp; Service Setup Guide</a>.)</p>
             <p>No phone handy yet, or want to sanity-check the chat screen fastest? Run <code>npx expo start --web</code> instead — opens the app in a browser tab, no Expo Go or login needed at all. Push notifications don't exist on web (the app already skips that step cleanly there), so switch to a real phone once you get to the push-notification stages.</p>
+            <div class="submit-box">
+                <h5>Submit (Engagement)</h5>
+                <ul><li>The prompt you gave your AI assistant, and a screenshot of the scaffolded app running.</li></ul>
+            </div>
         </div>
 
         <div class="stage-block">

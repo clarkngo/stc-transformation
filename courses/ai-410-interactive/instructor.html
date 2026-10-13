@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 410 instructor hub: term setup, the two-week rhythm, grading and calibration references, answer keys, and Team Project milestones in one place.">
+<title>AI 410 Instructor Hub</title>
+<style>
+:root {
+  --bg:#f3f7f4; --surface:#ffffff; --surface2:#eef5f0; --border:#d3e2d8;
+  --text:#10231a; --muted:#53695d; --accent:#1e8449; --accent2:#166236;
+  --accent-light:#e3f4e9; --on-accent:#ffffff;
+  --header-bg:#0e2a1c; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --amber:#b45309; --amber-bg:#fff6e5;
+  --violet:#7e22ce; --violet-bg:#f6edff; --rose:#be185d; --rose-bg:#fdf0f6;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea;
+  --code-bg:#0f172a; --code-text:#e2e8f0;
+  --shadow:0 2px 8px rgba(10,40,25,.08); --shadow-hover:0 8px 24px rgba(10,40,25,.14);
+  --radius:12px; --radius-sm:8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+    --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+    --accent-light:#0f2e1c; --on-accent:#052e16;
+    --header-bg:#06100b; --header-text:#e5f0ea;
+    --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+    --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+    --code-bg:#050b08; --code-text:#d9e7df;
+    --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a1510; --surface:#11211a; --surface2:#172c22; --border:#26402f;
+  --text:#e5f0ea; --muted:#94ab9d; --accent:#4ade80; --accent2:#86efac;
+  --accent-light:#0f2e1c; --on-accent:#052e16;
+  --header-bg:#06100b; --header-text:#e5f0ea;
+  --blue:#93b4ff; --blue-bg:#101c38; --amber:#fbbf24; --amber-bg:#2a1d05;
+  --violet:#d8b4fe; --violet-bg:#221233; --rose:#f9a8d4; --rose-bg:#2c1020;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111;
+  --code-bg:#050b08; --code-text:#d9e7df;
+  --shadow:0 2px 8px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
+a { color:var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+p { margin:0 0 .9em; }
+ul, ol { margin:0 0 .9em 1.3em; }
+li { margin-bottom:.3em; }
+code { font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.88em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:var(--radius-sm); overflow-x:auto; font-size:.8rem; line-height:1.5; margin:0 0 1em; }
+pre code { background:none; padding:0; color:inherit; font-size:inherit; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:200; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.top-inner { max-width:var(--maxw,1100px); margin:0 auto; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:38px; height:38px; background:#1e8449; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; flex-shrink:0; }
+.brand b { display:block; font-size:.95rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:6px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+
+.hero { background:linear-gradient(135deg,#0e2a1c 0%,#155e37 60%,#1e8449 100%); color:#fff; padding:34px 16px 30px; }
+.hero-inner { max-width:var(--maxw,1100px); margin:0 auto; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-bottom:6px; }
+.hero h1 { font-size:clamp(1.45rem,4vw,2rem); line-height:1.2; margin-bottom:8px; }
+.hero p.lede { opacity:.88; max-width:760px; font-size:.98rem; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.chip { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:20px; color:#fff; }
+
+main { max-width:var(--maxw,1100px); margin:0 auto; padding:26px 16px 56px; }
+h2 { font-size:1.3rem; line-height:1.3; margin:0 0 12px; }
+h3 { font-size:1.05rem; margin:18px 0 8px; }
+h4 { font-size:.95rem; margin:0 0 6px; }
+.muted { color:var(--muted); }
+.small { font-size:.85rem; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+.callout { border-left:5px solid var(--accent); background:var(--accent-light); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:0 0 16px; font-size:.9rem; }
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue { border-color:var(--blue); background:var(--blue-bg); }
+.callout.violet { border-color:var(--violet); background:var(--violet-bg); }
+.callout.rose { border-color:var(--rose); background:var(--rose-bg); }
+.callout .label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+.callout.amber .label { color:var(--amber); } .callout.blue .label { color:var(--blue); }
+.callout.violet .label { color:var(--violet); } .callout.rose .label { color:var(--rose); }
+.callout .label { color:var(--accent2); }
+.callout p:last-child, .callout ul:last-child { margin-bottom:0; }
+
+.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); }
+.btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:8px 14px; font-weight:700; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.btn:hover { filter:brightness(1.08); }
+.btn.secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+label.field { display:block; font-size:.82rem; font-weight:700; margin:10px 0 4px; }
+input[type=text], textarea, select { width:100%; font-family:inherit; font-size:.9rem; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+textarea { min-height:70px; resize:vertical; }
+input[type=range] { width:100%; accent-color:var(--accent); }
+table.t { width:100%; border-collapse:collapse; font-size:.86rem; margin:0 0 1em; }
+table.t th, table.t td { border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top; }
+table.t th { background:var(--surface2); font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.table-wrap { overflow-x:auto; }
+.tag { display:inline-block; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:6px; background:var(--accent-light); color:var(--accent2); }
+.tag.blue { background:var(--blue-bg); color:var(--blue); } .tag.amber { background:var(--amber-bg); color:var(--amber); }
+.tag.violet { background:var(--violet-bg); color:var(--violet); } .tag.rose { background:var(--rose-bg); color:var(--rose); }
+.tag.bad { background:var(--bad-bg); color:var(--bad); } .tag.ok { background:var(--ok-bg); color:var(--ok); }
+.log { background:var(--code-bg); color:var(--code-text); font-family:'SFMono-Regular',Consolas,Menlo,monospace; font-size:.76rem; border-radius:8px; padding:10px 12px; max-height:280px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+.sim-note { font-size:.78rem; font-weight:700; color:var(--amber); background:var(--amber-bg); display:inline-block; padding:3px 10px; border-radius:6px; margin-bottom:12px; }
+footer.foot { border-top:1px solid var(--border); text-align:center; font-size:.78rem; color:var(--muted); padding:20px 16px 30px; }
+@media print { header.top, .no-print { display:none !important; } body { background:#fff; } }
+
+:root { --maxw:1100px; }
+
+.sec-label { font-size:.74rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); padding-bottom:6px; margin:28px 0 14px; }
+.tile { display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; text-decoration:none; color:inherit; box-shadow:var(--shadow); transition:transform .15s, box-shadow .15s; }
+a.tile:hover { transform:translateY(-2px); box-shadow:var(--shadow-hover); border-color:var(--accent); }
+.tile .ic { font-size:1.5rem; }
+.tile h3 { margin:6px 0 4px; font-size:1rem; }
+.tile p { font-size:.85rem; color:var(--muted); margin-bottom:10px; flex:1; }
+.tile .foot { display:flex; gap:6px; flex-wrap:wrap; }
+.tile.soon { opacity:.75; box-shadow:none; background:var(--surface2); }
+.cycle { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; }
+.cycle div { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:.84rem; }
+.cycle b { display:block; font-size:.9rem; }
+.cycle .wk { font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="instructor.html"><span class="brand-icon">410</span><span><b>AI 410: AI Engineering</b><small>Instructor hub</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-410.html">← AI 410</a><a class="pill-btn" href="index.html">Student view</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 410: AI Engineering · For instructors</div>
+    <h1>Instructor Hub</h1>
+    <p class="lede">Everything you need to run AI 410: one-time setup, what to do each week of a HOS, how to grade each assignment quickly, the answer keys, and the Team Project milestones. Students use the <a href="index.html" style="color:inherit">student view</a>.</p>
+    <div class="chips"><span class="chip">Internal</span><span class="chip">10 weeks · 4 HOS</span><span class="chip">Answer keys</span><span class="chip">Grading calibration</span></div>
+  </div>
+</section>
+<main id="main">
+
+<div class="callout amber">
+  <span class="label">Instructors only</span>
+  <p>This page and the pages it links in the instructor sections (teaching guide, answer keys, AC example answers, faculty notes) are for instructors and graders. The <a href="index.html">student view</a> has the lessons, simulators and project guide students use. AI 410 is an upcoming BSAI course; these are sample materials, not yet offered to students.</p>
+</div>
+
+<div class="sec-label">Before the term</div>
+<div class="grid">
+  <a class="tile" href="teaching-guide.html#setup"><span class="ic">🧰</span><h3>One-time setup</h3><p>The Brightspace checklist: assignments and rubrics, the Knowledge Check quizzes, the five Concept Debate topics, and the debate groups.</p><div class="foot"><span class="tag amber">≈ 1 hour</span></div></a>
+  <a class="tile" href="../AI-410.html#cd-team-setup"><span class="ic">⚖️</span><h3>Concept Debate groups</h3><p>Two groups of about the same size, assigned by you or chosen by students, and the rotation table for all five debates.</p><div class="foot"><span class="tag">Week 1</span></div></a>
+  <a class="tile" href="../ai-410-guides/account-setup-guide.html"><span class="ic">🔑</span><h3>Accounts students need</h3><p>GitHub, a free Gemini key, Upstash, Expo and Langfuse, and when each one is needed. Worth a dry run in a fresh Codespace.</p><div class="foot"><span class="tag">Free tiers only</span></div></a>
+</div>
+
+<div class="sec-label">Running each HOS (two weeks)</div>
+<div class="grid">
+  <a class="tile" href="teaching-guide.html#rhythm"><span class="ic">🗓️</span><h3>The two-week rhythm</h3><p>What students do each day of a HOS, and what you do: answer Muddiest Points, nudge debates, grade.</p><div class="foot"><span class="tag">Every HOS</span></div></a>
+  <a class="tile" href="teaching-guide.html#mp"><span class="ic">🌫️</span><h3>Responding to Muddiest Points</h3><p>Turning the week's confusions into the next lecture's opening, in about 30 minutes.</p><div class="foot"><span class="tag">Week 1 of each HOS</span></div></a>
+  <a class="tile" href="concept-debate-example.html"><span class="ic">⚖️</span><h3>Concept Debate, worked example</h3><p>Four students through one debate, with your three touchpoints, the Brightspace thread view and grading.</p><div class="foot"><span class="tag">Also shown to students</span></div></a>
+  <a class="tile" href="teaching-guide.html#refine"><span class="ic">✋</span><h3>Checking Refine was done by hand</h3><p>Short follow-up questions that show whether the student wrote and understands the no-AI extension.</p><div class="foot"><span class="tag">Week 2 of each HOS</span></div></a>
+</div>
+
+<div class="sec-label">Per-HOS materials</div>
+<div class="card">
+  <div class="table-wrap"><table class="t">
+    <tr><th>HOS</th><th>What students use</th><th>Application Challenge</th><th>Answer keys</th><th>Notes</th></tr>
+    <tr><td><b>HOS 1</b><br><span class="small muted">Weeks 1–2</span><br>Foundations &amp; the Agentic Loop</td>
+      <td><a href="hos-01-lesson.html">Interactive lesson</a><br><a href="../ai-410-guides/hos-01-foundations-agentic-loop.html">Hands-on guide</a><br><a href="sim01-agentic-loop.html">Simulator</a></td>
+      <td><a href="../ai-410-guides/ac-01-clinic-booking.html">AC 1: Clinic booking agent</a><br><span class="small muted">Faculty notes at the bottom</span></td>
+      <td><a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/hos-01-foundations-agentic-loop" target="_blank" rel="noopener">HOS 1 answer key</a><br><a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/ac-01-clinic-booking" target="_blank" rel="noopener">AC 1 answer key</a></td>
+      <td><a href="teaching-guide.html#hos">Likely confusions &amp; snags</a></td></tr>
+    <tr><td><b>HOS 2</b><br><span class="small muted">Weeks 3–4</span><br>Embeddings, Chunking &amp; RAG</td>
+      <td><a href="hos-02-lesson.html">Interactive lesson</a><br><a href="../ai-410-guides/hos-02-embeddings-rag.html">Hands-on guide</a><br><a href="sim02-rag-pipeline.html">Simulator</a></td>
+      <td><a href="../ai-410-guides/ac-02-helpdesk-retrieval.html">AC 2: Help-desk retrieval</a><br><span class="small muted">Faculty notes at the bottom</span></td>
+      <td><a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/hos-02-embeddings-rag" target="_blank" rel="noopener">HOS 2 answer key</a><br><a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/ac-02-helpdesk-retrieval" target="_blank" rel="noopener">AC 2 answer key</a></td>
+      <td><a href="teaching-guide.html#hos">Likely confusions &amp; snags</a></td></tr>
+    <tr><td><b>HOS 3</b><br><span class="small muted">Weeks 5–6</span><br>Guardrails &amp; Async Processing</td>
+      <td><a href="hos-03-lesson.html">Interactive lesson</a><br><a href="../ai-410-guides/hos-03-guardrails-async.html">Hands-on guide</a><br><a href="sim03-guardrails-queue.html">Simulator</a></td>
+      <td><a href="../ai-410-guides/ac-03-refund-guardrail.html">AC 3: Refund guardrail</a><br><span class="small muted">Faculty notes at the bottom</span></td>
+      <td><a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/hos-03-guardrails-async" target="_blank" rel="noopener">HOS 3 answer key</a><br><a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/ac-03-refund-guardrail" target="_blank" rel="noopener">AC 3 answer key</a></td>
+      <td><a href="teaching-guide.html#hos">Likely confusions &amp; snags</a></td></tr>
+    <tr><td><b>HOS 4</b><br><span class="small muted">Weeks 7–8</span><br>Mobile, Push &amp; Observability</td>
+      <td><a href="hos-04-lesson.html">Interactive lesson</a><br><a href="../ai-410-guides/hos-04-mobile-observability.html">Hands-on guide</a><br><a href="sim04-push-observability.html">Simulator</a></td>
+      <td><a href="../ai-410-guides/ac-04-substitution-observability.html">AC 4: Substitution observability</a><br><span class="small muted">Faculty notes at the bottom</span></td>
+      <td><a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/hos-04-mobile-observability" target="_blank" rel="noopener">HOS 4 answer key</a><br><a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/answer-key/ac-04-substitution-observability" target="_blank" rel="noopener">AC 4 answer key</a></td>
+      <td><a href="teaching-guide.html#hos">Likely confusions &amp; snags</a></td></tr>
+  </table></div>
+  <p class="small muted">Answer keys open in GitHub. Each AC answer key's README explains how to check it against the provided tests.</p>
+</div>
+
+<div class="sec-label">Grading</div>
+<div class="card">
+  <div class="table-wrap"><table class="t">
+    <tr><th>Assignment</th><th>Share of grade</th><th>Rubric</th><th>Calibrate with</th></tr>
+    <tr><td>Hands-On Skill (×4)</td><td>40% (10% each)</td><td>Engagement (Create/Scaffold) 20 · Skills (Evaluate, Analyze, Understand &amp; Refine) 80</td><td><a href="teaching-guide.html#grading">Full-credit signals</a></td></tr>
+    <tr><td>Application Challenge (×4)</td><td>20% (5% each)</td><td>Application 10 · Analysis 20 · Evaluation 30 · Design 40</td><td><a href="ac-exemplars.html">Example answers</a> and each AC's faculty notes</td></tr>
+    <tr><td>Team Project</td><td>20% (200 pts)</td><td>System, report, presentation and demo video rubrics, by phase</td><td><a href="teaching-guide.html#project">Running the Team Project</a></td></tr>
+    <tr><td>Muddiest Point (×5)</td><td>5%</td><td>Participation 80 · Writing 20</td><td><a href="teaching-guide.html#mp">Responding to MPs</a></td></tr>
+    <tr><td>Concept Debate (×5)</td><td>5%</td><td>Participation 50 · Writing 50</td><td><a href="concept-debate-example.html#grading">Worked example grading</a></td></tr>
+    <tr><td>Knowledge Check (×5)</td><td>10%</td><td>Correct answers only; 90 s per question, no AI, unlimited retakes, 80% to pass</td><td>Brightspace quiz settings</td></tr>
+  </table></div>
+  <p class="small">Full criteria tables: <a href="../AI-410-syllabus.html">AI 410 syllabus</a>.</p>
+</div>
+
+<div class="sec-label">Team Project milestones</div>
+<div class="card">
+  <div class="table-wrap"><table class="t">
+    <tr><th>Due</th><th>Phase</th><th>Deliverables</th></tr>
+    <tr><td>End of Week 3</td><td>1 · Scope locked</td><td>System v0.3 (10) and a one-page proposal with 3 references (10)</td></tr>
+    <tr><td>End of Week 8</td><td>2 · Working version</td><td>System v0.8 (30) and a 2–3 page progress report with 12+ references (30)</td></tr>
+    <tr><td>End of Week 10</td><td>3 · Feature-complete, rehearsed</td><td>System v1.0 (40), final report (50), presentation (20), demo video (10)</td></tr>
+  </table></div>
+  <p class="small"><a href="teaching-guide.html#project">What to check at each milestone</a> · <a href="team-project.html">Student project guide</a> · <a href="../AI-410-syllabus.html#team-project">Syllabus → Team Project</a></p>
+</div>
+
+<div class="sec-label">Course documents</div>
+<ul>
+  <li><a href="teaching-guide.html">Teaching guide</a> (the full instructor reference) · <a href="../AI-410-syllabus.html">Syllabus</a> · <a href="../AI-410.html">Course schedule</a></li>
+  <li><a href="../ai-410-guides/index.html">All hands-on guides and Application Challenges</a> · <a href="../ai-410-guides/starter-code-walkthrough.html">Starter code walkthrough</a> · <a href="../ai-410-guides/concept-companion.html">Concept companion</a></li>
+  <li><a href="../hands-on-guides-review.html">Hands-on guides review list</a> · <a href="../AI-410-tracker.html">Materials tracker</a> · <a href="../AI-410-delivery-walkthrough.html">Delivery walkthrough</a> · <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a></li>
+</ul>
+
+</main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai410-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ if(btn) btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',label); } catch(e){}
+  var hdr=document.querySelector('header.top');
+  function hh(){ if(hdr) root.style.setProperty('--header-h',hdr.offsetHeight+'px'); }
+  hh(); window.addEventListener('resize',hh);
+  if(btn) btn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai410-theme',next); } catch(e){}
+    label();
+  });
+})();
+</script>
+<script></script>
+</body>
+</html>

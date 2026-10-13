@@ -211,6 +211,17 @@ details.gloss-box dl { margin-top:10px; }
 @media print { .week-tabs { display:none !important; } .week-panel[hidden] { display:block !important; } }
 
 
+/* lecture videos */
+.watch { border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface2); padding:12px 14px; margin:8px 0 16px; }
+.watch-head { display:flex; flex-wrap:wrap; gap:4px 10px; align-items:baseline; margin-bottom:8px; }
+.watch-head .label { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); }
+.watch-frame { position:relative; width:100%; max-width:720px; aspect-ratio:16/9; border-radius:8px; overflow:hidden; background:#000; }
+.watch-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.watch-note { font-size:.88rem; margin:10px 0 0; }
+.watch .deeper { font-size:.84rem; color:var(--muted); margin:6px 0 0; }
+@media print { .watch-frame { display:none; } }
+@media (max-width:640px) { .watch { padding:8px; margin-left:-8px; margin-right:-8px; } .watch-frame { border-radius:6px; } }
+
 /* ---------- guide pages (hands-on guides, challenges, reference) ---------- */
 body.guide .container { max-width:900px; margin:0 auto; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:30px; }
 body.guide main { padding-top:22px; }

@@ -41,9 +41,39 @@ Fix the draft, not the output. The output folder is regenerated every time and
 carries a `.ai410-export` marker; the script won't write into a non-empty folder
 it didn't create.
 
+`--check-videos` also confirms every YouTube video a page embeds or links still exists
+(it needs network access; the PR check runs it).
+
 Warnings (`--strict` turns them into errors): starter-code links that still
 point at this drafting repo instead of the course's template repos.
 
 ## Adding a page
 
 Add it to `PAGES` in `export_ai410.py`, then run `--check`.
+
+# Template repos: `sync_templates.py`
+
+Publishes the starter code as four GitHub template repos, one per module
+(`cityuseattle/ai410-module-1` … `-4`). Each holds that module's HOS starter
+(`hos/`) and Application Challenge starter (`challenge/`), each with its own
+Codespaces configuration ("Module N · HOS" / "Module N · Application
+Challenge"). Students get a copy through the module's GitHub Classroom invite.
+
+```bash
+python3 courses/ai-410-export/sync_templates.py --org cityuseattle                       # dry run: what would change
+python3 courses/ai-410-export/sync_templates.py --build-only /tmp/ai410-templates          # build locally to inspect
+python3 courses/ai-410-export/sync_templates.py --org cityuseattle --apply                # create/update all four
+python3 courses/ai-410-export/sync_templates.py --org cityuseattle --apply --module 3     # just one module
+```
+
+Add `--site-url https://…/ai-410` so the starter READMEs link to the deployed
+course instead of this drafting site.
+
+**Weekly loop:** a module's template is reviewed the week before it opens.
+Fix anything in the drafts here, commit, `--apply --module N`, have the
+reviewer re-test, then publish that module's Classroom invite in Brightspace.
+Students copy the template when they accept, so later fixes don't reach them.
+
+It's a dry run unless `--apply`, copies only git-tracked files, refuses to run
+with uncommitted starter-code changes, never force-pushes, and creates new
+repos private by default.

@@ -1,0 +1,32 @@
+# Blocks a PR that would break the deployable AI 410 student course:
+# links to unpublished or instructor pages, broken links/anchors,
+# instructor-only content on student pages, or missing assets.
+# See courses/ai-410-export/README.md.
+name: AI 410 export check
+
+on:
+  pull_request:
+    paths:
+      - "courses/ai-410-interactive/**"
+      - "courses/ai-410-guides/**"
+      - "courses/ai-410-assets/**"
+      - "courses/ai-410-export/**"
+      - ".github/workflows/ai410-export-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check the student course export
+        run: python3 courses/ai-410-export/export_ai410.py --check --check-videos
+      - name: Check the template repos build
+        run: python3 courses/ai-410-export/sync_templates.py --build-only "$RUNNER_TEMP/ai410-templates"

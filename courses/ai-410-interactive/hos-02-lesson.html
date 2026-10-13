@@ -205,6 +205,39 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 .vec-demo .s { font-weight:800; color:var(--accent2); }
 .review-code { counter-reset:ln; }
 
+
+/* week tabs, due checklist, glossary (lesson UX) */
+.week-tabs { display:none; gap:8px; flex-wrap:wrap; align-items:center; margin:22px 0 4px; }
+.tabs-on .week-tabs { display:flex; }
+.week-tabs button { font:inherit; font-size:.86rem; font-weight:700; padding:8px 14px; border-radius:10px; border:1px solid var(--border); background:var(--surface); color:var(--text); cursor:pointer; }
+.week-tabs button[aria-selected="true"] { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+.week-tabs .show-all { margin-left:auto; font-size:.78rem; font-weight:600; background:none; border:none; color:var(--accent2); text-decoration:underline; padding:4px; }
+.tabs-on .week-panel[hidden] { display:none; }
+.due-card { border:1px solid var(--border); border-left:5px solid var(--accent); background:var(--surface); border-radius:var(--radius-sm); padding:12px 16px; margin:0 0 16px; }
+.due-card h3 { margin:0 0 6px; font-size:1rem; }
+.due-card label { display:flex; gap:10px; align-items:flex-start; padding:5px 0; font-size:.9rem; border-top:1px dashed var(--border); }
+.due-card label:first-of-type { border-top:none; }
+.due-card input { margin-top:5px; accent-color:var(--accent); flex:none; }
+.due-card .when { font-size:.72rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); white-space:nowrap; margin-left:auto; padding-left:8px; }
+.due-card .muted { font-size:.78rem; margin:6px 0 0; }
+details.gloss-box { border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; margin-top:16px; background:var(--surface2); }
+details.gloss-box summary { cursor:pointer; font-weight:700; }
+details.gloss-box dl { margin-top:10px; }
+@media print { .week-tabs { display:none !important; } .week-panel[hidden] { display:block !important; } }
+
+/* phones: bigger text, header scrolls away, only the section menu stays */
+@media (max-width:640px) {
+  html { font-size:18.8px; }
+  header.top { position:static; }
+  .secnav { top:0 !important; }
+  section.module { scroll-margin-top:64px; }
+  .week-tabs button[data-week] { flex:1 1 0; padding:9px 10px; }
+  .week-tabs .tab-sub { display:none; }
+  .week-tabs .show-all { flex-basis:100%; text-align:right; margin-left:0; }
+  .due-card label { flex-wrap:wrap; }
+  .due-card label > span:not(.when) { flex:1 1 0; min-width:0; }
+  .due-card .when { width:100%; margin-left:26px; padding-left:0; }
+}
 </style>
 </head>
 <body>
@@ -243,10 +276,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
   </div>
 </nav>
 
-<div class="callout amber" style="margin-top:20px">
-  <span class="label">Course design constraints</span>
-  <p>This lesson follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>. It adapts to AI 410's official description and Outcome O2, everything runs in GitHub Codespaces, and everything is free. Embeddings use the same free Gemini key from HOS 1, and Chroma is a Python library that writes to a folder on disk, so there's no account or connection string.</p>
-</div>
+<p class="small muted" style="margin-top:18px">Everything in this HOS runs in GitHub Codespaces on free tiers, with no credit card. Which accounts you need, and when: <a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a>.</p>
 
 <section class="module card" id="overview">
   <div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag">Outcome O2</span><span class="tag blue">10% HOS + MP + CD + AC + KC</span></div></div></div>
@@ -281,7 +311,11 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <!-- ========================= WEEK 3 ========================= -->
+<div class="week-tabs no-print" role="tablist" aria-label="Weeks"><button type="button" role="tab" data-week="1" aria-controls="week-1">Week 3<span class="tab-sub"> · Build &amp; Judge</span></button><button type="button" role="tab" data-week="2" aria-controls="week-2">Week 4<span class="tab-sub"> · Explain &amp; Master</span></button><button type="button" class="show-all">Show both weeks</button></div>
+<div class="week-panel" id="week-1" data-week="1">
 <div class="part-banner"><b>Week 3 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div>
+<div class="due-card"><h3>Week 3: what's due</h3><label><input type="checkbox" data-k="l2-w0-0"><span><a href="#muddiest">Muddiest Point</a></span><span class="when">by Wed</span></label><label><input type="checkbox" data-k="l2-w0-1"><span><a href="#debate">Concept Debate: Stage 1 · Stage 2 · Stage 3</a></span><span class="when">Tue · Thu · Sat</span></label><label><input type="checkbox" data-k="l2-w0-2"><span><a href="#create">Create / Scaffold: your prompt + a screenshot of the app running</a></span><span class="when">Wed–Thu</span></label><label><input type="checkbox" data-k="l2-w0-3"><span><a href="#evaluate">Evaluate: your Evaluate note</a></span><span class="when">Fri–Sun</span></label><label><input type="checkbox" data-k="l2-w0-4"><span><a href="#project">Team Project Phase 1: System v0.3 + one-page proposal</a></span><span class="when">end of week</span></label><p class="muted">Suggested days for an online term; your Brightspace dates win. Ticks stay in this browser.</p></div>
+
 
 <section class="module card" id="lecture">
   <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: grounding answers in your own documents</h2><div class="module-meta"><span class="tag">≈ 70 min</span><span class="tag blue">3 short parts</span><span class="tag">O2</span></div></div></div>
@@ -337,23 +371,18 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
       <span class="label">Try it before the build</span>
       <p>Open the <a href="sim02-rag-pipeline.html"><strong>RAG Pipeline Simulator</strong></a>. Ask the return question at chunk size 30, then at 10 with top-k 1. Then turn on the buggy prompt and ask "What's 25 times 4?"</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Teaching note</span>
-      <p>Students tend to blame the model when an answer is wrong. Train the reflex early: <em>first</em> print what <code>retrieve()</code> returned. If the right chunk isn't there, no prompt wording will fix it. HOS 4's traces formalize this same habit.</p>
-    </div>
   </div>
 
-  <h3>New words this week</h3>
-  <dl class="gloss">
+  <details class="gloss-box"><summary>New words this week (4)</summary><dl class="gloss">
     <dt>Embedding &amp; cosine similarity</dt><dd>A vector representing a text's meaning, and the score (roughly 0 to 1) for how closely two vectors point the same way.</dd>
     <dt>Chunking &amp; overlap</dt><dd>Splitting documents into focused pieces before embedding them, with a few words shared between neighbors so nothing important is cut in half.</dd>
     <dt>Vector database (Chroma)</dt><dd>A store built to hold embeddings and quickly return the ones nearest a query. Chroma writes to a local folder, like SQLite.</dd>
     <dt>RAG &amp; top-k</dt><dd>Retrieval-Augmented Generation: fetch the k most similar chunks, then let the model answer using them.</dd>
-  </dl>
+  </dl></details>
 </section>
 
 <section class="module card" id="muddiest">
-  <div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag rose">Graded · part of 5% MP category</span><span class="tag">Due before the build begins</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag">Due before the build begins</span></div></div></div>
   <p>Four short fields, not a blank box. Draft it here — your draft stays in this browser only — then <strong>copy it into the Brightspace submission</strong>.</p>
   <div class="two" style="margin-bottom:14px">
     <div class="eg weak"><span class="label">Doesn't meet the bar</span>"Embeddings are confusing. I don't really get RAG."</div>
@@ -377,12 +406,12 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <section class="module card" id="debate">
-  <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag">Discussion board · 3 stages</span></div></div></div>
+  <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag">Discussion board · 3 stages</span></div></div></div>
   <div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>When retrieval finds nothing relevant, should the assistant refuse ("I don't have that information"), or answer from general knowledge with a clear caveat?</strong></p></div>
   <p>You'll argue the side your debate group is assigned, then argue the other one, then drop advocacy and synthesize.</p>
   <div class="callout blue">
     <span class="label">Your side this HOS</span>
-    <p>Sides rotate each HOS. <b>In HOS 2, Debate Group 1 argues Side B and Debate Group 2 argues Side A</b> — the reverse of HOS 1. Find your group under <b>Communication → Groups</b> in Brightspace. Not in a group? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A. <a href="../AI-410-syllabus.html#cd-sides">How sides are assigned →</a></p>
+    <p>Sides rotate each HOS. <b>In HOS 2, Debate Group 1 argues Side B and Debate Group 2 argues Side A</b> — the reverse of HOS 1. Find your group under <b>Communication → Groups</b> in Brightspace. Not in a group? Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A. <a href="hos-01-lesson.html#debate">How sides are assigned →</a></p>
   </div>
   <div class="row" style="margin-bottom:10px">
     <label for="teamInput" class="small"><b>My Brightspace group:</b></label>
@@ -422,7 +451,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <section class="module card" id="create">
-  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag">Engagement · 20% of HOS</span><span class="tag blue">GitHub Codespaces</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag blue">GitHub Codespaces</span></div></div></div>
   <p>Add retrieval to your working HOS 1 app with an AI coding assistant. As before, this is the starting point — no hand edits yet.</p>
   <ol>
     <li>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-02-embeddings-rag" target="_blank" rel="noopener">the HOS 2 starter-code folder</a> in GitHub Codespaces. It's your HOS 1 app plus five Northwind Outfitters sample documents in <code>backend/sample_docs/</code>.</li>
@@ -444,7 +473,7 @@ instruction suppress tool use.</code></pre>
 </section>
 
 <section class="module card" id="evaluate">
-  <div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"></div></div></div>
   <p>Test on purpose. Print or log what <code>retrieve()</code> returned for each test — the chunks are your evidence, not just the final answer.</p>
   <div class="progress-line" id="evalProgress">0 / 4 tests run</div>
   <div class="checklist" id="evalList">
@@ -459,10 +488,15 @@ instruction suppress tool use.</code></pre>
 </section>
 
 <!-- ========================= WEEK 4 ========================= -->
+</div>
+
+<div class="week-panel" id="week-2" data-week="2">
 <div class="part-banner"><b>Week 4 · Explain &amp; Master</b><span>Analyze → Understand &amp; Refine → Application Challenge → Knowledge Check</span></div>
+<div class="due-card"><h3>Week 4: what's due</h3><label><input type="checkbox" data-k="l2-w1-0"><span><a href="#analyze">Analyze: your walkthrough of one mechanism</a></span><span class="when">Mon–Tue</span></label><label><input type="checkbox" data-k="l2-w1-1"><span><a href="#refine">Understand &amp; Refine: your hand-written document (no AI)</a></span><span class="when">Wed–Thu</span></label><label><input type="checkbox" data-k="l2-w1-2"><span><a href="#challenge">Application Challenge 2</a></span><span class="when">Fri–Sun</span></label><label><input type="checkbox" data-k="l2-w1-3"><span><a href="#check">Knowledge Check quiz, in Brightspace</a></span><span class="when">any time</span></label><p class="muted">Suggested days for an online term; your Brightspace dates win. Ticks stay in this browser.</p></div>
+
 
 <section class="module card" id="analyze">
-  <div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does retrieval work?</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does retrieval work?</h2><div class="module-meta"></div></div></div>
   <p>Pick <strong>one</strong> piece and explain, in your own words, exactly how it works. The first option is the strongest choice.</p>
   <div class="pick" id="analyzePick">
     <button type="button" aria-pressed="false" data-k="task"><b>Recommended: the two <code>task_type</code> values</b>Why <code>ingest.py</code> and <code>retrieval.py</code> call the same API differently.</button>
@@ -474,7 +508,7 @@ instruction suppress tool use.</code></pre>
 </section>
 
 <section class="module card" id="refine">
-  <div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span><span class="tag bad">No AI assistant for this part</span></div></div></div>
+  <div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag bad">No AI assistant for this part</span></div></div></div>
   <p>Write a <strong>sixth sample document</strong> yourself — for example <code>product-sleeping-bags.md</code> or <code>care-and-repair.md</code> — in the same style as the other five, and prove the whole path works for knowledge you added.</p>
   <div class="progress-line" id="refineProgress">0 / 5 done</div>
   <div class="checklist" id="refineList">
@@ -488,7 +522,7 @@ instruction suppress tool use.</code></pre>
 </section>
 
 <section class="module card" id="challenge">
-  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — measure someone else's RAG pipeline</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Measure &amp; improve · 60–90 min</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — measure someone else's RAG pipeline</h2><div class="module-meta"><span class="tag blue">Measure &amp; improve · 60–90 min</span></div></div></div>
   <p>A campus IT help-desk team built the pipeline below to answer student questions from their knowledge base. It runs without errors, and nobody knows how often it answers from the wrong passage. In the challenge you get a runnable copy, six articles, and 20 questions with known answers: measure how often it finds the answer, beat it with your own chunking, and decide when the bot should say "I don't know". The spec, starter code, and rubric are in the <a href="../ai-410-guides/ac-02-helpdesk-retrieval.html"><b>AC 2 guide</b></a>.</p>
   <p class="small">Warm up first: read the production code and predict what will go wrong. The challenge then measures it.</p>
 <pre><code># helpdesk_rag.py  (someone else's code)
@@ -523,7 +557,7 @@ def answer(question):
 </section>
 
 <section class="module card" id="check">
-  <div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag">Practice here · graded quiz in Brightspace (10% KC)</span></div></div></div>
+  <div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag">Practice · the graded quiz is in Brightspace</span></div></div></div>
   <p>Five quick questions, then the two open questions your instructor will ask in the Week 4 check-in.</p>
   <div id="quiz"></div>
   <p class="score" id="quizScore" aria-live="polite"></p>
@@ -535,7 +569,7 @@ def answer(question):
 </section>
 
 <section class="module card" id="project">
-  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Team Project — what HOS 2 adds</h2><div class="module-meta"><span class="tag">20% of course</span><span class="tag amber">Phase 1 due end of Week 3 · Phase 2 due end of Week 8</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Team Project — what HOS 2 adds</h2><div class="module-meta"><span class="tag amber">Phase 1 due end of Week 3 · Phase 2 due end of Week 8</span></div></div></div>
   <p>Your project's HOS 2 piece is the <strong>documents your agent answers from</strong>. The syllabus's litmus test applies directly here: can you point to it and say "this is actually retrieval, not a hardcoded FAQ"? Two questions to settle in your Week 3 proposal, before Phase 2 starts:</p>
   <ul>
     <li><b>What are the documents?</b> Where do they come from, how many, and who updates them? (In the "Study Buddy" example, it's the student's own uploaded notes and syllabi.)</li>
@@ -548,8 +582,10 @@ def answer(question):
     <tr><td>HOS 3</td><td>Validated tool calls and slow work moved to a background job</td><td><a href="sim03-guardrails-queue.html">Guardrails &amp; Queue Simulator</a></td></tr>
     <tr><td>HOS 4</td><td>A mobile client, push notifications, and traces you can debug from</td><td><a href="sim04-push-observability.html">Push &amp; Observability Simulator</a></td></tr>
   </table></div>
-  <p class="small">Phases, deliverables and rubrics: <a href="../AI-410-syllabus.html#team-project">syllabus → Team Project</a>.</p>
+  <p class="small">Phases, deliverables and rubrics: the Team Project section of the syllabus (in Brightspace).</p>
 </section>
+
+</div>
 
 <section class="card">
   <h2>Resources</h2>
@@ -733,6 +769,39 @@ wireChecklist('refineList','refineProgress','done','ai410-'+LESSON+'-refine');
       card.querySelector('.fb').innerHTML=(ok?'✓ ':'✗ ')+q[3];
       document.getElementById('quizScore').textContent= done===qs.length ? 'Score: '+right+' / '+qs.length+(right===qs.length?' — ready for the Week 4 check-in.':' — revisit the lecture parts you missed.') : '';
     }); });
+  });
+})();
+
+/* week tabs: show one week at a time; links and #hash jumps switch tabs */
+(function(){
+  var panels=[].slice.call(document.querySelectorAll('.week-panel')); if(!panels.length) return;
+  var tabs=[].slice.call(document.querySelectorAll('.week-tabs [data-week]')), all=document.querySelector('.week-tabs .show-all');
+  var key='ai410-tab-'+location.pathname.split('/').pop();
+  function save(v){ try{ localStorage.setItem(key,v); }catch(e){} }
+  function load(){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+  function show(w){
+    panels.forEach(function(p){ p.hidden = !(w==='all' || p.getAttribute('data-week')===w); });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t.getAttribute('data-week')===w)); });
+    if(all) all.textContent = w==='all' ? 'Show one week at a time' : 'Show both weeks';
+  }
+  function weekOf(id){ var el=id && document.getElementById(id); var p=el && el.closest('.week-panel'); return p ? p.getAttribute('data-week') : null; }
+  document.body.classList.add('tabs-on');
+  var start = weekOf(location.hash.slice(1)) || load() || panels[0].getAttribute('data-week');
+  show(start);
+  if(location.hash){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt){ var go=function(){ tgt.scrollIntoView({block:'start'}); }; setTimeout(go,0); window.addEventListener('load',go); } }
+  tabs.forEach(function(t){ t.addEventListener('click',function(){ var w=t.getAttribute('data-week'); show(w); save(w); var p=document.querySelector('.week-panel[data-week="'+w+'"]'); if(p) p.scrollIntoView({block:'start'}); }); });
+  if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-selected')==='true';})[0]; var w = cur ? 'all' : (load()&&load()!=='all'?load():panels[0].getAttribute('data-week')); show(w); save(w); });
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+    var w=weekOf(a.getAttribute('href').slice(1)); if(!w) return;
+    var cur=panels.filter(function(p){return !p.hidden;}).map(function(p){return p.getAttribute('data-week');});
+    if(cur.indexOf(w)===-1){ show(w); save(w); }
+  }, true);
+  window.addEventListener('hashchange',function(){ var w=weekOf(location.hash.slice(1)); if(w && document.querySelector('.week-panel[data-week="'+w+'"]').hidden){ show(w); var el=document.getElementById(location.hash.slice(1)); if(el) el.scrollIntoView(); } });
+  /* due checklist ticks */
+  [].slice.call(document.querySelectorAll('.due-card input[data-k]')).forEach(function(cb){
+    var k='ai410-due-'+cb.getAttribute('data-k'); try{ cb.checked = localStorage.getItem(k)==='1'; }catch(e){}
+    cb.addEventListener('change',function(){ try{ localStorage.setItem(k, cb.checked?'1':'0'); }catch(e){} });
   });
 })();
 </script>

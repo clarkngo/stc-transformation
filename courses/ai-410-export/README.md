@@ -20,6 +20,7 @@ python3 courses/ai-410-export/export_ai410.py --out ../stc/ai-410
 | `ai-410-guides/ac-0N-*.html` | `module-N/application-challenge.html` |
 | `ai-410-interactive/team-project.html` | `module-5/index.html` |
 | `ai-410-guides/account-setup-guide.html` | `start-here/accounts.html` |
+| `ai-410-guides/tools-you-will-use.html` | `start-here/tools.html` |
 | concept companion, starter-code walkthrough, Concept Debate example | `reference/` |
 | `ai-410-assets/course.css`, `course.js` and any image a page uses | `assets/` |
 

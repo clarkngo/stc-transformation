@@ -36,6 +36,7 @@ SRC = "courses"                                     # paths below are relative t
 PAGES = {
     "courses/ai-410-interactive/index.html": "index.html",
     "courses/ai-410-guides/account-setup-guide.html": "start-here/accounts.html",
+    "courses/ai-410-guides/tools-you-will-use.html": "start-here/tools.html",
     "courses/ai-410-interactive/concept-debate-example.html": "reference/concept-debate-example.html",
     "courses/ai-410-guides/concept-companion.html": "reference/concept-companion.html",
     "courses/ai-410-guides/starter-code-walkthrough.html": "reference/starter-code-walkthrough.html",

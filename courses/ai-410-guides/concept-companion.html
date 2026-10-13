@@ -71,6 +71,12 @@
         .module-nav { text-align:right; margin-top:16px; font-size:0.82rem; }
         .module-nav a { color:var(--accent); text-decoration:none; font-weight:600; }
         .back-to-top { display:inline-block; margin-top:34px; font-size:0.85rem; color:var(--accent); text-decoration:none; font-weight:600; }
+
+        .tabs-hint { display:none; margin:6px 0 4px; }
+        [id^="module-"] { scroll-margin-top:calc(var(--header-h,62px) + 16px); }
+        .tabs-on .tabs-hint { display:block; }
+        .module-tabs { margin-top:26px; }
+        @media (max-width:640px) { .module-tabs .tab-sub { display:none; } .module-tabs button[data-mod] { flex:1 1 calc(50% - 8px); padding:9px 6px; } .module-tabs .show-all { flex-basis:100%; text-align:right; margin-left:0; } }
     </style>
 </head>
 <body class="guide">
@@ -99,7 +105,7 @@
         </div>
 
         <h2>Find your module</h2>
-        <table class="map-table">
+        <div style="overflow-x:auto"><table class="map-table">
             <tr><th>Module</th><th>When</th><th>Outcome(s)</th><th>Jump</th></tr>
             <tr>
                 <td class="mod-name">1 — Foundations &amp; the Agentic Loop</td>
@@ -125,8 +131,17 @@
                 <td>O4, O5</td>
                 <td><a class="jump" href="#module-4">Read →</a></td>
             </tr>
-        </table>
+        </table></div>
         <p style="font-size:0.85rem;color:var(--muted);margin-top:6px">Skipped a module and got confused later? That's the signal to come back and read it — every "common snag" box in the Hands-On Guides traces back to one of the concepts below.</p>
+
+        <div class="week-tabs no-print module-tabs" role="tablist" aria-label="Modules">
+            <button type="button" role="tab" data-mod="1" aria-controls="module-1">Module 1<span class="tab-sub"> · Agentic loop</span></button>
+            <button type="button" role="tab" data-mod="2" aria-controls="module-2">Module 2<span class="tab-sub"> · RAG</span></button>
+            <button type="button" role="tab" data-mod="3" aria-controls="module-3">Module 3<span class="tab-sub"> · Guardrails</span></button>
+            <button type="button" role="tab" data-mod="4" aria-controls="module-4">Module 4<span class="tab-sub"> · Mobile &amp; observability</span></button>
+            <button type="button" class="show-all">Show all modules</button>
+        </div>
+        <p class="small muted tabs-hint">Pick your module. Searching the page (Ctrl/Cmd+F) only looks in the open tab; use "Show all modules" to search everything.</p>
 
         <!-- ══════════════════ MODULE 1 ══════════════════ -->
         <div class="module" id="module-1">
@@ -536,5 +551,34 @@
     </div>
 </main>
 <script src="../ai-410-assets/course.js"></script>
+<script>
+/* module tabs: one module at a time; #module-N links open the right tab */
+(function(){
+  var panels=[1,2,3,4].map(function(n){ return document.getElementById('module-'+n); }).filter(Boolean); if(!panels.length) return;
+  var tabs=[].slice.call(document.querySelectorAll('.module-tabs [data-mod]')), all=document.querySelector('.module-tabs .show-all');
+  var key='ai410-cc-tab-'+location.pathname, last='1';
+  function save(v){ try{ localStorage.setItem(key,v); }catch(e){} }
+  function load(){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+  function show(m){
+    if(m!=='all') last=m;
+    panels.forEach(function(p){ p.hidden = !(m==='all' || p.id==='module-'+m); });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t.getAttribute('data-mod')===m)); });
+    if(all) all.textContent = m==='all' ? 'Show one module at a time' : 'Show all modules';
+  }
+  function modOf(id){ var el=id && document.getElementById(id); var p=el && el.closest('[id^="module-"]'); return p ? p.id.replace('module-','') : null; }
+  document.body.classList.add('tabs-on');
+  var start = modOf(location.hash.slice(1)) || load() || '1';
+  show(start);
+  if(location.hash){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt){ var go=function(){ tgt.scrollIntoView({block:'start'}); }; setTimeout(go,0); window.addEventListener('load',go); } }
+  tabs.forEach(function(t){ t.addEventListener('click',function(){ var m=t.getAttribute('data-mod'); show(m); save(m); }); });
+  if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-selected')==='true';})[0]; var m = cur ? 'all' : last; show(m); save(m); });
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+    var m=modOf(a.getAttribute('href').slice(1)); if(!m) return;
+    var p=document.getElementById('module-'+m); if(p && p.hidden){ show(m); save(m); }
+  }, true);
+  window.addEventListener('hashchange',function(){ var m=modOf(location.hash.slice(1)); if(m){ var p=document.getElementById('module-'+m); if(p.hidden){ show(m); var el=document.getElementById(location.hash.slice(1)); if(el) el.scrollIntoView(); } } });
+})();
+</script>
 </body>
 </html>

@@ -94,7 +94,7 @@
         <div class="intro-box">
             <h4>What this page is</h4>
             <p>The Hands-On Guides tell you <em>what to build, step by step</em>. This page is different: it's every concept and piece of vocabulary you should already understand <strong>before</strong> you open one of those guides, gathered in one place instead of scattered across the term. Read the module for what you're about to start, not the whole page at once — each module is written to stand on its own.</p>
-            <p style="margin-bottom:0"><strong>Modular by design:</strong> the same five modules below cover the whole <a href="../ai-410-interactive/index.html">AI 410</a> course, each mapped to one HOS. Use the table below to find your module.</p>
+            <p style="margin-bottom:0"><strong>Modular by design:</strong> Its four modules match the <a href="../ai-410-interactive/index.html">course's Modules 1–4</a>, one per HOS. (Module 5, the Team Project, adds no new concepts.) The tools you'll use all term (Codespaces, the terminal, git) are on their own page: <a href="tools-you-will-use.html">Tools you'll use all term</a>. Use the table below to find your module.</p>
             <p style="margin:10px 0 0"><strong>Want to see a concept in motion?</strong> Each HOS has a browser simulator: <a href="../ai-410-interactive/sim01-agentic-loop.html">agentic loop</a>, <a href="../ai-410-interactive/sim02-rag-pipeline.html">RAG pipeline</a>, <a href="../ai-410-interactive/sim03-guardrails-queue.html">guardrails &amp; queue</a>, <a href="../ai-410-interactive/sim04-push-observability.html">push &amp; observability</a>. See all of them, plus the interactive lessons, on the <a href="../ai-410-interactive/index.html">interactive index</a>.</p>
         </div>
 
@@ -102,126 +102,35 @@
         <table class="map-table">
             <tr><th>Module</th><th>When</th><th>Outcome(s)</th><th>Jump</th></tr>
             <tr>
-                <td class="mod-name">0 — Universal Tooling</td>
-                <td>Before HOS 1</td>
-                <td>—</td>
-                <td><a class="jump" href="#module-0">Read →</a></td>
-            </tr>
-            <tr>
-                <td class="mod-name">A — Foundations &amp; the Agentic Loop</td>
-                <td>Before HOS 1</td>
+                <td class="mod-name">1 — Foundations &amp; the Agentic Loop</td>
+                <td>Before Module 1</td>
                 <td>O1</td>
-                <td><a class="jump" href="#module-a">Read →</a></td>
+                <td><a class="jump" href="#module-1">Read →</a></td>
             </tr>
             <tr>
-                <td class="mod-name">B — Embeddings, Chunking &amp; RAG</td>
-                <td>Before HOS 2</td>
+                <td class="mod-name">2 — Embeddings, Chunking &amp; RAG</td>
+                <td>Before Module 2</td>
                 <td>O1, O2</td>
-                <td><a class="jump" href="#module-b">Read →</a></td>
+                <td><a class="jump" href="#module-2">Read →</a></td>
             </tr>
             <tr>
-                <td class="mod-name">C — Guardrails &amp; Async Processing</td>
-                <td>Before HOS 3</td>
+                <td class="mod-name">3 — Guardrails &amp; Async Processing</td>
+                <td>Before Module 3</td>
                 <td>O3</td>
-                <td><a class="jump" href="#module-c">Read →</a></td>
+                <td><a class="jump" href="#module-3">Read →</a></td>
             </tr>
             <tr>
-                <td class="mod-name">D — Mobile, Push &amp; Observability</td>
-                <td>Before HOS 4</td>
+                <td class="mod-name">4 — Mobile, Push &amp; Observability</td>
+                <td>Before Module 4</td>
                 <td>O4, O5</td>
-                <td><a class="jump" href="#module-d">Read →</a></td>
+                <td><a class="jump" href="#module-4">Read →</a></td>
             </tr>
         </table>
         <p style="font-size:0.85rem;color:var(--muted);margin-top:6px">Skipped a module and got confused later? That's the signal to come back and read it — every "common snag" box in the Hands-On Guides traces back to one of the concepts below.</p>
 
-        <!-- ══════════════════ MODULE 0 ══════════════════ -->
-        <div class="module mod0" id="module-0">
-            <div class="module-head"><h2>Module 0 — Universal Tooling</h2></div>
-            <div class="module-pills">
-                <span class="mod-pill hos">Before HOS 1</span>
-            </div>
-            <p class="why-line">These tools show up in <strong>every single HOS</strong> of this course, not just one. Get comfortable with them once, here, instead of relearning them under deadline pressure in HOS 1.</p>
-
-            <div class="diagram-box">
-                <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
-                    <defs><marker id="m0arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" style="fill:var(--code-bg)"/></marker></defs>
-                    <g font-family="Inter,system-ui,sans-serif">
-                        <rect x="0" y="35" width="120" height="50" rx="8" style="fill:var(--blue-bg);stroke:var(--blue)"/>
-                        <text x="60" y="65" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--blue)">Terminal</text>
-                        <line x1="120" y1="60" x2="148" y2="60" class="flow-line" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#m0arrow)"/>
-                        <rect x="152" y="35" width="120" height="50" rx="8" style="fill:var(--accent-light);stroke:var(--accent)"/>
-                        <text x="212" y="65" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--accent2)">venv</text>
-                        <line x1="272" y1="60" x2="300" y2="60" class="flow-line" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#m0arrow)"/>
-                        <rect x="304" y="35" width="120" height="50" rx="8" style="fill:var(--amber-bg);stroke:var(--amber)"/>
-                        <text x="364" y="65" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--amber)">pip install</text>
-                        <line x1="424" y1="60" x2="452" y2="60" class="flow-line" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#m0arrow)"/>
-                        <rect x="456" y="35" width="120" height="50" rx="8" style="fill:var(--blue-bg);stroke:var(--violet)"/>
-                        <text x="516" y="65" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--violet)">.env</text>
-                        <line x1="576" y1="60" x2="604" y2="60" class="flow-line" style="stroke:var(--border)" stroke-width="1.5" marker-end="url(#m0arrow)"/>
-                        <rect x="608" y="35" width="90" height="50" rx="8" style="fill:var(--accent-light);stroke:var(--accent)"/>
-                        <text x="653" y="60" text-anchor="middle" font-size="10" font-weight="700" style="fill:var(--accent2)">Ready</text>
-                        <text x="653" y="73" text-anchor="middle" font-size="9" style="fill:var(--accent2)">to code</text>
-                    </g>
-                    <text x="350" y="115" text-anchor="middle" font-size="11" style="fill:var(--muted)" font-family="Inter,system-ui,sans-serif">Every HOS's "What you'll need" starts with some version of this same setup path.</text>
-                </svg>
-                <div class="diagram-caption">The setup pipeline you'll repeat, in some form, at the start of nearly every HOS.</div>
-            </div>
-
-            <div class="concept-grid">
-                <div class="concept-card">
-                    <h4>Terminal / command line</h4>
-                    <p>A text-based way to run programs and commands, instead of clicking icons. This course uses it constantly — starting servers, installing packages, running scripts — because that's how real backend and AI-engineering work actually happens; almost nothing here has a GUI.</p>
-                </div>
-                <div class="concept-card">
-                    <h4>Python virtual environment (<code>venv</code>)</h4>
-                    <p>A private, self-contained copy of Python and its installed packages, scoped to one project folder. <code>python3 -m venv venv</code> creates it; <code>source venv/bin/activate</code> switches your terminal to use it.</p>
-                    <div class="why"><strong>Why it matters:</strong> different HOS units (and different projects entirely) can need different, sometimes conflicting, package versions. Without a venv, installing one project's dependencies can silently break another's.</div>
-                </div>
-                <div class="concept-card">
-                    <h4>Package managers — <code>pip</code> and <code>npm</code></h4>
-                    <p><code>pip</code> installs Python packages from a <code>requirements.txt</code> list; <code>npm</code> does the same job for JavaScript packages from a <code>package.json</code> file (you'll meet <code>npm</code> specifically in the mobile module). Same underlying idea in two different languages: a plain-text list of exactly what the project needs, and a tool that reads it and installs everything.</p>
-                </div>
-                <div class="concept-card">
-                    <h4>Environment variables &amp; <code>.env</code> files</h4>
-                    <p>A <code>.env</code> file holds project settings and secrets (like <code>GEMINI_API_KEY=...</code>) as plain <code>NAME=value</code> lines, kept <strong>out</strong> of your actual code. A small library (<code>python-dotenv</code>) reads that file at startup and makes those values available to your program.</p>
-                    <div class="why"><strong>Why it matters:</strong> this keeps secrets out of source code you might share or commit, and this project's <code>.gitignore</code> already excludes <code>.env</code> from Git — so it's hard to leak a key by accident.</div>
-                </div>
-                <div class="concept-card">
-                    <h4>API keys</h4>
-                    <p>A long string that identifies you (or your app) to a service like Gemini, so it can apply your usage limits and know who's making a request. Treat it exactly like a password — never commit it, paste it into a chat, or put it in a screenshot.</p>
-                </div>
-                <div class="concept-card">
-                    <h4>GitHub Codespaces &amp; devcontainers</h4>
-                    <p>A <code>.devcontainer/devcontainer.json</code> file describes a ready-made development environment — the right language versions, tools, and settings — that GitHub can spin up for you in the browser with one click (<strong>Code → Codespaces → Create codespace on main</strong>), dependencies and <code>.env</code> setup included.</p>
-                    <div class="why"><strong>Why it matters:</strong> the most common bug in this course is a local machine with an old package already installed globally that silently shadows the project's own version. A fresh Codespace sidesteps that entirely — every HOS's starter code is built to support it.</div>
-                    <div class="why"><strong>Changes to <code>devcontainer.json</code> only apply on rebuild.</strong> If a Codespace already exists and its config changes later (e.g. you carry the same Codespace forward from an earlier HOS into one that needs Node.js for the first time), it won't have the new tools — a command like <code>npm</code> will say "not found" even though the config says it should be there. Fix: Command Palette (<code>Cmd/Ctrl+Shift+P</code>) → "Codespaces: Rebuild Container." Your files are untouched; only the container's installed tools get reapplied.</div>
-                </div>
-                <div class="concept-card">
-                    <h4>A new terminal tab starts back at the repo root</h4>
-                    <p>Every HOS from HOS 3 onward asks you to run two or three processes at once (the API, the worker, the mobile dev server) in separate terminal tabs. In Codespaces, opening a <strong>new</strong> tab always starts you back at the repo's top-level folder — it does not remember that an earlier tab was sitting inside <code>backend/</code>.</p>
-                    <div class="why"><strong>Why it matters:</strong> if you copy just the run command (e.g. <code>./venv/bin/python worker.py</code>) into a fresh tab without <code>cd backend</code> first, it fails — that script only exists inside <code>backend/</code>. Get in the habit of typing <code>cd backend</code> (or <code>cd mobile</code>) as the very first thing in every new terminal tab, every time, even if you already did it in a different tab a minute ago.</div>
-                </div>
-                <div class="concept-card">
-                    <h4>Working with an AI coding assistant (CEAU-based HOS only)</h4>
-                    <p>If your version of the course uses the merged-HOS format, the first stage of each HOS (<strong>Create/Scaffold</strong>) is deliberately AI-driven — you prompt an assistant to build the app, then spend the rest of the HOS proving, in writing and by hand, that you actually understand what it built.</p>
-                    <div class="why"><strong>Why it matters:</strong> the grading isn't on whether the AI-produced code runs — it's on whether <em>you</em> can evaluate it, explain one piece of it mechanistically, and extend it correctly without AI help. Treat Stage 1 as a starting point, not the deliverable.</div>
-                </div>
-            </div>
-
-            <div class="check-box">
-                <h5>Quick self-check before you continue</h5>
-                <ul>
-                    <li>Could you explain to someone else why a venv exists, in one sentence?</li>
-                    <li>Do you know where your Gemini API key is stored, and why it's not inside a <code>.py</code> file?</li>
-                    <li>If your version of the course uses HOS format: do you know which CEAU stage is graded on code correctness, and which ones aren't?</li>
-                </ul>
-            </div>
-            <p class="module-nav"><a href="#module-a">Next: Module A — Foundations &amp; the Agentic Loop →</a></p>
-        </div>
-
-        <!-- ══════════════════ MODULE A ══════════════════ -->
-        <div class="module" id="module-a">
-            <div class="module-head"><h2>Module A — Foundations &amp; the Agentic Loop</h2></div>
+        <!-- ══════════════════ MODULE 1 ══════════════════ -->
+        <div class="module" id="module-1">
+            <div class="module-head"><h2>Module 1 — Foundations &amp; the Agentic Loop</h2></div>
             <div class="module-pills">
                 <span class="mod-pill hos">HOS 1</span>
                 <span class="mod-pill outcome">Outcome 1</span>
@@ -335,12 +244,12 @@
                     <li>If you saw a model calling a tool when it clearly shouldn't have, what's the first thing you'd check?</li>
                 </ul>
             </div>
-            <p class="module-nav"><a href="#module-b">Next: Module B — Embeddings, Chunking &amp; RAG →</a></p>
+            <p class="module-nav"><a href="#module-2">Next: Module 2 — Embeddings, Chunking &amp; RAG →</a></p>
         </div>
 
-        <!-- ══════════════════ MODULE B ══════════════════ -->
-        <div class="module" id="module-b">
-            <div class="module-head"><h2>Module B — Embeddings, Chunking &amp; RAG</h2></div>
+        <!-- ══════════════════ MODULE 2 ══════════════════ -->
+        <div class="module" id="module-2">
+            <div class="module-head"><h2>Module 2 — Embeddings, Chunking &amp; RAG</h2></div>
             <div class="module-pills">
                 <span class="mod-pill hos">HOS 2</span>
                 <span class="mod-pill outcome">Outcomes 1–2</span>
@@ -423,12 +332,12 @@
                     <li>What's the simplest experiment that proves retrieval is actually changing the model's answer?</li>
                 </ul>
             </div>
-            <p class="module-nav"><a href="#module-c">Next: Module C — Guardrails &amp; Async Processing →</a></p>
+            <p class="module-nav"><a href="#module-3">Next: Module 3 — Guardrails &amp; Async Processing →</a></p>
         </div>
 
-        <!-- ══════════════════ MODULE C ══════════════════ -->
-        <div class="module" id="module-c">
-            <div class="module-head"><h2>Module C — Guardrails &amp; Asynchronous Processing</h2></div>
+        <!-- ══════════════════ MODULE 3 ══════════════════ -->
+        <div class="module" id="module-3">
+            <div class="module-head"><h2>Module 3 — Guardrails &amp; Asynchronous Processing</h2></div>
             <div class="module-pills">
                 <span class="mod-pill hos">HOS 3</span>
                 <span class="mod-pill outcome">Outcome 3</span>
@@ -518,12 +427,12 @@
                     <li>Can you explain why the worker needs its own copy of your environment variables?</li>
                 </ul>
             </div>
-            <p class="module-nav"><a href="#module-d">Next: Module D — Mobile, Push &amp; Observability →</a></p>
+            <p class="module-nav"><a href="#module-4">Next: Module 4 — Mobile, Push &amp; Observability →</a></p>
         </div>
 
-        <!-- ══════════════════ MODULE D ══════════════════ -->
-        <div class="module" id="module-d">
-            <div class="module-head"><h2>Module D — Mobile, Push &amp; Observability</h2></div>
+        <!-- ══════════════════ MODULE 4 ══════════════════ -->
+        <div class="module" id="module-4">
+            <div class="module-head"><h2>Module 4 — Mobile, Push &amp; Observability</h2></div>
             <div class="module-pills">
                 <span class="mod-pill hos">HOS 4</span>
                 <span class="mod-pill outcome">Outcomes 4–5</span>

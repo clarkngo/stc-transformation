@@ -211,6 +211,14 @@ details.hos[open] summary { margin-bottom:8px; }
 details.hos h4 { margin-top:10px; font-size:.85rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
 .internal { background:var(--amber-bg); border:1px solid var(--amber); color:var(--amber); font-weight:700; font-size:.82rem; padding:8px 14px; border-radius:8px; margin:20px 0 0; }
 
+
+/* phones: bigger text, header scrolls away, only the section menu stays */
+@media (max-width:640px) {
+  html { font-size:18.8px; }
+  header.top { position:static; }
+  .secnav { top:0 !important; }
+  section.module { scroll-margin-top:64px; }
+}
 </style>
 </head>
 <body>
@@ -250,7 +258,7 @@ details.hos h4 { margin-top:10px; font-size:.85rem; text-transform:uppercase; le
   <div class="module-head"><div class="module-icon">🧰</div><div><h2>Before the term: one-time setup</h2><div class="module-meta"><span class="tag">≈ 1 hour, once</span></div></div></div>
   <div class="progress-line" id="setupProgress">0 / 6 done</div>
   <div class="checklist" id="setupList">
-    <label><input type="checkbox"><span><b>Debate groups:</b> create the auto-enrolled, randomized "Concept Debate Groups" group category in Brightspace. Step-by-step: <a href="../AI-410.html#cd-team-setup">AI 410 schedule, Week 1 instructor setup</a>.</span></label>
+    <label><input type="checkbox"><span><b>Debate groups:</b> split the class into two groups of about the same size, assigned by you or chosen by students. In Brightspace, go to <b>Communication → Groups → New Category</b>, name it "Concept Debate Groups", with <b>2</b> groups and the prefix "Debate Group". To let students choose, use a <b>Self Enrollment</b> type with each group capped at half the class (rounded up). To assign them yourself, use <b># of Groups – Auto Enrollment</b> with <b>Randomize users in groups</b>, or enroll students by hand. Skip "set up discussion areas": each debate stays one whole-class topic, because students read the other side's posts in Stages 2 and 3. The rotation table is in the <a href="hos-01-lesson.html#debate">HOS 1 lesson</a> and the <a href="../AI-410.html#cd-team-setup">AI 410 schedule</a>.</span></label>
     <label><input type="checkbox"><span><b>Five Concept Debate topics</b> (HOS 1–4 plus the Week 8 Integration debate), each a single whole-class discussion topic with the three stage dates in its description. The sides and prompts are in each <a href="index.html">interactive lesson</a>.</span></label>
     <label><input type="checkbox"><span><b>Four Muddiest Point submissions</b>, one per HOS, due before that HOS's build begins. Use four required fields (context, stuck point, what you tried, optional guess), not one free-text box.</span></label>
     <label><input type="checkbox"><span><b>HOS, Application Challenge and project assignments</b> with the HOS rubric (Engagement 20 · Skills 80), the AC rubric (10/20/30/40), the Team Project rubrics (system, report, presentation, demo video), and a Knowledge Check quiz per module (10% of the course), all from the <a href="../AI-410-syllabus.html">syllabus</a>.</span></label>
@@ -330,6 +338,8 @@ details.hos h4 { margin-top:10px; font-size:.85rem; text-transform:uppercase; le
     <ul><li>Where the tool actually runs (many assume the model runs it).</li><li>Why the backend resends the whole history with every call.</li><li>Why the API key can't sit in the frontend "just for a demo."</li></ul>
     <h4>Snags</h4>
     <ul><li>First-time Codespaces and <code>.env</code> setup; a missing or mistyped <code>GEMINI_API_KEY</code>.</li><li>Streamlit and uvicorn both need to run — two terminals.</li></ul>
+    <h4>Lecture teaching note</h4>
+    <p>Students new to backends often assume the model "has" the calculator. Have them point, on the step list above, to the exact line where Python runs — it's the moment the misconception breaks. Seed the Muddiest Point with it if nobody raises it.</p>
     <p class="small"><a href="hos-01-lesson.html">Lesson</a> · <a href="sim01-agentic-loop.html">Simulator</a> · <a href="../ai-410-guides/hos-01-foundations-agentic-loop.html">Hands-on guide</a></p>
   </details>
   <details class="hos"><summary>HOS 2 — Embeddings, Chunking &amp; RAG (Weeks 3–4)</summary>
@@ -337,6 +347,8 @@ details.hos h4 { margin-top:10px; font-size:.85rem; text-transform:uppercase; le
     <ul><li>Why documents and queries use different <code>task_type</code> values.</li><li>Why chunk at all, and how big.</li><li>Why the model still invents answers when retrieval finds nothing relevant (this week's debate).</li></ul>
     <h4>Snags</h4>
     <ul><li>RAG instruction suppresses tool calls — the most common silent bug.</li><li><code>EMBED_DIM</code> mismatch between ingest and retrieval.</li><li>Forgetting to re-run <code>ingest.py</code> after adding the sixth document.</li></ul>
+    <h4>Lecture teaching note</h4>
+    <p>Students tend to blame the model when an answer is wrong. Train the reflex early: <em>first</em> print what <code>retrieve()</code> returned. If the right chunk isn't there, no prompt wording will fix it. HOS 4's traces formalize this same habit.</p>
     <p class="small"><a href="hos-02-lesson.html">Lesson</a> · <a href="sim02-rag-pipeline.html">Simulator</a> · <a href="../ai-410-guides/hos-02-embeddings-rag.html">Hands-on guide</a></p>
   </details>
   <details class="hos"><summary>HOS 3 — Guardrails &amp; Async Processing (Weeks 5–6)</summary>
@@ -346,6 +358,8 @@ details.hos h4 { margin-top:10px; font-size:.85rem; text-transform:uppercase; le
     <ul><li>Jobs stuck on <code>queued</code> — the worker isn't running. By far the most common.</li><li>macOS + RQ fork issue when running locally (use Codespaces, or the env var in the guide).</li><li>Retries that repeat the same error because the hint isn't fed back.</li></ul>
     <h4>Also this unit</h4>
     <p>Team Project Phase 2 is underway (due end of Week 8). Students have a Phase 2 check-in in the lesson; flag any team whose Week 3 proposal named HOS pieces nobody has started, since they're the ones at risk in Week 9.</p>
+    <h4>Lecture teaching note</h4>
+    <p>This is the first HOS with two long-running processes (uvicorn and the worker). Have students split their Codespaces terminal before the build starts. And tell macOS users about the known RQ fork issue up front, or suggest Codespaces, where it doesn't occur (see the hands-on guide's Common snags).</p>
     <p class="small"><a href="hos-03-lesson.html">Lesson</a> · <a href="sim03-guardrails-queue.html">Simulator</a> · <a href="../ai-410-guides/hos-03-guardrails-async.html">Hands-on guide</a></p>
   </details>
   <details class="hos"><summary>HOS 4 — Mobile, Push &amp; Observability (Weeks 7–8)</summary>
@@ -355,6 +369,8 @@ details.hos h4 { margin-top:10px; font-size:.85rem; text-transform:uppercase; le
     <ul><li><code>npm</code> missing in an older Codespace — rebuild the container.</li><li>Expo SDK mismatch with Expo Go — <code>npx expo install expo@latest</code> then <code>--fix</code>.</li><li>iOS Expo Go requires the same Expo account signed in on the terminal and the phone.</li><li>Push token crash without an EAS project ID — <code>npx eas init</code>.</li><li><b>Android Expo Go no longer supports push (SDK 53+).</b> Tell Android-only students in advance: iPhone or a development build for the push proof step.</li><li>Expo push returns 200 OK for stale tokens — the error is in the response body.</li></ul>
     <h4>Also this unit</h4>
     <p>Week 8 Architecture Review and Integration Concept Debate — the heaviest week. Consider moving the HOS 4 Application Challenge deadline to the start of Week 9 if your section is struggling.</p>
+    <h4>Lecture teaching note</h4>
+    <p>Budget extra support time this week — it has the most environment snags (Node missing from an older Codespace, Expo SDK mismatches, the Expo login requirement on iOS). The hands-on guide's Common snags list has a fix for each. Tell Android-only students up front that the push proof step needs an iPhone or a development build, so they don't lose hours debugging correct code.</p>
     <p class="small"><a href="hos-04-lesson.html">Lesson</a> · <a href="sim04-push-observability.html">Simulator</a> · <a href="../ai-410-guides/hos-04-mobile-observability.html">Hands-on guide</a></p>
   </details>
 </section>

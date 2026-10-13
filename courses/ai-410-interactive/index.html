@@ -131,6 +131,14 @@ a.tile:hover { transform:translateY(-2px); box-shadow:var(--shadow-hover); borde
 .cycle b { display:block; font-size:.9rem; }
 .cycle .wk { font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); }
 
+
+/* phones: bigger text, header scrolls away, only the section menu stays */
+@media (max-width:640px) {
+  html { font-size:18.8px; }
+  header.top { position:static; }
+  .secnav { top:0 !important; }
+  section.module { scroll-margin-top:64px; }
+}
 </style>
 </head>
 <body>
@@ -150,11 +158,6 @@ a.tile:hover { transform:translateY(-2px); box-shadow:var(--shadow-hover); borde
   </div>
 </section>
 <main id="main">
-
-<div class="callout amber">
-  <span class="label">About these pages</span>
-  <p>AI 410 is an upcoming BSAI course — these are sample materials, not yet offered to students. All four HOS are built out as complete two-week lessons, showing each activity (Lecture, Muddiest Point, Concept Debate, the CEAU stages, Application Challenge, Knowledge Check). All four simulators are ready. Everything follows the <a href="../../bsai-course-design-constraints.html">course design constraints</a>: fixed official description and outcomes, GitHub Codespaces, free tiers first.</p>
-</div>
 
 <div class="sec-label">How every HOS runs — two weeks</div>
 <div class="cycle">
@@ -197,7 +200,7 @@ a.tile:hover { transform:translateY(-2px); box-shadow:var(--shadow-hover); borde
     <tr><td><b>3</b></td><td>Which AI output gets validated first, and what's slow enough to be a background job?</td><td><a href="sim03-guardrails-queue.html">Guardrails &amp; Queue</a></td></tr>
     <tr><td><b>4</b></td><td>What one event earns a push notification, and what one number goes on the dashboard?</td><td><a href="sim04-push-observability.html">Push &amp; Observability</a></td></tr>
   </table></div>
-  <p class="small">Litmus test from the syllabus: can you point to a part of your project and say "this is HOS 2, and here's why it's actually retrieval, not a hardcoded FAQ"? Phases, deliverables and rubrics: <a href="../AI-410-syllabus.html#team-project">syllabus → Team Project</a>.</p>
+  <p class="small">Litmus test from the syllabus: can you point to a part of your project and say "this is HOS 2, and here's why it's actually retrieval, not a hardcoded FAQ"? Phases, deliverables and rubrics: the Team Project section of the syllabus (in Brightspace).</p>
 </div>
 
 <div class="sec-label">How the Concept Debate works</div>
@@ -206,7 +209,7 @@ a.tile:hover { transform:translateY(-2px); box-shadow:var(--shadow-hover); borde
 </div>
 <div class="sec-label">Other AI 410 resources</div>
 <ul>
-  <li><a href="../AI-410.html">AI 410 course schedule</a> · <a href="../AI-410-syllabus.html">Syllabus</a></li>
+  <li><a href="../AI-410.html">AI 410 course schedule</a></li>
   <li><a href="../ai-410-guides/index.html">Hands-on guides &amp; Application Challenges</a></li>
   <li><a href="../ai-410-guides/concept-companion.html">Concept Companion</a> · <a href="../ai-410-guides/starter-code-walkthrough.html">Starter Code Walkthrough</a> · <a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a></li>
 </ul>

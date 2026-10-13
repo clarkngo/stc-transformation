@@ -196,6 +196,39 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 .score { font-weight:800; color:var(--accent2); }
 .project-map td:first-child { font-weight:700; white-space:nowrap; }
 
+
+/* week tabs, due checklist, glossary (lesson UX) */
+.week-tabs { display:none; gap:8px; flex-wrap:wrap; align-items:center; margin:22px 0 4px; }
+.tabs-on .week-tabs { display:flex; }
+.week-tabs button { font:inherit; font-size:.86rem; font-weight:700; padding:8px 14px; border-radius:10px; border:1px solid var(--border); background:var(--surface); color:var(--text); cursor:pointer; }
+.week-tabs button[aria-selected="true"] { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+.week-tabs .show-all { margin-left:auto; font-size:.78rem; font-weight:600; background:none; border:none; color:var(--accent2); text-decoration:underline; padding:4px; }
+.tabs-on .week-panel[hidden] { display:none; }
+.due-card { border:1px solid var(--border); border-left:5px solid var(--accent); background:var(--surface); border-radius:var(--radius-sm); padding:12px 16px; margin:0 0 16px; }
+.due-card h3 { margin:0 0 6px; font-size:1rem; }
+.due-card label { display:flex; gap:10px; align-items:flex-start; padding:5px 0; font-size:.9rem; border-top:1px dashed var(--border); }
+.due-card label:first-of-type { border-top:none; }
+.due-card input { margin-top:5px; accent-color:var(--accent); flex:none; }
+.due-card .when { font-size:.72rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); white-space:nowrap; margin-left:auto; padding-left:8px; }
+.due-card .muted { font-size:.78rem; margin:6px 0 0; }
+details.gloss-box { border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; margin-top:16px; background:var(--surface2); }
+details.gloss-box summary { cursor:pointer; font-weight:700; }
+details.gloss-box dl { margin-top:10px; }
+@media print { .week-tabs { display:none !important; } .week-panel[hidden] { display:block !important; } }
+
+/* phones: bigger text, header scrolls away, only the section menu stays */
+@media (max-width:640px) {
+  html { font-size:18.8px; }
+  header.top { position:static; }
+  .secnav { top:0 !important; }
+  section.module { scroll-margin-top:64px; }
+  .week-tabs button[data-week] { flex:1 1 0; padding:9px 10px; }
+  .week-tabs .tab-sub { display:none; }
+  .week-tabs .show-all { flex-basis:100%; text-align:right; margin-left:0; }
+  .due-card label { flex-wrap:wrap; }
+  .due-card label > span:not(.when) { flex:1 1 0; min-width:0; }
+  .due-card .when { width:100%; margin-left:26px; padding-left:0; }
+}
 </style>
 </head>
 <body>
@@ -208,7 +241,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">AI 410 · HOS 1 · Weeks 1–2 · Sample interactive lesson</div>
+    <div class="eyebrow">AI 410 · HOS 1 · Weeks 1–2 · Interactive lesson</div>
     <h1>Foundations &amp; the Agentic Loop</h1>
     <p class="lede">What a full-stack AI app is actually made of, what an LLM actually does, and the loop that lets a model ask your code to run a real function — built fast in Week 1, explained and extended by hand in Week 2.</p>
     <div class="chips"><span class="chip">Outcome O1</span><span class="chip">2 weeks</span><span class="chip">Lecture · MP · CD</span><span class="chip">CEAU: Create → Evaluate → Analyze → Refine</span><span class="chip">Application Challenge</span><span class="chip">Codespaces · free tier</span></div>
@@ -234,10 +267,7 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
   </div>
 </nav>
 
-<div class="callout amber" style="margin-top:20px">
-  <span class="label">Course design constraints</span>
-  <p>This lesson follows the <a href="../../bsai-course-design-constraints.html">BSAI course design constraints</a>: it adapts to AI 410's official description and Outcome O1 (never the reverse), every hands-on step runs in GitHub Codespaces, and everything uses free tiers — the Gemini API key is free and needs no credit card. See the <a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a>.</p>
-</div>
+<p class="small muted" style="margin-top:18px">Everything in this HOS runs in GitHub Codespaces on free tiers, with no credit card. Which accounts you need, and when: <a href="../ai-410-guides/account-setup-guide.html">Account &amp; Service Setup Guide</a>.</p>
 
 <section class="module card" id="overview">
   <div class="module-head"><div class="module-icon">🧭</div><div><h2>Lesson overview</h2><div class="module-meta"><span class="tag">Outcome O1</span><span class="tag blue">10% HOS + MP + CD + AC + KC</span></div></div></div>
@@ -272,7 +302,11 @@ dl.gloss dt { font-weight:700; } dl.gloss dd { margin:0 0 8px; color:var(--muted
 </section>
 
 <!-- ========================= WEEK 1 ========================= -->
+<div class="week-tabs no-print" role="tablist" aria-label="Weeks"><button type="button" role="tab" data-week="1" aria-controls="week-1">Week 1<span class="tab-sub"> · Build &amp; Judge</span></button><button type="button" role="tab" data-week="2" aria-controls="week-2">Week 2<span class="tab-sub"> · Explain &amp; Master</span></button><button type="button" class="show-all">Show both weeks</button></div>
+<div class="week-panel" id="week-1" data-week="1">
 <div class="part-banner"><b>Week 1 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div>
+<div class="due-card"><h3>Week 1: what's due</h3><label><input type="checkbox" data-k="l1-w0-0"><span><a href="#muddiest">Muddiest Point</a></span><span class="when">by Wed</span></label><label><input type="checkbox" data-k="l1-w0-1"><span><a href="#debate">Concept Debate: Stage 1 · Stage 2 · Stage 3</a></span><span class="when">Tue · Thu · Sat</span></label><label><input type="checkbox" data-k="l1-w0-2"><span><a href="#create">Create / Scaffold: your prompt + a screenshot of the app running</a></span><span class="when">Wed–Thu</span></label><label><input type="checkbox" data-k="l1-w0-3"><span><a href="#evaluate">Evaluate: your Evaluate note</a></span><span class="when">Fri–Sun</span></label><p class="muted">Suggested days for an online term; your Brightspace dates win. Ticks stay in this browser.</p></div>
+
 
 <section class="module card" id="lecture">
   <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: from chat box to agent</h2><div class="module-meta"><span class="tag">≈ 75 min</span><span class="tag blue">3 short parts</span><span class="tag">O1</span></div></div></div>
@@ -337,23 +371,18 @@ calculate_tool = {
       <span class="label">Try it before the build</span>
       <p>Open the <a href="sim01-agentic-loop.html"><strong>Agentic Loop Simulator</strong></a> and step through "What's 342 times 87?", then "Tell me a joke", then "Calculate 12 / (3 -". Watch where each one exits the loop.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Teaching note</span>
-      <p>Students new to backends often assume the model "has" the calculator. Have them point, on the step list above, to the exact line where Python runs — it's the moment the misconception breaks. Seed the Muddiest Point with it if nobody raises it.</p>
-    </div>
   </div>
 
-  <h3>New words this week</h3>
-  <dl class="gloss">
+  <details class="gloss-box"><summary>New words this week (4)</summary><dl class="gloss">
     <dt>Frontend / backend</dt><dd>What the user sees vs. the server that holds your API key and runs tools.</dd>
     <dt>Token &amp; context window</dt><dd>The word pieces a model reads and writes, and the maximum amount of them it can consider in one request.</dd>
     <dt>Agentic loop</dt><dd>The cycle of model → function call → your code runs it → result back to the model, repeated until the model answers in text.</dd>
     <dt>Tool / function declaration</dt><dd>The name, description, and parameter schema you give the model so it knows a function exists and how to ask for it.</dd>
-  </dl>
+  </dl></details>
 </section>
 
 <section class="module card" id="muddiest">
-  <div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag rose">Graded · part of 5% MP category</span><span class="tag">Due before the build begins</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🌫️</div><div><h2>Muddiest Point</h2><div class="module-meta"><span class="tag">Due before the build begins</span></div></div></div>
   <p>Not a blank box. Four short fields, because a specific confusion is much easier for your instructor to fix than "this week was confusing." Draft it here — your draft stays in this browser only — then <strong>copy it into the Brightspace submission</strong>.</p>
   <div class="two" style="margin-bottom:14px">
     <div class="eg weak"><span class="label">Doesn't meet the bar</span>"I didn't really get the agent loop part. Tool calling is confusing."</div>
@@ -377,7 +406,7 @@ calculate_tool = {
 </section>
 
 <section class="module card" id="debate">
-  <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag violet">Graded · part of 5% CD category</span><span class="tag">Discussion board · 3 stages</span></div></div></div>
+  <div class="module-head"><div class="module-icon">⚖️</div><div><h2>Concept Debate</h2><div class="module-meta"><span class="tag">Discussion board · 3 stages</span></div></div></div>
   <div class="callout violet"><span class="label">This week's question</span><p style="font-size:1.02rem"><strong>When a request might need a tool, who should decide — the model, or deterministic backend code?</strong></p></div>
   <p>You'll argue a side you're <em>assigned</em>, then argue the other one, then drop advocacy and synthesize. Nobody gets to post "I agree" — by Stage 3 everyone has argued both sides.</p>
   <div class="callout blue">
@@ -390,15 +419,6 @@ calculate_tool = {
     </table></div>
     <p class="small"><b>Not in a group?</b> (for example, you added the course late) Before posting Stage 1, count the posts on each side and join the side with fewer; if they're tied, take Side A.</p>
   </div>
-  <details class="callout amber" style="margin-bottom:14px">
-    <summary style="cursor:pointer;font-weight:700">Instructor setup: a one-time step in Week 1, about 5 minutes</summary>
-    <ol class="small" style="margin-top:8px">
-      <li>In Brightspace, go to <b>Communication → Groups → New Category</b>. Name it "Concept Debate Groups", with <b>2</b> groups and the group prefix "Debate Group".</li>
-      <li><b>To let students choose:</b> use a <b>Self Enrollment</b> type with each group capped at half the class (rounded up), so the sides stay even. <b>To assign them yourself:</b> use <b># of Groups – Auto Enrollment</b> with <b>Randomize users in groups</b>, or enroll students by hand.</li>
-      <li>Skip the "set up discussion areas" option. Each debate stays <b>one whole-class topic</b>, because students need to read the other side\'s posts for Stages 2 and 3.</li>
-    </ol>
-    <p class="small" style="margin:0">That's it for the term. The rotation table above handles every later HOS, so sides never need assigning by hand. The same steps are in the <a href="../AI-410.html#cd-team-setup">AI 410 schedule, Week 1</a>.</p>
-  </details>
   <div class="row" style="margin-bottom:10px">
     <label for="teamInput" class="small"><b>My Brightspace group:</b></label>
     <select id="teamInput" style="width:auto"><option value="">—</option><option value="1">Debate Group 1</option><option value="2">Debate Group 2</option></select>
@@ -437,7 +457,7 @@ calculate_tool = {
 </section>
 
 <section class="module card" id="create">
-  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag">Engagement · 20% of HOS</span><span class="tag blue">GitHub Codespaces</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Create / Scaffold</h2><div class="module-meta"><span class="tag blue">GitHub Codespaces</span></div></div></div>
   <p>Get a working app running fast with an AI coding assistant. This is the starting point, not the deliverable — you don't hand-edit anything yet.</p>
   <ol>
     <li>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/hos-01-foundations-agentic-loop" target="_blank" rel="noopener">the HOS 1 starter-code folder</a> in GitHub Codespaces (its <code>.devcontainer</code> sets up Python for you).</li>
@@ -459,7 +479,7 @@ that's already open) — edit files here; do not create a new workspace or proje
 </section>
 
 <section class="module card" id="evaluate">
-  <div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🔍</div><div><h2>Evaluate — the critical gate</h2><div class="module-meta"></div></div></div>
   <p>Is the AI-produced result actually right? Test it <em>on purpose</em>. Tick each test as you run it and jot what happened — this becomes your Evaluate note.</p>
   <div class="progress-line" id="evalProgress">0 / 4 tests run</div>
   <div class="checklist" id="evalList">
@@ -474,10 +494,15 @@ that's already open) — edit files here; do not create a new workspace or proje
 </section>
 
 <!-- ========================= WEEK 2 ========================= -->
+</div>
+
+<div class="week-panel" id="week-2" data-week="2">
 <div class="part-banner"><b>Week 2 · Explain &amp; Master</b><span>Analyze → Understand &amp; Refine → Application Challenge → Knowledge Check</span></div>
+<div class="due-card"><h3>Week 2: what's due</h3><label><input type="checkbox" data-k="l1-w1-0"><span><a href="#analyze">Analyze: your walkthrough of one mechanism</a></span><span class="when">Mon–Tue</span></label><label><input type="checkbox" data-k="l1-w1-1"><span><a href="#refine">Understand &amp; Refine: the second tool, by hand (no AI)</a></span><span class="when">Wed–Thu</span></label><label><input type="checkbox" data-k="l1-w1-2"><span><a href="#challenge">Application Challenge 1</a></span><span class="when">Fri–Sun</span></label><label><input type="checkbox" data-k="l1-w1-3"><span><a href="#check">Knowledge Check quiz, in Brightspace</a></span><span class="when">any time</span></label><label><input type="checkbox" data-k="l1-w1-4"><span><a href="#project">Team Project: form your team (Phase 1 is due end of Week 3)</a></span><span class="when">this week</span></label><p class="muted">Suggested days for an online term; your Brightspace dates win. Ticks stay in this browser.</p></div>
+
 
 <section class="module card" id="analyze">
-  <div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does this work?</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🔬</div><div><h2>Analyze — why does this work?</h2><div class="module-meta"></div></div></div>
   <p>Pick <strong>one</strong> specific piece of the AI-generated code and explain, in your own words, exactly how it works. Depth beats breadth: one function explained well scores higher than a tour of every file.</p>
   <div class="pick" id="analyzePick">
     <button type="button" aria-pressed="false" data-k="loop"><b>The loop in <code>agent.py</code></b>What stops it? What happens if the model calls a tool twice in a row?</button>
@@ -489,7 +514,7 @@ that's already open) — edit files here; do not create a new workspace or proje
 </section>
 
 <section class="module card" id="refine">
-  <div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag">Part of Skills · 80% of HOS</span><span class="tag bad">No AI assistant for this part</span></div></div></div>
+  <div class="module-head"><div class="module-icon">✋</div><div><h2>Understand &amp; Refine — by hand, no AI</h2><div class="module-meta"><span class="tag bad">No AI assistant for this part</span></div></div></div>
   <p>Add a <strong>second tool</strong> yourself — for example <code>get_current_time(timezone)</code> or <code>convert_units(value, from_unit, to_unit)</code> — and prove the agent chooses the right tool for the right question.</p>
   <div class="progress-line" id="refineProgress">0 / 5 done</div>
   <div class="checklist" id="refineList">
@@ -503,7 +528,7 @@ that's already open) — edit files here; do not create a new workspace or proje
 </section>
 
 <section class="module card" id="challenge">
-  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — a clinic's booking agent</h2><div class="module-meta"><span class="tag">5% of course</span><span class="tag blue">Build to spec · 60–90 min</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — a clinic's booking agent</h2><div class="module-meta"><span class="tag blue">Build to spec · 60–90 min</span></div></div></div>
   <p>Build the tools for Cascade Family Clinic's booking agent from a written spec with provided tests, make the one call the spec leaves open (what happens to a cancellation inside the $40 late-fee window), and argue which other tools the model should never get. Everything you need is in the <a href="../ai-410-guides/ac-01-clinic-booking.html"><b>AC 1 guide</b></a>: the spec, the starter code, and the rubric.</p>
   <p class="small">Warm up first: the judgment is the same one the challenge asks for. Pick a business and sort its proposed tools.</p>
   <div class="pick" id="bizPick">
@@ -527,7 +552,7 @@ that's already open) — edit files here; do not create a new workspace or proje
 </section>
 
 <section class="module card" id="check">
-  <div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag">Practice here · graded quiz in Brightspace (10% KC)</span></div></div></div>
+  <div class="module-head"><div class="module-icon">✅</div><div><h2>Knowledge check</h2><div class="module-meta"><span class="tag">Practice · the graded quiz is in Brightspace</span></div></div></div>
   <p>Five quick questions. Then answer the two open questions below out loud or in a notes file — they're the ones your instructor will ask in the Week 2 check-in.</p>
   <div id="quiz"></div>
   <p class="score" id="quizScore" aria-live="polite"></p>
@@ -539,7 +564,7 @@ that's already open) — edit files here; do not create a new workspace or proje
 </section>
 
 <section class="module card" id="project">
-  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Team Project — Phase 1 begins</h2><div class="module-meta"><span class="tag">20% of course</span><span class="tag amber">Phase 1 due end of Week 3</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🚀</div><div><h2>Team Project — Phase 1 begins</h2><div class="module-meta"><span class="tag amber">Phase 1 due end of Week 3</span></div></div></div>
   <p>The Team Project combines all 4 HOS into one agent-driven app, built by a team of three (four with instructor approval) and presented in Week 10. <b>Phase 1 runs Weeks 1–3:</b> form your team and lock your scope: which HOS pieces your project combines and why, who owns each piece, and a rough architecture sketch. <b>Due end of Week 3:</b> System v0.3 in a shared GitHub repository with a README, and a one-page proposal with three key references. A good first question: <strong>what are the 2–4 tools your project's agent would need, and which of them should require confirmation?</strong> That's this week's Application Challenge, pointed at your own idea.</p>
   <div class="table-wrap"><table class="t project-map">
     <tr><th>HOS</th><th>What it contributes to your project</th><th>Rehearse it in</th></tr>
@@ -548,8 +573,10 @@ that's already open) — edit files here; do not create a new workspace or proje
     <tr><td>HOS 3</td><td>Validated tool calls and slow work moved to a background job</td><td><a href="sim03-guardrails-queue.html">Guardrails &amp; Queue Simulator</a></td></tr>
     <tr><td>HOS 4</td><td>A mobile client, push notifications, and traces you can debug from</td><td><a href="sim04-push-observability.html">Push &amp; Observability Simulator</a></td></tr>
   </table></div>
-  <p class="small">Phases, deliverables and rubrics: <a href="../AI-410-syllabus.html#team-project">syllabus → Team Project</a>.</p>
+  <p class="small">Phases, deliverables and rubrics: the Team Project section of the syllabus (in Brightspace).</p>
 </section>
+
+</div>
 
 <section class="card">
   <h2>Resources</h2>
@@ -753,6 +780,39 @@ wireChecklist('refineList','refineProgress','done','ai410-l1-refine');
       card.querySelector('.fb').innerHTML=(ok?'✓ ':'✗ ')+q[3];
       document.getElementById('quizScore').textContent= done===qs.length ? 'Score: '+right+' / '+qs.length+(right===qs.length?' — ready for the Week 2 check-in.':' — revisit the lecture parts you missed.') : '';
     }); });
+  });
+})();
+
+/* week tabs: show one week at a time; links and #hash jumps switch tabs */
+(function(){
+  var panels=[].slice.call(document.querySelectorAll('.week-panel')); if(!panels.length) return;
+  var tabs=[].slice.call(document.querySelectorAll('.week-tabs [data-week]')), all=document.querySelector('.week-tabs .show-all');
+  var key='ai410-tab-'+location.pathname.split('/').pop();
+  function save(v){ try{ localStorage.setItem(key,v); }catch(e){} }
+  function load(){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+  function show(w){
+    panels.forEach(function(p){ p.hidden = !(w==='all' || p.getAttribute('data-week')===w); });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t.getAttribute('data-week')===w)); });
+    if(all) all.textContent = w==='all' ? 'Show one week at a time' : 'Show both weeks';
+  }
+  function weekOf(id){ var el=id && document.getElementById(id); var p=el && el.closest('.week-panel'); return p ? p.getAttribute('data-week') : null; }
+  document.body.classList.add('tabs-on');
+  var start = weekOf(location.hash.slice(1)) || load() || panels[0].getAttribute('data-week');
+  show(start);
+  if(location.hash){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt){ var go=function(){ tgt.scrollIntoView({block:'start'}); }; setTimeout(go,0); window.addEventListener('load',go); } }
+  tabs.forEach(function(t){ t.addEventListener('click',function(){ var w=t.getAttribute('data-week'); show(w); save(w); var p=document.querySelector('.week-panel[data-week="'+w+'"]'); if(p) p.scrollIntoView({block:'start'}); }); });
+  if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-selected')==='true';})[0]; var w = cur ? 'all' : (load()&&load()!=='all'?load():panels[0].getAttribute('data-week')); show(w); save(w); });
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+    var w=weekOf(a.getAttribute('href').slice(1)); if(!w) return;
+    var cur=panels.filter(function(p){return !p.hidden;}).map(function(p){return p.getAttribute('data-week');});
+    if(cur.indexOf(w)===-1){ show(w); save(w); }
+  }, true);
+  window.addEventListener('hashchange',function(){ var w=weekOf(location.hash.slice(1)); if(w && document.querySelector('.week-panel[data-week="'+w+'"]').hidden){ show(w); var el=document.getElementById(location.hash.slice(1)); if(el) el.scrollIntoView(); } });
+  /* due checklist ticks */
+  [].slice.call(document.querySelectorAll('.due-card input[data-k]')).forEach(function(cb){
+    var k='ai410-due-'+cb.getAttribute('data-k'); try{ cb.checked = localStorage.getItem(k)==='1'; }catch(e){}
+    cb.addEventListener('change',function(){ try{ localStorage.setItem(k, cb.checked?'1':'0'); }catch(e){} });
   });
 })();
 </script>

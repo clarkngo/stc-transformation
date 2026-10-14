@@ -4,7 +4,7 @@ Static HTML documentation hub for STC (School of Technology and Computing, City 
 
 ## Initiative Hubs
 
-As of 2026-08-20 the site is organized around 7 dedicated **Initiative Hub** pages — each one a curated, growing index of the meeting notes, briefings, research, and plans for one active STC initiative. They're linked from the "Initiative Hubs" section near the top of `index.html`.
+As of 2026-08-20 the site is organized around dedicated **Initiative Hub** pages — each one a curated, growing index of the meeting notes, briefings, research, and plans for one active STC initiative. They're linked from the "Initiative Hubs" section near the top of `index.html`.
 
 | Hub file | Covers |
 |---|---|
@@ -15,6 +15,7 @@ As of 2026-08-20 the site is organized around 7 dedicated **Initiative Hub** pag
 | `bsai-hub.html` | Bachelor of Science in AI (degree program) |
 | `teaching-framework-hub.html` | STC's pedagogy — assessment/grading design, student engagement, faculty tooling, faculty-development learnings |
 | `corporate-partnerships-hub.html` | Employer-facing AI-enablement / contract-training partnerships |
+| `deospheres-hub.html` | DeoSpheres partnership (added 2026-10-14) — "AI Fluency for X" community courses (Korean American, Filipino/healthcare, trades), AI apprenticeships with Everett manufacturers on secure local AI, Microsoft Community First / Elevate funding |
 
 ### Convention: keep hubs current
 
@@ -23,7 +24,7 @@ As of 2026-08-20 the site is organized around 7 dedicated **Initiative Hub** pag
 1. Open the hub file(s) the new doc belongs to (a doc can belong to more than one — e.g. a president briefing that touches both Blue Tech and CityUX gets a row in both).
 2. Add a `doc-row` entry inside the appropriate `<div class="group">` (or add a new group if it doesn't fit an existing one), following the existing markup pattern: title, one-line description, date.
 3. Bump the hub's document count in its `meta-row` chip (`N documents`) to match.
-4. If the new doc doesn't fit any of the 7 initiatives, it's fine to leave it un-hubbed — not everything needs to belong to one (it can still live in `index.html`'s "Recently added" strip or an audience-band card as before).
+4. If the new doc doesn't fit any of the initiatives, it's fine to leave it un-hubbed — not everything needs to belong to one (it can still live in `index.html`'s "Recently added" strip or an audience-band card as before).
 
 This is separate from — and in addition to — the existing convention of adding new docs to the "Recently added" strip in `index.html`.
 

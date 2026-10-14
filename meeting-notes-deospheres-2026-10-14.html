@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — DeoSpheres: AI Fluency for X, Trades &amp; Microsoft Grants, October 14 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+      --red: #b91c1c; --red-dim: #fef2f2;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--amber); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--amber-dim); border: 1px solid rgba(180,83,9,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); }
+    .icon-blue { background: var(--blue-dim); } .icon-red { background: var(--red-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.red { background: var(--red-dim); border-left: 4px solid var(--red); }
+    .callout:first-child { margin-top: 0; }
+    ol.steps li, ul.tight li { margin-bottom: 4px; }
+    .checklist { list-style: none; padding-left: 0; margin: 0; }
+    .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 4px; color: var(--slate); }
+    .owner { display: inline-block; font-size: 0.72rem; font-weight: 700; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 1px 8px; color: var(--slate); margin-left: 4px; }
+    h3.sub { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); margin: 18px 0 8px; }
+    h3.sub:first-child { margin-top: 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); }
+    .table-wrap { overflow-x: auto; }
+    a { color: var(--blue); }
+    .muted { color: var(--slate); font-size: 0.85rem; }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } .section-body { padding: 16px 18px; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="deospheres-hub.html">DeoSpheres Partnership Hub</a><span>·</span><a href="cityux-hub.html">CityUX Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Meeting Notes · New initiative</div>
+    <h1>DeoSpheres: AI Fluency for X, AI in the Trades &amp; Microsoft Grants</h1>
+    <p class="subtitle">First working session with Joneil and Sinae of DeoSpheres, a Seattle market-entry venture studio. We covered expectations on both sides, demos of CityU's Open edX and CityUX work, DeoSpheres' on-prem AI and Everett manufacturing thesis, and two Microsoft funding routes.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Oct 14, 2026</span>
+      <span class="meta-chip">⏱ ~60 min</span>
+      <span class="meta-chip">STC: Dr. Sam Chung, Brian Maeng, Clark Ngo</span>
+      <span class="meta-chip">DeoSpheres: Joneil, Sinae</span>
+    </div>
+  </header>
+
+  <div class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li><strong>Shared goal:</strong> build an <strong>"AI Fluency for X"</strong> course. X can be the Korean American community, healthcare workers, or blue-collar apprentices. It uses STC's example-first, hands-on, concepts-last approach and runs on CityU's Open edX platform.</li>
+      <li><strong>Near-term money:</strong> the Microsoft Community First grant (~$20K; King County nonprofits; one submission per organization; due in ~10 days). Sam drafts it this weekend around AI fluency for Korean Americans, and Sinae supplies the community partners.</li>
+      <li><strong>Long-term money:</strong> Joneil and Sinae strongly recommend <strong>Microsoft Elevate</strong> ($5B, 20M learners, nonprofit partners). They see it as a better fit for CityU than the one-off grant.</li>
+      <li><strong>Industry side:</strong> Joneil brought a list of Everett small manufacturers who want their front-line staff trained on AI. He proposed a 6-month joint engagement per company: a secure local AI environment (modular data center), CityU curriculum, paid apprentices, and a certificate.</li>
+      <li><strong>Next meeting:</strong> in about two weeks (Wednesday). Sam will schedule it.</li>
+    </ul>
+  </div>
+
+  <section class="section">
+    <div class="section-body">
+      <div class="callout blue"><strong>BSAI constraints reminder:</strong> this meeting touched on BSAI (upcoming, launching in winter) and on industry projects. Standing rules for AI 410–440 are on the <a href="bsai-course-design-constraints.html">BSAI course design constraints</a> page. <strong>Two ideas from this meeting would conflict if they were brought into a BSAI course as stated:</strong> (1) Joneil called the manufacturer engagement a "capstone." BSAI courses end in a 3-phase <em>Team Project</em> in Weeks 9–10, not a capstone, and a 6-month engagement can't fit inside one course. (2) A company-hosted local LLM or modular data center can't be a required course environment, because hands-on units must run in GitHub Codespaces on free tiers. Keep both as separate CityUX / continuing-ed or employer offerings.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-amber">👋</div><div><h2>Who's Who</h2><div class="section-sub">Introductions</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <tr><th>Person</th><th>Background shared in the meeting</th></tr>
+        <tr><td><strong>Dr. Sam Chung</strong><br><span class="muted">STC</span></td><td>Ran the meeting from printed minutes. Leads the applied "smart and secure" research group. Owns the grant proposal.</td></tr>
+        <tr><td><strong>Brian Maeng</strong><br><span class="muted">STC Program Director</span></td><td>Background in communication engineering, statistics, and an operations-management PhD; worked at Cisco Korea for about 2 years. Leads the data science / data mining / ML research group.</td></tr>
+        <tr><td><strong>Clark Ngo</strong><br><span class="muted">STC</span></td><td>AI engineering research (full-stack cloud → AI-infused apps, agentic AI, RAG) and BSAI curriculum. Demoed CityUX and the course and tool prototypes.</td></tr>
+        <tr><td><strong>Joneil</strong><br><span class="muted">DeoSpheres co-founder</span></td><td>Raised in the Tri-Cities. Started as a Boeing industrial engineer, then spent about 10 years at Microsoft and in consulting. Wants to help young people of color headed into the trades (nursing, HVAC, mechanical) gain practical AI skills. Brings corporate and government networks.</td></tr>
+        <tr><td><strong>Sinae</strong><br><span class="muted">DeoSpheres co-founder</span></td><td>Her family founded <a href="https://morningstarkcc.org/" target="_blank" rel="noopener">Morning Star Korean Cultural Center</a> 41 years ago. She acts as a bridge between the mainstream and Korean American communities, with ties to arts and culture, chambers of commerce, small business, education, and politics.</td></tr>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">🌐</div><div><h2>What DeoSpheres Is</h2><div class="section-sub">A "U.S. market-entry studio"</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>Name:</strong> <em>Deo</em> (God / faith) + <em>Spheres</em> (each founder's life path and network, pictured as overlapping circles). The five founders are people of faith, and most of the others are Seattle manufacturers.</li>
+        <li><strong>What they do:</strong> help international companies (mostly manufacturing and trades) enter and go to market in the U.S. They also back AI startups, local and international. Joneil mentioned four Seattle AI startups led by former Microsoft founders.</li>
+        <li><strong>Current focus:</strong> <strong>modular data centers (MDCs)</strong>, including a joint venture with a Korean company (SCS). Joneil asked Sam to forward the press release to Clark.</li>
+        <li><strong>Other conversations:</strong> UW Bothell's STEM program (last week), Noah Smith of UW (two days ago), Bellevue College (about Elevate), and the City of Everett's economic development director (yesterday).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">🎯</div><div><h2>What CityU Wants From the Partnership</h2><div class="section-sub">Sam's stated expectations</div></div></div>
+    <div class="section-body">
+      <ol class="steps">
+        <li><strong>Career opportunities for students:</strong> internships, paid project work, and eventual hiring.</li>
+        <li><strong>Joint grant opportunities:</strong> government, state, or corporate. CityU does <em>applied</em> research, not deep basic research. A past ~$3M proposal was rejected partly because it had <em>no clear manufacturing partner</em>, which DeoSpheres' network could supply.</li>
+        <li><strong>Smart manufacturing and physical AI:</strong> a pathway where learners without degrees start with short credentials and later move into a bachelor's. BSAI (launching in winter) emphasizes physical AI. Sam asked whether Joneil has a company site where this could start.</li>
+        <li><strong>Scale through an open online platform:</strong> the CityUX ecosystem (TOFU → MOFU → BOFU funnel) running on Open edX.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">🖥️</div><div><h2>Demos: Open edX, CityUX &amp; Clark's Prototypes</h2><div class="section-sub">What STC showed</div></div></div>
+    <div class="section-body">
+      <h3 class="sub">Sam: Open edX MOOC pilot</h3>
+      <ul class="tight">
+        <li>Open edX (MIT/Harvard, 2012) running on DigitalOcean. Tested with Korean students over the summer.</li>
+        <li><strong>Nonprofit example (DCMI):</strong> a 5-module leadership course for ministry leaders overseas (Cambodia, Nepal, Africa), built when COVID stopped travel. It has AI labs built with prompt engineering, video and audio lectures, a 3-month self-paced window, a student-worker TA, and two live "celebration" sessions with the lead instructor.</li>
+        <li><strong>"Netflix-style" catalog:</strong> some courses free, some paid (compliance, for example). Sam's rule is to charge something even for a digital certificate, even just $1.</li>
+      </ul>
+      <h3 class="sub">Clark: the CityUX ecosystem</h3>
+      <ul class="tight">
+        <li>Open edX, workshops, seminars, a community hub, YouTube, and GitHub all feed into official CityU programs. See the <a href="cityux-hub.html">CityUX hub</a> and the <a href="stc-open-ecosystem-funnel.html">open ecosystem funnel</a>.</li>
+        <li>Faculty model moving from research faculty, to industry faculty, to <strong>industry publishers</strong>: practitioners who already have content and publish it on CityU's platform.</li>
+        <li>Demos: the prompt builder for people new to AI, the maritime physical-AI explorer, industry primers, and the Vibe Coding showcase built by Korean students.</li>
+        <li>Clark's point: AI shrinks the coding work, so technologists must "move left" toward domain problems and asking good questions. Courses should build in domain knowledge, not generic examples.</li>
+      </ul>
+      <h3 class="sub">Sam: the teaching approach behind it</h3>
+      <ul class="tight">
+        <li><strong>Reverse Bloom's:</strong> learn by example first, then by doing, then the concepts ("let's dance first, then fix your form"). It targets non-traditional and lifelong learners who have little time, such as children of immigrants, who start behind in English reading.</li>
+        <li><strong>Industry certificates as the backbone:</strong> AI fluency built on existing Google, Anthropic, and Microsoft certificates, re-taught for learners those certificates don't serve. Clark's Google AI certificate posted to LinkedIn was the example of the credential students want. See the <a href="teaching-framework-hub.html">teaching framework hub</a>.</li>
+        <li><strong>Domain expert as instructor:</strong> a 45–50-year-old tradesperson with no degree can teach on CityUX, with CityU supplying the platform and course design. "The key player is the domain, not AI": human in the loop.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-red">🏭</div><div><h2>Joneil's Thesis: Secure Local AI for the Trades</h2><div class="section-sub">On-prem infrastructure, blue-collar learners, Everett manufacturers</div></div></div>
+    <div class="section-body">
+      <h3 class="sub">The problem</h3>
+      <ul class="tight">
+        <li><strong>Distrust of hyperscalers:</strong> regulated industries, small manufacturers, and Snohomish farms don't want competitive data in the cloud. Universities (Bothell, for example) have no on-prem AI sandbox.</li>
+        <li><strong>Cost:</strong> blue-collar and immigrant students can't pay for frontier-model subscriptions. They should learn to evaluate and run <strong>open-source LLMs</strong> without depending on big tech.</li>
+        <li><strong>Format:</strong> blue-collar learners don't like text-heavy courses. They learn on their phones between jobs, retention is low, and they drop out of COVID-style online courses. They prefer apprenticeship, learning alongside someone they trust.</li>
+        <li><strong>Crowded market:</strong> YouTube, UW Bothell, UW Tacoma, and others all offer AI courses, and students can't navigate them.</li>
+      </ul>
+      <h3 class="sub">The proposal</h3>
+      <ul class="tight">
+        <li><strong>The library of the future:</strong> on-prem physical AI infrastructure (modular data centers) for universities, colleges, trade schools, and libraries, giving protected public access to LLMs.</li>
+        <li><strong>Everett manufacturers:</strong> the City of Everett's economic development director shared a list of small manufacturers keen to train front-line staff on AI (smart factory, data analysis, automation): <a href="https://formostfuji.com/" target="_blank" rel="noopener">Formost Fuji</a>, <a href="https://www.eckstromind.com/" target="_blank" rel="noopener">Eckstrom Industries</a>, <a href="https://lafargeandegge.com/" target="_blank" rel="noopener">Lafarge &amp; Egge</a>, <a href="https://hinds-bock.com/" target="_blank" rel="noopener">Hinds-Bock</a>, and <a href="https://www.achillesusa.com/" target="_blank" rel="noopener">Achilles USA</a>.</li>
+        <li><strong>Owners want direct business impact:</strong> the apprentice brings real factory data into a <em>private, secure local environment</em>, runs scenarios, and the result goes into the business the next day, with the owner learning alongside.</li>
+        <li><strong>Joint venture per company (about 6 months):</strong> CityU supplies the curriculum (physical AI plus AI theory). The company supplies apprentices and data. DeoSpheres supplies the infrastructure. Outcomes: a certificate, paid apprentices, revenue or cost savings, and possibly revenue share that lifts the apprentice's pay.</li>
+        <li><strong>Regional collaboration:</strong> Noah Smith (UW) wants Seattle schools to advance open LLMs together instead of each building from scratch. The vision is to bring the best open models (UW's included) and CityU curriculum into these company environments.</li>
+      </ul>
+      <div class="callout amber"><strong>Fit with existing work:</strong> this matches the <a href="corporate-partnerships-hub.html">corporate partnerships</a> model (employer-facing AI enablement) and the <a href="https://clarkngo.github.io/courses/hydraulic-hose-fittings/" target="_blank" rel="noopener">hydraulic hose</a> course prototype for blue-collar learners. The "too much text" criticism is worth acting on: a mobile-first, video- and voice-heavy version of the trades courses is a clear design gap.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">💰</div><div><h2>Funding: Two Microsoft Routes</h2><div class="section-sub">Short-term grant vs. long-term partnership</div></div></div>
+    <div class="section-body">
+      <h3 class="sub">Microsoft Community First grant (short-term)</h3>
+      <ul class="tight">
+        <li>~<strong>$20K</strong>, for King County nonprofits. CityU qualifies as a 501(c)(3).</li>
+        <li><strong>One submission per organization</strong>, so it goes through an internal CityU competition. Due in about <strong>10 days</strong>, and Sam is writing it this weekend.</li>
+        <li><strong>Concept:</strong> AI fluency for the Korean American community. Content is built in English, translated into Korean, and self-paced, with in-person sessions at the start, middle, and end (at Hanin, for example). Funds would mainly support student-worker scholarships. Sam ran a similar internet-era class for a Tacoma church group, which his wife taught.</li>
+        <li><strong>Sinae's advice:</strong> being a Korean American professor isn't enough. The proposal has to show <em>direct partnerships with organizations in the community</em>. She can authorize naming:
+          <ul>
+            <li>Greater Seattle Korean Association</li>
+            <li>Korean Community Service Center (Hanin 생활상담소). Sinae says it's better at bringing people together, and it's an easy connection.</li>
+            <li>Morning Star Korean Cultural Center</li>
+          </ul>
+          These groups want new programs, and food plus education is enough for them to host. They won't charge much.</li>
+      </ul>
+      <h3 class="sub">Microsoft Elevate (long-term)</h3>
+      <ul class="tight">
+        <li><a href="https://www.microsoft.com/en-us/elevate" target="_blank" rel="noopener">Microsoft Elevate</a> launched about 1–1.5 years ago: $5B to bring AI learning to 20M people through nonprofit and Microsoft partners, aimed at underserved communities and the Global South.</li>
+        <li>Sinae and Joneil think most of what CityU described fits <strong>Elevate better than the Community First grant</strong>, which favors immediate local impact.</li>
+        <li>DeoSpheres is pitching the same idea to Bellevue College (as part of its campus revamp) but says CityU "already understands it." Sinae: <em>"Look up Microsoft Elevate, get the money, get the programming."</em> Once CityU has a program UW wants, the UW relationship gets easier.</li>
+        <li>Sam will help with the Elevate connection.</li>
+      </ul>
+      <div class="callout blue"><strong>Related history:</strong> CityU won AWS apprenticeship funding twice (~$0.35M, which funded Clark's earlier role). Large grants pay for staff; small ones prove the model.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">🤝</div><div><h2>Communities &amp; Channels</h2><div class="section-sub">Who "X" can be</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>Korean American community:</strong> through Sinae (see the grant partners above).</li>
+        <li><strong>Filipino American community and healthcare:</strong> Joneil lives next to the Filipino Community Center (Seward Park area) and has ties to the Kaiser Permanente Filipino nurses association (CA, OR, WA). Nurses are burned out and want AI skills for other career options. Ideas include mandatory compliance training and nurses or nursing aides teaching under CityU's name. It must be <em>easy</em>, because they're working overtime.</li>
+        <li><strong>Year Up United:</strong> already on campus; it trains and places apprentices in under 15 weeks. CityU found it too expensive to partner with before, but its staff want agentic AI expertise. Sinae attends the Year Up gala this Friday (Oct 16) and asked what to raise. Sam: start quietly, after the grant.</li>
+        <li><strong>First responders:</strong> Sam pointed to the SPD conversation as the same "you bring the domain, we bring the platform" model (see the <a href="frontline-spd-hub.html">frontline / SPD hub</a>).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-amber">✅</div><div><h2>Action Items</h2><div class="section-sub">Agreed or implied</div></div></div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li>Draft the Microsoft Community First proposal ("AI Fluency for Korean Americans") this weekend and share it with Joneil and Sinae. <span class="owner">Sam</span></li>
+        <li>Send Sam the community partner names and contacts (Greater Seattle Korean Association, KCSC / Hanin, Morning Star) for the proposal. <span class="owner">Sinae</span></li>
+        <li>Put the proposal through CityU's internal one-submission competition before the ~10-day deadline. <span class="owner">Sam</span></li>
+        <li>Forward the DeoSpheres / SCS modular data center press release to Clark. <span class="owner">Sam</span></li>
+        <li>Look into Microsoft Elevate eligibility and next steps for CityU as a nonprofit partner. <span class="owner">Sam · Sinae</span></li>
+        <li>Choose one Everett manufacturer for a small pilot ("even five students"). <span class="owner">Joneil</span></li>
+        <li>Prototype a mobile-first, low-text version of an "AI Fluency for X" unit (using the AI Fundamentals M1 lesson as the base). <span class="owner">Clark</span></li>
+        <li>Schedule the follow-up in about 2 weeks (Wednesday). <span class="owner">Sam</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-red">❓</div><div><h2>Open Questions</h2><div class="section-sub">To settle before or at the next meeting</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li>Who owns the modular data center and student work in a manufacturer joint venture, and who pays for it (company, grant, or DeoSpheres)?</li>
+        <li>What does the apprentice credential look like: an Open edX certificate, a CityU continuing-ed credential, or credit toward BSAI?</li>
+        <li>How is DeoSpheres paid? Their role (market-entry studio, MDC vendor, connector) needs to be clear before CityU co-brands anything.</li>
+        <li>Does the Community First proposal compete with other CityU schools' ideas in the internal round?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">🔗</div><div><h2>Links Shared in the Meeting</h2><div class="section-sub">From the chat</div></div></div>
+    <div class="section-body">
+      <h3 class="sub">From Joneil &amp; Sinae</h3>
+      <ul class="tight">
+        <li><a href="https://deospheres.com/" target="_blank" rel="noopener">DeoSpheres</a>: market-entry venture studio</li>
+        <li><a href="https://morningstarkcc.org/" target="_blank" rel="noopener">Morning Star Korean Cultural Center</a></li>
+        <li>Microsoft Community First Grants FAQ (PDF, shared in chat; not stored here)</li>
+        <li>Everett manufacturers: <a href="https://formostfuji.com/" target="_blank" rel="noopener">Formost Fuji</a> · <a href="https://www.eckstromind.com/" target="_blank" rel="noopener">Eckstrom Industries</a> · <a href="https://lafargeandegge.com/" target="_blank" rel="noopener">Lafarge &amp; Egge</a> · <a href="https://hinds-bock.com/" target="_blank" rel="noopener">Hinds-Bock</a> · <a href="https://www.achillesusa.com/" target="_blank" rel="noopener">Achilles USA</a></li>
+        <li><a href="https://www.microsoft.com/en-us/elevate" target="_blank" rel="noopener">Microsoft Elevate</a></li>
+        <li><a href="https://splk.cognitionthrives.com/" target="_blank" rel="noopener">splk.cognitionthrives.com</a> (the blue-collar learning link Joneil referred to)</li>
+        <li><a href="https://watech.wa.gov/ocio/news/visualization-interns-pitch-their-product" target="_blank" rel="noopener">WaTech: visualization interns pitch their product</a> (state agency data-viz intern program with industry mentors)</li>
+      </ul>
+      <h3 class="sub">From Clark</h3>
+      <ul class="tight">
+        <li><a href="https://clarkngo.github.io/vibe-coding/showcase/" target="_blank" rel="noopener">Vibe Coding showcase</a>: what the Korean summer students built</li>
+        <li><a href="https://clarkngo.github.io/courses/ai-fundamentals/lessons/m1-l1-what-ai-is-and-what-it-isnt/" target="_blank" rel="noopener">AI Fundamentals M1-L1</a>: Google AI Module 1 re-taught with more explanation for non-tech learners</li>
+        <li><a href="https://clarkngo.github.io/AI-Hub/" target="_blank" rel="noopener">AI Hub</a> · <a href="https://clarkngo.github.io/courses/" target="_blank" rel="noopener">course catalog</a></li>
+        <li><a href="https://clarkngo.github.io/courses/hydraulic-hose-fittings/" target="_blank" rel="noopener">Fundamentals and Hose Construction</a>: blue-collar sample course</li>
+        <li><a href="https://clarkngo.github.io/courses/physical-ai-maritime/" target="_blank" rel="noopener">Physical AI: Maritime</a></li>
+      </ul>
+      <p class="muted">Notes are from a machine transcript of the recording. Some names (the SCS company, the Everett economic development director) were unclear in the audio and should be confirmed.</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>

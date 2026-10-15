@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS 352: Discrete Mathematics and Data Structures in Computing — Syllabus</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        h1 { color: #1e8449; border-bottom: 2px solid #27ae60; padding-bottom:10px; }
+        h2 { color: #27ae60; margin-top:36px; }
+        h3 { margin-top:22px; font-size:1.02rem; }
+        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
+        .meta-pill { background:#f1f5f9; color:#334155; font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
+        .compare-box { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.9rem; }
+        .compare-box a { font-weight:600; }
+        .stub-note { font-size:0.85rem; color:#6b7280; font-style:italic; }
+        table.criteria { width:100%; border-collapse:collapse; margin:8px 0 20px; font-size:0.86rem; }
+        table.criteria th, table.criteria td { border:1px solid #e2e8f0; padding:9px 12px; text-align:left; vertical-align:top; }
+        table.criteria th { background:#f8fafc; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em; color:#475569; }
+        table.criteria td ul, table.criteria td ol { margin:0; padding-left:18px; }
+        table.criteria td p { margin:0 0 4px; }
+        table.criteria.small { width:auto; min-width:320px; }
+        table.rubric td:first-child { font-weight:600; width:16%; }
+        table.rubric td:first-child small { display:block; font-weight:400; color:#64748b; }
+        h4 { margin:20px 0 6px; font-size:0.95rem; color:#334155; }
+        .record td:first-child { font-weight:600; width:45%; }
+        .changed { background:#fef9c3; padding:0 2px; border-radius:2px; }
+        .design-notes { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px; padding:6px 18px 14px; margin:40px 0 10px; font-size:0.9rem; }
+        .design-notes h2 { color:#b45309; margin-top:14px; }
+        .design-notes h3 { color:#92400e; }
+        .tag { display:inline-block; font-size:0.72rem; font-weight:700; padding:2px 8px; border-radius:999px; }
+        .tag-keep { background:#dcfce7; color:#166534; }
+        .tag-adapt { background:#dbeafe; color:#1e40af; }
+        .tag-drop { background:#fee2e2; color:#991b1b; }
+    </style>
+</head>
+<body class="course-page">
+    <div class="container">
+    <nav style="font-family:Inter,system-ui,sans-serif;font-size:0.85rem;color:#6b7280;padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;margin:-20px -20px 20px -20px;border-radius:4px 4px 0 0">
+      <a href="../index.html" style="color:#1e8449;text-decoration:none;font-weight:500">← STC Hub</a>
+      &nbsp;/&nbsp;
+      <a href="index.html" style="color:#1e8449;text-decoration:none;font-weight:500">Course Catalog</a>
+      &nbsp;/&nbsp;
+      <a href="../bsai-hub.html" style="color:#1e8449;text-decoration:none;font-weight:500">BSAI Hub</a>
+    </nav>
+
+        <div class="compare-box"><strong>Draft, Oct 14, 2026.</strong> CS 352 is a new BSAI core course. This syllabus is a <strong>minimal-change copy of CS 351 Discrete Mathematics in Computing</strong> (syllabus of 6/6/2024, schedule of 10/7/2024): same assignment types, weights, points, rubrics, team-project phases, and zyBooks text. The AAC-approved description and outcomes are quoted word for word. The ten modules are re-sequenced so that the data-structures half of the description (hash maps, linked lists, stacks, queues, trees, heaps, graphs, Big-O) fits. Changes are <span class="changed">highlighted</span>. What was kept, adapted, or dropped is in the <a href="#design-notes">design notes</a> at the bottom of this page.</div>
+
+        <h1 id="top">CS 352: Discrete Mathematics and Data Structures in Computing — Syllabus</h1>
+
+        <div class="meta-strip">
+            <span class="meta-pill">5 Credits, Undergraduate Course</span>
+            <span class="meta-pill">Natural Sciences (NS)</span>
+            <span class="meta-pill">Grading: Decimal</span>
+            <span class="meta-pill">Prerequisite: AI 251</span>
+            <span class="meta-pill">School of Technology &amp; Computing</span>
+        </div>
+
+        <p><em>Access to the Internet is required.</em><br>
+        <em>All written assignments must be in Microsoft-Word-compatible formats.</em><br>
+        <em>See the library's APA Style Guide tutorial for a list of resources that can help you use APA style.</em></p>
+
+        <div style="overflow-x:auto"><table class="criteria record">
+            <tr><th colspan="2">Course record</th></tr>
+            <tr><td>Effective date</td><td>TBD</td></tr>
+            <tr><td>Course status</td><td>New Course (BSAI core; adapted from CS 351 Discrete Mathematics in Computing)</td></tr>
+            <tr><td>Can the course be repeated for credit?</td><td>No (a failed course can be repeated)</td></tr>
+            <tr><td>Requires program consent for registration?</td><td>No</td></tr>
+            <tr><td>Prerequisites</td><td>AI 251</td></tr>
+            <tr><td>Co-requisites</td><td>No</td></tr>
+        </table></div>
+
+<h2>Faculty Information</h2>
+<p>Professional experience information for instructors can be found under <em>Content → Syllabus, Schedule, and Course Team → Meet Your Instructor</em> in the online course menu.</p>
+<h2>Contact Information</h2>
+<p>Contact information for instructors can be found in the online course menu. Additional contact information regarding the TA for the course, the Program Manager, Program Director and Dean is also shared in the same location. Hyperlinks on the contact page direct students to the responsible party's weekly office hours.</p>
+
+<h2>Course Description</h2>
+<p class="changed">Bridges theoretical foundations of discrete mathematics with hands-on data structures. Covers Set Theory &amp; Logic, Combinatorics &amp; Probability, Number Theory, Linked Lists, Stacks, Queues, Trees, Graphs, and Big-O analysis.</p>
+
+<h2>Course Resources</h2>
+<p>Required and recommended resources to complete coursework and assignments are found on the course <a href="https://cityu.alma.exlibrisgroup.com/leganto/login?auth=SAML">Reading List</a>. The reading list can be found under Course Information in Desire2Learn LMS, as well as from the library homepage.</p>
+<p>Note: Required resources that must be purchased by the student are tagged “Purchase from a vendor of your choosing.” Required resources with a direct link, “Available through CityU Library”, are available at no cost to students.</p>
+<p>Students in Canada will see required resources they need to purchase tagged “Purchase from the Canadian Bookstore.” Students outside the U.S. and Canada should contact their advisor or textbook coordinator for additional information.</p>
+<p><strong>Required:</strong> zyBooks, <em>Discrete Mathematics in Computing with Python Lab</em> (learn.zybooks.com).</p>
+<p><strong>Recommended:</strong> Litvin, M., &amp; Litvin, G. (2019). <em>Coding in Python and elements of discrete mathematics</em>. Skylight Publishing. ISBN 9780997252842.</p>
+<p class="changed"><strong>Supplementary (free, data structures):</strong> Miller, B. N., &amp; Ranum, D. L. <em>Problem solving with algorithms and data structures using Python</em> (Runestone Academy, free online). Used for the data-structures readings in Modules 3, 4, 9, and 10.</p>
+
+<h2>Course Outcomes</h2>
+<p>At the end of the course students:</p>
+<ul class="changed">
+<li><p>CO1: Articulate the mathematical properties of discrete structures (Sets, Sequences, Graphs) and demonstrate their representation in computer memory.</p></li>
+<li><p>CO2: Implement core data structures (Hash Maps, BSTs, Heaps) and apply Propositional and Predicate Logic to verify program correctness.</p></li>
+<li><p>CO3: Apply Big-O notation and recurrence relations to analyze the time and space complexity of algorithms.</p></li>
+<li><p>CO4: Evaluate and differentiate data structures to identify the most suitable option for given performance constraints.</p></li>
+<li><p>CO5: Design and implement graph algorithms (Dijkstra’s, BFS/DFS) to solve real-world networking and optimization problems.</p></li>
+</ul>
+
+<h2>Grading Scale</h2>
+<p>The grades earned for the course will be calculated using City University of Seattle's decimal grading system, found in the current <a href="https://www.cityu.edu/catalog/">University Catalog</a>.</p>
+<p>Grading rubrics with details on how each assignment will be graded are located under <em>Grades</em> from the main bar in the online course menu. Students should review the rubric for each assignment prior to completing their work to understand how it will be assessed.</p>
+
+<div style="overflow-x:auto"><table class="criteria">
+<colgroup><col style="width: 48%" /><col style="width: 15%" /><col style="width: 37%" /></colgroup>
+<thead><tr><th style="text-align:center">Overview of Required Assignments</th><th style="text-align:center">% of Final Grade</th><th style="text-align:center">Points</th></tr></thead>
+<tbody>
+<tr><td><em><strong>Instructor Determined Assignments</strong></em></td><td style="text-align:center"><strong>20%</strong></td><td></td></tr>
+<tr><td>Muddiest Point (MP)</td><td style="text-align:center">5%</td><td>50 = 5 points * 10 modules</td></tr>
+<tr><td>Concept Debate (CD)</td><td style="text-align:center">5%</td><td>50 = 5 points * 10 modules</td></tr>
+<tr><td>Knowledge Check (KC)</td><td style="text-align:center">10%</td><td>100 = 10 points * 10 modules</td></tr>
+<tr><td><em><strong>Major Assignments</strong></em></td><td style="text-align:center"><strong>80%</strong></td><td></td></tr>
+<tr><td>Hands-On Skill (HOS)</td><td style="text-align:center">20%</td><td>200 = 20 points * 10 modules</td></tr>
+<tr><td>Virtual Lab (VL)</td><td style="text-align:center">40%</td><td>400 = 40 points * 10 modules</td></tr>
+<tr><td>Team Project (TP)</td><td style="text-align:center">20%</td><td><p>Proposal: 30 points</p><p>Progress: 70 points</p><p>Final Report: 70 points</p><p>Final PPT: 30 points</p><p>Subtotal: 200 points</p></td></tr>
+<tr><td><strong>TOTAL</strong></td><td style="text-align:center"><strong>100%</strong></td><td><strong>1,000 points</strong></td></tr>
+</tbody></table></div>
+
+<h2>Course Assignments and Grading</h2>
+<p>The instructor provides grading rubrics that will provide more detail as to how this assignment will be graded.</p>
+
+<h3>Muddiest Point (MP)</h3>
+<p>Before class, students are required to submit the Muddiest Point (MP) activity to ensure understanding of discrete mathematics <span class="changed">and data structures</span> concepts. The purpose of this activity is to stimulate student engagement. The instructor uses the MP to assess how students understood the required readings. The instructor also uses the MP to customize the lecture scope to implement Just-in-Time Teaching (JiTT). The MP consists of writing a brief reflective essay (&lt;= 50 words) identifying the most confusing part (i.e., the MP) of the content covered in the upcoming module. If a student understood all concepts, the student needs to explain the most exciting aspect. There is one multiple-choice question from the required reading to demonstrate that the student understood the required readings.</p>
+<div style="overflow-x:auto"><table class="criteria small"><thead><tr><th>Criteria</th><th>% of Grade</th></tr></thead><tbody>
+<tr><td>Participation</td><td>80%</td></tr><tr><td>Writing</td><td>20%</td></tr><tr><td><strong>TOTAL</strong></td><td><strong>100%</strong></td></tr>
+</tbody></table></div>
+
+<h3>Concept Debate (CD)</h3>
+<p>The instructor poses a problem based on key discrete mathematics <span class="changed">and data structures</span> concepts introduced in the lecture. For example, how specific mathematical models are used by GPS to find the shortest route<span class="changed">, or whether a hash map or a balanced BST is the better index for a given workload</span>. After reflecting on the problem, students submit their responses, and the instructor reviews them without providing a correct answer. Students discuss their thought process and solution with a peer. Students then commit to an answer and re-submit their responses. Instructor reviews responses and thought processes with the correct answer.</p>
+<div style="overflow-x:auto"><table class="criteria small"><thead><tr><th>Criteria</th><th>% of Grade</th></tr></thead><tbody>
+<tr><td>Participation</td><td>50%</td></tr><tr><td>Writing</td><td>50%</td></tr><tr><td><strong>TOTAL</strong></td><td><strong>100%</strong></td></tr>
+</tbody></table></div>
+
+<h3>Knowledge Check (KC)</h3>
+<p>Brief quizzes follow the readings which introduce discrete mathematic <span class="changed">and data structures</span> concepts. The questions focus on the underlying principles and concepts rather than memorization to solve the quizzes.</p>
+<div style="overflow-x:auto"><table class="criteria small"><thead><tr><th>Criteria</th><th>% of Grade</th></tr></thead><tbody>
+<tr><td>Correctness</td><td>100%</td></tr><tr><td><strong>TOTAL</strong></td><td><strong>100%</strong></td></tr>
+</tbody></table></div>
+
+<h3>Hands-On Skill (HOS)</h3>
+<p>The instructor assigns Hands-on Skill exercises to practice the mathematical problems introduced in class<span class="changed">, including tracing data-structure operations by hand and deriving their running times</span>. Knowledge of how to solve discrete mathematic problems and understand the algorithms assist students in completing the virtual labs.</p>
+<div style="overflow-x:auto"><table class="criteria small"><thead><tr><th>Criteria</th><th>% of Grade</th></tr></thead><tbody>
+<tr><td>Skill Exercise</td><td>90%</td></tr><tr><td>Correctness</td><td>10%</td></tr><tr><td><strong>TOTAL</strong></td><td><strong>100%</strong></td></tr>
+</tbody></table></div>
+
+<h3>Virtual Lab (VL)</h3>
+<p>Students complete labs that apply the math logic learned and practiced in HOS using a programming language <span class="changed">(Python)</span> to solve specific problems. VLs involve viewing instructional documents and following systematic instructions. Activities are embedded within each lab. The activities present a challenge to complete. Each lab is graded on accuracy and writing. A student has unlimited attempts at each lab to increase their accuracy and learn the required skills. Reports submitted include a write up on their understandings and findings in their lab reports.</p>
+<p class="changed">From Module 3 on, labs that build a data structure (hash map, linked list, stack, queue, BST, heap, graph) also ask for the Big-O of each operation and a short timing comparison against Python's built-in equivalent.</p>
+<div style="overflow-x:auto"><table class="criteria small"><thead><tr><th>Criteria</th><th>% of Grade</th></tr></thead><tbody>
+<tr><td>Accuracy</td><td>80%</td></tr><tr><td>Writing</td><td>20%</td></tr><tr><td><strong>TOTAL</strong></td><td><strong>100%</strong></td></tr>
+</tbody></table></div>
+
+<h3 id="team-project">Team Project (TP)</h3>
+<h4>Team Project Description</h4>
+<p>The central task in computing is designing efficient computational methods, or algorithms, for solving problems. Choose a concept from discrete mathematics <span class="changed">or a data structure</span> and research how it is applied in real life. The instructor provides a list of topics. Students can suggest an alternative, but it needs to be approved by the course instructor.</p>
+<p class="changed">The project includes a small Python implementation of the chosen concept or structure, a Big-O analysis of its key operations, and a comparison with at least one alternative structure or algorithm under the performance constraints of the real-life application (for example, a heap-based versus list-based priority queue in a routing service).</p>
+<p>A team is selected consisting of three or four students. A group of fewer than three students require the instructor's approval. Each team chooses an instructor-approved topic relevant to the course.</p>
+<p>The final project is the culmination of analyzing and evaluating required software, applied research, and instructor led activities throughout the quarter.</p>
+<p>Students can work on a specific project, but it must be approved by the instructor and be relevant to the course. Each project consists of four elements: a proposal, a progress report, a final report of 6-7 pages, and a final presentation with slides. Templates are provided for each element by the instructor. Students add to their project elements weekly, incorporating feedback from their instructor.</p>
+<p>Students are expected to use evidence to support the contentions they have drawn from their findings and critically analyze their cited resources. Resources should include assigned course materials and additional sources students have investigated and researched not assigned by the professor. Students use industry technical style of reporting and are expected to employ APA formatting for citations and references.</p>
+
+<h4>TP Report</h4>
+<p>Each student provides a report formatted based on a template provided by the instructor listing the team members. Students are required to improve their writing iteratively and incrementally every week. Students add new required sections to the existing paper every week.</p>
+<p>The final report is the culmination of applied research and activities conducted throughout the quarter. The final report/paper provides a detailed problem and its solution. Students need to specify if the problem they are solving is likely to be encountered in industry.</p>
+
+<p><em>TP01 and TP02</em></p>
+<div style="overflow-x:auto"><table class="criteria small"><thead><tr><th>Criteria</th><th>% of Grade</th></tr></thead><tbody>
+<tr><td>Structure</td><td>20%</td></tr><tr><td>Content</td><td>30%</td></tr><tr><td>Writing</td><td>30%</td></tr><tr><td>Reference</td><td>10%</td></tr><tr><td>Collaboration</td><td>10%</td></tr><tr><td><strong>TOTAL</strong></td><td><strong>100%</strong></td></tr>
+</tbody></table></div>
+
+<p><em>TP03</em></p>
+<div style="overflow-x:auto"><table class="criteria">
+<colgroup><col style="width: 6%" /><col style="width: 24%" /><col style="width: 58%" /><col style="width: 12%" /></colgroup>
+<thead><tr><th></th><th>Criteria</th><th>Outcome</th><th>% of Grade</th></tr></thead>
+<tbody>
+<tr><td colspan="4"><strong>Discrete Mathematics <span class="changed">and Data Structures</span> for Computing (20%)</strong></td></tr>
+<tr><td>1</td><td>Discrete Mathematics <span class="changed">and Data Structures</span> for Computing</td><td>Apply concepts, integration, and management of key components of discrete mathematics <span class="changed">and data structures</span> for computing.</td><td>20%</td></tr>
+<tr><td colspan="4"><strong>Critical Thinking (60%)</strong></td></tr>
+<tr><td>2</td><td>Issue</td><td>Issue is stated and described thoroughly so that it is understood fully.</td><td>20%</td></tr>
+<tr><td>3</td><td>Evidence</td><td>Information is taken from source(s) appropriate to the scope with enough interpretation and evaluation to develop a comprehensive analysis or synthesis, and expert opinions are thoroughly scrutinized.</td><td>10%</td></tr>
+<tr><td>4</td><td>Context and Awareness</td><td>Thoroughly analyzes assumptions and biases, carefully evaluating contextual relevance when presenting a position.</td><td>20%</td></tr>
+<tr><td>5</td><td>Conclusions</td><td>Conclusions are logical and reflect an informed evaluation of evidence and perspectives in priority order.</td><td>10%</td></tr>
+<tr><td colspan="4"><strong>Collaboration (20%)</strong></td></tr>
+<tr><td>6</td><td>Teamwork</td><td>Works effectively on diverse, global and/or distributed teams.</td><td>10%</td></tr>
+<tr><td>7</td><td>Knowledge of Cultural Frameworks</td><td>Demonstrates sophisticated understanding of the complexity of elements important to members of another culture in relation to its history, values, politics, communication styles, economy, or beliefs and practices.</td><td>5%</td></tr>
+<tr><td>8</td><td>Openness to Cultural Differences</td><td>Demonstrates openness to the diverse population of students in STC programs, collaboratively and professionally communicates with team members to form a collective decision and provide resolutions to the challenges that arise.</td><td>5%</td></tr>
+<tr><td></td><td><strong>TOTAL</strong></td><td></td><td><strong>100%</strong></td></tr>
+</tbody></table></div>
+
+<h4>TP Presentation</h4>
+<p>The students report the research outcomes, development, or other project efforts to an academically appropriate committee in a public forum. The nature of the presentation content determines the specific makeup of the audience. The students choose the format of the presentation in consultation with the advisor. The layout and design must be appropriate and adequate to represent the outcomes of the effort. While students must make some form of a visual presentation, the presentation of the results may include publishing in a refereed publication, publication in a trade or popular magazine or journal, broadcast in an appropriate medium, or, in exceptional cases, limited dissemination within a closed community.</p>
+<p>Each Team has 15 minutes for presentation and 5 minutes for questions and answers. Each presenter must keep the total presentation time limit strictly.</p>
+<div style="overflow-x:auto"><table class="criteria small"><thead><tr><th>Criteria</th><th>% of Grade</th></tr></thead><tbody>
+<tr><td>Structure</td><td>20%</td></tr><tr><td>Visual Presentation</td><td>30%</td></tr><tr><td>Verbal Quality &amp; Engagement</td><td>30%</td></tr><tr><td>Collaboration</td><td>20%</td></tr><tr><td><strong>TOTAL</strong></td><td><strong>100%</strong></td></tr>
+</tbody></table></div>
+
+<h2>Course Policies</h2>
+<p>Course policies on topics such as Late Assignments, Participation, and Professional Writing are found under <em>Content → Syllabus, Schedule, and Course Team → Course Policies</em> in the online course menu. Students are responsible for reviewing and applying these policies while enrolled in this course.</p>
+
+<h2>University Policies</h2>
+<p>You are responsible for understanding and adhering to all of City University of Seattle's academic policies. The most current versions of these policies can be found in the University Catalog that is linked from the CityU Web site.</p>
+<h3>Antidiscrimination</h3>
+<p>City University of Seattle and its staff and faculty are committed to supporting our students. We value equity, diversity, and inclusion as a way of life as well as the educational opportunities it provides. City U will not tolerate any form of discrimination based on race, color, ethnicity, sexual orientation, gender identification, socioeconomic status, or religious values. If you have experienced any discrimination based on any of the above, we encourage you to report this to the University. Please report this to your instructor. If you do not feel safe reporting this to your instructor, please report to the provost or to the Vice President of Student Affairs.</p>
+<h3>Non-Discrimination &amp; Prohibition of Sexual Misconduct</h3>
+<p>City University of Seattle adheres to all federal, state, and local civil rights laws prohibiting discrimination in employment and education. The University is committed to ensuring that the education environment is bound by standards of mutual respect and safety and is free from discriminatory practices.</p>
+<p>In the U.S., the University is required by Title IX of the Education Amendments of 1972 to ensure that all of its education programs and activities do not discriminate on the basis of sex/gender. Sex includes sex, sex stereotypes, gender identity, gender expression, sexual orientation, and pregnancy or parenting status. Sexual harassment, sexual assault, dating and domestic violence, and stalking are forms of sex discrimination, which are prohibited under Title IX and by City University of Seattle policy. City University of Seattle also prohibits retaliation against any person opposing discrimination or participating in any discrimination investigation or complaint process internal or external to the institution. Questions regarding Title IX, including its application and/or concerns about noncompliance, should be directed to the Title IX Coordinator. For a complete copy of the policy or for more information, visit <a href="https://my.cityu.edu/pages/office-of-title-ix-">Office of Title IX Home - City University of Seattle</a> or contact the Title IX Coordinator.</p>
+<p>In Canada, in compliance with the British Columbia Human Rights Code, the Alberta Human Rights Act, WorksafeBC, and the Workers' Compensation Board of Alberta, the University believes that its environment should at all times be supportive and respectful of the dignity and self-esteem of individuals. Discrimination, harassment and bullying conduct, whether through person-to-person behaviors or via electronic communications such as email or social media is not acceptable and will not be tolerated. As an educational institution, it is our responsibility to cultivate an environment of excellence, equity, mutual respect and to recognize the value and potential of every individual. The University will take all necessary steps to meet or exceed the requirements of the law to prevent discrimination, harassment and bullying. The Respectful Workplace Policy for the prevention of discrimination, harassment and bullying policy and procedure can be found at <a href="https://www.cityu.edu/about-cityu/">About Us | City University of Seattle</a> under the Policies section or at <a href="https://cityuniversity.ca/about/">About - CityU in Canada</a>.</p>
+<h3>Religious Accommodations</h3>
+<p>City University of Seattle has a policy for accommodation of student absences or significant hardship due to reasons of faith or conscience, or for organized religious activities. The University's policy, including more information about how to request an accommodation, is available in the University Catalog and on the my.cityu.edu student portal. Accommodations must be requested by the 20% mark of this course (e.g. day 14 of a ten-week course, day 7 of a 5-week course) using the Religious Accommodations Request Form found on the student dashboard in the my.cityu.edu student portal.</p>
+<h3>Academic Integrity</h3>
+<p>Academic integrity in students requires the pursuit of scholarly activity that is free from fraud, deception and unauthorized collaboration with other individuals. Students are responsible for understanding CityU's policy on academic integrity and adhering to its standards in meeting all course requirements. A complete copy of this policy can be found in the <a href="https://www.cityu.edu/catalog/">University Catalog</a> in the section titled <em>Academic Integrity Policy</em> under <em>Student Rights &amp; Responsibilities</em>.</p>
+<h3>Attendance</h3>
+<p>Students taking courses in any format at the University are expected to be diligent in their studies and to attend class regularly. Regular class attendance is important in achieving learning outcomes in the course and may be a valid consideration in determining the final grade. For classes where a physical presence is required, a student has to attend if they are present at any time during the class session. For online classes, a student has attended if they have posted or submitted an assignment. A complete copy of this policy can be found in the <a href="https://www.cityu.edu/catalog/">University Catalog</a> in the section titled <em>Attendance</em> under <em>Student Rights &amp; Responsibilities</em>.</p>
+<h3>Final Assignments Due Date</h3>
+<p>Final assignments for each class at CityU must be due on or before the final date of the course as indicated in the university's course information system. Due dates that extend beyond the final date of the course may negatively impact tuition funding for students.</p>
+
+<h2>Support Services</h2>
+<h3>Disability Services Accommodations Statement</h3>
+<p>Students with documented disability who wish to request academic accommodations are encouraged to contact Disability Support Services to discuss accommodation requests and eligibility requirements. Please contact Disability Support Services at <a href="mailto:disability@cityu.edu">disability@cityu.edu</a> or 206.239.4752 or visit the <a href="https://my.cityu.edu/pages/disability-support-services">Disability Support Services</a> page in the my.cityu.edu portal. Confidentiality will be observed in all inquiries. Once approved, information about academic accommodations will be shared with your course instructors.</p>
+<h3>Library Services</h3>
+<p>CityU librarians are available to help students find the resources and information they need to succeed in this course. Contact a CityU librarian through the <a href="https://cityu-seattle.libanswers.com/">Ask a Librarian</a> service, or access <a href="http://library.cityu.edu/">library resources and services</a> online, 24 hours a day, seven days a week.</p>
+<h3>Online Tutoring</h3>
+<p>CityU students have access to free online tutoring offered through Brainfuse, including writing support, from certified tutors 24 hours a day, seven days a week. Visit the <a href="https://my.cityu.edu/pages/tutoring-resources">Brainfuse</a> page on the my.cityu.edu portal for more information.</p>
+
+
+<h2>Course Schedule</h2>
+<p><strong>Required:</strong> zyBooks, <em>Discrete Mathematics in Computing with Python Lab</em>. <strong>Recommended:</strong> Litvin &amp; Litvin (2019). <span class="changed"><strong>Supplementary (free):</strong> Miller &amp; Ranum, <em>Problem Solving with Algorithms and Data Structures using Python</em> (Runestone Academy), cited below as “PSADS.”</span></p>
+<div style="overflow-x:auto"><table class="criteria">
+<colgroup><col style="width: 8%" /><col style="width: 50%" /><col style="width: 30%" /><col style="width: 12%" /></colgroup>
+<thead><tr><th style="text-align:center">Module</th><th>Topics / Readings</th><th>Assignments</th><th style="text-align:center">Outcome</th></tr></thead>
+<tbody>
+<tr><td style="text-align:center"><strong>1</strong></td><td><p><strong>zyBooks</strong> Ch. 1: Logic</p><p class="changed">Propositional and predicate logic as program specifications: preconditions, postconditions, and Python <code>assert</code>.</p></td><td><ol><li>Student Introductory Assignment</li><li>Muddiest Point</li><li>Concept Debate</li><li>Hands-On Skill</li><li>Knowledge Check</li><li>Virtual Lab</li><li>Team Project Proposal Announcement</li></ol></td><td style="text-align:center">CO2</td></tr>
+<tr><td style="text-align:center"><strong>2</strong></td><td><p><strong>zyBooks</strong> Ch. 4: Proofs; Ch. 5: Sets</p><p class="changed">Sets and sequences in memory: Python <code>list</code>, <code>set</code>, and <code>dict</code>; loop invariants as proofs of correctness.</p></td><td><ol><li>Muddiest Point</li><li>Concept Debate</li><li>Hands-On Skill</li><li>Virtual Lab</li><li>Knowledge Check</li></ol></td><td style="text-align:center">CO1, CO2</td></tr>
+<tr><td style="text-align:center"><strong>3</strong></td><td><p><strong>zyBooks</strong> Ch. 8: Functions; Ch. 9: Boolean Algebra <span class="changed">(9.1–9.5, condensed)</span></p><p class="changed">Functions as mappings → hash functions. <strong>Hash maps</strong>: chaining, load factor, resizing. PSADS: Hashing.</p></td><td><ol><li>Muddiest Point</li><li>Concept Debate</li><li>Hands-On Skill</li><li>Virtual Lab</li><li>Knowledge Check</li><li>Team Project Proposal Submission</li></ol></td><td style="text-align:center">CO1, CO2</td></tr>
+<tr><td style="text-align:center"><strong>4</strong></td><td><p><strong>zyBooks</strong> Ch. 14: Relations / Digraphs <span class="changed">(14.1–14.4; 14.6–14.10 moved to optional)</span></p><p class="changed"><strong>Linked lists, stacks, and queues</strong> as ordered structures. PSADS: Basic Data Structures.</p></td><td><ol><li>Muddiest Point</li><li>Concept Debate</li><li>Hands-On Skill</li><li>Virtual Lab</li><li>Knowledge Check</li><li>Team Project Progress Announcement</li></ol></td><td style="text-align:center">CO1, CO4</td></tr>
+<tr><td style="text-align:center"><strong>5</strong></td><td><p><strong>zyBooks</strong> Ch. 19: Computation / Algorithms</p><p class="changed"><strong>Big-O</strong> time and space analysis; comparing list, linked list, and hash map operations. PSADS: Analysis.</p></td><td><ol><li>Muddiest Point</li><li>Concept Debate</li><li>Hands-On Skill</li><li>Virtual Lab</li><li>Knowledge Check</li></ol></td><td style="text-align:center">CO3, CO4</td></tr>
+<tr><td style="text-align:center"><strong>6</strong></td><td><p><strong>zyBooks</strong> Ch. 20: Induction &amp; Recursion (20.1–20.4)</p><p class="changed"><strong>Recurrence relations</strong> for recursive algorithms (binary search, merge sort). PSADS: Recursion.</p></td><td><ol><li>Muddiest Point</li><li>Concept Debate</li><li>Hands-On Skill</li><li>Virtual Lab</li><li>Knowledge Check</li></ol></td><td style="text-align:center">CO3</td></tr>
+<tr><td style="text-align:center"><strong>7</strong></td><td><p><strong>zyBooks</strong> Ch. 23: Integer Properties (23.1–23.3)</p><p class="changed">Number theory in computing: modular arithmetic in hashing, GCD, primes.</p></td><td><ol><li>Muddiest Point</li><li>Concept Debate</li><li>Hands-On Skill</li><li>Virtual Lab</li><li>Knowledge Check</li><li>Team Project Progress Submission</li></ol></td><td style="text-align:center">CO1</td></tr>
+<tr><td style="text-align:center"><strong>8</strong></td><td><p><strong>zyBooks</strong> Ch. 25: Counting; Ch. 27: Discrete Probability <span class="changed">(moved up from Module 9)</span></p><p class="changed">Combinatorics and probability applied: hash collision probability, expected-case vs. worst-case cost.</p></td><td><ol><li>Muddiest Point</li><li>Concept Debate</li><li>Hands-On Skill</li><li>Virtual Lab</li><li>Knowledge Check</li><li>Team Project Final Announcement</li></ol></td><td style="text-align:center">CO1, CO4</td></tr>
+<tr><td style="text-align:center"><strong>9</strong></td><td><p><strong>zyBooks</strong> Ch. 33: Trees <span class="changed">(moved up from Module 10)</span></p><p class="changed"><strong>Binary search trees and heaps</strong>; priority queues. PSADS: Trees and Tree Algorithms.</p></td><td><ol><li>Muddiest Point</li><li>Concept Debate</li><li>Hands-On Skill</li><li>Virtual Lab</li><li>Knowledge Check</li></ol></td><td style="text-align:center">CO2, CO4</td></tr>
+<tr><td style="text-align:center"><strong>10</strong></td><td><p><strong>zyBooks</strong> Ch. 28: Graphs <span class="changed">(28.1–28.9, combined)</span></p><p class="changed">Graph representations; <strong>BFS/DFS</strong>; <strong>Dijkstra's algorithm</strong> with a heap. PSADS: Graphs and Graph Algorithms.</p></td><td><ol><li>Muddiest Point</li><li>Concept Debate</li><li>Hands-On Skill</li><li>Knowledge Check</li><li>Virtual Lab</li><li>Team Project Final Report Submission</li><li>Team Project Final Presentation Submission</li></ol></td><td style="text-align:center">CO1, CO5</td></tr>
+</tbody></table></div>
+
+<section class="design-notes" id="design-notes">
+<h2>Design notes — what we took from CS 351 (planning only)</h2>
+<p class="stub-note">This section is for course designers and is not part of the student syllabus. Remove it before the Brightspace copy, along with the yellow highlighting.</p>
+
+<h3>Verdict: copy CS 351's shell; re-sequence the modules to make room for data structures</h3>
+<p>The CS 351 syllabus (6/6/2024) and schedule (10/7/2024) were reviewed. CS 351 already covers the whole discrete-math half of the CS 352 description: logic, sets, counting, probability, number theory, recursion, graphs, trees. It has no data structures, little Big-O, and no shortest-path algorithm. So the assessment design is copied as is, and the ten modules keep their zyBooks chapters, but some are condensed or moved to free room for hash maps, linked lists, stacks, queues, BSTs, heaps, and Dijkstra.</p>
+
+<div style="overflow-x:auto"><table class="criteria">
+<colgroup><col style="width: 30%" /><col style="width: 12%" /><col style="width: 58%" /></colgroup>
+<thead><tr><th>CS 351 element</th><th>Decision</th><th>Where it goes in CS 352</th></tr></thead>
+<tbody>
+<tr><td>Course description and 6 outcomes</td><td><span class="tag tag-drop">Replace</span></td><td>AAC-approved CS 352 description and 5 outcomes, quoted word for word.</td></tr>
+<tr><td>Assignment mix and weights (MP 5%, CD 5%, KC 10%, HOS 20%, VL 40%, TP 20%; 1,000 points)</td><td><span class="tag tag-keep">Keep</span></td><td>Unchanged.</td></tr>
+<tr><td>MP, CD, KC, HOS, VL descriptions and criteria tables</td><td><span class="tag tag-keep">Keep</span></td><td>Unchanged apart from adding “and data structures”; VLs that build a structure also report Big-O and a timing comparison.</td></tr>
+<tr><td>Team Project: research a discrete-math concept's real-life use</td><td><span class="tag tag-adapt">Adapt</span></td><td>Topic can also be a data structure; adds a small implementation, Big-O analysis, and comparison with an alternative (CO3, CO4). Phases, page count, and TP03 critical-thinking/collaboration rubric unchanged.</td></tr>
+<tr><td>Logic, Proofs, Sets (Modules 1–2)</td><td><span class="tag tag-keep">Keep</span></td><td>Same modules, now tied to program correctness (CO2) and memory representation (CO1).</td></tr>
+<tr><td>Functions + Boolean Algebra (Modules 3–4, 9.1–9.5)</td><td><span class="tag tag-adapt">Adapt</span></td><td>Condensed into Module 3, which adds hash maps.</td></tr>
+<tr><td>Relations / Digraphs (Modules 4–5, Ch. 14)</td><td><span class="tag tag-adapt">Adapt</span></td><td>14.1–14.4 kept in Module 4 with linked lists, stacks, queues; 14.6–14.10 optional.</td></tr>
+<tr><td>Computation/Algorithms + Induction &amp; Recursion (Module 6)</td><td><span class="tag tag-adapt">Adapt</span></td><td>Split into Module 5 (Big-O) and Module 6 (recurrences).</td></tr>
+<tr><td>Integer Properties, Counting, Probability (Modules 7–9)</td><td><span class="tag tag-adapt">Adapt</span></td><td>Number theory stays in Module 7; Counting and Probability merge into Module 8.</td></tr>
+<tr><td>Graphs + Trees (Modules 9–10)</td><td><span class="tag tag-adapt">Adapt</span></td><td>Trees move to Module 9 (BSTs, heaps); all of Graphs in Module 10 with BFS/DFS and Dijkstra.</td></tr>
+<tr><td>Textbooks: zyBooks (required), Litvin &amp; Litvin (recommended)</td><td><span class="tag tag-keep">Keep</span></td><td>Unchanged; free Runestone PSADS book added for the data-structures readings.</td></tr>
+<tr><td>University policies and support services (2024 text)</td><td><span class="tag tag-adapt">Adapt</span></td><td>Replaced with the current wording used in the 2025 IS 471 / AI 371 syllabi. The 2024 text names a specific Provost and has an older religious-accommodations deadline.</td></tr>
+</tbody></table></div>
+
+<h3>Open questions</h3>
+<ol>
+<li><p><strong>Is zyBooks still the right required text?</strong> It's a paid book, and its chapters don't cover data structures; the free PSADS book carries that half. Options: keep zyBooks (minimal change), switch to a zyBooks edition that covers data structures, or make PSADS the main text and zyBooks recommended.</p></li>
+<li><p><strong>Module 3 load.</strong> Functions, Boolean algebra, and hash maps in one module is heavy. If it runs long, Boolean algebra (no longer in the description) is the first thing to trim.</p></li>
+<li><p><strong>Where labs run.</strong> CS 351 labs run inside zyBooks. If PSADS-based labs are added, decide whether they also run there or in GitHub Codespaces like the AI courses.</p></li>
+<li><p><strong>Course record.</strong> Effective date is not set.</p></li>
+</ol>
+</section>
+
+    </div>
+    <script src="../assets/nav.js"></script>
+</body>
+</html>

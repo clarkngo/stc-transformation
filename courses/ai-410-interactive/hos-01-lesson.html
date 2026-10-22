@@ -66,7 +66,7 @@
   </ol>
   <h3>Your two weeks at a glance</h3>
   <div class="flow">
-    <a href="#lecture"><span class="n">Wk 1 · Mon</span><span class="t">Lecture</span><span class="w">~35 min, 3 parts</span></a>
+    <a href="#lecture"><span class="n">Wk 1 · Mon</span><span class="t">Lecture</span><span class="w">~30 min, 3 parts</span></a>
     <a href="#muddiest"><span class="n">Wk 1 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a>
     <a href="#debate"><span class="n">Wk 1 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a>
     <a href="#create"><span class="n">Wk 1 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">Engagement · 20% of HOS</span></a>
@@ -87,15 +87,15 @@
 
 
 <section class="module card" id="lecture">
-  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: from chat box to agent</h2><div class="module-meta"><span class="tag">≈ 35 min with videos</span><span class="tag blue">3 short parts</span><span class="tag">O1</span></div></div></div>
-  <p class="small muted">Three short segments instead of one long one — pause after each and try the linked check before moving on. If something stays fuzzy, that's exactly what your <a href="#muddiest">Muddiest Point</a> is for.</p>
+  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: from chat box to agent</h2><div class="module-meta"><span class="tag">≈ 30 min with videos</span><span class="tag blue">3 short parts</span><span class="tag">O1</span></div></div></div>
+  <p class="small muted">Three short segments instead of one long one: watch the video, read the notes, then try the quick check before moving on. The notes cover everything you need, so the videos are a second explanation rather than a requirement. If something stays fuzzy, that's exactly what your <a href="#muddiest">Muddiest Point</a> is for.</p>
 
   <div class="lecture-part">
     <h3>Part 1 — Anatomy of a full-stack AI app <small>≈ 5 min</small></h3>
     <div class="watch">
-      <div class="watch-head"><span class="label">Watch first</span><span class="small muted">1:15 · Codecademy</span></div>
+      <div class="watch-head"><span class="label">Optional video</span><span class="small muted">1:15 · Codecademy</span></div>
       <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/1mXrxc_sv1o" title="Front-end vs back-end: What's the difference? (Codecademy)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
-      <p class="watch-note">A quick picture of the two halves of every app you'll build. Watch for what each half is responsible for, then read on for the part the video skips: why the API key has to live in the backend. <a href="https://www.youtube.com/watch?v=1mXrxc_sv1o" target="_blank" rel="noopener">Open on YouTube</a> (captions available).</p>
+      <p class="watch-note">A quick picture of the two halves of every app you'll build. Watch for what each half is responsible for, then read on for the part the video skips: why the API key has to live in the backend. <a href="https://www.youtube.com/watch?v=1mXrxc_sv1o" target="_blank" rel="noopener">Open on YouTube</a>. Auto-generated captions only; everything in it is covered in the notes below.</p>
     </div>
     <p>Every app you build this term has the same three-piece shape. The <strong>frontend</strong> (a Streamlit page now, an Expo mobile app in HOS 4) collects the user's message and shows the reply. The <strong>backend</strong> (a FastAPI server) receives that message over HTTP, adds anything the model needs, calls the LLM, and runs any tools. The <strong>LLM</strong> (Google's Gemini, via the free API) receives text and returns text — or, as you'll see in Part 3, a structured request to run a function.</p>
     <div class="arch" aria-label="Frontend to backend to LLM">
@@ -109,6 +109,19 @@
       <span class="label">Worked example</span>
       <p>A classmate ships a quick demo that calls Gemini directly from the frontend, with the API key pasted into the JavaScript. It works — and within an hour of posting the link, anyone who opens the browser's developer tools can copy the key and spend its quota. Moving the call behind a backend endpoint doesn't make the app smarter; it makes the secret unreachable. That's the first reason the backend exists. The second is that tools (Part 3) have to run somewhere trustworthy too.</p>
     </div>
+    <p>The two halves talk over <strong>HTTP</strong>. The frontend sends a request (<code>POST /chat</code> with a small JSON body such as <code>{"message": "What's 342 times 87?"}</code>) and the backend answers with JSON (<code>{"reply": "342 × 87 = 29,754."}</code>). That request and response are the <em>contract</em> between the halves. As long as it stays the same, you can replace either side: HOS 4 adds a phone app without touching the backend's AI code at all.</p>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>Putting the API key anywhere the user's device can see it</b>: frontend code, a mobile app, or a public repo. It belongs in <code>backend/.env</code>, which is git-ignored.</li>
+        <li><b>Committing <code>.env</code>.</b> If a key ever lands in a commit, treat it as leaked: delete it in Google AI Studio and make a new one.</li>
+        <li><b>Calling the model from the frontend "just for now."</b> Shortcuts like this tend to ship. Start with the backend in the middle.</li>
+      </ul>
+    </div>
+    <div class="callout violet">
+      <span class="label">Quick check</span>
+      <p>Name two things the backend does that the frontend must never do, and one reason for each.</p>
+    </div>
   </div>
 
   <div class="lecture-part">
@@ -116,7 +129,7 @@
     <div class="watch">
       <div class="watch-head"><span class="label">Watch first</span><span class="small muted">7:58 · 3Blue1Brown</span></div>
       <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/LPZh9BOjkQs" title="Large Language Models explained briefly (3Blue1Brown)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
-      <p class="watch-note">Watch for two ideas this lesson builds on: the model predicts the next word piece from probabilities, and it samples, so the same input can give different answers. <a href="https://www.youtube.com/watch?v=LPZh9BOjkQs" target="_blank" rel="noopener">Open on YouTube</a> (captions available).</p>
+      <p class="watch-note">Watch for two ideas this lesson builds on: the model predicts the next word piece from probabilities, and it samples, so the same input can give different answers. <a href="https://www.youtube.com/watch?v=LPZh9BOjkQs" target="_blank" rel="noopener">Open on YouTube</a> (human captions).</p>
       <p class="deeper"><b>Go deeper (optional):</b> IBM Technology, <a href="https://www.youtube.com/watch?v=vD0E3EUb8-8" target="_blank" rel="noopener">Context Engineering vs. Prompt Engineering</a> (7:52). It explains the difference in the table below, then goes on to retrieval and agents, which you'll meet in Module 2 and later courses.</p>
     </div>
     <p>An LLM reads a sequence of <strong>tokens</strong> (word pieces) and predicts the next one, over and over, until it decides to stop. Everything it "knows" about your conversation is whatever fits in its <strong>context window</strong> for that single request — the system instruction, the chat history your backend chose to resend, any retrieved documents, and the user's latest message. It doesn't remember the last request unless you send it again.</p>
@@ -128,18 +141,30 @@
       <tr><td><b>Example</b></td><td>"Answer in two sentences, cite the policy."</td><td>Resend only the last 6 turns; attach the 3 most relevant policy chunks; list the tools available.</td></tr>
       <tr><td><b>Where you'll see it</b></td><td>Every HOS</td><td>Tool declarations (HOS 1), retrieval (HOS 2), trace review (HOS 4)</td></tr>
     </table></div>
+    <div class="callout">
+      <span class="label">Worked example</span>
+      <p>A student types "I'm Dana," then "What's my name?" The Streamlit page shows both messages, so it looks like a conversation with memory. The model answers "I don't know your name." In the HOS 1 build, the frontend keeps the chat on screen, but each <code>POST /chat</code> sends only the latest message, and the backend starts a fresh request to Gemini every time. What the user sees and what the model sees are different things. If you want the model to remember, your backend has to send the earlier turns.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>Believing the model remembers you.</b> It only sees what's in this request. History is your backend's job.</li>
+        <li><b>Testing once.</b> Sampling means one good answer proves little. Run important checks several times.</li>
+        <li><b>Sending ever-longer history.</b> Every resent turn costs tokens and eventually hits the context window. Real apps trim or summarise.</li>
+      </ul>
+    </div>
     <div class="callout violet">
       <span class="label">Quick check</span>
-      <p>If you delete the chat-history list in your backend, does the model "forget" the conversation — or does it still remember? Decide, then confirm by trying it in Week 1's build.</p>
+      <p>The Streamlit page keeps a list of every message, but the backend receives only the latest one. Does the model remember earlier turns? Decide, then confirm by trying it in Week 1's build.</p>
     </div>
   </div>
 
   <div class="lecture-part">
-    <h3>Part 3 — The agentic loop &amp; tool calling <small>≈ 15 min</small></h3>
+    <h3>Part 3 — The agentic loop &amp; tool calling <small>≈ 10 min</small></h3>
     <div class="watch">
       <div class="watch-head"><span class="label">Watch first</span><span class="small muted">2:55 · Google Cloud Tech</span></div>
       <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/mVXrdvXplj0" title="Function calling with the Gemini API (Google Cloud Tech)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
-      <p class="watch-note">The same Gemini API you'll use in the build. Watch for the moment the model asks for a function instead of answering, and who actually runs it. The model names in the video may be older; use <code>gemini-3.8-flash</code>, as in the hands-on guide. <a href="https://www.youtube.com/watch?v=mVXrdvXplj0" target="_blank" rel="noopener">Open on YouTube</a> (captions available).</p>
+      <p class="watch-note">The same Gemini API you'll use in the build. Watch for the moment the model asks for a function instead of answering, and who actually runs it. The model names in the video may be older; use <code>gemini-3.8-flash</code>, as in the hands-on guide. <a href="https://www.youtube.com/watch?v=mVXrdvXplj0" target="_blank" rel="noopener">Open on YouTube</a> (human captions).</p>
       <p class="deeper"><b>Go deeper (optional):</b> IBM Technology, <a href="https://www.youtube.com/watch?v=h8gMhXYAv1k" target="_blank" rel="noopener">What is Tool Calling?</a> (4:56). The same idea without tying it to one vendor; its second half covers a variation that's beyond this module.</p>
     </div>
     <p>A plain chat app is one round trip: message in, text out. An <strong>agent</strong> adds a loop. Your backend tells the model which functions exist (a name, a description, and a parameter schema). When the model decides a function would help, it doesn't reply with text — it replies with a <strong>function call</strong>: a name and arguments. Your backend runs the real function, sends the result back, and asks again. The loop ends when the model replies with plain text.</p>
@@ -162,6 +187,19 @@ calculate_tool = {
     },
 }</code></pre>
     <p>Notice what the model <em>never</em> does: it never runs the function. It only asks. That's the property that makes tool calling safe to reason about — and it's why deciding <em>which</em> functions to expose is an engineering judgment, not a detail (you'll practice that in the <a href="#challenge">Application Challenge</a>).</p>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>A vague tool description.</b> The description is the only thing the model reads to decide when to call a tool. "Does math" gets ignored; "Evaluate a basic arithmetic expression. Use for any math." gets used.</li>
+        <li><b>Forgetting to send the result back.</b> If the backend runs the tool but never returns a <code>function_response</code>, the model never gets to answer.</li>
+        <li><b>No limit on the loop.</b> A model that keeps asking for tools can loop forever. Cap the number of turns.</li>
+        <li><b>Letting a tool crash the request.</b> Wrap the tool in try/except and return the error as data, so the model can explain it.</li>
+      </ul>
+    </div>
+    <div class="callout violet">
+      <span class="label">Quick check</span>
+      <p>A user asks "What's 2 + 2, and what's 10 times that?" How many times might the loop go round, and what does the backend send Gemini on each pass?</p>
+    </div>
     <div class="callout">
       <span class="label">Try it before the build</span>
       <p>Open the <a href="sim01-agentic-loop.html"><strong>Agentic Loop Simulator</strong></a> and step through "What's 342 times 87?", then "Tell me a joke", then "Calculate 12 / (3 -". Watch where each one exits the loop.</p>

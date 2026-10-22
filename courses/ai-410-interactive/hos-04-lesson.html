@@ -96,7 +96,7 @@
   </ol>
   <h3>Your two weeks at a glance</h3>
   <div class="flow">
-    <a href="#lecture"><span class="n">Wk 7 · Mon</span><span class="t">Lecture</span><span class="w">~75 min, 3 parts</span></a>
+    <a href="#lecture"><span class="n">Wk 7 · Mon</span><span class="t">Lecture</span><span class="w">~15 min, 3 parts</span></a>
     <a href="#muddiest"><span class="n">Wk 7 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a>
     <a href="#debate"><span class="n">Wk 7 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a>
     <a href="#create"><span class="n">Wk 7 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">Engagement · 20% of HOS</span></a>
@@ -118,13 +118,44 @@
 
 
 <section class="module card" id="lecture">
-  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: production shape — mobile, push, and seeing inside</h2><div class="module-meta"><span class="tag">≈ 75 min</span><span class="tag blue">3 short parts</span><span class="tag">O4 · O5</span></div></div></div>
-  <p class="small muted">Three short segments. Pause after each and try the quick check. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p>
+  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: production shape — mobile, push, and seeing inside</h2><div class="module-meta"><span class="tag">≈ 15 min reading</span><span class="tag blue">3 short parts</span><span class="tag">O4 · O5</span></div></div></div>
+  <p class="small muted">Three short segments: read the notes, then try the quick check before moving on. The two short videos are optional extras; the notes cover everything you need. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p>
 
   <div class="lecture-part">
-    <h3>Part 1 — A mobile client for the same backend <small>≈ 20 min</small></h3>
-    <p>In HOS 1 you split the app into a frontend and a backend. Here's the payoff: adding a phone app doesn't touch the backend's AI logic at all. The <strong>Expo</strong> (React Native) chat screen calls the same <code>POST /chat</code> endpoint Streamlit did. You run it on your own phone through the free <strong>Expo Go</strong> app by scanning a QR code.</p>
-    <p>Two practical details. Your phone and your Codespace aren't on the same network, so start Expo with <code>npx expo start --tunnel</code> (the default LAN mode just appears to hang), and make the backend's port public so the phone can reach it. On iOS, Expo Go also needs you signed in to the same Expo account in the terminal and in the app.</p>
+    <h3>Part 1 — A mobile client for the same backend <small>≈ 5 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Optional video</span><span class="small muted">2:39 · Fireship</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/vFW_TxKLyrE" title="Expo in 100 Seconds (Fireship)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">A fast tour of what Expo is. Watch for "one JavaScript codebase, real iOS and Android apps" and for Expo Go, the app you'll run your project in. <a href="https://www.youtube.com/watch?v=vFW_TxKLyrE" target="_blank" rel="noopener">Open on YouTube</a>. Auto-generated captions only; everything in it is covered in the notes below.</p>
+    </div>
+    <p>In HOS 1 you split the app into a frontend and a backend. Here's the payoff: adding a phone app doesn't touch the backend's AI logic at all. The <strong>Expo</strong> (React Native) chat screen calls the same <code>POST /chat</code> endpoint Streamlit did, with the same JSON in and the same JSON out. The backend can't tell which client is asking, and it doesn't need to.</p>
+    <div class="arch" aria-label="Two clients sharing one backend">
+      <div class="box"><b>Streamlit page</b>in the browser</div>
+      <div class="arrow">⇄</div>
+      <div class="box key"><b>Backend 🔑</b>FastAPI <code>POST /chat</code>, unchanged. Still the only place the API key lives.</div>
+      <div class="arrow">⇄</div>
+      <div class="box"><b>Expo app</b>on your phone, through Expo Go</div>
+    </div>
+    <p><strong>React Native</strong> lets you write a phone app in JavaScript and React; <strong>Expo</strong> is the toolkit around it that handles building and running. During development you don't install anything through an app store: the free <strong>Expo Go</strong> app on your phone loads your project when you scan a QR code.</p>
+    <p>Three practical details decide whether the phone can reach your code at all:</p>
+    <ol class="seq">
+      <li><b>Tunnel mode.</b> Your phone and your Codespace aren't on the same network, so start Expo with <code>npx expo start --tunnel</code>. The default LAN mode just appears to hang.</li>
+      <li><b>A public backend port.</b> The phone calls your backend over the internet, so the Codespace's backend port must be set to public, and the app must use that public URL, not <code>localhost</code>.</li>
+      <li><b>CORS.</b> When the Expo app runs in a web browser, the browser blocks calls to a different domain unless the backend allows them, which is what the <code>CORSMiddleware</code> lines in the guide do.</li>
+    </ol>
+    <p>On iOS, Expo Go also needs you signed in to the same Expo account in the terminal and in the app.</p>
+    <div class="callout">
+      <span class="label">Worked example</span>
+      <p>A student's app loads, but every message shows "Network request failed." The chat screen calls <code>http://localhost:8000/chat</code>. On a laptop that's the backend; on a phone, <code>localhost</code> means <em>the phone itself</em>, where nothing is listening. Switching to the Codespace's public forwarded URL fixes it. No backend code changed, because nothing in the backend was wrong.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>Using <code>localhost</code> from the phone.</b> It points at the phone. Use the public URL.</li>
+        <li><b>Leaving the backend port private.</b> The phone gets an error or a sign-in page instead of JSON.</li>
+        <li><b>Putting the Gemini key in the mobile app "just for testing."</b> Anything shipped in an app can be extracted from it. The key stays in the backend, exactly as in HOS 1.</li>
+      </ul>
+    </div>
     <div class="callout violet">
       <span class="label">Quick check</span>
       <p>Your Streamlit frontend and your phone app both call <code>/chat</code>. Where does the Gemini API key live now, and did anything about that need to change?</p>
@@ -132,32 +163,87 @@
   </div>
 
   <div class="lecture-part">
-    <h3>Part 2 — Push notifications: a chain that fails silently <small>≈ 20 min</small></h3>
-    <p>HOS 3 moved document ingestion into a background job — which means the user is no longer waiting when it finishes. A <strong>push notification</strong> closes that loop: "your document is ready," delivered even if the app is closed. It only works if every link holds:</p>
+    <h3>Part 2 — Push notifications: a chain that fails silently <small>≈ 5 min</small></h3>
+    <p>HOS 3 moved document ingestion into a background job, which means the user is no longer waiting when it finishes. Polling <code>GET /jobs/{id}</code> works while the app is open; a <strong>push notification</strong> closes the loop even when it isn't: "your document is ready," delivered to a closed app.</p>
+    <p>Your backend can't reach a phone directly. Phones only accept pushes from their platform's push service (Apple's for iPhones, Google's for Android). Expo's push service sits in front of both, so your backend sends one kind of request and Expo forwards it. The address is an <strong>Expo push token</strong>, a string that identifies one app on one device.</p>
+    <p>It only works if every link holds:</p>
     <ol class="seq">
       <li>The app asks for, and gets, notification permission.</li>
-      <li>The phone gets an <strong>Expo push token</strong> — an address for <em>this device</em>. (This needs a free EAS project ID: run <code>npx eas init</code> once.)</li>
+      <li>The phone gets an <strong>Expo push token</strong>, an address for <em>this device</em>. (This needs a free EAS project ID: run <code>npx eas init</code> once.)</li>
       <li>The app sends the token to the backend: <code>POST /register-device</code>.</li>
       <li>The upload includes the <code>device_id</code>, so the job knows whom to notify.</li>
       <li>When the job finishes, the backend sends a message to Expo's push service, addressed to that token.</li>
-      <li>Expo delivers it to the phone.</li>
+      <li>Expo hands it to Apple's or Google's service, which delivers it to the phone.</li>
     </ol>
-    <p>Break any link and nothing errors — the notification just never comes. Worse, Expo's push service returns <code>200 OK</code> even for a stale or invalid token; the real error is inside the response body. And one platform limit: <strong>Expo Go on Android no longer supports push</strong> (SDK 53+). Chat works on Android, but to prove push, use an iPhone or a free development build.</p>
+    <p>Step 5 is a single HTTP request. Its response is where silent failures hide:</p>
+<pre tabindex="0"><code>resp = requests.post(
+    "https://exp.host/--/api/v2/push/send",
+    json={"to": push_token, "title": "Document ready", "body": "returns.pdf is searchable now"},
+)
+# resp.status_code is 200 even when delivery failed.
+# The real outcome is in the body:
+#   {"data": {"status": "ok", ...}}
+#   {"data": {"status": "error", "details": {"error": "DeviceNotRegistered"}}}</code></pre>
+    <p>Break any link and nothing errors: the notification just never comes. Expo's push service returns <code>200 OK</code> even for a stale or invalid token, so a backend that only checks the status code reports success for a message nobody will see. And one platform limit: <strong>Expo Go on Android no longer supports push</strong> (SDK 53 and later). Chat works on Android, but to prove push, use an iPhone or a free development build.</p>
+    <div class="callout">
+      <span class="label">Worked example</span>
+      <p>Push worked yesterday and doesn't today. The job finished (its status is <code>finished</code>), the backend log shows the request to Expo, and the response was 200. Reading the body shows <code>"DeviceNotRegistered"</code>: the student reinstalled Expo Go, which issued a new token, and the backend still has the old one. Re-registering the device fixes it. The lesson is to walk the chain in order and read each link's evidence rather than guessing.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>Trusting the 200.</b> Always read the response body from Expo's push service.</li>
+        <li><b>Testing push in Expo Go on Android.</b> It can't receive pushes any more; use an iPhone or a development build.</li>
+        <li><b>Forgetting the <code>device_id</code> on upload.</b> The job finishes fine but has no one to notify.</li>
+      </ul>
+    </div>
+    <div class="callout violet">
+      <span class="label">Quick check</span>
+      <p>The job's status is <code>finished</code> but no notification arrived. List the links you'd check, in order, and the evidence you'd look for at each one.</p>
+    </div>
   </div>
 
   <div class="lecture-part">
-    <h3>Part 3 — Observability: traces, spans, and scores <small>≈ 35 min</small></h3>
-    <p>Logs tell you that something happened. A <strong>trace</strong> tells you the whole story of one request: a tree of <strong>spans</strong>, one per step, each with its own timing, inputs, and outputs. In this HOS, <strong>Langfuse</strong>'s <code>@observe()</code> decorator on <code>run_agent()</code> and <code>retrieve()</code> produces a trace where retrieval and generation are separate, nested spans:</p>
+    <h3>Part 3 — Observability: traces, spans, and scores <small>≈ 5 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Optional video</span><span class="small muted">10:09 · Langfuse</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/2E8iTvGo9Hs" title="10 min Walkthrough of Langfuse (Langfuse)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">A tour of the dashboard you'll use, from the people who make it. Watch the tracing and scores sections; prompt management and datasets are beyond this module. <a href="https://www.youtube.com/watch?v=2E8iTvGo9Hs" target="_blank" rel="noopener">Open on YouTube</a>. Auto-generated captions only; everything in it is covered in the notes below.</p>
+    </div>
+    <p>Logs tell you that something happened. A <strong>trace</strong> tells you the whole story of one request: a tree of <strong>spans</strong>, one per step, each with its own timing, inputs and outputs. In this HOS, <strong>Langfuse</strong>'s <code>@observe()</code> decorator on <code>run_agent()</code> and <code>retrieve()</code> produces a trace where retrieval and generation are separate, nested spans:</p>
+<pre tabindex="0"><code>@observe()
+def retrieve(query, k=5):      # becomes a child span: its own timing, input and output
+    ...
+
+@observe()
+def run_agent(message):        # becomes the top-level span for the whole request
+    chunks = retrieve(message) # called inside, so it nests under run_agent
+    ...</code></pre>
+    <p>You add one line per function and get the nesting for free, because Langfuse records which observed function called which.</p>
     <div class="wf-demo" aria-label="Illustrative trace waterfall">
       <div class="r"><span>run_agent</span><div class="t"><div class="b root" style="left:0;width:100%"></div></div><span>1.9 s</span></div>
       <div class="r"><span>&nbsp;&nbsp;retrieve</span><div class="t"><div class="b" style="left:2%;width:17%"></div></div><span>0.32 s</span></div>
       <div class="r"><span>&nbsp;&nbsp;generation</span><div class="t"><div class="b g" style="left:21%;width:77%"></div></div><span>1.47 s</span></div>
     </div>
-    <p class="small muted">Illustrative. Real traces also show tokens, inputs, and outputs per span.</p>
-    <p>Timing is only half of it. AI output is probabilistic, so "did the request succeed?" isn't enough — you also need "was the answer any good?" That's what a <strong>score</strong> is: a number attached to a trace. This HOS uses <strong>faithfulness</strong>: is the answer supported by the retrieved context, or did the model add things? Scores accumulate across runs, so you can see whether quality is trending up or down after a change — the "appropriate observability tools and metrics for assessing probabilistic outputs" in Outcome O4.</p>
+    <p class="small muted">Illustrative. Real traces also show tokens, inputs and outputs per span.</p>
+    <p>Read a waterfall like this from the top. The parent bar is the whole request. Each child bar shows where inside it time went: here, three quarters of the request is the model generating the answer, so making retrieval faster would barely help.</p>
+    <p>Timing is only half of it. AI output is probabilistic, so "did the request succeed?" isn't enough; you also need "was the answer any good?" That's what a <strong>score</strong> is: a number attached to a trace. This HOS uses <strong>faithfulness</strong>: is the answer supported by the retrieved context, or did the model add things? You'll write your own <code>score_faithfulness(answer, context)</code> in Understand &amp; Refine. A simple version checks what share of the answer's sentences have support in the retrieved chunks: 3 of 3 supported scores 1.0, 2 of 3 scores 0.67.</p>
+    <p>Scores accumulate across runs, so you can see whether quality is trending up or down after a change. That's the "appropriate observability tools and metrics for assessing probabilistic outputs" in Outcome O4: one score tells you little; a trend tells you whether your last change helped.</p>
     <div class="callout">
       <span class="label">Worked example</span>
-      <p>A user says the assistant told them Northwind offers gift wrapping. You open that request's trace. The retrieve span returned two chunks about packaging and shipping — nothing about gift wrap. The generation span's output stretched them into a policy. Faithfulness scored 0.67. Diagnosis in two minutes: a retrieval-threshold problem (HOS 2), not a model problem.</p>
+      <p>A user says the assistant told them Northwind offers gift wrapping. You open that request's trace. The retrieve span returned two chunks about packaging and shipping, nothing about gift wrap. The generation span's output stretched them into a policy. Faithfulness scored 0.67. Diagnosis in two minutes: a retrieval and grounding problem (HOS 2), not a model problem.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>Expecting traces without keys.</b> With no Langfuse keys set, the app still works and simply sends nothing. That's by design, not a bug.</li>
+        <li><b>Decorating only the top function.</b> You get one bar for the whole request and can't see where time went. Decorate the steps too.</li>
+        <li><b>Treating one score as a verdict.</b> A heuristic score is noisy. Look at the trend, and read the trace behind any surprising number.</li>
+      </ul>
+    </div>
+    <div class="callout violet">
+      <span class="label">Quick check</span>
+      <p>A request takes 6 seconds. The trace shows <code>retrieve</code> at 0.3 s and generation at 5.5 s. Where would you look first to speed it up, and what would you <em>not</em> bother optimising?</p>
     </div>
     <div class="callout">
       <span class="label">Try it before the build</span>

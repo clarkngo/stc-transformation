@@ -81,7 +81,7 @@
   </ol>
   <h3>Your two weeks at a glance</h3>
   <div class="flow">
-    <a href="#lecture"><span class="n">Wk 5 · Mon</span><span class="t">Lecture</span><span class="w">~70 min, 3 parts</span></a>
+    <a href="#lecture"><span class="n">Wk 5 · Mon</span><span class="t">Lecture</span><span class="w">~40 min, 3 parts</span></a>
     <a href="#muddiest"><span class="n">Wk 5 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a>
     <a href="#debate"><span class="n">Wk 5 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a>
     <a href="#create"><span class="n">Wk 5 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">Engagement · 20% of HOS</span></a>
@@ -103,21 +103,65 @@
 
 
 <section class="module card" id="lecture">
-  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: making an unpredictable system dependable</h2><div class="module-meta"><span class="tag">≈ 70 min</span><span class="tag blue">3 short parts</span><span class="tag">O3</span></div></div></div>
-  <p class="small muted">Three short segments. Pause after each and try the quick check. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p>
+  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: making an unpredictable system dependable</h2><div class="module-meta"><span class="tag">≈ 40 min with videos</span><span class="tag blue">3 short parts</span><span class="tag">O3</span></div></div></div>
+  <p class="small muted">Three short segments: watch the video, read the notes, then try the quick check before moving on. The notes cover everything you need, so the videos are a second explanation rather than a requirement. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p>
 
   <div class="lecture-part">
-    <h3>Part 1 — Nondeterminism reaches your code <small>≈ 20 min</small></h3>
-    <p>In HOS 1 you saw that the same prompt can produce different outputs. Until now that mostly affected wording. But when the model produces <em>tool arguments</em>, its output goes straight into your code — and code is not forgiving. The model might send <code>{"expr": "25*4"}</code> instead of <code>{"expression": ...}</code>, an empty string, a number where a string belongs, or a perfectly-formed <code>"sqrt(banana)"</code>.</p>
-    <p>The course description calls this "probabilistic logic for handling nondeterministic outputs." In practice it means one habit: <strong>treat model output like user input</strong>. You wouldn't pass a web form's text straight into a database; don't pass a model's arguments straight into a function. Check them against a <strong>schema</strong> first — in Python, a Pydantic model that says exactly what shape and values are allowed.</p>
+    <h3>Part 1 — Nondeterminism reaches your code <small>≈ 15 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Watch first</span><span class="small muted">9:37 · IBM Technology</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/cfqtFvWOfg0" title="Why Large Language Models Hallucinate (IBM Technology)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">The video is about wrong <em>facts</em>; this part is about wrong <em>structure</em>, but the root cause is the same: the model produces likely output, not checked output. Watch for why fluent text says nothing about whether it's correct. <a href="https://www.youtube.com/watch?v=cfqtFvWOfg0" target="_blank" rel="noopener">Open on YouTube</a> (human captions).</p>
+    </div>
+    <p>In HOS 1 you saw that the same prompt can produce different outputs. Until now that mostly affected wording. But when the model produces <em>tool arguments</em>, its output goes straight into your code, and code is not forgiving. The model might send <code>{"expr": "25*4"}</code> instead of <code>{"expression": ...}</code>, an empty string, a number where a string belongs, or a perfectly formed <code>"sqrt(banana)"</code>.</p>
+    <p>The course description calls this "probabilistic logic for handling nondeterministic outputs." In practice it means one habit: <strong>treat model output like user input</strong>. You wouldn't pass a web form's text straight into a database; don't pass a model's arguments straight into a function. Check them against a <strong>schema</strong> first: in Python, a Pydantic model that says exactly what shape and values are allowed.</p>
+    <p>It helps to sort the ways model output goes wrong, because each needs a different defence:</p>
+    <div class="table-wrap" tabindex="0"><table class="t">
+      <tr><th>What goes wrong</th><th>Example</th><th>Caught by a schema?</th></tr>
+      <tr><td><b>Shape</b>: missing or misnamed field</td><td><code>{"expr": "25*4"}</code></td><td>Yes</td></tr>
+      <tr><td><b>Type</b>: wrong kind of value</td><td><code>{"expression": 25}</code></td><td>Yes</td></tr>
+      <tr><td><b>Rule</b>: right type, not allowed</td><td><code>{"text": "   "}</code> (blank)</td><td>Yes, with a validator</td></tr>
+      <tr><td><b>Meaning</b>: valid, but not what the user asked</td><td>User asked 25 + 4; model sent <code>"25*4"</code></td><td>No</td></tr>
+    </table></div>
+    <p>The HOS 3 build guards the <code>calculate</code> tool with the simplest possible schema, and the Understand &amp; Refine step adds a rule to a second tool:</p>
+<pre tabindex="0"><code>class CalculateArgs(BaseModel):
+    expression: str                  # must exist, must be a string
+
+class WordCountArgs(BaseModel):
+    text: str
+
+    @field_validator("text")
+    @classmethod
+    def not_blank(cls, v):
+        if not v.strip():
+            raise ValueError("text must not be empty")
+        return v</code></pre>
     <div class="callout">
       <span class="label">Worked example</span>
-      <p>A user types "calculate the square root of a banana." The HOS 2 app passes the model's arguments straight to <code>calculate()</code>, which raises an exception — HTTP 500, and the user sees a generic error. With a schema that allows only digits, operators, and parentheses, the bad argument is caught <em>before</em> the tool runs, and the app can decide what to do next instead of crashing.</p>
+      <p>A user types "calculate the square root of a banana." The HOS 2 app passes the model's arguments straight to <code>calculate()</code>, which raises an exception: HTTP 500, and the user sees a generic error. With a schema in front of the tool, a malformed argument is caught <em>before</em> the tool runs, and the app decides what happens next instead of crashing. A stricter schema could go further and allow only digits, operators and parentheses, so <code>"sqrt(banana)"</code> never reaches the tool at all.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>"It worked when I tried it."</b> One success says little about a nondeterministic system. Evaluate with many runs and deliberately awkward inputs.</li>
+        <li><b>Validating inside the tool instead of before it.</b> By then the bad value is already in your code. Validate at the boundary.</li>
+        <li><b>Assuming a schema catches everything.</b> It checks shape, type and rules, never meaning.</li>
+      </ul>
+    </div>
+    <div class="callout violet">
+      <span class="label">Quick check</span>
+      <p>For each, say whether <code>CalculateArgs</code> rejects it: <code>{"expression": "2+2"}</code>, <code>{"expression": 4}</code>, <code>{}</code>, <code>{"expression": "2+2", "note": "hi"}</code>. (Pydantic ignores extra fields by default.)</p>
     </div>
   </div>
 
   <div class="lecture-part">
-    <h3>Part 2 — Guardrails: validate, retry with feedback, fail to data <small>≈ 25 min</small></h3>
+    <h3>Part 2 — Guardrails: validate, retry with feedback, fail to data <small>≈ 5 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Watch first</span><span class="small muted">1:27 · Red Hat</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/FLOXGvqdwbM" title="What are guardrails for LLMs? (Red Hat)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">A short overview of guardrails in general: checks placed around a model's input and output. This HOS builds one specific kind, an output check on tool arguments. <a href="https://www.youtube.com/watch?v=FLOXGvqdwbM" target="_blank" rel="noopener">Open on YouTube</a> (human captions).</p>
+    </div>
+    <p>A <strong>guardrail</strong> is code that stands between the model and the rest of your system and decides what gets through. The HOS 3 guardrail has three moves:</p>
     <div class="pipe-row">
       <div class="box"><b>model output</b>tool args</div><div class="arrow">→</div>
       <div class="box"><b>validate</b>Pydantic schema</div><div class="arrow">→</div>
@@ -136,39 +180,85 @@
             return schema.model_validate(raw)   # valid → done
         except ValidationError as e:
             hint = str(e)                       # tell the next attempt what was wrong
-    return {"error": "could not produce valid arguments"}</code></pre>
-    <p>Three design choices are doing the work. <strong>Retrying</strong> gives a nondeterministic system another roll. <strong>Feeding the error back</strong> makes the next roll better than the first — a blind retry repeats the same mistake. And <strong>failing to data</strong> (<code>{"error": ...}</code>, not an exception) keeps the request alive so the model can explain the problem to the user, like HOS 1's try/except.</p>
-    <p>One limit to keep in mind: a schema checks <em>shape</em>, not <em>meaning</em>. If the user asked for 25 + 4 and the model sends <code>"25*4"</code>, that passes every structural check. Some mistakes need a lookup or a human — you'll sort which is which in the Application Challenge.</p>
+    return {"error": "could not get a valid response"}</code></pre>
+    <p class="small muted">Simplified. The version in <code>guardrails.py</code> also logs each failed attempt and returns the last error alongside the message.</p>
+    <p>Three design choices are doing the work. <strong>Retrying</strong> gives a nondeterministic system another roll. <strong>Feeding the error back</strong> makes the next roll better than the first; a blind retry tends to repeat the same mistake. And <strong>failing to data</strong> (<code>{"error": ...}</code>, not an exception) keeps the request alive so the model can explain the problem to the user, like HOS 1's try/except.</p>
+    <p>Retries aren't free, so it's worth doing the arithmetic. If a call fails validation 30% of the time and attempts are independent, then 70% of requests need one call, 21% need two (fail, then pass), and 9% need all three. That's about 1.4 model calls per request on average, and the share that still fails after three attempts is 0.3 × 0.3 × 0.3 ≈ 2.7%. Feeding the error back usually makes later attempts more likely to pass than the first, so the real numbers tend to be better.</p>
+    <p>One limit to keep in mind: a schema checks <em>shape</em>, not <em>meaning</em>. If the user asked for 25 + 4 and the model sends <code>"25*4"</code>, that passes every structural check. Some mistakes need a lookup, a confirmation step, or a human. You'll sort which is which in the Application Challenge.</p>
+    <div class="callout">
+      <span class="label">Worked example</span>
+      <p>The model calls <code>word_count</code> with <code>{"text": "  "}</code>. Attempt 1 fails <code>not_blank</code>. The guardrail retries and adds the error ("text must not be empty") to the request. Attempt 2 comes back with the user's actual sentence, passes, and the tool runs. Without the hint, attempt 2 sees exactly the same request as attempt 1 and is likely to make the same choice. Without the guardrail at all, the tool would happily report "0 words," a wrong answer with no error anywhere.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>Retrying forever.</b> Always cap retries; an unbounded loop turns one bad request into a stuck server and a large bill.</li>
+        <li><b>Retrying blind.</b> Without the error message, a retry is just the same request again.</li>
+        <li><b>Raising instead of returning.</b> An exception after the last retry becomes an HTTP 500. Return a structured error the model can explain.</li>
+      </ul>
+    </div>
     <div class="callout violet">
       <span class="label">Quick check</span>
-      <p>Each retry costs another model call. If a tool fails validation 30% of the time and you allow 2 retries, roughly how many model calls does an average request make? Is that worth it?</p>
+      <p>Using the numbers above: if you raise <code>max_retries</code> from 2 to 4, what happens to the share of requests that still fail, and to the worst-case number of model calls per request? When would that trade be worth it?</p>
     </div>
   </div>
 
   <div class="lecture-part">
-    <h3>Part 3 — Async: moving slow work off the request path <small>≈ 25 min</small></h3>
-    <p>Ingesting a document means chunking it and embedding every chunk — easily many seconds for a long file. If <code>POST /documents</code> does that work inside the request, the user waits the whole time, and in a simple server so does everyone else. The fix is to split "accept the work" from "do the work."</p>
-    <div class="pipe-label">Request path — returns in milliseconds</div>
+    <h3>Part 3 — Async: moving slow work off the request path <small>≈ 20 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Watch first</span><span class="small muted">15:37 · IBM Technology</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/xErwDaOc-Gs" title="What is a Message Queue? (IBM Technology)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">The longest video this term, covering more than this part needs. Watch for the three roles (producer, queue, consumer) and why the producer doesn't wait. In this HOS, the API is the producer, Redis holds the queue, and <code>worker.py</code> is the consumer. <a href="https://www.youtube.com/watch?v=xErwDaOc-Gs" target="_blank" rel="noopener">Open on YouTube</a> (human captions).</p>
+    </div>
+    <p>Ingesting a document means chunking it and embedding every chunk, easily many seconds for a long file. If <code>POST /documents</code> does that work inside the request, the user waits the whole time, and in a simple server so does everyone else. The fix is to split "accept the work" from "do the work."</p>
+    <div class="pipe-label">Request path: returns in milliseconds</div>
     <div class="pipe-row">
       <div class="box"><b>POST /documents</b></div><div class="arrow">→</div>
       <div class="box"><b>enqueue job</b>Redis (Upstash)</div><div class="arrow">→</div>
-      <div class="box"><b>202 + job_id</b>immediately</div>
+      <div class="box"><b>{"job_id": …}</b>immediately</div>
     </div>
-    <div class="pipe-label">Background — a separate process: <code>python worker.py</code></div>
+    <div class="pipe-label">Background: a separate process, <code>python worker.py</code></div>
     <div class="pipe-row">
       <div class="box"><b>worker</b>takes the next job</div><div class="arrow">→</div>
       <div class="box"><b>chunk + embed</b>into Chroma</div><div class="arrow">→</div>
       <div class="box"><b>status</b>queued → started → finished / failed</div>
     </div>
-    <p>The client checks progress with <code>GET /jobs/{id}</code>. The worker is a <em>separate operating-system process</em>, started in its own terminal — which is why the most common HOS 3 bug is jobs stuck on <code>queued</code> forever: nobody started the worker. Nothing errors. The queue just waits.</p>
+    <p>The HOS 3 code uses <strong>RQ</strong> (Redis Queue), a small Python library. Enqueuing a job and checking on it are each a couple of lines:</p>
+<pre tabindex="0"><code>@app.post("/documents")
+def upload_document(body: UploadRequest):
+    job = queue.enqueue(ingest_document_job, body.doc_path)   # store the job, don't run it
+    return {"job_id": job.id}
+
+@app.get("/jobs/{job_id}")
+def job_status(job_id: str):
+    job = Job.fetch(job_id, connection=redis_conn)
+    return {"status": job.get_status(), "result": job.result}</code></pre>
+    <p>Notice that <code>upload_document</code> never calls <code>ingest_document_job</code>. It only records "someone should run this, with this argument" in Redis. The worker is a <em>separate operating-system process</em>, started in its own terminal, that waits for jobs and runs them. That's why the most common HOS 3 bug is jobs stuck on <code>queued</code> forever: nobody started the worker. Nothing errors. The queue just waits.</p>
+    <p>The client finds out what happened by <strong>polling</strong>: asking <code>GET /jobs/{id}</code> every second or two until the status is <code>finished</code> or <code>failed</code>. HOS 4 replaces polling with a push notification, so the user can close the app and still hear when the job is done.</p>
+    <div class="callout">
+      <span class="label">Worked example</span>
+      <p>Inline: a 40-page PDF takes 25 seconds to ingest, so <code>POST /documents</code> takes 25 seconds, and a student who sends "hi" to <code>/chat</code> meanwhile waits behind it. Queued: <code>POST /documents</code> answers in about 50 ms with a job ID, chat stays instant, and <code>GET /jobs/{id}</code> moves from <code>queued</code> to <code>started</code> to <code>finished</code> about 25 seconds later. The work takes just as long; it just no longer blocks anyone.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>Not starting the worker.</b> Jobs sit on <code>queued</code> forever with no error. Run <code>python worker.py</code> in a second terminal.</li>
+        <li><b>Changing job code without restarting the worker.</b> The worker loaded the old code when it started; restart it after edits.</li>
+        <li><b>Sending large data through the queue.</b> Enqueue a path or an ID, not the whole file. The job looks the data up when it runs.</li>
+      </ul>
+    </div>
+    <div class="callout violet">
+      <span class="label">Quick check</span>
+      <p>You upload three documents and stop the worker after the first finishes. What status does each job show? What happens when you start the worker again?</p>
+    </div>
     <div class="callout">
       <span class="label">Try it before the build</span>
-      <p>Open the <a href="sim03-guardrails-queue.html"><strong>Guardrails &amp; Queue Simulator</strong></a>. Send 20 requests with the guardrail off, then on. Then upload a document in inline mode and send "hi" — compare the wait with queue mode. Finally, set workers to 0.</p>
+      <p>Open the <a href="sim03-guardrails-queue.html"><strong>Guardrails &amp; Queue Simulator</strong></a>. Send 20 requests with the guardrail off, then on. Then upload a document in inline mode and send "hi"; compare the wait with queue mode. Finally, set workers to 0.</p>
     </div>
   </div>
 
   <details class="gloss-box"><summary>New words this week (4)</summary><dl class="gloss">
-    <dt>Nondeterministic output &amp; guardrail</dt><dd>Output that can differ on every run, and a check that validates it — retrying or failing safely when it's wrong.</dd>
+    <dt>Nondeterministic output &amp; guardrail</dt><dd>Output that can differ on every run, and a check that validates it, retrying or failing safely when it's wrong.</dd>
     <dt>Schema (Pydantic)</dt><dd>A precise definition of what data is allowed: field names, types, and rules like "not empty."</dd>
     <dt>Queue, worker &amp; job</dt><dd>A waiting line of work (in Redis), a separate process that takes work from it, and one unit of that work with its own ID and status.</dd>
     <dt>Request path</dt><dd>Everything that happens between a request arriving and its response being sent. Slow work on this path makes users wait.</dd>

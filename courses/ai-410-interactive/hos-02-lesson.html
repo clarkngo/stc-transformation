@@ -76,7 +76,7 @@
   </ol>
   <h3>Your two weeks at a glance</h3>
   <div class="flow">
-    <a href="#lecture"><span class="n">Wk 3 · Mon</span><span class="t">Lecture</span><span class="w">~70 min, 3 parts</span></a>
+    <a href="#lecture"><span class="n">Wk 3 · Mon</span><span class="t">Lecture</span><span class="w">~40 min, 3 parts</span></a>
     <a href="#muddiest"><span class="n">Wk 3 · by Wed</span><span class="t">Muddiest Point</span><span class="w">graded · 5% pool</span></a>
     <a href="#debate"><span class="n">Wk 3 · Tue–Sat</span><span class="t">Concept Debate</span><span class="w">graded · 3 stages</span></a>
     <a href="#create"><span class="n">Wk 3 · Wed–Thu</span><span class="t">Create / Scaffold</span><span class="w">Engagement · 20% of HOS</span></a>
@@ -97,30 +97,92 @@
 
 
 <section class="module card" id="lecture">
-  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: grounding answers in your own documents</h2><div class="module-meta"><span class="tag">≈ 70 min</span><span class="tag blue">3 short parts</span><span class="tag">O2</span></div></div></div>
-  <p class="small muted">Three short segments. Pause after each and try the quick check. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p>
+  <div class="module-head"><div class="module-icon">🎓</div><div><h2>Lecture: grounding answers in your own documents</h2><div class="module-meta"><span class="tag">≈ 40 min with videos</span><span class="tag blue">3 short parts</span><span class="tag">O2</span></div></div></div>
+  <p class="small muted">Three short segments: watch the video, read the notes, then try the quick check before moving on. The notes cover everything you need, so the videos are a second explanation rather than a requirement. Anything that stays fuzzy goes in your <a href="#muddiest">Muddiest Point</a>.</p>
 
   <div class="lecture-part">
-    <h3>Part 1 — Why the model needs your context <small>≈ 15 min</small></h3>
-    <p>An LLM's knowledge is fixed at training time and general by design. It has never seen Northwind Outfitters' return policy, and it can't tell you that it hasn't — it predicts a likely-sounding answer either way. HOS 1 gave the model <em>tools</em> for things it can't compute; HOS 2 gives it <em>context</em> for things it can't know.</p>
-    <p>The obvious fix is to paste every document into every request. That works for five short documents and stops working quickly: every token you send costs time and money, the context window has a limit, and a model handed fifty pages answers worse than one handed the right three paragraphs. So the real task is selection — deciding, per question, which few pieces of text the model should see. That's the context engineering you met in HOS 1, now done automatically.</p>
+    <h3>Part 1 — Why the model needs your context <small>≈ 10 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Watch first</span><span class="small muted">6:35 · IBM Technology</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/T-D1OfcDW1M" title="What is Retrieval-Augmented Generation (RAG)? (IBM Technology)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">Watch for the two problems retrieval fixes (no source for the answer, and knowledge that's out of date) and for the split between the part that <em>finds</em> text and the part that <em>writes</em> the answer. <a href="https://www.youtube.com/watch?v=T-D1OfcDW1M" target="_blank" rel="noopener">Open on YouTube</a> (human captions).</p>
+    </div>
+    <p>An LLM's knowledge is fixed at training time and general by design. It has never seen Northwind Outfitters' return policy, and it can't tell you that it hasn't: it predicts a likely-sounding answer either way. HOS 1 gave the model <em>tools</em> for things it can't compute; HOS 2 gives it <em>context</em> for things it can't know.</p>
+    <p>There are three ways to get your knowledge into an answer, and it's worth knowing why this course picks the third:</p>
+    <div class="table-wrap" tabindex="0"><table class="t">
+      <tr><th></th><th>Retrain (fine-tune) the model</th><th>Paste every document into every request</th><th>Retrieve the relevant pieces (RAG)</th></tr>
+      <tr><td><b>Update a policy</b></td><td>Retrain: slow, needs data and money</td><td>Edit the file: instant</td><td>Re-ingest one file: instant</td></tr>
+      <tr><td><b>Cost per question</b></td><td>Low</td><td>High: every token is paid for, every time</td><td>Low: a few chunks per question</td></tr>
+      <tr><td><b>Can it cite a source?</b></td><td>No</td><td>Yes, but it's buried in a huge prompt</td><td>Yes: you know exactly which chunks it saw</td></tr>
+      <tr><td><b>Scales to 1,000 documents?</b></td><td>Yes, with retraining</td><td>No: the context window runs out</td><td>Yes</td></tr>
+    </table></div>
+    <p>Pasting everything works for five short documents and stops working quickly. Every token you send costs time and money, the context window has a limit, and a model handed fifty pages answers worse than one handed the right three paragraphs. So the real task is <strong>selection</strong>: deciding, per question, which few pieces of text the model should see. That's the context engineering you met in HOS 1, now done automatically by code.</p>
+    <p>That's what <strong>Retrieval-Augmented Generation (RAG)</strong> means. <em>Retrieval</em>: find the relevant text. <em>Augmented</em>: add it to the request. <em>Generation</em>: the model writes the answer using it. The model itself doesn't change at all; only what you send it does.</p>
     <div class="callout">
       <span class="label">Worked example</span>
-      <p>A customer asks, "Can I send back a tent I bought three weeks ago?" Without retrieval, the model says something like "Most retailers allow 14 to 30 days." With retrieval, the backend first finds the chunk from <code>return-policy.md</code> — "returns within 30 days of delivery … unused and in its original packaging" — and puts it in the system instruction. The model's answer is now Northwind's actual policy, including the condition about packaging that a generic answer would have skipped.</p>
+      <p>A customer asks, "Can I send back a tent I bought three weeks ago?" Without retrieval, the model says something like "Most retailers allow 14 to 30 days." With retrieval, the backend first finds the chunk from <code>return-policy.md</code> ("returns within 30 days of delivery … unused and in its original packaging") and puts it in the system instruction. The model's answer is now Northwind's actual policy, including the packaging condition that a generic answer would have skipped. And because you know which chunk it saw, you can check the answer against it.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>Trusting a fluent answer.</b> "It sounded right" is not evidence the model read your documents. Compare the answer with the retrieved chunks.</li>
+        <li><b>Expecting retrieval to answer questions the documents don't cover.</b> If Northwind's docs never mention price matching, RAG can't help; the app should say it doesn't know.</li>
+        <li><b>Thinking RAG changes the model.</b> Nothing is trained. Delete the retrieved context and the model is exactly as ignorant as before.</li>
+      </ul>
+    </div>
+    <div class="callout violet">
+      <span class="label">Quick check</span>
+      <p>Northwind changes its return window from 30 to 45 days. With RAG, what do you have to do so the assistant gives the new answer? With fine-tuning, what would you have to do?</p>
     </div>
   </div>
 
   <div class="lecture-part">
-    <h3>Part 2 — Embeddings: turning meaning into numbers <small>≈ 25 min</small></h3>
-    <p>An <strong>embedding</strong> is a list of numbers (a <em>vector</em>) that represents the meaning of a piece of text. Gemini's <code>gemini-embedding-001</code> model turns any text into such a vector. Texts with similar meaning get vectors that point in similar directions, and we measure that with <strong>cosine similarity</strong>: close to 1 means "about the same thing," close to 0 means unrelated.</p>
+    <h3>Part 2 — Embeddings: turning meaning into numbers <small>≈ 15 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Watch first</span><span class="small muted">8:38 · IBM Technology</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/wgfSDrqYMJ4" title="What are Word Embeddings? (IBM Technology)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">The video embeds single words; Gemini embeds whole passages, but the idea is the same. Watch for "similar meaning, nearby vectors," which is the only property retrieval relies on. <a href="https://www.youtube.com/watch?v=wgfSDrqYMJ4" target="_blank" rel="noopener">Open on YouTube</a> (human captions).</p>
+      <p class="deeper"><b>Go deeper (optional):</b> 3Blue1Brown, <a href="https://www.youtube.com/watch?v=wjZofJX0v4M" target="_blank" rel="noopener">Transformers, the tech behind LLMs</a> (27:14, human captions). Its opening sections show embeddings as directions in space, with memorable pictures.</p>
+    </div>
+    <p>An <strong>embedding</strong> is a list of numbers (a <em>vector</em>) that represents the meaning of a piece of text. Gemini's <code>gemini-embedding-001</code> model turns any text into such a vector; the HOS 2 code asks for 1,024 numbers per text. You never read those numbers yourself. What matters is that texts with similar meaning get vectors that point in similar directions.</p>
+    <p>"Point in similar directions" has a precise meaning. Picture each vector as an arrow. <strong>Cosine similarity</strong> measures the angle between two arrows: close to 1 means they point the same way ("about the same thing"), close to 0 means unrelated. A two-number example makes it concrete:</p>
+    <div class="table-wrap" tabindex="0"><table class="t">
+      <tr><th>Text (toy 2-number embedding)</th><th>Compared with "return policy" [3, 1]</th><th>Why</th></tr>
+      <tr><td>"sending an item back" [6, 2]</td><td><b>1.00</b>, same direction</td><td>Twice as long, but the same angle: same meaning</td></tr>
+      <tr><td>"tent sizes" [2, 3]</td><td><b>0.79</b></td><td>Partly related (both are about products)</td></tr>
+      <tr><td>"store hours" [−1, 3]</td><td><b>0.00</b>, at right angles</td><td>Unrelated</td></tr>
+    </table></div>
+    <p class="small muted">Real embeddings have 1,024 numbers instead of 2, but the comparison works exactly the same way. Chroma ranks chunks by distance between vectors; for this course, read "closest" as "most similar in meaning."</p>
     <p>This is why RAG beats keyword search. A customer who types "sending an item back" never uses the word "return," but its embedding still lands near the return-policy chunk.</p>
     <div class="vec-demo" aria-label="Illustrative similarity scores">
       <span>"Can I send back a tent?" ↔ return-policy chunk</span><span class="s">high</span>
       <span>"Can I send back a tent?" ↔ product-tents chunk</span><span class="s">medium</span>
       <span>"Can I send back a tent?" ↔ shipping chunk</span><span class="s">low</span>
     </div>
-    <p class="small muted">Illustrative — the tent guide shares the word "tent," but the return policy shares the <em>meaning</em>.</p>
-    <p>Two settings matter in the HOS 2 code. First, Gemini lets you say what a text is <em>for</em>: documents are embedded with <code>task_type="RETRIEVAL_DOCUMENT"</code> and questions with <code>task_type="RETRIEVAL_QUERY"</code>. Why that helps is your Week 4 Analyze question — for now, notice that nothing crashes if you get it wrong. Second, <code>EMBED_DIM</code>, the vector length, must be identical at ingest time and question time, or the comparison is meaningless.</p>
+    <p class="small muted">Illustrative: the tent guide shares the word "tent," but the return policy shares the <em>meaning</em>.</p>
+    <p>Here is the embedding call from the HOS 2 build, trimmed to the parts that matter:</p>
+<pre tabindex="0"><code>result = client.models.embed_content(
+    model="gemini-embedding-001",
+    contents=query,
+    config=types.EmbedContentConfig(
+        task_type="RETRIEVAL_QUERY",      # a question; chunks use RETRIEVAL_DOCUMENT
+        output_dimensionality=EMBED_DIM,  # 1024, and identical in ingest.py
+    ),
+)
+q_vec = result.embeddings[0].values      # the list of 1,024 numbers</code></pre>
+    <p>Two settings in it matter. First, Gemini lets you say what a text is <em>for</em>: documents are embedded with <code>task_type="RETRIEVAL_DOCUMENT"</code> and questions with <code>task_type="RETRIEVAL_QUERY"</code>. Why that helps is your Week 4 Analyze question; for now, notice that nothing crashes if you get it wrong. Second, <code>EMBED_DIM</code>, the vector length, must be identical at ingest time and question time, or the comparison is meaningless.</p>
+    <div class="callout">
+      <span class="label">Worked example</span>
+      <p>A student changes <code>EMBED_DIM</code> to 768 in <code>retrieval.py</code> to "make it faster" but doesn't re-run <code>ingest.py</code>. The stored chunks still have 1,024 numbers each; the question now has 768. Chroma refuses to compare vectors of different lengths and the request fails. The fix isn't in the query code: re-ingest with the same setting, or change it back. Settings that shape vectors belong in one place, used by both scripts.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>Treating similarity as truth.</b> The closest chunk is the most <em>related</em> text, not necessarily the right answer. A chunk about tent returns can be close to a question about tent warranties.</li>
+        <li><b>Changing the embedding model or size without re-ingesting.</b> Vectors from different settings can't be compared.</li>
+        <li><b>Swapping the task types.</b> Embedding chunks as queries (or the reverse) doesn't error; results just get quietly worse.</li>
+      </ul>
+    </div>
     <div class="callout violet">
       <span class="label">Quick check</span>
       <p>If you embed the question "What's your refund window?" and the only document chunk says "returns within 30 days," would keyword search find it? Would embeddings? Why?</p>
@@ -128,16 +190,30 @@
   </div>
 
   <div class="lecture-part">
-    <h3>Part 3 — Chunking and the RAG pipeline <small>≈ 30 min</small></h3>
-    <p>You don't embed whole documents. A document covering shipping times <em>and</em> customs fees produces one vector that's a blurry average of both — a mediocre match for either question. So you <strong>chunk</strong> first: split each document into focused pieces (about 400 words in the HOS 2 starter), and optionally <strong>overlap</strong> neighboring chunks so a key sentence isn't cut in half.</p>
-    <div class="pipe-label">Once, at ingest time — <code>ingest.py</code></div>
+    <h3>Part 3 — Chunking and the RAG pipeline <small>≈ 15 min</small></h3>
+    <div class="watch">
+      <div class="watch-head"><span class="label">Watch first</span><span class="small muted">8:11 · IBM Technology</span></div>
+      <div class="watch-frame"><iframe src="https://www.youtube-nocookie.com/embed/t9IDoenf-lo" title="What is a Vector Database? (IBM Technology)" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="watch-note">Chroma, which you'll use, is a small vector database that stores its data in a local folder. Watch for what it stores (vectors plus the original text) and what it's fast at (finding the nearest vectors to a query). <a href="https://www.youtube.com/watch?v=t9IDoenf-lo" target="_blank" rel="noopener">Open on YouTube</a> (human captions).</p>
+    </div>
+    <p>You don't embed whole documents. A document covering shipping times <em>and</em> customs fees produces one vector that's a blurry average of both, a mediocre match for either question. So you <strong>chunk</strong> first: split each document into focused pieces, and <strong>overlap</strong> neighboring chunks so a key sentence isn't cut in half. The HOS 2 code does the simplest version, by word count:</p>
+<pre tabindex="0"><code>def chunk_text(text, chunk_size=400, overlap=50):
+    words = text.split()
+    chunks, start = [], 0
+    while start &lt; len(words):
+        chunks.append(" ".join(words[start:start + chunk_size]))
+        start += chunk_size - overlap   # step back 50 words: the overlap
+    return chunks</code></pre>
+    <p>A 1,000-word document becomes three chunks: words 1–400, 351–750 and 701–1,000. A sentence that falls around word 400 appears whole in at least one of them. Northwind's five sample documents are short (80 to 100 words each), so at these settings each one is a single chunk.</p>
+    <p>Chunk size is a trade-off you'll tune in the simulator. <b>Too big</b>, and each chunk mixes topics, so its vector is vague and the model gets paragraphs it doesn't need. <b>Too small</b>, and a chunk loses the sentence that gives it meaning ("…within 30 days" without saying of what). The number of chunks you retrieve, <strong>top-k</strong>, is the same kind of trade-off: too few and the answer may be missing; too many and you're back to pasting everything.</p>
+    <div class="pipe-label">Once, at ingest time: <code>ingest.py</code></div>
     <div class="pipe-row">
       <div class="box"><b>sample_docs/*.md</b>5 Northwind docs</div><div class="arrow">→</div>
-      <div class="box"><b>chunk</b>~400 words each</div><div class="arrow">→</div>
+      <div class="box"><b>chunk</b>400 words, 50 overlap</div><div class="arrow">→</div>
       <div class="box"><b>embed</b>RETRIEVAL_DOCUMENT</div><div class="arrow">→</div>
       <div class="box"><b>Chroma</b><code>documents</code> collection on disk</div>
     </div>
-    <div class="pipe-label">Every question — <code>retrieval.py</code> + <code>agent.py</code></div>
+    <div class="pipe-label">Every question: <code>retrieval.py</code> + <code>agent.py</code></div>
     <div class="pipe-row">
       <div class="box"><b>user question</b></div><div class="arrow">→</div>
       <div class="box"><b>embed</b>RETRIEVAL_QUERY</div><div class="arrow">→</div>
@@ -145,7 +221,24 @@
       <div class="box"><b>system instruction</b>"use this context…"</div><div class="arrow">→</div>
       <div class="box"><b>Gemini</b>+ HOS 1 tools</div>
     </div>
-    <p>Notice the last box: your tools are still there. The most common HOS 2 bug is a system instruction like "only answer from the context; otherwise say you don't know." Applied broadly, it makes the model refuse to call <code>calculate</code>, because arithmetic isn't in the context either. Nothing errors — tool calls just stop happening. Scope the instruction to content questions and say tools are exempt.</p>
+    <p>Notice that ingest runs <em>once</em> and retrieval runs on <em>every question</em>. If you edit a document and don't re-run ingest, the app keeps answering from the old version, because Chroma still holds the old chunks.</p>
+    <p>Notice the last box too: your tools are still there. The most common HOS 2 bug is a system instruction like "only answer from the context; otherwise say you don't know." Applied broadly, it makes the model refuse to call <code>calculate</code>, because arithmetic isn't in the context either. Nothing errors; tool calls just stop happening. Scope the instruction to content questions and say tools are exempt.</p>
+    <div class="callout">
+      <span class="label">Worked example</span>
+      <p>With the starter's settings, the five short sample documents become five chunks, and <code>retrieve(k=5)</code> returns all of them, so every question sees every document. That's fine for learning the plumbing, and it hides the selection problem that appears once Northwind has 500 documents. To see selection happen, shrink chunks to about 20 words and set top-k to 1. Now <code>shipping.md</code> splits into several pieces, and "Canadian orders may be subject to customs fees…" becomes its own chunk. Ask "Do Canadian orders pay customs fees?" and that chunk should rank first. Ask "How long does shipping to Canada take?" and the top chunk is likely the standard-shipping one: "5-7 business days," with nothing about customs. The answer is grounded but incomplete, and the cause is the retrieval settings, not the model.</p>
+    </div>
+    <div class="callout amber">
+      <span class="label">Common mistakes</span>
+      <ul>
+        <li><b>Forgetting to re-ingest</b> after changing documents or chunk settings. The app answers from stale chunks and nothing tells you.</li>
+        <li><b>An over-broad "only use the context" instruction</b> that silently disables the HOS 1 tools.</li>
+        <li><b>Blaming the model first.</b> When an answer is wrong, look at what was retrieved before changing the prompt. Most RAG bugs are retrieval bugs.</li>
+      </ul>
+    </div>
+    <div class="callout violet">
+      <span class="label">Quick check</span>
+      <p>A 900-word document goes through <code>chunk_text</code> with the default settings. How many chunks come out, and which words does each one start at?</p>
+    </div>
     <div class="callout">
       <span class="label">Try it before the build</span>
       <p>Open the <a href="sim02-rag-pipeline.html"><strong>RAG Pipeline Simulator</strong></a>. Ask the return question at chunk size 30, then at 10 with top-k 1. Then turn on the buggy prompt and ask "What's 25 times 4?"</p>

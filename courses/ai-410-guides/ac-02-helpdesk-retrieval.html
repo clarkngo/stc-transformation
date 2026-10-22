@@ -45,7 +45,7 @@
         details.faculty h4 { margin:16px 0 6px; font-size:0.92rem; color:var(--text); }
         details.faculty p, details.faculty li { font-size:0.88rem; }
         .guide-nav { display:flex; justify-content:space-between; gap:12px; margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:0.9rem; }
-        .guide-nav a { color:var(--accent); text-decoration:none; font-weight:600; }
+        .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
 <body class="guide">
@@ -83,12 +83,12 @@
         <h2>The spec</h2>
         <p>Every requirement below is checked by a provided test in <code>tests/test_evaluate.py</code>. Your code goes in <code>evaluate.py</code>.</p>
         <div class="table-scroll">
-        <table class="mini">
+        <div class="table-wrap" tabindex="0"><table class="mini">
             <tr><th>Function</th><th>Must do</th></tr>
             <tr><td><code>hit_rate(eval_set, search_fn, k)</code></td><td>Count a question as a hit when one of its top-k results has the right article <em>and</em> contains the answer phrase. Skip the unanswerable questions. Return the rate and the IDs of the misses. On the vendor's pipeline at k=1 it must report 0.5625.</td></tr>
             <tr><td><code>chunk_article(article_id, text)</code></td><td>Your chunking. Every chunk is labelled with its article, non-empty, and at most 800 characters (the chat model's prompt budget). No answer may be lost. It must beat the vendor's hit rate at k=1.</td></tr>
             <tr><td><code>answer_or_abstain(question, search_fn, min_score)</code></td><td>Look at the top result. Below <code>min_score</code>, or no result: abstain. Otherwise answer from it. Defaults to your <code>MIN_SCORE</code>.</td></tr>
-        </table>
+        </table></div>
         </div>
 
         <div class="decision-box">
@@ -104,7 +104,7 @@
         <div class="stage-block">
             <h3><span class="stage-num">1</span>Open it and run the tests</h3>
             <p>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/ac-02-helpdesk-retrieval" target="_blank" rel="noopener">the AC 2 starter-code folder</a> in GitHub Codespaces. It installs everything for you. Then run:</p>
-<pre>pytest</pre>
+<pre tabindex="0">pytest</pre>
             <p>Almost everything fails with <code>NotImplementedError</code>. That's your to-do list.</p>
         </div>
         <div class="stage-block">
@@ -114,7 +114,7 @@
         <div class="stage-block">
             <h3><span class="stage-num">3</span>Chunk it your way</h3>
             <p>Write <code>chunk_article</code>. Try at least two strategies and keep the one that measures best:</p>
-<pre>python run_eval.py</pre>
+<pre tabindex="0">python run_eval.py</pre>
             <p>Adding the article title to every chunk sounds helpful. Measure it before you assume.</p>
         </div>
         <div class="stage-block">
@@ -139,13 +139,13 @@
         <h2>How it's graded</h2>
         <p>Each criterion is graded on one part of your submission, at one of three levels.</p>
         <div class="table-scroll">
-        <table class="mini rubric">
+        <div class="table-wrap" tabindex="0"><table class="mini rubric">
             <tr><th>Criterion</th><th>Weight</th><th>Graded on</th><th>Full</th><th>Partial</th><th>Missing</th></tr>
             <tr><td><strong>Application</strong></td><td class="wt">10%</td><td><code>REPORT.md</code></td><td>Your chunking runs on the help desk's articles and beats the vendor, with the misses listed.</td><td>It runs, but the report is missing the sweep or the misses.</td><td>It restates the HOS build, or doesn't run.</td></tr>
             <tr><td><strong>Analysis</strong></td><td class="wt">20%</td><td><code>DECISIONS.md</code>, section 2 (why the misses happen)</td><td>Every miss is sorted by cause, with a specific question for each cause and what would fix it.</td><td>Causes are named, but not tied to specific questions.</td><td>No breakdown.</td></tr>
             <tr><td><strong>Evaluation</strong></td><td class="wt">30%</td><td><code>DECISIONS.md</code>, section 1</td><td>A clear threshold, judged against stated criteria (which mistake is worse, for whom), using the sweep's numbers, with a threshold you rejected and why.</td><td>A threshold with a reason, but no numbers or no rejected alternative.</td><td>No rule, or no justification.</td></tr>
             <tr><td><strong>Design</strong></td><td class="wt">40%</td><td><code>evaluate.py</code>, your tests, and the <code>pytest</code> output</td><td>All provided tests pass, and your own tests check your threshold on real questions, including the closest call.</td><td>Most provided tests pass, or your own tests use only easy questions.</td><td>It doesn't run, or you wrote no tests of your own.</td></tr>
-        </table>
+        </table></div>
         </div>
 
         <p style="font-size:0.88rem;color:var(--muted)">How this differs from HOS 2's Understand &amp; Refine: there you added a document to your own pipeline, by hand. Here the pipeline, the articles, and the decisions are someone else's, AI help is allowed, and half the grade (Analysis and Evaluation) is for the calls you make.</p>
@@ -166,6 +166,7 @@
         </div>
     </div>
 </main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
 </body>
 </html>

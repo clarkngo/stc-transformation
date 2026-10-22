@@ -24,6 +24,9 @@ python3 courses/ai-410-export/export_ai410.py --out ../stc/ai-410
 | concept companion, starter-code walkthrough, Concept Debate example | `reference/` |
 | `ai-410-assets/course.css`, `course.js` and any image a page uses | `assets/` |
 
+Footers drop the drafting site's "Upcoming BSAI course — sample materials, not
+yet offered" note; the "Course design & materials: Clark Ngo" credit stays.
+
 Instructor pages (the instructor hub, teaching guide, AC example answers, AC
 faculty notes), the schedule and syllabus pages, and legacy pages are never
 published.
@@ -37,6 +40,19 @@ The script exits with an error and a list of problems if a published page:
 - contains instructor-only content (faculty notes, teaching notes, or links to
   instructor pages)
 - uses an asset that doesn't exist
+- fails a basic accessibility check: no `lang` or `<title>`, an image without
+  `alt`, an iframe without `title`, an SVG diagram without a text alternative, a
+  form field without a label, a `role="tablist"`, or a viewport that blocks zoom
+
+### Full accessibility audit (WCAG 2.2 AA)
+
+The static checks above catch regressions. Before each term, also run axe-core
+over every published page in light and dark mode with all week panels and
+`<details>` open, and check 320px reflow and keyboard focus by hand. Shared
+rules live in `course.css`: `--link` for link colour (meets 4.5:1 on the tinted
+boxes), `.sr-only`, reduced motion, focus-not-obscured scroll margins and
+long-word wrapping. Week/module switchers are `role="group"` buttons with
+`aria-pressed`; scrolling tables, diagrams and code blocks get `tabindex="0"`.
 
 Fix the draft, not the output. The output folder is regenerated every time and
 carries a `.ai410-export` marker; the script won't write into a non-empty folder

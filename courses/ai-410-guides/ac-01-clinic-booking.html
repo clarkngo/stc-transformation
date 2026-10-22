@@ -45,7 +45,7 @@
         details.faculty h4 { margin:16px 0 6px; font-size:0.92rem; color:var(--text); }
         details.faculty p, details.faculty li { font-size:0.88rem; }
         .guide-nav { display:flex; justify-content:space-between; gap:12px; margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:0.9rem; }
-        .guide-nav a { color:var(--accent); text-decoration:none; font-weight:600; }
+        .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
 <body class="guide">
@@ -90,13 +90,13 @@
         <h2>The spec</h2>
         <p>Every requirement below is checked by a provided test in <code>tests/test_tools.py</code>.</p>
         <div class="table-scroll">
-        <table class="mini">
+        <div class="table-wrap" tabindex="0"><table class="mini">
             <tr><th>Tool</th><th>Must do</th><th>Must refuse (as an error the model can read)</th></tr>
             <tr><td><code>find_open_slots(date, provider_id?)</code></td><td>Return one day's open slots, sorted by time, optionally for one provider. Skip booked slots and slots that already started. No openings is an empty list, not an error.</td><td>A date that isn't <code>YYYY-MM-DD</code>; an unknown provider.</td></tr>
             <tr><td><code>book_appointment(slot_id)</code></td><td>Book an open slot for the logged-in patient.</td><td>Unknown slot or patient; a slot that's taken; a slot that already started.</td></tr>
             <tr><td><code>cancel_appointment(slot_id)</code></td><td>Cancel the patient's own appointment when it's more than 24 hours away, and reopen the slot.</td><td>A slot that doesn't exist or isn't this patient's.</td></tr>
             <tr><td>Schemas in <code>TOOLS</code></td><td>One per tool, with a real description (the model reads it to decide <em>when</em> to call the tool).</td><td>Any schema that exposes <code>patient_id</code>.</td></tr>
-        </table>
+        </table></div>
         </div>
         <p>Every error returns <code>{"error": "..."}</code> and changes nothing. That's the HOS 1 rule: a tool that fails should tell the model, not crash the request.</p>
 
@@ -118,7 +118,7 @@
         <div class="stage-block">
             <h3><span class="stage-num">1</span>Open it and run the tests</h3>
             <p>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/ac-01-clinic-booking" target="_blank" rel="noopener">the AC 1 starter-code folder</a> in GitHub Codespaces. It installs everything for you. Then run:</p>
-<pre>pytest</pre>
+<pre tabindex="0">pytest</pre>
             <p>Almost everything fails with <code>NotImplementedError</code>. That's your to-do list.</p>
         </div>
         <div class="stage-block">
@@ -132,7 +132,7 @@
         <div class="stage-block">
             <h3><span class="stage-num">4</span>Run the assistant</h3>
             <p>Put your free Gemini key in <code>.env</code> (copied from <code>.env.example</code>), then send these messages. The app prints every tool call, so the transcript shows what actually ran.</p>
-<pre>python agent.py --patient P1001
+<pre tabindex="0">python agent.py --patient P1001
 you&gt; What does Dr. Patel have open tomorrow?
 you&gt; Book the 10 a.m. one.
 you&gt; quit
@@ -159,13 +159,13 @@ you&gt; I need to cancel my appointment today.</pre>
         <h2>How it's graded</h2>
         <p>Each criterion is graded on one part of your submission, at one of three levels.</p>
         <div class="table-scroll">
-        <table class="mini rubric">
+        <div class="table-wrap" tabindex="0"><table class="mini rubric">
             <tr><th>Criterion</th><th>Weight</th><th>Graded on</th><th>Full</th><th>Partial</th><th>Missing</th></tr>
             <tr><td><strong>Application</strong></td><td class="wt">10%</td><td><code>TRANSCRIPT.md</code></td><td>Your solution runs in the clinic scenario, and the right tool fires for each message.</td><td>It runs, but one message misbehaves and you don't explain why.</td><td>It restates the HOS 1 build, or doesn't run.</td></tr>
             <tr><td><strong>Analysis</strong></td><td class="wt">20%</td><td><code>DECISIONS.md</code>, section 2 (wish list)</td><td>For each wish-list tool, you break down what it would actually let the model do: what data it could see and what actions it could take.</td><td>You name a risk, but only in general terms ("privacy").</td><td>No breakdown.</td></tr>
             <tr><td><strong>Evaluation</strong></td><td class="wt">30%</td><td><code>DECISIONS.md</code>, section 1 (late cancellations)</td><td>A clear rule, judged against stated criteria (who it protects, what it costs), with an alternative you rejected and why.</td><td>A rule with a reason, but no criteria or no rejected alternative.</td><td>No rule, or no justification.</td></tr>
             <tr><td><strong>Design</strong></td><td class="wt">40%</td><td><code>tools.py</code>, your tests, and the <code>pytest</code> output</td><td>All provided tests pass, and your own tests check your rule, including an edge case.</td><td>Most provided tests pass, or your own tests cover only the easy case.</td><td>It doesn't run, or you wrote no tests of your own.</td></tr>
-        </table>
+        </table></div>
         </div>
         <p style="font-size:0.88rem;color:var(--muted)">How this differs from HOS 1's Understand &amp; Refine: there you extended code you already understood, by hand, with no AI. Here the business, the code, and the decisions are new, AI help is allowed, and half the grade (Analysis and Evaluation) is for the calls you make, not the typing.</p>
 
@@ -185,6 +185,7 @@ you&gt; I need to cancel my appointment today.</pre>
         </div>
     </div>
 </main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
 </body>
 </html>

@@ -80,7 +80,7 @@
 </section>
 
 <!-- ========================= WEEK 1 ========================= -->
-<div class="week-tabs no-print" role="tablist" aria-label="Weeks"><button type="button" role="tab" data-week="1" aria-controls="week-1">Week 1<span class="tab-sub"> · Build &amp; Judge</span></button><button type="button" role="tab" data-week="2" aria-controls="week-2">Week 2<span class="tab-sub"> · Explain &amp; Master</span></button><button type="button" class="show-all">Show both weeks</button></div>
+<div class="week-tabs no-print" role="group" aria-label="Weeks"><button type="button" data-week="1" aria-controls="week-1">Week 1<span class="tab-sub"> · Build &amp; Judge</span></button><button type="button" data-week="2" aria-controls="week-2">Week 2<span class="tab-sub"> · Explain &amp; Master</span></button><button type="button" class="show-all">Show both weeks</button></div>
 <div class="week-panel" id="week-1" data-week="1">
 <div class="part-banner"><b>Week 1 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div>
 <div class="due-card"><h3>Week 1: what's due</h3><label><input type="checkbox" data-k="l1-w0-acct"><span><b>Check your account setup:</b> <a href="../ai-410-guides/account-setup-guide.html#github">GitHub account</a> and <a href="../ai-410-guides/account-setup-guide.html#google">free Gemini API key</a></span><span class="when">before Mon</span></label><label><input type="checkbox" data-k="l1-w0-0"><span><a href="#muddiest">Muddiest Point</a></span><span class="when">by Wed</span></label><label><input type="checkbox" data-k="l1-w0-1"><span><a href="#debate">Concept Debate: Stage 1 · Stage 2 · Stage 3</a></span><span class="when">Tue · Thu · Sat</span></label><label><input type="checkbox" data-k="l1-w0-2"><span><a href="#create">Create / Scaffold: your prompt + a screenshot of the app running</a></span><span class="when">Wed–Thu</span></label><label><input type="checkbox" data-k="l1-w0-3"><span><a href="#evaluate">Evaluate: your Evaluate note</a></span><span class="when">Fri–Sun</span></label><p class="muted">Suggested days for an online term; your Brightspace dates win. Ticks stay in this browser.</p></div>
@@ -121,7 +121,7 @@
     </div>
     <p>An LLM reads a sequence of <strong>tokens</strong> (word pieces) and predicts the next one, over and over, until it decides to stop. Everything it "knows" about your conversation is whatever fits in its <strong>context window</strong> for that single request — the system instruction, the chat history your backend chose to resend, any retrieved documents, and the user's latest message. It doesn't remember the last request unless you send it again.</p>
     <p>Because each next token is <em>sampled</em> from a probability distribution, the same input can produce different outputs. That <strong>nondeterminism</strong> is a feature for writing and a hazard for software — it's why HOS 3 adds guardrails, and why "it worked once" is never a complete Evaluate.</p>
-    <div class="table-wrap"><table class="t">
+    <div class="table-wrap" tabindex="0"><table class="t">
       <tr><th></th><th>Prompt engineering</th><th>Context engineering</th></tr>
       <tr><td><b>Question it answers</b></td><td>How should I word the request?</td><td>What information should the model see at all?</td></tr>
       <tr><td><b>Where it lives</b></td><td>The instruction text</td><td>The backend code that assembles each request</td></tr>
@@ -151,7 +151,7 @@
       <li class="loopback">Backend sends the <code>function_response</code> back to Gemini, along with the history so far. <em>(This is the "loop" — it can repeat.)</em></li>
       <li>Gemini replies with text: <em>"342 × 87 = 29,754."</em> Backend returns it to the frontend.</li>
     </ol>
-<pre><code># the shape of a tool declaration (simplified)
+<pre tabindex="0"><code># the shape of a tool declaration (simplified)
 calculate_tool = {
     "name": "calculate",
     "description": "Evaluate a basic arithmetic expression. Use for any math.",
@@ -207,7 +207,7 @@ calculate_tool = {
   <div class="callout blue">
     <span class="label">How your side is assigned</span>
     <p>Before the first debate you join <b>Debate Group 1</b> or <b>Debate Group 2</b>, either assigned by your instructor or chosen yourself, as long as the two groups stay close to even. You stay in that group all term; find yours under <b>Communication → Groups</b>. The sides rotate each HOS, so nobody argues the same kind of position all term:</p>
-    <div class="table-wrap"><table class="t" style="margin:6px 0 8px;background:var(--surface)">
+    <div class="table-wrap" tabindex="0"><table class="t" style="margin:6px 0 8px;background:var(--surface)">
       <tr><th></th><th>HOS 1</th><th>HOS 2</th><th>HOS 3</th><th>HOS 4</th><th>Integration (Wk 8)</th></tr>
       <tr><td><b>Group 1</b></td><td>Side A</td><td>Side B</td><td>Side A</td><td>Side B</td><td>Side A</td></tr>
       <tr><td><b>Group 2</b></td><td>Side B</td><td>Side A</td><td>Side B</td><td>Side A</td><td>Side B</td></tr>
@@ -259,7 +259,7 @@ calculate_tool = {
     <li>Put your free Gemini key in <code>backend/.env</code> as <code>GEMINI_API_KEY=…</code> — never in the frontend.</li>
     <li>Give your assistant the starting prompt below, and iterate until the chat app calls at least one tool.</li>
   </ol>
-<pre><code>Build a full-stack chat app in THIS existing workspace (the starter-code folder
+<pre tabindex="0"><code>Build a full-stack chat app in THIS existing workspace (the starter-code folder
 that's already open) — edit files here; do not create a new workspace or project:
 - backend/: a FastAPI server with a POST /chat endpoint that calls the Gemini API
   (google-genai) with model "gemini-3.8-flash" (kept in one MODEL constant),
@@ -363,7 +363,7 @@ that's already open) — edit files here; do not create a new workspace or proje
 <section class="module card" id="project">
   <div class="module-head"><div class="module-icon">🚀</div><div><h2>Team Project — Phase 1 begins</h2><div class="module-meta"><span class="tag amber">Phase 1 due end of Week 3</span></div></div></div>
   <p>The Team Project combines all 4 HOS into one agent-driven app, built by a team of three (four with instructor approval) and presented in Week 10. <b>Phase 1 runs Weeks 1–3:</b> form your team and lock your scope: which HOS pieces your project combines and why, who owns each piece, and a rough architecture sketch. <b>Due end of Week 3:</b> System v0.3 in a shared GitHub repository with a README, and a one-page proposal with three key references. A good first question: <strong>what are the 2–4 tools your project's agent would need, and which of them should require confirmation?</strong> That's this week's Application Challenge, pointed at your own idea.</p>
-  <div class="table-wrap"><table class="t project-map">
+  <div class="table-wrap" tabindex="0"><table class="t project-map">
     <tr><th>HOS</th><th>What it contributes to your project</th><th>Rehearse it in</th></tr>
     <tr><td>HOS 1</td><td>The agent and its tools</td><td><a href="sim01-agentic-loop.html">Agentic Loop Simulator</a></td></tr>
     <tr><td>HOS 2</td><td>Answers grounded in your project's own documents</td><td><a href="sim02-rag-pipeline.html">RAG Pipeline Simulator</a></td></tr>
@@ -387,7 +387,7 @@ that's already open) — edit files here; do not create a new workspace or proje
 </section>
 
 </main>
-<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo · Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
 <script>
 (function(){
   var root=document.documentElement, btn=document.getElementById('themeToggle');
@@ -588,7 +588,7 @@ wireChecklist('refineList','refineProgress','done','ai410-l1-refine');
   function load(){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
   function show(w){
     panels.forEach(function(p){ p.hidden = !(w==='all' || p.getAttribute('data-week')===w); });
-    tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t.getAttribute('data-week')===w)); });
+    tabs.forEach(function(t){ t.setAttribute('aria-pressed', String(t.getAttribute('data-week')===w)); });
     if(all) all.textContent = w==='all' ? 'Show one week at a time' : 'Show both weeks';
   }
   function weekOf(id){ var el=id && document.getElementById(id); var p=el && el.closest('.week-panel'); return p ? p.getAttribute('data-week') : null; }
@@ -597,7 +597,7 @@ wireChecklist('refineList','refineProgress','done','ai410-l1-refine');
   show(start);
   if(location.hash){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt){ var go=function(){ tgt.scrollIntoView({block:'start'}); }; setTimeout(go,0); window.addEventListener('load',go); } }
   tabs.forEach(function(t){ t.addEventListener('click',function(){ var w=t.getAttribute('data-week'); show(w); save(w); var p=document.querySelector('.week-panel[data-week="'+w+'"]'); if(p) p.scrollIntoView({block:'start'}); }); });
-  if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-selected')==='true';})[0]; var w = cur ? 'all' : (load()&&load()!=='all'?load():panels[0].getAttribute('data-week')); show(w); save(w); });
+  if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-pressed')==='true';})[0]; var w = cur ? 'all' : (load()&&load()!=='all'?load():panels[0].getAttribute('data-week')); show(w); save(w); });
   document.addEventListener('click',function(e){
     var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
     var w=weekOf(a.getAttribute('href').slice(1)); if(!w) return;

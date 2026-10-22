@@ -29,7 +29,7 @@
         .snag-box { background:var(--amber-bg); border-left:5px solid var(--amber); padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:var(--amber); }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:0.9rem; }
-        .guide-nav a { color:var(--accent); text-decoration:none; font-weight:600; }
+        .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
 <body class="guide">
@@ -79,7 +79,7 @@
             <h2><span class="stage-num">1</span>Create / Scaffold</h2>
             <p class="stage-tagline">Graded as Engagement: 20% of this HOS. The AI-assisted starting point, not the deliverable.</p>
             <p>Prompt your AI assistant to add both pieces:</p>
-<pre>Add a mobile client and observability to this app:
+<pre tabindex="0">Add a mobile client and observability to this app:
 - mobile/: an Expo (React Native) chat screen that calls this
   backend's /chat endpoint, requests push-notification permission,
   and registers the device's push token with the backend once granted.
@@ -152,7 +152,7 @@
                 <li><strong>No Langfuse keys set yet, app still works</strong> — that's expected, not a bug. The SDK disables tracing and logs a line about it instead of crashing. You just won't see anything in the dashboard until keys are configured.</li>
                 <li><strong>Physical device can't reach a Codespaces-hosted backend</strong> — make the API port public in the Ports tab, use that forwarded URL as your mobile app's API base (ideally via an <code>EXPO_PUBLIC_API_BASE</code> variable in <code>mobile/.env</code>, reloading the app after editing it), and start Expo with <code>--tunnel</code> instead of the default LAN mode.</li>
                 <li><strong>Testing with <code>npx expo start --web</code>: "Failed to fetch" / server log shows <code>OPTIONS /chat ... 405 Method Not Allowed</code></strong> — unlike Streamlit or Expo Go on a real device, Expo <em>web</em> runs inside an actual browser, and browsers block cross-origin requests until the server explicitly allows them (a "CORS preflight" — the browser's own <code>OPTIONS</code> check before the real request). If your AI-scaffolded backend doesn't already have this, add it to <code>backend/main.py</code>:
-<pre>from fastapi.middleware.cors import CORSMiddleware
+<pre tabindex="0">from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
@@ -172,6 +172,7 @@ app.add_middleware(
         </div>
     </div>
 </main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
 </body>
 </html>

@@ -96,7 +96,7 @@
 </section>
 
 <!-- ========================= WEEK 5 ========================= -->
-<div class="week-tabs no-print" role="tablist" aria-label="Weeks"><button type="button" role="tab" data-week="1" aria-controls="week-1">Week 5<span class="tab-sub"> · Build &amp; Judge</span></button><button type="button" role="tab" data-week="2" aria-controls="week-2">Week 6<span class="tab-sub"> · Explain &amp; Master</span></button><button type="button" class="show-all">Show both weeks</button></div>
+<div class="week-tabs no-print" role="group" aria-label="Weeks"><button type="button" data-week="1" aria-controls="week-1">Week 5<span class="tab-sub"> · Build &amp; Judge</span></button><button type="button" data-week="2" aria-controls="week-2">Week 6<span class="tab-sub"> · Explain &amp; Master</span></button><button type="button" class="show-all">Show both weeks</button></div>
 <div class="week-panel" id="week-1" data-week="1">
 <div class="part-banner"><b>Week 5 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div>
 <div class="due-card"><h3>Week 5: what's due</h3><label><input type="checkbox" data-k="l3-w0-acct"><span><b>Check your account setup:</b> <a href="../ai-410-guides/account-setup-guide.html#redis">free Upstash Redis database</a></span><span class="when">before Mon</span></label><label><input type="checkbox" data-k="l3-w0-0"><span><a href="#muddiest">Muddiest Point</a></span><span class="when">by Wed</span></label><label><input type="checkbox" data-k="l3-w0-1"><span><a href="#debate">Concept Debate: Stage 1 · Stage 2 · Stage 3</a></span><span class="when">Tue · Thu · Sat</span></label><label><input type="checkbox" data-k="l3-w0-2"><span><a href="#create">Create / Scaffold: your prompt + a screenshot of the app running</a></span><span class="when">Wed–Thu</span></label><label><input type="checkbox" data-k="l3-w0-3"><span><a href="#evaluate">Evaluate: your Evaluate note</a></span><span class="when">Fri–Sun</span></label><p class="muted">Suggested days for an online term; your Brightspace dates win. Ticks stay in this browser.</p></div>
@@ -128,7 +128,7 @@
       <div class="box" style="border-color:var(--amber)"><b>up to 2 retries</b>each one sees the last error</div><div class="arrow">→</div>
       <div class="box" style="border-color:var(--bad)"><b>still invalid</b>return <code>{"error": …}</code></div>
     </div>
-<pre><code>def call_with_guardrail(fn, schema, max_retries=2):
+<pre tabindex="0"><code>def call_with_guardrail(fn, schema, max_retries=2):
     hint = None
     for attempt in range(max_retries + 1):
         raw = fn(correction_hint=hint)          # ask the model (again)
@@ -253,7 +253,7 @@
     <li>Split your terminal: one for <code>uvicorn</code>, one for <code>python worker.py</code>.</li>
     <li>Give your assistant the prompt below.</li>
   </ol>
-<pre><code>Add reliability to this app:
+<pre tabindex="0"><code>Add reliability to this app:
 - backend/guardrails.py: a call_with_guardrail(fn, schema, ...) helper that calls
   fn(), validates the result against a Pydantic schema, and retries (up to 2 times)
   if validation fails — returning an {"error": ...} dict instead of raising if all
@@ -360,10 +360,10 @@
   <h3>Which HOS pieces does it combine?</h3>
   <p class="small muted">Tick each one and say, in a few words, what it does <em>in your project</em>. All four is the goal by Week 10; by Week 8, at least two should work end to end.</p>
   <div id="cpHos">
-    <label class="hos-tick"><input type="checkbox" data-h="1"><span><b>HOS 1 — agent &amp; tools</b></span><input type="text" placeholder="e.g. tools: look_up_due_date, make_flashcard"></label>
-    <label class="hos-tick"><input type="checkbox" data-h="2"><span><b>HOS 2 — RAG over your documents</b></span><input type="text" placeholder="e.g. answers from the student's uploaded notes"></label>
-    <label class="hos-tick"><input type="checkbox" data-h="3"><span><b>HOS 3 — guardrails &amp; background jobs</b></span><input type="text" placeholder="e.g. validate flashcards; ingest PDFs as a job"></label>
-    <label class="hos-tick"><input type="checkbox" data-h="4"><span><b>HOS 4 — mobile, push &amp; observability</b></span><input type="text" placeholder="e.g. push when flashcards are ready; trace every answer"></label>
+    <label class="hos-tick"><input type="checkbox" data-h="1"><span><b>HOS 1 — agent &amp; tools</b></span><input type="text" aria-label="What HOS 1 does in your project" placeholder="e.g. tools: look_up_due_date, make_flashcard"></label>
+    <label class="hos-tick"><input type="checkbox" data-h="2"><span><b>HOS 2 — RAG over your documents</b></span><input type="text" aria-label="What HOS 2 does in your project" placeholder="e.g. answers from the student's uploaded notes"></label>
+    <label class="hos-tick"><input type="checkbox" data-h="3"><span><b>HOS 3 — guardrails &amp; background jobs</b></span><input type="text" aria-label="What HOS 3 does in your project" placeholder="e.g. validate flashcards; ingest PDFs as a job"></label>
+    <label class="hos-tick"><input type="checkbox" data-h="4"><span><b>HOS 4 — mobile, push &amp; observability</b></span><input type="text" aria-label="What HOS 4 does in your project" placeholder="e.g. push when flashcards are ready; trace every answer"></label>
   </div>
   <h3>Litmus test</h3>
   <ul class="hints litmus" id="cpLitmus"></ul>
@@ -385,7 +385,7 @@
 </section>
 
 </main>
-<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo · Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
 <script>
 (function(){
   var root=document.documentElement, btn=document.getElementById('themeToggle');
@@ -603,7 +603,7 @@ wireChecklist('refineList','refineProgress','done','ai410-'+LESSON+'-refine');
   function load(){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
   function show(w){
     panels.forEach(function(p){ p.hidden = !(w==='all' || p.getAttribute('data-week')===w); });
-    tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t.getAttribute('data-week')===w)); });
+    tabs.forEach(function(t){ t.setAttribute('aria-pressed', String(t.getAttribute('data-week')===w)); });
     if(all) all.textContent = w==='all' ? 'Show one week at a time' : 'Show both weeks';
   }
   function weekOf(id){ var el=id && document.getElementById(id); var p=el && el.closest('.week-panel'); return p ? p.getAttribute('data-week') : null; }
@@ -612,7 +612,7 @@ wireChecklist('refineList','refineProgress','done','ai410-'+LESSON+'-refine');
   show(start);
   if(location.hash){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt){ var go=function(){ tgt.scrollIntoView({block:'start'}); }; setTimeout(go,0); window.addEventListener('load',go); } }
   tabs.forEach(function(t){ t.addEventListener('click',function(){ var w=t.getAttribute('data-week'); show(w); save(w); var p=document.querySelector('.week-panel[data-week="'+w+'"]'); if(p) p.scrollIntoView({block:'start'}); }); });
-  if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-selected')==='true';})[0]; var w = cur ? 'all' : (load()&&load()!=='all'?load():panels[0].getAttribute('data-week')); show(w); save(w); });
+  if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-pressed')==='true';})[0]; var w = cur ? 'all' : (load()&&load()!=='all'?load():panels[0].getAttribute('data-week')); show(w); save(w); });
   document.addEventListener('click',function(e){
     var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
     var w=weekOf(a.getAttribute('href').slice(1)); if(!w) return;

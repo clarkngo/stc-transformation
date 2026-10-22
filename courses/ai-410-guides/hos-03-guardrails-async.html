@@ -28,7 +28,7 @@
         .snag-box { background:var(--amber-bg); border-left:5px solid var(--amber); padding:15px 18px; margin:20px 0; border-radius:4px; }
         .snag-box h4 { margin:0 0 8px; color:var(--amber); }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:0.9rem; }
-        .guide-nav a { color:var(--accent); text-decoration:none; font-weight:600; }
+        .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
 <body class="guide">
@@ -76,7 +76,7 @@
             <h2><span class="stage-num">1</span>Create / Scaffold</h2>
             <p class="stage-tagline">Graded as Engagement: 20% of this HOS. The AI-assisted starting point, not the deliverable.</p>
             <p>Prompt your AI assistant to add both pieces:</p>
-<pre>Add reliability to this app:
+<pre tabindex="0">Add reliability to this app:
 - backend/guardrails.py: a call_with_guardrail(fn, schema, ...)
   helper that calls fn(), validates the result against a Pydantic
   schema, and retries (up to 2 times) if validation fails — returning
@@ -103,7 +103,7 @@
             <ul>
                 <li>A message likely to produce a malformed tool call (e.g. "calculate the square root of a banana") — does the guardrail catch it and retry, or does the request crash?</li>
                 <li>Upload a document via <code>POST /documents</code>, confirm you get a <code>job_id</code> back instantly, then poll <code>GET /jobs/{id}</code> until it's <code>"finished"</code> — while sending normal chat messages the whole time to prove the app stayed responsive:
-<pre>curl -X POST http://127.0.0.1:8000/documents \
+<pre tabindex="0">curl -X POST http://127.0.0.1:8000/documents \
   -H "Content-Type: application/json" \
   -d '{"doc_path": "sample_docs/return-policy.md"}'
 # → should return {"job_id": "..."} immediately, not after ingestion finishes
@@ -159,6 +159,7 @@ curl http://127.0.0.1:8000/jobs/YOUR-JOB-ID-HERE
         </div>
     </div>
 </main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
 </body>
 </html>

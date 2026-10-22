@@ -90,7 +90,7 @@
 </section>
 
 <!-- ========================= WEEK 3 ========================= -->
-<div class="week-tabs no-print" role="tablist" aria-label="Weeks"><button type="button" role="tab" data-week="1" aria-controls="week-1">Week 3<span class="tab-sub"> · Build &amp; Judge</span></button><button type="button" role="tab" data-week="2" aria-controls="week-2">Week 4<span class="tab-sub"> · Explain &amp; Master</span></button><button type="button" class="show-all">Show both weeks</button></div>
+<div class="week-tabs no-print" role="group" aria-label="Weeks"><button type="button" data-week="1" aria-controls="week-1">Week 3<span class="tab-sub"> · Build &amp; Judge</span></button><button type="button" data-week="2" aria-controls="week-2">Week 4<span class="tab-sub"> · Explain &amp; Master</span></button><button type="button" class="show-all">Show both weeks</button></div>
 <div class="week-panel" id="week-1" data-week="1">
 <div class="part-banner"><b>Week 3 · Build &amp; Judge</b><span>Lecture → Muddiest Point → Concept Debate → Create/Scaffold → Evaluate</span></div>
 <div class="due-card"><h3>Week 3: what's due</h3><label><input type="checkbox" data-k="l2-w0-acct"><span><b>Check your account setup:</b> <a href="../ai-410-guides/account-setup-guide.html#google">the same Gemini API key from Module 1</a></span><span class="when">before Mon</span></label><label><input type="checkbox" data-k="l2-w0-0"><span><a href="#muddiest">Muddiest Point</a></span><span class="when">by Wed</span></label><label><input type="checkbox" data-k="l2-w0-1"><span><a href="#debate">Concept Debate: Stage 1 · Stage 2 · Stage 3</a></span><span class="when">Tue · Thu · Sat</span></label><label><input type="checkbox" data-k="l2-w0-2"><span><a href="#create">Create / Scaffold: your prompt + a screenshot of the app running</a></span><span class="when">Wed–Thu</span></label><label><input type="checkbox" data-k="l2-w0-3"><span><a href="#evaluate">Evaluate: your Evaluate note</a></span><span class="when">Fri–Sun</span></label><label><input type="checkbox" data-k="l2-w0-4"><span><a href="#project">Team Project Phase 1: System v0.3 + one-page proposal</a></span><span class="when">end of week</span></label><p class="muted">Suggested days for an online term; your Brightspace dates win. Ticks stay in this browser.</p></div>
@@ -237,7 +237,7 @@
     <li>Keep the same <code>GEMINI_API_KEY</code> in <code>backend/.env</code> — embeddings use the same free key.</li>
     <li>Give your assistant the prompt below, then run <code>python ingest.py</code> once and test in the chat app.</li>
   </ol>
-<pre><code>Add RAG to this app:
+<pre tabindex="0"><code>Add RAG to this app:
 - backend/ingest.py: chunk each .md file in backend/sample_docs/ into ~400-word
   pieces and embed them (Gemini's embedding model, task_type="RETRIEVAL_DOCUMENT")
   into a local Chroma collection.
@@ -306,7 +306,7 @@ instruction suppress tool use.</code></pre>
   <div class="module-head"><div class="module-icon">🧩</div><div><h2>Application Challenge — measure someone else's RAG pipeline</h2><div class="module-meta"><span class="tag blue">Measure &amp; improve · 60–90 min</span></div></div></div>
   <p>A campus IT help-desk team built the pipeline below to answer student questions from their knowledge base. It runs without errors, and nobody knows how often it answers from the wrong passage. In the challenge you get a runnable copy, six articles, and 20 questions with known answers: measure how often it finds the answer, beat it with your own chunking, and decide when the bot should say "I don't know". The spec, starter code, and rubric are in the <a href="../ai-410-guides/ac-02-helpdesk-retrieval.html"><b>AC 2 guide</b></a>.</p>
   <p class="small">Warm up first: read the production code and predict what will go wrong. The challenge then measures it.</p>
-<pre><code># helpdesk_rag.py  (someone else's code)
+<pre tabindex="0"><code># helpdesk_rag.py  (someone else's code)
 kb = chromadb.PersistentClient(path="./kb_db")
 col = kb.get_or_create_collection("articles")
 
@@ -356,7 +356,7 @@ def answer(question):
     <li><b>What are the documents?</b> Where do they come from, how many, and who updates them? (In the "Study Buddy" example, it's the student's own uploaded notes and syllabi.)</li>
     <li><b>What should happen when retrieval finds nothing?</b> This week's Concept Debate, applied to your users.</li>
   </ul>
-  <div class="table-wrap"><table class="t project-map">
+  <div class="table-wrap" tabindex="0"><table class="t project-map">
     <tr><th>HOS</th><th>What it contributes to your project</th><th>Rehearse it in</th></tr>
     <tr><td>HOS 1</td><td>The agent and its tools</td><td><a href="sim01-agentic-loop.html">Agentic Loop Simulator</a></td></tr>
     <tr><td><b>HOS 2 · now</b></td><td><b>Answers grounded in your project's own documents</b></td><td><a href="sim02-rag-pipeline.html">RAG Pipeline Simulator</a></td></tr>
@@ -379,7 +379,7 @@ def answer(question):
 </section>
 
 </main>
-<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo · Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
 <script>
 (function(){
   var root=document.documentElement, btn=document.getElementById('themeToggle');
@@ -561,7 +561,7 @@ wireChecklist('refineList','refineProgress','done','ai410-'+LESSON+'-refine');
   function load(){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
   function show(w){
     panels.forEach(function(p){ p.hidden = !(w==='all' || p.getAttribute('data-week')===w); });
-    tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t.getAttribute('data-week')===w)); });
+    tabs.forEach(function(t){ t.setAttribute('aria-pressed', String(t.getAttribute('data-week')===w)); });
     if(all) all.textContent = w==='all' ? 'Show one week at a time' : 'Show both weeks';
   }
   function weekOf(id){ var el=id && document.getElementById(id); var p=el && el.closest('.week-panel'); return p ? p.getAttribute('data-week') : null; }
@@ -570,7 +570,7 @@ wireChecklist('refineList','refineProgress','done','ai410-'+LESSON+'-refine');
   show(start);
   if(location.hash){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt){ var go=function(){ tgt.scrollIntoView({block:'start'}); }; setTimeout(go,0); window.addEventListener('load',go); } }
   tabs.forEach(function(t){ t.addEventListener('click',function(){ var w=t.getAttribute('data-week'); show(w); save(w); var p=document.querySelector('.week-panel[data-week="'+w+'"]'); if(p) p.scrollIntoView({block:'start'}); }); });
-  if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-selected')==='true';})[0]; var w = cur ? 'all' : (load()&&load()!=='all'?load():panels[0].getAttribute('data-week')); show(w); save(w); });
+  if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-pressed')==='true';})[0]; var w = cur ? 'all' : (load()&&load()!=='all'?load():panels[0].getAttribute('data-week')); show(w); save(w); });
   document.addEventListener('click',function(e){
     var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
     var w=weekOf(a.getAttribute('href').slice(1)); if(!w) return;

@@ -49,7 +49,7 @@
         .flow-list { font-size:0.9rem; padding-left:22px; }
         .flow-list li { margin-bottom:6px; }
         .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:0.9rem; }
-        .guide-nav a { color:var(--accent); text-decoration:none; font-weight:600; }
+        .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
 <body class="guide">
@@ -83,14 +83,14 @@
             <strong>Don't read ahead.</strong> The section for HOS 3 explains the retrieval code you <em>build</em> in HOS 2; the section for HOS 4 explains the guardrail and queue code you build in HOS 3. Each HOS grades you on explaining that code in your own words (the Analyze stage), so read a section only when you're <em>starting</em> that HOS — at which point it describes code you've already written and understood.
         </div>
 
-        <table class="jump-table">
+        <div class="table-wrap" tabindex="0"><table class="jump-table">
             <tr><th>You're starting…</th><th>The folder hands you</th><th>Jump</th></tr>
             <tr><td class="hos">HOS 1</td><td>Almost nothing — a Codespace config and a <code>.env.example</code></td><td><a href="#hos1">Read →</a></td></tr>
             <tr><td class="hos">HOS 2</td><td>Your HOS 1 chat app with a working tool-calling agent, plus five sample documents</td><td><a href="#hos2">Read →</a></td></tr>
             <tr><td class="hos">HOS 3</td><td>+ retrieval: <code>ingest.py</code>, <code>retrieval.py</code>, a local vector database</td><td><a href="#hos3">Read →</a></td></tr>
             <tr><td class="hos">HOS 4</td><td>+ guardrails and an async ingestion queue: <code>guardrails.py</code>, <code>jobs.py</code>, <code>queue_setup.py</code>, <code>worker.py</code></td><td><a href="#hos4">Read →</a></td></tr>
             <tr><td class="hos">Any</td><td>Running it, and how to read code you didn't write</td><td><a href="#run">Run →</a> · <a href="#reading">Read →</a></td></tr>
-        </table>
+        </table></div>
 
         <!-- ═════════════ HOS 1 ═════════════ -->
         <div class="hos-block" id="hos1">
@@ -108,7 +108,7 @@
             <details class="file-block">
                 <summary>backend/.env.example <span class="role">— where your API key goes</span></summary>
                 <div class="file-body">
-<pre>GEMINI_API_KEY=your-key-here</pre>
+<pre tabindex="0">GEMINI_API_KEY=your-key-here</pre>
                     <p>A template, safe to commit. You put your real Gemini key (free, no credit card, from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>) in <code>backend/.env</code>, which is git-ignored so it never leaves your Codespace. Treat the key like a password — see the <a href="account-setup-guide.html#google">Account &amp; Service Setup Guide</a>.</p>
                 </div>
             </details>
@@ -127,7 +127,7 @@
             </ul>
 
             <h3 style="font-size:1rem;color:var(--text)">How one chat message travels</h3>
-            <div class="diagram">
+            <div class="diagram" tabindex="0">
 <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A chat message flows from the Streamlit frontend to the FastAPI backend, into the agent loop, out to Gemini, and back through tools">
   <defs>
     <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--blue)"/></marker>
@@ -178,7 +178,7 @@
                         <li><strong>Some?</strong> For each one, look up the Python function by name in <code>TOOL_FUNCTIONS</code>, run it locally with the model's arguments, and wrap the output as a <code>"function_result"</code>.</li>
                         <li>Send those results back with <code>previous_interaction_id</code> so Gemini continues the <em>same</em> conversation, and go around again.</li>
                     </ol>
-<pre>for _ in range(MAX_TURNS):
+<pre tabindex="0">for _ in range(MAX_TURNS):
     function_calls = [s for s in interaction.steps if s.type == "function_call"]
     if not function_calls:
         return interaction.output_text      # done: plain answer
@@ -247,7 +247,7 @@
             <p>Everything from HOS 2, plus retrieval. The agent can now answer questions about the Northwind documents instead of guessing. New this time: <code>backend/ingest.py</code>, <code>backend/retrieval.py</code>, a changed <code>agent.py</code>, and <code>chromadb</code> in <code>requirements.txt</code>.</p>
 
             <h3 style="font-size:1rem;color:var(--text)">Two phases: prepare once, then look up per question</h3>
-            <div class="diagram">
+            <div class="diagram" tabindex="0">
 <svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ingest reads sample docs, chunks and embeds them into Chroma. At question time, retrieval embeds the question and finds the closest chunks, which agent.py adds to the prompt.">
   <defs>
     <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--blue)"/></marker>
@@ -351,7 +351,7 @@
             </details>
 
             <h3 style="font-size:1rem;color:var(--text)">Why ingestion moved to a queue</h3>
-            <div class="diagram">
+            <div class="diagram" tabindex="0">
 <svg viewBox="0 0 780 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A client posts a document to main.py, which enqueues a job in Redis and returns a job id at once. A separate worker process pulls the job from Redis and runs jobs.py, which embeds the document into Chroma. The client polls the job status.">
   <defs>
     <marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--blue)"/></marker>
@@ -449,7 +449,7 @@
         <!-- ═════════════ RUN ═════════════ -->
         <h2 id="run">Running it in a Codespace</h2>
         <p>Open the HOS folder as a Codespace (Code → Codespaces → Create codespace on main). The devcontainer installs dependencies and creates <code>backend/.env</code> for you. Add your real keys to that file, then use one terminal per process:</p>
-<pre># Terminal 1 — the API
+<pre tabindex="0"># Terminal 1 — the API
 cd backend
 uvicorn main:app --reload
 
@@ -482,6 +482,7 @@ python worker.py</pre>
         </div>
     </div>
 </main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
 </body>
 </html>

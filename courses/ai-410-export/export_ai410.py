@@ -33,6 +33,8 @@ REPO = Path(__file__).resolve().parents[2]          # stc-transformation/
 SRC = "courses"                                     # paths below are relative to REPO
 
 # draft page -> published path (inside the output folder)
+DRAFT_NOTE = " · Upcoming BSAI course — sample materials, not yet offered."
+
 PAGES = {
     "courses/ai-410-interactive/index.html": "index.html",
     "courses/ai-410-guides/account-setup-guide.html": "start-here/accounts.html",
@@ -71,6 +73,37 @@ DRAFT_REPO_CODE = re.compile(r"github\.com/clarkngo/stc-transformation/tree/main
 ATTR = re.compile(r'(\b(?:href|src)=")([^"]+)(")')
 SCRIPT_HTML = re.compile(r"""(['"])([\w./-]+\.html(?:#[\w-]*)?)\1""")
 ID = re.compile(r'\bid="([^"]+)"')
+
+
+def a11y_problems(text):
+    """Static accessibility checks (WCAG 2.2 AA basics) that every published page must pass.
+    They catch regressions cheaply; the full audit is axe-core in a browser (see README)."""
+    out = []
+    if not re.search(r'<html[^>]*\blang="[a-z]', text):
+        out.append("<html> has no lang attribute")
+    if not re.search(r"<title>[^<]+</title>", text):
+        out.append("page has no <title>")
+    for m in re.finditer(r"<img\b[^>]*>", text):
+        if not re.search(r'\balt="', m.group(0)):
+            out.append(f"image without alt text: {m.group(0)[:80]}")
+    for m in re.finditer(r"<iframe\b[^>]*>", text):
+        if not re.search(r'\btitle="[^"]+"', m.group(0)):
+            out.append(f"iframe without a title: {m.group(0)[:80]}")
+    for m in re.finditer(r"<svg\b[^>]*>", text):
+        tag = m.group(0)
+        if not re.search(r'\b(aria-label|aria-labelledby|aria-hidden)="', tag) and "<title" not in text[m.end():m.end() + 200]:
+            out.append(f"svg without a text alternative (aria-label, <title>, or aria-hidden): {tag[:80]}")
+    for m in re.finditer(r'<input\b(?![^>]*type="(?:hidden|checkbox|radio|button|submit)")[^>]*>|<textarea\b[^>]*>|<select\b[^>]*>', text):
+        tag = m.group(0)
+        idm = re.search(r'\bid="([^"]+)"', tag)
+        if re.search(r"\baria-label(?:ledby)?=", tag) or (idm and re.search(rf'<label[^>]*\bfor="{re.escape(idm.group(1))}"', text)):
+            continue
+        out.append(f"form field without a label: {tag[:80]}")
+    if 'role="tablist"' in text:
+        out.append('role="tablist" without full tab keyboard support; use a role="group" of aria-pressed buttons')
+    if re.search(r"maximum-scale|user-scalable\s*=\s*no", text):
+        out.append("viewport blocks zoom")
+    return out
 
 
 def is_external(u):
@@ -134,6 +167,8 @@ def main():
             for m in re.finditer(pat, text):
                 line = text.count("\n", 0, m.start()) + 1
                 errors.append(f"{src}:{line}: {why}: {m.group(0)!r}")
+        for why in a11y_problems(text):
+            errors.append(f"{src}: accessibility: {why}")
         for m in DRAFT_REPO_CODE.finditer(text):
             line = text.count("\n", 0, m.start()) + 1
             warnings.append(f"{src}:{line}: {m.group(1)} link points at the drafting repo (switch to the template repo / Classroom link)")
@@ -175,6 +210,9 @@ def main():
                 return mm.group(1) + resolve(mm.group(2), "script string") + mm.group(1)
             return SCRIPT_HTML.sub(lit, m.group(0))
         new = re.sub(r"<script\b(?![^>]*\bsrc=)[^>]*>.*?</script>", script_block, new, flags=re.S)
+        # The drafting site is public and says the course isn't offered yet;
+        # the student site is the live course, so its footer drops that note.
+        new = new.replace(DRAFT_NOTE, "")
         out_pages[dst] = new
 
     if a.check_videos:

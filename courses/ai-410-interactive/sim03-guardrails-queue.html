@@ -112,7 +112,7 @@
         <div class="stat warn"><b id="sErr">0</b><span>returned {"error"}</span></div>
         <div class="stat bad"><b id="sCrash">0</b><span>crashed (500)</span></div>
       </div>
-      <div class="log" id="gLog">Send a request to see each attempt.</div>
+      <div class="log" id="gLog">Send a request to see each attempt.</div><p class="sr-only" id="gLive" aria-live="polite"></p>
     </div>
   </div>
 </div>
@@ -142,7 +142,7 @@
         <div class="stage-col"><h4><span>🧺 Queue (Redis)</span><span class="tag amber" id="qCount">0</span></h4><div id="queueJobs"></div></div>
         <div class="stage-col"><h4><span>👷 Workers</span><span class="tag blue" id="wCount">1</span></h4><div id="workerJobs"></div></div>
       </div>
-      <div class="log" id="qLog">—</div>
+      <div class="log" id="qLog">—</div><p class="sr-only" id="qLive" aria-live="polite"></p>
     </div>
   </div>
 </div>
@@ -163,7 +163,7 @@
 </div>
 
 </main>
-<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo · Simulators are illustrative HTML models — no real LLM, database, or network calls.</footer>
 <script>
 (function(){
   var root=document.documentElement, btn=document.getElementById('themeToggle');
@@ -219,7 +219,7 @@ function sendOne(){
 }
 function finish(lines){
   logLines=lines.concat(logLines).slice(0,120);
-  $('gLog').textContent=logLines.join('\n');
+  $('gLog').textContent=logLines.join('\n'); $('gLive').textContent=lines[lines.length-1].trim();
   $('sOk').textContent=stats.ok; $('sRec').textContent=stats.rec; $('sErr').textContent=stats.err; $('sCrash').textContent=stats.crash;
 }
 $('one').addEventListener('click',sendOne);
@@ -229,7 +229,7 @@ $('gReset').addEventListener('click',function(){ stats={ok:0,rec:0,err:0,crash:0
 /* ---------- B: queue ---------- */
 var mode='queue', jobs=[], jobN=0, apiBusyUntil=0, apiBusyStart=0, apiBusyWhat='', pending=[], qlog=[], t0=performance.now();
 function now(){ return (performance.now()-t0)/1000; }
-function log(s){ qlog.unshift('['+now().toFixed(1)+'s] '+s); qlog=qlog.slice(0,60); $('qLog').textContent=qlog.join('\n'); }
+function log(s){ qlog.unshift('['+now().toFixed(1)+'s] '+s); qlog=qlog.slice(0,60); $('qLog').textContent=qlog.join('\n'); $('qLive').textContent=s; }
 function setMode(m){ mode=m; $('mInline').setAttribute('aria-pressed',m==='inline'); $('mQueue').setAttribute('aria-pressed',m==='queue'); log('Mode → '+(m==='inline'?'inline ingestion (inside the request)':'queue + worker')); }
 $('mInline').addEventListener('click',function(){ setMode('inline'); });
 $('mQueue').addEventListener('click',function(){ setMode('queue'); });

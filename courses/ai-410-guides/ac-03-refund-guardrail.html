@@ -45,7 +45,7 @@
         details.faculty h4 { margin:16px 0 6px; font-size:0.92rem; color:var(--text); }
         details.faculty p, details.faculty li { font-size:0.88rem; }
         .guide-nav { display:flex; justify-content:space-between; gap:12px; margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:0.9rem; }
-        .guide-nav a { color:var(--accent); text-decoration:none; font-weight:600; }
+        .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
 <body class="guide">
@@ -83,13 +83,13 @@
         <h2>The spec</h2>
         <p>Every requirement below is checked by a provided test in <code>tests/test_refunds.py</code>. Your code goes in <code>refunds.py</code>.</p>
         <div class="table-scroll">
-        <table class="mini">
+        <div class="table-wrap" tabindex="0"><table class="mini">
             <tr><th>Layer</th><th>Must do</th></tr>
             <tr><td><strong>Schema</strong> (<code>RefundArgs</code>, Pydantic)</td><td>Order ID is <code>PB-</code> plus 4 digits; amount is a number above 0 with at most 2 decimals; reason is one of four; note is optional, at most 200 characters; any other field is rejected.</td></tr>
             <tr><td><strong>Lookup</strong> (the order data)</td><td>Reject an order that doesn't exist or isn't this customer's, with the same message for both. Reject orders older than 30 days. Reject an amount above what's left to refund, and say what's left.</td></tr>
             <tr><td><strong>Routing</strong></td><td>Over $500 is never applied: it goes to the review queue. Otherwise your rules decide. A small "damaged" refund on a recent order goes straight through.</td></tr>
             <tr><td><strong>Every error</strong></td><td>Returns <code>{"error": ...}</code> naming every bad field, so the model can retry (the HOS 3 pattern), and changes nothing.</td></tr>
-        </table>
+        </table></div>
         </div>
 
         <div class="decision-box">
@@ -105,7 +105,7 @@
         <div class="stage-block">
             <h3><span class="stage-num">1</span>Open it and run the tests</h3>
             <p>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/ac-03-refund-guardrail" target="_blank" rel="noopener">the AC 3 starter-code folder</a> in GitHub Codespaces. It installs everything for you. Then run:</p>
-<pre>pytest</pre>
+<pre tabindex="0">pytest</pre>
             <p>Almost everything fails. That's your to-do list.</p>
         </div>
         <div class="stage-block">
@@ -123,7 +123,7 @@
         <div class="stage-block">
             <h3><span class="stage-num">5</span>Replay the recorded calls</h3>
             <p>Run every recorded tool call through your code:</p>
-<pre>python run_cases.py</pre>
+<pre tabindex="0">python run_cases.py</pre>
             <p>Paste the output into <code>REPORT.md</code> and fill in <code>DECISIONS.md</code>.</p>
         </div>
 
@@ -140,13 +140,13 @@
         <h2>How it's graded</h2>
         <p>Each criterion is graded on one part of your submission, at one of three levels.</p>
         <div class="table-scroll">
-        <table class="mini rubric">
+        <div class="table-wrap" tabindex="0"><table class="mini rubric">
             <tr><th>Criterion</th><th>Weight</th><th>Graded on</th><th>Full</th><th>Partial</th><th>Missing</th></tr>
             <tr><td><strong>Application</strong></td><td class="wt">10%</td><td><code>REPORT.md</code></td><td>Every recorded call is handled: bad ones rejected with a useful message, good ones refunded or queued by your rules.</td><td>It runs, but a recorded call is handled in a way you don't explain.</td><td>It restates the HOS build, or doesn't run.</td></tr>
             <tr><td><strong>Analysis</strong></td><td class="wt">20%</td><td><code>DECISIONS.md</code>, section 2 (where each check belongs)</td><td>Each bad call is assigned to a layer, with why an earlier layer can't catch it, plus a call that would still get through.</td><td>Layers are named, but not tied to the recorded calls.</td><td>No breakdown.</td></tr>
             <tr><td><strong>Evaluation</strong></td><td class="wt">30%</td><td><code>DECISIONS.md</code>, section 1</td><td>Clear routing rules, judged against stated criteria (who they protect, what they cost), with an alternative you rejected and why.</td><td>Rules with a reason, but no criteria or no rejected alternative.</td><td>No rule, or no justification.</td></tr>
             <tr><td><strong>Design</strong></td><td class="wt">40%</td><td><code>refunds.py</code>, your tests, and the <code>pytest</code> output</td><td>All provided tests pass, and your own tests check your rules, including the edge closest to your limit.</td><td>Most provided tests pass, or your own tests cover only the easy case.</td><td>It doesn't run, or you wrote no tests of your own.</td></tr>
-        </table>
+        </table></div>
         </div>
 
         <p style="font-size:0.88rem;color:var(--muted)">How this differs from HOS 3's Understand &amp; Refine: there you guarded your own second tool, by hand. Here the tool moves real money, the bad calls are someone else's, AI help is allowed, and half the grade (Analysis and Evaluation) is for the calls you make.</p>
@@ -167,6 +167,7 @@
         </div>
     </div>
 </main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
 </body>
 </html>

@@ -62,11 +62,11 @@
         .glossary-box dd { display:inline; margin:0 0 0 4px; color:var(--muted); }
         .glossary-box dd::after { content:""; display:block; margin-bottom:4px; }
 
-        .env-example { background:var(--code-bg); color:var(--code-text); padding:16px 18px; border-radius:8px; font-size:0.82rem; line-height:1.7; margin:14px 0; }
+        .env-example { overflow-x:auto; background:var(--code-bg); color:var(--code-text); padding:16px 18px; border-radius:8px; font-size:0.82rem; line-height:1.7; margin:14px 0; }
         .env-example .comment { color:var(--code-text); opacity:.6; }
         .env-example .key { color:#93c5fd; }
 
-        .back-to-top { display:inline-block; margin-top:30px; font-size:0.85rem; color:var(--accent); text-decoration:none; font-weight:600; }
+        .back-to-top { display:inline-block; margin-top:30px; font-size:0.85rem; color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
 <body class="guide">
@@ -93,7 +93,7 @@
         </div>
 
         <h2>Find your service</h2>
-        <table class="map-table">
+        <div class="table-wrap" tabindex="0"><table class="map-table">
             <tr><th>Service</th><th>What it's for</th><th>First needed</th><th>Jump</th></tr>
             <tr>
                 <td class="svc-name">GitHub</td>
@@ -125,7 +125,7 @@
                 <td>HOS 4</td>
                 <td><a class="jump" href="#langfuse">Read →</a></td>
             </tr>
-        </table>
+        </table></div>
 
         <!-- ══════════════════ GITHUB ══════════════════ -->
         <div class="service" id="github">
@@ -165,7 +165,7 @@
                 <li>Click <strong>Create API key</strong>.</li>
                 <li>Copy the long string it gives you — it starts with something like <code>AIza...</code>.</li>
                 <li>Paste it into your project's <code>.env</code> file:
-<pre>GEMINI_API_KEY=AIzaSyD-your-real-key-goes-right-here</pre>
+<pre tabindex="0">GEMINI_API_KEY=AIzaSyD-your-real-key-goes-right-here</pre>
                 </li>
             </ol>
 
@@ -197,7 +197,7 @@
             <h3 style="font-size:1rem;color:var(--text);margin-top:22px">What that connection string actually means</h3>
             <p style="font-size:0.9rem;color:var(--muted)">It looks intimidating, but it's five plain pieces glued together in one line — the same shape as any URL, just with a login baked in:</p>
 
-            <div class="anatomy-box">
+            <div class="anatomy-box" tabindex="0">
                 <div class="anatomy-string">
 <span class="anatomy-part part-scheme">rediss://</span><span class="anatomy-part part-user">default</span>:<span class="anatomy-part part-pass">AbCdEf123...</span>@<span class="anatomy-part part-host">your-instance-name.upstash.io</span>:<span class="anatomy-part part-port">6379</span>
                 </div>
@@ -250,11 +250,11 @@
             <ol class="steps">
                 <li>Go to <a href="https://expo.dev/signup" target="_blank" rel="noopener">expo.dev/signup</a> and create a free account.</li>
                 <li><strong>Log in on the CLI</strong> — in your Codespaces terminal, inside <code>mobile/</code>:
-<pre>npx expo login</pre>
+<pre tabindex="0">npx expo login</pre>
                 It prints a link; open it, sign in with the account from step 1, and the terminal picks it up automatically.</li>
                 <li><strong>Log in on your phone too</strong> — open the Expo Go app, tap the avatar/profile icon in the top-right of its home screen, and sign in with the <em>same</em> account. Both have to match — logged in as one user in the terminal and a different one (or no one) in Expo Go won't load the project.</li>
                 <li>Then, for push notifications specifically, still inside <code>mobile/</code>:
-<pre>npx eas init</pre>
+<pre tabindex="0">npx eas init</pre>
                 It'll confirm you're logged in (from step 2) and confirm creating a new project — say yes. It writes an <code>extra.eas.projectId</code> field directly into your <code>mobile/app.json</code> for you; you don't edit anything by hand.</li>
                 <li>Restart <code>npx expo start --tunnel</code> so the app picks up the updated login state and <code>app.json</code>.</li>
             </ol>
@@ -264,14 +264,14 @@
             <div class="snag-box">
                 <h4>Don't want to deal with phone login or Expo Go at all? Use Expo web instead</h4>
                 <p>For quickly testing the chat screen — no phone, no Expo Go, no account login required — run this inside <code>mobile/</code> instead:</p>
-<pre>npx expo start --web</pre>
+<pre tabindex="0">npx expo start --web</pre>
                 <p>This opens the app in a regular browser tab (in Codespaces, it uses the forwarded-port preview automatically). It's the fastest way to confirm the chat UI and your backend connection work before dealing with phones at all. <strong>Trade-off:</strong> push notifications don't exist on Expo web — <code>expo-notifications</code> isn't supported there, so <code>Device.isDevice</code> is <code>false</code> and this app's code already skips push registration cleanly on its own (no error, it just doesn't run). Use web to verify chat, then switch to a real phone only for the push-notification stages.</p>
             </div>
 
             <div class="snag-box">
                 <h4>"Project is incompatible with this version of Expo Go"</h4>
                 <p>The Expo Go app on your phone only ever supports the <em>current</em> Expo SDK — and it auto-updates itself, so which SDK counts as "current" keeps moving forward over time, independent of this course. If the version this project is pinned to falls behind, Expo Go will refuse to open it and tell you exactly which SDK it wants instead. Fix it by upgrading the project to match, right inside <code>mobile/</code>:</p>
-<pre>npx expo install expo@latest
+<pre tabindex="0">npx expo install expo@latest
 npx expo install --fix</pre>
                 <p>The second command re-aligns every other Expo/React Native package to versions compatible with whatever <code>expo@latest</code> turned out to be. Restart <code>npx expo start --tunnel</code> afterward. This will happen again the next time Expo ships a new SDK — the fix is always these same two commands.</p>
             </div>
@@ -299,7 +299,7 @@ npx expo install --fix</pre>
                 <li>Create a new project (any name — e.g. <code>ai410</code>).</li>
                 <li>Go to <strong>Settings → API Keys</strong> and create a new key pair. You'll get a <strong>Public Key</strong> (starts with <code>pk-lf-...</code>) and a <strong>Secret Key</strong> (starts with <code>sk-lf-...</code>).</li>
                 <li>Add all three to <code>backend/.env</code>:
-<pre>LANGFUSE_PUBLIC_KEY=pk-lf-...
+<pre tabindex="0">LANGFUSE_PUBLIC_KEY=pk-lf-...
 LANGFUSE_SECRET_KEY=sk-lf-...
 LANGFUSE_HOST=https://cloud.langfuse.com</pre>
                 </li>
@@ -315,7 +315,7 @@ LANGFUSE_HOST=https://cloud.langfuse.com</pre>
 
         <h2>Putting it all together</h2>
         <p style="font-size:0.9rem;color:var(--muted)">By the end of the term, your <code>backend/.env</code> holds all four — but you add them one at a time, as each HOS needs them, not all on day one:</p>
-        <div class="env-example">
+        <div class="env-example" tabindex="0">
 <span class="comment"># HOS 1</span><br>
 <span class="key">GEMINI_API_KEY</span>=AIzaSyD-your-real-key-goes-right-here<br>
 <br>
@@ -332,6 +332,7 @@ LANGFUSE_HOST=https://cloud.langfuse.com</pre>
         <a class="back-to-top" href="#top">↑ Back to top / find your service</a>
     </div>
 </main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
 </body>
 </html>

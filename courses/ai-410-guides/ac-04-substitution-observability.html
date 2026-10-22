@@ -45,7 +45,7 @@
         details.faculty h4 { margin:16px 0 6px; font-size:0.92rem; color:var(--text); }
         details.faculty p, details.faculty li { font-size:0.88rem; }
         .guide-nav { display:flex; justify-content:space-between; gap:12px; margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:0.9rem; }
-        .guide-nav a { color:var(--accent); text-decoration:none; font-weight:600; }
+        .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
 <body class="guide">
@@ -84,12 +84,12 @@
         <h2>The spec</h2>
         <p>Every requirement below is checked by a provided test in <code>tests/test_instrumented.py</code>. Your code goes in <code>instrumented.py</code>.</p>
         <div class="table-scroll">
-        <table class="mini">
+        <div class="table-wrap" tabindex="0"><table class="mini">
             <tr><th>Function</th><th>Must do</th></tr>
             <tr><td><code>score_substitution(original, substitute, customer)</code></td><td>0.0 for no substitute, or one with an allergen the customer listed; 0.5 if it costs more than 20% above the original; otherwise 1.0.</td></tr>
             <tr><td><code>run_order(order)</code></td><td>One trace per order. A <code>lookup_stock</code> span, one <code>choose_substitute</code> span per out-of-stock item (the item, how many candidates, what was chosen, how long the model took), and a <code>notify</code> span with the message, when anything was swapped. One quality score per swap. The customer gets exactly what the untraced feature would send.</td></tr>
             <tr><td><code>should_page(trace)</code></td><td>True or False for every order. An order with nothing out of stock never pages.</td></tr>
-        </table>
+        </table></div>
         </div>
 
         <div class="decision-box">
@@ -105,7 +105,7 @@
         <div class="stage-block">
             <h3><span class="stage-num">1</span>Open it and run the tests</h3>
             <p>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/ac-04-substitution-observability" target="_blank" rel="noopener">the AC 4 starter-code folder</a> in GitHub Codespaces. It installs everything for you. Then run:</p>
-<pre>pytest</pre>
+<pre tabindex="0">pytest</pre>
             <p>Almost everything fails. That's your to-do list.</p>
         </div>
         <div class="stage-block">
@@ -123,7 +123,7 @@
         <div class="stage-block">
             <h3><span class="stage-num">5</span>Run the day</h3>
             <p>Run every order through your instrumented feature:</p>
-<pre>python run_day.py</pre>
+<pre tabindex="0">python run_day.py</pre>
             <p>Paste the output into <code>REPORT.md</code> and fill in <code>DECISIONS.md</code>.</p>
         </div>
 
@@ -140,13 +140,13 @@
         <h2>How it's graded</h2>
         <p>Each criterion is graded on one part of your submission, at one of three levels.</p>
         <div class="table-scroll">
-        <table class="mini rubric">
+        <div class="table-wrap" tabindex="0"><table class="mini rubric">
             <tr><th>Criterion</th><th>Weight</th><th>Graded on</th><th>Full</th><th>Partial</th><th>Missing</th></tr>
             <tr><td><strong>Application</strong></td><td class="wt">10%</td><td><code>REPORT.md</code></td><td>Every order is traced and scored, and the pages match your rule.</td><td>It runs, but an order is paged (or not) in a way you don't explain.</td><td>It restates the HOS build, or doesn't run.</td></tr>
             <tr><td><strong>Analysis</strong></td><td class="wt">20%</td><td><code>DECISIONS.md</code>, section 2 (what the trace lets you see)</td><td>Each problem in the report is tied to the span that shows it, compared with a single log line, plus one thing the trace still can't show.</td><td>Spans are listed, but not tied to the day's problems.</td><td>No breakdown.</td></tr>
             <tr><td><strong>Evaluation</strong></td><td class="wt">30%</td><td><code>DECISIONS.md</code>, section 1</td><td>A clear paging rule, judged against stated criteria (how rare, how harmful, can someone act now), with a condition you put on the dashboard instead and why.</td><td>A rule with a reason, but no criteria or no dashboard alternative.</td><td>No rule, or no justification.</td></tr>
             <tr><td><strong>Design</strong></td><td class="wt">40%</td><td><code>instrumented.py</code>, your tests, and the <code>pytest</code> output</td><td>All provided tests pass, and your own tests check your rule, including a hand-built edge case.</td><td>Most provided tests pass, or your own tests cover only the day's obvious orders.</td><td>It doesn't run, or you wrote no tests of your own.</td></tr>
-        </table>
+        </table></div>
         </div>
 
         <p style="font-size:0.88rem;color:var(--muted)">How this differs from HOS 4's Understand &amp; Refine: there you wrote a faithfulness score for your own app, by hand. Here the feature, its failures, and the paging call are someone else's, AI help is allowed, and half the grade (Analysis and Evaluation) is for the calls you make.</p>
@@ -167,6 +167,7 @@
         </div>
     </div>
 </main>
+<footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing · Upcoming BSAI course — sample materials, not yet offered.<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
 </body>
 </html>

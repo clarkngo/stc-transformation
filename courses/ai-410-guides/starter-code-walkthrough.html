@@ -6,10 +6,6 @@
     <title>AI 410 — Starter Code Walkthrough</title>
     <link rel="stylesheet" href="../ai-410-assets/course.css">
     <style>
-        h1 { color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:10px; }
-        h2 { color:var(--accent); margin-top: 34px; }
-        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
-        .meta-pill { background:var(--surface2); color:var(--text); font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
         .rule-box { background:var(--accent-light); border-left:5px solid var(--accent); padding:13px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.9rem; }
         .rule-box strong { color:var(--accent2); }
         .spoiler-box { background:var(--amber-bg); border:2px solid var(--amber); border-radius:8px; padding:14px 18px; margin:18px 0; font-size:0.9rem; }
@@ -20,8 +16,6 @@
         .jump-table th, .jump-table td { border:1px solid var(--border); padding:9px 12px; text-align:left; vertical-align:top; }
         .jump-table th { background:var(--surface2); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:var(--muted); }
         .jump-table td.hos { font-weight:700; color:var(--accent); white-space:nowrap; }
-        .hos-block { border:1px solid var(--border); border-radius:10px; padding:22px 24px 24px; margin:26px 0; scroll-margin-top:16px; }
-        .hos-block > h2 { margin:0 0 4px; }
         .hos-tag { display:inline-block; font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; background:var(--accent-light); color:var(--accent2); margin-bottom:12px; }
         .hos-tag.empty { background:var(--surface2); color:var(--muted); }
         .have-list { margin:8px 0 14px; padding-left:20px; font-size:0.9rem; }
@@ -52,7 +46,7 @@
         .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
-<body class="guide">
+<body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="top">
   <div class="top-inner">
@@ -60,16 +54,30 @@
     <div class="top-right"><a class="pill-btn" href="../ai-410-interactive/index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
   </div>
 </header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 410 · Reference · Read as you start each HOS</div>
+    <h1>Starter Code Walkthrough</h1>
+    <p class="lede">What every file in each module's starter code does, and how a request moves through it. Read the section for the HOS you're starting, not the ones after it.</p>
+    <div class="chips"><span class="chip">Reference — read as you go, not up front</span><span class="chip">Runs in GitHub Codespaces</span><span class="chip">Free tiers only</span></div>
+  </div>
+</section>
 <main id="main">
-    <div class="container">
 
-        <h1>AI 410 — Starter Code Walkthrough</h1>
-        <div class="meta-strip">
-            <span class="meta-pill">Reference — read as you go, not up front</span>
-            <span class="meta-pill">Runs in GitHub Codespaces</span>
-            <span class="meta-pill">Free tiers only</span>
-        </div>
+<nav class="secnav no-print" aria-label="Page sections">
+  <div class="secnav-inner">
+    <a href="#overview">How to use</a>
+    <a href="#hos1">HOS 1</a>
+    <a href="#hos2">HOS 2</a>
+    <a href="#hos3">HOS 3</a>
+    <a href="#hos4">HOS 4</a>
+    <a href="#run">Run it</a>
+    <a href="#reading">Reading code</a>
+  </div>
+</nav>
 
+<section class="module card" id="overview">
+  <div class="module-head"><div class="module-icon">🧭</div><div><h2>How to use this page</h2></div></div>
         <div class="rule-box">
             <strong>Course rules this page follows:</strong> everything below runs in a GitHub Codespace and needs no credit card (Gemini, Upstash, Langfuse, and Expo all have free tiers).
         </div>
@@ -91,10 +99,10 @@
             <tr><td class="hos">HOS 4</td><td>+ guardrails and an async ingestion queue: <code>guardrails.py</code>, <code>jobs.py</code>, <code>queue_setup.py</code>, <code>worker.py</code></td><td><a href="#hos4">Read →</a></td></tr>
             <tr><td class="hos">Any</td><td>Running it, and how to read code you didn't write</td><td><a href="#run">Run →</a> · <a href="#reading">Read →</a></td></tr>
         </table></div>
+</section>
 
-        <!-- ═════════════ HOS 1 ═════════════ -->
-        <div class="hos-block" id="hos1">
-            <h2>Starting HOS 1</h2>
+<section class="module card" id="hos1">
+  <div class="module-head"><div class="module-icon">1️⃣</div><div><h2>Starting HOS 1</h2></div></div>
             <span class="hos-tag empty">Almost empty on purpose</span>
             <p>The folder contains exactly two useful things, and no application code at all:</p>
             <details class="file-block">
@@ -112,11 +120,10 @@
                     <p>A template, safe to commit. You put your real Gemini key (free, no credit card, from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>) in <code>backend/.env</code>, which is git-ignored so it never leaves your Codespace. Treat the key like a password — see the <a href="account-setup-guide.html#google">Account &amp; Service Setup Guide</a>.</p>
                 </div>
             </details>
-        </div>
+</section>
 
-        <!-- ═════════════ HOS 2 ═════════════ -->
-        <div class="hos-block" id="hos2">
-            <h2>Starting HOS 2</h2>
+<section class="module card" id="hos2">
+  <div class="module-head"><div class="module-icon">2️⃣</div><div><h2>Starting HOS 2</h2></div></div>
             <span class="hos-tag">Reference HOS 1 result, carried forward</span>
             <p>You're handed a working chat app with an agent that can call tools. Nothing here needs to change in HOS 2 — but you need to understand it, because everything you add in HOS 2 plugs into it.</p>
 
@@ -238,11 +245,10 @@
                 </div>
             </details>
             <p style="font-size:0.85rem;color:var(--muted);margin-top:10px">A few header comments in this code still name the HOS it was first written in (for example, <code>main.py</code> may say "HOS 1"). The code is what counts.</p>
-        </div>
+</section>
 
-        <!-- ═════════════ HOS 3 ═════════════ -->
-        <div class="hos-block" id="hos3">
-            <h2>Starting HOS 3</h2>
+<section class="module card" id="hos3">
+  <div class="module-head"><div class="module-icon">3️⃣</div><div><h2>Starting HOS 3</h2></div></div>
             <span class="hos-tag">Reference HOS 2 result, carried forward</span>
             <p>Everything from HOS 2, plus retrieval. The agent can now answer questions about the Northwind documents instead of guessing. New this time: <code>backend/ingest.py</code>, <code>backend/retrieval.py</code>, a changed <code>agent.py</code>, and <code>chromadb</code> in <code>requirements.txt</code>.</p>
 
@@ -321,11 +327,10 @@
                     <p>The rest of the loop is unchanged from HOS 2.</p>
                 </div>
             </details>
-        </div>
+</section>
 
-        <!-- ═════════════ HOS 4 ═════════════ -->
-        <div class="hos-block" id="hos4">
-            <h2>Starting HOS 4</h2>
+<section class="module card" id="hos4">
+  <div class="module-head"><div class="module-icon">4️⃣</div><div><h2>Starting HOS 4</h2></div></div>
             <span class="hos-tag">Reference HOS 3 result, carried forward</span>
             <p>Everything from HOS 3, plus two more layers: <strong>guardrails</strong> around tool arguments, and <strong>async document ingestion</strong> through a background queue. New files: <code>guardrails.py</code>, <code>jobs.py</code>, <code>queue_setup.py</code>, <code>worker.py</code>. Changed: <code>main.py</code> and <code>agent.py</code>. The <code>mobile/</code> folder is empty — that's yours to build this HOS.</p>
 
@@ -444,10 +449,10 @@
                     </ul>
                 </div>
             </details>
-        </div>
+</section>
 
-        <!-- ═════════════ RUN ═════════════ -->
-        <h2 id="run">Running it in a Codespace</h2>
+<section class="module card" id="run">
+  <div class="module-head"><div class="module-icon">▶️</div><div><h2>Running it in a Codespace</h2></div></div>
         <p>Open the HOS folder as a Codespace (Code → Codespaces → Create codespace on main). The devcontainer installs dependencies and creates <code>backend/.env</code> for you. Add your real keys to that file, then use one terminal per process:</p>
 <pre tabindex="0"># Terminal 1 — the API
 cd backend
@@ -465,9 +470,10 @@ python ingest.py
 cd backend
 python worker.py</pre>
         <p>No virtual environment needed — the Codespace is already an isolated container. Check the API is alive at <code>/health</code>; try endpoints at <code>/docs</code>. Stop your Codespace when you're done — free hours are limited.</p>
+</section>
 
-        <!-- ═════════════ READING ═════════════ -->
-        <h2 id="reading">How to read code you didn't write</h2>
+<section class="module card" id="reading">
+  <div class="module-head"><div class="module-icon">🔎</div><div><h2>How to read code you didn't write</h2></div></div>
         <ol class="flow-list">
             <li><strong>Start at the entry point.</strong> For this app, that's <code>main.py</code> — every request enters here.</li>
             <li><strong>Follow one request end to end.</strong> Pick a single chat message and trace it file by file, like the diagrams above, before you read anything else.</li>
@@ -475,14 +481,25 @@ python worker.py</pre>
             <li><strong>Break it on purpose.</strong> Stop the worker, blank the API key, ask for something the tool can't do. Knowing how it fails is how you know you understand it.</li>
         </ol>
         <p>This is the same habit the Evaluate and Analyze stages of every HOS are training.</p>
+</section>
 
-        <div class="guide-nav">
+<div class="guide-nav">
             <a href="../ai-410-interactive/index.html">← Course home</a>
             <a href="account-setup-guide.html">Account &amp; Service Setup Guide →</a>
         </div>
-    </div>
+
 </main>
 <footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
+<script>
+/* section nav highlight (scrolls only the nav row, never the page) */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); var c=a.parentElement, ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect(); c.scrollLeft += (ar.left+ar.width/2)-(cr.left+cr.width/2); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+</script>
 </body>
 </html>

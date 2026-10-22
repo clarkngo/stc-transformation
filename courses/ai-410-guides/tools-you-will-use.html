@@ -6,10 +6,6 @@
     <title>AI 410 — Tools You'll Use All Term</title>
     <link rel="stylesheet" href="../ai-410-assets/course.css">
     <style>
-        h1 { color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:10px; }
-        h2 { color:var(--accent); }
-        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
-        .meta-pill { background:var(--surface2); color:var(--text); font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
         .intro-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
         .intro-box h4 { margin:0 0 6px; color:var(--blue); font-size:0.95rem; }
 
@@ -22,10 +18,6 @@
         table.map-table a.jump:hover { text-decoration:underline; }
 
         /* Module blocks */
-        .module { border:1px solid var(--border); border-radius:10px; padding:22px 24px 26px; margin:26px 0; scroll-margin-top:16px; }
-        .module.mod0 { background:var(--surface2); }
-        .module-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-bottom:6px; }
-        .module-head h2 { margin:0; border-bottom:none; padding-bottom:0; }
         .module-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
         .mod-pill { font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; }
         .mod-pill.hos { background:var(--blue-bg); color:var(--violet); }
@@ -73,7 +65,7 @@
         .back-to-top { display:inline-block; margin-top:34px; font-size:0.85rem; color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
-<body class="guide">
+<body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="top">
   <div class="top-inner">
@@ -81,9 +73,25 @@
     <div class="top-right"><a class="pill-btn" href="../ai-410-interactive/index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
   </div>
 </header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 410 · Start here · Read before Week 1</div>
+    <h1>Tools You'll Use All Term</h1>
+    <p class="lede">Codespaces, the terminal, virtual environments, packages, keys and git: the tools every module uses. Learn them once here instead of under deadline pressure in HOS 1.</p>
+    <div class="chips"><span class="chip">Read before Week 1</span><span class="chip">Runs in GitHub Codespaces</span><span class="chip">Free tiers only</span></div>
+  </div>
+</section>
 <main id="main">
-    <div class="container">
-        <h1>Tools You'll Use All Term</h1>
+
+<nav class="secnav no-print" aria-label="Page sections">
+  <div class="secnav-inner">
+    <a href="#start">Start here</a>
+    <a href="#module-0">Universal tooling</a>
+  </div>
+</nav>
+
+<section class="module card" id="start">
+  <div class="module-head"><div class="module-icon">🚦</div><div><h2>Start here, in this order</h2></div></div>
         <div class="before-box">
             <h4>Start here, in this order</h4>
             <ol>
@@ -92,12 +100,10 @@
                 <li>Then open <a href="../ai-410-interactive/hos-01-lesson.html">Module 1</a>.</li>
             </ol>
         </div>
-<!-- ══════════════════ MODULE 0 ══════════════════ -->
-        <div class="module mod0" id="module-0">
-            <div class="module-head"><h2>Universal tooling</h2></div>
-            <div class="module-pills">
-                <span class="mod-pill hos">Read before Week 1</span>
-            </div>
+</section>
+
+<section class="module card" id="module-0">
+  <div class="module-head"><div class="module-icon">🧰</div><div><h2>Universal tooling</h2><div class="module-meta"><span class="tag blue">Read before Week 1</span></div></div></div>
             <p class="why-line">These tools show up in <strong>every single HOS</strong> of this course, not just one. Get comfortable with them once, here, instead of relearning them under deadline pressure in HOS 1.</p>
 
             <div class="diagram-box">
@@ -160,9 +166,9 @@
                     <div class="why"><strong>Why it matters:</strong> if you copy just the run command (e.g. <code>./venv/bin/python worker.py</code>) into a fresh tab without <code>cd backend</code> first, it fails — that script only exists inside <code>backend/</code>. Get in the habit of typing <code>cd backend</code> (or <code>cd mobile</code>) as the very first thing in every new terminal tab, every time, even if you already did it in a different tab a minute ago.</div>
                 </div>
                 <div class="concept-card">
-                    <h4>Working with an AI coding assistant (CEAU-based HOS only)</h4>
-                    <p>If your version of the course uses the merged-HOS format, the first stage of each HOS (<strong>Create/Scaffold</strong>) is deliberately AI-driven — you prompt an assistant to build the app, then spend the rest of the HOS proving, in writing and by hand, that you actually understand what it built.</p>
-                    <div class="why"><strong>Why it matters:</strong> the grading isn't on whether the AI-produced code runs — it's on whether <em>you</em> can evaluate it, explain one piece of it mechanistically, and extend it correctly without AI help. Treat Stage 1 as a starting point, not the deliverable.</div>
+                    <h4>Working with an AI coding assistant</h4>
+                    <p>The first stage of each HOS (<strong>Create/Scaffold</strong>) is deliberately AI-driven — you prompt an assistant to build the app, then spend the rest of the HOS proving, in writing and by hand, that you actually understand what it built.</p>
+                    <div class="why"><strong>Why it matters:</strong> getting the AI-built app running is only 20% of each HOS grade (Create). The other 80% is whether <em>you</em> can evaluate it, explain one piece of it mechanistically, and extend it correctly without AI help. Treat Stage 1 as a starting point, not the deliverable.</div>
                 </div>
             </div>
 
@@ -171,20 +177,29 @@
                 <ul>
                     <li>Could you explain to someone else why a venv exists, in one sentence?</li>
                     <li>Do you know where your Gemini API key is stored, and why it's not inside a <code>.py</code> file?</li>
-                    <li>If your version of the course uses HOS format: do you know which CEAU stage is graded on code correctness, and which ones aren't?</li>
+                    <li>Do you know which part of each HOS is done with an AI assistant, and which parts you must do and explain yourself?</li>
                 </ul>
             </div>
             <p class="module-nav"><a href="concept-companion.html#module-1">Next: Module 1 — Foundations &amp; the Agentic Loop →</a></p>
-        </div>
+</section>
 
-        
-        <div class="guide-nav" style="display:flex;justify-content:space-between;gap:12px;margin-top:30px;padding-top:16px;border-top:1px solid var(--border)">
+<div class="guide-nav" style="display:flex;justify-content:space-between;gap:12px;margin-top:30px;padding-top:16px;border-top:1px solid var(--border)">
             <a href="../ai-410-interactive/index.html">← Course home</a>
             <a href="../ai-410-interactive/hos-01-lesson.html">Module 1 →</a>
         </div>
-    </div>
+
 </main>
 <footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
+<script>
+/* section nav highlight (scrolls only the nav row, never the page) */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); var c=a.parentElement, ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect(); c.scrollLeft += (ar.left+ar.width/2)-(cr.left+cr.width/2); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+</script>
 </body>
 </html>

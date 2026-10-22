@@ -6,10 +6,6 @@
     <title>AI 410 — Account &amp; Service Setup Guide</title>
     <link rel="stylesheet" href="../ai-410-assets/course.css">
     <style>
-        h1 { color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:10px; }
-        h2 { color:var(--accent); }
-        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
-        .meta-pill { background:var(--surface2); color:var(--text); font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
         .intro-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
         .intro-box h4 { margin:0 0 6px; color:var(--blue); font-size:0.95rem; }
 
@@ -20,7 +16,6 @@
         table.map-table a.jump { font-weight:600; text-decoration:none; color:var(--blue); }
         table.map-table a.jump:hover { text-decoration:underline; }
 
-        .service { border:1px solid var(--border); border-radius:10px; padding:22px 24px 26px; margin:26px 0; scroll-margin-top:16px; }
         .service-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-bottom:6px; }
         .service-head h2 { margin:0; border-bottom:none; padding-bottom:0; }
         .service-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
@@ -69,7 +64,7 @@
         .back-to-top { display:inline-block; margin-top:30px; font-size:0.85rem; color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
-<body class="guide">
+<body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="top">
   <div class="top-inner">
@@ -77,22 +72,34 @@
     <div class="top-right"><a class="pill-btn" href="../ai-410-interactive/index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
   </div>
 </header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 410 · Start here · Before you need each service</div>
+    <h1>Account &amp; Service Setup</h1>
+    <p class="lede">Every external account the course asks you to create, in one place: what to click, what each one is for, and when you first need it. Set up GitHub and Gemini before Week 1; the rest can wait until their module.</p>
+    <div class="chips"><span class="chip">Do this once, before you need it</span><span class="chip">Every service has a free tier — no credit card required anywhere</span><span class="chip">5 services</span></div>
+  </div>
+</section>
 <main id="main">
-    <div class="container">
 
-        <h1 id="top">AI 410 — Account &amp; Service Setup Guide</h1>
-        <div class="meta-strip">
-            <span class="meta-pill">Do this once, before you need it</span>
-            <span class="meta-pill">Every service has a free tier — no credit card required anywhere</span>
-            <span class="meta-pill">5 services</span>
-        </div>
+<nav class="secnav no-print" aria-label="Page sections">
+  <div class="secnav-inner">
+    <a href="#find">Find your service</a>
+    <a href="#github">GitHub</a>
+    <a href="#google">Gemini key</a>
+    <a href="#redis">Redis</a>
+    <a href="#expo">Expo</a>
+    <a href="#langfuse">Langfuse</a>
+    <a href="#together">All together</a>
+  </div>
+</nav>
 
+<section class="module card" id="find">
+  <div class="module-head"><div class="module-icon">🗺️</div><div><h2>Find your service</h2></div></div>
         <div class="intro-box">
             <h4>What this page is</h4>
             <p>Every external account this course ever asks you to create, in one place, with exactly what to click and — for Redis specifically — what that intimidating connection string actually means. You don't need all five on day one: GitHub and Google are needed immediately (HOS 1), Redis isn't needed until HOS 3, and Expo and Langfuse aren't needed until HOS 4. Each section below says when, so you can set things up as you go instead of all at once.</p>
         </div>
-
-        <h2>Find your service</h2>
         <div class="table-wrap" tabindex="0"><table class="map-table">
             <tr><th>Service</th><th>What it's for</th><th>First needed</th><th>Jump</th></tr>
             <tr>
@@ -126,14 +133,10 @@
                 <td><a class="jump" href="#langfuse">Read →</a></td>
             </tr>
         </table></div>
+</section>
 
-        <!-- ══════════════════ GITHUB ══════════════════ -->
-        <div class="service" id="github">
-            <div class="service-head"><h2>GitHub</h2></div>
-            <div class="service-pills">
-                <span class="svc-pill when">First needed: HOS 1</span>
-                <span class="svc-pill cost">Free — no credit card</span>
-            </div>
+<section class="module card" id="github">
+  <div class="module-head"><div class="module-icon">🐙</div><div><h2>GitHub</h2><div class="module-meta"><span class="tag blue">First needed: HOS 1</span><span class="tag">Free — no credit card</span></div></div></div>
             <p class="why-line"><strong>What it's for:</strong> hosting your own copy of each HOS's starter code, and — the recommended path all term — <strong>GitHub Codespaces</strong>, a ready-made cloud dev environment that sidesteps the most common setup bug in this course (an old package on your own machine silently shadowing the project's real one).</p>
 
             <ol class="steps">
@@ -149,15 +152,10 @@
                 <h4>You'll know it worked when…</h4>
                 <ul><li>You can sign in at github.com, and can see the option <strong>Code → Codespaces → Create codespace on main</strong> on any repository (including your own copy of a starter-code folder).</li></ul>
             </div>
-        </div>
+</section>
 
-        <!-- ══════════════════ GOOGLE / GEMINI ══════════════════ -->
-        <div class="service" id="google">
-            <div class="service-head"><h2>Google AI Studio — Gemini API Key</h2></div>
-            <div class="service-pills">
-                <span class="svc-pill when">First needed: HOS 1</span>
-                <span class="svc-pill cost">Free — no credit card</span>
-            </div>
+<section class="module card" id="google">
+  <div class="module-head"><div class="module-icon">🔑</div><div><h2>Google AI Studio: Gemini API key</h2><div class="module-meta"><span class="tag blue">First needed: HOS 1</span><span class="tag">Free — no credit card</span></div></div></div>
             <p class="why-line"><strong>What it's for:</strong> the API key that lets your backend talk to Gemini. You get this once, in HOS 1, and reuse the exact same key for every remaining HOS — chat, embeddings, everything.</p>
 
             <ol class="steps">
@@ -175,15 +173,10 @@
                 <h4>You'll know it worked when…</h4>
                 <ul><li>You have a copied key starting with <code>AIza</code> saved in your own notes somewhere safe, and pasted into <code>.env</code> as <code>GEMINI_API_KEY</code> (not <code>.env.example</code> — that file is just a template).</li></ul>
             </div>
-        </div>
+</section>
 
-        <!-- ══════════════════ REDIS / UPSTASH ══════════════════ -->
-        <div class="service" id="redis">
-            <div class="service-head"><h2>Upstash — Redis Database</h2></div>
-            <div class="service-pills">
-                <span class="svc-pill when">First needed: HOS 3</span>
-                <span class="svc-pill cost">Free — no credit card</span>
-            </div>
+<section class="module card" id="redis">
+  <div class="module-head"><div class="module-icon">🧱</div><div><h2>Upstash: Redis database</h2><div class="module-meta"><span class="tag blue">First needed: HOS 3</span><span class="tag">Free — no credit card</span></div></div></div>
             <p class="why-line"><strong>What it's for:</strong> Redis is the fast, simple database your background job queue runs on — one process (your API) adds "please ingest this document" tasks to it, and a separate worker process pulls them off. Upstash gives you a managed, free Redis instance with no server to install yourself.</p>
 
             <ol class="steps">
@@ -236,15 +229,10 @@
                 <h4>You'll know it worked when…</h4>
                 <ul><li>Your <code>.env</code> has one line starting <code>REDIS_URL=rediss://default:...@...upstash.io:6379</code>, and HOS 3's <code>queue_setup.py</code> can connect without a connection error.</li></ul>
             </div>
-        </div>
+</section>
 
-        <!-- ══════════════════ EXPO ══════════════════ -->
-        <div class="service" id="expo">
-            <div class="service-head"><h2>Expo — Account, Login &amp; EAS Project ID</h2></div>
-            <div class="service-pills">
-                <span class="svc-pill when">First needed: HOS 4</span>
-                <span class="svc-pill cost">Free — no credit card</span>
-            </div>
+<section class="module card" id="expo">
+  <div class="module-head"><div class="module-icon">📱</div><div><h2>Expo: account, login &amp; EAS project ID</h2><div class="module-meta"><span class="tag blue">First needed: HOS 4</span><span class="tag">Free — no credit card</span></div></div></div>
             <p class="why-line"><strong>What it's for:</strong> two separate things, both solved by the same free account. First — on current versions of <strong>Expo Go for iOS</strong>, you must be logged in to the same Expo account in <em>both</em> your terminal and the Expo Go app just to load the project at all (a newer Expo Go requirement, not specific to this course). Second — requesting a <strong>push token</strong> specifically also requires the app to be linked to a project on Expo's own servers (EAS), separately from the login above.</p>
 
             <ol class="steps">
@@ -283,15 +271,10 @@ npx expo install --fix</pre>
                     <li><code>mobile/app.json</code> has a new <code>extra.eas.projectId</code> field after running <code>eas init</code>, and the app logs a real push token to the console instead of the "No EAS project ID found" warning.</li>
                 </ul>
             </div>
-        </div>
+</section>
 
-        <!-- ══════════════════ LANGFUSE ══════════════════ -->
-        <div class="service" id="langfuse">
-            <div class="service-head"><h2>Langfuse</h2></div>
-            <div class="service-pills">
-                <span class="svc-pill when">First needed: HOS 4</span>
-                <span class="svc-pill cost">Free — no credit card</span>
-            </div>
+<section class="module card" id="langfuse">
+  <div class="module-head"><div class="module-icon">🔭</div><div><h2>Langfuse</h2><div class="module-meta"><span class="tag blue">First needed: HOS 4</span><span class="tag">Free — no credit card</span></div></div></div>
             <p class="why-line"><strong>What it's for:</strong> observability — recording what actually happened on every real request (timing, inputs, outputs, cost) so you can look at data instead of guessing when something's slow or wrong. You won't need this until the observability HOS, but it's included here so this page covers every account the course asks for.</p>
 
             <ol class="steps">
@@ -311,9 +294,10 @@ LANGFUSE_HOST=https://cloud.langfuse.com</pre>
                 <h4>You'll know it worked when…</h4>
                 <ul><li>Your Langfuse project's <strong>Traces</strong> tab shows real entries after you send a few chat messages through your HOS 4 app.</li></ul>
             </div>
-        </div>
+</section>
 
-        <h2>Putting it all together</h2>
+<section class="module card" id="together">
+  <div class="module-head"><div class="module-icon">🧩</div><div><h2>Putting it all together</h2></div></div>
         <p style="font-size:0.9rem;color:var(--muted)">By the end of the term, your <code>backend/.env</code> holds all four — but you add them one at a time, as each HOS needs them, not all on day one:</p>
         <div class="env-example" tabindex="0">
 <span class="comment"># HOS 1</span><br>
@@ -329,10 +313,21 @@ LANGFUSE_HOST=https://cloud.langfuse.com</pre>
         </div>
         <p style="font-size:0.85rem;color:var(--muted)">This file is already excluded from Git by this project's <code>.gitignore</code> — it stays on your machine (or your Codespace) only, never committed.</p>
 
-        <a class="back-to-top" href="#top">↑ Back to top / find your service</a>
-    </div>
+        <a class="back-to-top" href="#find">↑ Back to Find your service</a>
+</section>
+
 </main>
 <footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
+<script>
+/* section nav highlight (scrolls only the nav row, never the page) */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); var c=a.parentElement, ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect(); c.scrollLeft += (ar.left+ar.width/2)-(cr.left+cr.width/2); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+</script>
 </body>
 </html>

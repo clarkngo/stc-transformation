@@ -6,10 +6,6 @@
     <title>AI 410 — Concept Companion</title>
     <link rel="stylesheet" href="../ai-410-assets/course.css">
     <style>
-        h1 { color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:10px; }
-        h2 { color:var(--accent); }
-        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
-        .meta-pill { background:var(--surface2); color:var(--text); font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
         .intro-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
         .intro-box h4 { margin:0 0 6px; color:var(--blue); font-size:0.95rem; }
 
@@ -22,10 +18,6 @@
         table.map-table a.jump:hover { text-decoration:underline; }
 
         /* Module blocks */
-        .module { border:1px solid var(--border); border-radius:10px; padding:22px 24px 26px; margin:26px 0; scroll-margin-top:16px; }
-        .module.mod0 { background:var(--surface2); }
-        .module-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-bottom:6px; }
-        .module-head h2 { margin:0; border-bottom:none; padding-bottom:0; }
         .module-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
         .mod-pill { font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; }
         .mod-pill.hos { background:var(--blue-bg); color:var(--violet); }
@@ -79,7 +71,7 @@
         @media (max-width:640px) { .module-tabs .tab-sub { display:none; } .module-tabs button[data-mod] { flex:1 1 calc(50% - 8px); padding:9px 6px; } .module-tabs .show-all { flex-basis:100%; text-align:right; margin-left:0; } }
     </style>
 </head>
-<body class="guide">
+<body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="top">
   <div class="top-inner">
@@ -87,24 +79,34 @@
     <div class="top-right"><a class="pill-btn" href="../ai-410-interactive/index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
   </div>
 </header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 410 · Reference · Read before each module</div>
+    <h1>Concept Companion</h1>
+    <p class="lede">Every concept and piece of vocabulary you should understand before you open a module's hands-on guide, gathered in one place. Read the module you're about to start, not the whole page.</p>
+    <div class="chips"><span class="chip">Read before you start, not while debugging</span><span class="chip">One module per HOS</span><span class="chip">Modules 1–4</span></div>
+  </div>
+</section>
 <main id="main">
-    <div class="container">
 
-        <h1 id="top">AI 410 — Concept Companion</h1>
-        <div class="meta-strip">
-            <span class="meta-pill">Read before you start, not while you're debugging</span>
-            <span class="meta-pill">One module per HOS</span>
-            <span class="meta-pill">5 standalone modules</span>
-        </div>
+<nav class="secnav no-print" aria-label="Page sections">
+  <div class="secnav-inner">
+    <a href="#find">Find your module</a>
+    <a href="#module-1">Module 1</a>
+    <a href="#module-2">Module 2</a>
+    <a href="#module-3">Module 3</a>
+    <a href="#module-4">Module 4</a>
+  </div>
+</nav>
 
+<section class="module card" id="find">
+  <div class="module-head"><div class="module-icon">🗺️</div><div><h2>Find your module</h2></div></div>
         <div class="intro-box">
             <h4>What this page is</h4>
             <p>The Hands-On Guides tell you <em>what to build, step by step</em>. This page is different: it's every concept and piece of vocabulary you should already understand <strong>before</strong> you open one of those guides, gathered in one place instead of scattered across the term. Read the module for what you're about to start, not the whole page at once — each module is written to stand on its own.</p>
             <p style="margin-bottom:0"><strong>Modular by design:</strong> Its four modules match the <a href="../ai-410-interactive/index.html">course's Modules 1–4</a>, one per HOS. (Module 5, the Team Project, adds no new concepts.) The tools you'll use all term (Codespaces, the terminal, git) are on their own page: <a href="tools-you-will-use.html">Tools you'll use all term</a>. Use the table below to find your module.</p>
             <p style="margin:10px 0 0"><strong>Want to see a concept in motion?</strong> Each HOS has a browser simulator: <a href="../ai-410-interactive/sim01-agentic-loop.html">agentic loop</a>, <a href="../ai-410-interactive/sim02-rag-pipeline.html">RAG pipeline</a>, <a href="../ai-410-interactive/sim03-guardrails-queue.html">guardrails &amp; queue</a>, <a href="../ai-410-interactive/sim04-push-observability.html">push &amp; observability</a>. See all of them, plus the interactive lessons, on the <a href="../ai-410-interactive/index.html">interactive index</a>.</p>
         </div>
-
-        <h2>Find your module</h2>
         <div style="overflow-x:auto" tabindex="0"><table class="map-table">
             <tr><th>Module</th><th>When</th><th>Outcome(s)</th><th>Jump</th></tr>
             <tr>
@@ -133,6 +135,7 @@
             </tr>
         </table></div>
         <p style="font-size:0.85rem;color:var(--muted);margin-top:6px">Skipped a module and got confused later? That's the signal to come back and read it — every "common snag" box in the Hands-On Guides traces back to one of the concepts below.</p>
+</section>
 
         <div class="week-tabs no-print module-tabs" role="group" aria-label="Modules">
             <button type="button" data-mod="1" aria-controls="module-1">Module 1<span class="tab-sub"> · Agentic loop</span></button>
@@ -143,13 +146,8 @@
         </div>
         <p class="small muted tabs-hint">Pick your module. Searching the page (Ctrl/Cmd+F) only looks in the open tab; use "Show all modules" to search everything.</p>
 
-        <!-- ══════════════════ MODULE 1 ══════════════════ -->
-        <div class="module" id="module-1">
-            <div class="module-head"><h2>Module 1 — Foundations &amp; the Agentic Loop</h2></div>
-            <div class="module-pills">
-                <span class="mod-pill hos">HOS 1</span>
-                <span class="mod-pill outcome">Outcome 1</span>
-            </div>
+<section class="module card" id="module-1">
+  <div class="module-head"><div class="module-icon">1️⃣</div><div><h2>Module 1: Foundations &amp; the Agentic Loop</h2><div class="module-meta"><span class="tag blue">HOS 1</span><span class="tag">Outcome 1</span></div></div></div>
             <p class="why-line"><strong>Why before you start:</strong> almost everything you build for the rest of the term is an extension of one request/response call and one decision loop. Get these two shapes solid now and every later HOS is "the same thing, plus one more piece."</p>
 
             <div class="diagram-box">
@@ -260,15 +258,10 @@
                 </ul>
             </div>
             <p class="module-nav"><a href="#module-2">Next: Module 2 — Embeddings, Chunking &amp; RAG →</a></p>
-        </div>
+</section>
 
-        <!-- ══════════════════ MODULE 2 ══════════════════ -->
-        <div class="module" id="module-2">
-            <div class="module-head"><h2>Module 2 — Embeddings, Chunking &amp; RAG</h2></div>
-            <div class="module-pills">
-                <span class="mod-pill hos">HOS 2</span>
-                <span class="mod-pill outcome">Outcomes 1–2</span>
-            </div>
+<section class="module card" id="module-2">
+  <div class="module-head"><div class="module-icon">2️⃣</div><div><h2>Module 2: Embeddings, Chunking &amp; RAG</h2><div class="module-meta"><span class="tag blue">HOS 2</span><span class="tag">Outcomes 1–2</span></div></div></div>
             <p class="why-line"><strong>Why before you start:</strong> Retrieval-Augmented Generation (RAG) is the single most common pattern for making a model answer accurately about specific data instead of guessing. Every concept here builds toward that one pipeline.</p>
 
             <div class="concept-grid">
@@ -348,15 +341,10 @@
                 </ul>
             </div>
             <p class="module-nav"><a href="#module-3">Next: Module 3 — Guardrails &amp; Async Processing →</a></p>
-        </div>
+</section>
 
-        <!-- ══════════════════ MODULE 3 ══════════════════ -->
-        <div class="module" id="module-3">
-            <div class="module-head"><h2>Module 3 — Guardrails &amp; Asynchronous Processing</h2></div>
-            <div class="module-pills">
-                <span class="mod-pill hos">HOS 3</span>
-                <span class="mod-pill outcome">Outcome 3</span>
-            </div>
+<section class="module card" id="module-3">
+  <div class="module-head"><div class="module-icon">3️⃣</div><div><h2>Module 3: Guardrails &amp; Asynchronous Processing</h2><div class="module-meta"><span class="tag blue">HOS 3</span><span class="tag">Outcome 3</span></div></div></div>
             <p class="why-line"><strong>Why before you start:</strong> once your app is doing real retrieval and tool calls, two new risks show up — the model can produce malformed output, and slow work can freeze the app for everyone using it. This module is about naming those risks on purpose, then handling both.</p>
 
             <div class="concept-grid">
@@ -443,15 +431,10 @@
                 </ul>
             </div>
             <p class="module-nav"><a href="#module-4">Next: Module 4 — Mobile, Push &amp; Observability →</a></p>
-        </div>
+</section>
 
-        <!-- ══════════════════ MODULE 4 ══════════════════ -->
-        <div class="module" id="module-4">
-            <div class="module-head"><h2>Module 4 — Mobile, Push &amp; Observability</h2></div>
-            <div class="module-pills">
-                <span class="mod-pill hos">HOS 4</span>
-                <span class="mod-pill outcome">Outcomes 4–5</span>
-            </div>
+<section class="module card" id="module-4">
+  <div class="module-head"><div class="module-icon">4️⃣</div><div><h2>Module 4: Mobile, Push &amp; Observability</h2><div class="module-meta"><span class="tag blue">HOS 4</span><span class="tag">Outcomes 4–5</span></div></div></div>
             <p class="why-line"><strong>Why before you start:</strong> the last stretch puts the same backend you've been building in front of a real device, and makes what's happening inside it visible instead of a black box you have to guess about.</p>
 
             <div class="concept-grid">
@@ -544,11 +527,11 @@
                     <li>Can you name one thing your app does that would be worth measuring with a number, not just "it feels fine"?</li>
                 </ul>
             </div>
-        </div>
+</section>
 
         <p style="font-size:0.85rem;color:var(--muted);margin-top:8px">Missed something after all this? Every Hands-On Guide's "Common snags" box is written for exactly that moment — go back to the relevant HOS guide and re-read its <code>explain</code> boxes alongside this page.</p>
-        <a class="back-to-top" href="#top">↑ Back to top / module map</a>
-    </div>
+        <a class="back-to-top" href="#find">↑ Back to the module map</a>
+
 </main>
 <footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
@@ -570,7 +553,7 @@
   document.body.classList.add('tabs-on');
   var start = modOf(location.hash.slice(1)) || load() || '1';
   show(start);
-  if(location.hash){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt){ var go=function(){ tgt.scrollIntoView({block:'start'}); }; setTimeout(go,0); window.addEventListener('load',go); } }
+  if(location.hash){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt){ var go=function(){ tgt.scrollIntoView({block:'start', behavior:'instant'}); }; setTimeout(go,0); window.addEventListener('load',go); } }
   tabs.forEach(function(t){ t.addEventListener('click',function(){ var m=t.getAttribute('data-mod'); show(m); save(m); }); });
   if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-pressed')==='true';})[0]; var m = cur ? 'all' : last; show(m); save(m); });
   document.addEventListener('click',function(e){
@@ -579,6 +562,16 @@
     var p=document.getElementById('module-'+m); if(p && p.hidden){ show(m); save(m); }
   }, true);
   window.addEventListener('hashchange',function(){ var m=modOf(location.hash.slice(1)); if(m){ var p=document.getElementById('module-'+m); if(p.hidden){ show(m); var el=document.getElementById(location.hash.slice(1)); if(el) el.scrollIntoView(); } } });
+})();
+</script>
+<script>
+/* section nav highlight (scrolls only the nav row, never the page) */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); var c=a.parentElement, ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect(); c.scrollLeft += (ar.left+ar.width/2)-(cr.left+cr.width/2); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
 })();
 </script>
 </body>

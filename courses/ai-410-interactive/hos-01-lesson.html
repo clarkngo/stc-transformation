@@ -114,8 +114,8 @@
       <p>A classmate ships a quick demo that calls Gemini directly from the frontend, with the API key pasted into the JavaScript. It works — and within an hour of posting the link, anyone who opens the browser's developer tools can copy the key and spend its quota. Moving the call behind a backend endpoint doesn't make the app smarter; it makes the secret unreachable. That's the first reason the backend exists. The second is that tools (Part 3) have to run somewhere trustworthy too.</p>
     </div>
     <p>The two halves talk over <strong>HTTP</strong>. The frontend sends a request (<code>POST /chat</code> with a small JSON body such as <code>{"message": "What's 342 times 87?"}</code>) and the backend answers with JSON (<code>{"reply": "342 × 87 = 29,754."}</code>). That request and response are the <em>contract</em> between the halves. As long as it stays the same, you can replace either side: HOS 4 adds a phone app without touching the backend's AI code at all.</p>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>Putting the API key anywhere the user's device can see it</b>: frontend code, a mobile app, or a public repo. It belongs in <code>backend/.env</code>, which is git-ignored.</li>
         <li><b>Committing <code>.env</code>.</b> If a key ever lands in a commit, treat it as leaked: delete it in Google AI Studio and make a new one.</li>
@@ -149,8 +149,8 @@
       <span class="label">Worked example</span>
       <p>A student types "I'm Dana," then "What's my name?" The Streamlit page shows both messages, so it looks like a conversation with memory. The model answers "I don't know your name." In the HOS 1 build, the frontend keeps the chat on screen, but each <code>POST /chat</code> sends only the latest message, and the backend starts a fresh request to Gemini every time. What the user sees and what the model sees are different things. If you want the model to remember, your backend has to send the earlier turns.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>Believing the model remembers you.</b> It only sees what's in this request. History is your backend's job.</li>
         <li><b>Testing once.</b> Sampling means one good answer proves little. Run important checks several times.</li>
@@ -191,8 +191,8 @@ calculate_tool = {
     },
 }</code></pre>
     <p>Notice what the model <em>never</em> does: it never runs the function. It only asks. That's the property that makes tool calling safe to reason about — and it's why deciding <em>which</em> functions to expose is an engineering judgment, not a detail (you'll practice that in the <a href="#challenge">Application Challenge</a>).</p>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>A vague tool description.</b> The description is the only thing the model reads to decide when to call a tool. "Does math" gets ignored; "Evaluate a basic arithmetic expression. Use for any math." gets used.</li>
         <li><b>Forgetting to send the result back.</b> If the backend runs the tool but never returns a <code>function_response</code>, the model never gets to answer.</li>
@@ -204,10 +204,7 @@ calculate_tool = {
       <span class="label">Quick check</span>
       <p>A user asks "What's 2 + 2, and what's 10 times that?" How many times might the loop go round, and what does the backend send Gemini on each pass?</p>
     </div>
-    <div class="callout">
-      <span class="label">Try it before the build</span>
-      <p>Open the <a href="sim01-agentic-loop.html"><strong>Agentic Loop Simulator</strong></a> and step through "What's 342 times 87?", then "Tell me a joke", then "Calculate 12 / (3 -". Watch where each one exits the loop.</p>
-    </div>
+    <p class="try-it">▶ <b>Rehearse before the build:</b> Open the <a href="sim01-agentic-loop.html"><strong>Agentic Loop Simulator</strong></a> and step through "What's 342 times 87?", then "Tell me a joke", then "Calculate 12 / (3 -". Watch where each one exits the loop.</p>
   </div>
 
   <details class="gloss-box"><summary>New words this week (4)</summary><dl class="gloss">
@@ -286,10 +283,12 @@ calculate_tool = {
     <div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>Before replying to anyone, post the <em>strongest</em> version of the side you didn't hold.</div>
     <div class="stage"><span class="day">Stage 3 · by Sat</span><h4>Synthesis</h4>Drop advocacy. State a real position (it can be "it depends on X"), citing at least one specific point from a classmate's post.</div>
   </div>
+  <details class="eg-toggle"><summary>See a weak vs. strong example</summary>
   <div class="two">
     <div class="eg weak"><span class="label">Weak synthesis</span>"Great points everyone, I think both sides are right and it depends on the situation."</div>
     <div class="eg strong"><span class="label">Strong synthesis</span>"Priya's point that a routing rule is testable changed my mind for anything that writes data. I'd let the model choose read-only tools like <code>calculate</code>, but route anything that sends email or charges money through backend code that checks the request first — which is roughly what HOS 3's guardrails do."</div>
   </div>
+  </details>
   <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%). <a href="concept-debate-example.html">See a worked example: four students through one debate, with a timeline →</a> A reply that only affirms agreement without citing what it agrees with doesn't meet the Writing criterion.</p>
 </section>
 

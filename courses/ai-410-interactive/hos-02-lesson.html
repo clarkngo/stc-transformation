@@ -126,8 +126,8 @@
       <span class="label">Worked example</span>
       <p>A customer asks, "Can I send back a tent I bought three weeks ago?" Without retrieval, the model says something like "Most retailers allow 14 to 30 days." With retrieval, the backend first finds the chunk from <code>return-policy.md</code> ("returns within 30 days of delivery … unused and in its original packaging") and puts it in the system instruction. The model's answer is now Northwind's actual policy, including the packaging condition that a generic answer would have skipped. And because you know which chunk it saw, you can check the answer against it.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>Trusting a fluent answer.</b> "It sounded right" is not evidence the model read your documents. Compare the answer with the retrieved chunks.</li>
         <li><b>Expecting retrieval to answer questions the documents don't cover.</b> If Northwind's docs never mention price matching, RAG can't help; the app should say it doesn't know.</li>
@@ -179,8 +179,8 @@ q_vec = result.embeddings[0].values      # the list of 1,024 numbers</code></pre
       <span class="label">Worked example</span>
       <p>A student changes <code>EMBED_DIM</code> to 768 in <code>retrieval.py</code> to "make it faster" but doesn't re-run <code>ingest.py</code>. The stored chunks still have 1,024 numbers each; the question now has 768. Chroma refuses to compare vectors of different lengths and the request fails. The fix isn't in the query code: re-ingest with the same setting, or change it back. Settings that shape vectors belong in one place, used by both scripts.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>Treating similarity as truth.</b> The closest chunk is the most <em>related</em> text, not necessarily the right answer. A chunk about tent returns can be close to a question about tent warranties.</li>
         <li><b>Changing the embedding model or size without re-ingesting.</b> Vectors from different settings can't be compared.</li>
@@ -231,8 +231,8 @@ q_vec = result.embeddings[0].values      # the list of 1,024 numbers</code></pre
       <span class="label">Worked example</span>
       <p>With the starter's settings, the five short sample documents become five chunks, and <code>retrieve(k=5)</code> returns all of them, so every question sees every document. That's fine for learning the plumbing, and it hides the selection problem that appears once Northwind has 500 documents. To see selection happen, shrink chunks to about 20 words and set top-k to 1. Now <code>shipping.md</code> splits into several pieces, and "Canadian orders may be subject to customs fees…" becomes its own chunk. Ask "Do Canadian orders pay customs fees?" and that chunk should rank first. Ask "How long does shipping to Canada take?" and the top chunk is likely the standard-shipping one: "5-7 business days," with nothing about customs. The answer is grounded but incomplete, and the cause is the retrieval settings, not the model.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>Forgetting to re-ingest</b> after changing documents or chunk settings. The app answers from stale chunks and nothing tells you.</li>
         <li><b>An over-broad "only use the context" instruction</b> that silently disables the HOS 1 tools.</li>
@@ -243,10 +243,7 @@ q_vec = result.embeddings[0].values      # the list of 1,024 numbers</code></pre
       <span class="label">Quick check</span>
       <p>A 900-word document goes through <code>chunk_text</code> with the default settings. How many chunks come out, and which words does each one start at?</p>
     </div>
-    <div class="callout">
-      <span class="label">Try it before the build</span>
-      <p>Open the <a href="sim02-rag-pipeline.html"><strong>RAG Pipeline Simulator</strong></a>. Ask the return question at chunk size 30, then at 10 with top-k 1. Then turn on the buggy prompt and ask "What's 25 times 4?"</p>
-    </div>
+    <p class="try-it">▶ <b>Rehearse before the build:</b> Open the <a href="sim02-rag-pipeline.html"><strong>RAG Pipeline Simulator</strong></a>. Ask the return question at chunk size 30, then at 10 with top-k 1. Then turn on the buggy prompt and ask "What's 25 times 4?"</p>
   </div>
 
   <details class="gloss-box"><summary>New words this week (4)</summary><dl class="gloss">
@@ -319,10 +316,12 @@ q_vec = result.embeddings[0].values      # the list of 1,024 numbers</code></pre
     <div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>Before replying to anyone, post the <em>strongest</em> version of the side you didn't hold.</div>
     <div class="stage"><span class="day">Stage 3 · by Sat</span><h4>Synthesis</h4>Drop advocacy. State a real position, citing at least one specific point from a classmate's post.</div>
   </div>
+  <details class="eg-toggle"><summary>See a weak vs. strong example</summary>
   <div class="two">
     <div class="eg weak"><span class="label">Weak synthesis</span>"Both sides make good points. It depends on the use case."</div>
     <div class="eg strong"><span class="label">Strong synthesis</span>"Marcus showed that 'do you gift wrap?' got an invented yes in his build — that's a policy question, and I now think policy questions must refuse. But Dana's waterproofing example is general advice, not policy. My position: refuse on anything that sounds like a commitment (prices, returns, availability), allow caveated general answers for how-to questions. The hard part is telling them apart, which is a classifier problem, not a prompt problem."</div>
   </div>
+  </details>
   <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%). <a href="concept-debate-example.html">See a worked example: four students through one debate, with a timeline →</a></p>
 </section>
 

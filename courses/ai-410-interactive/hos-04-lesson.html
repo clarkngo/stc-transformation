@@ -152,8 +152,8 @@
       <span class="label">Worked example</span>
       <p>A student's app loads, but every message shows "Network request failed." The chat screen calls <code>http://localhost:8000/chat</code>. On a laptop that's the backend; on a phone, <code>localhost</code> means <em>the phone itself</em>, where nothing is listening. Switching to the Codespace's public forwarded URL fixes it. No backend code changed, because nothing in the backend was wrong.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>Using <code>localhost</code> from the phone.</b> It points at the phone. Use the public URL.</li>
         <li><b>Leaving the backend port private.</b> The phone gets an error or a sign-in page instead of JSON.</li>
@@ -193,8 +193,8 @@
       <span class="label">Worked example</span>
       <p>Push worked yesterday and doesn't today. The job finished (its status is <code>finished</code>), the backend log shows the request to Expo, and the response was 200. Reading the body shows <code>"DeviceNotRegistered"</code>: the student reinstalled Expo Go, which issued a new token, and the backend still has the old one. Re-registering the device fixes it. The lesson is to walk the chain in order and read each link's evidence rather than guessing.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>Trusting the 200.</b> Always read the response body from Expo's push service.</li>
         <li><b>Testing push in Expo Go on Android.</b> It can't receive pushes any more; use an iPhone or a development build.</li>
@@ -237,8 +237,8 @@ def run_agent(message):        # becomes the top-level span for the whole reques
       <span class="label">Worked example</span>
       <p>A user says the assistant told them Northwind offers gift wrapping. You open that request's trace. The retrieve span returned two chunks about packaging and shipping, nothing about gift wrap. The generation span's output stretched them into a policy. Faithfulness scored 0.67. Diagnosis in two minutes: a retrieval and grounding problem (HOS 2), not a model problem.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>Expecting traces without keys.</b> With no Langfuse keys set, the app still works and simply sends nothing. That's by design, not a bug.</li>
         <li><b>Decorating only the top function.</b> You get one bar for the whole request and can't see where time went. Decorate the steps too.</li>
@@ -249,10 +249,7 @@ def run_agent(message):        # becomes the top-level span for the whole reques
       <span class="label">Quick check</span>
       <p>A request takes 6 seconds. The trace shows <code>retrieve</code> at 0.3 s and generation at 5.5 s. Where would you look first to speed it up, and what would you <em>not</em> bother optimising?</p>
     </div>
-    <div class="callout">
-      <span class="label">Try it before the build</span>
-      <p>Open the <a href="sim04-push-observability.html"><strong>Push &amp; Observability Simulator</strong></a>. Break the push chain one link at a time (try Android and a missing EAS ID), then open each trace scenario and answer "what do you check first?"</p>
-    </div>
+    <p class="try-it">▶ <b>Rehearse before the build:</b> Open the <a href="sim04-push-observability.html"><strong>Push &amp; Observability Simulator</strong></a>. Break the push chain one link at a time (try Android and a missing EAS ID), then open each trace scenario and answer "what do you check first?"</p>
   </div>
 
   <details class="gloss-box"><summary>New words this week (4)</summary><dl class="gloss">

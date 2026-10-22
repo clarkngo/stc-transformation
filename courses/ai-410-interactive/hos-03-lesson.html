@@ -144,8 +144,8 @@ class WordCountArgs(BaseModel):
       <span class="label">Worked example</span>
       <p>A user types "calculate the square root of a banana." The HOS 2 app passes the model's arguments straight to <code>calculate()</code>, which raises an exception: HTTP 500, and the user sees a generic error. With a schema in front of the tool, a malformed argument is caught <em>before</em> the tool runs, and the app decides what happens next instead of crashing. A stricter schema could go further and allow only digits, operators and parentheses, so <code>"sqrt(banana)"</code> never reaches the tool at all.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>"It worked when I tried it."</b> One success says little about a nondeterministic system. Evaluate with many runs and deliberately awkward inputs.</li>
         <li><b>Validating inside the tool instead of before it.</b> By then the bad value is already in your code. Validate at the boundary.</li>
@@ -193,8 +193,8 @@ class WordCountArgs(BaseModel):
       <span class="label">Worked example</span>
       <p>The model calls <code>word_count</code> with <code>{"text": "  "}</code>. Attempt 1 fails <code>not_blank</code>. The guardrail retries and adds the error ("text must not be empty") to the request. Attempt 2 comes back with the user's actual sentence, passes, and the tool runs. Without the hint, attempt 2 sees exactly the same request as attempt 1 and is likely to make the same choice. Without the guardrail at all, the tool would happily report "0 words," a wrong answer with no error anywhere.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>Retrying forever.</b> Always cap retries; an unbounded loop turns one bad request into a stuck server and a large bill.</li>
         <li><b>Retrying blind.</b> Without the error message, a retry is just the same request again.</li>
@@ -243,8 +243,8 @@ def job_status(job_id: str):
       <span class="label">Worked example</span>
       <p>Inline: a 40-page PDF takes 25 seconds to ingest, so <code>POST /documents</code> takes 25 seconds, and a student who sends "hi" to <code>/chat</code> meanwhile waits behind it. Queued: <code>POST /documents</code> answers in about 50 ms with a job ID, chat stays instant, and <code>GET /jobs/{id}</code> moves from <code>queued</code> to <code>started</code> to <code>finished</code> about 25 seconds later. The work takes just as long; it just no longer blocks anyone.</p>
     </div>
-    <div class="callout amber">
-      <span class="label">Common mistakes</span>
+    <div class="mistakes">
+      <h4>⚠ Common mistakes</h4>
       <ul>
         <li><b>Not starting the worker.</b> Jobs sit on <code>queued</code> forever with no error. Run <code>python worker.py</code> in a second terminal.</li>
         <li><b>Changing job code without restarting the worker.</b> The worker loaded the old code when it started; restart it after edits.</li>
@@ -255,10 +255,7 @@ def job_status(job_id: str):
       <span class="label">Quick check</span>
       <p>You upload three documents and stop the worker after the first finishes. What status does each job show? What happens when you start the worker again?</p>
     </div>
-    <div class="callout">
-      <span class="label">Try it before the build</span>
-      <p>Open the <a href="sim03-guardrails-queue.html"><strong>Guardrails &amp; Queue Simulator</strong></a>. Send 20 requests with the guardrail off, then on. Then upload a document in inline mode and send "hi"; compare the wait with queue mode. Finally, set workers to 0.</p>
-    </div>
+    <p class="try-it">▶ <b>Rehearse before the build:</b> Open the <a href="sim03-guardrails-queue.html"><strong>Guardrails &amp; Queue Simulator</strong></a>. Send 20 requests with the guardrail off, then on. Then upload a document in inline mode and send "hi"; compare the wait with queue mode. Finally, set workers to 0.</p>
   </div>
 
   <details class="gloss-box"><summary>New words this week (4)</summary><dl class="gloss">
@@ -331,10 +328,12 @@ def job_status(job_id: str):
     <div class="stage"><span class="day">Stage 2 · by Thu</span><h4>Argue the opposite</h4>Before replying to anyone, post the <em>strongest</em> version of the side you didn't hold.</div>
     <div class="stage"><span class="day">Stage 3 · by Sat</span><h4>Synthesis</h4>Drop advocacy. State a real position, citing at least one specific point from a classmate's post.</div>
   </div>
+  <details class="eg-toggle"><summary>See a weak vs. strong example</summary>
   <div class="two">
     <div class="eg weak"><span class="label">Weak synthesis</span>"Retrying is good but not too much. Balance is key."</div>
     <div class="eg strong"><span class="label">Strong synthesis</span>"Jordan's simulator numbers convinced me: with the error fed back, 2 retries recovered almost every failure, but a third retry recovered almost nothing extra. So: retry exactly twice with feedback for read-only tools, and fail fast on the first failure for anything that changes data — Kai's point that a confused model is a signal matters most when the tool isn't reversible."</div>
   </div>
+  </details>
   <p class="small muted" style="margin-top:10px"><b>Grading:</b> Participation — initial position plus response to at least one peer (50%) · Writing — quality of argument and reasoning (50%). <a href="concept-debate-example.html">See a worked example: four students through one debate, with a timeline →</a></p>
 </section>
 

@@ -24,9 +24,6 @@ python3 courses/ai-410-export/export_ai410.py --out ../stc/ai-410
 | concept companion, starter-code walkthrough, Concept Debate example | `reference/` |
 | `ai-410-assets/course.css`, `course.js` and any image a page uses | `assets/` |
 
-Footers drop the drafting site's "Upcoming BSAI course — sample materials, not
-yet offered" note; the "Course design & materials: Clark Ngo" credit stays.
-
 Instructor pages (the instructor hub, teaching guide, AC example answers, AC
 faculty notes), the schedule and syllabus pages, and legacy pages are never
 published.

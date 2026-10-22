@@ -33,8 +33,6 @@ REPO = Path(__file__).resolve().parents[2]          # stc-transformation/
 SRC = "courses"                                     # paths below are relative to REPO
 
 # draft page -> published path (inside the output folder)
-DRAFT_NOTE = " · Upcoming BSAI course — sample materials, not yet offered."
-
 PAGES = {
     "courses/ai-410-interactive/index.html": "index.html",
     "courses/ai-410-guides/account-setup-guide.html": "start-here/accounts.html",
@@ -210,9 +208,6 @@ def main():
                 return mm.group(1) + resolve(mm.group(2), "script string") + mm.group(1)
             return SCRIPT_HTML.sub(lit, m.group(0))
         new = re.sub(r"<script\b(?![^>]*\bsrc=)[^>]*>.*?</script>", script_block, new, flags=re.S)
-        # The drafting site is public and says the course isn't offered yet;
-        # the student site is the live course, so its footer drops that note.
-        new = new.replace(DRAFT_NOTE, "")
         out_pages[dst] = new
 
     if a.check_videos:

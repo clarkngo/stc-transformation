@@ -6,10 +6,6 @@
     <title>AI 410 — Application Challenge 2: Riverbend Help-Desk Retrieval</title>
     <link rel="stylesheet" href="../ai-410-assets/course.css">
     <style>
-        h1 { color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:10px; }
-        h2 { color:var(--accent); font-size:1.15rem; margin:28px 0 8px; }
-        .meta-strip { display:flex; flex-wrap:wrap; gap:10px; margin:-6px 0 22px; }
-        .meta-pill { background:var(--surface2); color:var(--text); font-size:0.8rem; font-weight:600; padding:4px 12px; border-radius:999px; }
         .draft-banner { background:var(--amber-bg); border:2px solid var(--amber); border-radius:8px; padding:14px 18px; margin:0 0 22px; font-size:0.88rem; }
         .draft-banner strong { color:var(--amber); }
         .draft-banner p { margin:6px 0 0; }
@@ -48,7 +44,7 @@
         .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
     </style>
 </head>
-<body class="guide">
+<body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="top">
   <div class="top-inner">
@@ -56,22 +52,35 @@
     <div class="top-right"><a class="pill-btn" href="../ai-410-interactive/index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
   </div>
 </header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 410 · Module 2 · Application Challenge</div>
+    <h1>Application Challenge 2: Riverbend College Help-Desk Retrieval</h1>
+    <p class="lede">Take the retrieval skill from HOS 2 to someone else's pipeline: measure how often it actually finds the answer, improve it with your own chunking, and decide when the bot should stop answering and send the student to a person.</p>
+    <div class="chips"><span class="chip">Est. 60–90 min</span><span class="chip">Outcome 2</span><span class="chip">Module 2 · end of Week 4</span><span class="chip">Individual</span><span class="chip">AI assistant allowed — disclose it</span><span class="chip">5% of final grade</span></div>
+  </div>
+</section>
 <main id="main">
-    <div class="container">
 
-        <h1>Application Challenge 2 — Riverbend College Help-Desk Retrieval</h1>
-        <div class="meta-strip">
-            <span class="meta-pill">Est. 60–90 min</span><span class="meta-pill">Outcome 2</span><span class="meta-pill">Module 2 · end of Week 4</span><span class="meta-pill">Individual</span><span class="meta-pill">AI assistant allowed — disclose it</span><span class="meta-pill">5% of final grade</span>
-        </div>
+<nav class="secnav no-print" aria-label="Page sections">
+  <div class="secnav-inner">
+    <a href="#rules">Ground rules</a>
+    <a href="#scenario">Scenario</a>
+    <a href="#spec">Spec</a>
+    <a href="#why">Why misses happen</a>
+    <a href="#steps">Steps</a>
+    <a href="#grading">Grading</a>
+    <a href="#snags">Common snags</a>
+  </div>
+</nav>
 
+<section class="module card" id="rules">
+  <div class="module-head"><div class="module-icon">📏</div><div><h2>Ground rules</h2></div></div>
         <div class="rules-box">Everything here runs in GitHub Codespaces on free tiers, with no credit card. Everything runs offline with no API key. Real Gemini embeddings are an optional comparison.</div>
+</section>
 
-        <div class="goal-box">
-            <h4>Goal</h4>
-            <p>Take the retrieval skill from HOS 2 to someone else's pipeline: measure how often it actually finds the answer, improve it with your own chunking, and decide when the bot should stop answering and send the student to a person.</p>
-        </div>
-
-        <h2>The scenario</h2>
+<section class="module card" id="scenario">
+  <div class="module-head"><div class="module-icon">🏢</div><div><h2>The scenario</h2></div></div>
         <div class="scenario">
             <p><strong>Riverbend College</strong> (fictional) has an IT help-desk bot that answers student questions from six knowledge-base articles: passwords, MFA, Wi-Fi, printing, software, and Canvas. It's the same pipeline you reviewed in the HOS 2 lesson's warm-up, now runnable. It never crashes, and nobody knows how often it answers from the wrong passage.</p>
             <p>You get the pipeline, the articles, and <code>eval_set.json</code>: 16 real student questions with the article and phrase that answers each one, plus 4 questions the articles <em>can't</em> answer.</p>
@@ -79,8 +88,10 @@
                 <li><strong>The tests use an offline embedder</strong> (<code>LocalEmbedder</code> counts words) so everyone gets the same numbers. It's cruder than Gemini's, on purpose: some of its misses are ones real embeddings would fix, and telling those apart is part of the challenge.</li>
             </ul>
         </div>
+</section>
 
-        <h2>The spec</h2>
+<section class="module card" id="spec">
+  <div class="module-head"><div class="module-icon">📐</div><div><h2>The spec</h2></div></div>
         <p>Every requirement below is checked by a provided test in <code>tests/test_evaluate.py</code>. Your code goes in <code>evaluate.py</code>.</p>
         <div class="table-scroll">
         <div class="table-wrap" tabindex="0"><table class="mini">
@@ -96,11 +107,15 @@
             <p>The help desk lead: <em>"A wrong answer sends a student to the wrong office, or makes them miss a deadline. But 'I don't know' sends them to the ticket queue, and that's a two-day wait right now."</em> Nobody set a threshold.</p>
             <p style="margin-bottom:0">Choose <code>MIN_SCORE</code>. <code>python run_eval.py</code> prints a sweep showing, for each threshold, how many questions are answered right, answered wrong, and declined when they were answerable. There's no single right row. Prove your choice with your own tests and defend it in <code>DECISIONS.md</code>.</p>
         </div>
+</section>
 
-        <h2>Why the misses happen</h2>
+<section class="module card" id="why">
+  <div class="module-head"><div class="module-icon">💡</div><div><h2>Why the misses happen</h2></div></div>
         <p>In your memo, sort the misses (the vendor's and your remaining ones) by cause: <strong>chunking</strong> (the answer was cut off or diluted), <strong>vocabulary</strong> (the student's words aren't the article's words, like "Xbox" or "jammed"), or something else. Say which causes your chunking could fix, and which need something else.</p>
+</section>
 
-        <h2>Steps</h2>
+<section class="module card" id="steps">
+  <div class="module-head"><div class="module-icon">🪜</div><div><h2>Steps &amp; what to submit</h2></div></div>
         <div class="stage-block">
             <h3><span class="stage-num">1</span>Open it and run the tests</h3>
             <p>Open <a href="https://github.com/clarkngo/stc-transformation/tree/main/courses/ai-410-guides/starter-code/ac-02-helpdesk-retrieval" target="_blank" rel="noopener">the AC 2 starter-code folder</a> in GitHub Codespaces. It installs everything for you. Then run:</p>
@@ -135,8 +150,10 @@
                 <li><code>DECISIONS.md</code></li>
             </ul>
         </div>
+</section>
 
-        <h2>How it's graded</h2>
+<section class="module card" id="grading">
+  <div class="module-head"><div class="module-icon">📊</div><div><h2>How it's graded</h2></div></div>
         <p>Each criterion is graded on one part of your submission, at one of three levels.</p>
         <div class="table-scroll">
         <div class="table-wrap" tabindex="0"><table class="mini rubric">
@@ -149,9 +166,11 @@
         </div>
 
         <p style="font-size:0.88rem;color:var(--muted)">How this differs from HOS 2's Understand &amp; Refine: there you added a document to your own pipeline, by hand. Here the pipeline, the articles, and the decisions are someone else's, AI help is allowed, and half the grade (Analysis and Evaluation) is for the calls you make.</p>
+</section>
 
+<section class="module card" id="snags">
+  <div class="module-head"><div class="module-icon">🧯</div><div><h2>Common snags</h2></div></div>
         <div class="snag-box">
-            <h4>Common snags</h4>
             <ul>
                 <li><strong><code>test_vendor_baseline</code> says 0.625 or 0.5.</strong> Check both conditions: the right <em>source</em> and the answer phrase in the text, ignoring upper/lower case. And skip questions whose source is <code>None</code>.</li>
                 <li><strong><code>test_no_answer_is_lost</code> fails.</strong> Your chunker dropped text, often the last piece of an article or the line right after a heading.</li>
@@ -159,14 +178,25 @@
                 <li><strong><code>--gemini</code> fails.</strong> It needs <code>GEMINI_API_KEY</code> in <code>.env</code>. It's optional; everything graded runs without it.</li>
             </ul>
         </div>
+</section>
 
-        <div class="guide-nav">
+<div class="guide-nav">
             <a href="hos-02-embeddings-rag.html">← HOS 2 guide</a>
             <a href="../ai-410-interactive/hos-02-lesson.html">Module 2 lesson →</a>
         </div>
-    </div>
+
 </main>
 <footer class="foot">AI 410: AI Engineering · City University of Seattle, School of Technology &amp; Computing<br>Course design &amp; materials: Clark Ngo</footer>
 <script src="../ai-410-assets/course.js"></script>
+<script>
+/* section nav highlight (scrolls only the nav row, never the page) */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); var c=a.parentElement, ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect(); c.scrollLeft += (ar.left+ar.width/2)-(cr.left+cr.width/2); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+</script>
 </body>
 </html>

@@ -414,7 +414,7 @@ function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); loca
   var links=[].slice.call(document.querySelectorAll('.secnav a'));
   var map={}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
   if(!('IntersectionObserver' in window)) return;
-  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); a.scrollIntoView({block:'nearest',inline:'center'}); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); var c=a.parentElement, ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect(); c.scrollLeft += (ar.left+ar.width/2)-(cr.left+cr.width/2); } } }); },{rootMargin:'-45% 0px -50% 0px'});
   Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
 })();
 

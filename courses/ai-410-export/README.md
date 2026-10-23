@@ -1,5 +1,7 @@
 # AI 410 export
 
+> **Moved (2026-10-22).** The AI 410 student site now lives in [`cityuseattle/ai410`](https://github.com/cityuseattle/ai410) (https://cityuseattle.github.io/ai410/), and the starter code in the private template repos `cityuseattle/AI410-HOS01`–`04` and `AI410-AC01`–`04`. Edit those directly. The drafts in `courses/ai-410-*` and the scripts below are kept as an archive; re-exporting would overwrite later edits made in the new repos.
+
 Builds the student-facing AI 410 course from the drafts in this repo into a
 self-contained folder you can deploy (for example `../stc/ai-410`, or upload
 to Brightspace as a zip).

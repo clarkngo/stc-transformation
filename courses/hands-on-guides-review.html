@@ -70,7 +70,7 @@
 <script>
 const GH = 'https://github.com/clarkngo/stc-transformation/tree/main/courses/';
 const COURSES = [
-  { code:'AI 410', name:'AI Engineering', index:'ai-410-guides/index.html', dir:'ai-410-guides', lessons:'ai-410-interactive', guides:[
+  { code:'AI 410', name:'AI Engineering', index:'ai-410-guides/index.html', dir:'ai-410-guides', lessons:'ai-410-interactive', answers:'https://github.com/cityuseattle/ai410-instructor/tree/main/answer-keys/', guides:[
     { id:'410-1', num:'HOS 1 · Weeks 1–2', title:'Foundations & the Agentic Loop', slug:'hos-01-foundations-agentic-loop', updated:'Oct 7, 2026',
       goal:'Build a full-stack chat app that calls a real tool, scaffolded with an AI assistant, then prove you understand what it built.', lesson:'hos-01-lesson.html' },
     { id:'410-2', num:'HOS 2 · Weeks 3–4', title:'Embeddings, Chunking & RAG Pipelines', slug:'hos-02-embeddings-rag', updated:'Sep 24, 2026',
@@ -127,7 +127,7 @@ COURSES.forEach(c => {
     const links = [`<a class="primary" href="${page}">Guide</a>`];
     if (!g.noCode) {
       links.push(`<a href="${GH}${c.dir}/starter-code/${g.slug}" target="_blank" rel="noopener">Starter code</a>`);
-      links.push(`<a href="${GH}${c.dir}/answer-key/${g.slug}" target="_blank" rel="noopener">Answer key</a>`);
+      links.push(`<a href="${c.answers || GH + c.dir + '/answer-key/'}${g.slug}" target="_blank" rel="noopener">Answer key</a>`);
     }
     if (g.lesson) links.push(`<a href="${c.lessons}/${g.lesson}">Interactive lesson</a>`);
     const s = state[g.id] || {};

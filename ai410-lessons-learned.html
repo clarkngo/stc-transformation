@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 410 Lessons Learned</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --accent: #1e8449; --accent-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --red: #b91c1c; --red-dim: #fef2f2;
+    }
+    * { box-sizing: border-box; }
+    html:focus-within { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 920px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+    a { color: var(--blue); }
+
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 28px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); border-left: 5px solid var(--accent); margin-bottom: 20px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 16px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px 20px; margin-bottom: 20px; font-size: 0.86rem; }
+    .toc strong { display: block; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin-bottom: 6px; }
+    .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 28px; }
+    .toc li { margin: 2px 0; break-inside: avoid; }
+    .toc a { text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 22px 26px; margin-bottom: 20px; scroll-margin-top: 16px; }
+    .section h2 { margin: 0 0 4px; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; }
+    .section .lede { margin: 0 0 16px; color: var(--slate); font-size: 0.9rem; }
+    .section h3 { font-size: 0.98rem; margin: 20px 0 6px; }
+    .section p, .section li { font-size: 0.92rem; }
+    .section p { margin: 0 0 10px; }
+    .section ul, .section ol { margin: 0 0 10px; padding-left: 22px; }
+    .section li { margin: 3px 0; }
+
+    .tldr { list-style: none; padding: 0; margin: 0; counter-reset: t; }
+    .tldr li { counter-increment: t; position: relative; padding: 10px 12px 10px 46px; border-bottom: 1px solid var(--border); }
+    .tldr li:last-child { border-bottom: none; }
+    .tldr li::before { content: counter(t); position: absolute; left: 10px; top: 10px; width: 24px; height: 24px; border-radius: 50%; background: var(--accent-dim); color: var(--accent); font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 6px 0 14px; }
+    .stat { background: var(--bg); border-radius: var(--radius-sm); padding: 12px 14px; }
+    .stat b { display: block; font-size: 1.35rem; font-weight: 900; letter-spacing: -0.02em; color: var(--accent); line-height: 1.2; }
+    .stat span { font-size: 0.8rem; color: var(--slate); }
+
+    .table-wrap { overflow-x: auto; margin: 6px 0 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+    th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+    th { background: var(--bg); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { font-weight: 600; }
+
+    .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; margin: 8px 0 14px; }
+    .flow .node { flex: 1 1 150px; background: var(--blue-dim); border: 1px solid #bfdbfe; border-radius: var(--radius-sm); padding: 10px 12px; font-size: 0.82rem; }
+    .flow .node b { display: block; font-size: 0.86rem; color: #1e3a8a; margin-bottom: 2px; }
+    .flow .arrow { align-self: center; color: var(--slate-light); font-weight: 800; }
+
+    .timeline { list-style: none; margin: 0; padding: 0 0 0 18px; border-left: 2px solid #bbf7d0; }
+    .timeline li { position: relative; padding: 0 0 16px 16px; }
+    .timeline li::before { content: ""; position: absolute; left: -25px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--card); border: 3px solid var(--accent); }
+    .timeline .when { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+    .timeline .what { font-weight: 800; font-size: 0.95rem; display: block; }
+    .timeline p { margin: 2px 0 0; font-size: 0.88rem; color: var(--slate); }
+
+    .lesson { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 12px; }
+    .lesson h3 { margin: 0 0 6px; font-size: 0.98rem; }
+    .lesson .tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 20px; padding: 2px 9px; margin-right: 6px; vertical-align: 2px; }
+    .tag.worked { background: var(--accent-dim); color: var(--accent); }
+    .tag.change { background: var(--amber-dim); color: var(--amber); }
+    .lesson p { margin: 0 0 6px; font-size: 0.9rem; }
+    .lesson .rec { background: var(--bg); border-radius: 6px; padding: 8px 12px; font-size: 0.86rem; margin-top: 6px; }
+    .lesson .rec strong { color: var(--ink); }
+
+    .checklist { list-style: none; padding: 0; margin: 0; }
+    .checklist li { padding: 9px 0 9px 32px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 6px; top: 7px; font-size: 1rem; color: var(--accent); }
+    .checklist .phase { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.87rem; border: 1px solid #ddd6fe; background: var(--violet-dim); color: #4c1d95; margin: 10px 0; }
+    .callout.amber { border-color: #fde68a; background: var(--amber-dim); color: #78350f; }
+
+    dl.gloss { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; font-size: 0.9rem; }
+    dl.gloss dt { font-weight: 800; }
+    dl.gloss dd { margin: 0; color: var(--slate); }
+
+    .footer-note { font-size: 0.8rem; color: var(--slate); text-align: center; margin-top: 24px; }
+
+    @media (max-width: 640px) {
+      .doc-header, .section { padding: 18px 16px; }
+      .doc-header h1 { font-size: 1.4rem; }
+      .toc ol { columns: 1; }
+      .flow .arrow { display: none; }
+      dl.gloss { grid-template-columns: 1fr; gap: 0; }
+      dl.gloss dd { margin-bottom: 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a><span class="nav-sep">/</span>
+    <a href="bsai-hub.html">BSAI Hub</a><span class="nav-sep">/</span>
+    <a href="teaching-framework-hub.html">Teaching Framework Hub</a>
+  </nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Lessons Learned · BSAI</div>
+    <h1>How AI 410 Was Built: From Plan to Delivery</h1>
+    <p class="subtitle">A lessons-learned report on building AI 410: AI Engineering, the first fully built course for the upcoming Bachelor of Science in AI. It is written for program managers and colleagues who are new to this way of planning, building, teaching and delivering a course with an AI assistant.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Aug 25 – Oct 25, 2026</span>
+      <span class="meta-chip">About 9 weeks</span>
+      <span class="meta-chip">Course lead: Clark Ngo</span>
+      <span class="meta-chip">Audience: program managers, course builders</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Contents">
+    <strong>Contents</strong>
+    <ol>
+      <li><a href="#tldr">The short version</a></li>
+      <li><a href="#what">What was delivered</a></li>
+      <li><a href="#how">The new way of working</a></li>
+      <li><a href="#timeline">Timeline: plan to delivery</a></li>
+      <li><a href="#design">Design decisions and why</a></li>
+      <li><a href="#lessons">Lessons learned</a></li>
+      <li><a href="#playbook">Playbook for the next course</a></li>
+      <li><a href="#pm">What a program manager should track</a></li>
+      <li><a href="#open">Open items and risks</a></li>
+      <li><a href="#glossary">Glossary</a></li>
+    </ol>
+  </nav>
+
+  <section class="section" id="tldr">
+    <h2>1. The short version</h2>
+    <p class="lede">Five things to take away if you read nothing else.</p>
+    <ol class="tldr">
+      <li><strong>Building is no longer the slow part. Keeping things consistent is.</strong> With an AI assistant, a guide, a lesson or a rubric can be drafted in minutes. Most of the late effort went into making the syllabus, the student site, Brightspace and the rubrics say the same thing.</li>
+      <li><strong>Lock the non-negotiables on day one.</strong> The fixed course description, "everything runs in Codespaces", "free tiers first" and the Dean's two-week rule arrived partway through. Each one caused a round of rework. Write them down before any content is built.</li>
+      <li><strong>Decide structure before content.</strong> The course changed shape twice: from 8 weekly units to 4 merged units, then to 2 weeks per unit. Every reshape meant rewriting guides, lessons and schedules.</li>
+      <li><strong>Give every artifact exactly one source of truth.</strong> The syllabus lives in OneDrive, the student site in one GitHub repo, and instructor material in a private repo. Brightspace links to them instead of holding copies. Each time two copies drifted, old errors came back.</li>
+      <li><strong>When AI can write the code, grade the thinking.</strong> The course grades students on judging, explaining and improving AI-produced work (the CEAU cycle), not on whether the code runs.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="what">
+    <h2>2. What was delivered</h2>
+    <p class="lede">AI 410 is a 10-week, 5-credit course. Students build one AI chat assistant across four hands-on units, then a team Term Project.</p>
+    <div class="stats">
+      <div class="stat"><b>4 × 2 wks</b><span>Hands-On Skill (HOS) units, Weeks 1–8</span></div>
+      <div class="stat"><b>23</b><span>published student pages, WCAG 2.2 AA</span></div>
+      <div class="stat"><b>4 + 4</b><span>HOS and Application Challenge repo templates</span></div>
+      <div class="stat"><b>175</b><span>Knowledge Check questions (35 per module)</span></div>
+      <div class="stat"><b>12</b><span>Brightspace rubrics, each matching its points</span></div>
+      <div class="stat"><b>1,000</b><span>point gradebook, aligned to the syllabus</span></div>
+    </div>
+    <div class="table-wrap" tabindex="0">
+      <table>
+        <thead><tr><th>Module</th><th>Weeks</th><th>What students build and learn</th></tr></thead>
+        <tbody>
+          <tr><td>1 · Foundations &amp; the Agentic Loop</td><td>1–2</td><td>A chat backend that calls tools: when the model decides and when code decides.</td></tr>
+          <tr><td>2 · Embeddings, Chunking &amp; RAG</td><td>3–4</td><td>Grounding answers in documents with a vector database (Chroma).</td></tr>
+          <tr><td>3 · Guardrails &amp; Async Processing</td><td>5–6</td><td>Validating model output and moving slow work to a queue.</td></tr>
+          <tr><td>4 · Mobile, Push &amp; Observability</td><td>7–8</td><td>A mobile client, push notifications, and tracing with Langfuse.</td></tr>
+          <tr><td>5 · Term Project</td><td>9–10</td><td>Teams finish, present and demo a full-stack app combining all four units. Phases 1 and 2 run alongside Weeks 1–8.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Where it lives</h3>
+    <ul>
+      <li><strong>Student site (public):</strong> the Interactive Lesson Lab at <a href="https://cityuseattle.github.io/ai410/">cityuseattle.github.io/ai410</a>. It has lessons, HOS guides, simulators and reference pages. Materials are CC BY 4.0 and the starter code is MIT.</li>
+      <li><strong>Instructor material (private):</strong> a private repository in the CityU GitHub organization. It holds the syllabus, teaching guide, answer keys, Knowledge Check banks and delivery walkthrough.</li>
+      <li><strong>Student work:</strong> GitHub Classroom repositories, created from the 8 templates and opened in GitHub Codespaces. Students need no local installs.</li>
+      <li><strong>Delivery and grades:</strong> the Brightspace development shell. It holds assignments, discussions, quizzes, rubrics and the gradebook, and links out to the student site.</li>
+      <li><strong>Syllabus master:</strong> the Word file in OneDrive. The repository copy mirrors it word for word.</li>
+    </ul>
+  </section>
+
+  <section class="section" id="how">
+    <h2>3. The new way of working</h2>
+    <p class="lede">One faculty subject-matter expert worked with an AI coding assistant (Claude Code) as a build partner. Every change was a reviewed pull request in a git repository.</p>
+
+    <h3>How the pieces connect</h3>
+    <div class="flow" role="img" aria-label="Flow: course content is written in git repositories, published by GitHub Pages, linked from Brightspace, and students do their work in GitHub Classroom repos opened in Codespaces.">
+      <div class="node"><b>Write</b>Course content as HTML and Markdown in git repositories. Every change is a pull request.</div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Publish</b>GitHub Pages turns the repo into the student site within minutes of each merge.</div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Deliver</b>Brightspace links to the site and holds assignments, quizzes, rubrics and grades.</div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Do the work</b>Students build in GitHub Classroom repos inside Codespaces and submit the repo link.</div>
+    </div>
+
+    <h3>Who does what</h3>
+    <div class="table-wrap" tabindex="0">
+      <table>
+        <thead><tr><th>Faculty lead decides</th><th>AI assistant does</th></tr></thead>
+        <tbody>
+          <tr><td>What the course must teach (from the approved description), the structure, the grading weights, and every naming choice.</td><td>Drafts guides, lessons, starter code, rubrics, quiz banks and syllabus text to those decisions.</td></tr>
+          <tr><td>Whether a draft is right. It reviews every pull request and every syllabus version.</td><td>Checks consistency across documents. Finds mismatches in wording, points and dates between the syllabus, site, rubrics and Brightspace.</td></tr>
+          <tr><td>What is shared, published or deleted, and anything involving accounts or sign-in.</td><td>Runs automated checks (links, accessibility, video embeds) and builds the Brightspace shell through its API while the faculty member is signed in.</td></tr>
+          <tr><td>Standing rules (for example "OneDrive is the syllabus master").</td><td>Remembers those rules across sessions and applies them without being reminded.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><strong>Why this matters for a program manager:</strong> the bottleneck moves from "how long does it take to write" to "how quickly can the faculty lead make and review decisions." Plan the schedule around decision points and review time, not drafting time.</div>
+  </section>
+
+  <section class="section" id="timeline">
+    <h2>4. Timeline: plan to delivery</h2>
+    <p class="lede">The course went through eight phases. The two reshapes (Sep 15 and Sep 30) explain most of the rework.</p>
+    <ol class="timeline">
+      <li><span class="when">Jan – Apr 14, 2026</span><span class="what">Program approved</span>
+        <p>The BSAI proposal went through drafts and was approved by the Academic Affairs Committee on April 14. AI 410's course description and outcomes were fixed from that point.</p></li>
+      <li><span class="when">Aug 25 – Sep 14</span><span class="what">Version 1: eight weekly units</span>
+        <p>Schedule, 8 weekly hands-on guides and starter code. The stack was simplified repeatedly for beginners: Anthropic API to the Gemini free tier on day one, Codespaces support (Sep 2), Supabase to Chroma (Sep 8), and static frontends to Streamlit (Sep 14).</p></li>
+      <li><span class="when">Sep 15</span><span class="what">Redesign: "merge, don't reduce"</span>
+        <p>Eight units became four merged units, and nothing was dropped. Added the CEAU grading cycle, Muddiest Points, Concept Debates, Application Challenges, a Concept Companion and comparable-courses research. The 8-unit version was archived.</p></li>
+      <li><span class="when">Sep 23</span><span class="what">Constraints written down</span>
+        <p>The standing rules were made explicit in <a href="bsai-course-design-constraints.html">BSAI Course Design Constraints</a>: the official description is fixed, everything runs in Codespaces, and free tiers come first.</p></li>
+      <li><span class="when">Sep 28 – Sep 30</span><span class="what">Reshape: two weeks per unit</span>
+        <p>The second half of the course was rebuilt around the team project, then every unit was stretched across two weeks to meet the Dean's requirement. Interactive lessons and four browser simulators were built, and AI 420–440 were realigned to AI 410.</p></li>
+      <li><span class="when">Oct 6 – Oct 13</span><span class="what">Test as a student, rework assessments</span>
+        <p>A Codespaces test run found a retired AI model and an assistant that set up the wrong workspace, and both were fixed in the guides. Application Challenges became "spec, build, defend". The syllabus moved to the Word file, and lessons got week tabs and due-date lists.</p></li>
+      <li><span class="when">Oct 21 – Oct 23</span><span class="what">Hardening and hand-off</span>
+        <p>Student work moved to GitHub Classroom repos. The site passed a WCAG 2.2 AA accessibility audit. Recorded lectures became written notes with captioned videos. The course moved into the CityU GitHub organization (a public site and a private instructor repo), the Knowledge Check banks went live, and "Team Project" was renamed "Term Project".</p></li>
+      <li><span class="when">Oct 24 – Oct 25</span><span class="what">Brightspace build and audit</span>
+        <p>Every rubric was matched to its assignment's points and given level descriptions. The Term Project rubrics were split one per deliverable. Syllabus versions 7–11 were reconciled, and legacy units and old template files were removed.</p></li>
+    </ol>
+  </section>
+
+  <section class="section" id="design">
+    <h2>5. Design decisions and why</h2>
+    <p class="lede">These are the choices that make AI 410 different from a traditional course. They are reusable for AI 420, 430 and 440.</p>
+    <div class="table-wrap" tabindex="0">
+      <table>
+        <thead><tr><th>Decision</th><th>What it means</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Merge, don't reduce</td><td>Eight skills are taught as four paired units. An AI assistant scaffolds the boilerplate.</td><td>Learning a new concept and a new tool eight times in a row overloads beginners. Pairing them cuts the load without cutting content.</td></tr>
+          <tr><td>CEAU cycle</td><td>Each unit is graded on Create (20%) plus Evaluate, Analyze and Understand &amp; Refine (80%).</td><td>If AI can write working code, "does it run?" no longer measures understanding. Judging, explaining and hand-improving the code does.</td></tr>
+          <tr><td>Two weeks per unit</td><td>Week 1: lecture, Muddiest Point, debate, build, evaluate. Week 2: analyze, refine, Application Challenge, Knowledge Check.</td><td>This is the Dean's requirement. It turns the time saved on plumbing into deeper analysis instead of a faster pace.</td></tr>
+          <tr><td>Muddiest Point (Just-in-Time Teaching)</td><td>Before each build, students post the one thing that confused them.</td><td>The instructor adjusts the lecture to real confusion, and students learn to ask precise questions.</td></tr>
+          <tr><td>Staged Concept Debates</td><td>Students argue an assigned side, then the opposite side, then a real position that cites a classmate.</td><td>The staging rewards reasoning and makes generic AI-written posts easy to spot and weak to submit.</td></tr>
+          <tr><td>Application Challenge: spec, build, defend</td><td>A short build against provided tests, one open decision, and a one-page memo defending it.</td><td>Transfer to a new scenario, plus a written defense that only the student can give.</td></tr>
+          <tr><td>Low-stakes Knowledge Checks</td><td>10 questions drawn from 35 per module, hint-only feedback, unlimited retakes, a 15-minute limit.</td><td>With retakes there's little reason to cheat, and the time limit makes pasting into AI impractical. The goal is retention, not policing.</td></tr>
+          <tr><td>Term Project in three phases</td><td>Teams release v0.3, then v0.7, then v1.0, each with an ISCAP-format report. It ends with a presentation and a demo video.</td><td>Steady progress instead of a last-minute build, and a research-style writing artifact students can show.</td></tr>
+          <tr><td>Codespaces and free tiers</td><td>Every unit runs in the browser. Paid keys are optional only.</td><td>Students are mostly new to software, and STC has no lab or GPU budget.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="lessons">
+    <h2>6. Lessons learned</h2>
+    <p class="lede">What worked, what we would change, and a recommendation for each.</p>
+
+    <div class="lesson">
+      <h3><span class="tag change">Change</span>Constraints arrived after content</h3>
+      <p>The fixed description, the Codespaces and free-tier rules, and the two-week rule were each applied after material existed. The two-week rule alone meant rewriting schedules, guides and lessons, and realigning three other courses.</p>
+      <div class="rec"><strong>Recommendation:</strong> start every course with a one-page constraints document, reviewed by the Dean and program lead, before any content is built.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag change">Change</span>Copies drift, and old errors come back</h3>
+      <p>Fixes made only in the repository copy of the syllabus never reached the OneDrive master, so the next edit reintroduced them: Week 8 instead of Week 7, 40 points instead of 50. Brightspace rubrics also drifted from the syllabus. One rubric mentioned "Week 1" when the syllabus didn't, and point totals didn't match their assignments.</p>
+      <div class="rec"><strong>Recommendation:</strong> name one master per artifact and write it down. Fix the master first, then copy it word for word. Brightspace should link to content, not hold its own copy.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag worked">Worked</span>AI as a consistency checker, not just a writer</h3>
+      <p>The most valuable late-stage work was cross-checking. The assistant diffed each syllabus version against the repository copy and returned a table of exact fixes. It also audited every Brightspace assignment, quiz, discussion and rubric against the syllabus.</p>
+      <div class="rec"><strong>Recommendation:</strong> schedule an audit pass after every structural change, and before term start, across syllabus, site and LMS.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag worked">Worked</span>Small, reviewed changes in git</h3>
+      <p>Every change went through a pull request: about 60 merged pull requests for AI 410 in this repository alone, before the hand-off to the CityU organization. Nothing was lost, every decision has a date, and the archived 8-unit version is still one click away.</p>
+      <div class="rec"><strong>Recommendation:</strong> keep course content in version control from day one, even for faculty who don't usually use git. The assistant handles the mechanics.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag change">Change</span>Test as a student, in the real environment, early</h3>
+      <p>The first real Codespaces run (Oct 6) found that the AI model named in the starter prompts had been retired for new accounts, and that the built-in coding assistant set up a new workspace instead of using the starter folder. A student would have been stuck on day one.</p>
+      <div class="rec"><strong>Recommendation:</strong> do a "fresh account" dry run of every unit as soon as it exists. Pin model names in one place, and re-test before each term, because free-tier services change without notice.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag worked">Worked</span>Accessibility as an automated gate</h3>
+      <p>Instead of a one-off review, the publishing check fails if a page is missing alt text, labels, titles or zoom support. All 23 student pages pass WCAG 2.2 AA in light and dark mode.</p>
+      <div class="rec"><strong>Recommendation:</strong> build accessibility checks into publishing for every new course, and re-run the full audit before each term.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag change">Change</span>The LMS is the slowest, most manual mile</h3>
+      <p>The Brightspace shell came late (Oct 21). Building it meant matching 1,000 points of grade items, 16 assignment folders, 10 discussions, 5 quizzes and 12 rubrics to the syllabus. Several Brightspace features have no usable API, so parts of the work had to go through the web interface.</p>
+      <div class="rec"><strong>Recommendation:</strong> request the development shell at the start of the build, not the end. Budget dedicated time for it, and treat "rubric total = assignment points" as a launch checklist item.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag change">Change</span>Renames are expensive</h3>
+      <p>"Capstone" became "Team/Term Project", then "Team Project" became "Term Project". Each rename touched pages, templates, file names, Brightspace items, rubrics and three sister courses.</p>
+      <div class="rec"><strong>Recommendation:</strong> settle names for activities and deliverables in the constraints document. Keep web addresses and page IDs stable even when display names change, because Brightspace links depend on them.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag worked">Worked</span>A plan B for media</h3>
+      <p>Narrated lecture videos stalled on logistics (no microphone or time to record). Rather than leave gaps, each lecture became written notes with a worked example, common mistakes, a quick check and a curated video. Videos with human captions are marked "watch first" and others are marked optional.</p>
+      <div class="rec"><strong>Recommendation:</strong> make text-first lectures the default. Recorded video is an upgrade, not a dependency for launch.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag worked">Worked</span>Institutional ownership before launch</h3>
+      <p>The course was moved from a personal account into the CityU GitHub organization. Answer keys and quiz banks were split into a private repository, and a clear license was added, so the university owns the course and can staff it if people change.</p>
+      <div class="rec"><strong>Recommendation:</strong> create the organization repositories, decide what is public and what is private, and choose a license at the start of the build.</div>
+    </div>
+  </section>
+
+  <section class="section" id="playbook">
+    <h2>7. Playbook for the next course</h2>
+    <p class="lede">The order we would follow for AI 420, 430 and 440, with AI 410 as the structural template.</p>
+    <ul class="checklist">
+      <li><span class="phase">Week 0 · Plan</span>Copy the approved description and outcomes word for word. Write the constraints document: structure, tools, free-tier limits and names. Get sign-off.</li>
+      <li><span class="phase">Week 0 · Plan</span>Request the Brightspace development shell. Create the public and private organization repositories and choose a license.</li>
+      <li><span class="phase">Week 1 · Structure</span>Fix the schedule and grading weights by copying AI 410 (four units × two weeks, then the Term Project). Draft the syllabus master in OneDrive.</li>
+      <li><span class="phase">Weeks 2–4 · Build</span>For each unit: starter code template, guide, interactive lesson, simulator, Application Challenge and Knowledge Check bank. Do a fresh-account Codespaces test before moving on.</li>
+      <li><span class="phase">Week 5 · Deliver</span>Build Brightspace from the syllabus: grade items, folders, discussions, quizzes, rubrics (totals equal to points), and link topics to the site.</li>
+      <li><span class="phase">Week 6 · Audit</span>Cross-check the syllabus, site, templates and Brightspace. Run the accessibility audit. Get a peer faculty review.</li>
+      <li><span class="phase">Before term</span>Re-test with fresh accounts (model names, free tiers). Set up the roster, Classroom invites and organization access.</li>
+    </ul>
+  </section>
+
+  <section class="section" id="pm">
+    <h2>8. What a program manager should track</h2>
+    <p class="lede">Drafting is fast, so track decisions, reviews and integration instead.</p>
+    <div class="table-wrap" tabindex="0">
+      <table>
+        <thead><tr><th>Track</th><th>Why</th><th>Signal that it's on track</th></tr></thead>
+        <tbody>
+          <tr><td>Constraints sign-off</td><td>Late constraints caused most of the rework.</td><td>A signed-off constraints page exists before content starts.</td></tr>
+          <tr><td>Decision log</td><td>Each open decision blocks drafting downstream.</td><td>Open decisions have an owner and a date.</td></tr>
+          <tr><td>Source-of-truth map</td><td>Drift between copies brings back fixed errors.</td><td>Every artifact has one named master, written down.</td></tr>
+          <tr><td>LMS shell readiness</td><td>Slowest and most manual step.</td><td>The shell is requested in Week 0, and rubric totals match the gradebook.</td></tr>
+          <tr><td>Student dry runs</td><td>Environment and free-tier changes break day one.</td><td>A fresh-account run passes for each unit, dated this term.</td></tr>
+          <tr><td>Accessibility</td><td>A legal obligation, and students reach pages from Brightspace.</td><td>The automated audit passes on every published page.</td></tr>
+          <tr><td>Ownership and access</td><td>The course must outlive any single person.</td><td>Repositories are in the CityU organization, and a second instructor has access.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="open">
+    <h2>9. Open items and risks</h2>
+    <ul>
+      <li><strong>Single-builder dependency.</strong> One faculty lead built and knows the whole course. A second instructor should shadow a delivery and get access to the instructor repository.</li>
+      <li><strong>Free-tier and model churn.</strong> AI services retire models and change limits without notice. A pre-term re-test is required every term.</li>
+      <li><strong>Brightspace finishing work.</strong> Readings &amp; Resources for Modules 2–4 still need to be added, and Knowledge Check settings need a final review.</li>
+      <li><strong>Launch logistics.</strong> The Classroom roster and organization invites are set up per cohort.</li>
+      <li><strong>Recorded lectures.</strong> Narrated decks for Units 2–4 are on hold. The written notes cover them in the meantime.</li>
+      <li><strong>Sister courses.</strong> AI 420–440 follow AI 410's structure, but still need the same Brightspace build, audit and hand-off.</li>
+    </ul>
+  </section>
+
+  <section class="section" id="glossary">
+    <h2>10. Glossary</h2>
+    <dl class="gloss">
+      <dt>HOS</dt><dd>Hands-On Skill unit. A two-week build-and-analyze unit; AI 410 has four.</dd>
+      <dt>CEAU</dt><dd>Create, Evaluate, Analyze, Understand &amp; Refine. The four graded stages of every HOS.</dd>
+      <dt>MP</dt><dd>Muddiest Point. A short post naming what confused you, submitted before each build.</dd>
+      <dt>CD</dt><dd>Concept Debate. A staged discussion where students argue assigned sides on a design question.</dd>
+      <dt>AC</dt><dd>Application Challenge. A short individual build-and-defend task after each HOS.</dd>
+      <dt>KC</dt><dd>Knowledge Check. A low-stakes Brightspace quiz with unlimited retakes.</dd>
+      <dt>TP</dt><dd>Term Project. A team-built full-stack app delivered in three phases.</dd>
+      <dt>Codespaces</dt><dd>GitHub's browser-based development environment, so students need no local setup.</dd>
+      <dt>GitHub Classroom</dt><dd>Gives each student their own copy of a template repository to work and submit in.</dd>
+      <dt>Pull request</dt><dd>A proposed change in git that is reviewed before it is merged into the course.</dd>
+      <dt>Interactive Lesson Lab</dt><dd>The public AI 410 student site: lessons, guides and simulators.</dd>
+    </dl>
+  </section>
+
+  <section class="section">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="courses/AI-410.html">AI 410: AI Engineering, course design</a>: outcomes, the CEAU cycle, schedule and grading.</li>
+      <li><a href="courses/AI-410-market-research.html">AI 410 comparable-courses research</a>: what informed the design choices.</li>
+      <li><a href="bsai-course-design-constraints.html">BSAI Course Design Constraints</a>: the standing rules for AI 410–440.</li>
+      <li><a href="courses/AI-410-vs-AI-420.html">AI 410 vs. AI 420</a>: what the next course inherits.</li>
+      <li><a href="https://cityuseattle.github.io/ai410/">AI 410 Interactive Lesson Lab</a>: the live student site.</li>
+    </ul>
+  </section>
+
+  <p class="footer-note">Prepared October 2026 from the course repositories, pull request history and Brightspace build notes.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 410 Staff Briefing</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --accent: #1e8449; --accent-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --red: #b91c1c; --red-dim: #fef2f2;
+    }
+    * { box-sizing: border-box; }
+    html:focus-within { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 940px; margin: 0 auto; padding: 28px 16px 100px; }
+    a { color: var(--blue); }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 28px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); border-left: 5px solid var(--accent); margin-bottom: 20px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 16px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.87rem; border: 1px solid #ddd6fe; background: var(--violet-dim); color: #4c1d95; margin: 0 0 20px; }
+    .callout.green { border-color: #bbf7d0; background: var(--accent-dim); color: #14532d; }
+    .callout.amber { border-color: #fde68a; background: var(--amber-dim); color: #78350f; }
+
+    .agenda { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px 20px; margin-bottom: 20px; }
+    .agenda h2 { margin: 0 0 8px; font-size: 1rem; }
+    .agenda ol { list-style: none; margin: 0; padding: 0; }
+    .agenda li { display: grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .agenda li:last-child { border-bottom: none; }
+    .agenda .tm { font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .agenda a { text-decoration: none; color: var(--ink); font-weight: 600; }
+    .agenda a:hover { color: var(--blue); }
+
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 22px 26px; margin-bottom: 20px; scroll-margin-top: 16px; }
+    .section h2 { margin: 0 0 4px; font-size: 1.2rem; font-weight: 800; letter-spacing: -0.01em; }
+    .section .time { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: var(--accent-dim); border-radius: 20px; padding: 2px 10px; margin-bottom: 8px; }
+    .section .lede { margin: 0 0 14px; color: var(--slate); font-size: 0.92rem; }
+    .section h3 { font-size: 0.98rem; margin: 18px 0 6px; }
+    .section p, .section li { font-size: 0.92rem; }
+    .section p { margin: 0 0 10px; }
+    .section ul, .section ol { margin: 0 0 10px; padding-left: 22px; }
+    .section li { margin: 3px 0; }
+    .why { border-left: 4px solid var(--accent); background: var(--accent-dim); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 10px 14px; margin: 10px 0 12px; font-size: 0.9rem; }
+    .why b:first-child { color: var(--accent); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.08em; display: block; margin-bottom: 2px; }
+
+    .flow-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin: 14px 0 6px; }
+    .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 6px; margin-bottom: 6px; }
+    .flow .node { flex: 1 1 120px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px; font-size: 0.8rem; background: var(--bg); position: relative; }
+    .flow .node b { display: block; font-size: 0.84rem; }
+    .flow .node.neck { border: 2px solid var(--red); background: var(--red-dim); }
+    .flow .node.neck::after { content: "bottleneck"; position: absolute; top: -9px; right: 8px; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; background: var(--red); color: #fff; border-radius: 10px; padding: 0 7px; }
+    .flow.new .node { background: var(--blue-dim); border-color: #bfdbfe; }
+    .flow.new .node.neck { background: var(--red-dim); border-color: var(--red); }
+    .flow .arrow { align-self: center; color: var(--slate-light); font-weight: 800; }
+    .flow .loop { flex-basis: 100%; font-size: 0.78rem; color: var(--slate); }
+
+    .table-wrap { overflow-x: auto; margin: 6px 0 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+    th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+    th { background: var(--bg); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { font-weight: 700; }
+
+    .bloom { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 12px; }
+    .bloom h4 { margin: 0 0 6px; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); }
+    .pyr { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .pyr div { text-align: center; font-size: 0.8rem; font-weight: 700; padding: 5px 4px; border-radius: 4px; color: #fff; }
+    .stack { display: flex; flex-direction: column; gap: 4px; }
+    .stack div { border-radius: 6px; padding: 7px 10px; font-size: 0.82rem; background: var(--blue-dim); border: 1px solid #bfdbfe; }
+    .stack div b { display: block; }
+    .stack div.ai { background: var(--amber-dim); border-color: #fde68a; }
+    .stack div.hand { background: var(--accent-dim); border-color: #bbf7d0; }
+
+    .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 8px 0 12px; }
+    .tile { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+    .tile h3 { margin: 0 0 4px; font-size: 0.95rem; }
+    .tile p { font-size: 0.86rem; margin: 0; color: var(--slate); }
+
+    details.qa { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    details.qa summary { cursor: pointer; font-weight: 700; font-size: 0.92rem; }
+    details.qa[open] summary { margin-bottom: 6px; }
+    details.qa p { margin: 0 0 6px; }
+
+    form.fb label.q { display: block; font-weight: 700; font-size: 0.9rem; margin: 14px 0 6px; }
+    form.fb .opts { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.88rem; }
+    form.fb .opts label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+    form.fb textarea { width: 100%; min-height: 70px; font: inherit; font-size: 0.9rem; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: var(--radius-sm); background: #fff; color: var(--ink); }
+    .btn { font: inherit; font-weight: 700; font-size: 0.88rem; border: none; border-radius: var(--radius-sm); padding: 9px 16px; background: var(--accent); color: #fff; cursor: pointer; }
+    .btn.secondary { background: var(--bg); color: var(--ink); border: 1px solid #cbd5e1; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+    .small { font-size: 0.84rem; color: var(--slate); }
+    .status { font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+
+    @media (max-width: 640px) {
+      .doc-header, .section { padding: 18px 16px; }
+      .doc-header h1 { font-size: 1.4rem; }
+      .bloom { grid-template-columns: 1fr; }
+      .flow .arrow { display: none; }
+      .agenda li { grid-template-columns: 76px 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a><span class="nav-sep">/</span>
+    <a href="bsai-hub.html">BSAI Hub</a><span class="nav-sep">/</span>
+    <a href="teaching-framework-hub.html">Teaching Framework Hub</a>
+  </nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">STC Staff Meeting · Thursday, Oct 29, 2026</div>
+    <h1>How We Built AI 410, and Why</h1>
+    <p class="subtitle">A 20-minute briefing for STC staff on building AI 410: AI Engineering, the first fully built course for the upcoming BS in AI. It covers how course development changed with AI, the reasoning behind each design choice, the Interactive Lesson Lab, and the new bottleneck. We'd like your feedback at the end.</p>
+    <div class="meta-row">
+      <span class="meta-chip">20 minutes</span>
+      <span class="meta-chip">Presenter: Clark Ngo</span>
+      <span class="meta-chip">Audience: STC staff</span>
+      <span class="meta-chip">Feedback form at the end</span>
+    </div>
+  </header>
+
+  <div class="callout">
+    <strong>Standing rules for BSAI courses:</strong> the approved course description and outcomes are fixed, every hands-on unit runs in GitHub Codespaces, free tiers come first, and each HOS spans two weeks. See <a href="bsai-course-design-constraints.html">BSAI Course Design Constraints</a>. Nothing in this briefing conflicts with them.
+  </div>
+
+  <nav class="agenda" aria-label="Agenda">
+    <h2>Agenda</h2>
+    <ol>
+      <li><span class="tm">0:00–2:00</span><a href="#why">1. Why we're here: the problem AI created for teaching</a></li>
+      <li><span class="tm">2:00–6:00</span><a href="#process">2. Traditional vs AI-driven course development</a></li>
+      <li><span class="tm">6:00–9:00</span><a href="#bloom">3. Reversing Bloom's: the CEAU cycle</a></li>
+      <li><span class="tm">9:00–12:00</span><a href="#lab">4. The Interactive Lesson Lab (live look)</a></li>
+      <li><span class="tm">12:00–14:00</span><a href="#reinvented">5. MP, CD and KC: reinvented, not removed</a></li>
+      <li><span class="tm">14:00–16:00</span><a href="#bottleneck">6. The old bottleneck and the new one</a></li>
+      <li><span class="tm">16:00–20:00</span><a href="#qa">7. Questions</a> and <a href="#feedback">your feedback</a></li>
+    </ol>
+  </nav>
+
+  <section class="section" id="why">
+    <span class="time">0:00–2:00</span>
+    <h2>1. Why we're here</h2>
+    <p class="lede">AI changed two things at once: how students do the work, and how we can build a course.</p>
+    <ul>
+      <li><b>For students:</b> an AI assistant can now write working code for most assignments. If we grade "does the code run?", we're grading the AI, not the student.</li>
+      <li><b>For us:</b> the same tools can draft lessons, guides, starter code, rubrics and quiz banks in minutes. Building a course is no longer limited by how fast one person can write.</li>
+    </ul>
+    <div class="why"><b>Why it matters</b>AI 410 was designed around both changes, so it's a working example of what an AI-era course looks like, and of a faster way to build one. It's a model other STC courses can borrow from, not a one-off.</div>
+    <p class="small">AI 410 at a glance: 10 weeks, 5 credits; four two-week hands-on units (HOS) where students build one AI assistant, then a Term Project. 23 published student pages, 4 Application Challenges, 175 Knowledge Check questions, a 1,000-point Brightspace gradebook. Built from Aug 25 to Oct 25, 2026.</p>
+  </section>
+
+  <section class="section" id="process">
+    <span class="time">2:00–6:00</span>
+    <h2>2. Traditional vs AI-driven course development</h2>
+    <p class="lede">Same goal, a different process. The red box in each flow is where the time goes.</p>
+
+    <div class="flow-label">Traditional: hand-built, hand-off by hand-off</div>
+    <div class="flow" role="img" aria-label="Traditional flow: faculty writes outline and content, hands off to an instructional designer, content is built in the LMS, media is produced, review, revisions loop back, then launch. The bottleneck is writing and building content.">
+      <div class="node"><b>Plan</b>Outline from the course description</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node neck"><b>Write &amp; build</b>Faculty drafts every lecture, lab and quiz by hand</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Hand off</b>Instructional design and media teams build it in the LMS</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Review</b>Comments come back weeks later</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Launch</b>Changes wait for next term</div>
+      <span class="loop">↺ Each revision repeats the hand-off. A change is expensive, so courses change rarely.</span>
+    </div>
+
+    <div class="flow-label">AI-driven: faculty decides, AI drafts and checks</div>
+    <div class="flow new" role="img" aria-label="AI-driven flow: faculty sets rules and decisions, the AI assistant drafts content in a git repository, faculty reviews each change, it publishes to the student site in minutes, Brightspace links to it, and an audit checks consistency. The bottleneck is faculty decisions and review.">
+      <div class="node"><b>Set the rules</b>Fixed description, Codespaces, free tiers, two-week units</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node neck"><b>Decide</b>Structure, grading, names: faculty only</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>AI drafts</b>Lessons, code, rubrics, quizzes, in minutes</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node neck"><b>Review</b>Faculty approves every change (a pull request)</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Publish</b>Live on the site minutes later; Brightspace links to it</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Audit</b>AI cross-checks syllabus, site and Brightspace</div>
+      <span class="loop">↺ A change is cheap and tracked, so the course improves every week, not every term.</span>
+    </div>
+
+    <div class="table-wrap" tabindex="0">
+      <table>
+        <thead><tr><th>What changed</th><th>Traditional</th><th>AI-driven (AI 410)</th><th>Why we did it</th></tr></thead>
+        <tbody>
+          <tr><td>Who drafts</td><td>Faculty, by hand</td><td>An AI assistant, to faculty decisions</td><td>Frees faculty time for the judgment only they can make.</td></tr>
+          <tr><td>Where content lives</td><td>Word files and the LMS</td><td>A version-controlled repository, published as a website</td><td>Every change is reviewed, dated and reversible, and one copy is the master.</td></tr>
+          <tr><td>Brightspace's role</td><td>Holds all content</td><td>Holds grades, submissions, discussions and quizzes; links to the lessons</td><td>One master copy of each lesson means no drift between copies.</td></tr>
+          <tr><td>Quality checks</td><td>Manual review once</td><td>Automated link and accessibility checks on every change, plus audits</td><td>Fast drafting only helps if errors are caught just as fast.</td></tr>
+          <tr><td>Ownership</td><td>Often in one person's files</td><td>The CityU GitHub organization, with a runbook and maintainer guide</td><td>The course has to outlive any one person.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="bloom">
+    <span class="time">6:00–9:00</span>
+    <h2>3. Reversing Bloom's: the CEAU cycle</h2>
+    <p class="lede">Bloom's taxonomy puts Create at the top, as the hardest thing a learner does. With AI, Create is now the fast, cheap part. The skill is in what comes after.</p>
+    <div class="bloom">
+      <div>
+        <h4>Traditional Bloom's (Create is the summit)</h4>
+        <div class="pyr" role="img" aria-label="Bloom's pyramid from top to bottom: Create, Evaluate, Analyze, Apply, Understand, Remember.">
+          <div style="width:30%;background:#7c3aed">Create</div>
+          <div style="width:42%;background:#6d28d9">Evaluate</div>
+          <div style="width:54%;background:#4f46e5">Analyze</div>
+          <div style="width:66%;background:#2563eb">Apply</div>
+          <div style="width:78%;background:#0284c7">Understand</div>
+          <div style="width:90%;background:#0e7490">Remember</div>
+        </div>
+      </div>
+      <div>
+        <h4>AI 410's order (Create comes first)</h4>
+        <div class="stack">
+          <div class="ai"><b>1 · Create / Scaffold (20%)</b>Use an AI assistant to get a working version fast.</div>
+          <div><b>2 · Evaluate</b>Is the AI's result actually right? Test it on purpose.</div>
+          <div><b>3 · Analyze</b>Explain how one piece works, in your own words.</div>
+          <div class="hand"><b>4 · Understand &amp; Refine</b>Change or extend it by hand, no AI. The mastery check.</div>
+        </div>
+        <p class="small" style="margin-top:6px">Evaluate, Analyze and Understand &amp; Refine together are 80% of each HOS grade.</p>
+      </div>
+    </div>
+    <div class="why"><b>Why we did it</b>If an AI can produce working code, grading the code no longer tells us whether the student understands it. Judging the AI's output, explaining it, and improving it by hand all require understanding, and they're hard to fake. We moved the grade to where the learning is.</div>
+    <p><b>Why not ban AI instead?</b> Our graduates will use these tools at work on day one. Banning them would teach students to work in a way no employer expects, and it can't be enforced reliably anyway.</p>
+  </section>
+
+  <section class="section" id="lab">
+    <span class="time">9:00–12:00</span>
+    <h2>4. The Interactive Lesson Lab</h2>
+    <p class="lede">The student site at <a href="https://cityuseattle.github.io/ai410/">cityuseattle.github.io/ai410</a>. Students reach it from Brightspace; everything they submit still goes into Brightspace.</p>
+    <div class="grid3">
+      <div class="tile"><h3>🗺️ Preview the build</h3><p>Each module opens with a 15-minute guided tour of a simulator, so students see the whole unit working before the lecture. <em>(New this week, in review.)</em></p></div>
+      <div class="tile"><h3>🧪 Browser simulators</h3><p>Four interactive models of the systems students build: no account, no code. Students break things on purpose and see why.</p></div>
+      <div class="tile"><h3>📖 Lessons</h3><p>Written lecture notes with captioned videos, worked examples, common mistakes and quick checks, plus week tabs and due lists.</p></div>
+      <div class="tile"><h3>🛠️ Hands-on guides</h3><p>Step-by-step builds in GitHub Codespaces on free tiers. Students need nothing installed and no credit card.</p></div>
+      <div class="tile"><h3>🎬 Term Project example</h3><p>A fictional finished project students can click through, with its demo played step by step. <em>(New this week, in review.)</em></p></div>
+      <div class="tile"><h3>♿ Accessible and open</h3><p>All pages meet WCAG 2.2 AA, checked automatically. Openly licensed (CC BY 4.0) so other courses can reuse them.</p></div>
+    </div>
+    <div class="why"><b>Why we did it</b>Most students in the BSAI are new to software. Simulators let them practice and fail safely before touching real code, and they come to the lecture already knowing what to look for. A web page (rather than LMS content) loads the same everywhere, works on a phone, and can be fixed the same day.</div>
+    <p class="small"><b>Live look (2 minutes):</b> open Module 1 → Preview the build → start the Agentic Loop Simulator tour → step 2, "Take the tool away", to show an AI answer that looks right and is wrong.</p>
+  </section>
+
+  <section class="section" id="reinvented">
+    <span class="time">12:00–14:00</span>
+    <h2>5. MP, CD and KC: reinvented, not removed</h2>
+    <p class="lede">We kept every familiar STC activity. Each one was redesigned for a world where AI can produce a passable answer in seconds.</p>
+    <div class="table-wrap" tabindex="0">
+      <table>
+        <thead><tr><th>Activity</th><th>Before</th><th>Now in AI 410</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Muddiest Point (MP)</td><td>A reflection on what was confusing, after the fact</td><td>Due <em>before</em> each build, in four specific fields. The instructor answers the top three themes that week (Just-in-Time Teaching).</td><td>Confusion only helps if it reaches the instructor in time to change the lecture. Specific questions are also harder to hand off to AI.</td></tr>
+          <tr><td>Concept Debate (CD)</td><td>Post an opinion, reply to two classmates</td><td>Assigned sides that rotate by group, in three stages: argue your side, argue the <em>opposite</em> side, then a synthesis that cites a classmate. Evidence from your own build counts most.</td><td>Generic "I agree" posts, human or AI-written, earn little. Arguing the other side builds real judgment.</td></tr>
+          <tr><td>Knowledge Check (KC)</td><td>One graded quiz attempt</td><td>10 questions drawn from 35 per module, hint-only feedback, unlimited retakes (highest counts), 15 minutes, no-AI pledge.</td><td>Low stakes and retakes remove the reason to cheat; the time limit makes pasting into AI impractical. The goal is retention.</td></tr>
+          <tr><td>Application Challenge (AC), new</td><td>—</td><td>Build to a short spec with provided tests, make one open decision, defend it in a one-page memo.</td><td>Applying a skill to a new scenario and defending a choice is something only the student can do.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="bottleneck">
+    <span class="time">14:00–16:00</span>
+    <h2>6. The old bottleneck and the new one</h2>
+    <p class="lede">AI didn't remove the bottleneck. It moved it.</p>
+    <div class="flow-label">Before: limited by production</div>
+    <div class="flow" role="img" aria-label="Before: idea, then writing and building content is the bottleneck, then review, then launch.">
+      <div class="node"><b>Idea</b></div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node neck"><b>Write and build</b>Weeks per module</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Review</b></div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Launch</b></div>
+    </div>
+    <div class="flow-label">Now: limited by decisions, review and consistency</div>
+    <div class="flow new" role="img" aria-label="Now: decide is a bottleneck, drafting takes minutes, review and consistency across syllabus, site and Brightspace is a bottleneck, then the Brightspace build is a bottleneck, then launch.">
+      <div class="node neck"><b>Decide</b>Structure, grading, names</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Draft</b>Minutes</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node neck"><b>Review &amp; keep consistent</b>Syllabus, site, rubrics and Brightspace must agree</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node neck"><b>LMS last mile</b>Gradebook, rubrics, quizzes</div><span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>Launch</b></div>
+    </div>
+    <h3>What this taught us</h3>
+    <ul>
+      <li><b>Decide early.</b> Rules that arrived mid-build (for example, two weeks per unit) caused the most rework. Write the non-negotiables down before any content exists.</li>
+      <li><b>One master per document.</b> When two copies of the syllabus drifted, fixed errors came back. Now the OneDrive file is the master and everything else mirrors it.</li>
+      <li><b>Start the LMS early.</b> The Brightspace build was the slowest, most manual step. Request the shell at the start, not the end.</li>
+      <li><b>Test as a student.</b> A fresh-account run found a retired AI model that would have stopped every student on day one.</li>
+    </ul>
+    <p class="small">The full write-up: <a href="ai410-lessons-learned.html">AI 410 Lessons Learned: From Plan to Delivery</a>.</p>
+  </section>
+
+  <section class="section" id="qa">
+    <span class="time">16:00–20:00</span>
+    <h2>7. Questions we expect</h2>
+    <p class="lede">Short answers to the questions most likely to come up. Click to open.</p>
+    <details class="qa"><summary>Isn't letting students use AI just cheating with permission?</summary>
+      <p>AI is allowed where it's a tool (getting a first working version) and not where the learning is checked (Understand &amp; Refine, done by hand, and Knowledge Checks, with a no-AI pledge). Most of the grade is for judging and explaining work, which AI can't do for the student.</p></details>
+    <details class="qa"><summary>How do you know a student did the "by hand" part?</summary>
+      <p>Not with AI detectors, which are unreliable. Instructors use cheap, fair checks: ask the student to explain one line of their code, look for the work as its own commits in their repository, or ask for a small live change in office hours.</p></details>
+    <details class="qa"><summary>Does this replace faculty or instructional designers?</summary>
+      <p>No. It moves their time. Every structural and grading decision was a faculty decision, and every change was reviewed before it went live. What shrank was the time spent typing, formatting and copying between systems.</p></details>
+    <details class="qa"><summary>How long did it take, and could I do this for my course?</summary>
+      <p>About nine weeks of work by one faculty member, from first draft to a finished Brightspace shell, including two major redesigns. The process (decide, AI drafts, review, publish, audit) works for any course. The <a href="ai410-lessons-learned.html#playbook">playbook</a> lists the steps in order.</p></details>
+    <details class="qa"><summary>What does it cost students?</summary>
+      <p>Nothing beyond tuition. Every unit runs in GitHub Codespaces on free tiers (Gemini, Upstash, Expo, Langfuse), with no credit card. Anything that would need a paid key is optional.</p></details>
+    <details class="qa"><summary>Is AI-generated course content accurate?</summary>
+      <p>Only because of the checks around it. Faculty reviews every change, each hands-on unit gets a fresh-account test, automated checks catch broken links and accessibility problems, and audits compare the syllabus, site and Brightspace line by line. Those audits found real errors, such as rubric totals that didn't match assignment points, which were fixed before launch.</p></details>
+    <details class="qa"><summary>Our students aren't all technical. Will this overwhelm them?</summary>
+      <p>That's the reason for the design. Pairing eight skills into four two-week units means fewer, deeper units instead of a new tool every week; simulators let students see a system working before they build it; and the AI assistant handles the boilerplate that used to stall beginners.</p></details>
+    <details class="qa"><summary>What happens when a free service or AI model changes?</summary>
+      <p>It will. The model name is set in one place in the starter code, and the maintainer guide includes a pre-term re-test of every unit with fresh accounts.</p></details>
+    <details class="qa"><summary>Who maintains it if the course lead leaves?</summary>
+      <p>The course lives in CityU's GitHub organization, not a personal account. There's an instructor runbook and a maintainer guide, and the Brightspace development shell can be copied into any new section.</p></details>
+    <details class="qa"><summary>Does it work with Brightspace, or replace it?</summary>
+      <p>It works with it. Brightspace still holds enrollment, submissions, discussions, quizzes, rubrics and grades. Lessons open from Brightspace links.</p></details>
+    <details class="qa"><summary>Can other courses reuse the materials?</summary>
+      <p>Yes. The student site is CC BY 4.0 and the starter code is MIT. AI 420, 430 and 440 already follow AI 410's structure, and the MP, CD and KC redesigns don't depend on the subject.</p></details>
+  </section>
+
+  <section class="section" id="feedback">
+    <h2>Your feedback</h2>
+    <p class="lede">Four quick questions. Fill them in during or after the meeting, then copy your answers into the meeting chat or an email to Clark. Nothing is sent from this page; your draft stays in this browser only.</p>
+    <form class="fb" id="fb" onsubmit="return false">
+      <label class="q" id="q1">1. Which parts would you consider for your own course?</label>
+      <div class="opts" role="group" aria-labelledby="q1">
+        <label><input type="checkbox" name="reuse" value="The CEAU cycle (Create first, then Evaluate, Analyze, Refine)"> The CEAU cycle</label>
+        <label><input type="checkbox" name="reuse" value="Muddiest Point before the work (Just-in-Time Teaching)"> Muddiest Point before the work</label>
+        <label><input type="checkbox" name="reuse" value="Three-stage Concept Debates"> Three-stage debates</label>
+        <label><input type="checkbox" name="reuse" value="Low-stakes Knowledge Checks with retakes"> Low-stakes Knowledge Checks</label>
+        <label><input type="checkbox" name="reuse" value="Simulators and guided tours"> Simulators</label>
+        <label><input type="checkbox" name="reuse" value="AI-assisted course building"> AI-assisted course building</label>
+        <label><input type="checkbox" name="reuse" value="None yet"> None yet</label>
+      </div>
+      <label class="q" for="f2">2. What concerns you most about this approach?</label>
+      <textarea id="f2" name="concern" placeholder="For example: academic integrity, workload, student readiness, accreditation…"></textarea>
+      <label class="q" for="f3">3. What was unclear, or what would you want to see in more detail?</label>
+      <textarea id="f3" name="unclear"></textarea>
+      <label class="q" for="f4">4. What would you need to try one piece of this next term?</label>
+      <textarea id="f4" name="need" placeholder="Training, time, a template, a partner, LMS help…"></textarea>
+      <div class="btn-row">
+        <button class="btn" type="button" id="copyFb">Copy my feedback</button>
+        <button class="btn secondary" type="button" id="clearFb">Clear</button>
+        <span class="status" id="fbStatus" aria-live="polite"></span>
+      </div>
+    </form>
+    <div class="callout green" style="margin-top:16px;margin-bottom:0">
+      <strong>Questions to ask the room</strong> (if time is short, pick one): Where would the CEAU cycle not fit your subject? Which redesigned activity would your students push back on? What should we pilot next term, and in which course?
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="ai410-lessons-learned.html">AI 410 Lessons Learned: From Plan to Delivery</a>: the full timeline, decisions and playbook.</li>
+      <li><a href="courses/AI-410.html">AI 410: AI Engineering, course design</a>: outcomes, the CEAU cycle, schedule and grading.</li>
+      <li><a href="courses/AI-410-market-research.html">Comparable-courses research</a>: what informed the MP, CD and grading choices.</li>
+      <li><a href="https://cityuseattle.github.io/ai410/">The Interactive Lesson Lab</a>: the live student site.</li>
+    </ul>
+  </section>
+
+</div>
+<script>
+(function(){
+  var form=document.getElementById('fb'), KEY='ai410-staff-fb-2026-10-29', status=document.getElementById('fbStatus');
+  function read(){ return { reuse:[].slice.call(form.querySelectorAll('input[name=reuse]:checked')).map(function(i){return i.value;}),
+    concern:form.concern.value, unclear:form.unclear.value, need:form.need.value }; }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(read())); }catch(e){} }
+  try{ var d=JSON.parse(localStorage.getItem(KEY)||'null'); if(d){
+    [].slice.call(form.querySelectorAll('input[name=reuse]')).forEach(function(i){ i.checked=d.reuse.indexOf(i.value)>=0; });
+    form.concern.value=d.concern||''; form.unclear.value=d.unclear||''; form.need.value=d.need||''; } }catch(e){}
+  form.addEventListener('input',save); form.addEventListener('change',save);
+  function text(){ var d=read(); return 'AI 410 staff briefing (Oct 29) feedback\n\n1. Would consider for my course: '+(d.reuse.length?d.reuse.join('; '):'(none selected)')+
+    '\n2. Biggest concern: '+(d.concern.trim()||'-')+'\n3. Unclear / want more detail: '+(d.unclear.trim()||'-')+'\n4. What I would need to try it: '+(d.need.trim()||'-'); }
+  document.getElementById('copyFb').addEventListener('click',function(){
+    var t=text();
+    function ok(){ status.textContent='Copied. Paste it into the meeting chat or an email to Clark.'; }
+    function fallback(){ var a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select(); try{ document.execCommand('copy'); ok(); }catch(e){ status.textContent='Copy failed: select and copy the text manually.'; } document.body.removeChild(a); }
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok,fallback); else fallback();
+  });
+  document.getElementById('clearFb').addEventListener('click',function(){ form.reset(); save(); status.textContent='Cleared.'; });
+})();
+</script>
+</body>
+</html>

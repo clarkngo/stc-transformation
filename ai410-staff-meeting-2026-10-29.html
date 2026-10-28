@@ -149,7 +149,7 @@
       <li><span class="tm">6:00–9:00</span><a href="#bloom">3. Reversing Bloom's: the CEAU cycle</a></li>
       <li><span class="tm">9:00–12:00</span><a href="#lab">4. The Interactive Lesson Lab (live look)</a></li>
       <li><span class="tm">12:00–14:00</span><a href="#reinvented">5. MP, CD and KC: reinvented, not removed</a></li>
-      <li><span class="tm">14:00–16:00</span><a href="#bottleneck">6. The old bottleneck and the new one</a></li>
+      <li><span class="tm">14:00–16:00</span><a href="#bottleneck">6. What AI unlocked, and the new bottleneck</a></li>
       <li><span class="tm">16:00–20:00</span><a href="#qa">7. Questions</a> and <a href="#feedback">your feedback</a></li>
     </ol>
   </nav>
@@ -242,11 +242,11 @@
     <h2>4. The Interactive Lesson Lab</h2>
     <p class="lede">The student site at <a href="https://cityuseattle.github.io/ai410/">cityuseattle.github.io/ai410</a>. Students reach it from Brightspace; everything they submit still goes into Brightspace.</p>
     <div class="grid3">
-      <div class="tile"><h3>🗺️ Preview the build</h3><p>Each module opens with a 15-minute guided tour of a simulator, so students see the whole unit working before the lecture. <em>(New this week, in review.)</em></p></div>
+      <div class="tile"><h3>🗺️ Preview the build</h3><p>Each module opens with a 15-minute guided tour of a simulator, so students see the whole unit working before the lecture.</p></div>
       <div class="tile"><h3>🧪 Browser simulators</h3><p>Four interactive models of the systems students build: no account, no code. Students break things on purpose and see why.</p></div>
       <div class="tile"><h3>📖 Lessons</h3><p>Written lecture notes with captioned videos, worked examples, common mistakes and quick checks, plus week tabs and due lists.</p></div>
       <div class="tile"><h3>🛠️ Hands-on guides</h3><p>Step-by-step builds in GitHub Codespaces on free tiers. Students need nothing installed and no credit card.</p></div>
-      <div class="tile"><h3>🎬 Term Project example</h3><p>A fictional finished project students can click through, with its demo played step by step. <em>(New this week, in review.)</em></p></div>
+      <div class="tile"><h3>🎬 Term Project example</h3><p>A fictional finished project students can click through, with its demo played step by step.</p></div>
       <div class="tile"><h3>♿ Accessible and open</h3><p>All pages meet WCAG 2.2 AA, checked automatically. Openly licensed (CC BY 4.0) so other courses can reuse them.</p></div>
     </div>
     <div class="why"><b>Why we did it</b>Most students in the BSAI are new to software. Simulators let them practice and fail safely before touching real code, and they come to the lecture already knowing what to look for. A web page (rather than LMS content) loads the same everywhere, works on a phone, and can be fixed the same day.</div>
@@ -272,8 +272,17 @@
 
   <section class="section" id="bottleneck">
     <span class="time">14:00–16:00</span>
-    <h2>6. The old bottleneck and the new one</h2>
+    <h2>6. What AI unlocked, and the new bottleneck</h2>
     <p class="lede">AI didn't remove the bottleneck. It moved it.</p>
+    <h3>What AI help unlocked</h3>
+    <ul>
+      <li><b>One faculty member built a full course in about nine weeks:</b> 23 student pages, four simulators, eight starter-code templates, four Application Challenges and 175 Knowledge Check questions.</li>
+      <li><b>Redesigns stopped being expensive.</b> The course changed shape twice (eight weekly units to four merged units, then two weeks per unit). Each reshape took days, not a term.</li>
+      <li><b>Things we couldn't staff before.</b> Interactive simulators and guided tours normally need a developer; WCAG accessibility audits normally need a specialist. Both were built in.</li>
+      <li><b>Checking at a scale people can't.</b> Line-by-line audits of the syllabus against the site, every rubric and every Brightspace item, which caught real mismatches before launch.</li>
+      <li><b>The LMS build itself.</b> The gradebook, rubrics and quizzes were set up through Brightspace's API, with the faculty member signed in.</li>
+      <li><b>Same-day fixes.</b> A wording error found in the morning is live on the student site that afternoon.</li>
+    </ul>
     <div class="flow-label">Before: limited by production</div>
     <div class="flow" role="img" aria-label="Before: idea, then writing and building content is the bottleneck, then review, then launch.">
       <div class="node"><b>Idea</b></div><span class="arrow" aria-hidden="true">→</span>
@@ -289,10 +298,14 @@
       <div class="node neck"><b>LMS last mile</b>Gradebook, rubrics, quizzes</div><span class="arrow" aria-hidden="true">→</span>
       <div class="node"><b>Launch</b></div>
     </div>
+    <h3>New limits we ran into</h3>
+    <ul>
+      <li><b>AI usage limits.</b> Long working sessions hit the assistant's token and usage limits. Work has to be split into chunks, and each new session has to be brought back up to speed. Written decision notes and standing rules make that faster, but it's real time.</li>
+      <li><b>AI fluency is now a must.</b> The assistant drafts quickly and can be confidently wrong. Faculty have to know how to direct it, check its output against the source, and catch a plausible error. This isn't optional for one course: it's a skill every STC faculty member needs.</li>
+    </ul>
     <h3>What this taught us</h3>
     <ul>
       <li><b>Decide early.</b> Rules that arrived mid-build (for example, two weeks per unit) caused the most rework. Write the non-negotiables down before any content exists.</li>
-      <li><b>One master per document.</b> When two copies of the syllabus drifted, fixed errors came back. Now the OneDrive file is the master and everything else mirrors it.</li>
       <li><b>Start the LMS early.</b> The Brightspace build was the slowest, most manual step. Request the shell at the start, not the end.</li>
       <li><b>Test as a student.</b> A fresh-account run found a retired AI model that would have stopped every student on day one.</li>
     </ul>
@@ -311,6 +324,8 @@
       <p>No. It moves their time. Every structural and grading decision was a faculty decision, and every change was reviewed before it went live. What shrank was the time spent typing, formatting and copying between systems.</p></details>
     <details class="qa"><summary>How long did it take, and could I do this for my course?</summary>
       <p>About nine weeks of work by one faculty member, from first draft to a finished Brightspace shell, including two major redesigns. The process (decide, AI drafts, review, publish, audit) works for any course. The <a href="ai410-lessons-learned.html#playbook">playbook</a> lists the steps in order.</p></details>
+    <details class="qa"><summary>Do I need to be a programmer to build a course this way?</summary>
+      <p>No, but you do need AI fluency: knowing how to give the assistant clear rules, review what it produces, and spot when it's wrong. That's the skill to build first, and it applies to every STC course, not just technical ones.</p></details>
     <details class="qa"><summary>What does it cost students?</summary>
       <p>Nothing beyond tuition. Every unit runs in GitHub Codespaces on free tiers (Gemini, Upstash, Expo, Langfuse), with no credit card. Anything that would need a paid key is optional.</p></details>
     <details class="qa"><summary>Is AI-generated course content accurate?</summary>

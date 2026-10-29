@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 410 Staff Briefing Slides</title>
+  <meta name="description" content="The slide deck for the Oct 29, 2026 STC staff meeting: how AI 410 was built, and why. Scroll through it, read the speaker notes, or present it full screen.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500..700&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --accent: #1e8449; --accent-dim: #f0fdf4;
+      --blue: #1d4ed8; --violet: #7c3aed; --violet-dim: #f5f3ff;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 1100px; margin: 0 auto; padding: 28px 16px 100px; }
+    a { color: var(--blue); }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 28px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); border-left: 5px solid var(--accent); margin-bottom: 20px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 16px; }
+    .meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.87rem; border: 1px solid #ddd6fe; background: var(--violet-dim); color: #4c1d95; margin: 0 0 20px; }
+    .btn { font: inherit; font-weight: 700; font-size: 0.88rem; border: none; border-radius: var(--radius-sm); padding: 9px 16px; background: var(--accent); color: #fff; cursor: pointer; }
+    .btn:focus-visible, .stage-btn:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 2px; }
+    .small { font-size: 0.84rem; color: var(--slate); }
+
+    .toc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px 18px; margin-bottom: 24px; font-size: 0.86rem; }
+    .toc h2 { margin: 0 0 6px; font-size: 0.95rem; }
+    .toc ol { margin: 0; padding-left: 22px; columns: 2; column-gap: 28px; }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--blue); text-decoration: underline; }
+
+    .slide-card { margin: 0 0 28px; scroll-margin-top: 16px; }
+    .frame { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 10px; box-shadow: var(--shadow); border: 1px solid var(--border); background: #0F1F18; }
+    .canvas { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; transform-origin: 0 0; transform: scale(var(--k, 0.5)); }
+    figcaption { display: flex; gap: 10px; align-items: baseline; margin-top: 8px; font-size: 0.86rem; color: var(--slate); }
+    figcaption .num { font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .notes { margin-top: 6px; font-size: 0.86rem; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; }
+    .notes summary { cursor: pointer; font-weight: 700; color: var(--slate); }
+    .notes p { margin: 6px 0 2px; }
+
+    /* The slide canvas: a fixed 1920x1080 page. Inline styles on each slide carry its design. */
+    .slide { width: 1920px; height: 1080px; overflow: hidden; line-height: 1.4; }
+    .slide * { margin: 0; box-sizing: border-box; }
+    .slide h1 { font-size: 96px; font-weight: 600; line-height: 1.1; }
+    .slide h2 { font-size: 64px; font-weight: 600; line-height: 1.15; }
+    .slide h3 { font-size: 44px; font-weight: 600; line-height: 1.2; }
+    .slide p { font-size: 32px; }
+    .slide ul, .slide ol { padding-left: 1.3em; }
+    .slide li { margin: 4px 0; }
+    .slide table { border-collapse: collapse; width: 100%; }
+    .slide th, .slide td { padding: 14px 20px; text-align: left; vertical-align: top; border-bottom: 1px solid #DCE3DD; }
+    .slide th { font-weight: 700; color: #5D6B64; border-bottom: 2px solid #C9D2CB; }
+
+    /* Present mode */
+    #stage { position: fixed; inset: 0; background: #05090a; z-index: 50; display: none; }
+    #stage.on { display: block; }
+    #stage .canvas { left: 50%; top: 50%; transform: translate(-50%, -50%) scale(var(--k, 0.5)); transform-origin: center; }
+    .stage-bar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 10px; color: #cbd5e1; font-size: 0.85rem; opacity: 0; transition: opacity .2s; }
+    #stage:hover .stage-bar, #stage:focus-within .stage-bar { opacity: 1; }
+    .stage-btn { font: inherit; font-weight: 700; background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+    @media (max-width: 640px) {
+      .doc-header { padding: 18px 16px; }
+      .doc-header h1 { font-size: 1.4rem; }
+      .toc ol { columns: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) { .stage-bar { transition: none; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a><span class="nav-sep">/</span>
+    <a href="bsai-hub.html">BSAI Hub</a><span class="nav-sep">/</span>
+    <a href="teaching-framework-hub.html">Teaching Framework Hub</a><span class="nav-sep">/</span>
+    <a href="ai410-staff-meeting-2026-10-29.html">Briefing page</a>
+  </nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">STC Staff Meeting · Thursday, Oct 29, 2026 · Slides</div>
+    <h1>How We Built AI 410, and Why: the Slides</h1>
+    <p class="subtitle">The 21-slide deck presented at the STC staff meeting. It follows the seven sections of the <a href="ai410-staff-meeting-2026-10-29.html">briefing page</a>, which has the full text, the anticipated Q&amp;A and the feedback form. Screenshots are from the live student site.</p>
+    <div class="meta-row">
+      <span class="meta-chip">21 slides</span>
+      <span class="meta-chip">20 minutes</span>
+      <span class="meta-chip">Presenter: Clark Ngo</span>
+      <button type="button" class="btn" id="present">Present full screen ▸</button>
+    </div>
+    <p class="small" style="margin:12px 0 0">In present mode, use the arrow keys or click the right or left half of the screen to move between slides. Esc exits.</p>
+  </header>
+
+  <div class="callout">
+    <strong>Standing rules for BSAI courses:</strong> the approved course description and outcomes are fixed, every hands-on unit runs in GitHub Codespaces, free tiers come first, and each HOS spans two weeks. See <a href="bsai-course-design-constraints.html">BSAI Course Design Constraints</a>. Nothing in these slides conflicts with them.
+  </div>
+
+  <nav class="toc" aria-labelledby="toc-h">
+    <h2 id="toc-h">Slides</h2>
+    <ol id="toc-list"></ol>
+  </nav>
+
+  <main id="deck">
+  <figure class="slide-card" id="cover">
+    <div class="frame"><div class="canvas">
+<section id="s-cover" class="slide" aria-label="Slide 1" style="background:linear-gradient(135deg, #0F1F18 0%, #123524 60%, #1E7A46 140%);color:#F5F6F1;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#7FD9A4">STC staff meeting · Thursday, October 29, 2026</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:128px;font-weight:700;line-height:1.05;letter-spacing:-2px">How we built AI 410,<br>and why</h1>
+<p style="font-size:36px;line-height:1.4;color:#C5D6CC;width:1300px">AI Engineering: the first fully built course for the upcoming BS in AI, and what it taught us about building courses with AI.</p>
+<p style="font-size:28px;color:#C5D6CC">Clark Ngo · 20 minutes · feedback at the end</p>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">1</span><span class="cap-title">How we built AI 410,and why</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>Welcome. Twenty minutes: how AI 410 was built, why each design choice was made, a live look at the student site, and then your questions and feedback. Everything here is also on the briefing page in stc-transformation.</p></details>
+  </figure>
+  <figure class="slide-card" id="agenda">
+    <div class="frame"><div class="canvas">
+<section id="s-agenda" class="slide" aria-label="Slide 2" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">Agenda · 20 minutes</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Seven short stops</h2>
+</div>
+<div style="display:flex;flex-direction:column">
+<div style="display:flex;gap:40px;padding:16px 0;border-bottom:1px solid #DCE3DD"><p style="width:220px;font-size:34px;font-weight:700;color:#1E7A46;font-variant-numeric:tabular-nums">0:00</p><p style="font-size:34px">1 · Why we’re here: the problem AI created for teaching</p></div>
+<div style="display:flex;gap:40px;padding:16px 0;border-bottom:1px solid #DCE3DD"><p style="width:220px;font-size:34px;font-weight:700;color:#1E7A46;font-variant-numeric:tabular-nums">2:00</p><p style="font-size:34px">2 · Traditional vs AI-driven course development</p></div>
+<div style="display:flex;gap:40px;padding:16px 0;border-bottom:1px solid #DCE3DD"><p style="width:220px;font-size:34px;font-weight:700;color:#1E7A46;font-variant-numeric:tabular-nums">6:00</p><p style="font-size:34px">3 · Reversing Bloom’s: the CEAU cycle</p></div>
+<div style="display:flex;gap:40px;padding:16px 0;border-bottom:1px solid #DCE3DD"><p style="width:220px;font-size:34px;font-weight:700;color:#1E7A46;font-variant-numeric:tabular-nums">9:00</p><p style="font-size:34px">4 · The Interactive Lesson Lab (live look)</p></div>
+<div style="display:flex;gap:40px;padding:16px 0;border-bottom:1px solid #DCE3DD"><p style="width:220px;font-size:34px;font-weight:700;color:#1E7A46;font-variant-numeric:tabular-nums">12:00</p><p style="font-size:34px">5 · MP, CD and KC: reinvented, not removed</p></div>
+<div style="display:flex;gap:40px;padding:16px 0;border-bottom:1px solid #DCE3DD"><p style="width:220px;font-size:34px;font-weight:700;color:#1E7A46;font-variant-numeric:tabular-nums">14:00</p><p style="font-size:34px">6 · What AI unlocked, and the new bottleneck</p></div>
+<div style="display:flex;gap:40px;padding:16px 0"><p style="width:220px;font-size:34px;font-weight:700;color:#1E7A46;font-variant-numeric:tabular-nums">16:00</p><p style="font-size:34px">7 · Questions and your feedback</p></div>
+</div>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">2</span><span class="cap-title">Seven short stops</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>The briefing page follows the same seven sections, so anyone who misses the meeting can read it later. The feedback form is on that page too.</p></details>
+  </figure>
+  <figure class="slide-card" id="why">
+    <div class="frame"><div class="canvas">
+<section id="s-why" class="slide" aria-label="Slide 3" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">1 · Why we’re here</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">AI changed two things at once</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:20px;padding:48px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1E7A46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#1E7A46;width:64px;height:64px;flex:none"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700">How students do the work</h3>
+<p style="font-size:30px;line-height:1.45;color:#3F4D46">An AI assistant can now write working code for most assignments. If we grade “does the code run?”, we’re grading the AI, not the student.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:20px;padding:48px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1E7A46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#1E7A46;width:64px;height:64px;flex:none"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700">How we can build a course</h3>
+<p style="font-size:30px;line-height:1.45;color:#3F4D46">The same tools draft lessons, guides, starter code, rubrics and quiz banks in minutes. Building a course is no longer limited by how fast one person can write.</p>
+</div>
+</div>
+<p style="font-size:32px;line-height:1.4;color:#13221B"><b>AI 410 was designed around both changes:</b> a working example of an AI-era course, and of a faster way to build one.</p>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">3</span><span class="cap-title">AI changed two things at once</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>AI 410 is a model other STC courses can borrow from, not a one-off. Keep this to two minutes.</p></details>
+  </figure>
+  <figure class="slide-card" id="glance">
+    <div class="frame"><div class="canvas">
+<section id="s-glance" class="slide" aria-label="Slide 4" style="background:#0F1F18;color:#F5F6F1;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7FD9A4">AI 410 at a glance</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Students build one AI assistant, then a project</h2>
+</div>
+<div style="display:grid;grid-template-columns:repeat(5, 1fr);gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px;border-top:4px solid #7FD9A4;padding:24px 0 0"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1">10</p><p style="font-size:28px;color:#C5D6CC">weeks, 5 credits</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;border-top:4px solid #7FD9A4;padding:24px 0 0"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1">4</p><p style="font-size:28px;color:#C5D6CC">two-week hands-on units, then a Term Project</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;border-top:4px solid #7FD9A4;padding:24px 0 0"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1">23</p><p style="font-size:28px;color:#C5D6CC">published student pages</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;border-top:4px solid #7FD9A4;padding:24px 0 0"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1">175</p><p style="font-size:28px;color:#C5D6CC">Knowledge Check questions</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;border-top:4px solid #7FD9A4;padding:24px 0 0"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1">4</p><p style="font-size:28px;color:#C5D6CC">Application Challenges</p></div>
+</div>
+<p style="font-size:28px;color:#C5D6CC">Plus a 1,000-point Brightspace gradebook. Every hands-on unit runs in GitHub Codespaces on free tiers, with no credit card.</p>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">4</span><span class="cap-title">Students build one AI assistant, then a project</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>HOS means Hands-On Skill: a two-week unit. The four HOS build one assistant step by step: tools, retrieval over documents, guardrails and background jobs, then mobile, push and traces. Module 5 is the Term Project.</p></details>
+  </figure>
+  <figure class="slide-card" id="trad">
+    <div class="frame"><div class="canvas">
+<section id="s-trad" class="slide" aria-label="Slide 5" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">2 · Course development, before</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Traditional: hand-built, hand-off by hand-off</h2>
+</div>
+<div style="display:flex;align-items:stretch;gap:20px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:700">Plan</h3><p style="font-size:26px;line-height:1.4;color:#3F4D46">Outline from the course description</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:44px;height:24px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FBEDE4;border:4px solid #B4470C;border-radius:16px;padding:32px"><p style="font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#B4470C">Bottleneck</p><h3 style="font-size:32px;font-weight:700">Write &amp; build</h3><p style="font-size:26px;line-height:1.4;color:#3F4D46">Faculty drafts every lecture, lab and quiz by hand</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:44px;height:24px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:700">Hand off</h3><p style="font-size:26px;line-height:1.4;color:#3F4D46">Design and media teams build it in the LMS</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:44px;height:24px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:700">Review</h3><p style="font-size:26px;line-height:1.4;color:#3F4D46">Comments come back weeks later</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:44px;height:24px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:32px"><h3 style="font-size:32px;font-weight:700">Launch</h3><p style="font-size:26px;line-height:1.4;color:#3F4D46">Changes wait for next term</p></div>
+</div>
+<div style="display:flex;gap:24px;align-items:center;background:#ECEFE9;border-radius:16px;padding:32px 40px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#B4470C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#B4470C;width:48px;height:48px;flex:none"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+<p style="font-size:32px;line-height:1.4">Each revision repeats the hand-off. A change is expensive, so <b>courses change rarely.</b></p>
+</div>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">5</span><span class="cap-title">Traditional: hand-built, hand-off by hand-off</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>The orange box is where the time goes: writing and building by hand. Every revision goes back through the hand-off and the review cycle, so changes pile up for next term.</p></details>
+  </figure>
+  <figure class="slide-card" id="aiflow">
+    <div class="frame"><div class="canvas">
+<section id="s-aiflow" class="slide" aria-label="Slide 6" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">2 · Course development, now</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">AI-driven: faculty decides, AI drafts and checks</h2>
+</div>
+<div style="display:flex;align-items:stretch;gap:14px">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#EAF3FB;border:1px solid #BCD3EA;border-radius:16px;padding:24px"><h3 style="font-size:28px;font-weight:700">Set the rules</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">Fixed description, Codespaces, free tiers, two-week units</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:32px;height:18px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FBEDE4;border:4px solid #B4470C;border-radius:16px;padding:24px"><p style="font-size:24px;font-weight:700;letter-spacing:0px;text-transform:uppercase;color:#B4470C">Bottleneck</p><h3 style="font-size:28px;font-weight:700">Decide</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">Structure, grading, names: faculty only</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:32px;height:18px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#EAF3FB;border:1px solid #BCD3EA;border-radius:16px;padding:24px"><h3 style="font-size:28px;font-weight:700">AI drafts</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">Lessons, code, rubrics, quizzes, in minutes</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:32px;height:18px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FBEDE4;border:4px solid #B4470C;border-radius:16px;padding:24px"><p style="font-size:24px;font-weight:700;letter-spacing:0px;text-transform:uppercase;color:#B4470C">Bottleneck</p><h3 style="font-size:28px;font-weight:700">Review</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">Faculty approves every change</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:32px;height:18px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#EAF3FB;border:1px solid #BCD3EA;border-radius:16px;padding:24px"><h3 style="font-size:28px;font-weight:700">Publish</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">Live in minutes; Brightspace links to it</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:32px;height:18px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#EAF3FB;border:1px solid #BCD3EA;border-radius:16px;padding:24px"><h3 style="font-size:28px;font-weight:700">Audit</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">AI cross-checks syllabus, site and Brightspace</p></div>
+</div>
+<div style="display:flex;gap:24px;align-items:center;background:#E3F1E8;border-radius:16px;padding:32px 40px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1E7A46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#1E7A46;width:48px;height:48px;flex:none"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+<p style="font-size:32px;line-height:1.4">A change is cheap and tracked, so <b>the course improves every week, not every term.</b></p>
+</div>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">6</span><span class="cap-title">AI-driven: faculty decides, AI drafts and checks</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>Same goal, different process. The time now goes into the two human steps: deciding, and reviewing. Every change is a pull request that faculty approves before it goes live. Audits use AI to cross-check the syllabus, the student site and Brightspace line by line.</p></details>
+  </figure>
+  <figure class="slide-card" id="changed">
+    <div class="frame"><div class="canvas">
+<section id="s-changed" class="slide" aria-label="Slide 7" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">2 · What changed, and why</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Five shifts behind the new process</h2>
+</div>
+<table style="font-family:'Public Sans', Arial, sans-serif;font-size:26px;color:#13221B;padding:14px 20px">
+<tr><th style="width:18%">What</th><th style="width:22%">Traditional</th><th style="width:28%">AI 410</th><th style="width:32%">Why</th></tr>
+<tr><td><b>Who drafts</b></td><td>Faculty, by hand</td><td>An AI assistant, to faculty decisions</td><td>Frees faculty time for judgment only they can make</td></tr>
+<tr style="background:#ECEFE9"><td><b>Where it lives</b></td><td>Word files and the LMS</td><td>A version-controlled repository, published as a website</td><td>Every change is reviewed, dated and reversible</td></tr>
+<tr><td><b>Brightspace</b></td><td>Holds all content</td><td>Grades, submissions, discussions, quizzes; links to lessons</td><td>One master copy of each lesson, so no drift</td></tr>
+<tr style="background:#ECEFE9"><td><b>Quality checks</b></td><td>Manual review, once</td><td>Automatic link and accessibility checks, plus audits</td><td>Fast drafting only helps if errors are caught as fast</td></tr>
+<tr><td><b>Ownership</b></td><td>One person’s files</td><td>CityU’s GitHub organization, with a runbook and maintainer guide</td><td>The course has to outlive any one person</td></tr>
+</table>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">7</span><span class="cap-title">Five shifts behind the new process</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>This is the “why” table. The short version: faculty keep every decision, the AI does the typing, and everything is tracked, checked and owned by the institution rather than one person.</p></details>
+  </figure>
+  <figure class="slide-card" id="bloom">
+    <div class="frame"><div class="canvas">
+<section id="s-bloom" class="slide" aria-label="Slide 8" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">3 · Reversing Bloom’s: the CEAU cycle</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Create is now the cheap part</h2>
+</div>
+<div style="display:flex;gap:80px;align-items:start">
+<div style="width:680px;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5D6B64">Traditional Bloom’s</p>
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+<p style="width:240px;background:#B4470C;color:#FDFDFB;font-size:26px;font-weight:700;text-align:center;padding:12px;border-radius:8px">Create</p>
+<p style="width:328px;background:#1E7A46;color:#FDFDFB;font-size:26px;font-weight:700;text-align:center;padding:12px;border-radius:8px">Evaluate</p>
+<p style="width:416px;background:#2A8A55;color:#FDFDFB;font-size:26px;font-weight:700;text-align:center;padding:12px;border-radius:8px">Analyze</p>
+<p style="width:504px;background:#3A7D5C;color:#FDFDFB;font-size:26px;font-weight:700;text-align:center;padding:12px;border-radius:8px">Apply</p>
+<p style="width:592px;background:#4A6E5E;color:#FDFDFB;font-size:26px;font-weight:700;text-align:center;padding:12px;border-radius:8px">Understand</p>
+<p style="width:680px;background:#55635C;color:#FDFDFB;font-size:26px;font-weight:700;text-align:center;padding:12px;border-radius:8px">Remember</p>
+</div>
+<p style="font-size:26px;color:#3F4D46">Create sits at the summit: the hardest thing a learner does.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5D6B64">AI 410’s order, each HOS</p>
+<div style="display:flex;gap:24px;align-items:center;background:#FBEDE4;border-radius:14px;padding:20px 28px"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700;color:#B4470C;width:48px">1</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:700">Create / Scaffold · 20%</h3><p style="font-size:24px;color:#3F4D46">Use an AI assistant to get a working version fast.</p></div></div>
+<div style="display:flex;gap:24px;align-items:center;background:#E3F1E8;border-radius:14px;padding:20px 28px"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700;color:#1E7A46;width:48px">2</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:700">Evaluate</h3><p style="font-size:24px;color:#3F4D46">Is the AI’s result actually right? Test it on purpose.</p></div></div>
+<div style="display:flex;gap:24px;align-items:center;background:#E3F1E8;border-radius:14px;padding:20px 28px"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700;color:#1E7A46;width:48px">3</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:700">Analyze</h3><p style="font-size:24px;color:#3F4D46">Explain how one piece works, in your own words.</p></div></div>
+<div style="display:flex;gap:24px;align-items:center;background:#E3F1E8;border-radius:14px;padding:20px 28px"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700;color:#1E7A46;width:48px">4</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:30px;font-weight:700">Understand &amp; Refine</h3><p style="font-size:24px;color:#3F4D46">Change or extend it by hand, no AI. The mastery check.</p></div></div>
+<p style="font-size:26px;font-weight:700;color:#1E7A46">Steps 2–4 together: 80% of each HOS grade.</p>
+</div>
+</div>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">8</span><span class="cap-title">Create is now the cheap part</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>If an AI can produce working code, grading the code no longer tells us whether the student understands it. Judging the AI’s output, explaining it and improving it by hand all require understanding, and they are hard to fake. So we moved the grade there.</p></details>
+  </figure>
+  <figure class="slide-card" id="noban">
+    <div class="frame"><div class="canvas">
+<section id="s-noban" class="slide" aria-label="Slide 9" style="background:#1E7A46;color:#F5F6F1;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#D8F2E2">Why not ban AI instead?</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1.1;letter-spacing:-1px;width:1500px">Our graduates will use these tools at work on day one.</h2>
+<p style="font-size:36px;line-height:1.45;color:#E6F4EA;width:1400px">Banning them would teach students to work in a way no employer expects, and it can’t be enforced reliably anyway. So AI is allowed where it’s a tool, and the grade sits where the learning is checked.</p>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">9</span><span class="cap-title">Our graduates will use these tools at work on day one.</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>This is the most common objection, so address it head-on before moving to the live look.</p></details>
+  </figure>
+  <figure class="slide-card" id="lab">
+    <div class="frame"><div class="canvas">
+<section id="s-lab" class="slide" aria-label="Slide 10" style="background:#0F1F18;color:#F5F6F1;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;gap:64px;align-items:center">
+<div style="width:560px;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7FD9A4">4 · The Interactive Lesson Lab</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">The student site</h2>
+<p style="font-size:30px;line-height:1.45;color:#C5D6CC">Students reach it from Brightspace. Everything they submit still goes into Brightspace.</p>
+<ul style="font-size:28px;line-height:1.5;color:#C5D6CC">
+<li>Preview the build</li>
+<li>Browser simulators</li>
+<li>Written lessons with captioned videos</li>
+<li>Hands-on guides in Codespaces</li>
+<li>A Term Project example</li>
+<li>WCAG 2.2 AA, openly licensed</li>
+</ul>
+</div>
+<img src="assets/ai410-staff-briefing-2026-10-29/home.jpg" alt="AI 410 course home page: Build a full-stack AI app, one module at a time, with Start here steps and the module list" style="width:1040px;height:650px;object-fit:contain;border:1px solid #2C4237;border-radius:16px;background:#0A1510">
+
+</section>
+    </div></div>
+    <figcaption><span class="num">10</span><span class="cap-title">The student site</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>The site is cityuseattle.github.io/ai410. Most BSAI students are new to software, so simulators let them practice and fail safely before touching real code. A web page loads the same everywhere and can be checked automatically for accessibility. Openly licensed: CC BY 4.0 for content, MIT for code.</p></details>
+  </figure>
+  <figure class="slide-card" id="preview">
+    <div class="frame"><div class="canvas">
+<section id="s-preview" class="slide" aria-label="Slide 11" style="background:#0F1F18;color:#F5F6F1;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;gap:64px;align-items:center">
+<div style="width:520px;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7FD9A4">Before the lecture</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Preview the build</h2>
+<p style="font-size:30px;line-height:1.45;color:#C5D6CC">Each module opens with a 15-minute guided tour of a simulator, so students see the whole unit working before the lecture.</p>
+<p style="font-size:30px;line-height:1.45;color:#C5D6CC">They arrive knowing what to look for, with three questions to answer.</p>
+</div>
+<img src="assets/ai410-staff-briefing-2026-10-29/m1-preview.jpg" alt="Module 1 Preview the build section: what students build in HOS 1, a table mapping each piece to the simulator, the guided tour steps and a Start the guided tour button" style="width:1080px;height:675px;object-fit:contain;border:1px solid #2C4237;border-radius:16px;background:#0A1510">
+
+</section>
+    </div></div>
+    <figcaption><span class="num">11</span><span class="cap-title">Preview the build</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>Ungraded, about 15 minutes. The table maps each piece of the real app (Streamlit, FastAPI, Gemini, a Python tool) to a lane in the simulator.</p></details>
+  </figure>
+  <figure class="slide-card" id="sim">
+    <div class="frame"><div class="canvas">
+<section id="s-sim" class="slide" aria-label="Slide 12" style="background:#0F1F18;color:#F5F6F1;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;gap:64px;align-items:center">
+<div style="width:520px;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7FD9A4">Browser simulators</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Break it on purpose</h2>
+<p style="font-size:30px;line-height:1.45;color:#C5D6CC">Four interactive models of what students build. No account, no code.</p>
+<p style="font-size:30px;line-height:1.45;color:#C5D6CC">Here, tour step 2 takes the tool away. The model answers with a <b style="color:#F5F6F1">wrong number, confidently</b>, and no error appears.</p>
+<p style="font-size:30px;line-height:1.45;color:#C5D6CC">That’s why Evaluate means testing on purpose.</p>
+</div>
+<img src="assets/ai410-staff-briefing-2026-10-29/sim1-guess.jpg" alt="Agentic Loop Simulator on guided tour step 2, Take the tool away: the calculate tool is unticked and a red verdict warns of hallucination risk because the model guessed" style="width:1080px;height:824px;object-fit:contain;border:1px solid #2C4237;border-radius:16px;background:#0A1510">
+
+</section>
+    </div></div>
+    <figcaption><span class="num">12</span><span class="cap-title">Break it on purpose</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>Live look, two minutes: open Module 1, Preview the build, start the Agentic Loop Simulator tour, go to step 2 and press Set this up for me. Point at the red verdict at the bottom of panel 2.</p></details>
+  </figure>
+  <figure class="slide-card" id="example">
+    <div class="frame"><div class="canvas">
+<section id="s-example" class="slide" aria-label="Slide 13" style="background:#0F1F18;color:#F5F6F1;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;gap:64px;align-items:center">
+<div style="width:520px;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7FD9A4">Term Project example</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-1px">Flashcard Coach</h2>
+<p style="font-size:30px;line-height:1.45;color:#C5D6CC">A fictional finished project students can click through: its live demo played step by step, with what the presenter says.</p>
+<p style="font-size:30px;line-height:1.45;color:#C5D6CC">Every event is tagged with the HOS it comes from, so students see all four units working in one app.</p>
+</div>
+<img src="assets/ai410-staff-briefing-2026-10-29/example-demo.jpg" alt="Flashcard Coach live demo: a phone showing a request for flashcards, a Behind the scenes panel with seven system lanes, and an event log tagged by HOS" style="width:1080px;height:750px;object-fit:contain;border:1px solid #2C4237;border-radius:16px;background:#0A1510">
+
+</section>
+    </div></div>
+    <figcaption><span class="num">13</span><span class="cap-title">Flashcard Coach</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>Clearly labeled as illustrative: no real model or network calls. It also shows the three releases (v0.3, v0.7, v1.0) and a demo video storyboard, so students know what “good” looks like before they start.</p></details>
+  </figure>
+  <figure class="slide-card" id="reinvented">
+    <div class="frame"><div class="canvas">
+<section id="s-reinvented" class="slide" aria-label="Slide 14" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">5 · Reinvented, not removed</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Every familiar STC activity stayed</h2>
+</div>
+<table style="font-family:'Public Sans', Arial, sans-serif;font-size:24px;line-height:1.3;color:#13221B;padding:14px 18px">
+<tr><th style="width:17%">Activity</th><th style="width:21%">Before</th><th style="width:36%">Now in AI 410</th><th style="width:26%">Why</th></tr>
+<tr><td><b>Muddiest Point</b></td><td>A reflection on what was confusing, after the fact</td><td>Due before each build, in four specific fields. The instructor answers the top three themes that week.</td><td>Confusion only helps if it reaches the instructor in time</td></tr>
+<tr style="background:#ECEFE9"><td><b>Concept Debate</b></td><td>Post an opinion, reply to two classmates</td><td>Assigned, rotating sides in three stages: argue yours, argue the other, then a synthesis citing a classmate</td><td>Arguing both sides with evidence from your own build is hard to fake</td></tr>
+<tr><td><b>Knowledge Check</b></td><td>One graded quiz attempt</td><td>10 of 35 questions, hint-only feedback, unlimited retakes, 15 minutes, no-AI pledge</td><td>Low stakes remove the reason to cheat; the timer limits pasting into AI</td></tr>
+<tr style="background:#ECEFE9"><td><b>Application Challenge</b> (new)</td><td>None</td><td>Build to a short spec with tests, make one open decision, defend it in a one-page memo</td><td>Applying a skill to a new case and defending a choice is the student’s own work</td></tr>
+</table>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">14</span><span class="cap-title">Every familiar STC activity stayed</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>Muddiest Point now follows Just-in-Time Teaching: it’s due before the build, so the answers shape that week’s teaching. Knowledge Checks keep the highest score.</p></details>
+  </figure>
+  <figure class="slide-card" id="studentsee">
+    <div class="frame"><div class="canvas">
+<section id="s-studentsee" class="slide" aria-label="Slide 15" style="background:#0F1F18;color:#F5F6F1;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7FD9A4">What students see</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Specific prompts, not blank boxes</h2>
+</div>
+<div style="display:flex;gap:64px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<img src="assets/ai410-staff-briefing-2026-10-29/m1-muddiest.jpg" alt="Muddiest Point form: examples that do and don’t meet the bar, four short fields and a specificity meter" style="width:800px;height:500px;object-fit:contain;border:1px solid #2C4237;border-radius:16px;background:#0A1510">
+<p style="font-size:28px;line-height:1.4;color:#C5D6CC"><b style="color:#F5F6F1">Muddiest Point:</b> examples of what meets the bar, four fields and a specificity meter.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<img src="assets/ai410-staff-briefing-2026-10-29/ac.jpg" alt="Application Challenge 1: Cascade Family Clinic Booking Agent, with ground rules and the scenario" style="width:800px;height:500px;object-fit:contain;border:1px solid #2C4237;border-radius:16px;background:#0A1510">
+<p style="font-size:28px;line-height:1.4;color:#C5D6CC"><b style="color:#F5F6F1">Application Challenge:</b> a new business case, a spec with tests, and AI use allowed if disclosed.</p>
+</div>
+</div>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">15</span><span class="cap-title">Specific prompts, not blank boxes</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>The Muddiest Point draft stays in the student’s browser and is copied into Brightspace. The Application Challenge is a fictional clinic booking agent: the student builds the tools from a spec and defends which capabilities the model should be able to call.</p></details>
+  </figure>
+  <figure class="slide-card" id="unlocked">
+    <div class="frame"><div class="canvas">
+<section id="s-unlocked" class="slide" aria-label="Slide 16" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">6 · What AI help unlocked</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">One faculty member, about nine weeks, a full course</h2>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:32px"><h3 style="font-size:30px;font-weight:700">Cheap redesigns</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">The course changed shape twice. Each reshape took days, not a term.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:32px"><h3 style="font-size:30px;font-weight:700">Work we couldn’t staff</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">Simulators normally need a developer; accessibility audits need a specialist. Both were built in.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:32px"><h3 style="font-size:30px;font-weight:700">Checking at scale</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">Line-by-line audits of syllabus, site, rubrics and Brightspace caught real mismatches.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:32px"><h3 style="font-size:30px;font-weight:700">The LMS build</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">Gradebook, rubrics and quizzes set up through Brightspace’s API, with faculty signed in.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:32px"><h3 style="font-size:30px;font-weight:700">Same-day fixes</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">A wording error found in the morning is live on the student site that afternoon.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#E3F1E8;border:1px solid #B9DCC6;border-radius:16px;padding:32px"><h3 style="font-size:30px;font-weight:700">The output</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">23 pages, 4 simulators, 8 starter templates, 4 Application Challenges, 175 quiz questions.</p></div>
+</div>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">16</span><span class="cap-title">One faculty member, about nine weeks, a full course</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>The two reshapes: eight weekly units became four merged units, then each unit became two weeks long. Normally either change would have waited a full term.</p></details>
+  </figure>
+  <figure class="slide-card" id="moved">
+    <div class="frame"><div class="canvas">
+<section id="s-moved" class="slide" aria-label="Slide 17" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">6 · The new bottleneck</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">AI moved the bottleneck</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5D6B64">Before: limited by production</p>
+<div style="display:flex;align-items:stretch;gap:16px">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:14px;padding:24px"><h3 style="font-size:28px;font-weight:700">Idea</h3></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:36px;height:20px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:2;display:flex;flex-direction:column;gap:6px;background:#FBEDE4;border:4px solid #B4470C;border-radius:14px;padding:24px"><h3 style="font-size:28px;font-weight:700">Write and build <span style="color:#B4470C">· bottleneck</span></h3><p style="font-size:24px;color:#3F4D46">Weeks per module</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:36px;height:20px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:14px;padding:24px"><h3 style="font-size:28px;font-weight:700">Review</h3></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:36px;height:20px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:14px;padding:24px"><h3 style="font-size:28px;font-weight:700">Launch</h3></div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5D6B64">Now: limited by decisions, review and consistency</p>
+<div style="display:flex;align-items:stretch;gap:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#FBEDE4;border:4px solid #B4470C;border-radius:14px;padding:24px"><h3 style="font-size:28px;font-weight:700">Decide</h3><p style="font-size:24px;color:#3F4D46">Structure, grading, names</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:36px;height:20px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#EAF3FB;border:1px solid #BCD3EA;border-radius:14px;padding:24px"><h3 style="font-size:28px;font-weight:700">Draft</h3><p style="font-size:24px;color:#3F4D46">Minutes</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:36px;height:20px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1.4;display:flex;flex-direction:column;gap:6px;background:#FBEDE4;border:4px solid #B4470C;border-radius:14px;padding:24px"><h3 style="font-size:28px;font-weight:700">Review &amp; keep consistent</h3><p style="font-size:24px;color:#3F4D46">Syllabus, site, rubrics and Brightspace must agree</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:36px;height:20px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#FBEDE4;border:4px solid #B4470C;border-radius:14px;padding:24px"><h3 style="font-size:28px;font-weight:700">LMS last mile</h3><p style="font-size:24px;color:#3F4D46">Gradebook, rubrics, quizzes</p></div>
+<svg aria-hidden="true" viewBox="0 0 10 6" preserveAspectRatio="none" style="background:#8A978F;width:36px;height:20px;align-self:center;background:none;flex:none"><path d="M0 1.8h6V0l4 3-4 3V4.2H0z" fill="#8A978F"/></svg>
+<div style="flex:0.7;display:flex;flex-direction:column;justify-content:center;background:#EAF3FB;border:1px solid #BCD3EA;border-radius:14px;padding:24px"><h3 style="font-size:28px;font-weight:700">Launch</h3></div>
+</div>
+</div>
+<p style="font-size:26px;color:#3F4D46">Orange boxes, marked by a thick border: where the time goes.</p>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">17</span><span class="cap-title">AI moved the bottleneck</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>Drafting dropped from weeks to minutes. The time moved into the human steps: decisions, reviewing every change, keeping four places consistent, and the manual last mile in Brightspace.</p></details>
+  </figure>
+  <figure class="slide-card" id="limits">
+    <div class="frame"><div class="canvas">
+<section id="s-limits" class="slide" aria-label="Slide 18" style="background:#0F1F18;color:#F5F6F1;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7FD9A4">6 · New limits we ran into</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Faster, but not free</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#172C22;border:1px solid #2C4237;border-radius:20px;padding:48px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#F2B385" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#F2B385;width:56px;height:56px;flex:none"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700">AI usage limits</h3>
+<p style="font-size:30px;line-height:1.45;color:#C5D6CC">Long sessions hit the assistant’s token and usage limits. Work gets split into chunks, and each new session has to be brought back up to speed.</p>
+<p style="font-size:26px;line-height:1.45;color:#C5D6CC">Written decision notes and standing rules make that faster, but it’s real time.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#1E7A46;border-radius:20px;padding:48px">
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#F5F6F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#F5F6F1;width:56px;height:56px;flex:none"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700">AI fluency is now a must</h3>
+<p style="font-size:30px;line-height:1.45;color:#F0F7F2">The assistant drafts quickly and can be confidently wrong. Faculty have to direct it, check its output against the source, and catch a plausible error.</p>
+<p style="font-size:26px;line-height:1.45;color:#F0F7F2;font-weight:700">This is a skill every STC faculty member needs.</p>
+</div>
+</div>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">18</span><span class="cap-title">Faster, but not free</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>Be direct about the AI fluency point: it isn’t optional for one course. Building and teaching this way requires knowing how to direct the assistant and verify what it produces, and that applies to every STC course, not only technical ones.</p></details>
+  </figure>
+  <figure class="slide-card" id="taught">
+    <div class="frame"><div class="canvas">
+<section id="s-taught" class="slide" aria-label="Slide 19" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">6 · What this taught us</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Three things we’d do first next time</h2>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px;border-top:4px solid #1E7A46;padding:32px 0 0"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1;color:#1E7A46">1</p><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700">Decide early</h3><p style="font-size:28px;line-height:1.45;color:#3F4D46">Rules that arrived mid-build, like two weeks per unit, caused the most rework. Write the non-negotiables down before any content exists.</p></div>
+<div style="display:flex;flex-direction:column;gap:16px;border-top:4px solid #1E7A46;padding:32px 0 0"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1;color:#1E7A46">2</p><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700">Start the LMS early</h3><p style="font-size:28px;line-height:1.45;color:#3F4D46">The Brightspace build was the slowest, most manual step. Request the shell at the start, not the end.</p></div>
+<div style="display:flex;flex-direction:column;gap:16px;border-top:4px solid #1E7A46;padding:32px 0 0"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1;color:#1E7A46">3</p><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:700">Test as a student</h3><p style="font-size:28px;line-height:1.45;color:#3F4D46">A fresh-account run found a retired AI model that would have stopped every student on day one.</p></div>
+</div>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">19</span><span class="cap-title">Three things we’d do first next time</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>The full write-up is “AI 410 Lessons Learned: From Plan to Delivery” in stc-transformation, with the timeline, decisions and playbook.</p></details>
+  </figure>
+  <figure class="slide-card" id="qa">
+    <div class="frame"><div class="canvas">
+<section id="s-qa" class="slide" aria-label="Slide 20" style="background:#F5F6F1;color:#13221B;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1E7A46">7 · Questions we expect</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Short answers</h2>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:24px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:28px"><h3 style="font-size:28px;font-weight:700">Isn’t this cheating with permission?</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">AI is allowed where it’s a tool, not where learning is checked: Refine is by hand, KCs carry a no-AI pledge.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:28px"><h3 style="font-size:28px;font-weight:700">How do you know they did it by hand?</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">Not AI detectors. Ask them to explain a line, look at their commits, or ask for a small live change.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:28px"><h3 style="font-size:28px;font-weight:700">Does this replace faculty or designers?</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">No. Every structural and grading decision was faculty’s. What shrank was typing, formatting and copying.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#E3F1E8;border:1px solid #B9DCC6;border-radius:16px;padding:28px"><h3 style="font-size:28px;font-weight:700">Do I need to be a programmer?</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">No, but you need AI fluency: clear rules for the assistant, reviewing its work, spotting when it’s wrong.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:28px"><h3 style="font-size:28px;font-weight:700">What does it cost students?</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">Nothing beyond tuition. Codespaces and free tiers, no credit card. Paid keys are optional only.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #DCE3DD;border-radius:16px;padding:28px"><h3 style="font-size:28px;font-weight:700">Who maintains it if the lead leaves?</h3><p style="font-size:24px;line-height:1.4;color:#3F4D46">It lives in CityU’s GitHub organization, with an instructor runbook and a maintainer guide.</p></div>
+</div>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">20</span><span class="cap-title">Short answers</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>More answers on the briefing page. Accuracy: faculty review every change, each unit gets a fresh-account test, automatic checks catch broken links and accessibility issues, and audits compare syllabus, site and Brightspace. Non-technical students: four deeper units instead of a new tool every week, and simulators before building. Model changes: the model name is set in one place, with a pre-term re-test. Brightspace still holds enrollment, submissions, discussions, quizzes and grades. Reuse: site CC BY 4.0, code MIT; AI 420, 430 and 440 follow the same structure.</p></details>
+  </figure>
+  <figure class="slide-card" id="feedback">
+    <div class="frame"><div class="canvas">
+<section id="s-feedback" class="slide" aria-label="Slide 21" style="background:linear-gradient(135deg, #0F1F18 0%, #123524 60%, #1E7A46 140%);color:#F5F6F1;font-family:'Public Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7FD9A4">Your feedback</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px">Help us decide what to pilot next term</h2>
+</div>
+<div style="display:flex;gap:64px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7FD9A4">Four questions on the briefing page</p>
+<ol style="font-size:30px;line-height:1.5;color:#E6F0EA">
+<li>Which parts would you consider for your own course?</li>
+<li>What concerns you most about this approach?</li>
+<li>What was unclear, or needs more detail?</li>
+<li>What would you need to try one piece next term?</li>
+</ol>
+</div>
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#172C22;border:1px solid #2C4237;border-radius:20px;padding:40px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7FD9A4">For the room</p>
+<p style="font-size:28px;line-height:1.45">Where would the CEAU cycle not fit your subject?</p>
+<p style="font-size:28px;line-height:1.45">Which redesigned activity would your students push back on?</p>
+<p style="font-size:28px;line-height:1.45">What should we pilot next term, and in which course?</p>
+</div>
+</div>
+<p style="font-size:26px;color:#C5D6CC">Copy your answers from the briefing page into the meeting chat or an email to Clark.</p>
+
+</section>
+    </div></div>
+    <figcaption><span class="num">21</span><span class="cap-title">Help us decide what to pilot next term</span></figcaption>
+    <details class="notes"><summary>Speaker notes</summary><p>If time is short, pick one question for the room. The feedback form on the briefing page sends nothing by itself: people copy their answers into the chat or an email.</p></details>
+  </figure>
+  </main>
+
+</div>
+
+<div id="stage" role="dialog" aria-modal="true" aria-label="Slide presentation" tabindex="-1">
+  <div id="stage-slot"></div>
+  <div class="stage-bar">
+    <button type="button" class="stage-btn" id="st-prev">◂ Back</button>
+    <span id="st-count" aria-live="polite"></span>
+    <button type="button" class="stage-btn" id="st-next">Next ▸</button>
+    <button type="button" class="stage-btn" id="st-exit">Exit (Esc)</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var cards=[].slice.call(document.querySelectorAll('.slide-card'));
+  // Table of contents from the slide captions.
+  var toc=document.getElementById('toc-list');
+  cards.forEach(function(c){
+    var li=document.createElement('li'), a=document.createElement('a');
+    a.href='#'+c.id; a.textContent=c.querySelector('.cap-title').textContent;
+    li.appendChild(a); toc.appendChild(li);
+  });
+  // Scale each 1920x1080 canvas to its frame.
+  function fit(frame){ frame.querySelector('.canvas').style.setProperty('--k', frame.clientWidth/1920); }
+  var frames=[].slice.call(document.querySelectorAll('.frame'));
+  if('ResizeObserver' in window){ var ro=new ResizeObserver(function(es){ es.forEach(function(e){ fit(e.target); }); }); frames.forEach(function(f){ ro.observe(f); }); }
+  else { frames.forEach(fit); window.addEventListener('resize',function(){ frames.forEach(fit); }); }
+
+  // Present mode.
+  var stage=document.getElementById('stage'), slot=document.getElementById('stage-slot'), count=document.getElementById('st-count'), i=0, opener=null;
+  function show(n){
+    i=Math.max(0,Math.min(cards.length-1,n));
+    slot.innerHTML='';
+    var c=cards[i].querySelector('.canvas').cloneNode(true);
+    c.querySelectorAll('[id]').forEach(function(el){ el.removeAttribute('id'); });
+    slot.appendChild(c); size();
+    count.textContent='Slide '+(i+1)+' of '+cards.length;
+  }
+  function size(){ var c=slot.querySelector('.canvas'); if(c) c.style.setProperty('--k', Math.min(stage.clientWidth/1920, stage.clientHeight/1080)); }
+  function open(){
+    opener=document.activeElement;
+    var h=location.hash.slice(1), start=0;
+    cards.forEach(function(c,k){ if(c.id===h) start=k; });
+    stage.classList.add('on'); show(start); stage.focus();
+    if(stage.requestFullscreen) stage.requestFullscreen().catch(function(){});
+  }
+  function close(){
+    stage.classList.remove('on'); slot.innerHTML='';
+    if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(function(){});
+    history.replaceState(null,'','#'+cards[i].id); cards[i].scrollIntoView();
+    if(opener) opener.focus();
+  }
+  document.getElementById('present').addEventListener('click',open);
+  document.getElementById('st-prev').addEventListener('click',function(e){ e.stopPropagation(); show(i-1); });
+  document.getElementById('st-next').addEventListener('click',function(e){ e.stopPropagation(); show(i+1); });
+  document.getElementById('st-exit').addEventListener('click',function(e){ e.stopPropagation(); close(); });
+  slot.addEventListener('click',function(e){ show(e.clientX>stage.clientWidth/2?i+1:i-1); });
+  document.addEventListener('fullscreenchange',function(){ size(); if(!document.fullscreenElement && stage.classList.contains('on')) close(); });
+  window.addEventListener('resize',size);
+  stage.addEventListener('keydown',function(e){
+    var k=e.key;
+    if(k==='ArrowRight'||k==='PageDown'||k===' '){ e.preventDefault(); show(i+1); }
+    else if(k==='ArrowLeft'||k==='PageUp'){ e.preventDefault(); show(i-1); }
+    else if(k==='Home'){ e.preventDefault(); show(0); }
+    else if(k==='End'){ e.preventDefault(); show(cards.length-1); }
+    else if(k==='Escape'){ e.preventDefault(); close(); }
+  });
+})();
+</script>
+</body>
+</html>

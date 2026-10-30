@@ -149,7 +149,7 @@
         <tr><td>Production</td><td>Scripted screen recordings of the public site and simulators, edited with ffmpeg</td><td>No one on camera, no release forms, and the video can be re-recorded whenever the site changes.</td></tr>
         <tr><td>Who the video follows</td><td>The viewer, as "you": "your first module in AI 410"</td><td>Shows the real course without presenting a made-up person as a real student.</td></tr>
         <tr><td>Audio</td><td>AI-generated voiceover (Kokoro neural voice, <code>af_heart</code>; open source, Apache 2.0, runs locally) under light royalty-free music, with on-screen captions kept</td><td>The voice adds the explanation; the on-screen captions still carry the story with the sound off.</td></tr>
-        <tr><td>Music</td><td>Added from the YouTube Audio Library at upload</td><td>Licensed for YouTube use, and no audio file needs to be stored or cleared separately.</td></tr>
+        <tr><td>Music</td><td>Under review: "Science Tech Corporate" by stock_music (Pixabay Content License), compared against no music</td><td>Fills the gaps between spoken lines, but only a real listen can show whether it helps or hurts clear speech. The track is registered with Content ID, so a YouTube upload will probably get an automated claim. Keep the Pixabay license certificate for a dispute. The music file itself stays out of this repo, because the license doesn't allow sharing it on its own.</td></tr>
         <tr><td>Brightspace</td><td>Left out of the video</td><td>It needs a sign-in to record, changes every term, and is where names and grades appear. Prospective students care more about what they'll build.</td></tr>
         <tr><td>Closing link</td><td>The AI 410 student site, cityuseattle.github.io/ai410</td><td>It's public and shows the whole course.</td></tr>
         <tr><td>Hosting</td><td>MP4 in this repo, played on this page; a CityU YouTube channel when it's ready for wider sharing</td><td>The team can watch and review it here now. YouTube adds reach and the licensed music later.</td></tr>
@@ -159,12 +159,26 @@
 
   <section class="section" id="video">
     <h2>The video</h2>
-    <p class="lede">The current draft, 1:45, with the AI-generated voiceover and no music yet.</p>
-    <video controls preload="metadata" playsinline poster="assets/ai410-marketing-video/ai410-first-module-poster.jpg" style="display:block;width:100%;height:auto;border-radius:10px;background:#000" aria-label="AI 410 marketing video">
-      <source src="assets/ai410-marketing-video/ai410-first-module.mp4" type="video/mp4">
-      <track kind="captions" src="tools/ai410-marketing-video/captions.vtt" srclang="en" label="English">
-      <a href="assets/ai410-marketing-video/ai410-first-module.mp4">Download the video (MP4, 12 MB)</a>
-    </video>
+    <p class="lede">Two drafts to compare, each 1:45 with the same AI-generated voiceover. Watch both with the sound on, and try one on laptop or phone speakers. Which makes you more interested in the course?</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
+      <figure style="margin:0">
+        <figcaption style="margin-bottom:8px"><b>Version A: no music</b><br><span class="small">Voiceover only.</span></figcaption>
+        <video controls preload="metadata" playsinline poster="assets/ai410-marketing-video/ai410-first-module-poster.jpg" style="display:block;width:100%;height:auto;border-radius:10px;background:#000" aria-label="AI 410 marketing video, Version A: no music">
+          <source src="assets/ai410-marketing-video/ai410-first-module.mp4" type="video/mp4">
+          <track kind="captions" src="tools/ai410-marketing-video/captions.vtt" srclang="en" label="English">
+          <a href="assets/ai410-marketing-video/ai410-first-module.mp4">Download Version A: no music (MP4, 12 MB)</a>
+        </video>
+      </figure>
+      <figure style="margin:0">
+        <figcaption style="margin-bottom:8px"><b>Version B: with music</b><br><span class="small">Voiceover with quiet background music.</span></figcaption>
+        <video controls preload="metadata" playsinline poster="assets/ai410-marketing-video/ai410-first-module-poster.jpg" style="display:block;width:100%;height:auto;border-radius:10px;background:#000" aria-label="AI 410 marketing video, Version B: with music">
+          <source src="assets/ai410-marketing-video/ai410-first-module-with-music.mp4" type="video/mp4">
+          <track kind="captions" src="tools/ai410-marketing-video/captions.vtt" srclang="en" label="English">
+          <a href="assets/ai410-marketing-video/ai410-first-module-with-music.mp4">Download Version B: with music (MP4, 12 MB)</a>
+        </video>
+      </figure>
+    </div>
+    <p class="small" style="margin-top:12px">Music in Version B: "Science Tech Corporate" by stock_music, from Pixabay, under the Pixabay Content License.</p>
   </section>
 
   <section class="section" id="storyboard">
@@ -191,9 +205,10 @@
       <li><b>Record.</b> <code>tools/ai410-marketing-video/record.mjs</code> drives Chrome through each scene at 1920×1080 and saves the frames. Every click and scroll is in the script, so a scene can be re-recorded in minutes.</li>
       <li><b>Edit.</b> The recorder burns in each caption as a CityU-colored bar (Marine with a Blood Orange edge, Open Sans), and <code>build.sh</code> adds short fades and joins the scenes with ffmpeg. The closing card is <code>closing-card.html</code>.</li>
       <li><b>Voiceover.</b> <code>narration.json</code> holds the script. <code>add-voiceover.py</code> speaks each line with Kokoro, places it in its scene and mixes it onto the video. Change the words or the voice there and re-run it. Setup is in the script's header.</li>
+      <li><b>Music version.</b> <code>add-music.sh</code> mixes the track about 20 dB below the voice, lowers it further during speech, and fades it at both ends. The no-music version stays as the master.</li>
       <li><b>Captions file.</b> <code>add-voiceover.py</code> also writes <code>captions.vtt</code>: the spoken script with its real timings, for upload to YouTube as closed captions.</li>
       <li><b>Export.</b> MP4, H.264, 1920×1080, 30 fps, about 12 MB. A poster image comes from the hook frame.</li>
-      <li><b>Upload.</b> CityU's channel owner uploads it, adds the music from the YouTube Audio Library, and attaches the captions file.</li>
+      <li><b>Upload.</b> CityU's channel owner uploads the chosen version and attaches the captions file. If it has music, keep the license certificate ready in case of a claim.</li>
     </ol>
     <p class="small">To re-record after the site changes, from <code>tools/ai410-marketing-video/</code>: <code>node --experimental-websocket record.mjs frames</code>, then <code>./build.sh frames ai410-first-module.mp4</code>, then <code>~/.cache/ai410-kokoro-venv/bin/python add-voiceover.py ai410-first-module.mp4 ai410-first-module-voiceover.mp4</code>. It needs Chrome, Node 20 or later, ffmpeg and the Kokoro setup (about 1.1 GB plus the model), and takes about two minutes.</p>
   </section>
@@ -215,9 +230,10 @@
       <tbody>
         <tr><td>Storyboard and captions approved</td><td>Clark</td><td>Done (Oct 29)</td></tr>
         <tr><td>Draft video reviewed</td><td>Clark</td><td>Open</td></tr>
+        <tr><td>Music or no music chosen</td><td>Clark and reviewers</td><td>Open</td></tr>
         <tr><td>Voiceover reviewed: voice, pronunciation and pacing</td><td>Clark</td><td>Open</td></tr>
         <tr><td>Brand and wording sign-off</td><td>CityU marketing</td><td>Open</td></tr>
-        <tr><td>Uploaded with music and captions</td><td>CityU channel owner</td><td>Open</td></tr>
+        <tr><td>Uploaded with captions</td><td>CityU channel owner</td><td>Open</td></tr>
         <tr><td>Draft embedded on this page</td><td>Clark</td><td>Done (Oct 30)</td></tr>
       </tbody>
     </table></div>
@@ -227,6 +243,7 @@
     <h2>Related</h2>
     <ul>
       <li><a href="https://cityuseattle.github.io/ai410/">The AI 410 student site</a>: the source of every shot.</li>
+      <li><a href="ai410-marketing-video-process.html">How the AI 410 Marketing Video Was Made</a>: the work process and lessons.</li>
       <li><a href="ai410-staff-meeting-2026-10-29-slides.html">AI 410 Staff Briefing Slides</a>: the same screenshots, in the Oct 29 deck.</li>
       <li><a href="courses/AI-410.html">AI 410: AI Engineering, course design</a>: outcomes, the CEAU cycle, schedule and grading.</li>
     </ul>

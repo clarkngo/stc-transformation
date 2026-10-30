@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 410 Video Plan</title>
+  <meta name="description" content="Plan for a captioned marketing video under two minutes showing a first module of AI 410, made from screen recordings of the student site.">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --accent: #1e8449; --accent-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --red: #b91c1c; --red-dim: #fef2f2;
+    }
+    * { box-sizing: border-box; }
+    html:focus-within { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 940px; margin: 0 auto; padding: 28px 16px 100px; }
+    a { color: var(--blue); }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 28px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); border-left: 5px solid var(--accent); margin-bottom: 20px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 16px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.87rem; border: 1px solid #ddd6fe; background: var(--violet-dim); color: #4c1d95; margin: 0 0 20px; }
+    .callout.green { border-color: #bbf7d0; background: var(--accent-dim); color: #14532d; }
+    .callout.amber { border-color: #fde68a; background: var(--amber-dim); color: #78350f; }
+
+    .agenda { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px 20px; margin-bottom: 20px; }
+    .agenda h2 { margin: 0 0 8px; font-size: 1rem; }
+    .agenda ol { list-style: none; margin: 0; padding: 0; }
+    .agenda li { display: grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .agenda li:last-child { border-bottom: none; }
+    .agenda .tm { font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .agenda a { text-decoration: none; color: var(--ink); font-weight: 600; }
+    .agenda a:hover { color: var(--blue); }
+
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 22px 26px; margin-bottom: 20px; scroll-margin-top: 16px; }
+    .section h2 { margin: 0 0 4px; font-size: 1.2rem; font-weight: 800; letter-spacing: -0.01em; }
+    .section .time { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: var(--accent-dim); border-radius: 20px; padding: 2px 10px; margin-bottom: 8px; }
+    .section .lede { margin: 0 0 14px; color: var(--slate); font-size: 0.92rem; }
+    .section h3 { font-size: 0.98rem; margin: 18px 0 6px; }
+    .section p, .section li { font-size: 0.92rem; }
+    .section p { margin: 0 0 10px; }
+    .section ul, .section ol { margin: 0 0 10px; padding-left: 22px; }
+    .section li { margin: 3px 0; }
+    .why { border-left: 4px solid var(--accent); background: var(--accent-dim); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 10px 14px; margin: 10px 0 12px; font-size: 0.9rem; }
+    .why b:first-child { color: var(--accent); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.08em; display: block; margin-bottom: 2px; }
+
+    .flow-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin: 14px 0 6px; }
+    .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 6px; margin-bottom: 6px; }
+    .flow .node { flex: 1 1 120px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px; font-size: 0.8rem; background: var(--bg); position: relative; }
+    .flow .node b { display: block; font-size: 0.84rem; }
+    .flow .node.neck { border: 2px solid var(--red); background: var(--red-dim); }
+    .flow .node.neck::after { content: "bottleneck"; position: absolute; top: -9px; right: 8px; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; background: var(--red); color: #fff; border-radius: 10px; padding: 0 7px; }
+    .flow.new .node { background: var(--blue-dim); border-color: #bfdbfe; }
+    .flow.new .node.neck { background: var(--red-dim); border-color: var(--red); }
+    .flow .arrow { align-self: center; color: var(--slate-light); font-weight: 800; }
+    .flow .loop { flex-basis: 100%; font-size: 0.78rem; color: var(--slate); }
+
+    .table-wrap { overflow-x: auto; margin: 6px 0 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+    th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+    th { background: var(--bg); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { font-weight: 700; }
+
+    .bloom { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 12px; }
+    .bloom h4 { margin: 0 0 6px; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); }
+    .pyr { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .pyr div { text-align: center; font-size: 0.8rem; font-weight: 700; padding: 5px 4px; border-radius: 4px; color: #fff; }
+    .stack { display: flex; flex-direction: column; gap: 4px; }
+    .stack div { border-radius: 6px; padding: 7px 10px; font-size: 0.82rem; background: var(--blue-dim); border: 1px solid #bfdbfe; }
+    .stack div b { display: block; }
+    .stack div.ai { background: var(--amber-dim); border-color: #fde68a; }
+    .stack div.hand { background: var(--accent-dim); border-color: #bbf7d0; }
+
+    .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 8px 0 12px; }
+    .tile { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+    .tile h3 { margin: 0 0 4px; font-size: 0.95rem; }
+    .tile p { font-size: 0.86rem; margin: 0; color: var(--slate); }
+
+    details.qa { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    details.qa summary { cursor: pointer; font-weight: 700; font-size: 0.92rem; }
+    details.qa[open] summary { margin-bottom: 6px; }
+    details.qa p { margin: 0 0 6px; }
+
+    form.fb label.q { display: block; font-weight: 700; font-size: 0.9rem; margin: 14px 0 6px; }
+    form.fb .opts { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.88rem; }
+    form.fb .opts label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+    form.fb textarea { width: 100%; min-height: 70px; font: inherit; font-size: 0.9rem; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: var(--radius-sm); background: #fff; color: var(--ink); }
+    .btn { font: inherit; font-weight: 700; font-size: 0.88rem; border: none; border-radius: var(--radius-sm); padding: 9px 16px; background: var(--accent); color: #fff; cursor: pointer; }
+    .btn.secondary { background: var(--bg); color: var(--ink); border: 1px solid #cbd5e1; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+    .small { font-size: 0.84rem; color: var(--slate); }
+    .status { font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+
+    @media (max-width: 640px) {
+      .doc-header, .section { padding: 18px 16px; }
+      .doc-header h1 { font-size: 1.4rem; }
+      .bloom { grid-template-columns: 1fr; }
+      .flow .arrow { display: none; }
+      .agenda li { grid-template-columns: 76px 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a><span class="nav-sep">/</span>
+    <a href="bsai-hub.html">BSAI Hub</a>
+  </nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Marketing · AI 410 · Plan</div>
+    <h1>AI 410 Marketing Video: Plan</h1>
+    <p class="subtitle">A video under two minutes that shows what it's like to take AI 410: AI Engineering, made from scripted screen recordings of the public student site. This page holds the decisions, the storyboard and captions, the production steps and the sign-off checklist.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Target length 1:45</span>
+      <span class="meta-chip">AI voiceover, captions, light music</span>
+      <span class="meta-chip">Plays on this page; YouTube later</span>
+      <span class="meta-chip">Status: draft video ready for review</span>
+    </div>
+  </header>
+
+  <div class="callout">
+    <strong>Standing rules for BSAI courses:</strong> the approved course description and outcomes are fixed, every hands-on unit runs in GitHub Codespaces, free tiers come first, and each HOS spans two weeks. See <a href="bsai-course-design-constraints.html">BSAI Course Design Constraints</a>. The video only shows what the course already does, so nothing here conflicts with them.
+  </div>
+
+  <section class="section" id="decisions">
+    <h2>1. Decisions</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Question</th><th>Decision</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Production</td><td>Scripted screen recordings of the public site and simulators, edited with ffmpeg</td><td>No one on camera, no release forms, and the video can be re-recorded whenever the site changes.</td></tr>
+        <tr><td>Who the video follows</td><td>The viewer, as "you": "your first module in AI 410"</td><td>Shows the real course without presenting a made-up person as a real student.</td></tr>
+        <tr><td>Audio</td><td>AI-generated voiceover (Kokoro neural voice, <code>af_heart</code>; open source, Apache 2.0, runs locally) under light royalty-free music, with on-screen captions kept</td><td>The voice adds the explanation; the on-screen captions still carry the story with the sound off.</td></tr>
+        <tr><td>Music</td><td>Added from the YouTube Audio Library at upload</td><td>Licensed for YouTube use, and no audio file needs to be stored or cleared separately.</td></tr>
+        <tr><td>Brightspace</td><td>Left out of the video</td><td>It needs a sign-in to record, changes every term, and is where names and grades appear. Prospective students care more about what they'll build.</td></tr>
+        <tr><td>Closing link</td><td>The AI 410 student site, cityuseattle.github.io/ai410</td><td>It's public and shows the whole course.</td></tr>
+        <tr><td>Hosting</td><td>MP4 in this repo, played on this page; a CityU YouTube channel when it's ready for wider sharing</td><td>The team can watch and review it here now. YouTube adds reach and the licensed music later.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="section" id="video">
+    <h2>The video</h2>
+    <p class="lede">The current draft, 1:45, with the AI-generated voiceover and no music yet.</p>
+    <video controls preload="metadata" playsinline poster="assets/ai410-marketing-video/ai410-first-module-poster.jpg" style="display:block;width:100%;height:auto;border-radius:10px;background:#000" aria-label="AI 410 marketing video">
+      <source src="assets/ai410-marketing-video/ai410-first-module.mp4" type="video/mp4">
+      <track kind="captions" src="tools/ai410-marketing-video/captions.vtt" srclang="en" label="English">
+      <a href="assets/ai410-marketing-video/ai410-first-module.mp4">Download the video (MP4, 12 MB)</a>
+    </video>
+  </section>
+
+  <section class="section" id="storyboard">
+    <h2>2. Storyboard and captions</h2>
+    <p class="lede">Seven scenes, about 1:45 in total. Each scene is one scripted recording of a page on <a href="https://cityuseattle.github.io/ai410/">the AI 410 student site</a>.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Time</th><th>Scene</th><th>On screen (scripted action)</th><th>Caption</th></tr></thead>
+      <tbody>
+        <tr><td>0:00–0:08</td><td>Hook</td><td>Course home page, slow scroll from the title to the module list</td><td>Build a real AI app in your first module.</td></tr>
+        <tr><td>0:08–0:22</td><td>Preview the build</td><td>Module 1 simulator: start the guided tour, press "Set this up for me", step through the loop</td><td>See it working before the lecture.</td></tr>
+        <tr><td>0:22–0:40</td><td>Break it on purpose</td><td>Tour step 2: the calculate tool is unticked, the model answers wrong, and the red verdict appears</td><td>Learn to catch AI when it's wrong.</td></tr>
+        <tr><td>0:40–0:55</td><td>Build it for real</td><td>The HOS 1 hands-on guide: "Before you start", then the Create stage and its starter prompt</td><td>Build it in GitHub Codespaces. Free tools, no credit card.</td></tr>
+        <tr><td>0:55–1:12</td><td>Explain, then refine by hand</td><td>The guide's Analyze and Understand &amp; Refine stages, then a Muddiest Point being typed on the Module 1 page</td><td>AI drafts it. You prove you understand it.</td></tr>
+        <tr><td>1:12–1:32</td><td>Term Project</td><td>Flashcard Coach example: play the live demo step by step</td><td>Combine everything into an app of your own.</td></tr>
+        <tr><td>1:32–1:45</td><td>Close</td><td>Title card in CityU brand colors</td><td>AI 410: AI Engineering · BS in AI · City University of Seattle, cityuseattle.github.io/ai410</td></tr>
+      </tbody>
+    </table></div>
+    <div class="why"><b>Why this order</b>It follows the same path a student takes in every module: preview, test the AI on purpose, build, then explain and refine by hand. The Term Project closes the story.</div>
+  </section>
+
+  <section class="section" id="production">
+    <h2>3. Production</h2>
+    <ol>
+      <li><b>Record.</b> <code>tools/ai410-marketing-video/record.mjs</code> drives Chrome through each scene at 1920×1080 and saves the frames. Every click and scroll is in the script, so a scene can be re-recorded in minutes.</li>
+      <li><b>Edit.</b> The recorder burns in each caption as a CityU-colored bar (Marine with a Blood Orange edge, Open Sans), and <code>build.sh</code> adds short fades and joins the scenes with ffmpeg. The closing card is <code>closing-card.html</code>.</li>
+      <li><b>Voiceover.</b> <code>narration.json</code> holds the script. <code>add-voiceover.py</code> speaks each line with Kokoro, places it in its scene and mixes it onto the video. Change the words or the voice there and re-run it. Setup is in the script's header.</li>
+      <li><b>Captions file.</b> <code>add-voiceover.py</code> also writes <code>captions.vtt</code>: the spoken script with its real timings, for upload to YouTube as closed captions.</li>
+      <li><b>Export.</b> MP4, H.264, 1920×1080, 30 fps, about 12 MB. A poster image comes from the hook frame.</li>
+      <li><b>Upload.</b> CityU's channel owner uploads it, adds the music from the YouTube Audio Library, and attaches the captions file.</li>
+    </ol>
+    <p class="small">To re-record after the site changes, from <code>tools/ai410-marketing-video/</code>: <code>node --experimental-websocket record.mjs frames</code>, then <code>./build.sh frames ai410-first-module.mp4</code>, then <code>~/.cache/ai410-kokoro-venv/bin/python add-voiceover.py ai410-first-module.mp4 ai410-first-module-voiceover.mp4</code>. It needs Chrome, Node 20 or later, ffmpeg and the Kokoro setup (about 1.1 GB plus the model), and takes about two minutes.</p>
+  </section>
+
+  <section class="section" id="rules">
+    <h2>4. Rules for the video</h2>
+    <ul>
+      <li><b>Show only what's real.</b> Every shot is a page students actually use. The Flashcard Coach example keeps its own label as an illustrative project.</li>
+      <li><b>No people, keys or personal data on screen.</b> Recordings come from the public site, with no sign-in and no API keys.</li>
+      <li><b>Accessible.</b> Closed captions of the full narration plus on-screen captions on every scene, text large enough to read on a phone, and no flashing.</li>
+      <li><b>CityU brand.</b> The title card and caption style follow the CityU identity guide.</li>
+    </ul>
+  </section>
+
+  <section class="section" id="signoff">
+    <h2>5. Review and sign-off</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Step</th><th>Who</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Storyboard and captions approved</td><td>Clark</td><td>Done (Oct 29)</td></tr>
+        <tr><td>Draft video reviewed</td><td>Clark</td><td>Open</td></tr>
+        <tr><td>Voiceover reviewed: voice, pronunciation and pacing</td><td>Clark</td><td>Open</td></tr>
+        <tr><td>Brand and wording sign-off</td><td>CityU marketing</td><td>Open</td></tr>
+        <tr><td>Uploaded with music and captions</td><td>CityU channel owner</td><td>Open</td></tr>
+        <tr><td>Draft embedded on this page</td><td>Clark</td><td>Done (Oct 30)</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="section" id="related">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="https://cityuseattle.github.io/ai410/">The AI 410 student site</a>: the source of every shot.</li>
+      <li><a href="ai410-staff-meeting-2026-10-29-slides.html">AI 410 Staff Briefing Slides</a>: the same screenshots, in the Oct 29 deck.</li>
+      <li><a href="courses/AI-410.html">AI 410: AI Engineering, course design</a>: outcomes, the CEAU cycle, schedule and grading.</li>
+    </ul>
+  </section>
+
+</div>
+</body>
+</html>

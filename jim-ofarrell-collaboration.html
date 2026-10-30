@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Jim O'Farrell Collaboration</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --accent: #1e8449; --accent-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 920px; margin: 0 auto; padding: 28px 20px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); border-left: 5px solid #1d4ed8; margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #1d4ed8; margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 16px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .also-known { margin-top: 14px; font-size: 0.84rem; color: var(--slate); background: var(--bg); border-radius: var(--radius-sm); padding: 10px 14px; }
+    .also-known strong { color: var(--ink); }
+    .group { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
+    .group-header { padding: 16px 22px 12px; border-bottom: 1px solid var(--border); }
+    .group-header h2 { margin: 0; font-size: 0.98rem; font-weight: 800; letter-spacing: -0.01em; }
+    .group-header p { margin: 2px 0 0; font-size: 0.82rem; color: var(--slate); }
+    .doc-list { padding: 6px 12px; }
+    .doc-row { display: flex; align-items: baseline; gap: 12px; padding: 12px 10px; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--ink); }
+    .doc-row:last-child { border-bottom: none; }
+    .doc-row:hover { background: var(--bg); border-radius: var(--radius-sm); }
+    .doc-row .dr-title { font-weight: 700; font-size: 0.92rem; flex: 1 1 auto; }
+    .doc-row .dr-desc { display: block; font-weight: 400; color: var(--slate); font-size: 0.84rem; margin-top: 2px; }
+    .doc-row .dr-date { flex-shrink: 0; font-size: 0.76rem; color: var(--slate-light); white-space: nowrap; font-weight: 600; }
+    .doc-row .dr-ext { font-size: 0.7rem; color: var(--slate-light); }
+    .overview p { font-size: 0.92rem; margin: 0 0 10px; }
+    .overview p:last-child { margin-bottom: 0; }
+    .overview { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 20px 24px; margin-bottom: 24px; }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.85rem; border: 1px solid #ddd6fe; background: var(--violet-dim); color: #5b21b6; margin-top: 16px; }
+    .group + .group { margin-top: 24px; }
+    div.doc-row { cursor: default; }
+    div.doc-row:hover { background: none; }
+    .doc-row a.dr-link { color: var(--blue); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    .panel { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 14px 20px; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <a href="corporate-partnerships-hub.html">Corporate Partnerships Hub</a>
+    <a href="teaching-framework-hub.html">Teaching Framework Hub</a>
+  </nav>
+
+  <div class="doc-header" style="border-left-color:#1d4ed8">
+    <div class="eyebrow" style="color:#1d4ed8">Collaboration Record · Outside STC, adjacent to it</div>
+    <h1>Jim O'Farrell Collaboration</h1>
+    <p class="subtitle">Every interaction with Jim in one place: what happened, what's open, and where each thread stands.</p>
+    <div class="meta-row"><span class="meta-chip">4 tracks</span><span class="meta-chip">Sep 2026 – present</span><span class="meta-chip">Last contact: Oct 30, 2026</span></div>
+  </div>
+
+  <div class="overview">
+    <p>Jim works with Clark across CityU's School of Business &amp; Management, Habitat for Humanity Seattle-King &amp; Kittitas Counties, and VMI LLC. The collaboration so far covers a proposed research paper, a proposed paid agentic-AI pilot, EMBA AI fluency, and Habitat's technology roadmap.</p>
+    <p>This page is built from what's on file in this site. Where there's no record of an outcome, it says so rather than assuming one.</p>
+  </div>
+
+  <div class="group">
+    <div class="group-header"><h2>Where each track stands</h2><p>Latest known status</p></div>
+    <div class="panel"><div class="table-wrap"><table>
+      <thead><tr><th>Track</th><th>Status</th><th>Next step</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Research paper</strong></td><td>Jim proposed it on Oct 30 and Clark replied the same day. Jim's response is pending.</td><td>Hold a call on the argument, roles, authorship, and timeline. Submissions are due Jan 19, 2027, per Jim's email.</td></tr>
+        <tr><td><strong>Agentic AI pilot</strong></td><td>Clark drafted answers and recommended a public-data Research-to-Brief pilot. No decision or written agreement is on file.</td><td>Record whether a pilot was chosen, and the status of the VMI LLC agreement.</td></tr>
+        <tr><td><strong>EMBA AI fluency</strong></td><td>Discussed Sep 28: AI in course operations and fluency challenges in every module. No record that the EMV 582 materials were shared or reviewed.</td><td>Confirm the materials and pick one module for a sample challenge.</td></tr>
+        <tr><td><strong>Habitat technology</strong></td><td>A 3–5 year plan that runs from IT audit to data to process, then AI. No record of the audit's scope or status.</td><td>Find out where the audit stands and clarify Clark's role.</td></tr>
+      </tbody>
+    </table></div></div>
+  </div>
+
+  <div class="group">
+    <div class="group-header"><h2>Timeline</h2><p>Newest first</p></div>
+    <div class="doc-list">
+    <a class="doc-row" href="jim-research-paper-collab-2026-10-30.html">
+      <span class="dr-title">Clark replied to the paper proposal<span class="dr-desc">Email reply to Jim. Tracked on the paper collaboration page.</span></span>
+      <span class="dr-date">Oct 30, 2026</span>
+    </a>
+    <a class="doc-row" href="jim-research-paper-collab-2026-10-30.html">
+      <span class="dr-title">Jim proposed a co-authored paper<span class="dr-desc">Email after reading Clark's LinkedIn post on Bloom's Taxonomy: "Beyond Bloom's Pyramid" for the ACBSP AI Forum, using a sociomaterial lens.</span></span>
+      <span class="dr-date">Oct 30, 2026</span>
+    </a>
+    <a class="doc-row" href="jim-followup-discussion-guide-2026-10-05.html">
+      <span class="dr-title">Monday follow-up meeting scheduled<span class="dr-desc">Discussion guide for the pilot decision, one EMV 582 module, and the Habitat audit. No meeting notes are on file, so whether it happened and what was decided aren't recorded.</span></span>
+      <span class="dr-date">Oct 5, 2026</span>
+    </a>
+    <a class="doc-row" href="meeting-notes-habitat-emba-ai-2026-09-28.html">
+      <span class="dr-title">1-1 meeting<span class="dr-desc">Three tracks: Habitat's technology transformation, AI fluency in EMBA courses, and demos of Clark's work. Jim described flipping Bloom's Taxonomy.</span></span>
+      <span class="dr-date">Sep 28, 2026</span>
+    </a>
+    <a class="doc-row" href="agentic-ai-pilot-discussion-2026-09-28.html">
+      <span class="dr-title">Clark prepared answers to Jim's pilot questions<span class="dr-desc">Responses to the five questions in Jim's discussion doc: guardrails, value ranking, Pilot A vs. B, tool ladder, and scope.</span></span>
+      <span class="dr-date">Sep 28, 2026</span>
+    </a>
+    <div class="doc-row">
+      <span class="dr-title">Jim shared a pilot discussion doc<span class="dr-desc">Five questions about a small, paid agentic-AI pilot across Jim's SBM work and Habitat board role. The doc itself isn't on this site.</span></span>
+      <span class="dr-date">Before Sep 28</span>
+    </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-header"><h2>Open items</h2><p>Sep 28 action items have no recorded outcome unless noted</p></div>
+    <div class="panel"><div class="table-wrap"><table>
+      <thead><tr><th>Owner</th><th>Item</th><th>From</th></tr></thead>
+      <tbody>
+        <tr><td>Jim</td><td>Respond to Clark's reply on the paper.</td><td>Oct 30</td></tr>
+        <tr><td>Both</td><td>Get the official ACBSP call for submissions. A web search on Oct 30 couldn't confirm the forum details.</td><td>Oct 30</td></tr>
+        <tr><td>Clark</td><td>Check for overlap with any course where Jim grades Clark. The pilot guardrail requires separation and disclosure to the appropriate CityU contact; decide if the paper needs the same.</td><td>Sep 28, Oct 30</td></tr>
+        <tr><td>Clark</td><td>Add notes from the Oct 5 meeting, if it took place.</td><td>Oct 5</td></tr>
+        <tr><td>Jim</td><td>Review Clark's GitHub repository, AI Hub, and course blueprints.</td><td>Sep 28</td></tr>
+        <tr><td>Jim</td><td>Send the EMV 582 syllabus and EMBA AI Fluency drafts.</td><td>Sep 28</td></tr>
+        <tr><td>Jim</td><td>Align with Habitat's CFO and CEO on the IT audit and governance scope.</td><td>Sep 28</td></tr>
+        <tr><td>Clark</td><td>Update LinkedIn with data science skills and share the portfolio links.</td><td>Sep 28</td></tr>
+        <tr><td>Clark</td><td>Review Jim's EMBA documents once received.</td><td>Sep 28</td></tr>
+      </tbody>
+    </table></div></div>
+    <div class="callout">Nothing paid starts until a written agreement exists and separation from any course Jim grades is settled. Phase 1 work uses public or approved data only.</div>
+  </div>
+
+</div>
+</body>
+</html>

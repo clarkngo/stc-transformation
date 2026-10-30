@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Research Paper Collaboration with Jim O'Farrell, October 30 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--teal); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--teal-dim); border: 1px solid rgba(13,148,136,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { white-space: nowrap; font-weight: 600; }
+    ul.tight li { margin-bottom: 4px; }
+    .checklist { list-style: none; padding-left: 0; margin: 0; }
+    .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 4px; color: var(--slate); }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } td:first-child { white-space: normal; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="meeting-notes-habitat-emba-ai-2026-09-28.html">Sep 28 meeting notes</a><span>·</span><a href="jim-followup-discussion-guide-2026-10-05.html">Oct 5 follow-up guide</a><span>·</span><a href="jim-ofarrell-collaboration.html">All Jim interactions</a><span>·</span><a href="corporate-partnerships-hub.html">Corporate Partnerships Hub</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Research Collaboration · Outside STC, adjacent to it</div>
+    <h1>Research Paper Collaboration with Jim O'Farrell</h1>
+    <p class="subtitle">Jim proposed co-writing a paper on Create-first learning and sociomateriality for the ACBSP AI Forum. This page tracks the exchange and where it stands.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Oct 30, 2026</span>
+      <span class="meta-chip">👥 Jim O'Farrell · Clark Ngo</span>
+      <span class="meta-chip">✉️ Clark replied · awaiting Jim's response</span>
+      <span class="meta-chip">🎯 Submission deadline: Jan 19, 2027</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 28px;"><strong>BSAI reminder:</strong> this page discusses AI 410. The standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>. Nothing here conflicts with them.</div>
+
+  <div class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li><strong>The ask:</strong> a co-authored paper, tentatively "Beyond Bloom's Pyramid: A Sociomaterial Perspective on Authentic Learning in the Age of Generative AI."</li>
+      <li><strong>The venue:</strong> ACBSP AI Forum, San Diego, March 11–13, 2027, theme "From Fragmentation to Framework." Presenting depends on acceptance, and a publication could follow.</li>
+      <li><strong>The approach:</strong> a conceptual paper with CEAU as the design case, because AI 410 will have no student data by the deadline. A study of the first cohort can be the follow-on.</li>
+      <li><strong>Next:</strong> Jim's response, then a short call on the argument, roles, authorship, and timeline.</li>
+    </ul>
+  </div>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">🗓</div><div><h2>How this thread developed</h2><div class="section-sub">From a shared teaching idea to a paper proposal</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>When</th><th>What happened</th></tr></thead>
+        <tbody>
+          <tr><td>Sep 28</td><td>Jim described flipping Bloom's Taxonomy for the EMBA: practice first, AI as a Socratic tutor, ungraded scenario checks (<a href="meeting-notes-habitat-emba-ai-2026-09-28.html">meeting notes</a>).</td></tr>
+          <tr><td>Oct 5</td><td>The <a href="jim-followup-discussion-guide-2026-10-05.html">follow-up guide</a> raised SBM × STC collaboration as a longer-term thread.</td></tr>
+          <tr><td>Oct 29</td><td>Clark presented reversing Bloom's and the CEAU cycle at the <a href="ai410-staff-meeting-2026-10-29.html">AI 410 staff briefing</a>.</td></tr>
+          <tr><td>Oct 30</td><td>Jim emailed Clark after reading Clark's LinkedIn post on Bloom's Taxonomy in AI-enabled learning, and proposed the paper.</td></tr>
+          <tr><td>Oct 30</td><td>Clark replied by email.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">✉️</div><div><h2>What Jim proposed</h2><div class="section-sub">Summary of the Oct 30 email</div></div></div>
+    <div class="section-body">
+      <p><strong>Two research questions</strong></p>
+      <ul class="tight">
+        <li>How does a Create-first approach change the way students develop critical thinking, analytical reasoning, and genuine understanding?</li>
+        <li>How can we distinguish AI-assisted task completion from authentic student learning?</li>
+      </ul>
+      <p><strong>Theoretical frame</strong></p>
+      <ul class="tight">
+        <li><strong>Sociomateriality:</strong> drawing on Wanda Orlikowski's work, which Jim explored in a Ph.D. dissertation. Human and technological agency are intertwined in practice, so students and AI jointly shape the learning process.</li>
+        <li><strong>Co-Intelligence:</strong> Ethan Mollick's book, particularly Chapter 8, on learning and building expertise alongside AI.</li>
+      </ul>
+      <p><strong>The division of work Jim suggested:</strong> Clark's instructional design thinking combined with Jim's research background. Jim is open to other ideas on the title and direction.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">🧩</div><div><h2>What we can bring to it</h2><div class="section-sub">How the questions connect to existing work</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Paper topic</th><th>Existing work</th></tr></thead>
+        <tbody>
+          <tr><td>Create-first</td><td><a href="courses/AI-410.html">AI 410's CEAU cycle</a>: Create/Scaffold, Evaluate, Analyze, Understand &amp; Refine.</td></tr>
+          <tr><td>Completion vs. learning</td><td>Create/Scaffold is 20% of each HOS grade. The other 80% goes to judging the AI's result, explaining it, and changing it by hand without AI.</td></tr>
+          <tr><td>Human and AI agency</td><td>Each CEAU stage changes who does the work: AI leads the scaffold, and the student takes over through the mastery check.</td></tr>
+          <tr><td>Business education fit</td><td>The EMBA AI-fluency challenges from Sep 28, which matters because ACBSP's audience is business educators.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>Evidence limit:</strong> the BSAI is upcoming and AI 410 has not run with students. The forum paper can argue from the design, but it can't claim learning outcomes.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-amber">✅</div><div><h2>Open items</h2><div class="section-sub">Settle these before drafting starts</div></div></div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li><strong>Jim:</strong> respond to Clark's reply.</li>
+        <li><strong>Both:</strong> hold a short call on the argument, who drafts what, authorship order, and a timeline back from Jan 19.</li>
+        <li><strong>Both:</strong> get the official call for submissions. The forum, theme, dates, and deadline are as stated in Jim's email; a web search on Oct 30 didn't find a listing to confirm them. Check format and length too.</li>
+        <li><strong>Clark:</strong> check for overlap with any course where Jim grades Clark. The <a href="agentic-ai-pilot-discussion-2026-09-28.html">pilot guardrails</a> require separation and disclosure for paid work; decide if the paper needs the same.</li>
+        <li><strong>Clark:</strong> tell the Dean before sharing internal AI 410 details beyond Jim, and describe the BSAI as upcoming in anything public.</li>
+        <li><strong>Both:</strong> get IRB review before collecting any first-cohort student data.</li>
+        <li><strong>Both:</strong> agree on terms. Suggested: CEAU for the model, "Create-first" for the idea.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</body>
+</html>

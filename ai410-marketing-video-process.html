@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 410 Video Process</title>
+  <meta name="description" content="How a course lead and an AI assistant turned the AI 410 student site into a marketing video: the work process, decisions, problems and a playbook for the next course.">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --accent: #1e8449; --accent-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --red: #b91c1c; --red-dim: #fef2f2;
+    }
+    * { box-sizing: border-box; }
+    html:focus-within { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 920px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+    a { color: var(--blue); }
+
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 28px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); border-left: 5px solid var(--accent); margin-bottom: 20px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 16px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px 20px; margin-bottom: 20px; font-size: 0.86rem; }
+    .toc strong { display: block; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin-bottom: 6px; }
+    .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 28px; }
+    .toc li { margin: 2px 0; break-inside: avoid; }
+    .toc a { text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 22px 26px; margin-bottom: 20px; scroll-margin-top: 16px; }
+    .section h2 { margin: 0 0 4px; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; }
+    .section .lede { margin: 0 0 16px; color: var(--slate); font-size: 0.9rem; }
+    .section h3 { font-size: 0.98rem; margin: 20px 0 6px; }
+    .section p, .section li { font-size: 0.92rem; }
+    .section p { margin: 0 0 10px; }
+    .section ul, .section ol { margin: 0 0 10px; padding-left: 22px; }
+    .section li { margin: 3px 0; }
+
+    .tldr { list-style: none; padding: 0; margin: 0; counter-reset: t; }
+    .tldr li { counter-increment: t; position: relative; padding: 10px 12px 10px 46px; border-bottom: 1px solid var(--border); }
+    .tldr li:last-child { border-bottom: none; }
+    .tldr li::before { content: counter(t); position: absolute; left: 10px; top: 10px; width: 24px; height: 24px; border-radius: 50%; background: var(--accent-dim); color: var(--accent); font-weight: 800; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 6px 0 14px; }
+    .stat { background: var(--bg); border-radius: var(--radius-sm); padding: 12px 14px; }
+    .stat b { display: block; font-size: 1.35rem; font-weight: 900; letter-spacing: -0.02em; color: var(--accent); line-height: 1.2; }
+    .stat span { font-size: 0.8rem; color: var(--slate); }
+
+    .table-wrap { overflow-x: auto; margin: 6px 0 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+    th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+    th { background: var(--bg); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { font-weight: 600; }
+
+    .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; margin: 8px 0 14px; }
+    .flow .node { flex: 1 1 150px; background: var(--blue-dim); border: 1px solid #bfdbfe; border-radius: var(--radius-sm); padding: 10px 12px; font-size: 0.82rem; }
+    .flow .node b { display: block; font-size: 0.86rem; color: #1e3a8a; margin-bottom: 2px; }
+    .flow .arrow { align-self: center; color: var(--slate-light); font-weight: 800; }
+
+    .timeline { list-style: none; margin: 0; padding: 0 0 0 18px; border-left: 2px solid #bbf7d0; }
+    .timeline li { position: relative; padding: 0 0 16px 16px; }
+    .timeline li::before { content: ""; position: absolute; left: -25px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--card); border: 3px solid var(--accent); }
+    .timeline .when { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+    .timeline .what { font-weight: 800; font-size: 0.95rem; display: block; }
+    .timeline p { margin: 2px 0 0; font-size: 0.88rem; color: var(--slate); }
+
+    .lesson { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 12px; }
+    .lesson h3 { margin: 0 0 6px; font-size: 0.98rem; }
+    .lesson .tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 20px; padding: 2px 9px; margin-right: 6px; vertical-align: 2px; }
+    .tag.worked { background: var(--accent-dim); color: var(--accent); }
+    .tag.change { background: var(--amber-dim); color: var(--amber); }
+    .lesson p { margin: 0 0 6px; font-size: 0.9rem; }
+    .lesson .rec { background: var(--bg); border-radius: 6px; padding: 8px 12px; font-size: 0.86rem; margin-top: 6px; }
+    .lesson .rec strong { color: var(--ink); }
+
+    .checklist { list-style: none; padding: 0; margin: 0; }
+    .checklist li { padding: 9px 0 9px 32px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 6px; top: 7px; font-size: 1rem; color: var(--accent); }
+    .checklist .phase { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.87rem; border: 1px solid #ddd6fe; background: var(--violet-dim); color: #4c1d95; margin: 10px 0; }
+    .callout.amber { border-color: #fde68a; background: var(--amber-dim); color: #78350f; }
+
+    dl.gloss { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; font-size: 0.9rem; }
+    dl.gloss dt { font-weight: 800; }
+    dl.gloss dd { margin: 0; color: var(--slate); }
+
+    .footer-note { font-size: 0.8rem; color: var(--slate); text-align: center; margin-top: 24px; }
+
+    @media (max-width: 640px) {
+      .doc-header, .section { padding: 18px 16px; }
+      .doc-header h1 { font-size: 1.4rem; }
+      .toc ol { columns: 1; }
+      .flow .arrow { display: none; }
+      dl.gloss { grid-template-columns: 1fr; gap: 0; }
+      dl.gloss dd { margin-bottom: 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a><span class="nav-sep">/</span>
+    <a href="bsai-hub.html">BSAI Hub</a><span class="nav-sep">/</span>
+    <a href="teaching-framework-hub.html">Teaching Framework Hub</a><span class="nav-sep">/</span>
+    <a href="ai410-lessons-learned.html">AI 410 Lessons Learned</a>
+  </nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Lessons Learned · BSAI · Addition</div>
+    <h1>How the AI 410 Marketing Video Was Made</h1>
+    <p class="subtitle">A work-process note that adds to <a href="ai410-lessons-learned.html">How AI 410 Was Built</a>. It shows how a course lead and an AI assistant turned the finished student site into a marketing video, with no camera and no editing suite. It is written for program managers and colleagues who may want to do the same for another course.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Oct 29 – 30, 2026</span>
+      <span class="meta-chip">Course lead: Clark Ngo</span>
+      <span class="meta-chip">Status: draft video, review open</span>
+      <span class="meta-chip">Audience: program managers, course builders</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Contents">
+    <strong>Contents</strong>
+    <ol>
+      <li><a href="#tldr">The short version</a></li>
+      <li><a href="#result">What was made</a></li>
+      <li><a href="#process">The work process</a></li>
+      <li><a href="#roles">Who did what</a></li>
+      <li><a href="#changes">How the plan changed</a></li>
+      <li><a href="#problems">What went wrong</a></li>
+      <li><a href="#lessons">Lessons learned</a></li>
+      <li><a href="#playbook">Playbook for the next course</a></li>
+      <li><a href="#open">Open items</a></li>
+    </ol>
+  </nav>
+
+  <section class="section" id="tldr">
+    <h2>1. The short version</h2>
+    <p class="lede">Four things to take away if you read nothing else.</p>
+    <ol class="tldr">
+      <li><strong>A course built on the web already holds its own footage.</strong> The simulators, guides and example project on the public student site are the video. Nobody appears on camera, so there are no release forms.</li>
+      <li><strong>Script the recording, and the video stays maintainable.</strong> Every click and scroll is in a file. When the site changes, the video can be recorded again instead of edited by hand.</li>
+      <li><strong>Decisions stay with people, and production moves to the assistant.</strong> The course lead made the calls on audience, wording, voice and what to leave out. The assistant did the recording, editing and audio.</li>
+      <li><strong>An AI assistant can't review what it can't perceive.</strong> The assistant can't hear the voiceover. Checks caught a real pronunciation error, but a person still has to listen before anyone outside the team sees it.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="result">
+    <h2>2. What was made</h2>
+    <p class="lede">A draft video that follows "you" through a first module in AI 410, from preview to Term Project. This version has no music. The <a href="ai410-marketing-video-plan.html#video">plan page</a> has it next to a version with music, for review.</p>
+    <video controls preload="metadata" playsinline poster="assets/ai410-marketing-video/ai410-first-module-poster.jpg" style="display:block;width:100%;height:auto;border-radius:8px;background:#000;margin-bottom:14px" aria-label="AI 410 marketing video">
+      <source src="assets/ai410-marketing-video/ai410-first-module.mp4" type="video/mp4">
+      <track kind="captions" src="tools/ai410-marketing-video/captions.vtt" srclang="en" label="English">
+      <a href="assets/ai410-marketing-video/ai410-first-module.mp4">Download the video (MP4, 12 MB)</a>
+    </video>
+    <div class="stats">
+      <div class="stat"><b>1:45</b><span>length, against a 2-minute limit</span></div>
+      <div class="stat"><b>7</b><span>scenes, each one scripted recording</span></div>
+      <div class="stat"><b>21</b><span>spoken lines, with matching closed captions</span></div>
+      <div class="stat"><b>0</b><span>people on camera or release forms</span></div>
+      <div class="stat"><b>12 MB</b><span>1080p MP4, kept in the repository</span></div>
+    </div>
+    <p>The decisions, storyboard and sign-off table are on the <a href="ai410-marketing-video-plan.html">video plan page</a>. The scripts are in <a href="https://github.com/clarkngo/stc-transformation/tree/main/tools/ai410-marketing-video">tools/ai410-marketing-video</a>.</p>
+  </section>
+
+  <section class="section" id="process">
+    <h2>3. The work process</h2>
+    <p class="lede">Six steps. The first and the last two belong to people.</p>
+    <div class="flow" role="img" aria-label="Flow: plan the video, record the site by script, edit the scenes, add the voice, review it, then publish.">
+      <div class="node"><b>1. Plan</b>Agree the story, the decisions and the storyboard on a page.</div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>2. Record</b>A script drives Chrome through the public site and saves every frame.</div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>3. Edit</b>ffmpeg adds fades and joins the scenes. Captions are burned in as the page records.</div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>4. Voice</b>Kokoro speaks the script on the laptop, and the timings become the captions file.</div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>5. Review</b>People watch and listen, and marketing signs off on brand and wording.</div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="node"><b>6. Publish</b>Upload the chosen version to CityU's channel, with its captions file.</div>
+    </div>
+    <div class="table-wrap" tabindex="0">
+      <table>
+        <thead><tr><th>Tool</th><th>Job</th><th>Why this one</th></tr></thead>
+        <tbody>
+          <tr><td>Claude Code</td><td>Wrote the scripts, ran them and checked the output</td><td>The AI assistant already used to build the course.</td></tr>
+          <tr><td>Google Chrome, Node.js</td><td>Recorded the site at 1920×1080, 30 frames a second</td><td>Saving frame by frame gives a smooth result on any machine, with no screen-capture app.</td></tr>
+          <tr><td>ffmpeg</td><td>Fades, joining scenes, mixing audio, loudness</td><td>Free, and every edit is a repeatable command.</td></tr>
+          <tr><td>Pixabay</td><td>Background music for the comparison version</td><td>Free, with no credit required. Each track's page says whether it is registered with Content ID.</td></tr>
+          <tr><td>Kokoro</td><td>The AI voice (<code>af_heart</code>)</td><td>Open source (Apache 2.0) and runs locally. The install is about 1.1 GB plus a 313 MB model.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>No tool here needs a paid license, apart from the AI assistant itself.</p>
+  </section>
+
+  <section class="section" id="roles">
+    <h2>4. Who did what</h2>
+    <p class="lede">This is the same split as the course build: the course lead decides, and the assistant drafts and checks.</p>
+    <div class="table-wrap" tabindex="0">
+      <table>
+        <thead><tr><th>Course lead decided</th><th>AI assistant did</th></tr></thead>
+        <tbody>
+          <tr><td>The format: a screen recording rather than filmed footage, under two minutes.</td><td>Wrote the storyboard, the plan page and the narration for review.</td></tr>
+          <tr><td>The wording: drop "upcoming", and end on the AI 410 student site.</td><td>Scripted all seven scenes, recorded them and fixed what broke.</td></tr>
+          <tr><td>The voice: add an AI voiceover, then use Kokoro.</td><td>Installed Kokoro, generated the audio and timed it to each scene.</td></tr>
+          <tr><td>When to ship, and that the video belongs in the repository.</td><td>Checked timing, pronunciation, audio levels and page playback, then opened and merged the pull request on request.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Brightspace is the one choice that came from the assistant. The course lead asked whether to include it, and the assistant recommended leaving it out, because it needs a sign-in, changes every term, and is where names and grades appear.</p>
+  </section>
+
+  <section class="section" id="changes">
+    <h2>5. How the plan changed</h2>
+    <p class="lede">Each change took a re-run, not a re-shoot, because the plan lived in scripts and data files.</p>
+    <ol class="timeline">
+      <li><span class="when">Plan</span><span class="what">Captions and light music</span>
+        <p>The first plan had no spoken audio. The video had to work with the sound off.</p></li>
+      <li><span class="when">Plan</span><span class="what">"Upcoming" removed from the closing card</span>
+        <p>The video no longer calls the course upcoming. It also never says students are already taking it. It speaks to the viewer as "you" and doesn't present a made-up student as real.</p></li>
+      <li><span class="when">Build</span><span class="what">An AI voiceover added</span>
+        <p>A voice carries more explanation than captions can. The first version used the voice built into macOS, with no new install.</p></li>
+      <li><span class="when">Build</span><span class="what">Switched to Kokoro</span>
+        <p>The course lead asked for the Kokoro neural voice. The script, scenes and captions stayed the same, and only the speech step changed.</p></li>
+      <li><span class="when">Ship</span><span class="what">The video went into the repository</span>
+        <p>The plan was to keep the file on YouTube only. It now plays on the plan page, so the team can review it there before any upload.</p></li>
+      <li><span class="when">Review</span><span class="what">Music became a side-by-side choice</span>
+        <p>Music was first going to be added at upload. Now reviewers compare a music version with the no-music one, and the no-music version stays as the master.</p></li>
+    </ol>
+  </section>
+
+  <section class="section" id="problems">
+    <h2>6. What went wrong</h2>
+    <p class="lede">None of these was serious, and each was found by checking the output rather than trusting the script.</p>
+    <div class="table-wrap" tabindex="0">
+      <table>
+        <thead><tr><th>Problem</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Two scenes stayed at the top of the page</td><td>The browser restored its old scroll position after a reload. A sign error in one script also pushed the target off the page.</td><td>Wait for the page to finish loading, and correct the sign.</td></tr>
+          <tr><td>Some sections couldn't be recorded</td><td>Week tabs on the module pages hide the Week 2 content.</td><td>Record those stages from the hands-on guide instead.</td></tr>
+          <tr><td>Long captions wrapped badly</td><td>The caption bar shrank to fit the page.</td><td>Size the bar to its text.</td></tr>
+          <tr><td>The project demo ended too soon</td><td>Too few clicks to show it finishing.</td><td>Ten clicks, 1.5 seconds apart.</td></tr>
+          <tr><td>Kokoro crashed on start</td><td>Its speech component (espeak-ng) fails on long folder paths, and the error named a different path entirely.</td><td>Move the install to a short path, and record that in the script's setup notes.</td></tr>
+          <tr><td>"AI 410" came out as "uh eye four ten"</td><td>Spelled "A I", the voice read the "A" as the word "a". It only happened in some sentences.</td><td>Fix the pronunciation in the script, then check the sounds of all 21 lines.</td></tr>
+          <tr><td>Audio came out at 96 kHz</td><td>A side effect of the loudness step.</td><td>Set it back to the standard 48 kHz.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="lessons">
+    <h2>7. Lessons learned</h2>
+    <p class="lede">What worked, what we would change, and a recommendation for each.</p>
+
+    <div class="lesson">
+      <h3><span class="tag worked">Worked</span>Plan on a page before building</h3>
+      <p>The plan page came first, and it held the decisions, storyboard and rules. Changing a sentence there cost nothing, and it gave the course lead one place to say "remove this".</p>
+      <div class="rec"><strong>Recommendation:</strong> write the storyboard and rules down, and get a yes on them, before recording anything.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag worked">Worked</span>Footage from the real product</h3>
+      <p>Because the student site is public, the video shows what students will actually use. It needed no mock-ups, sign-ins or student data.</p>
+      <div class="rec"><strong>Recommendation:</strong> record only public pages, and keep the LMS and anything with names or grades out of shot.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag worked">Worked</span>Words kept apart from the video</h3>
+      <p>The narration lives in one data file, separate from the recording. Changing the voice or a line means one re-run, and the captions update with it, so they can't drift from what is said.</p>
+      <div class="rec"><strong>Recommendation:</strong> keep a single script file and generate the audio and captions from it. This is the "one source of truth" lesson from the course build, applied to media.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag change">Change</span>A check is not the same as listening</h3>
+      <p>The assistant can't hear audio. Reading the planned sounds of each line caught "uh eye four ten", which an ordinary success message would have missed. That check can't judge whether the voice sounds natural, so human review stays on the sign-off list.</p>
+      <div class="rec"><strong>Recommendation:</strong> say plainly what automated checks can't cover, and name the person who covers it.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag change">Change</span>Decide the audio first</h3>
+      <p>The audio plan changed twice, from captions only, to a built-in voice, to Kokoro. Each change was cheap, but the Kokoro install took the most troubleshooting of the whole job.</p>
+      <div class="rec"><strong>Recommendation:</strong> choose the voice at the planning stage, and test the tool on a single line before building around it.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag change">Change</span>Check the wording rules for marketing early</h3>
+      <p>Course pages and institutional copy follow different wording rules about a program that hasn't launched. The closing card needed a specific decision, because a video reaches people who see none of the surrounding context.</p>
+      <div class="rec"><strong>Recommendation:</strong> agree the claims a video may make before writing the script, and have marketing review the wording.</div>
+    </div>
+
+    <div class="lesson">
+      <h3><span class="tag change">Change</span>"Free music" still has conditions</h3>
+      <p>A free license doesn't mean no copyright. The chosen track can be used without credit, but it can't be shared on its own, so the file stays out of the public repository. It is also registered with Content ID, which the track's page shows, so YouTube will probably flag it automatically even though the use is licensed.</p>
+      <div class="rec"><strong>Recommendation:</strong> read the license and the track's page before choosing. Save the license certificate with the download, and agree with marketing whether a claim on the channel is acceptable.</div>
+    </div>
+  </section>
+
+  <section class="section" id="playbook">
+    <h2>8. Playbook for the next course</h2>
+    <p class="lede">The order to follow for an AI 420, 430 or 440 video once its student site is public. The scripts can be reused, with new scenes and narration.</p>
+    <ul class="checklist">
+      <li><span class="phase">Plan</span>Write the plan page: audience, length, what to leave out, and the claims the video may make. Get sign-off on the storyboard.</li>
+      <li><span class="phase">Script</span>Write the narration in <code>narration.json</code>. Each scene's lines should fit its length, with time to spare.</li>
+      <li><span class="phase">Record</span>Add the new scenes to <code>record.mjs</code> and run it against the live site. Watch every scene.</li>
+      <li><span class="phase">Voice</span>Set up Kokoro on a short folder path. Test one line, then check the sounds of every line that has a name or an abbreviation.</li>
+      <li><span class="phase">Check</span>Confirm timing, audio levels and captions, and test playback on the page.</li>
+      <li><span class="phase">Review</span>A person watches it with sound on and with sound off. Marketing checks brand and wording.</li>
+      <li><span class="phase">Music</span>Choose a track from its license and its Content ID status, keep the certificate, and build a music version with <code>add-music.sh</code>. Keep the no-music version so reviewers can compare.</li>
+      <li><span class="phase">Publish</span>Upload the chosen version with the captions file, and say in the description that the voice is AI-generated.</li>
+      <li><span class="phase">Maintain</span>Re-record when the pages shown change, and check it before each term.</li>
+    </ul>
+  </section>
+
+  <section class="section" id="open">
+    <h2>9. Open items</h2>
+    <ul>
+      <li><strong>Voiceover review.</strong> Nobody has listened to the Kokoro voice yet. The course lead needs to review voice, pronunciation and pacing.</li>
+      <li><strong>Brand and wording sign-off.</strong> CityU marketing hasn't reviewed the draft.</li>
+      <li><strong>Music or no music.</strong> Reviewers still need to compare the two versions. Nobody has heard the mix yet, so the balance is measured, not judged by ear.</li>
+      <li><strong>Upload.</strong> CityU's channel owner uploads the chosen version with its captions file. A music version will probably get a Content ID claim, so marketing should agree that's acceptable first.</li>
+      <li><strong>Upkeep.</strong> The video shows live pages, so changes to the student site will date it. Re-recording takes a machine with Chrome, Node, ffmpeg and the Kokoro install.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Related</h2>
+    <ul>
+      <li><a href="ai410-lessons-learned.html">How AI 410 Was Built: From Plan to Delivery</a>: the main report this page adds to.</li>
+      <li><a href="ai410-marketing-video-plan.html">AI 410 Marketing Video: Plan</a>: decisions, storyboard, rules and sign-off.</li>
+      <li><a href="bsai-course-design-constraints.html">BSAI Course Design Constraints</a>: the standing rules for AI 410–440.</li>
+      <li><a href="https://cityuseattle.github.io/ai410/">AI 410 Interactive Lesson Lab</a>: the live student site shown in the video.</li>
+    </ul>
+  </section>
+
+  <p class="footer-note">Prepared October 2026 from the video's scripts, plan page and build notes.</p>
+</div>
+</body>
+</html>

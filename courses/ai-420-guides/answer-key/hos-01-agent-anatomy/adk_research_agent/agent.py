@@ -22,7 +22,7 @@ from research.tools import calculator, wiki_search, wiki_summary  # noqa: E402
 
 root_agent = Agent(
     name="research_agent",
-    model=os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
+    model=os.getenv("GEMINI_MODEL", "gemini-3.8-flash"),
     description="Answers multi-step factual questions using Wikipedia and a calculator.",
     instruction=SYSTEM,
     tools=[wiki_search, wiki_summary, calculator],

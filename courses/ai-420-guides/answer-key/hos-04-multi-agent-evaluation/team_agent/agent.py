@@ -21,7 +21,7 @@ from single_agent.guards import error_as_observation, repeat_call_guard  # noqa:
 from single_agent.tools import (  # noqa: E402
     check_shipment, create_support_ticket, get_order, get_product, list_orders, search_products)
 
-MODEL = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
+MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 GUARDS = {"on_tool_error_callback": error_as_observation, "before_tool_callback": repeat_call_guard}
 
 orders_agent = Agent(

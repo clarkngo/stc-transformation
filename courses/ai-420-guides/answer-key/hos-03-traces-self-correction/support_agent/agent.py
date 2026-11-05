@@ -18,7 +18,7 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 root_agent = Agent(
     name="support_agent",
-    model=os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
+    model=os.getenv("GEMINI_MODEL", "gemini-3.8-flash"),
     description="Customer support for Harbor Supply Co., a marine supply store.",
     instruction=(
         "You are the customer support agent for Harbor Supply Co., a marine supply store.\n"

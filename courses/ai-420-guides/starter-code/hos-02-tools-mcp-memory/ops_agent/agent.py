@@ -34,7 +34,7 @@ harbor_tools = McpToolset(
 
 root_agent = Agent(
     name="ops_agent",
-    model=os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
+    model=os.getenv("GEMINI_MODEL", "gemini-3.8-flash"),
     description="Operations assistant for Harbor Supply Co., a marine supply store.",
     instruction=(
         "You help the staff and customers of Harbor Supply Co., a marine supply store in the Seattle area. "

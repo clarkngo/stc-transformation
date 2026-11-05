@@ -63,7 +63,7 @@
                 <li>Every tool works against the real free services, and every agent's logic works with a scripted stand-in model. HOS 3's five planted failures reproduce in the starter with the values the checklist expects ($1,622.79 and $153.30) and recover in the answer key.</li>
                 <li><code>adk web</code> starts in every HOS folder and lists the right agents.</li>
                 <li><strong>Fixed:</strong> in a portfolio-repo Codespace (the path students use), nothing built <code>data/harbor.db</code> for HOS 2–4. Each HOS now builds it the first time a tool needs it.</li>
-                <li><strong>Not checked:</strong> anything a real model does, and whether <code>gemini-3.6-flash</code> is available to your key. Step 2 checks that in one command.</li>
+                <li><strong>Not checked:</strong> anything a real model does, and whether <code>gemini-3.8-flash</code> is available to your key. Step 2 checks that in one command.</li>
             </ul>
         </div>
 
@@ -100,7 +100,7 @@ pip install -r requirements.txt</code></pre>
 <pre><code>cat > .env &lt;&lt;'EOF'
 GOOGLE_API_KEY=paste-your-key-here
 GOOGLE_GENAI_USE_VERTEXAI=FALSE
-GEMINI_MODEL=gemini-3.6-flash
+GEMINI_MODEL=gemini-3.8-flash
 LANGFUSE_PUBLIC_KEY=
 LANGFUSE_SECRET_KEY=
 LANGFUSE_HOST=https://cloud.langfuse.com
@@ -133,8 +133,8 @@ bash faculty-smoke-tests/run_all.sh starter    # starter code</code></pre>
 python -c "import os; from google import genai; print(genai.Client().models.generate_content(model=os.environ['GEMINI_MODEL'], contents='Reply with the single word OK').text)"</code></pre>
             <p>Expect <code>OK</code>. If you get a <strong>404 / model not found</strong>, pick a current Flash model in <a href="https://aistudio.google.com" target="_blank" rel="noopener">AI Studio</a>, set <code>GEMINI_MODEL</code> in the root <code>.env</code>, and rerun the <code>for</code> line from Step 0. If this happens, the guides' <code>.env.example</code> files need the new name too, so note it below. A <strong>429</strong> means you hit the per-minute limit: wait a minute.</p>
             <div class="record"><h4>Record</h4><div class="fields">
-                <label>Result<select data-k="key_result"><option></option><option>OK with gemini-3.6-flash</option><option>Needed a different model</option><option>Key problem</option></select></label>
-                <label>Model used<input type="text" data-k="model_used" placeholder="gemini-3.6-flash"></label>
+                <label>Result<select data-k="key_result"><option></option><option>OK with gemini-3.8-flash</option><option>Needed a different model</option><option>Key problem</option></select></label>
+                <label>Model used<input type="text" data-k="model_used" placeholder="gemini-3.8-flash"></label>
             </div></div>
         </div>
 

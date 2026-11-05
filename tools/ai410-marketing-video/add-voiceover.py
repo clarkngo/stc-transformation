@@ -10,6 +10,8 @@ Setup, once:  python3 -m venv ~/.cache/ai410-kokoro-venv
               Python 3.12. Keep the venv on a short path: espeak-ng fails on long data paths.
               The first run fetches the model from hexgrad/Kokoro-82M, about 330 MB.
 Usage:        ~/.cache/ai410-kokoro-venv/bin/python add-voiceover.py <silent.mp4> <out.mp4> [--voice af_heart] [--speed 1.0]
+              [--narration narration.json] [--captions captions.vtt]   (paths relative to this folder)
+A line can be a string, or {"text": ..., "at": seconds} to start no earlier than that point in its scene.
 """
 import argparse, json, re, subprocess, tempfile
 from pathlib import Path
@@ -36,8 +38,9 @@ def stamp(t):
 ap = argparse.ArgumentParser()
 ap.add_argument("silent"); ap.add_argument("out")
 ap.add_argument("--voice"); ap.add_argument("--speed", type=float)
+ap.add_argument("--narration", default="narration.json"); ap.add_argument("--captions", default="captions.vtt")
 args = ap.parse_args()
-cfg = json.loads((HERE / "narration.json").read_text(encoding="utf-8"))
+cfg = json.loads((HERE / args.narration).read_text(encoding="utf-8"))
 voice, speed = args.voice or cfg["voice"], args.speed or cfg["speed"]
 
 import numpy as np, soundfile as sf
@@ -53,6 +56,9 @@ inputs, filters, cues, over = [], [], [], False
 for s_no, scene in enumerate(cfg["scenes"], 1):
     t = scene["start"] + cfg["lead_in"]
     for l_no, line in enumerate(scene["lines"], 1):
+        if isinstance(line, dict):
+            t = max(t, scene["start"] + line["at"])
+            line = line["text"]
         wav = tmp / f"{s_no}-{l_no}.wav"
         speak(spoken(line), wav)
         d = duration(wav)
@@ -75,7 +81,7 @@ subprocess.check_call(["ffmpeg", "-loglevel", "error", "-y", "-i", args.silent, 
 vtt = ["WEBVTT", ""]
 for i, (a, b, line) in enumerate(cues, 1):
     vtt += [str(i), f"{stamp(a)} --> {stamp(b)}", line, ""]
-(HERE / "captions.vtt").write_text("\n".join(vtt), encoding="utf-8")
+(HERE / args.captions).write_text("\n".join(vtt), encoding="utf-8")
 print(f"voice: {voice}, {n} lines, final length {duration(args.out):.1f}s")
 if over:
     print("WARNING: a scene has under 0.3s spare; shorten its lines or raise the rate.")

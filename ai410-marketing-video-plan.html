@@ -158,7 +158,7 @@
   </section>
 
   <section class="section" id="video">
-    <h2>The video</h2>
+    <h2>Video 1: a first module</h2>
     <p class="lede">Two drafts to compare, each 1:45 with the same AI-generated voiceover. Watch both with the sound on, and try one on laptop or phone speakers. Which makes you more interested in the course?</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
       <figure style="margin:0">
@@ -181,8 +181,49 @@
     <p class="small" style="margin-top:12px">Music in Version B: "Science Tech Corporate" by stock_music, from Pixabay, under the Pixabay Content License.</p>
   </section>
 
+  <section class="section" id="app-demo">
+    <h2>Video 2: a real app, running live</h2>
+    <p class="lede">A second 1:45 video, made on Nov 4. Instead of touring the site, it shows the app students build in the four hands-on units, answering real questions. Its message: "After AI 410, this is what you can build with AI."</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
+      <figure style="margin:0">
+        <figcaption style="margin-bottom:8px"><b>Version A: no music</b><br><span class="small">Voiceover only.</span></figcaption>
+        <video controls preload="metadata" playsinline poster="assets/ai410-marketing-video/ai410-app-demo-poster.jpg" style="display:block;width:100%;height:auto;border-radius:10px;background:#000" aria-label="AI 410 app demo video, Version A: no music">
+          <source src="assets/ai410-marketing-video/ai410-app-demo.mp4" type="video/mp4">
+          <track kind="captions" src="tools/ai410-marketing-video/app-demo/captions.vtt" srclang="en" label="English">
+          <a href="assets/ai410-marketing-video/ai410-app-demo.mp4">Download Version A: no music (MP4)</a>
+        </video>
+      </figure>
+      <figure style="margin:0">
+        <figcaption style="margin-bottom:8px"><b>Version B: with music</b><br><span class="small">Same music as Video 1.</span></figcaption>
+        <video controls preload="metadata" playsinline poster="assets/ai410-marketing-video/ai410-app-demo-poster.jpg" style="display:block;width:100%;height:auto;border-radius:10px;background:#000" aria-label="AI 410 app demo video, Version B: with music">
+          <source src="assets/ai410-marketing-video/ai410-app-demo-with-music.mp4" type="video/mp4">
+          <track kind="captions" src="tools/ai410-marketing-video/app-demo/captions.vtt" srclang="en" label="English">
+          <a href="assets/ai410-marketing-video/ai410-app-demo-with-music.mp4">Download Version B: with music (MP4)</a>
+        </video>
+      </figure>
+    </div>
+    <div class="table-wrap" style="margin-top:16px"><table>
+      <thead><tr><th>Time</th><th>Scene</th><th>What the app does</th></tr></thead>
+      <tbody>
+        <tr><td>0:00–0:07</td><td>Hook</td><td>Title card: "After AI 410, this is what you can build with AI."</td></tr>
+        <tr><td>0:07–0:24</td><td>Answers from documents</td><td>Asked about returning a used tent, it answers from the store's return policy.</td></tr>
+        <tr><td>0:24–0:39</td><td>Uses a tool</td><td>Asked for an order total, it calls its calculator tool. A side panel shows the call it made.</td></tr>
+        <tr><td>0:39–1:05</td><td>Learns a new document</td><td>It says it doesn't know about rentals. A rental sheet is added, a background job reads it, and the same question gets a real answer.</td></tr>
+        <tr><td>1:05–1:21</td><td>On a phone</td><td>The same app answers on the phone client.</td></tr>
+        <tr><td>1:21–1:45</td><td>Close</td><td>The four units it is built across, the Term Project, then the AI 410 card and site link.</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li><b>What's real.</b> The app is the course's reference build of the HOS 4 project, run on a laptop with a free Gemini key. Every answer is a live call to it. Only the waits for answers are shortened, to about a second each.</li>
+      <li><b>Wording.</b> It says "what you can build with AI", never "AI builds it", and never says a student built this app. No code, keys or terminals appear on screen.</li>
+      <li><b>Left out.</b> Push notifications need a physical phone and an Expo account. The tracing dashboard needs a sign-in.</li>
+      <li><b>Bugs it found.</b> Recording the app turned up two bugs in the course's apps: a document added by the background worker stayed invisible until the API restarted, and dollar amounts broke in the web chat. Both are fixed in the course's answer keys and starter repos, pending merge.</li>
+      <li><b>Re-recording.</b> The scripts are in <code>tools/ai410-marketing-video/app-demo/</code>: run <code>reset-app.sh</code>, then <code>record-app.mjs</code> against the running app, then <code>build.sh</code>, <code>add-voiceover.py --narration app-demo/narration.json --captions app-demo/captions.vtt</code> and <code>add-music.sh</code>.</li>
+    </ul>
+  </section>
+
   <section class="section" id="storyboard">
-    <h2>2. Storyboard and captions</h2>
+    <h2>2. Video 1: storyboard and captions</h2>
     <p class="lede">Seven scenes, about 1:45 in total. Each scene is one scripted recording of a page on <a href="https://cityuseattle.github.io/ai410/">the AI 410 student site</a>.</p>
     <div class="table-wrap"><table>
       <thead><tr><th>Time</th><th>Scene</th><th>On screen (scripted action)</th><th>Caption</th></tr></thead>
@@ -230,6 +271,8 @@
       <tbody>
         <tr><td>Storyboard and captions approved</td><td>Clark</td><td>Done (Oct 29)</td></tr>
         <tr><td>Draft video reviewed</td><td>Clark</td><td>Open</td></tr>
+        <tr><td>Video 2 (app demo) reviewed</td><td>Clark</td><td>Open</td></tr>
+        <tr><td>Video 1 or Video 2 chosen, or both used</td><td>Clark and CityU marketing</td><td>Open</td></tr>
         <tr><td>Music or no music chosen</td><td>Clark and reviewers</td><td>Open</td></tr>
         <tr><td>Voiceover reviewed: voice, pronunciation and pacing</td><td>Clark</td><td>Open</td></tr>
         <tr><td>Brand and wording sign-off</td><td>CityU marketing</td><td>Open</td></tr>

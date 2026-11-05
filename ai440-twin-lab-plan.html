@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Plan for AI 440's Twin Lab: a browser-hosted physical-AI and digital-twin lab built on real MuJoCo physics, ROS 2-style Python and OpenUSD, in place of labs that need NVIDIA Omniverse, Isaac Lab or a full ROS 2 install.">
+  <title>AI 440 Twin Lab — Plan</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --red: #dc2626; --red-dim: #fef2f2; --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff; --amber: #b45309; --amber-dim: #fffbeb;
+      --violet: #7c3aed; --violet-dim: #f5f3ff; --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 940px; margin: 0 auto; padding: 28px 20px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); border-left: 5px solid var(--amber); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; margin: 0 0 22px; font-size: 0.92rem; }
+    .callout.rules { background: var(--blue-dim); border: 1px solid #bfd3fb; }
+    .callout.flag { background: var(--amber-dim); border: 1px solid #f5d79e; }
+    .callout.ok { background: var(--green-dim); border: 1px solid #b7e4c7; }
+    .callout b:first-child { display: block; margin-bottom: 4px; }
+    .toc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 24px; margin-bottom: 28px; box-shadow: var(--shadow); font-size: 0.9rem; }
+    .toc ol { margin: 6px 0 0; padding-left: 20px; columns: 2; column-gap: 32px; }
+    .toc a { color: var(--blue); text-decoration: none; }
+    section.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px 28px; margin-bottom: 24px; }
+    section.card h2 { margin: 0 0 4px; font-size: 1.25rem; letter-spacing: -0.01em; }
+    section.card .sub { color: var(--slate); font-size: 0.88rem; margin: 0 0 14px; }
+    h3 { font-size: 1rem; margin: 18px 0 6px; }
+    p { margin: 0 0 12px; }
+    ul, ol { margin: 0 0 12px; padding-left: 22px; }
+    li { margin-bottom: 4px; }
+    code { font-family: "SFMono-Regular", Consolas, Menlo, monospace; font-size: 0.85em; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+    .tbl { overflow-x: auto; margin: 0 0 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate); background: var(--bg); }
+    .tag { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 1px 8px; border-radius: 10px; white-space: nowrap; }
+    .tag.done { background: var(--green-dim); color: var(--green); }
+    .tag.plan { background: var(--blue-dim); color: var(--blue); }
+    .tag.test { background: var(--amber-dim); color: var(--amber); }
+    .tag.no { background: var(--red-dim); color: var(--red); }
+    .big-link { display: inline-block; background: var(--amber); color: #fff; font-weight: 700; padding: 10px 18px; border-radius: 10px; text-decoration: none; margin: 4px 0 8px; }
+    .big-link:hover { filter: brightness(1.08); }
+    .arch { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 10px 0 14px; }
+    .arch .box { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; background: var(--bg); font-size: 0.86rem; }
+    .arch .box h4 { margin: 0 0 6px; font-size: 0.9rem; }
+    .arch .box ul { margin: 0; padding-left: 18px; }
+    .arch .wide { grid-column: 1 / -1; background: var(--amber-dim); }
+    @media (max-width: 680px) { .arch { grid-template-columns: 1fr; } .toc ol { columns: 1; } .doc-header { padding: 22px 20px; } section.card { padding: 20px; } }
+    .sources { font-size: 0.82rem; color: var(--slate); }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row" aria-label="Breadcrumb">
+    <a href="index.html">Home</a><span class="nav-sep">›</span>
+    <a href="bsai-hub.html">BSAI Hub</a><span class="nav-sep">›</span>
+    <a href="courses/AI-440.html">AI 440 Outline</a><span class="nav-sep">›</span>
+    <span>Twin Lab Plan</span>
+  </nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">AI 440 · Course Planning · Proposal</div>
+    <h1>Twin Lab: a browser-based physical AI lab for AI 440</h1>
+    <p class="subtitle">How AI 440 can teach skills employers recognise without NVIDIA Omniverse, Isaac Lab or a full ROS 2 desktop install, hosted on GitHub Pages. Includes the results from a working prototype.</p>
+    <div class="meta-row"><span class="meta-chip">Nov 4, 2026</span><span class="meta-chip">Owner: Clark</span><span class="meta-chip">Status: proposal + prototype v0.1</span></div>
+  </header>
+
+  <div class="callout rules">
+    <b>Course design rules apply</b>
+    Read with the <a href="bsai-course-design-constraints.html">BSAI Course Design Constraints</a>: the AAC-approved description and outcomes are fixed; hands-on work runs in GitHub Codespaces; free tiers first; two-week HOS with the project in Weeks 9–10. Section 8 checks this plan against each rule and flags one that needs a decision.
+  </div>
+
+  <a class="big-link" href="courses/ai-440-twin-lab/index.html">Open the Twin Lab prototype →</a>
+
+  <nav class="toc" aria-label="Contents">
+    <b>Contents</b>
+    <ol>
+      <li><a href="#problem">The problem</a></li>
+      <li><a href="#principle">The design principle</a></li>
+      <li><a href="#employers">What employers ask for</a></li>
+      <li><a href="#skills">Skill map: lab feature → real tool</a></li>
+      <li><a href="#arch">Architecture</a></li>
+      <li><a href="#hos">How it carries the four HOS and the Term Project</a></li>
+      <li><a href="#proto">What the prototype proved</a></li>
+      <li><a href="#rules">Check against the design rules</a></li>
+      <li><a href="#limits">What it can't do, honestly</a></li>
+      <li><a href="#roadmap">Roadmap and feasibility tests</a></li>
+      <li><a href="#decisions">Decisions needed</a></li>
+    </ol>
+  </nav>
+
+  <section class="card" id="problem">
+    <h2>1. The problem</h2>
+    <p class="sub">The industry-standard physical AI tools don't fit how BSAI students work.</p>
+    <ul>
+      <li><b>NVIDIA Isaac Sim, Isaac Lab and Omniverse</b> need an NVIDIA RTX GPU workstation or a paid cloud GPU. Codespaces has no GPU, and most students don't own an RTX card.</li>
+      <li><b>ROS 2 with Gazebo</b> runs in a container, but its 3D GUI is heavy and fragile over a remote desktop, and setup failures eat the two-week HOS.</li>
+      <li>The current AI 440 outline (MQTT/Grafana, a PyTorch PINN, MuJoCo + BlenderProc, SB3) is feasible, but the units don't share a world. Students never watch one machine and its twin over the whole term.</li>
+    </ul>
+    <p>The risk is a course that names Physical AI and can't let students drive a physical system and its twin.</p>
+  </section>
+
+  <section class="card" id="principle">
+    <h2>2. The design principle</h2>
+    <p class="sub">Real engine, real interfaces, simulated plant.</p>
+    <p>A homemade simulator would teach a homemade tool, and that isn't marketable. So the Twin Lab simulates only what we can't provide, the physical robot. Everything students touch is an industry standard:</p>
+    <ul>
+      <li><b>Real physics engine.</b> DeepMind's official MuJoCo WebAssembly build (<code>@mujoco/mujoco</code>, Apache-2.0) runs in the browser. Contact, friction, inertia and motor saturation are computed, not scripted. The same model file runs in Python <code>mujoco</code> in a Codespace.</li>
+      <li><b>Real interfaces.</b> Students write Python nodes against ROS 2's <code>rclpy</code> API with standard message types (<code>geometry_msgs/Twist</code>, <code>sensor_msgs/LaserScan</code>, <code>nav_msgs/Odometry</code>…). The code ports to a real ROS 2 install almost unchanged.</li>
+      <li><b>Real file formats.</b> Robots and scenes are MJCF and export to OpenUSD (<code>.usda</code>), which Omniverse and Isaac Sim open. Logs are planned as MCAP for Foxglove, and policies as ONNX.</li>
+      <li><b>A "real robot" with secrets.</b> The plant is a second MuJoCo world built from hidden, per-serial parameters (wheel radii, mass, motor gain, latency, sensor bias). The twin starts from the spec sheet. Closing that gap is the sim-to-real work employers describe.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="employers">
+    <h2>3. What employers ask for</h2>
+    <p class="sub">A small sample of 2026 robotics-simulation postings, not a market survey.</p>
+    <ul>
+      <li><b>A physics simulator.</b> Postings name Isaac Sim, and several accept MuJoCo, Gazebo, Drake or Webots as equivalents.</li>
+      <li><b>ROS 2</b> is usually required, often for connecting simulation to robot software.</li>
+      <li><b>OpenUSD</b> appears for asset and scene work (authoring, composition, referencing).</li>
+      <li><b>Sim-to-real</b> is the differentiator. Postings ask candidates to measure and reduce the gap between simulated and real behaviour, compare simulated sensor data against the real robot, and do system identification.</li>
+      <li><b>Domain randomisation, synthetic data, CI for simulation tests</b>, and Python (C++ a plus).</li>
+    </ul>
+    <p class="sources">Sources: <a href="https://jobs.anitab.org/companies/nvidia/jobs/93025992-senior-solutions-architect-robotics-simulation">NVIDIA, Sr. Solutions Architect, Robotics Simulation</a> · <a href="https://www.startuphub.ai/jobs/persona-ai/robotics-simulation-engineer-5de17d">Persona AI, Robotics Simulation Engineer</a> · <a href="https://jobs.capitalfactory.com/companies/icon/jobs/80858562-robotics-simulation-engineer-ii">ICON, Robotics Simulation Engineer II</a> · <a href="https://hitmarker.net/jobs/nvidia-senior-robotics-systems-engineer---sim-to-real-4744516">NVIDIA, Sr. Robotics Systems Engineer, Sim-to-Real</a> · <a href="https://builtin.com/job/robotic-simulation-engineer-isaac-sim/7146949">Robotic Simulation Engineer (Isaac Sim), Built In</a>. Some listings may have expired.</p>
+  </section>
+
+  <section class="card" id="skills">
+    <h2>4. Skill map: lab feature → real tool</h2>
+    <p class="sub">What a student can honestly put on a résumé after the course.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Employer skill</th><th>In the Twin Lab</th><th>Transfers to</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Physics simulation</td><td>MuJoCo 3.17 in the browser; robots written as MJCF</td><td>MuJoCo (Python), MuJoCo Playground; MJCF ↔ URDF; MuJoCo-Warp is a solver in Newton, the engine NVIDIA co-develops for Isaac Lab</td><td><span class="tag done">prototype</span></td></tr>
+        <tr><td>ROS 2</td><td>rclpy-shaped nodes, standard messages, a topic monitor modelled on <code>ros2 topic list/hz/echo</code></td><td>ROS 2 Jazzy rclpy, Nav2</td><td><span class="tag done">prototype</span></td></tr>
+        <tr><td>ROS 2, for real</td><td>Optional bridge: the browser lab speaks the rosbridge protocol to a real ROS 2 in the Codespace</td><td>rosbridge, roslibjs, Foxglove bridge</td><td><span class="tag test">to test</span></td></tr>
+        <tr><td>OpenUSD</td><td>Scene export as <code>.usda</code> (Z-up, metres; verified with Pixar's <code>usd-core</code>). Later: author scenes in USD and load them into the lab</td><td>usdview, Omniverse, Isaac Sim, Blender</td><td><span class="tag done">export</span> <span class="tag plan">import</span></td></tr>
+        <tr><td>Sim-to-real gap measurement and system identification</td><td>Hidden per-serial robots; replay a run's exact commands through the twin and score the error</td><td>The sim-to-real workflows in the postings above</td><td><span class="tag done">prototype</span></td></tr>
+        <tr><td>Data assimilation and sensor fusion</td><td>Digital-shadow mode pulls the twin toward live <code>/uwb/pose</code> fixes; odometry fuses gyro heading</td><td>robot_localization (EKF), Kalman filters</td><td><span class="tag done">prototype</span></td></tr>
+        <tr><td>Safety-critical autonomy</td><td>Digital-twin mode looks 1 s ahead in physics and gates <code>/cmd_vel</code></td><td>Nav2 collision monitor, safety envelopes</td><td><span class="tag done">prototype</span></td></tr>
+        <tr><td>Synthetic data and domain randomisation</td><td>Camera sensor with randomised lighting, textures and poses; auto-labelled images in COCO format</td><td>Omniverse Replicator, BlenderProc</td><td><span class="tag plan">planned</span></td></tr>
+        <tr><td>RL and sim-to-real policies</td><td>Same MJCF wrapped as a Gymnasium env in the Codespace; train with SB3 on CPU, export ONNX, test on hidden robots in the browser</td><td>Gymnasium, Stable-Baselines3, ONNX (Isaac Lab exports policies the same way)</td><td><span class="tag plan">planned</span></td></tr>
+        <tr><td>Robot data tooling</td><td>Run logs export as MCAP</td><td>Foxglove, rosbag2</td><td><span class="tag plan">planned (JSON today)</span></td></tr>
+        <tr><td>IoT pipelines (HOS 1)</td><td>Bridge selected topics to MQTT over WebSockets</td><td>MQTT, Node-RED, InfluxDB/Grafana</td><td><span class="tag plan">planned</span></td></tr>
+        <tr><td>CI for simulation</td><td>Headless scenario suites run in GitHub Actions with Python MuJoCo</td><td>Simulation test pipelines</td><td><span class="tag plan">planned</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="card" id="arch">
+    <h2>5. Architecture</h2>
+    <p class="sub">One static site, one shared model format, two runtimes.</p>
+    <div class="arch">
+      <div class="box">
+        <h4>Browser · GitHub Pages (no install)</h4>
+        <ul>
+          <li>MuJoCo WASM: <b>plant</b> (hidden parameters) + <b>twin</b> (student's parameters)</li>
+          <li>Topic bus with ROS 2 message types and rates</li>
+          <li>Python nodes via Pyodide and an rclpy-shaped API</li>
+          <li>Three.js view, twin modes, calibration replay, exports</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h4>Codespace · same files, heavier work</h4>
+        <ul>
+          <li><code>pip install mujoco==3.17.0</code>: the browser's MJCF loads byte-identical (verified)</li>
+          <li>Offline system ID and PINN training on exported run logs (PyTorch CPU)</li>
+          <li>Gymnasium + SB3 policy training → ONNX</li>
+          <li>Optional: real ROS 2 + rosbridge, for students who want the real thing</li>
+        </ul>
+      </div>
+      <div class="box wide">
+        <b>Shared formats:</b> MJCF (robot and world) · OpenUSD (scenes) · ROS 2 message schemas · JSON/MCAP (logs) · ONNX (policies). Students' finished twins are deployable static sites, so the O6 "deploy a functional digital twin" can mean a live URL on the student's own GitHub Pages: a portfolio piece an employer can click.
+      </div>
+    </div>
+    <p>Load cost: about 9 MB for MuJoCo and about 10 MB for Python on first visit, then cached. Single-threaded MuJoCo needs no special server headers, so GitHub Pages works as is.</p>
+  </section>
+
+  <section class="card" id="hos">
+    <h2>6. How it carries the four HOS and the Term Project</h2>
+    <p class="sub">HOS titles and outcomes are unchanged from the <a href="courses/AI-440.html">course outline</a>. The Twin Lab becomes the shared world, and each HOS adds one capability to it.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>HOS</th><th>Twin Lab work</th><th>Codespace work</th><th>Outcomes</th></tr></thead>
+      <tbody>
+        <tr><td><b>1</b> Digital Shadows, Twins &amp; Real-Time Pipelines</td><td>Run the robot in model, shadow and twin modes; explain which arrow each adds. Write a node that fuses <code>/odom</code> with <code>/uwb/pose</code>.</td><td>Bridge topics to MQTT, store them in a time-series database, build a dashboard (from the existing HOS 1 plan).</td><td>O1, O3</td></tr>
+        <tr><td><b>2</b> Physics-Informed Neural Networks</td><td>Export run logs; load a trained model back as the twin's motion predictor (ONNX Runtime Web, planned).</td><td>Fit a data-only network vs. a PINN with the robot's kinematics in the loss, on sparse, noisy logs. The heat-equation PINN from the current plan can stay as the warm-up.</td><td>O2</td></tr>
+        <tr><td><b>3</b> Simulation, Synthetic Data &amp; Sim-to-Real</td><td>Calibrate the twin by system identification; author the cell in OpenUSD; generate randomised, labelled camera images.</td><td>Train a policy on the same MJCF with domain randomisation; export ONNX; score it on held-out hidden robots in the browser.</td><td>O4</td></tr>
+        <tr><td><b>4</b> What-If Testing &amp; Safe Autonomous Decisions</td><td>Scenario sweeps (pallet, slippery patch, sensor dropout, latency spike); twin look-ahead safety gate; an agent proposes actions on a topic and the twin approves or blocks them.</td><td>Batch what-if sweeps headless; the ADK agent from the current plan talks to the lab over the bus.</td><td>O5</td></tr>
+        <tr><td><b>Term Project</b> (Weeks 9–10)</td><td>Choose a cell pack: warehouse AMR (prototype), manufacturing cell with arm + conveyor, or drone. Build, calibrate and safety-gate a twin.</td><td>Deploy it to the team's GitHub Pages with a short evidence report.</td><td>O6</td></tr>
+      </tbody>
+    </table></div>
+    <p>O6 lists smart building, drone and manufacturing cell. The prototype's warehouse cell is closest to "manufacturing cell". A drone pack (quadrotor in MuJoCo) and a smart-building pack would need building. The existing <a href="courses/ai-440-interactive/sim04-safety-envelope.html">HVAC safety sim</a> could become the building pack's model.</p>
+  </section>
+
+  <section class="card" id="proto">
+    <h2>7. What the prototype proved</h2>
+    <p class="sub"><a href="courses/ai-440-twin-lab/index.html">Twin Lab v0.1</a>: one HTML file, with MuJoCo, Three.js and Pyodide pinned from jsDelivr.</p>
+    <div class="callout ok">
+      <b>Feasibility test 1 passed: real physics on GitHub Pages</b>
+      MuJoCo 3.17 WASM loads from a CDN without special headers and steps two worlds plus a 1-second look-ahead in real time. The exact MJCF the browser builds loads in Python <code>mujoco</code> 3.17.0 (SHA-256 match) and behaves the same. The <code>.usda</code> export opens in Pixar's <code>usd-core</code> with correct units, axis and geometry.
+    </div>
+    <p>Headless runs of the starter Python node (a route follower that steers by <code>/odom</code>):</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Robot</th><th>Twin mode</th><th>Scenario</th><th>Result</th><th>Odometry error</th><th>Twin–robot gap</th></tr></thead>
+      <tbody>
+        <tr><td>IDEAL (built to spec)</td><td>model</td><td>clear</td><td><span class="tag done">docked, 41 s</span></td><td>0.13 m</td><td>0.00 m</td></tr>
+        <tr><td>AMR-1234</td><td>model</td><td>clear</td><td><span class="tag done">docked</span></td><td>0.11 m</td><td>1.6 m</td></tr>
+        <tr><td>AMR-0007</td><td>model</td><td>clear</td><td><span class="tag done">docked</span></td><td>0.15 m</td><td>5.9 m (open-loop twin hit a wall)</td></tr>
+        <tr><td>AMR-0042</td><td>model</td><td>clear</td><td><span class="tag no">missed dock by 0.54 m</span></td><td>0.50 m</td><td>1.6 m</td></tr>
+        <tr><td>AMR-0042</td><td>shadow</td><td>clear</td><td><span class="tag no">missed dock</span></td><td>0.50 m</td><td>0.03–0.10 m</td></tr>
+        <tr><td>AMR-0042</td><td>twin</td><td>pallet</td><td><span class="tag test">stopped safely, no collision</span></td><td>0.17 m</td><td>0.03 m</td></tr>
+      </tbody>
+    </table></div>
+    <p>System identification on the AMR-0042 run, scored by replaying its commands through the twin (RMSE):</p>
+    <ul>
+      <li><b>Spec-sheet twin:</b> 1.36 m.</li>
+      <li><b>Correct wheel radii only:</b> 0.19 m. Radii dominate.</li>
+      <li><b>Latency, or mass + motor gain, alone:</b> barely moves the error.</li>
+      <li><b>All true parameters:</b> 0.00 m.</li>
+    </ul>
+    <p>Each replay takes about 0.4 s, so students can search by hand or write a fitting script.</p>
+    <h3>Modelling issues found and fixed while building it</h3>
+    <p>These matter because students would hit them on real tools too.</p>
+    <ul>
+      <li><b>Caster friction.</b> MuJoCo combines contact friction by taking the larger of the two surfaces, so "frictionless" casters dragged at the floor's friction. Fixed with contact priority.</li>
+      <li><b>Lidar seeing itself.</b> A rangefinder only ignores its own body, so beams starting on a child body hit the robot's lidar puck. Fixed by mounting the beams on the base.</li>
+      <li><b>Turning error from wide tyres.</b> Wide tyres scrub in turns and spinning wheels over-report rotation. Fixed with thin tyres, noslip solver iterations, and gyro-fused heading (what real AMR drivers do).</li>
+    </ul>
+    <h3>Not yet in v0.1</h3>
+    <p>Camera and synthetic data, manipulator and drone packs, MCAP export, the Gymnasium wrapper, the rosbridge mode, MQTT bridge, accessibility audit (keyboard teleop and tabs work; no screen-reader pass yet), and unmodelled effects so a perfect calibration never reaches exactly zero error.</p>
+  </section>
+
+  <section class="card" id="rules">
+    <h2>8. Check against the design rules</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Rule</th><th>Check</th></tr></thead>
+      <tbody>
+        <tr><td>1. Description and outcomes are fixed</td><td><span class="tag done">fits</span> No wording changes. Coverage: 3D modelling (MJCF + OpenUSD), IoT data assimilation (shadow mode, MQTT bridge), PINNs (HOS 2), SDG (camera pack), sim-to-real (hidden robots), ethics in safety-critical domains (twin safety gate, HOS 4).</td></tr>
+        <tr><td>2. Every hands-on unit runs in GitHub Codespaces</td><td><span class="tag test">needs a decision</span> The lab runs in a browser tab on GitHub Pages, not inside a Codespace. Two ways to stay compliant: (a) open it from inside the Codespace through a forwarded port, with the static files in the course repo; or (b) read the rule as "no local installs", which the lab meets better than Codespaces does. All Python training and analysis stays in Codespaces either way.</td></tr>
+        <tr><td>3. Free tiers and free resources first</td><td><span class="tag done">fits</span> MuJoCo (Apache-2.0), Three.js (MIT), Pyodide (MPL-2.0), GitHub Pages, Codespaces free hours. No keys. NVIDIA tools appear only as optional "open your export in Isaac Sim" stretch work, never graded.</td></tr>
+        <tr><td>4. Two-week HOS, checkpoints in Weeks 6 and 8, project in Weeks 9–10, AI 410 as reference</td><td><span class="tag done">fits</span> Same four HOS on the same schedule; each adds one capability to the same world.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="card" id="limits">
+    <h2>9. What it can't do, honestly</h2>
+    <ul>
+      <li><b>No RTX path-traced rendering.</b> Synthetic images will be raster quality, not Omniverse photorealism. Teach the pipeline (randomise → render → auto-label → measure the gap), not the renderer.</li>
+      <li><b>No GPU-parallel RL.</b> Isaac Lab trains thousands of environments at once; we train a few on CPU. Keep policies small (driving, pushing, docking).</li>
+      <li><b>No DDS networking.</b> The bus mimics ROS 2 topics but not QoS, discovery or tf2. The optional rosbridge mode is where students meet the real middleware.</li>
+      <li><b>The "real robot" is still a simulation.</b> It has hidden differences but the same physics engine, so effects outside MuJoCo (cable drag, sensor temperature drift) only appear if we model them. Say so plainly in the course; real hardware is already out of scope in the outline.</li>
+      <li><b>Marketing language.</b> Students learn MuJoCo, ROS 2 interfaces and OpenUSD, not Isaac Sim. Course copy should say "skills that transfer to Isaac Sim and Omniverse", not "Isaac Sim experience".</li>
+    </ul>
+  </section>
+
+  <section class="card" id="roadmap">
+    <h2>10. Roadmap and feasibility tests</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Phase</th><th>Build</th><th>Feasibility test that gates it</th></tr></thead>
+      <tbody>
+        <tr><td>0 · done</td><td>v0.1 warehouse AMR: plant/twin, three twin modes, rclpy nodes, calibration replay, MJCF/USD/JSON export</td><td><span class="tag done">passed</span> Real physics on GitHub Pages; same MJCF in Python</td></tr>
+        <tr><td>1 · HOS 1</td><td>MQTT-over-WebSockets bridge; Codespace starter with Mosquitto + time-series DB; fusion node exercise</td><td>Browser on github.io can reach a broker in a Codespace (public port or forwarded-port origin)</td></tr>
+        <tr><td>2 · HOS 2</td><td>Run-log dataset generator; PINN notebook on robot kinematics; ONNX Runtime Web loader</td><td>PINN trains on CPU in under 10 minutes in a 2-core Codespace</td></tr>
+        <tr><td>3 · HOS 3</td><td>Camera sensor + randomisation + COCO export; Gymnasium wrapper; ONNX policy runner; USD scene import</td><td>SB3 PPO learns docking on CPU in under 30 minutes; MuJoCo WASM offscreen camera is fast enough</td></tr>
+        <tr><td>4 · HOS 4</td><td>Scenario library, batch sweeps, agent-proposes / twin-approves loop</td><td>Agent call fits the free Gemini tier at lab rates</td></tr>
+        <tr><td>5 · Project</td><td>Manufacturing-cell pack (arm + conveyor); drone pack; student-deployable template repo</td><td>Arm pick-and-place stable in WASM; a drone controller runs at 200 Hz</td></tr>
+        <tr><td>Optional</td><td>rosbridge mode: lab ↔ real ROS 2 Jazzy in a Codespace</td><td>Codespace port forwarding allows the WebSocket from github.io</td></tr>
+      </tbody>
+    </table></div>
+    <p>Where it would live: like AI 410, the course site would be the public source of truth (a <code>cityuseattle/ai440</code> repo), with the lab under <code>/twin-lab/</code>. The prototype stays in this repo until that decision.</p>
+  </section>
+
+  <section class="card" id="decisions">
+    <h2>11. Decisions needed</h2>
+    <ol>
+      <li><b>Adopt the Twin Lab as AI 440's shared lab world?</b> If yes, the four existing draft sims become concept explainers that lead into it rather than separate labs.</li>
+      <li><b>Codespaces rule (section 8):</b> serve the lab from inside the Codespace, or read the rule as "no local installs"?</li>
+      <li><b>Term Project packs:</b> which of warehouse/manufacturing cell, drone and smart building must exist by launch? O6 names all three.</li>
+      <li><b>HOS 2 PINN subject:</b> robot kinematics (fits the shared world) or the heat equation (current draft)? Or both, heat as the warm-up.</li>
+      <li><b>Optional NVIDIA stretch:</b> include an ungraded "open your USD in Isaac Sim / Omniverse" path for students with RTX hardware?</li>
+    </ol>
+  </section>
+</div>
+</body>
+</html>

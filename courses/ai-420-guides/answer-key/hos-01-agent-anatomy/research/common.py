@@ -8,7 +8,7 @@ from google import genai
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
-MODEL = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
+MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 
 SYSTEM = (
     "You are a careful research assistant. Answer using facts you look up, not memory. "

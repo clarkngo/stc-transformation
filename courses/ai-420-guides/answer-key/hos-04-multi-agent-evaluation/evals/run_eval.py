@@ -38,7 +38,7 @@ sys.path.insert(0, str(ROOT))
 load_dotenv(ROOT / ".env")
 logging.getLogger("google_adk").setLevel(logging.CRITICAL)
 
-MODEL = os.getenv("GEMINI_MODEL") or "gemini-3.6-flash"
+MODEL = os.getenv("GEMINI_MODEL") or "gemini-3.8-flash"
 SIM_MODEL = os.getenv("SIM_MODEL") or MODEL
 JUDGE_MODEL = os.getenv("JUDGE_MODEL") or MODEL
 DONE = "DONE"

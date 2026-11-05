@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 440 Twin Lab prototype: a MuJoCo-powered warehouse robot and its digital twin in the browser, driven by Python nodes written against a ROS 2 rclpy-style API.">
+<title>AI 440 Twin Lab</title>
+<style>
+:root {
+  --bg:#fbf7f1; --surface:#ffffff; --surface2:#f6efe4; --border:#e6d8c3;
+  --text:#22170b; --muted:#6b5a45; --accent:#b45309; --accent2:#92400e;
+  --accent-light:#fdf1df; --on-accent:#ffffff; --header-bg:#2a1706; --header-text:#ffffff;
+  --blue:#1d4ed8; --blue-bg:#eaf1ff; --cyan:#0e7490; --cyan-bg:#e3f6fa;
+  --ok:#237a3b; --ok-bg:#e6f6ea; --bad:#c0392b; --bad-bg:#fdecea; --warn:#a16207; --warn-bg:#fff6e0;
+  --code-bg:#15100a; --code-text:#f1e6d6;
+  --shadow:0 2px 8px rgba(40,25,10,.08);
+  --radius:12px; --radius-sm:8px;
+  --mono:'SFMono-Regular',Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#140e07; --surface:#1f160c; --surface2:#2a1e10; --border:#43321c;
+    --text:#f5ecdf; --muted:#b8a488; --accent:#fbbf24; --accent2:#fcd34d;
+    --accent-light:#2e1f08; --on-accent:#2a1706; --header-bg:#0c0803; --header-text:#f5ecdf;
+    --blue:#93b4ff; --blue-bg:#101c38; --cyan:#67e8f9; --cyan-bg:#0b2a30;
+    --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111; --warn:#fcd34d; --warn-bg:#2a2005;
+    --code-bg:#0a0703; --code-text:#f1e6d6; --shadow:0 2px 8px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#140e07; --surface:#1f160c; --surface2:#2a1e10; --border:#43321c;
+  --text:#f5ecdf; --muted:#b8a488; --accent:#fbbf24; --accent2:#fcd34d;
+  --accent-light:#2e1f08; --on-accent:#2a1706; --header-bg:#0c0803; --header-text:#f5ecdf;
+  --blue:#93b4ff; --blue-bg:#101c38; --cyan:#67e8f9; --cyan-bg:#0b2a30;
+  --ok:#86efac; --ok-bg:#0d2615; --bad:#fca5a5; --bad-bg:#2c1111; --warn:#fcd34d; --warn-bg:#2a2005;
+  --code-bg:#0a0703; --code-text:#f1e6d6; --shadow:0 2px 8px rgba(0,0,0,.4);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; min-height:100vh; }
+a { color:var(--accent); }
+:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+code { font-family:var(--mono); font-size:.86em; background:var(--surface2); padding:1px 5px; border-radius:4px; }
+p { margin:0 0 .7em; }
+ul, ol { margin:0 0 .7em 1.3em; }
+.skip-link { position:absolute; left:-999px; }
+.skip-link:focus { position:fixed; left:12px; top:12px; z-index:400; background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:8px; font-weight:700; }
+
+header.top { background:var(--header-bg); color:var(--header-text); }
+.top-inner { max-width:1400px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+.brand-icon { width:36px; height:36px; background:#b45309; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; color:#fff; }
+.brand b { display:block; font-size:.92rem; line-height:1.2; }
+.brand small { font-size:.72rem; opacity:.7; }
+.top-right { display:flex; gap:8px; flex-wrap:wrap; }
+.pill-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); color:var(--header-text); padding:5px 12px; border-radius:20px; font-size:.78rem; font-weight:600; font-family:inherit; text-decoration:none; cursor:pointer; }
+.pill-btn:hover { background:rgba(255,255,255,.22); }
+.draftbar { background:#7c2d12; color:#fff; font-size:.78rem; padding:6px 16px; text-align:center; }
+
+.intro { max-width:1400px; margin:0 auto; padding:18px 16px 6px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; }
+.intro h1 { font-size:clamp(1.3rem,3vw,1.7rem); line-height:1.2; }
+.intro .lede { color:var(--muted); max-width:820px; font-size:.93rem; margin-top:4px; }
+.chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.chip { background:var(--accent-light); color:var(--accent2); border:1px solid var(--border); font-size:.72rem; font-weight:700; padding:2px 10px; border-radius:20px; }
+
+main { max-width:1400px; margin:0 auto; padding:10px 16px 48px; }
+.lab { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:14px; align-items:start; }
+@media (max-width: 980px) { .lab { grid-template-columns:minmax(0,1fr); } }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); }
+.card-h { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 12px; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+.card-h h2 { font-size:.95rem; }
+.card-b { padding:12px; }
+
+.viewport { position:relative; height:min(62vh,560px); min-height:340px; background:var(--surface2); border-radius:0 0 var(--radius) var(--radius); overflow:hidden; }
+.viewport canvas { display:block; width:100%; height:100%; }
+.viewport:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
+.hud { position:absolute; left:10px; top:10px; display:flex; flex-direction:column; gap:4px; pointer-events:none; font-size:.76rem; }
+.hud span { background:rgba(20,14,7,.72); color:#f5ecdf; padding:2px 8px; border-radius:6px; font-family:var(--mono); width:max-content; }
+.hud .stop { background:#b91c1c; color:#fff; font-weight:700; }
+.legend { position:absolute; right:10px; bottom:10px; background:rgba(20,14,7,.72); color:#f5ecdf; font-size:.72rem; padding:6px 9px; border-radius:8px; pointer-events:none; }
+.legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; vertical-align:-1px; }
+.loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; padding:20px; background:var(--surface2); color:var(--muted); font-size:.9rem; }
+
+.toolbar { display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:9px 12px; border-bottom:1px solid var(--border); }
+.toolbar label { font-size:.78rem; color:var(--muted); display:flex; align-items:center; gap:5px; }
+.sep { width:1px; align-self:stretch; background:var(--border); margin:0 2px; }
+button.btn, select, input[type=text], input[type=number] { font-family:inherit; font-size:.82rem; border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:8px; padding:5px 10px; }
+button.btn { cursor:pointer; font-weight:600; }
+button.btn:hover { background:var(--surface2); }
+button.btn.primary { background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
+button.btn.primary:hover { filter:brightness(1.08); }
+button.btn[aria-pressed="true"] { background:var(--accent-light); border-color:var(--accent); color:var(--accent2); }
+button.btn:disabled { opacity:.5; cursor:not-allowed; }
+input[type=number] { width:86px; }
+
+.modes { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.mode { text-align:left; border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:9px; padding:7px 9px; cursor:pointer; font-family:inherit; }
+.mode b { display:block; font-size:.82rem; }
+.mode small { display:block; font-size:.7rem; color:var(--muted); line-height:1.3; }
+.mode[aria-pressed="true"] { border-color:var(--cyan); background:var(--cyan-bg); }
+@media (max-width: 560px) { .modes { grid-template-columns:1fr; } }
+
+.tabs { display:flex; gap:2px; padding:6px 8px 0; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+.tabs button { border:1px solid transparent; border-bottom:none; background:none; color:var(--muted); font-family:inherit; font-size:.8rem; font-weight:700; padding:6px 10px; border-radius:8px 8px 0 0; cursor:pointer; }
+.tabs button[aria-selected="true"] { background:var(--surface2); color:var(--text); border-color:var(--border); }
+.tabpanel { padding:12px; }
+.tabpanel[hidden] { display:none; }
+
+textarea#code { width:100%; height:430px; resize:vertical; font-family:var(--mono); font-size:.76rem; line-height:1.45; background:var(--code-bg); color:var(--code-text); border:1px solid var(--border); border-radius:8px; padding:10px; tab-size:4; white-space:pre; }
+.hint { font-size:.76rem; color:var(--muted); }
+.status { font-size:.78rem; padding:6px 9px; border-radius:7px; background:var(--surface2); color:var(--muted); margin-top:8px; }
+.status.ok { background:var(--ok-bg); color:var(--ok); }
+.status.bad { background:var(--bad-bg); color:var(--bad); }
+
+table { width:100%; border-collapse:collapse; font-size:.76rem; }
+th, td { text-align:left; padding:5px 6px; border-bottom:1px solid var(--border); vertical-align:top; }
+th { color:var(--muted); font-weight:700; font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; }
+td code { font-size:.72rem; }
+tr.clickable { cursor:pointer; }
+tr.clickable:hover td, tr.sel td { background:var(--surface2); }
+.scroll { max-height:260px; overflow:auto; }
+pre.echo { background:var(--code-bg); color:var(--code-text); font-family:var(--mono); font-size:.72rem; padding:10px; border-radius:8px; max-height:240px; overflow:auto; margin-top:8px; white-space:pre-wrap; }
+
+.params { display:grid; grid-template-columns:1fr auto auto; gap:6px 10px; align-items:center; font-size:.8rem; }
+.params input[type=range] { width:100%; accent-color:var(--accent); }
+.params output { font-family:var(--mono); font-size:.75rem; min-width:62px; text-align:right; }
+.params .lbl { grid-column:1 / -1; margin-top:2px; font-weight:600; display:flex; justify-content:space-between; }
+.rmse { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+.metric { background:var(--surface2); border-radius:9px; padding:8px 10px; }
+.metric small { display:block; font-size:.7rem; color:var(--muted); }
+.metric b { font-family:var(--mono); font-size:1.05rem; }
+.reveal { margin-top:10px; font-size:.78rem; }
+
+.bottom { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:14px; margin-top:14px; }
+@media (max-width: 980px) { .bottom { grid-template-columns:minmax(0,1fr); } }
+#console { font-family:var(--mono); font-size:.72rem; background:var(--code-bg); color:var(--code-text); height:220px; overflow:auto; padding:8px 10px; border-radius:0 0 var(--radius) var(--radius); white-space:pre-wrap; }
+#console .warn { color:#fcd34d; } #console .error { color:#fca5a5; } #console .sys { color:#93c5fd; } #console .ok { color:#86efac; }
+canvas#chart { width:100%; height:150px; display:block; }
+.badge { display:inline-block; font-size:.68rem; font-weight:800; padding:1px 7px; border-radius:10px; }
+.badge.ok { background:var(--ok-bg); color:var(--ok); } .badge.bad { background:var(--bad-bg); color:var(--bad); } .badge.warn { background:var(--warn-bg); color:var(--warn); }
+details.about { margin-top:14px; }
+details.about summary { cursor:pointer; font-weight:700; padding:10px 12px; }
+details.about .card-b { border-top:1px solid var(--border); font-size:.88rem; }
+details.about h3 { font-size:.92rem; margin:10px 0 4px; }
+.sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="../ai-440-interactive/index.html"><span class="brand-icon">440</span><span><b>AI 440: Digital Twins and Physical AI</b><small>Twin Lab — prototype</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../AI-440.html">← AI 440</a><a class="pill-btn" href="../../ai440-twin-lab-plan.html">Plan</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+  <div class="draftbar">Prototype v0.1 (Nov 4, 2026). It's built to test whether the idea works and isn't course material yet. The physics engine is real; the "real robot" is a second simulation with hidden differences.</div>
+</header>
+
+<div class="intro">
+  <div>
+    <h1>Twin Lab: warehouse robot &amp; its digital twin</h1>
+    <p class="lede">A delivery robot (AMR) has to reach its charging dock. The <b>solid robot</b> stands in for the real machine: it has hidden manufacturing differences, motor latency and sensor noise. The <b>cyan ghost</b> is your digital twin, built from the spec sheet. Drive the robot with a Python node, then measure the gap between twin and robot and close it.</p>
+    <div class="chips"><span class="chip">MuJoCo 3.17 physics (WebAssembly)</span><span class="chip">ROS 2 rclpy-style Python</span><span class="chip">MJCF + OpenUSD export</span><span class="chip">O1 · O3 · O5 · sim-to-real</span></div>
+  </div>
+</div>
+
+<main id="main">
+<div class="lab">
+  <section class="card" aria-labelledby="viewH">
+    <div class="card-h"><h2 id="viewH">Warehouse cell</h2>
+      <span class="hint">Drag to orbit · scroll to zoom · teleop: click the view, then arrow keys / WASD</span></div>
+    <div class="toolbar">
+      <button class="btn primary" id="runBtn" type="button" disabled>▶ Run</button>
+      <button class="btn" id="pauseBtn" type="button" disabled aria-pressed="false">⏸ Pause</button>
+      <button class="btn" id="resetBtn" type="button" disabled>↺ Reset</button>
+      <span class="sep"></span>
+      <label>Control <select id="control"><option value="python">Python node</option><option value="teleop">Keyboard teleop</option></select></label>
+      <label>Scenario <select id="scenario"><option value="clear">Clear aisles</option><option value="pallet">What-if: pallet left in aisle</option></select></label>
+      <label>Speed <select id="speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+      <span class="sep"></span>
+      <button class="btn" id="raysBtn" type="button" aria-pressed="true">Lidar rays</button>
+      <button class="btn" id="followBtn" type="button" aria-pressed="false">Follow cam</button>
+    </div>
+    <div class="viewport" id="viewport" tabindex="0" role="img" aria-label="3D view of the warehouse cell: a mobile robot, its translucent digital twin, two shelving racks and a green charging dock.">
+      <canvas id="three"></canvas>
+      <div class="hud" aria-live="off">
+        <span id="hudTime">t = 0.0 s</span>
+        <span id="hudMission">Mission: ready</span>
+        <span id="hudDiv">Twin divergence: 0.00 m</span>
+        <span id="hudStop" class="stop" hidden>TWIN SAFETY STOP</span>
+      </div>
+      <div class="legend"><div><i style="background:#334155"></i>Robot (plant)</div><div><i style="background:#22d3ee"></i>Digital twin</div><div><i style="background:#16a34a"></i>Dock</div></div>
+      <div class="loading" id="loading">Loading the MuJoCo physics engine (about 9 MB, first visit only)…</div>
+    </div>
+    <div class="card-b">
+      <div class="modes" role="group" aria-label="How the twin is connected to the robot">
+        <button class="mode" type="button" data-mode="model" aria-pressed="true"><b>Digital model</b><small>No live data. The twin only sees the same /cmd_vel and predicts open-loop.</small></button>
+        <button class="mode" type="button" data-mode="shadow" aria-pressed="false"><b>Digital shadow</b><small>Physical → virtual: the twin corrects itself from /uwb/pose.</small></button>
+        <button class="mode" type="button" data-mode="twin" aria-pressed="false"><b>Digital twin</b><small>Both ways: the twin runs 1 s ahead and can stop the robot.</small></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" aria-label="Lab panels">
+    <div class="tabs" role="tablist" aria-label="Lab panels">
+      <button role="tab" id="tab-code" aria-controls="panel-code" aria-selected="true" type="button">Node (Python)</button>
+      <button role="tab" id="tab-topics" aria-controls="panel-topics" aria-selected="false" tabindex="-1" type="button">Topics</button>
+      <button role="tab" id="tab-sysid" aria-controls="panel-sysid" aria-selected="false" tabindex="-1" type="button">Twin calibration</button>
+      <button role="tab" id="tab-export" aria-controls="panel-export" aria-selected="false" tabindex="-1" type="button">Export</button>
+    </div>
+
+    <div class="tabpanel" role="tabpanel" id="panel-code" aria-labelledby="tab-code">
+      <label for="code" class="hint">The same API as ROS 2's <code>rclpy</code>: <code>Node</code>, <code>create_publisher</code>, <code>create_subscription</code>, <code>create_timer</code>, <code>get_logger</code>. Runs in your browser (Pyodide). Press ▶ Run to start it.</label>
+      <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+        <button class="btn" id="restoreBtn" type="button">Restore starter node</button>
+      </div>
+      <div class="status" id="pyStatus">Python loads the first time you run a node (about 10 MB).</div>
+    </div>
+
+    <div class="tabpanel" role="tabpanel" id="panel-topics" aria-labelledby="tab-topics" hidden>
+      <p class="hint">Live view of the topic graph, like <code>ros2 topic list -t</code>, <code>ros2 topic hz</code> and <code>ros2 topic echo</code>. Select a row to echo its last message.</p>
+      <div class="scroll"><table><thead><tr><th>Topic</th><th>Type</th><th>Hz</th><th>Publishers → Subscribers</th></tr></thead><tbody id="topicRows"></tbody></table></div>
+      <pre class="echo" id="echo" aria-live="off">Select a topic to echo it.</pre>
+    </div>
+
+    <div class="tabpanel" role="tabpanel" id="panel-sysid" aria-labelledby="tab-sysid" hidden>
+      <p class="hint">The twin starts at the spec sheet values. The real robot doesn't match them. Do a run, then adjust these parameters and <b>Replay</b> the run's exact commands through the twin. Lower replay error means a more faithful twin. This is <b>system identification</b>.</p>
+      <div class="params" id="params"></div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <button class="btn primary" id="replayBtn" type="button" disabled>Replay last run through twin</button>
+        <button class="btn" id="applyBtn" type="button">Apply to live twin</button>
+        <button class="btn" id="specBtn" type="button">Back to spec sheet</button>
+      </div>
+      <div class="rmse">
+        <div class="metric"><small>Replay error, spec-sheet twin</small><b id="rmseSpec">—</b></div>
+        <div class="metric"><small>Replay error, your twin</small><b id="rmseMine">—</b></div>
+      </div>
+      <div class="reveal">
+        <label>Robot serial <input type="text" id="serial" value="AMR-0042" size="12" aria-describedby="serialHint"></label>
+        <span class="hint" id="serialHint">Each serial is a different physical robot. Instructors give each student their own.</span>
+        <div style="margin-top:6px"><button class="btn" id="revealBtn" type="button" aria-expanded="false">Reveal true robot parameters (instructor)</button></div>
+        <div id="revealOut" class="hint" hidden></div>
+      </div>
+    </div>
+
+    <div class="tabpanel" role="tabpanel" id="panel-export" aria-labelledby="tab-export" hidden>
+      <p class="hint">Everything you build here leaves in an industry format, so it carries over to desktop tools.</p>
+      <table>
+        <tr><td><button class="btn" id="exMjcf" type="button">Twin model (.xml, MJCF)</button></td><td>Loads unchanged in Python: <code>mujoco.MjModel.from_xml_path()</code> in your Codespace, MuJoCo Playground, or the MuJoCo desktop viewer.</td></tr>
+        <tr><td><button class="btn" id="exUsd" type="button">Scene (.usda, OpenUSD)</button></td><td>Text-format USD stage, Z-up, metres. Opens in <code>usdview</code>, Blender and NVIDIA Omniverse / Isaac Sim.</td></tr>
+        <tr><td><button class="btn" id="exLog" type="button" disabled>Last run log (.json)</button></td><td>Commands, ground truth and odometry for offline system identification in Python. (MCAP for Foxglove is planned.)</td></tr>
+        <tr><td><button class="btn" id="exNode" type="button">Your node (.py)</button></td><td>Your rclpy node. Porting it to a real ROS 2 install changes only the launch line.</td></tr>
+      </table>
+    </div>
+  </section>
+</div>
+
+<div class="bottom">
+  <section class="card" aria-labelledby="conH">
+    <div class="card-h"><h2 id="conH">Console</h2><button class="btn" id="clearCon" type="button">Clear</button></div>
+    <div id="console" role="log" aria-live="polite"></div>
+  </section>
+  <section class="card" aria-labelledby="chartH">
+    <div class="card-h"><h2 id="chartH">Twin divergence &amp; runs</h2><span class="hint">distance between twin and robot (m)</span></div>
+    <div class="card-b">
+      <canvas id="chart" role="img" aria-label="Line chart of twin-to-robot distance over the current run"></canvas>
+      <div class="scroll" style="margin-top:8px;max-height:170px"><table><thead><tr><th>#</th><th>Control · twin mode · scenario</th><th>Result</th><th>Time</th><th>Hits</th><th>Dock err</th><th>Odom err</th></tr></thead><tbody id="runRows"><tr><td colspan="7" class="hint">No runs yet.</td></tr></tbody></table></div>
+    </div>
+  </section>
+</div>
+
+<details class="card about">
+  <summary>What this prototype is testing, and things to try</summary>
+  <div class="card-b">
+    <h3>Things to try</h3>
+    <ol>
+      <li><b>See the sim-to-real gap.</b> Press ▶ Run with the starter node in <i>Digital model</i> mode. The node steers by wheel odometry. Watch where the robot ends up compared with the twin and the dock.</li>
+      <li><b>Assimilate live data.</b> Switch to <i>Digital shadow</i> and run again. The twin pulls itself toward the robot's indoor-positioning fix (<code>/uwb/pose</code>, 5 Hz, noisy).</li>
+      <li><b>Calibrate the twin.</b> In <i>Twin calibration</i>, adjust wheel radii, mass, motor gain and latency until replay error drops. Which parameter matters most?</li>
+      <li><b>What-if + safety.</b> Choose the pallet scenario in <i>Digital twin</i> mode. The twin predicts the collision and stops the robot. Then edit the node so it routes around the pallet (use <code>/scan</code>).</li>
+    </ol>
+    <h3>Why it's built this way</h3>
+    <p>Each piece maps to something employers name: MuJoCo is listed alongside Isaac Sim in robotics simulation postings, nodes use ROS 2's rclpy API and standard message types, and scenes export as MJCF and OpenUSD. The physics is real (DeepMind's official MuJoCo WebAssembly build), so contact, friction, motor saturation and inertia aren't scripted. The full rationale and roadmap are on the <a href="../../ai440-twin-lab-plan.html">plan page</a>.</p>
+    <h3>Not in this prototype yet</h3>
+    <p>Camera sensor and synthetic-data export (HOS 3), robot arm cell, MCAP logs, a Gymnasium-style environment for RL, and a bridge to a real ROS 2 install over rosbridge.</p>
+  </div>
+</details>
+</main>
+
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  try { var saved=localStorage.getItem('ai440-theme'); if(saved) root.setAttribute('data-theme',saved); } catch(e){}
+  function isDark(){ var t=root.getAttribute('data-theme'); return t ? t==='dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label(){ btn.textContent = isDark() ? '☀️ Light' : '🌙 Dark'; }
+  label();
+  btn.addEventListener('click', function(){
+    var next=isDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try { localStorage.setItem('ai440-theme',next); } catch(e){}
+    label(); window.dispatchEvent(new Event('themechange'));
+  });
+})();
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const $ = id => document.getElementById(id);
+
+// ───────────────────────── constants ─────────────────────────
+const DT = 0.005;                 // physics timestep (s)
+const R_NOM = 0.05, B_NOM = 0.36; // spec-sheet wheel radius and track width (m)
+const LIDAR_N = 36, RANGE_MAX = 8.0, RANGE_MIN = 0.12;
+const START = { x: -4.0, y: -3.0, yaw: 0 };
+const DOCK = { x: 4.0, y: -2.5 };
+const MISSION_LIMIT = 120;        // s
+const SPEC = { rL: 0.050, rR: 0.050, mass: 8.0, kv: 1.5, latency: 0.00 };
+const PARAM_UI = [
+  { key: 'rL', label: 'Left wheel radius', unit: 'm', min: 0.046, max: 0.054, step: 0.0002, fmt: v => v.toFixed(4) },
+  { key: 'rR', label: 'Right wheel radius', unit: 'm', min: 0.046, max: 0.054, step: 0.0002, fmt: v => v.toFixed(4) },
+  { key: 'mass', label: 'Chassis mass', unit: 'kg', min: 6, max: 14, step: 0.1, fmt: v => v.toFixed(1) },
+  { key: 'kv', label: 'Motor velocity gain kv', unit: '', min: 0.6, max: 2.4, step: 0.05, fmt: v => v.toFixed(2) },
+  { key: 'latency', label: 'Command latency', unit: 's', min: 0, max: 0.2, step: 0.005, fmt: v => v.toFixed(3) },
+];
+
+// ───────────────────────── seeded "physical robot" ─────────────────────────
+function hashSeed(s) { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; }
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function plantParams(serial) {
+  // Serial "IDEAL" is a robot built exactly to the spec sheet: a baseline where twin and robot should agree.
+  if (serial.trim().toUpperCase() === 'IDEAL') return { ...SPEC, lidarSigma: 0, lidarBias: 0, gyroBias: 0 };
+  const r = mulberry32(hashSeed(serial.trim().toUpperCase() || 'AMR'));
+  const u = (a, b) => a + (b - a) * r();
+  // Tyre wear and tolerances: the two wheels differ by roughly 0.3–1.3 %.
+  const small = 0.05 * u(0.991, 0.997), big = 0.05 * u(1.0, 1.004);
+  const leftSmall = r() < 0.5;
+  return {
+    rL: leftSmall ? small : big, rR: leftSmall ? big : small,
+    mass: 8 * u(1.15, 1.45), kv: 1.5 * u(0.65, 0.9), latency: u(0.05, 0.12),
+    lidarSigma: u(0.01, 0.03), lidarBias: u(-0.02, 0.02), gyroBias: u(-0.004, 0.004),
+  };
+}
+let rng = mulberry32(7);
+function gauss() { let u = 0, v = 0; while (!u) u = rng(); while (!v) v = rng(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+
+// ───────────────────────── MJCF builder ─────────────────────────
+function buildXML(p, scenario) {
+  const f = n => (+n).toFixed(5);
+  let sites = '', rays = '';
+  for (let i = 0; i < LIDAR_N; i++) {
+    const a = -Math.PI + i * 2 * Math.PI / LIDAR_N;
+    sites += `\n        <site name="ray${i}" pos="0.08 0 0.14" zaxis="${f(Math.cos(a))} ${f(Math.sin(a))} 0" size="0.004"/>`;
+    rays += `\n    <rangefinder name="lidar${i}" site="ray${i}" cutoff="${RANGE_MAX}"/>`;
+  }
+  const pallet = scenario === 'pallet'
+    ? `\n    <geom name="pallet" type="box" size="0.45 0.4 0.16" pos="0.15 0.4 0.16" rgba="0.55 0.38 0.2 1" group="1"/>` : '';
+  return `<mujoco model="amr_cell">
+  <compiler angle="radian" autolimits="true"/>
+  <option timestep="${DT}" integrator="implicitfast" noslip_iterations="5"/>
+  <visual><global offwidth="640" offheight="480"/></visual>
+  <worldbody>
+    <light pos="0 0 6" dir="0 0 -1" directional="true"/>
+    <geom name="floor" type="plane" size="5 4 0.1" rgba="0.82 0.8 0.76 1"/>
+    <geom name="wall_n" type="box" size="5.1 0.1 0.4" pos="0 4.1 0.4" rgba="0.62 0.6 0.57 1" group="1"/>
+    <geom name="wall_s" type="box" size="5.1 0.1 0.4" pos="0 -4.1 0.4" rgba="0.62 0.6 0.57 1" group="1"/>
+    <geom name="wall_e" type="box" size="0.1 4.0 0.4" pos="5.1 0 0.4" rgba="0.62 0.6 0.57 1" group="1"/>
+    <geom name="wall_w" type="box" size="0.1 4.0 0.4" pos="-5.1 0 0.4" rgba="0.62 0.6 0.57 1" group="1"/>
+    <geom name="rack_a" type="box" size="0.25 2.25 0.6" pos="-1.5 0.25 0.6" rgba="0.85 0.45 0.1 1" group="1"/>
+    <geom name="rack_b" type="box" size="0.25 2.25 0.6" pos="1.5 -0.75 0.6" rgba="0.85 0.45 0.1 1" group="1"/>${pallet}
+    <geom name="dock" type="box" size="0.35 0.35 0.003" pos="${DOCK.x} ${DOCK.y} 0.003" rgba="0.09 0.64 0.29 1" contype="0" conaffinity="0" group="2"/>
+    <geom name="dock_post" type="box" size="0.05 0.3 0.25" pos="4.95 ${DOCK.y} 0.25" rgba="0.09 0.5 0.25 1" group="1"/>
+    <body name="base_link" pos="${START.x} ${START.y} 0.09">
+      <freejoint name="root"/>
+      <geom name="chassis" type="box" size="0.22 0.15 0.04" mass="${f(p.mass)}" rgba="0.2 0.25 0.33 1"/>
+      <geom name="deck" type="box" size="0.18 0.12 0.01" pos="0 0 0.05" mass="0.1" rgba="0.95 0.7 0.1 1"/>
+      <geom name="lidar_puck" type="cylinder" size="0.045 0.025" pos="0.08 0 0.085" mass="0.2" rgba="0.75 0.1 0.1 1"/>
+      <geom name="caster_f" type="sphere" size="0.03" pos="0.17 0 -0.06" mass="0.1" priority="1" condim="1" rgba="0.3 0.3 0.3 1"/>
+      <geom name="caster_r" type="sphere" size="0.03" pos="-0.17 0 -0.06" mass="0.1" priority="1" condim="1" rgba="0.3 0.3 0.3 1"/>
+      <site name="imu" pos="0 0 0"/>
+      <!-- Lidar beams start on base_link itself: a rangefinder ignores only its own body's geoms. -->${sites}
+      <body name="wheel_left" pos="0 ${B_NOM / 2} ${f(p.rL - 0.09)}">
+        <joint name="wheel_left_joint" type="hinge" axis="0 1 0" damping="0.002"/>
+        <geom name="wheel_left_tire" type="cylinder" size="${f(p.rL)} 0.008" zaxis="0 1 0" mass="0.4" friction="1.2 0.01 0.001" rgba="0.08 0.08 0.08 1"/>
+      </body>
+      <body name="wheel_right" pos="0 ${-B_NOM / 2} ${f(p.rR - 0.09)}">
+        <joint name="wheel_right_joint" type="hinge" axis="0 1 0" damping="0.002"/>
+        <geom name="wheel_right_tire" type="cylinder" size="${f(p.rR)} 0.008" zaxis="0 1 0" mass="0.4" friction="1.2 0.01 0.001" rgba="0.08 0.08 0.08 1"/>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <velocity name="motor_left" joint="wheel_left_joint" kv="${f(p.kv)}" ctrlrange="-25 25" forcerange="-0.8 0.8"/>
+    <velocity name="motor_right" joint="wheel_right_joint" kv="${f(p.kv)}" ctrlrange="-25 25" forcerange="-0.8 0.8"/>
+  </actuator>
+  <sensor>${rays}
+    <gyro name="imu_gyro" site="imu"/>
+    <accelerometer name="imu_accel" site="imu"/>
+    <jointvel name="enc_left" joint="wheel_left_joint"/>
+    <jointvel name="enc_right" joint="wheel_right_joint"/>
+  </sensor>
+</mujoco>
+`;
+}
+
+// ───────────────────────── physics world wrapper ─────────────────────────
+let mj = null;
+class World {
+  constructor(params, scenario) {
+    this.params = { ...params };
+    this.scenario = scenario;
+    this.xml = buildXML(params, scenario);
+    this.model = mj.MjModel.from_xml_string(this.xml);
+    this.data = new mj.MjData(this.model);
+    this.queue = []; this.cmd = { v: 0, w: 0 }; this.lastCmdT = -1e9;
+    const m = this.model;
+    this.robotGeoms = new Set(); this.obstacleGeoms = new Set();
+    for (let i = 0; i < m.ngeom; i++) {
+      if (m.geom_bodyid[i] > 0) this.robotGeoms.add(i);
+      else if (m.geom_group[i] === 1) this.obstacleGeoms.add(i);
+    }
+    mj.mj_forward(m, this.data);
+  }
+  receive(cmd) { this.queue.push({ t: this.data.time + (this.params.latency || 0), v: cmd.v, w: cmd.w }); }
+  applyCommands() {
+    const t = this.data.time;
+    while (this.queue.length && this.queue[0].t <= t + 1e-9) { const c = this.queue.shift(); this.cmd = c; this.lastCmdT = t; }
+    const live = (t - this.lastCmdT) < 0.5;           // watchdog: stop if commands stop arriving
+    const v = live ? this.cmd.v : 0, w = live ? this.cmd.w : 0;
+    // Motor controller uses the spec-sheet geometry — it doesn't know the real wheel sizes.
+    setWheels(this.data, v, w);
+  }
+  step() { this.applyCommands(); mj.mj_step(this.model, this.data); }
+  pose() { const q = this.data.qpos; return { x: q[0], y: q[1], yaw: yawOf(q[3], q[4], q[5], q[6]) }; }
+  setPose(x, y, yaw) { const q = this.data.qpos; q[0] = x; q[1] = y; q[3] = Math.cos(yaw / 2); q[4] = 0; q[5] = 0; q[6] = Math.sin(yaw / 2); }
+  inCollision(d = this.data) {
+    if (d.ncon === 0) return false;
+    const cs = d.contact; let hit = false;
+    try {
+      for (let i = 0; i < cs.size() && !hit; i++) {
+        const c = cs.get(i), g1 = c.geom1, g2 = c.geom2;
+        if ((this.robotGeoms.has(g1) && this.obstacleGeoms.has(g2)) || (this.robotGeoms.has(g2) && this.obstacleGeoms.has(g1))) hit = true;
+        c.delete && c.delete();
+      }
+    } finally { cs.delete(); }
+    return hit;
+  }
+  dispose() { this.scratch && this.scratch.delete(); this.data.delete(); this.model.delete(); }
+}
+function setWheels(d, v, w) {
+  const clamp = (x, a) => Math.max(-a, Math.min(a, x));
+  d.ctrl[0] = clamp((v - w * B_NOM / 2) / R_NOM, 25);
+  d.ctrl[1] = clamp((v + w * B_NOM / 2) / R_NOM, 25);
+}
+const yawOf = (w, x, y, z) => Math.atan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z));
+const wrap = a => Math.atan2(Math.sin(a), Math.cos(a));
+
+// ───────────────────────── ROS 2-style topic bus ─────────────────────────
+const bus = {
+  topics: new Map(), nodes: new Set(),
+  topic(name, type) {
+    let t = this.topics.get(name);
+    if (!t) { t = { name, type, pubs: new Set(), subs: new Set(), handlers: [], stamps: [], last: null, py: false }; this.topics.set(name, t); }
+    if (type && !t.type) t.type = type;
+    return t;
+  },
+  advertise(name, type, node) { this.topic(name, type).pubs.add(node); this.nodes.add(node); },
+  subscribe(name, type, node, fn) { const t = this.topic(name, type); t.subs.add(node); this.nodes.add(node); if (fn) t.handlers.push(fn); },
+  publish(name, type, msg, node) {
+    const t = this.topic(name, type); t.pubs.add(node); t.last = msg;
+    const now = sim.plant ? sim.plant.data.time : 0;
+    t.stamps.push(now); if (t.stamps.length > 60) t.stamps.shift();
+    for (const h of t.handlers) h(msg);
+    if (t.py && py.deliver) py.deliverMsg(name, msg);
+  },
+  hz(t) {
+    const now = sim.plant ? sim.plant.data.time : 0;
+    const recent = t.stamps.filter(s => s > now - 2);
+    if (recent.length < 2) return 0;
+    return (recent.length - 1) / (recent[recent.length - 1] - recent[0] || 1);
+  },
+  resetUserSide() {
+    for (const t of this.topics.values()) { t.py = false; for (const n of [...t.pubs]) if (!SYS_NODES.has(n)) t.pubs.delete(n); for (const n of [...t.subs]) if (!SYS_NODES.has(n)) t.subs.delete(n); }
+    for (const n of [...this.nodes]) if (!SYS_NODES.has(n)) this.nodes.delete(n);
+  },
+};
+const SYS_NODES = new Set(['/robot_driver', '/uwb_positioning', '/digital_twin']);
+
+const stamp = t => ({ sec: Math.floor(t), nanosec: Math.round((t - Math.floor(t)) * 1e9) });
+const header = (t, frame) => ({ stamp: stamp(t), frame_id: frame });
+const quatYaw = yaw => ({ x: 0, y: 0, z: Math.sin(yaw / 2), w: Math.cos(yaw / 2) });
+const cov = (d) => { const c = new Array(36).fill(0); d.forEach((v, i) => c[i * 7] = v); return c; };
+
+// ───────────────────────── simulation state ─────────────────────────
+const sim = {
+  plant: null, twin: null, running: false, paused: false, mode: 'model', scenario: 'clear',
+  twinParams: { ...SPEC }, plantSerial: 'AMR-0042', truePlant: null,
+  odom: { ...START, v: 0, w: 0 }, nextPub: {}, stopActive: false, stopUntil: 0,
+  mission: null, divergence: [], lastRun: null, runs: [], record: null,
+};
+
+function buildWorlds() {
+  sim.plant && sim.plant.dispose(); sim.twin && sim.twin.dispose();
+  sim.truePlant = plantParams(sim.plantSerial);
+  rng = mulberry32(hashSeed(sim.plantSerial) ^ 0x9e3779b9);
+  sim.plant = new World(sim.truePlant, sim.scenario);
+  sim.twin = new World(sim.twinParams, sim.scenario);
+  sim.twin.scratch = new mj.MjData(sim.twin.model);
+  sim.odom = { ...START, v: 0, w: 0 };
+  sim.nextPub = { scan: 0, odom: 0, imu: 0, joints: 0, uwb: 0, twin: 0, predict: 0, py: 0 };
+  sim.stopActive = false; sim.divergence = [];
+  sim.mission = { status: 'ready', hits: 0, inContact: false, lastContact: -1e9, minClear: Infinity, dockedFor: 0, t: 0 };
+  sim.record = { cmds: [], truth: [], odom: [] };
+  scene3d.rebuild();
+  updateHud();
+}
+
+// Plant-side handlers (what the robot's firmware and sensors do)
+function wireSystemNodes() {
+  bus.subscribe('/cmd_vel', 'geometry_msgs/msg/Twist', '/robot_driver', msg => {
+    let v = Math.max(-0.8, Math.min(0.8, msg.linear.x)), w = Math.max(-2.5, Math.min(2.5, msg.angular.z));
+    if (sim.record && sim.running) sim.record.cmds.push({ t: sim.plant.data.time, v, w });
+    sim.twin.receive({ v, w });
+    if (sim.stopActive && v > 0) v = 0;   // twin's safety stop gates forward motion (like Nav2's collision monitor)
+    sim.plant.receive({ v, w });
+  });
+  bus.subscribe('/cmd_vel', 'geometry_msgs/msg/Twist', '/digital_twin');
+  bus.subscribe('/uwb/pose', 'geometry_msgs/msg/PoseWithCovarianceStamped', '/digital_twin', msg => {
+    if (sim.mode === 'model') return;
+    const k = 0.35, p = sim.twin.pose();
+    const mx = msg.pose.pose.position.x, my = msg.pose.pose.position.y, o = msg.pose.pose.orientation;
+    const myaw = yawOf(o.w, o.x, o.y, o.z);
+    sim.twin.setPose(p.x + k * (mx - p.x), p.y + k * (my - p.y), p.yaw + k * wrap(myaw - p.yaw));
+  });
+  bus.advertise('/scan', 'sensor_msgs/msg/LaserScan', '/robot_driver');
+  bus.advertise('/odom', 'nav_msgs/msg/Odometry', '/robot_driver');
+  bus.advertise('/imu', 'sensor_msgs/msg/Imu', '/robot_driver');
+  bus.advertise('/joint_states', 'sensor_msgs/msg/JointState', '/robot_driver');
+  bus.advertise('/uwb/pose', 'geometry_msgs/msg/PoseWithCovarianceStamped', '/uwb_positioning');
+  bus.advertise('/twin/pose', 'geometry_msgs/msg/PoseStamped', '/digital_twin');
+  bus.advertise('/twin/divergence', 'std_msgs/msg/Float64', '/digital_twin');
+  bus.advertise('/twin/safety_stop', 'std_msgs/msg/Bool', '/digital_twin');
+}
+
+function physicsStep() {
+  const P = sim.plant, T = sim.twin;
+  P.step(); T.step();
+  const t = P.data.time, sd = P.data.sensordata;
+
+  // Odometry as most AMR drivers do it: distance from the wheel encoders (with the spec-sheet radius,
+  // since the firmware doesn't know the real one) and heading from the gyro (which has a small bias).
+  const wl = sd[LIDAR_N + 6], wr = sd[LIDAR_N + 7];
+  const gz = sd[LIDAR_N + 2] + sim.truePlant.gyroBias + gauss() * 0.002;
+  const v = R_NOM * (wl + wr) / 2, w = gz, o = sim.odom;
+  o.x += v * Math.cos(o.yaw + w * DT / 2) * DT; o.y += v * Math.sin(o.yaw + w * DT / 2) * DT; o.yaw = wrap(o.yaw + w * DT); o.v = v; o.w = w;
+
+  const due = (k, hz) => { if (t + 1e-9 >= sim.nextPub[k]) { sim.nextPub[k] = t + 1 / hz; return true; } return false; };
+  const tp = P.pose();
+
+  if (due('scan', 10)) {
+    const p = sim.truePlant, ranges = [];
+    for (let i = 0; i < LIDAR_N; i++) {
+      const r = sd[i];
+      ranges.push(r < 0 || r >= RANGE_MAX ? null : Math.max(RANGE_MIN, r + p.lidarBias + gauss() * p.lidarSigma));
+    }
+    bus.publish('/scan', 'sensor_msgs/msg/LaserScan', {
+      header: header(t, 'lidar_link'), angle_min: -Math.PI, angle_max: Math.PI - 2 * Math.PI / LIDAR_N,
+      angle_increment: 2 * Math.PI / LIDAR_N, time_increment: 0, scan_time: 0.1,
+      range_min: RANGE_MIN, range_max: RANGE_MAX, ranges, intensities: [] }, '/robot_driver');
+    sim.lastScan = ranges;
+    const valid = ranges.filter(r => r !== null); if (valid.length && sim.running) sim.mission.minClear = Math.min(sim.mission.minClear, Math.min(...valid));
+  }
+  if (due('odom', 20)) {
+    bus.publish('/odom', 'nav_msgs/msg/Odometry', {
+      header: header(t, 'odom'), child_frame_id: 'base_link',
+      pose: { pose: { position: { x: o.x, y: o.y, z: 0 }, orientation: quatYaw(o.yaw) }, covariance: cov([0.01, 0.01, 1e6, 1e6, 1e6, 0.02]) },
+      twist: { twist: { linear: { x: o.v, y: 0, z: 0 }, angular: { x: 0, y: 0, z: o.w } }, covariance: cov([0.01, 1e6, 1e6, 1e6, 1e6, 0.02]) } }, '/robot_driver');
+    if (sim.running) sim.record.odom.push({ t, x: o.x, y: o.y, yaw: o.yaw });
+  }
+  if (due('imu', 50)) {
+    bus.publish('/imu', 'sensor_msgs/msg/Imu', {
+      header: header(t, 'imu_link'), orientation: { x: 0, y: 0, z: 0, w: 1 }, orientation_covariance: [-1, 0, 0, 0, 0, 0, 0, 0, 0],
+      angular_velocity: { x: sd[LIDAR_N], y: sd[LIDAR_N + 1], z: gz }, angular_velocity_covariance: new Array(9).fill(0),
+      linear_acceleration: { x: sd[LIDAR_N + 3], y: sd[LIDAR_N + 4], z: sd[LIDAR_N + 5] }, linear_acceleration_covariance: new Array(9).fill(0) }, '/robot_driver');
+  }
+  if (due('joints', 20)) {
+    bus.publish('/joint_states', 'sensor_msgs/msg/JointState', {
+      header: header(t, ''), name: ['wheel_left_joint', 'wheel_right_joint'],
+      position: [P.data.qpos[7], P.data.qpos[8]], velocity: [wl, wr], effort: [] }, '/robot_driver');
+  }
+  if (due('uwb', 5) && rng() > 0.05) {   // 5% of fixes drop out, as radio fixes do
+    bus.publish('/uwb/pose', 'geometry_msgs/msg/PoseWithCovarianceStamped', {
+      header: header(t, 'map'),
+      pose: { pose: { position: { x: tp.x + gauss() * 0.05, y: tp.y + gauss() * 0.05, z: 0 }, orientation: quatYaw(tp.yaw + gauss() * 0.03) }, covariance: cov([0.0025, 0.0025, 1e6, 1e6, 1e6, 0.0009]) } }, '/uwb_positioning');
+  }
+  if (due('predict', 5)) predictAhead();
+  if (due('twin', 10)) {
+    const tw = T.pose(), dv = Math.hypot(tw.x - tp.x, tw.y - tp.y);
+    bus.publish('/twin/pose', 'geometry_msgs/msg/PoseStamped', { header: header(t, 'map'), pose: { position: { x: tw.x, y: tw.y, z: 0 }, orientation: quatYaw(tw.yaw) } }, '/digital_twin');
+    bus.publish('/twin/divergence', 'std_msgs/msg/Float64', { data: dv }, '/digital_twin');
+    bus.publish('/twin/safety_stop', 'std_msgs/msg/Bool', { data: sim.stopActive }, '/digital_twin');
+    if (sim.running) { sim.divergence.push({ t, d: dv, stop: sim.stopActive }); sim.record.truth.push({ t, x: tp.x, y: tp.y, yaw: tp.yaw }); }
+  }
+  if (py.tick && due('py', 100)) py.tickAt(t);
+
+  if (sim.running && Math.round(t / DT) % 4 === 0) missionCheck(t, tp);
+}
+
+// Digital-twin mode: roll the twin 1 s ahead under the current command; stop the robot if it predicts a hit.
+function predictAhead() {
+  if (sim.mode !== 'twin') { sim.stopActive = false; return; }
+  const T = sim.twin, s = T.scratch, m = T.model;
+  s.qpos.set(T.data.qpos); s.qvel.set(T.data.qvel); s.time = T.data.time;
+  mj.mj_forward(m, s);
+  const c = T.cmd; let hit = false;
+  for (let i = 0; i < 200 && !hit; i++) {
+    setWheels(s, Math.max(0, c.v), c.w);
+    mj.mj_step(m, s);
+    if (i % 5 === 4) hit = T.inCollision(s);
+  }
+  if (hit && !sim.stopActive) log('warn', '/digital_twin', 'predicted collision within 1 s — safety stop ON');
+  if (!hit && sim.stopActive) log('sys', '/digital_twin', 'path clear — safety stop OFF');
+  sim.stopActive = hit;
+}
+
+function missionCheck(t, tp) {
+  const M = sim.mission;
+  // Count a bump when contact starts after at least 0.5 s clear, so resting against a rack counts once.
+  const hit = sim.plant.inCollision();
+  if (hit) {
+    if (!M.inContact && t - M.lastContact > 0.5) { M.hits++; log('error', '/robot_driver', `bump detected at (${tp.x.toFixed(2)}, ${tp.y.toFixed(2)})`); }
+    M.lastContact = t;
+  }
+  M.inContact = hit;
+  const dockErr = Math.hypot(tp.x - DOCK.x, tp.y - DOCK.y);
+  const speed = Math.hypot(sim.plant.data.qvel[0], sim.plant.data.qvel[1]);
+  M.dockedFor = (dockErr < 0.3 && speed < 0.03) ? M.dockedFor + 4 * DT : 0;
+  if (M.dockedFor >= 1.0) finishRun('docked', t, tp);
+  else if (t >= MISSION_LIMIT) finishRun('timeout', t, tp);
+}
+
+function finishRun(status, t, tp) {
+  const M = sim.mission; M.status = status; sim.running = false;
+  const dockErr = Math.hypot(tp.x - DOCK.x, tp.y - DOCK.y);
+  const odomErr = Math.hypot(sim.odom.x - tp.x, sim.odom.y - tp.y);
+  const run = { n: sim.runs.length + 1, control: $('control').value, mode: sim.mode, scenario: sim.scenario, status, t, hits: M.hits, dockErr, odomErr, minClear: M.minClear };
+  sim.runs.push(run);
+  sim.lastRun = { ...sim.record, scenario: sim.scenario, serial: sim.plantSerial };
+  $('replayBtn').disabled = false; $('exLog').disabled = false;
+  log(status === 'docked' ? 'ok' : 'warn', 'mission', status === 'docked'
+    ? `docked in ${t.toFixed(1)} s · ${M.hits} bump(s) · dock error ${dockErr.toFixed(2)} m · odometry error ${odomErr.toFixed(2)} m`
+    : `stopped: ${status} after ${t.toFixed(1)} s · robot is ${dockErr.toFixed(2)} m from the dock · odometry error ${odomErr.toFixed(2)} m`);
+  renderRuns(); setRunButtons();
+}
+
+// ───────────────────────── Python (Pyodide) with an rclpy-shaped API ─────────────────────────
+const PY_FILES = {
+'_twinlab_msgs.py': `
+"""Message base class for Twin Lab. Field names and nesting follow the ROS 2 message definitions."""
+import math
+
+class Msg:
+    _type = ''
+    _fields = ()
+
+    def __init__(self, **kwargs):
+        names = [n for n, _ in self._fields]
+        for k in kwargs:
+            if k not in names:
+                raise TypeError('%s has no field %r (fields: %s)' % (self._type, k, ', '.join(names)))
+        for name, factory in self._fields:
+            setattr(self, name, kwargs[name] if name in kwargs else factory())
+
+    def _to_dict(self):
+        out = {}
+        for name, _ in self._fields:
+            v = getattr(self, name)
+            if isinstance(v, Msg):
+                v = v._to_dict()
+            elif isinstance(v, (list, tuple)):
+                v = [x._to_dict() if isinstance(x, Msg) else (None if isinstance(x, float) and math.isinf(x) else x) for x in v]
+            out[name] = v
+        return out
+
+    @classmethod
+    def _from_dict(cls, d):
+        m = cls.__new__(cls)
+        d = d or {}
+        for name, factory in cls._fields:
+            default = factory()
+            v = d.get(name)
+            if isinstance(default, Msg):
+                v = type(default)._from_dict(v)
+            elif isinstance(default, list):
+                v = [float('inf') if x is None else x for x in (v or [])]
+            elif v is None:
+                v = default
+            setattr(m, name, v)
+        return m
+
+    def __repr__(self):
+        return '%s(%s)' % (self._type.split('/')[-1], ', '.join('%s=%r' % (n, getattr(self, n)) for n, _ in self._fields))
+
+    def __eq__(self, other):
+        return type(self) is type(other) and self._to_dict() == other._to_dict()
+
+def msg(type_name, fields):
+    return type(type_name.split('/')[-1], (Msg,), {'_type': type_name, '_fields': tuple(fields)})
+
+def zeros(n):
+    return lambda: [0.0] * n
+`,
+'builtin_interfaces/__init__.py': '',
+'builtin_interfaces/msg.py': `
+from _twinlab_msgs import msg
+Time = msg('builtin_interfaces/msg/Time', [('sec', int), ('nanosec', int)])
+`,
+'std_msgs/__init__.py': '',
+'std_msgs/msg.py': `
+from _twinlab_msgs import msg
+from builtin_interfaces.msg import Time
+Header = msg('std_msgs/msg/Header', [('stamp', Time), ('frame_id', str)])
+Bool = msg('std_msgs/msg/Bool', [('data', bool)])
+Float64 = msg('std_msgs/msg/Float64', [('data', float)])
+Int32 = msg('std_msgs/msg/Int32', [('data', int)])
+String = msg('std_msgs/msg/String', [('data', str)])
+`,
+'geometry_msgs/__init__.py': '',
+'geometry_msgs/msg.py': `
+from _twinlab_msgs import msg, zeros
+from std_msgs.msg import Header
+Vector3 = msg('geometry_msgs/msg/Vector3', [('x', float), ('y', float), ('z', float)])
+Point = msg('geometry_msgs/msg/Point', [('x', float), ('y', float), ('z', float)])
+Quaternion = msg('geometry_msgs/msg/Quaternion', [('x', float), ('y', float), ('z', float), ('w', lambda: 1.0)])
+Pose = msg('geometry_msgs/msg/Pose', [('position', Point), ('orientation', Quaternion)])
+PoseStamped = msg('geometry_msgs/msg/PoseStamped', [('header', Header), ('pose', Pose)])
+PoseWithCovariance = msg('geometry_msgs/msg/PoseWithCovariance', [('pose', Pose), ('covariance', zeros(36))])
+PoseWithCovarianceStamped = msg('geometry_msgs/msg/PoseWithCovarianceStamped', [('header', Header), ('pose', PoseWithCovariance)])
+Twist = msg('geometry_msgs/msg/Twist', [('linear', Vector3), ('angular', Vector3)])
+TwistStamped = msg('geometry_msgs/msg/TwistStamped', [('header', Header), ('twist', Twist)])
+TwistWithCovariance = msg('geometry_msgs/msg/TwistWithCovariance', [('twist', Twist), ('covariance', zeros(36))])
+`,
+'sensor_msgs/__init__.py': '',
+'sensor_msgs/msg.py': `
+from _twinlab_msgs import msg, zeros
+from std_msgs.msg import Header
+from geometry_msgs.msg import Quaternion, Vector3
+LaserScan = msg('sensor_msgs/msg/LaserScan', [('header', Header), ('angle_min', float), ('angle_max', float),
+    ('angle_increment', float), ('time_increment', float), ('scan_time', float), ('range_min', float),
+    ('range_max', float), ('ranges', list), ('intensities', list)])
+Imu = msg('sensor_msgs/msg/Imu', [('header', Header), ('orientation', Quaternion), ('orientation_covariance', zeros(9)),
+    ('angular_velocity', Vector3), ('angular_velocity_covariance', zeros(9)),
+    ('linear_acceleration', Vector3), ('linear_acceleration_covariance', zeros(9))])
+JointState = msg('sensor_msgs/msg/JointState', [('header', Header), ('name', list), ('position', list), ('velocity', list), ('effort', list)])
+`,
+'nav_msgs/__init__.py': '',
+'nav_msgs/msg.py': `
+from _twinlab_msgs import msg
+from std_msgs.msg import Header
+from geometry_msgs.msg import PoseWithCovariance, TwistWithCovariance
+Odometry = msg('nav_msgs/msg/Odometry', [('header', Header), ('child_frame_id', str), ('pose', PoseWithCovariance), ('twist', TwistWithCovariance)])
+`,
+'rclpy/__init__.py': `
+"""Twin Lab's in-browser stand-in for ROS 2's rclpy (a subset with the same names and call shapes).
+
+One difference: real rclpy.spin() blocks and runs callbacks forever. Here the simulator's clock
+drives callbacks, so spin() registers the node and returns immediately."""
+from rclpy import _core
+
+def init(args=None, context=None):
+    _core.reset()
+
+def ok(context=None):
+    return True
+
+def spin(node, executor=None):
+    _core.spin(node)
+
+def spin_once(node, executor=None, timeout_sec=None):
+    _core.spin(node)
+
+def shutdown(context=None):
+    _core.reset()
+
+def try_shutdown(context=None):
+    _core.reset()
+`,
+'rclpy/_core.py': `
+import json
+import traceback
+import js
+
+subs = {}
+timers = []
+spinning = []
+now_s = 0.0
+errors = 0
+
+def reset():
+    global now_s, errors
+    subs.clear(); timers.clear(); spinning.clear(); now_s = 0.0; errors = 0
+    js.twinlab.py_reset()
+
+def spin(node):
+    if node not in spinning:
+        spinning.append(node)
+        js.twinlab.log('sys', '/' + node.get_name(), 'spinning')
+
+def report(where):
+    global errors
+    errors += 1
+    if errors <= 5:
+        js.twinlab.log('error', 'python', where + '\\n' + traceback.format_exc())
+    elif errors == 6:
+        js.twinlab.log('error', 'python', 'more errors hidden; fix the one above first')
+
+def add_subscription(node, msg_type, topic, callback):
+    subs.setdefault(topic, []).append((msg_type, callback, node))
+    js.twinlab.py_subscribe(topic, msg_type._type, '/' + node.get_name())
+
+def deliver(topic, payload):
+    entries = subs.get(topic)
+    if not entries:
+        return
+    data = json.loads(payload)
+    for msg_type, callback, node in entries:
+        if node not in spinning:
+            continue
+        try:
+            callback(msg_type._from_dict(data))
+        except Exception:
+            report('in /%s, callback for %s' % (node.get_name(), topic))
+
+def tick(t):
+    global now_s
+    now_s = t
+    for tm in list(timers):
+        if tm.cancelled or tm.node not in spinning:
+            continue
+        if t + 1e-9 >= tm.next_t:
+            tm.next_t = max(tm.next_t + tm.period, t)
+            try:
+                tm.callback()
+            except Exception:
+                report('in /%s, timer callback' % tm.node.get_name())
+
+def publish(topic, msg, node):
+    js.twinlab.py_publish(topic, msg._type, json.dumps(msg._to_dict()), '/' + node.get_name())
+`,
+'rclpy/time.py': `
+class Time:
+    def __init__(self, seconds=0, nanoseconds=0):
+        self.nanoseconds = int(seconds * 1e9) + int(nanoseconds)
+
+    def to_msg(self):
+        from builtin_interfaces.msg import Time as TimeMsg
+        return TimeMsg(sec=self.nanoseconds // 10**9, nanosec=self.nanoseconds % 10**9)
+
+    def __sub__(self, other):
+        return Duration(nanoseconds=self.nanoseconds - other.nanoseconds)
+
+class Duration:
+    def __init__(self, seconds=0, nanoseconds=0):
+        self.nanoseconds = int(seconds * 1e9) + int(nanoseconds)
+`,
+'rclpy/qos.py': `
+class QoSProfile:
+    def __init__(self, depth=10, **kwargs):
+        self.depth = depth
+
+qos_profile_sensor_data = QoSProfile(depth=5)
+`,
+'rclpy/node.py': `
+import js
+from rclpy import _core
+from rclpy.time import Time
+
+class Publisher:
+    def __init__(self, node, msg_type, topic):
+        self.node, self.msg_type, self.topic = node, msg_type, topic
+
+    def publish(self, msg):
+        if not isinstance(msg, self.msg_type):
+            raise TypeError('publisher on %s expects %s, got %s' % (self.topic, self.msg_type._type, type(msg).__name__))
+        _core.publish(self.topic, msg, self.node)
+
+class Subscription:
+    def __init__(self, msg_type, topic, callback):
+        self.msg_type, self.topic, self.callback = msg_type, topic, callback
+
+class Timer:
+    def __init__(self, node, period, callback):
+        self.node, self.period, self.callback = node, float(period), callback
+        self.next_t = _core.now_s + self.period
+        self.cancelled = False
+
+    def cancel(self):
+        self.cancelled = True
+
+class Logger:
+    def __init__(self, name):
+        self.name = name
+
+    def _log(self, level, msg):
+        js.twinlab.log(level, '/' + self.name, str(msg))
+
+    def debug(self, msg): self._log('debug', msg)
+    def info(self, msg): self._log('info', msg)
+    def warn(self, msg): self._log('warn', msg)
+    def warning(self, msg): self._log('warn', msg)
+    def error(self, msg): self._log('error', msg)
+    def fatal(self, msg): self._log('error', msg)
+
+class Clock:
+    def now(self):
+        return Time(seconds=_core.now_s)
+
+class Parameter:
+    def __init__(self, name, value=None):
+        self.name, self.value = name, value
+
+class Node:
+    def __init__(self, node_name, **kwargs):
+        self._name = node_name
+        self._logger = Logger(node_name)
+        self._params = {}
+        js.twinlab.py_node('/' + node_name)
+
+    def get_name(self):
+        return self._name
+
+    def get_logger(self):
+        return self._logger
+
+    def get_clock(self):
+        return Clock()
+
+    def create_publisher(self, msg_type, topic, qos_profile=10):
+        js.twinlab.py_advertise(topic, msg_type._type, '/' + self._name)
+        return Publisher(self, msg_type, topic)
+
+    def create_subscription(self, msg_type, topic, callback, qos_profile=10):
+        _core.add_subscription(self, msg_type, topic, callback)
+        return Subscription(msg_type, topic, callback)
+
+    def create_timer(self, timer_period_sec, callback):
+        t = Timer(self, timer_period_sec, callback)
+        _core.timers.append(t)
+        return t
+
+    def declare_parameter(self, name, value=None):
+        self._params[name] = Parameter(name, value)
+        return self._params[name]
+
+    def get_parameter(self, name):
+        return self._params[name]
+
+    def destroy_node(self):
+        if self in _core.spinning:
+            _core.spinning.remove(self)
+`,
+};
+
+const STARTER = `import math
+
+import rclpy
+from rclpy.node import Node
+from geometry_msgs.msg import Twist
+from nav_msgs.msg import Odometry
+from sensor_msgs.msg import LaserScan
+
+
+def yaw_from_quaternion(q):
+    return math.atan2(2 * (q.w * q.z + q.x * q.y), 1 - 2 * (q.y * q.y + q.z * q.z))
+
+
+class DockRunner(Node):
+    """Follow a route to the charging dock, steering by wheel odometry."""
+
+    def __init__(self):
+        super().__init__('dock_runner')
+        # Route through the cell, in metres, map frame. The last point is the dock.
+        self.route = [(-1.5, -3.1), (0.0, -2.6), (0.0, 2.8), (1.6, 2.9), (3.3, 1.2), (4.0, -2.5)]
+        self.i = 0
+        self.pose = None
+        self.front = float('inf')
+
+        self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.create_subscription(Odometry, '/odom', self.on_odom, 10)
+        self.create_subscription(LaserScan, '/scan', self.on_scan, 10)
+        self.create_timer(0.1, self.control_loop)  # 10 Hz
+        self.get_logger().info('route has %d waypoints' % len(self.route))
+
+    def on_odom(self, msg):
+        p = msg.pose.pose
+        self.pose = (p.position.x, p.position.y, yaw_from_quaternion(p.orientation))
+
+    def on_scan(self, msg):
+        # Beam 0 points backwards (angle_min = -pi), so straight ahead is the middle beam.
+        mid = len(msg.ranges) // 2
+        self.front = min(msg.ranges[mid - 2: mid + 3])
+
+    def control_loop(self):
+        cmd = Twist()
+        if self.pose is None or self.i >= len(self.route):
+            self.cmd_pub.publish(cmd)  # all zeros = stop
+            return
+        x, y, yaw = self.pose
+        gx, gy = self.route[self.i]
+        dist = math.hypot(gx - x, gy - y)
+        last = self.i == len(self.route) - 1
+        if dist < (0.05 if last else 0.25):
+            self.i += 1
+            self.get_logger().info('reached waypoint %d of %d' % (self.i, len(self.route)))
+            return
+        heading_error = math.atan2(gy - y, gx - x) - yaw
+        heading_error = math.atan2(math.sin(heading_error), math.cos(heading_error))
+        cmd.angular.z = max(-1.5, min(1.5, 2.5 * heading_error))
+        cmd.linear.x = min(0.5, 0.8 * dist) if abs(heading_error) < 0.5 else 0.0
+        if self.front < 0.45:
+            cmd.linear.x = 0.0  # something ahead: hold position
+        self.cmd_pub.publish(cmd)
+
+
+def main():
+    rclpy.init()
+    node = DockRunner()
+    rclpy.spin(node)
+
+
+if __name__ == '__main__':
+    main()
+`;
+
+const py = {
+  pyodide: null, loading: null, deliver: null, tick: null,
+  async load() {
+    if (this.pyodide) return this.pyodide;
+    if (!this.loading) this.loading = (async () => {
+      setPyStatus('Loading Python (Pyodide, about 10 MB, first time only)…');
+      const { loadPyodide } = await import('https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.mjs');
+      const pyo = await loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.27.2/full/' });
+      const base = '/home/pyodide/twinlab';
+      for (const [path, src] of Object.entries(PY_FILES)) {
+        const full = `${base}/${path}`;
+        pyo.FS.mkdirTree(full.slice(0, full.lastIndexOf('/')));
+        pyo.FS.writeFile(full, src.replace(/^\n/, ''));
+      }
+      pyo.runPython(`import sys\nsys.path.insert(0, '${base}')`);
+      const core = pyo.pyimport('rclpy._core');
+      this.deliver = core.deliver; this.tick = core.tick; this.core = core;
+      this.pyodide = pyo;
+      return pyo;
+    })();
+    return this.loading;
+  },
+  deliverMsg(topic, msg) { try { this.deliver(topic, JSON.stringify(msg)); } catch (e) { log('error', 'python', String(e)); } },
+  tickAt(t) { try { this.tick(t); } catch (e) { log('error', 'python', String(e)); } },
+  async start(code) {
+    const pyo = await this.load();
+    this.core.reset();
+    const g = pyo.globals.get('dict')();
+    g.set('__name__', '__main__');
+    try {
+      pyo.runPython(code, { globals: g });
+      setPyStatus('Node running. Its callbacks run on the simulator clock.', 'ok');
+      return true;
+    } catch (e) {
+      setPyStatus('Your node raised an error. See the console.', 'bad');
+      log('error', 'python', String(e.message || e));
+      return false;
+    } finally { g.destroy(); }
+  },
+  stop() { if (this.core) { try { this.core.reset(); } catch (e) { } } },
+};
+function setPyStatus(text, cls = '') { const s = $('pyStatus'); s.textContent = text; s.className = 'status' + (cls ? ' ' + cls : ''); }
+
+window.twinlab = {
+  log: (level, who, text) => log(level, who, text),
+  py_reset: () => bus.resetUserSide(),
+  py_node: name => bus.nodes.add(name),
+  py_advertise: (topic, type, node) => bus.advertise(topic, type, node),
+  py_subscribe: (topic, type, node) => { bus.subscribe(topic, type, node); bus.topic(topic).py = true; },
+  py_publish: (topic, type, json, node) => {
+    let msg; try { msg = JSON.parse(json); } catch (e) { log('error', node, 'message could not be encoded (NaN or inf in a field?)'); return; }
+    bus.publish(topic, type, msg, node);
+  },
+};
+
+// ───────────────────────── teleop ─────────────────────────
+const keys = new Set();
+$('viewport').addEventListener('keydown', e => {
+  const k = e.key.toLowerCase();
+  if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd', ' '].includes(k)) { keys.add(k); e.preventDefault(); }
+});
+$('viewport').addEventListener('keyup', e => keys.delete(e.key.toLowerCase()));
+$('viewport').addEventListener('blur', () => keys.clear());
+let teleNext = 0;
+function teleop(t) {
+  if ($('control').value !== 'teleop' || t < teleNext) return;
+  teleNext = t + 0.1;
+  const f = (keys.has('arrowup') || keys.has('w')) - (keys.has('arrowdown') || keys.has('s'));
+  const r = (keys.has('arrowleft') || keys.has('a')) - (keys.has('arrowright') || keys.has('d'));
+  bus.publish('/cmd_vel', 'geometry_msgs/msg/Twist', { linear: { x: 0.5 * f, y: 0, z: 0 }, angular: { x: 0, y: 0, z: 1.4 * r } }, '/teleop_keyboard');
+}
+
+// ───────────────────────── 3D view ─────────────────────────
+const scene3d = (() => {
+  const canvas = $('three'), host = $('viewport');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.05, 200);
+  camera.up.set(0, 0, 1); camera.position.set(0, -7.5, 12.5);
+  const controls = new OrbitControls(camera, canvas);
+  controls.target.set(0, -0.3, 0); controls.enableDamping = true; controls.update();
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7a66, 1.6));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.6); sun.position.set(3, -4, 8); scene.add(sun);
+  let plantMeshes = [], twinMeshes = [], group = new THREE.Group(); scene.add(group);
+  const rayGeo = new THREE.BufferGeometry(); rayGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(LIDAR_N * 6), 3));
+  const rays = new THREE.LineSegments(rayGeo, new THREE.LineBasicMaterial({ color: 0xef4444, transparent: true, opacity: 0.55 }));
+  scene.add(rays);
+  const m4 = new THREE.Matrix4();
+  let follow = false;
+
+  function geomMesh(type, size, material) {
+    let g;
+    switch (type) {
+      case 0: g = new THREE.PlaneGeometry(2 * (size[0] || 10), 2 * (size[1] || 10)); break;
+      case 2: g = new THREE.SphereGeometry(size[0], 20, 14); break;
+      case 3: g = new THREE.CapsuleGeometry(size[0], 2 * size[1], 8, 16); g.rotateX(Math.PI / 2); break;
+      case 5: g = new THREE.CylinderGeometry(size[0], size[0], 2 * size[1], 28); g.rotateX(Math.PI / 2); break;
+      case 6: g = new THREE.BoxGeometry(2 * size[0], 2 * size[1], 2 * size[2]); break;
+      default: return null;
+    }
+    return new THREE.Mesh(g, material);
+  }
+  function place(mesh, d, i) {
+    const p = d.geom_xpos, R = d.geom_xmat, k = 9 * i;
+    mesh.position.set(p[3 * i], p[3 * i + 1], p[3 * i + 2]);
+    m4.set(R[k], R[k + 1], R[k + 2], 0, R[k + 3], R[k + 4], R[k + 5], 0, R[k + 6], R[k + 7], R[k + 8], 0, 0, 0, 0, 1);
+    mesh.quaternion.setFromRotationMatrix(m4);
+  }
+  function rebuild() {
+    scene.remove(group); group.traverse(o => { o.geometry && o.geometry.dispose(); o.material && o.material.dispose(); });
+    group = new THREE.Group(); scene.add(group); plantMeshes = []; twinMeshes = [];
+    const P = sim.plant, T = sim.twin, m = P.model;
+    for (let i = 0; i < m.ngeom; i++) {
+      const c = m.geom_rgba.slice(4 * i, 4 * i + 4);
+      const mat = new THREE.MeshStandardMaterial({ color: new THREE.Color(c[0], c[1], c[2]), roughness: 0.75, metalness: 0.05 });
+      const mesh = geomMesh(m.geom_type[i], m.geom_size.slice(3 * i, 3 * i + 3), mat);
+      if (!mesh) continue;
+      place(mesh, P.data, i); group.add(mesh);
+      if (m.geom_bodyid[i] > 0) plantMeshes.push([mesh, i]);
+    }
+    const grid = new THREE.GridHelper(10, 10, 0x9a8a74, 0xb9ab95); grid.rotateX(Math.PI / 2); grid.position.z = 0.002;
+    grid.scale.set(1, 1, 0.8); group.add(grid);
+    const tm = T.model;
+    for (let i = 0; i < tm.ngeom; i++) {
+      if (tm.geom_bodyid[i] === 0) continue;
+      const mat = new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.32, depthWrite: false });
+      const mesh = geomMesh(tm.geom_type[i], tm.geom_size.slice(3 * i, 3 * i + 3), mat);
+      if (!mesh) continue;
+      mesh.scale.multiplyScalar(1.03); place(mesh, T.data, i); group.add(mesh); twinMeshes.push([mesh, i]);
+    }
+    theme();
+  }
+  function theme() { scene.background = new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--surface2').trim() || '#f6efe4'); }
+  window.addEventListener('themechange', theme);
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', theme);
+  function resize() {
+    const w = host.clientWidth, h = host.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(host);
+  function render() {
+    for (const [mesh, i] of plantMeshes) place(mesh, sim.plant.data, i);
+    for (const [mesh, i] of twinMeshes) place(mesh, sim.twin.data, i);
+    const pos = rayGeo.attributes.position.array, tp = sim.plant.pose();
+    const ox = tp.x + 0.08 * Math.cos(tp.yaw), oy = tp.y + 0.08 * Math.sin(tp.yaw), z = 0.23;
+    for (let i = 0; i < LIDAR_N; i++) {
+      const r = sim.lastScan ? (sim.lastScan[i] ?? RANGE_MAX) : 0, a = tp.yaw - Math.PI + i * 2 * Math.PI / LIDAR_N;
+      pos.set([ox, oy, z, ox + r * Math.cos(a), oy + r * Math.sin(a), z], 6 * i);
+    }
+    rayGeo.attributes.position.needsUpdate = true;
+    if (follow) { controls.target.lerp(new THREE.Vector3(tp.x, tp.y, 0), 0.1); }
+    controls.update(); renderer.render(scene, camera);
+  }
+  return { rebuild, render, resize, rays, setFollow: f => { follow = f; }, theme };
+})();
+
+// ───────────────────────── UI: HUD, console, chart, runs ─────────────────────────
+function log(level, who, text) {
+  const el = $('console'), line = document.createElement('div');
+  const t = sim.plant ? sim.plant.data.time.toFixed(2) : '0.00';
+  line.className = level === 'info' || level === 'debug' ? '' : level;
+  line.textContent = `[${t}] ${level.toUpperCase().padEnd(5)} ${who}: ${text}`;
+  el.appendChild(line);
+  while (el.childElementCount > 400) el.firstChild.remove();
+  el.scrollTop = el.scrollHeight;
+}
+function updateHud() {
+  if (!sim.plant) return;
+  const t = sim.plant.data.time, tp = sim.plant.pose(), tw = sim.twin.pose();
+  $('hudTime').textContent = `t = ${t.toFixed(1)} s${sim.paused ? ' (paused)' : ''}`;
+  const M = sim.mission, label = { ready: 'ready', running: 'driving to dock', docked: 'DOCKED ✓', timeout: 'timed out' }[M.status] || M.status;
+  $('hudMission').textContent = `Mission: ${label} · bumps ${M.hits} · dock ${Math.hypot(tp.x - DOCK.x, tp.y - DOCK.y).toFixed(2)} m`;
+  $('hudDiv').textContent = `Twin divergence: ${Math.hypot(tw.x - tp.x, tw.y - tp.y).toFixed(2)} m`;
+  $('hudStop').hidden = !sim.stopActive;
+}
+function drawChart() {
+  const c = $('chart'), dpr = Math.min(2, window.devicePixelRatio), w = c.clientWidth, h = c.clientHeight;
+  if (c.width !== w * dpr) { c.width = w * dpr; c.height = h * dpr; }
+  const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+  const cs = getComputedStyle(document.documentElement), col = n => cs.getPropertyValue(n).trim();
+  const data = sim.divergence, L = 34, B = 18, tmax = Math.max(20, data.length ? data[data.length - 1].t : 0);
+  const dmax = Math.max(0.5, ...data.map(p => p.d)) * 1.1;
+  g.font = '10px system-ui'; g.fillStyle = col('--muted'); g.strokeStyle = col('--border'); g.lineWidth = 1;
+  for (let k = 0; k <= 4; k++) { const y = 6 + (h - B - 6) * k / 4; g.beginPath(); g.moveTo(L, y); g.lineTo(w - 6, y); g.stroke(); g.fillText((dmax * (1 - k / 4)).toFixed(2), 2, y + 3); }
+  g.fillText('0 s', L, h - 4); g.fillText(`${tmax.toFixed(0)} s`, w - 30, h - 4);
+  const X = t => L + (w - 6 - L) * t / tmax, Y = d => 6 + (h - B - 6) * (1 - d / dmax);
+  g.fillStyle = 'rgba(220,38,38,.18)';
+  for (const p of data) if (p.stop) g.fillRect(X(p.t) - 1, 6, 3, h - B - 6);
+  g.strokeStyle = col('--cyan'); g.lineWidth = 2; g.beginPath();
+  data.forEach((p, i) => i ? g.lineTo(X(p.t), Y(p.d)) : g.moveTo(X(p.t), Y(p.d))); g.stroke();
+}
+function renderRuns() {
+  const rows = sim.runs.slice().reverse().map(r => {
+    const badge = r.status === 'docked' ? (r.hits ? '<span class="badge warn">docked, bumped</span>' : '<span class="badge ok">docked</span>') : `<span class="badge bad">${r.status}</span>`;
+    return `<tr><td>${r.n}</td><td>${r.control} · ${r.mode} · ${r.scenario}</td><td>${badge}</td><td>${r.t.toFixed(1)} s</td><td>${r.hits}</td><td>${r.dockErr.toFixed(2)} m</td><td>${r.odomErr.toFixed(2)} m</td></tr>`;
+  });
+  $('runRows').innerHTML = rows.join('') || '<tr><td colspan="7" class="hint">No runs yet.</td></tr>';
+}
+let echoTopic = null;
+function renderTopics() {
+  const rows = [...bus.topics.values()].sort((a, b) => a.name.localeCompare(b.name)).map(t => {
+    const hz = bus.hz(t);
+    return `<tr class="clickable${t.name === echoTopic ? ' sel' : ''}" data-topic="${t.name}" tabindex="0"><td><code>${t.name}</code></td><td><code>${(t.type || '').replace('/msg/', '/')}</code></td><td>${hz ? hz.toFixed(1) : '—'}</td><td>${[...t.pubs].join(', ') || '—'} → ${[...t.subs].join(', ') || '—'}</td></tr>`;
+  });
+  $('topicRows').innerHTML = rows.join('');
+  if (echoTopic) {
+    const t = bus.topics.get(echoTopic);
+    $('echo').textContent = `$ ros2 topic echo ${echoTopic} --once\n` + (t && t.last ? yamlish(t.last) : '(no message yet)');
+  }
+}
+function yamlish(o, ind = '') {
+  if (Array.isArray(o)) {
+    const shown = o.slice(0, 8).map(v => v === null ? '.inf' : typeof v === 'number' ? +v.toFixed(4) : JSON.stringify(v));
+    return `[${shown.join(', ')}${o.length > 8 ? `, … (${o.length} items)` : ''}]`;
+  }
+  if (o && typeof o === 'object') return Object.entries(o).map(([k, v]) => (v && typeof v === 'object' && !Array.isArray(v)) ? `${ind}${k}:\n${yamlish(v, ind + '  ')}` : `${ind}${k}: ${yamlish(v, ind)}`).join('\n');
+  return typeof o === 'number' ? String(+o.toFixed(5)) : JSON.stringify(o);
+}
+$('topicRows').addEventListener('click', e => { const tr = e.target.closest('tr[data-topic]'); if (tr) { echoTopic = tr.dataset.topic; renderTopics(); } });
+$('topicRows').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const tr = e.target.closest('tr[data-topic]'); if (tr) { e.preventDefault(); echoTopic = tr.dataset.topic; renderTopics(); } } });
+
+// ───────────────────────── calibration (system identification) ─────────────────────────
+function renderParams() {
+  $('params').innerHTML = PARAM_UI.map(p => `
+    <div class="lbl"><label for="p_${p.key}">${p.label}${p.unit ? ` (${p.unit})` : ''}</label><span class="hint">spec ${p.fmt(SPEC[p.key])}</span></div>
+    <input type="range" id="p_${p.key}" min="${p.min}" max="${p.max}" step="${p.step}" value="${sim.twinParams[p.key]}">
+    <output for="p_${p.key}" id="o_${p.key}">${p.fmt(sim.twinParams[p.key])}</output><span></span>`).join('');
+  for (const p of PARAM_UI) $(`p_${p.key}`).addEventListener('input', e => { sim.twinParams[p.key] = +e.target.value; $(`o_${p.key}`).textContent = p.fmt(+e.target.value); });
+}
+function replayError(params) {
+  const run = sim.lastRun; if (!run || !run.truth.length) return null;
+  const m = mj.MjModel.from_xml_string(buildXML(params, run.scenario)), d = new mj.MjData(m);
+  try {
+    const q = run.cmds.map(c => ({ t: c.t + params.latency, v: c.v, w: c.w }));
+    let cur = { v: 0, w: 0 }, last = -1e9, qi = 0, si = 0, se = 0, n = 0;
+    const S = run.truth, tEnd = S[S.length - 1].t;
+    while (d.time < tEnd + DT && si < S.length) {
+      const t = d.time;
+      while (qi < q.length && q[qi].t <= t + 1e-9) { cur = q[qi++]; last = t; }
+      const live = t - last < 0.5; setWheels(d, live ? cur.v : 0, live ? cur.w : 0);
+      mj.mj_step(m, d);
+      while (si < S.length && S[si].t <= d.time + 1e-9) { const dx = d.qpos[0] - S[si].x, dy = d.qpos[1] - S[si].y; se += dx * dx + dy * dy; n++; si++; }
+    }
+    return Math.sqrt(se / Math.max(1, n));
+  } finally { d.delete(); m.delete(); }
+}
+$('replayBtn').addEventListener('click', () => {
+  const a = replayError(SPEC), b = replayError(sim.twinParams);
+  if (a === null) return;
+  $('rmseSpec').textContent = `${a.toFixed(3)} m`; $('rmseMine').textContent = `${b.toFixed(3)} m`;
+  log('sys', 'calibration', `replayed run ${sim.runs.length}: spec-sheet twin RMSE ${a.toFixed(3)} m → your twin ${b.toFixed(3)} m`);
+});
+$('applyBtn').addEventListener('click', () => { hardReset(); log('sys', 'calibration', 'live twin rebuilt with your parameters'); });
+$('specBtn').addEventListener('click', () => { sim.twinParams = { ...SPEC }; renderParams(); });
+$('revealBtn').addEventListener('click', e => {
+  const out = $('revealOut'), open = out.hidden; out.hidden = !open; e.target.setAttribute('aria-expanded', String(open));
+  const p = sim.truePlant;
+  out.innerHTML = `<b>${sim.plantSerial}</b>: left wheel ${p.rL.toFixed(4)} m · right wheel ${p.rR.toFixed(4)} m · mass ${p.mass.toFixed(2)} kg · kv ${p.kv.toFixed(2)} · latency ${p.latency.toFixed(3)} s · lidar noise σ ${p.lidarSigma.toFixed(3)} m, bias ${p.lidarBias.toFixed(3)} m · gyro bias ${p.gyroBias.toFixed(3)} rad/s`;
+});
+$('serial').addEventListener('change', e => { sim.plantSerial = e.target.value || 'AMR-0042'; $('revealOut').hidden = true; $('revealBtn').setAttribute('aria-expanded', 'false'); hardReset(); log('sys', 'lab', `now driving robot ${sim.plantSerial}`); });
+
+// ───────────────────────── export ─────────────────────────
+function download(name, text, type = 'text/plain') {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function exportUSDA() {
+  const m = sim.plant.model, d = sim.plant.data, q = new THREE.Quaternion(), M = new THREE.Matrix4();
+  const name = i => (mj.mj_id2name(m, mj.mjtObj.mjOBJ_GEOM.value, i) || `geom_${i}`).replace(/[^A-Za-z0-9_]/g, '_');
+  const n = v => (+v).toFixed(5);
+  const prims = { Environment: [], AMR: [] };
+  for (let i = 0; i < m.ngeom; i++) {
+    const t = m.geom_type[i], s = m.geom_size.slice(3 * i, 3 * i + 3), c = m.geom_rgba.slice(4 * i, 4 * i + 4);
+    const p = d.geom_xpos.slice(3 * i, 3 * i + 3), R = d.geom_xmat.slice(9 * i, 9 * i + 9);
+    M.set(R[0], R[1], R[2], 0, R[3], R[4], R[5], 0, R[6], R[7], R[8], 0, 0, 0, 0, 1); q.setFromRotationMatrix(M);
+    let kind, attrs, scale = [1, 1, 1], pos = [...p];
+    if (t === 6) { kind = 'Cube'; attrs = 'double size = 1'; scale = [2 * s[0], 2 * s[1], 2 * s[2]]; }
+    else if (t === 0) { kind = 'Cube'; attrs = 'double size = 1'; scale = [2 * s[0], 2 * s[1], 0.01]; pos[2] -= 0.005; }
+    else if (t === 2) { kind = 'Sphere'; attrs = `double radius = ${n(s[0])}`; }
+    else if (t === 5) { kind = 'Cylinder'; attrs = `double radius = ${n(s[0])}\n            double height = ${n(2 * s[1])}\n            uniform token axis = "Z"`; }
+    else if (t === 3) { kind = 'Capsule'; attrs = `double radius = ${n(s[0])}\n            double height = ${n(2 * s[1])}\n            uniform token axis = "Z"`; }
+    else continue;
+    (m.geom_bodyid[i] > 0 ? prims.AMR : prims.Environment).push(`        def ${kind} "${name(i)}"
+        {
+            ${attrs}
+            color3f[] primvars:displayColor = [(${n(c[0])}, ${n(c[1])}, ${n(c[2])})]
+            double3 xformOp:translate = (${pos.map(n).join(', ')})
+            quatf xformOp:orient = (${n(q.w)}, ${n(q.x)}, ${n(q.y)}, ${n(q.z)})
+            float3 xformOp:scale = (${scale.map(n).join(', ')})
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }`);
+  }
+  const usda = `#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+    doc = "AI 440 Twin Lab warehouse cell, robot ${sim.plantSerial} at t=${d.time.toFixed(2)} s. Generated from the MuJoCo model."
+)
+
+def Xform "World"
+{
+    def Xform "Environment"
+    {
+${prims.Environment.join('\n')}
+    }
+
+    def Xform "AMR"
+    {
+${prims.AMR.join('\n')}
+    }
+}
+`;
+  download('twinlab_cell.usda', usda);
+}
+$('exUsd').addEventListener('click', exportUSDA);
+$('exMjcf').addEventListener('click', () => download('twin_amr_cell.xml', sim.twin.xml, 'application/xml'));
+$('exNode').addEventListener('click', () => download('dock_runner.py', $('code').value, 'text/x-python'));
+$('exLog').addEventListener('click', () => sim.lastRun && download('twinlab_run.json', JSON.stringify({
+  format: 'ai440-twinlab-run/0.1', robot_serial: sim.lastRun.serial, scenario: sim.lastRun.scenario, timestep: DT,
+  spec_sheet: SPEC, notes: 'cmds = /cmd_vel as published; truth = ground-truth pose at 10 Hz; odom = /odom at 20 Hz',
+  cmds: sim.lastRun.cmds, truth: sim.lastRun.truth, odom: sim.lastRun.odom }, null, 1), 'application/json'));
+
+// ───────────────────────── run control ─────────────────────────
+function setRunButtons() {
+  $('runBtn').disabled = sim.running || !mj;
+  $('runBtn').textContent = sim.mission && sim.mission.status !== 'ready' && !sim.running ? '▶ Run again' : '▶ Run';
+  $('pauseBtn').disabled = !sim.running; $('resetBtn').disabled = !mj;
+  $('pauseBtn').setAttribute('aria-pressed', String(sim.paused));
+  $('pauseBtn').textContent = sim.paused ? '▶ Resume' : '⏸ Pause';
+}
+function hardReset() {
+  py.stop(); sim.running = false; sim.paused = false;
+  buildWorlds(); setRunButtons(); drawChart();
+}
+async function run() {
+  if (sim.mission.status !== 'ready') hardReset();
+  sim.running = true; sim.paused = false; sim.mission.status = 'running'; setRunButtons();
+  log('sys', 'lab', `run started · robot ${sim.plantSerial} · twin mode: ${sim.mode} · scenario: ${sim.scenario}`);
+  if ($('control').value === 'python') {
+    sim.paused = true;   // hold the clock while Python loads
+    const ok = await py.start($('code').value);
+    sim.paused = false;
+    if (!ok) { sim.running = false; sim.mission.status = 'ready'; setRunButtons(); }
+  } else {
+    $('viewport').focus();
+    log('sys', '/teleop_keyboard', 'arrow keys or WASD to drive; release to stop');
+  }
+  setRunButtons();
+}
+$('runBtn').addEventListener('click', run);
+$('pauseBtn').addEventListener('click', () => { sim.paused = !sim.paused; setRunButtons(); });
+$('resetBtn').addEventListener('click', () => { hardReset(); log('sys', 'lab', 'reset'); });
+$('scenario').addEventListener('change', e => { sim.scenario = e.target.value; hardReset(); });
+$('raysBtn').addEventListener('click', e => { const on = e.target.getAttribute('aria-pressed') !== 'true'; e.target.setAttribute('aria-pressed', String(on)); scene3d.rays.visible = on; });
+$('followBtn').addEventListener('click', e => { const on = e.target.getAttribute('aria-pressed') !== 'true'; e.target.setAttribute('aria-pressed', String(on)); scene3d.setFollow(on); });
+document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.mode').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  sim.mode = b.dataset.mode; if (sim.mode !== 'twin') sim.stopActive = false;
+  log('sys', '/digital_twin', `mode → ${b.querySelector('b').textContent}`);
+}));
+$('clearCon').addEventListener('click', () => { $('console').textContent = ''; });
+$('restoreBtn').addEventListener('click', () => { $('code').value = STARTER; });
+$('code').addEventListener('keydown', e => {
+  if (e.key === 'Tab' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+    e.preventDefault(); const ta = e.target, s = ta.selectionStart;
+    ta.setRangeText('    ', s, ta.selectionEnd, 'end');
+  }
+});
+
+// Tabs (WAI-ARIA tab pattern)
+const tabs = [...document.querySelectorAll('[role=tab]')];
+function selectTab(tab) {
+  for (const t of tabs) { const on = t === tab; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; $(t.getAttribute('aria-controls')).hidden = !on; }
+  if (tab.id === 'tab-topics') renderTopics();
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => selectTab(t));
+  t.addEventListener('keydown', e => {
+    const k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (k) { const n = tabs[(i + k + tabs.length) % tabs.length]; selectTab(n); n.focus(); }
+  });
+});
+
+// ───────────────────────── main loop ─────────────────────────
+let lastFrame = performance.now(), acc = 0, uiTick = 0;
+function frame(now) {
+  const dt = Math.min(0.1, (now - lastFrame) / 1000); lastFrame = now;
+  if (sim.plant) {
+    if (!sim.paused && (sim.running || $('control').value === 'teleop')) {
+      acc += dt * +$('speed').value;
+      let n = 0;
+      while (acc >= DT && n < 200) { teleop(sim.plant.data.time); physicsStep(); acc -= DT; n++; }
+      if (n === 200) acc = 0;
+    } else acc = 0;
+    scene3d.render();
+    if (now - uiTick > 250) { uiTick = now; updateHud(); drawChart(); if (!$('panel-topics').hidden) renderTopics(); }
+  }
+  requestAnimationFrame(frame);
+}
+
+window.__twinlab = { sim, bus, py, get mj() { return mj; }, buildXML, plantParams, physicsStep, replayError };   // for debugging from the browser console
+
+async function boot() {
+  $('code').value = STARTER;
+  renderParams();
+  try {
+    const { default: loadMujoco } = await import('https://cdn.jsdelivr.net/npm/@mujoco/mujoco@3.17.0/mujoco.js');
+    mj = await loadMujoco();
+  } catch (e) {
+    $('loading').textContent = 'The physics engine could not load. Check your connection and reload. (' + e.message + ')';
+    return;
+  }
+  wireSystemNodes();
+  buildWorlds();
+  $('loading').remove();
+  setRunButtons();
+  log('sys', 'lab', `MuJoCo ready · robot ${sim.plantSerial} on the floor · press ▶ Run`);
+  requestAnimationFrame(frame);
+}
+boot();
+</script>
+</body>
+</html>

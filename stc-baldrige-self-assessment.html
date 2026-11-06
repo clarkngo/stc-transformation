@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Baldrige Self-Assessment — STC</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --green: #15803d;
+      --green-dim: #f0fdf4;
+      --green-mid: #bbf7d0;
+      --amber: #b45309;
+      --amber-dim: #fffbeb;
+      --amber-mid: #fde68a;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --blue-mid: #bfdbfe;
+      --violet: #6d28d9;
+      --violet-dim: #f5f3ff;
+      --violet-mid: #ddd6fe;
+      --red: #be123c;
+      --red-dim: #fff1f2;
+      --red-mid: #fecdd3;
+      --teal: #0f766e;
+      --teal-dim: #f0fdfa;
+      --teal-mid: #99f6e4;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .shell { max-width: 920px; margin: 0 auto; padding: 28px 20px 100px; }
+    a { color: var(--blue); }
+
+    /* Nav */
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    /* Doc header */
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow); margin-bottom: 24px;
+    }
+    .eyebrow {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--violet); margin-bottom: 6px;
+    }
+    .doc-header h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 6px; }
+    .doc-header .sub { color: var(--slate); font-size: 0.95rem; margin-bottom: 14px; }
+    .doc-meta { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.82rem; color: var(--slate-light); }
+    .doc-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* Callouts */
+    .callout {
+      border-radius: var(--radius-sm); padding: 14px 18px; margin: 0 0 24px;
+      font-size: 0.9rem; line-height: 1.6; border: 1px solid;
+    }
+    .callout strong { display: block; margin-bottom: 4px; }
+    .callout p { margin: 0 0 6px; }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout.edition { background: var(--blue-dim); border-color: var(--blue-mid); }
+    .callout.draft { background: var(--amber-dim); border-color: var(--amber-mid); }
+
+    /* TOC */
+    .toc {
+      background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 18px 24px; margin-bottom: 32px; font-size: 0.88rem;
+    }
+    .toc-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 8px; }
+    .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 32px; }
+    .toc li { margin-bottom: 3px; break-inside: avoid; }
+    .toc a { text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* Section */
+    .section { margin-bottom: 40px; scroll-margin-top: 16px; }
+    .section-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+    .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-light); }
+    .section-title { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.01em; margin: 0; }
+    .section-desc { font-size: 0.9rem; color: var(--slate); margin: 0 0 18px; max-width: 760px; line-height: 1.65; }
+
+    .panel {
+      background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 22px 26px; margin-bottom: 16px;
+    }
+    .panel h3 { font-size: 1rem; margin: 0 0 8px; }
+    .panel h4 {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--slate); margin: 18px 0 6px;
+    }
+    .panel h4:first-of-type { margin-top: 4px; }
+    .panel p { margin: 0 0 10px; font-size: 0.9rem; }
+    .panel ul { margin: 0 0 10px; padding-left: 20px; font-size: 0.9rem; }
+    .panel li { margin-bottom: 4px; }
+
+    /* Pathway cards */
+    .pathways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .pw-card { border-radius: var(--radius-sm); padding: 14px 16px; border: 1px solid; font-size: 0.86rem; }
+    .pw-card .pw-step { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+    .pw-card .pw-name { font-size: 1.02rem; font-weight: 800; margin: 2px 0 2px; }
+    .pw-card .pw-tag { font-style: italic; color: var(--slate); margin-bottom: 6px; }
+    .pw-card p { margin: 0; }
+    .pw-1 { background: var(--amber-dim); border-color: var(--amber-mid); }
+    .pw-1 .pw-step { color: var(--amber); }
+    .pw-2 { background: var(--blue-dim); border-color: var(--blue-mid); }
+    .pw-2 .pw-step { color: var(--blue); }
+    .pw-3 { background: var(--green-dim); border-color: var(--green-mid); }
+    .pw-3 .pw-step { color: var(--green); }
+
+    .lens { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .lens .panel { margin-bottom: 0; }
+    .lens dl { margin: 0; font-size: 0.88rem; }
+    .lens dt { font-weight: 700; }
+    .lens dd { margin: 0 0 8px; color: var(--slate); }
+
+    /* Maturity meter */
+    .meter { display: inline-flex; gap: 3px; vertical-align: middle; }
+    .meter i { display: block; width: 22px; height: 8px; border-radius: 4px; background: #e2e8f0; }
+    .meter.l1 i:nth-child(1) { background: var(--amber); }
+    .meter.l15 i:nth-child(1) { background: var(--amber); }
+    .meter.l15 i:nth-child(2) { background: linear-gradient(90deg, var(--blue) 50%, #e2e8f0 50%); }
+    .meter.l2 i:nth-child(1) { background: var(--amber); }
+    .meter.l2 i:nth-child(2) { background: var(--blue); }
+    .level-text { font-size: 0.82rem; font-weight: 600; margin-left: 8px; color: var(--slate); }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 16px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 640px; }
+    th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); background: #f8fafc; }
+    tr:last-child td { border-bottom: none; }
+    td.cat { font-weight: 700; white-space: nowrap; }
+    td.cat small { display: block; font-weight: 400; color: var(--slate-light); font-size: 0.76rem; }
+    .known { color: var(--green); font-weight: 600; }
+    .unknown { color: var(--red); font-weight: 600; }
+
+    /* Category blocks */
+    .cat-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+    .cat-head h3 { margin: 0; font-size: 1.08rem; }
+    .cat-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 50%; background: var(--violet-dim); color: var(--violet);
+      font-size: 0.8rem; font-weight: 800; margin-right: 8px;
+    }
+    .asks { font-size: 0.88rem; color: var(--slate); margin-bottom: 4px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+    .gap-list li::marker { color: var(--red); }
+    .next-list li::marker { color: var(--green); }
+
+    /* Roadmap */
+    .roadmap { counter-reset: step; list-style: none; padding: 0; margin: 0; }
+    .roadmap li {
+      counter-increment: step; position: relative; padding: 14px 18px 14px 58px;
+      background: var(--card); border-radius: var(--radius-sm); box-shadow: var(--shadow);
+      margin-bottom: 10px; font-size: 0.9rem;
+    }
+    .roadmap li::before {
+      content: counter(step); position: absolute; left: 16px; top: 14px;
+      width: 28px; height: 28px; border-radius: 50%; background: var(--violet); color: #fff;
+      font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center;
+    }
+    .roadmap strong { display: block; }
+    .roadmap .when { font-size: 0.78rem; color: var(--slate-light); }
+
+    .footer { margin-top: 48px; font-size: 0.8rem; color: var(--slate-light); text-align: center; }
+
+    @media (max-width: 720px) {
+      .doc-header { padding: 22px 20px 18px; }
+      .panel { padding: 18px 18px; }
+      .pathways, .lens, .two-col { grid-template-columns: 1fr; }
+      .toc ol { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row" aria-label="Breadcrumb">
+    <a href="index.html">← STC Transformation</a>
+    <span class="nav-sep">/</span>
+    <a href="stc-survive-reset-thrive.html">STC Strategic Frameworks</a>
+    <span class="nav-sep">/</span>
+    <span>Baldrige Self-Assessment</span>
+  </nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Leadership &amp; Strategy · Performance Excellence</div>
+    <h1>The Baldrige Excellence Framework, Applied to STC</h1>
+    <div class="sub">A first-pass self-assessment of the School of Technology and Computing: an Organizational Profile, an honest read of where each Baldrige category sits today, the results STC should start tracking, and a 90-day plan to move up one maturity level.</div>
+    <div class="doc-meta">
+      <span>📅 November 6, 2026</span>
+      <span>🎯 Audience: Dean &amp; STC leadership</span>
+      <span>📝 Status: Draft v1, for validation</span>
+      <span>🏛️ City University of Seattle</span>
+    </div>
+  </header>
+
+  <div class="callout edition">
+    <strong>Which edition of Baldrige this uses</strong>
+    <p>The Baldrige Foundation released a revised framework on August 13, 2026, developed under the oversight of NIST's Baldrige Performance Excellence Program. It has six categories (Leadership, Strategy, Customers, Organizational Intelligence, Workforce, Operations). Results are no longer a separate seventh category; they are built into each of the six. It also adds three <em>Maturity Pathways</em>.</p>
+    <p>That release is the Business, Nonprofit, and Government edition. The Education edition was announced for fall 2026 but had not been posted as of this draft. So this page uses the 2026 six-category structure and its Maturity Pathways, and borrows the education wording (students, other customers, educational programs and services) from the 2023–2024 Education edition. <strong style="display:inline">When the 2026 Education edition comes out, re-check this page against its category questions.</strong></p>
+  </div>
+
+  <div class="callout draft">
+    <strong>What this is, and isn't</strong>
+    <p>This is an internal planning tool, not an award application. The maturity levels are proposals based on the documents in this hub. The Dean and program leads should confirm or correct them. Evidence about initiatives that have not launched (the BS in AI, and the exploratory partnership hubs) is counted as <em>plans</em>, not as current performance.</p>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#why">Why Baldrige, why now</a></li>
+      <li><a href="#how">How to read the assessment</a></li>
+      <li><a href="#glance">STC at a glance</a></li>
+      <li><a href="#profile">Organizational Profile</a></li>
+      <li><a href="#c1">Leadership</a></li>
+      <li><a href="#c2">Strategy</a></li>
+      <li><a href="#c3">Customers: students &amp; stakeholders</a></li>
+      <li><a href="#c4">Organizational Intelligence</a></li>
+      <li><a href="#c5">Workforce</a></li>
+      <li><a href="#c6">Operations</a></li>
+      <li><a href="#scorecard">Results scorecard starter</a></li>
+      <li><a href="#roadmap">90-day roadmap</a></li>
+      <li><a href="#sources">Sources &amp; related docs</a></li>
+    </ol>
+  </nav>
+
+  <!-- ── WHY ─────────────────────────────────────────── -->
+  <section class="section" id="why">
+    <div class="section-header"><span class="section-label">Context</span><h2 class="section-title">Why Baldrige, why now</h2></div>
+    <p class="section-desc">STC already has plenty of strategy. There are pillar maps, the Survive · Reset · Thrive frameworks, eight initiative hubs and a reference course build in AI 410. What it lacks is one system that connects them, says which ones matter most, and shows whether they are working. Baldrige is built for exactly that. It doesn't tell a school <em>what</em> to do. It asks <em>how</em> the school does things, how widely, how it learns, and how well the pieces fit together, and then asks for results to prove it.</p>
+    <div class="panel">
+      <ul>
+        <li><strong>It fits the current moment.</strong> The new structure puts results inside every category, so each initiative has to say what it will measure. That answers STC's biggest risk: many parallel efforts, few shared measures.</li>
+        <li><strong>The Maturity Pathways fit a school in transition.</strong> STC can be honest that most categories are at "Establishing" without that sounding like failure. It's the expected starting point.</li>
+        <li><strong>The 2026 revision covers AI explicitly</strong>, including responsible AI use and data governance. That's where STC already has distinctive practice: AI-use rules per activity, AI-resistant assessment design, and AI-assisted course building.</li>
+        <li><strong>It overlaps with accreditation.</strong> The evidence Baldrige asks for (mission, outcomes assessment, continuous improvement, data-informed decisions) is largely what NWCCU review asks for too. Building it once serves both.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── HOW ─────────────────────────────────────────── -->
+  <section class="section" id="how">
+    <div class="section-header"><span class="section-label">Method</span><h2 class="section-title">How to read the assessment</h2></div>
+    <p class="section-desc">Each category gets a proposed level on the 2026 Maturity Pathways, which build on each other. A category "between" levels means part of it is at the higher level and part isn't yet.</p>
+    <div class="pathways">
+      <div class="pw-card pw-1">
+        <div class="pw-step">Pathway 1</div>
+        <div class="pw-name">Establishing</div>
+        <div class="pw-tag">Operational awareness</div>
+        <p>We know how the work gets done, what students and stakeholders need, which processes matter most, and which results to measure.</p>
+      </div>
+      <div class="pw-card pw-2">
+        <div class="pw-step">Pathway 2</div>
+        <div class="pw-name">Developing</div>
+        <div class="pw-tag">Process discipline</div>
+        <p>Processes are consistent and owned, and data is used regularly to guide decisions and improvement.</p>
+      </div>
+      <div class="pw-card pw-3">
+        <div class="pw-step">Pathway 3</div>
+        <div class="pw-name">Maturing</div>
+        <div class="pw-tag">System integration</div>
+        <p>Leadership, strategy, students, data, people, and operations work as one system that learns and improves.</p>
+      </div>
+    </div>
+    <div class="lens">
+      <div class="panel">
+        <h3>Questions for a process</h3>
+        <dl>
+          <dt>Approach</dt><dd>Is there a repeatable, written method, or does it depend on one person?</dd>
+          <dt>Deployment</dt><dd>Is it used across all programs and modalities, or only in one course?</dd>
+          <dt>Learning</dt><dd>Is it reviewed and improved on a set cycle?</dd>
+          <dt>Integration</dt><dd>Does it serve STC's strategic objectives and connect to other processes?</dd>
+        </dl>
+      </div>
+      <div class="panel">
+        <h3>Questions for a result</h3>
+        <dl>
+          <dt>Levels</dt><dd>What is the current number?</dd>
+          <dt>Trends</dt><dd>Is there at least three terms of data, and which way is it moving?</dd>
+          <dt>Comparisons</dt><dd>How does it compare with peer schools, benchmarks, or targets?</dd>
+          <dt>Integration</dt><dd>Is it a measure leadership actually uses to make decisions?</dd>
+        </dl>
+      </div>
+    </div>
+    <p class="section-desc" style="margin-top:12px;font-size:0.82rem">These are the ADLI and LeTCI factors from the 2023–2024 edition. The 2026 pages refer to "evaluation dimensions" without listing them, so this page keeps the familiar ones until the Education edition confirms them.</p>
+  </section>
+
+  <!-- ── GLANCE ─────────────────────────────────────────── -->
+  <section class="section" id="glance">
+    <div class="section-header"><span class="section-label">Summary</span><h2 class="section-title">STC at a glance</h2></div>
+    <p class="section-desc">The short version: STC is strong at designing new things and documenting them, and weak at measuring them consistently over time. Operations is the most mature category, because the AI 410 build produced a written, repeatable process. Organizational Intelligence and Workforce are the least mature. They are also what the other categories depend on.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Category</th><th>Proposed level</th><th>Strongest evidence</th><th>Biggest gap</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cat">1 · Leadership</td>
+            <td><span class="meter l15" aria-label="Establishing, moving to Developing"><i></i><i></i><i></i></span><span class="level-text">Establishing → Developing</span></td>
+            <td>Five strategic pillars; "yes, and" risk culture; clear governance decisions (e.g. AILI Option A)</td>
+            <td>No written STC mission, vision, and values that faculty can repeat; no regular two-way communication cycle</td>
+          </tr>
+          <tr>
+            <td class="cat">2 · Strategy</td>
+            <td><span class="meter l15" aria-label="Establishing, moving to Developing"><i></i><i></i><i></i></span><span class="level-text">Establishing → Developing</span></td>
+            <td>Uncertainty matrix, 4 Cs, BLAST; FY 2026–27 alignment map</td>
+            <td>Eight initiatives in parallel, with no ranked list of objectives and no owners, measures, or targets</td>
+          </tr>
+          <tr>
+            <td class="cat">3 · Customers</td>
+            <td><span class="meter l1" aria-label="Establishing"><i></i><i></i><i></i></span><span class="level-text">Establishing</span></td>
+            <td>Clear working-adult segment; funnel and user journey mapped; AAC feedback analysed line by line</td>
+            <td>No standing voice-of-student or voice-of-employer loop; advisory board still being formed</td>
+          </tr>
+          <tr>
+            <td class="cat">4 · Organizational Intelligence</td>
+            <td><span class="meter l1" aria-label="Establishing"><i></i><i></i><i></i></span><span class="level-text">Establishing</span></td>
+            <td>Feb 2026 program analytics; a single source of truth per artifact; this documentation hub</td>
+            <td>Analytics are a one-time snapshot, with no scorecard, trends, or peer comparisons</td>
+          </tr>
+          <tr>
+            <td class="cat">5 · Workforce</td>
+            <td><span class="meter l1" aria-label="Establishing"><i></i><i></i><i></i></span><span class="level-text">Establishing</span></td>
+            <td>SME + instructional designer model; AI-era course build briefing for staff; Guild continuity model</td>
+            <td>New-course building depends on one person; student-worker time goes to low-value grading; no engagement measure</td>
+          </tr>
+          <tr>
+            <td class="cat">6 · Operations</td>
+            <td><span class="meter l2" aria-label="Developing"><i></i><i></i><i></i></span><span class="level-text">Developing</span></td>
+            <td>AI 410 reference build: fixed constraints, one source of truth, accessibility checks on export, documented lessons learned</td>
+            <td>Proven in one course; not yet standard across existing BS/MS courses; few measures of the process itself</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── PROFILE ─────────────────────────────────────────── -->
+  <section class="section" id="profile">
+    <div class="section-header"><span class="section-label">Starting point</span><h2 class="section-title">Organizational Profile</h2></div>
+    <p class="section-desc">Every Baldrige assessment starts here. The Profile describes the school as it is and names what matters most. If leadership can't agree on the Profile, nothing after it holds up, so <strong>validating this section is the first action in the roadmap.</strong></p>
+
+    <div class="panel">
+      <h3>P.1 · Organizational description</h3>
+      <div class="two-col">
+        <div>
+          <h4>Educational programs &amp; services</h4>
+          <ul>
+            <li>Bachelor's: Applied Computer Science, Cybersecurity, Data Science, all with a shared core that includes AI, cloud, cybersecurity, and cyber ethics</li>
+            <li>MS Computer Science, MS Cybersecurity, Doctor of Information Technology</li>
+            <li>Graduate certificates; preparatory courses for career changers</li>
+            <li>Applied Research Symposium and DIT Forum (both quarterly)</li>
+            <li><em>In development:</em> BS in Artificial Intelligence (AI 410–440)</li>
+          </ul>
+          <h4>Mission, vision &amp; values</h4>
+          <ul>
+            <li>Five pillars on the <a href="stc-strategic-alignment.html">alignment map</a>: Career-Ready Graduates, Innovation &amp; Agentic Learning, Equity &amp; Accessibility, Industry-Integrated Education, Faculty &amp; Institutional Excellence</li>
+            <li><strong>Gap:</strong> No one-page STC mission, vision, and values statement</li>
+          </ul>
+          <h4>Workforce</h4>
+          <ul>
+            <li>Full-time and associate faculty, program staff, and student workers who support classmates and grading</li>
+            <li>Course development uses a subject-matter expert plus instructional designer model, now AI-assisted</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Assets</h4>
+          <ul>
+            <li>Brightspace; GitHub Codespaces as the standard hands-on environment; Open edX for micro-credentials and workshops</li>
+            <li>A public content catalog (over 207K video views) and this documentation hub</li>
+          </ul>
+          <h4>Regulatory environment</h4>
+          <ul>
+            <li>NWCCU institutional accreditation; ABET alignment is a stated goal</li>
+            <li>Academic Affairs Committee approval of programs and course descriptions</li>
+            <li>Accessibility (WCAG 2.2 AA in new course builds), FERPA, and academic-integrity policy</li>
+          </ul>
+          <h4>Governance &amp; relationships</h4>
+          <ul>
+            <li>The Dean reports into CityU academic leadership; cross-school institutes report to the President's Office</li>
+            <li>Students: mostly working adults, career changers, veterans and other non-traditional learners, online-first with global reach</li>
+            <li>Stakeholders: employers, the planned Industry Advisory Board, the Center for Cybersecurity Innovation, and community partners</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>P.2 · Organizational situation</h3>
+      <div class="two-col">
+        <div>
+          <h4>Competitive environment</h4>
+          <ul>
+            <li>Bootcamps and employer-run credentials that skip four-year degrees</li>
+            <li>Large micro-credential providers (Coursera, Google, AWS) competing for the same prospects</li>
+            <li>The 2026–2028 demographic enrollment cliff</li>
+          </ul>
+          <h4>Strategic challenges</h4>
+          <ul>
+            <li>AI is eroding entry-level developer roles, which threatens the case for employability</li>
+            <li>Course content is ageing faster than curriculum cycles can update it</li>
+            <li>Traditional assessment is vulnerable to AI (see <a href="current-grading-breakdown.html">current grading model</a>)</li>
+            <li>Delivery-mode concerns raised in the BSAI AAC review</li>
+            <li>Too many initiatives for a small team to carry at once</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Strategic advantages</h4>
+          <ul>
+            <li>Programs built for working adults, with a clear path from preparatory courses to the DIT</li>
+            <li>AI and security already in every bachelor's core</li>
+            <li>Fast, documented, AI-assisted course building (AI 410)</li>
+            <li>Open content that already reaches people at internet scale</li>
+          </ul>
+          <h4>Performance improvement system</h4>
+          <ul>
+            <li>Today: lessons-learned reports, staff briefings with feedback forms, ad hoc analytics</li>
+            <li><strong>Gap:</strong> No named STC-wide improvement cycle (for example, plan-do-study-act each term) with owners</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── C1 LEADERSHIP ─────────────────────────────────────────── -->
+  <section class="section" id="c1">
+    <div class="panel">
+      <div class="cat-head">
+        <h3><span class="cat-num">1</span>Leadership</h3>
+        <span><span class="meter l15" aria-label="Establishing, moving to Developing"><i></i><i></i><i></i></span><span class="level-text">Establishing → Developing</span></span>
+      </div>
+      <p class="asks"><strong>Baldrige asks:</strong> How do senior leaders set and live the school's vision and values, communicate with faculty, staff, and students, build a culture focused on student success, and govern responsibly, including legal, ethical, and societal responsibilities?</p>
+      <h4>STC today</h4>
+      <ul>
+        <li>Direction exists as five pillars on the <a href="stc-strategic-alignment.html">Strategic Alignment</a> map, connected to university priorities.</li>
+        <li>A clear stance on risk: the <a href="meeting-notes-strategic-leadership-roundtable-2026-07-01.html">July roundtable</a> set a "yes, and" culture, where risks are named and then mitigated rather than used to stop work.</li>
+        <li>Governance decisions get recorded with options and reasons, as in the <a href="aili-governance-options.html">AILI governance decision</a>.</li>
+        <li>STC gave its institutional answers in the <a href="deans-discussion-guide-stc-input-2026-09-30.html">Deans' discussion guide</a>.</li>
+        <li>Ethics: cyber ethics is in every bachelor's core, and new courses publish AI-use rules for each activity.</li>
+      </ul>
+      <div class="two-col">
+        <div>
+          <h4>Gaps</h4>
+          <ul class="gap-list">
+            <li>No short STC mission, vision, and values statement. BLAST's "60-second answer" test isn't met yet.</li>
+            <li>Communication flows one way (briefings), with no regular cycle for listening to faculty and staff.</li>
+            <li>No measures of leadership effectiveness or governance results.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Next level (Developing)</h4>
+          <ul class="next-list">
+            <li>Publish a one-page STC profile with mission, vision, and values, signed off by the Dean.</li>
+            <li>Hold a termly all-hands with a two-question pulse survey, and close the loop on what was heard.</li>
+            <li>Write STC's AI governance principles once and link them from every course.</li>
+          </ul>
+        </div>
+      </div>
+      <h4>Results to track here</h4>
+      <p>Faculty and staff confidence in direction (pulse survey); share of faculty who can state the STC value story; academic-integrity case counts and how they're resolved; community contributions (symposium presenters and attendees).</p>
+    </div>
+  </section>
+
+  <!-- ── C2 STRATEGY ─────────────────────────────────────────── -->
+  <section class="section" id="c2">
+    <div class="panel">
+      <div class="cat-head">
+        <h3><span class="cat-num">2</span>Strategy</h3>
+        <span><span class="meter l15" aria-label="Establishing, moving to Developing"><i></i><i></i><i></i></span><span class="level-text">Establishing → Developing</span></span>
+      </div>
+      <p class="asks"><strong>Baldrige asks:</strong> How does the school develop strategy, using its challenges, advantages, and blind spots; turn it into strategic objectives and action plans; assign resources; and track progress?</p>
+      <h4>STC today</h4>
+      <ul>
+        <li><strong>Strategy development is strong.</strong> The <a href="stc-survive-reset-thrive.html">Survive · Reset · Thrive</a> page already does environmental scanning (uncertainty matrix), resilience planning (4 Cs), and execution design (BLAST).</li>
+        <li>Market-facing strategy is written down: the <a href="stc-brand-enrollment-initiative.html">Brand &amp; Enrollment Initiative</a>, the <a href="stc-open-ecosystem-funnel.html">Open Ecosystem Funnel</a>, and the <a href="strategy/executive-summary.html">BSAI executive briefing</a>.</li>
+        <li>The <a href="index.html#hubs">Initiative Hubs</a> work as a portfolio of action plans, and each one keeps its own record.</li>
+      </ul>
+      <div class="two-col">
+        <div>
+          <h4>Gaps</h4>
+          <ul class="gap-list">
+            <li><strong>Implementation is the weak half.</strong> Eight hubs with no ranking, so there's no agreed "if we can only do three things."</li>
+            <li>Action plans have no named owner, measure, target, or review date.</li>
+            <li>Initiatives that haven't launched sit beside live programs with no stage-gate showing where each one is.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Next level (Developing)</h4>
+          <ul class="next-list">
+            <li>Pick at most five STC strategic objectives for FY 2026–27, drawn from the five pillars.</li>
+            <li>Map every hub to an objective and give it a stage: Explore, Pilot, Launch, or Sustain.</li>
+            <li>Review progress once a term against the scorecard below.</li>
+          </ul>
+        </div>
+      </div>
+      <h4>Results to track here</h4>
+      <p>Action-plan milestones hit on time; curriculum cycle time from "need identified" to "course updated" (BLAST target: under 6 months); share of revenue from any single source (4 Cs target: no source above 60%).</p>
+    </div>
+  </section>
+
+  <!-- ── C3 CUSTOMERS ─────────────────────────────────────────── -->
+  <section class="section" id="c3">
+    <div class="panel">
+      <div class="cat-head">
+        <h3><span class="cat-num">3</span>Customers: students &amp; other stakeholders</h3>
+        <span><span class="meter l1" aria-label="Establishing"><i></i><i></i><i></i></span><span class="level-text">Establishing</span></span>
+      </div>
+      <p class="asks"><strong>Baldrige asks:</strong> How does the school listen to current and future students and other stakeholders, segment them, choose programs and services that fit, build relationships, and handle complaints, and how satisfied and engaged are they?</p>
+      <h4>STC today</h4>
+      <ul>
+        <li>Clear segments: working adults, career changers, and veterans, reached through online-first, flexible programs and preparatory courses.</li>
+        <li>The path for prospective students is mapped: the <a href="cityux-user-journey.html">CityUX user journey</a> and the funnel from awareness to conversion. Segmentation and positioning tools are in <a href="marketing-101-stc.html">Marketing 101</a>.</li>
+        <li>Stakeholder feedback is taken seriously when it arrives. The <a href="bsai-feedback-synthesis.html">AAC feedback synthesis</a> answered every reviewer comment.</li>
+        <li>Student community: student workers, tech clubs, the research group, and the <a href="stc-guild-framework.html">STC Guild</a> proposal.</li>
+      </ul>
+      <div class="two-col">
+        <div>
+          <h4>Gaps</h4>
+          <ul class="gap-list">
+            <li>Listening happens one event at a time. There's no standing loop that every term, across every program, asks students what they need and reports back.</li>
+            <li>Employer voice is planned (Industry Advisory Board formation in 2026) but not running.</li>
+            <li>No visible complaint or concern process at STC level, and no satisfaction trend data.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Next level (Developing)</h4>
+          <ul class="next-list">
+            <li>Run one end-of-term STC pulse survey in every course, with the same five questions every term so trends show.</li>
+            <li>Hold the first Industry Advisory Board meeting with specific curriculum questions (BLAST: questions, not updates).</li>
+            <li>Publish a "you said, we did" note to students each term.</li>
+          </ul>
+        </div>
+      </div>
+      <h4>Results to track here</h4>
+      <p>Student satisfaction and engagement; term-to-term and year-to-year retention by program; employer satisfaction with graduates; funnel conversion (free content → inquiry → application → enrollment).</p>
+    </div>
+  </section>
+
+  <!-- ── C4 ORG INTELLIGENCE ─────────────────────────────────────────── -->
+  <section class="section" id="c4">
+    <div class="panel">
+      <div class="cat-head">
+        <h3><span class="cat-num">4</span>Organizational Intelligence</h3>
+        <span><span class="meter l1" aria-label="Establishing"><i></i><i></i><i></i></span><span class="level-text">Establishing</span></span>
+      </div>
+      <p class="asks"><strong>Baldrige asks:</strong> How does the school choose, collect, analyse, and use data to track performance and make decisions; compare itself with others; manage knowledge and organizational learning; and govern its data and AI use responsibly? <span style="color:var(--slate-light)">(In the 2023–2024 edition this category was called "Measurement, Analysis, and Knowledge Management.")</span></p>
+      <h4>STC today</h4>
+      <ul>
+        <li>A real data-based analysis exists. <a href="strategy/program-analytics.html">Program analytics (Feb 2026)</a> covered 324 enrollments across five foundation courses with grade averages and at-risk counts, and the results shaped the Python-first BSAI design.</li>
+        <li>Strong knowledge management habits: one source of truth per artifact and written lessons learned (<a href="ai410-lessons-learned.html">AI 410 lessons learned</a>), the Guild's "We do not restart; we resume" handover rule, and this hub as the school's shared memory.</li>
+        <li>Data and AI governance is in place at course level: AI-use rules per activity and assessment designed to resist AI misuse.</li>
+      </ul>
+      <div class="two-col">
+        <div>
+          <h4>Gaps</h4>
+          <ul class="gap-list">
+            <li>Analytics is a project, not a habit. The February snapshot hasn't been refreshed, so there are no trends.</li>
+            <li>No comparison data from peer schools of technology, national benchmarks, or targets.</li>
+            <li>No agreed short list of key performance indicators, and no named owner for each.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Next level (Developing)</h4>
+          <ul class="next-list">
+            <li>Adopt the <a href="#scorecard">scorecard starter</a> below, with fewer than 15 measures, and refresh it every term.</li>
+            <li>Re-run the program-analytics query each term so trends start building from Winter 2027.</li>
+            <li>Pick one or two comparison sources (for example, IPEDS peers) for retention and completion.</li>
+          </ul>
+        </div>
+      </div>
+      <h4>Results to track here</h4>
+      <p>Share of scorecard measures with three or more terms of data; share with a comparison; how current the data is (days since last refresh).</p>
+    </div>
+  </section>
+
+  <!-- ── C5 WORKFORCE ─────────────────────────────────────────── -->
+  <section class="section" id="c5">
+    <div class="panel">
+      <div class="cat-head">
+        <h3><span class="cat-num">5</span>Workforce</h3>
+        <span><span class="meter l1" aria-label="Establishing"><i></i><i></i><i></i></span><span class="level-text">Establishing</span></span>
+      </div>
+      <p class="asks"><strong>Baldrige asks:</strong> How does the school plan for the faculty and staff it needs, keep a safe and supportive environment, engage people, and develop them and future leaders?</p>
+      <h4>STC today</h4>
+      <ul>
+        <li>The course-building model is changing in a way people can see: the <a href="ai410-staff-meeting-2026-10-29.html">Oct 29 staff briefing</a> shared how AI 410 was built and asked for feedback.</li>
+        <li>Faculty AI upskilling is a named initiative, and BLAST sets a target of at least one hands-on AI tool immersion per term for every faculty member.</li>
+        <li>A new faculty role is described in the <a href="stc-open-ecosystem-funnel.html">Open Ecosystem Funnel</a>: practitioner instructors who publish in public.</li>
+        <li>A succession model for student leaders is in the <a href="stc-guild-framework.html">STC Guild</a>: Apprentice, Journeyman, Grandmaster.</li>
+      </ul>
+      <div class="two-col">
+        <div>
+          <h4>Gaps</h4>
+          <ul class="gap-list">
+            <li><strong>Capacity risk:</strong> building the new BSAI courses depends on one course lead. There's no second person who could keep going.</li>
+            <li>Student-worker hours go to grading low-value items (the "student worker drain" on the <a href="current-grading-breakdown.html">current grading model</a>).</li>
+            <li>No engagement or workload measure for faculty and staff; upskilling isn't tracked.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Next level (Developing)</h4>
+          <ul class="next-list">
+            <li>Name a second builder for each of AI 420, 430, and 440, and pair them on one build sprint.</li>
+            <li>Track AI immersion attendance per term against the BLAST target.</li>
+            <li>Move student-worker hours from grading to supporting students as the new assessment model rolls out.</li>
+          </ul>
+        </div>
+      </div>
+      <h4>Results to track here</h4>
+      <p>Share of faculty completing one AI immersion per term; faculty and staff engagement (pulse survey); share of courses with at least two people able to maintain them; student-worker hours spent on grading versus supporting students.</p>
+    </div>
+  </section>
+
+  <!-- ── C6 OPERATIONS ─────────────────────────────────────────── -->
+  <section class="section" id="c6">
+    <div class="panel">
+      <div class="cat-head">
+        <h3><span class="cat-num">6</span>Operations</h3>
+        <span><span class="meter l2" aria-label="Developing"><i></i><i></i><i></i></span><span class="level-text">Developing</span></span>
+      </div>
+      <p class="asks"><strong>Baldrige asks:</strong> How does the school design, manage, and improve its key work processes, especially educational program design and delivery, control costs, manage its supply network and partners, and prepare for disruption?</p>
+      <h4>STC today</h4>
+      <ul>
+        <li><strong>A repeatable course-design process exists and is written down.</strong> AI 410 runs on fixed <a href="bsai-course-design-constraints.html">design constraints</a>: the approved description is fixed, everything runs in Codespaces, free tiers come first, and each hands-on unit spans two weeks. It also has one source of truth per artifact, accessibility checks enforced at export, and a <a href="ai410-lessons-learned.html">lessons-learned report</a>. AI 420–440 syllabi were then built from it. That covers approach, deployment, and learning.</li>
+        <li>Assessment is being redesigned on purpose, moving away from the high-activity, AI-vulnerable <a href="current-grading-breakdown.html">current model</a> towards hands-on work submitted as code, knowledge checks, and a phased term project.</li>
+        <li>For credentials, the <a href="assessment-infrastructure-playbook.html">Assessment Infrastructure Playbook</a> covers mapping competencies to jobs, validating rubrics with employer experts, and verifiable delivery.</li>
+        <li>Cost control is built in: free tiers first, and paid keys only as an option.</li>
+      </ul>
+      <div class="two-col">
+        <div>
+          <h4>Gaps</h4>
+          <ul class="gap-list">
+            <li>The process is proven in new BSAI courses, but existing BS and MS courses still use the older model.</li>
+            <li>The process itself isn't measured: build time, rounds of rework, accessibility pass rate.</li>
+            <li>No written plan for disruption at STC level, such as a platform outage, losing key staff, or a crisis script (a 4 Cs item).</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Next level (Maturing, in parts)</h4>
+          <ul class="next-list">
+            <li>Turn the AI 410 build into an "STC Course Build Standard" and use it for the next existing-course revision.</li>
+            <li>Record build time and rework rounds for each new course.</li>
+            <li>Draft the crisis communication script and a continuity plan for course builds.</li>
+          </ul>
+        </div>
+      </div>
+      <h4>Results to track here</h4>
+      <p>Attainment of course learning outcomes; course build cycle time; accessibility pass rate on first export; cost per student for lab and cloud tooling; share of courses on the current build standard.</p>
+    </div>
+  </section>
+
+  <!-- ── SCORECARD ─────────────────────────────────────────── -->
+  <section class="section" id="scorecard">
+    <div class="section-header"><span class="section-label">Results</span><h2 class="section-title">Results scorecard starter</h2></div>
+    <p class="section-desc">In the 2023–2024 Education edition, results carried 450 of the 1,000 points, more than any other category. The 2026 framework goes further and expects results in every category. This starter list keeps it small. For each measure, it shows what STC knows today. "Not yet measured" doesn't mean failure; it shows where Organizational Intelligence work comes first.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Measure</th><th>Category</th><th>Level today</th><th>Trend</th><th>Comparison</th></tr></thead>
+        <tbody>
+          <tr><td>Enrollments in foundation courses</td><td>Customers</td><td class="known">324 (Feb 2026 snapshot)</td><td class="unknown">None yet</td><td class="unknown">None</td></tr>
+          <tr><td>At-risk students in foundation courses</td><td>Customers</td><td class="known">19 below 0.7</td><td class="unknown">None yet</td><td class="unknown">None</td></tr>
+          <tr><td>Average grade in foundation courses</td><td>Operations</td><td class="known">2.94 (CS 251: 3.07)</td><td class="unknown">None yet</td><td>Between courses only</td></tr>
+          <tr><td>Term-to-term retention by program</td><td>Customers</td><td class="unknown">Not yet measured at STC level</td><td class="unknown">—</td><td>IPEDS peers (proposed)</td></tr>
+          <tr><td>Student satisfaction (end-of-term pulse)</td><td>Customers</td><td class="unknown">Not yet measured</td><td class="unknown">—</td><td>Target to be set</td></tr>
+          <tr><td>Employer satisfaction with graduates</td><td>Customers</td><td class="unknown">Not yet measured</td><td class="unknown">—</td><td>Advisory board</td></tr>
+          <tr><td>Reach of open content</td><td>Customers / Strategy</td><td class="known">207K+ video views</td><td class="unknown">Not tracked by term</td><td class="unknown">None</td></tr>
+          <tr><td>Curriculum cycle time (need → course updated)</td><td>Strategy</td><td class="unknown">Not yet measured</td><td class="unknown">—</td><td>BLAST target: &lt; 6 months</td></tr>
+          <tr><td>Largest single revenue source share</td><td>Strategy</td><td class="unknown">Not yet measured</td><td class="unknown">—</td><td>4 Cs target: ≤ 60%</td></tr>
+          <tr><td>Faculty completing an AI immersion each term</td><td>Workforce</td><td class="unknown">Not yet tracked</td><td class="unknown">—</td><td>BLAST target: 100%</td></tr>
+          <tr><td>Courses with two or more people able to maintain them</td><td>Workforce</td><td class="unknown">Not yet tracked</td><td class="unknown">—</td><td>Target to be set</td></tr>
+          <tr><td>Course build cycle time and rework rounds</td><td>Operations</td><td class="known">AI 410: about 9 weeks (Aug 25 – Oct 25)</td><td class="unknown">One data point</td><td class="unknown">None</td></tr>
+          <tr><td>Faculty and staff confidence in direction</td><td>Leadership</td><td class="unknown">Not yet measured</td><td class="unknown">—</td><td>Target to be set</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── ROADMAP ─────────────────────────────────────────── -->
+  <section class="section" id="roadmap">
+    <div class="section-header"><span class="section-label">Action</span><h2 class="section-title">90-day roadmap: one level up</h2></div>
+    <p class="section-desc">The aim is not to win an award. It's to move Leadership, Strategy, Customers, and Organizational Intelligence from Establishing to Developing by the end of Winter 2027. That means taking what's already written down and running it as a regular cycle.</p>
+    <ol class="roadmap">
+      <li><strong>Validate the Organizational Profile and maturity levels with the Dean.</strong> A 60-minute session. Correct this page, then publish STC's one-page mission, vision, and values.<div class="when">Weeks 1–2 · Leadership</div></li>
+      <li><strong>Choose at most five strategic objectives and stage every hub against them.</strong> Each objective gets an owner, a measure, a target, and a review date. Each hub gets a stage: Explore, Pilot, Launch, or Sustain.<div class="when">Weeks 2–4 · Strategy</div></li>
+      <li><strong>Agree the scorecard and owners.</strong> Start from the starter list above, re-run the program-analytics query, and pick one comparison source.<div class="when">Weeks 3–6 · Organizational Intelligence</div></li>
+      <li><strong>Start the listening loops.</strong> An end-of-term STC pulse survey with five fixed questions, and the first Industry Advisory Board meeting with curriculum questions.<div class="when">Weeks 4–10 · Customers</div></li>
+      <li><strong>Reduce single-person risk in new-course building.</strong> Name and pair a second builder for AI 420–440, and write the AI 410 process up as the STC Course Build Standard.<div class="when">Weeks 4–12 · Workforce &amp; Operations</div></li>
+      <li><strong>Hold the first improvement review.</strong> At the end of the term, review the scorecard, choose one improvement per category, and update this page. That review is the "learning" step Baldrige looks for.<div class="when">Week 12 · All categories</div></li>
+    </ol>
+  </section>
+
+  <!-- ── SOURCES ─────────────────────────────────────────── -->
+  <section class="section" id="sources">
+    <div class="section-header"><span class="section-label">References</span><h2 class="section-title">Sources &amp; related docs</h2></div>
+    <div class="panel">
+      <h4>Baldrige framework</h4>
+      <ul>
+        <li><a href="https://baldrigefoundation.org/what-we-do/baldrige-excellence-framework/baldrige-framework-national-technical-committee.html/article/2026/08/13/baldrige-foundation-releases-new-2026-baldrige-excellence-framework-to-strengthen-american-competitiveness">Baldrige Foundation: new 2026 Baldrige Excellence Framework released (Aug 13, 2026)</a></li>
+        <li><a href="https://baldrigefoundation.org/what-we-do/baldrige-excellence-framework/2026-baldrige-framework-key-changes.html">2026 Baldrige Framework: key changes</a></li>
+        <li><a href="https://baldrigefoundation.org/what-we-do/baldrige-excellence-framework/maturity-pathways.html">Baldrige Maturity Pathways</a></li>
+        <li><a href="https://baldrigefoundation.org/what-we-do/baldrige-excellence-framework/education.html">Baldrige Excellence Framework (Education): edition status</a></li>
+        <li><a href="https://www.nist.gov/document/2023-2024-baldrige-excellence-framework-education-organizational-profile-pdf">NIST: 2023–2024 Education edition Organizational Profile (PDF)</a></li>
+      </ul>
+      <h4>STC evidence used on this page</h4>
+      <ul>
+        <li><a href="stc-strategic-alignment.html">STC Strategic Alignment</a> · <a href="stc-survive-reset-thrive.html">Survive · Reset · Thrive</a> · <a href="stc-brand-enrollment-initiative.html">Brand &amp; Enrollment Initiative</a></li>
+        <li><a href="strategy/program-analytics.html">Program Analytics</a> · <a href="strategy/executive-summary.html">BSAI Executive Briefing</a> · <a href="bsai-feedback-synthesis.html">BSAI AAC Feedback Synthesis</a></li>
+        <li><a href="ai410-lessons-learned.html">AI 410 Lessons Learned</a> · <a href="ai410-staff-meeting-2026-10-29.html">AI 410 Staff Briefing</a> · <a href="bsai-course-design-constraints.html">BSAI Course Design Constraints</a> · <a href="current-grading-breakdown.html">Current Grading Model</a></li>
+        <li><a href="assessment-infrastructure-playbook.html">Assessment Infrastructure Playbook</a> · <a href="stc-open-ecosystem-funnel.html">Open Ecosystem Funnel</a> · <a href="cityux-user-journey.html">CityUX User Journey</a> · <a href="marketing-101-stc.html">Marketing 101</a></li>
+        <li><a href="stc-guild-framework.html">STC Guild</a> · <a href="aili-governance-options.html">AILI Governance</a> · <a href="meeting-notes-strategic-leadership-roundtable-2026-07-01.html">Strategic Leadership Roundtable</a> · <a href="deans-discussion-guide-stc-input-2026-09-30.html">Deans' Discussion Guide</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="footer">City University of Seattle · School of Technology &amp; Computing · Baldrige Self-Assessment · Draft v1 · November 2026</div>
+</div>
+</body>
+</html>

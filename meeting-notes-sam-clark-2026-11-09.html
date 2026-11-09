@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes — Sam &amp; Clark, November 9 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="bsai-hub.html">BSAI Hub</a>
+    <span class="nav-sep">›</span>
+    <span>Meeting Notes — Sam &amp; Clark, Nov 9 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Meeting Notes — Curriculum &amp; AI Landscape</div>
+    <h1>Sam &amp; Clark: AI Agents, Data Centers, Open Models and Course Updates, November 9, 2026</h1>
+    <p class="subtitle">A conversation covering how AI agents curate and answer multi-part student prompts, how different countries build and power data centers, the move toward personal AI computers and local storage, open-source models as a lower-energy option, and where AI 410 and AI 420 stand.</p>
+    <div class="meta-row">
+      <span class="meta-chip">November 9, 2026</span>
+      <span class="meta-chip">Sam, Clark</span>
+      <span class="meta-chip">Source: summary of the audio transcript</span>
+    </div>
+  </div>
+
+  <div class="callout callout-blue" style="margin-bottom:24px">
+    <strong>BSAI constraints reminder:</strong> this meeting discussed AI 410 and AI 420. Standing rules for AI 410–440 are on the <a href="bsai-course-design-constraints.html">BSAI course design constraints</a> page: the approved course description and outcomes are fixed, hands-on units run in GitHub Codespaces, free tiers come first, and each HOS spans two weeks. No decision in this meeting conflicts with them. If the local-model and personal-AI-computer ideas move into a course, they must stay optional, since a local model can't be a required course environment.
+  </div>
+
+  <div class="callout callout-amber" style="margin-bottom:32px">
+    <strong>About these notes:</strong> they're based on an automated summary of the meeting recording, not a full transcript. Some names may be mis-transcribed: "Natural" in the open-source model list is probably a different model name, "Anti-Gravity and SDK" is read here as Google Antigravity and the Agent Development Kit (ADK), and "rental sheet analysis" is kept as heard. Correct any of these if you remember them differently.
+  </div>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#curation">AI Curation and Response Times</a></li>
+      <li><a href="#datacenters">Global Approaches to Data Centers</a></li>
+      <li><a href="#opensource">Open-Source AI Models</a></li>
+      <li><a href="#courses">Course Development and Curriculum Planning</a></li>
+      <li><a href="#related">Related Materials</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="curation">
+    <div class="section-header">
+      <div class="section-icon icon-blue">⏱️</div>
+      <div>
+        <h2>1. AI Curation and Response Times</h2>
+        <div class="section-sub">How agents handle student work and multi-part prompts</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">Measuring curation</span>
+        <div class="point-body">How AI agents can measure the way students <strong>curate</strong> information, meaning how they select, filter and organize what an AI gives them.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Multi-question prompts</span>
+        <div class="point-body">How agents deal with prompts that ask several questions at once. The examples discussed included an AI answering within about <strong>90 seconds</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="datacenters">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🌐</div>
+      <div>
+        <h2>2. Global Approaches to Data Centers</h2>
+        <div class="section-sub">Who builds and powers AI infrastructure, and the move to local computing</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-teal">South Korea vs. US</span>
+        <div class="point-body">South Korea relies on a <strong>government-controlled electrical grid</strong> to power data centers. In the US, data centers are mostly built and run by <strong>private companies</strong>.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Personal AI computers</span>
+        <div class="point-body">A shift toward <strong>personal AI desktop computers</strong> and storing data locally, mainly for privacy.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="opensource">
+    <div class="section-header">
+      <div class="section-icon icon-green">🔓</div>
+      <div>
+        <h2>3. Open-Source AI Models</h2>
+        <div class="section-sub">A lower-energy option that leans less on large data centers</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-green">Models named</span>
+        <div class="point-body">DeepSeek, Llama, and a third model transcribed as "Natural."</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Why they matter</span>
+        <div class="point-body">These models were described as <strong>energy-efficient</strong> options that reduce the heavy reliance on massive data centers. This links back to the local-computing trend in section 2.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="courses">
+    <div class="section-header">
+      <div class="section-icon icon-violet">📚</div>
+      <div>
+        <h2>4. Course Development and Curriculum Planning</h2>
+        <div class="section-sub">Updates on BSAI courses and what's next</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-blue">AI 410</span>
+        <div class="point-body">Reviewed updates, including <strong>real-world assistants</strong> and a <strong>rental sheet analysis</strong> activity.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">AI 420</span>
+        <div class="point-body">Reviewed the move to <strong>Google Antigravity</strong> and an <strong>ADK-first</strong> build, as on the <a href="courses/AI-420.html">AI 420 course page</a>.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Looking ahead</span>
+        <div class="point-body">Future curriculum planning, how to prepare students, and <strong>simulation tools</strong>. For AI 440, the browser-based simulation proposal is on the <a href="ai440-twin-lab-plan.html">AI 440 Twin Lab plan</a>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="related">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🔗</div>
+      <h2>Related Materials</h2>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-violet">Constraints</span>
+        <div class="point-body"><a href="bsai-course-design-constraints.html">BSAI Course Design Constraints</a>: the standing rules for AI 410–440</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">AI 420</span>
+        <div class="point-body"><a href="courses/AI-420.html">AI 420 course page</a>: Antigravity and the ADK-first build</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-teal">AI 440</span>
+        <div class="point-body"><a href="ai440-twin-lab-plan.html">AI 440 Twin Lab plan</a>: browser-based physical AI simulation</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Hub</span>
+        <div class="point-body"><a href="bsai-hub.html">BSAI Hub</a>: all BSAI program documents</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

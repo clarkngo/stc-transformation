@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUx Labs — AI for Life-Science Professionals (Prototype Plan)</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+    .qa { margin: 0; padding-left: 20px; }
+    .qa > li { margin-bottom: 18px; font-size: 0.92rem; }
+    .qa > li > strong.q { display: block; font-size: 0.95rem; margin-bottom: 6px; }
+    .qa ul { margin: 0; padding-left: 18px; }
+    .qa ul li { margin-bottom: 6px; }
+    .fill { background: #fef9c3; border: 1px dashed #ca8a04; border-radius: 4px; padding: 0 4px; color: #713f12; }
+    .copy-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .copy-btn { font: inherit; font-size: 0.85rem; font-weight: 700; background: var(--blue); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+    .copy-btn:hover { background: #1e40af; }
+    .copy-status { font-size: 0.82rem; color: var(--green); font-weight: 600; min-height: 1em; }
+    table.map { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    table.map th, table.map td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.map th { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+    .table-wrap { overflow-x: auto; }
+    @media (max-width: 600px) { .doc-header, .section-body { padding-left: 16px; padding-right: 16px; } .point { flex-direction: column; gap: 6px; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-hub.html">CityUx Hub</a>
+    <span class="nav-sep">›</span>
+    <span>CityUx Labs: AI for Life-Science Professionals</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Prototype Plan — CityUx</div>
+    <h1>CityUx Labs: AI for Life-Science Professionals</h1>
+    <p class="subtitle">A free, browser-only lab site that turns the "AI for Life-Science Professionals" idea from the <a href="briefing-life-sciences-panel-2026-11-11.html">Nov 11 life sciences briefing</a> into something people can click. It's a CityUx prototype, so it doesn't follow STC course standards, but it keeps the CityU brand, accessibility, and the free-and-public-data rules.</p>
+    <div class="meta-row">
+      <span class="meta-chip">November 12, 2026</span>
+      <span class="meta-chip">Clark</span>
+      <span class="meta-chip">Prototype · personal GitHub</span>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon icon-blue" aria-hidden="true">🔗</div>
+      <div><h2>Links</h2><div class="section-sub">Live site and source</div></div>
+    </div>
+    <div class="section-body">
+      <ul class="link-list">
+        <li><a href="https://clarkngo.github.io/cityux-ai-life-sciences/">clarkngo.github.io/cityux-ai-life-sciences</a><span class="link-desc">The live site on GitHub Pages.</span></li>
+        <li><a href="https://github.com/clarkngo/cityux-ai-life-sciences">github.com/clarkngo/cityux-ai-life-sciences</a><span class="link-desc">Source repo. It's under Clark's account while it's a prototype; it can move to the cityuseattle org later. Content CC BY 4.0, code MIT, same as AI 410.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon icon-teal" aria-hidden="true">🧪</div>
+      <div><h2>The four labs</h2><div class="section-sub">Each about 15–20 minutes, no install, no account, no API key</div></div>
+    </div>
+    <div class="section-body">
+      <div class="point"><span class="point-label lbl-blue">Lab 1</span><div class="point-body"><strong>Protein Structure Explorer.</strong> Puts a lab-measured structure from the Protein Data Bank next to AlphaFold's prediction, colored by pLDDT confidence. Five proteins (lysozyme, GFP, hemoglobin, insulin, p53), fetched live. Teaches that low confidence often marks flexible biology or parts that get cut away, not just AI error.</div></div>
+      <div class="point"><span class="point-label lbl-blue">Lab 2</span><div class="point-body"><strong>Assay Hit Predictor.</strong> A k-nearest-neighbors model on simulated screening data. Learners change the amount of data, the assay noise, and the model's flexibility, and compare training accuracy, test accuracy, and an "always inactive" baseline.</div></div>
+      <div class="point"><span class="point-label lbl-blue">Lab 3</span><div class="point-body"><strong>Literature Triage Agent.</strong> A rule-based agent screens ten fictional abstracts (a made-up drug, Velorastat) against review criteria. Learners check its work, then switch on upgrades and watch precision and recall change. The traps are negation, code names, reviews, retractions, animal studies, and computer-only studies.</div></div>
+      <div class="point"><span class="point-label lbl-blue">Lab 4</span><div class="point-body"><strong>Can This Data Cross the Border?</strong> Eight Seattle–Shenzhen data-sharing scenarios, each answered with share, review first, or don't share. Covers China's human genetic resources rules, the US bulk sensitive data rules, restricted companies, FERPA/PIPL, and public or synthetic data. It's the "methods, not data" guardrail from the briefing, made hands-on.</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon icon-violet" aria-hidden="true">🧭</div>
+      <div><h2>Where it fits</h2><div class="section-sub">The CityUx funnel</div></div>
+    </div>
+    <div class="section-body">
+      <p style="margin-top:0">The labs sit at the GitHub / self-paced stage of the <a href="cityux-open-ecosystem-execution-plan.html">CityUx open-ecosystem funnel</a>. Next steps along the funnel could be:</p>
+      <ul>
+        <li>Embed the labs in an Open edX micro-credential ("AI for Life-Science Professionals").</li>
+        <li>Use them in live workshops for employers and displaced biotech workers.</li>
+        <li>Use Lab 4, and possibly Lab 1, in a joint seminar with Shenzhen Polytechnic University, since it uses only public data.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon icon-amber" aria-hidden="true">✅</div>
+      <div><h2>Open items</h2><div class="section-sub">Before this goes beyond a prototype</div></div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item"><span class="action-check" aria-hidden="true">1</span><div class="action-body"><strong>Domain review.</strong> No life-science expert has checked Labs 1–3. Possible reviewers include Shenzhen Poly's School of Food and Drug or CityU's health side.</div></li>
+        <li class="action-item"><span class="action-check" aria-hidden="true">2</span><div class="action-body"><strong>Compliance review of Lab 4.</strong> It simplifies legal rules for teaching. A compliance or export-control office should read it before wider use.</div></li>
+        <li class="action-item"><span class="action-check" aria-hidden="true">3</span><div class="action-body"><strong>Home.</strong> Decide whether and when it moves from Clark's GitHub to the cityuseattle org.</div></li>
+        <li class="action-item"><span class="action-check" aria-hidden="true">4</span><div class="action-body"><strong>Live data dependency.</strong> Lab 1 fetches from RCSB and the AlphaFold Database. If either changes its URLs, the lab shows an error message rather than breaking silently; check it before any workshop.</div></li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

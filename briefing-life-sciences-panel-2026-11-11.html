@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Quick Take — Seattle Life Sciences Panel, Nov 11 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+    .qa { margin: 0; padding-left: 20px; }
+    .qa > li { margin-bottom: 18px; font-size: 0.92rem; }
+    .qa > li > strong.q { display: block; font-size: 0.95rem; margin-bottom: 6px; }
+    .qa ul { margin: 0; padding-left: 18px; }
+    .qa ul li { margin-bottom: 6px; }
+    .fill { background: #fef9c3; border: 1px dashed #ca8a04; border-radius: 4px; padding: 0 4px; color: #713f12; }
+    .copy-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .copy-btn { font: inherit; font-size: 0.85rem; font-weight: 700; background: var(--blue); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+    .copy-btn:hover { background: #1e40af; }
+    .copy-status { font-size: 0.82rem; color: var(--green); font-weight: 600; min-height: 1em; }
+    table.map { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    table.map th, table.map td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.map th { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+    .table-wrap { overflow-x: auto; }
+    @media (max-width: 600px) { .doc-header, .section-body { padding-left: 16px; padding-right: 16px; } .point { flex-direction: column; gap: 6px; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-hub.html">CityUX Hub</a>
+    <span class="nav-sep">›</span>
+    <span>Quick Take — Life Sciences Panel, Nov 11 2026</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Briefing — Quick Take for Suzanne</div>
+    <h1>Seattle Life Sciences, AI-Driven Biology &amp; China: Where STC Fits</h1>
+    <p class="subtitle">Bullets for Suzanne ahead of the 3 PM panel <em>"What's Next for Seattle Life Sciences? Capital, China, and Philanthropy in a Changing Market."</em> She asked four things: can we contribute, which degree programs are a foundation, can CityUX help outside a degree, and what we've learned from China and could do with our partner universities there.</p>
+    <div class="meta-row">
+      <span class="meta-chip">November 11, 2026</span>
+      <span class="meta-chip">Due to Suzanne by 1 PM</span>
+      <span class="meta-chip">Clark (draft) · Sam (China input)</span>
+      <span class="meta-chip">Internal: not for external copy</span>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#bullets">The bullets to send (copy-ready)</a></li>
+      <li><a href="#context">What the panel is about, and why it touches us</a></li>
+      <li><a href="#programs">Program map: which STC programs cover which skills</a></li>
+      <li><a href="#cityux">CityUX: learning outside a degree</a></li>
+      <li><a href="#china">China: lessons and joint-work ideas</a></li>
+      <li><a href="#check">Check before sending</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1. COPY-READY BULLETS -->
+  <section class="section" id="bullets">
+    <div class="section-header">
+      <div class="section-icon icon-blue" aria-hidden="true">📋</div>
+      <div><h2>The bullets to send</h2><div class="section-sub">Short enough to read in the hallway before the panel. Paste into the Teams chat.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="copy-bar">
+        <button class="copy-btn" type="button" id="copyBtn">Copy bullets as plain text</button>
+        <span class="copy-status" id="copyStatus" role="status" aria-live="polite"></span>
+      </div>
+      <div class="callout callout-amber" style="margin-bottom:16px"><strong>Before sending:</strong> the highlighted parts of question 4 need Sam's real China experience. The rest can go as written.</div>
+
+      <ol class="qa" id="bulletText">
+        <li><strong class="q">Can we contribute?</strong>
+          <ul>
+            <li>Yes, on talent and applied AI rather than lab science. "AI-driven biology" needs people who can build the data pipelines, ML models, cloud setups and security that the science runs on. That is what STC trains.</li>
+            <li>Our fit is working adults and career changers. With venture funding down about 58%, the region has scientists and staff who need to retool, and companies that need AI skills without adding headcount.</li>
+            <li>A second, less crowded opening is secure and compliant data handling. The China and biosecurity rules now shaping deal terms make data governance and cybersecurity a real need for early-stage companies.</li>
+          </ul>
+        </li>
+        <li><strong class="q">Which degree programs are a good foundation?</strong>
+          <ul>
+            <li><strong>BS Data Science</strong> is the most direct fit, with machine learning, math for ML, big data, and AI courses.</li>
+            <li><strong>MS Computer Science</strong> adds ML and deep learning, NLP (the same methods behind protein language models and literature mining), and AI in the cloud.</li>
+            <li><strong>MS / BS Cybersecurity</strong> covers protecting IP and sensitive health and genomic data.</li>
+            <li>The <strong>Data Mining &amp; Analytics graduate certificate</strong> is the fastest way in for bench scientists who want ML skills without a full degree.</li>
+            <li>The <strong>DIT</strong> covers leaders who are responsible for data strategy and governance.</li>
+            <li>The planned <strong>BS in AI</strong>, now in development, will add agentic AI and MLOps.</li>
+            <li>Gap: none of these has biology content. A life-sciences track would need an industry or academic partner to provide the domain side.</li>
+          </ul>
+        </li>
+        <li><strong class="q">Could CityUX help with learning outside a degree?</strong>
+          <ul>
+            <li>Yes. This is where we can move fastest. A short "AI for Life-Science Professionals" series could run as workshops and seminars, with micro-credentials on Open edX. Example topics: Python and ML for lab data, AI agents for literature and regulatory work, and data governance for genomic and health data.</li>
+            <li>Two audiences: displaced biotech workers who need to reskill, and employer cohorts through contract training.</li>
+            <li>Built-in pathway: credits from the short courses can stack toward the graduate certificate and then the MS, so the short courses also bring in degree students.</li>
+          </ul>
+        </li>
+        <li><strong class="q">Lessons from China, and joint work with our partner universities?</strong>
+          <ul>
+            <li><span class="fill">[Sam: 1–2 real lessons from our China partnerships, such as what worked in joint delivery, what slowed things down, and which partner universities are strongest in CS, data, or bio.]</span></li>
+            <li>Keep joint work on education and methods, not data. China restricts exporting human genetic data, and new US rules restrict sending bulk US genomic and health data to China. Joint work built on public datasets and open models avoids both problems.</li>
+            <li>Ideas: (a) a joint virtual seminar series on AI for biology and on how the US and China biotech ecosystems compare. Chinese biotechs are now a major source of drug candidates licensed by Western pharma, which ties directly to the panel's topic. (b) A co-taught micro-credential with mixed US–China student teams working on public protein and genomics datasets. (c) Faculty exchange on teaching with open-weight models, many of which are Chinese.</li>
+            <li>Guardrail: anything involving human data or export-controlled technology goes through compliance review first.</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 2. CONTEXT -->
+  <section class="section" id="context">
+    <div class="section-header">
+      <div class="section-icon icon-violet" aria-hidden="true">🧬</div>
+      <div><h2>What the panel is about, and why it touches us</h2><div class="section-sub">Background on the panel's three threads, in case Suzanne wants more than the bullets</div></div>
+    </div>
+    <div class="section-body">
+      <div class="point"><span class="point-label lbl-violet">Capital</span><div class="point-body">Seattle life-sciences venture funding is down about 58% through Q3 (per the panel description). Less money means smaller teams that have to get more done per person. AI tools and AI-skilled staff are how companies try to do that. It also means layoffs, and the people laid off are a reskilling audience.</div></div>
+      <div class="point"><span class="point-label lbl-red">China</span><div class="point-body">The China thread is about deal terms. Western pharma increasingly licenses drug candidates from Chinese biotechs, which puts price pressure on early-stage US companies. At the same time, US biosecurity legislation and data-security rules limit work with some Chinese partners and limit where sensitive data can go. Drug-pricing policy adds pressure on what early assets are worth. For us, the relevant part is that compliance, data governance, and security are now board-level topics for small companies.</div></div>
+      <div class="point"><span class="point-label lbl-teal">AI edge</span><div class="point-body">Seattle's case for "AI-driven biology" rests on having both computational biology research (the UW Institute for Protein Design, Fred Hutch, the Allen Institute) and a deep pool of cloud and AI engineers. The bottleneck is people who can work in both worlds. STC can supply the computing half of that combination.</div></div>
+      <div class="point"><span class="point-label lbl-amber">Philanthropy</span><div class="point-body">With venture money scarce, foundations matter more. Workforce training is something foundations fund and CityU can deliver. The DeoSpheres / Microsoft funding conversations are a model for this kind of grant.</div></div>
+    </div>
+  </section>
+
+  <!-- 3. PROGRAM MAP -->
+  <section class="section" id="programs">
+    <div class="section-header">
+      <div class="section-icon icon-green" aria-hidden="true">🎓</div>
+      <div><h2>Program map</h2><div class="section-sub">Which current programs cover which skills that AI-driven biology needs. Based on the STC program lineup as of Sep 2026.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Program map table">
+      <table class="map">
+        <thead><tr><th scope="col">Need in AI-driven biology</th><th scope="col">STC program today</th><th scope="col">Relevant courses</th></tr></thead>
+        <tbody>
+          <tr><td>ML on assay, imaging and omics data</td><td>BS Data Science</td><td>DS 479 Data Mining/ML, DS 483 Math for ML, DS 484 Big Data, CS 475 AI</td></tr>
+          <tr><td>Deep learning, language models for proteins and literature</td><td>MS Computer Science</td><td>DS 620 ML &amp; Deep Learning, AI 520 NLP for AI</td></tr>
+          <tr><td>Compute and pipelines at scale</td><td>MS CS; shared BS core</td><td>AI 510 AI in Cloud Computing, IT 434 Cloud, IS 360 Databases</td></tr>
+          <tr><td>Protecting IP, genomic and health data</td><td>MS / BS Cybersecurity</td><td>CY 628 Cloud Security, CY 615 Cryptography, CY 605 Auditing</td></tr>
+          <tr><td>Fast upskilling for scientists</td><td>Grad cert: Data Mining &amp; Analytics; CS 11A/11B bridge courses</td><td>Overlaps the MS core, so credits stack</td></tr>
+          <tr><td>Data strategy and governance leadership</td><td>Doctor of Information Technology</td><td>Strategy, governance, smart &amp; secure systems</td></tr>
+          <tr><td>Agents and MLOps for lab automation</td><td>BS in AI (in development)</td><td>Planned: agentic AI, MLOps/AgentOps, digital twins / physical AI</td></tr>
+          <tr><td><strong>Biology domain knowledge</strong></td><td><strong>Gap</strong></td><td>Needs a partner: industry advisor, partner university, or CityU's health programs</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. CITYUX -->
+  <section class="section" id="cityux">
+    <div class="section-header">
+      <div class="section-icon icon-teal" aria-hidden="true">🧭</div>
+      <div><h2>CityUX: learning outside a degree</h2><div class="section-sub">How this fits the existing open-ecosystem funnel</div></div>
+    </div>
+    <div class="section-body">
+      <div class="module-grid">
+        <div class="module-card"><div class="module-name" style="color:var(--violet)">Free content</div><div class="module-desc">Short YouTube explainers and GitHub notebooks, for example "fold a protein with an open model in Codespaces." These draw in scientists who are curious about AI.</div></div>
+        <div class="module-card"><div class="module-name" style="color:var(--blue)">Self-paced courses</div><div class="module-desc">Open edX micro-credential modules: Python for lab data, ML basics on public datasets, AI agents for literature and regulatory work.</div></div>
+        <div class="module-card"><div class="module-name" style="color:var(--teal)">Workshops &amp; seminars</div><div class="module-desc">Live cohorts for employers and displaced workers, plus a seminar series where local life-science companies and investors speak.</div></div>
+        <div class="module-card"><div class="module-name" style="color:var(--green)">Path into degrees</div><div class="module-desc">Credits stack into the Data Mining &amp; Analytics certificate and then the MS CS. Employer contract training goes through the corporate-partnerships track.</div></div>
+      </div>
+      <div class="callout callout-teal mt16">See the <a href="cityux-open-ecosystem-execution-plan.html">CityUX open-ecosystem execution plan</a> for the full funnel. A life-sciences track would be one more topic in that funnel, not a new structure.</div>
+    </div>
+  </section>
+
+  <!-- 5. CHINA -->
+  <section class="section" id="china">
+    <div class="section-header">
+      <div class="section-icon icon-red" aria-hidden="true">🌏</div>
+      <div><h2>China: lessons and joint-work ideas</h2><div class="section-sub">Sam's experience goes here. The guardrails and ideas below are general and don't depend on it.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="point"><span class="point-label lbl-amber">Sam</span><div class="point-body"><span class="fill">Lessons from our China work: which partner universities, which programs, what joint delivery looked like, what got in the way (time zones, accreditation, approvals, language), and what students got out of it.</span></div></div>
+      <div class="point"><span class="point-label lbl-red">Guardrail</span><div class="point-body"><strong>Methods, not data.</strong> China's human genetic resources rules restrict sending human genetic data out of China. US rules restrict sending bulk sensitive US data, including genomic and health data, to China. US biosecurity legislation targets certain Chinese biotech firms. Joint academic work should use public datasets (for example protein structure and sequence databases) and open models, and get a compliance review before anything touches human data.</div></div>
+      <div class="point"><span class="point-label lbl-blue">Idea A</span><div class="point-body"><strong>Joint seminar series: "AI for Biology, US and China."</strong> Virtual, with one CityU speaker and one partner-university speaker per session. Covers methods and how the two ecosystems compare, including the cross-border licensing trend the panel will discuss. Low cost and low risk, and it can run on CityUX.</div></div>
+      <div class="point"><span class="point-label lbl-blue">Idea B</span><div class="point-body"><strong>Co-taught micro-credential with mixed student teams.</strong> Mixed US–China teams build a small project on public datasets. Both universities award it, and it can stack into our graduate certificate.</div></div>
+      <div class="point"><span class="point-label lbl-blue">Idea C</span><div class="point-body"><strong>Faculty exchange on open models.</strong> Many leading open-weight models come from Chinese labs. Comparing how each side teaches with them fits what Sam and Clark discussed on Nov 9 about open models as a lower-cost option. See <a href="meeting-notes-sam-clark-2026-11-09.html">Nov 9 notes</a>.</div></div>
+      <div class="point"><span class="point-label lbl-blue">Idea D</span><div class="point-body"><strong>DIT research case studies</strong> on cross-border biotech deal structures and data governance. This uses the DIT Forum and the Applied Research Symposium as places to present the work.</div></div>
+    </div>
+  </section>
+
+  <!-- 6. CHECK -->
+  <section class="section" id="check">
+    <div class="section-header">
+      <div class="section-icon icon-amber" aria-hidden="true">✅</div>
+      <div><h2>Check before sending</h2><div class="section-sub">So nothing in the bullets overstates what we have</div></div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item"><span class="action-check" aria-hidden="true">1</span><div class="action-body">Sam fills in the China lessons and names the partner universities.</div></li>
+        <li class="action-item"><span class="action-check" aria-hidden="true">2</span><div class="action-body">The BS in AI is described only as "in development." CityUX life-sciences offerings are ideas, not existing products.</div></li>
+        <li class="action-item"><span class="action-check" aria-hidden="true">3</span><div class="action-body">The policy points (China's genetic-data rules, US data-security rules, biosecurity legislation) are kept general on purpose. If Suzanne wants to cite a specific rule in the room, check its current status first.</div></li>
+        <li class="action-item"><span class="action-check" aria-hidden="true">4</span><div class="action-body">Vernon offered to help. He could check whether CityU's health programs could supply the biology side to fill the gap.</div></li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+<script>
+  (function () {
+    var btn = document.getElementById('copyBtn');
+    var status = document.getElementById('copyStatus');
+    function toText() {
+      var out = [];
+      document.querySelectorAll('#bulletText > li').forEach(function (li, i) {
+        out.push((i + 1) + '. ' + li.querySelector('.q').textContent.trim());
+        li.querySelectorAll('ul > li').forEach(function (b) {
+          out.push('   • ' + b.textContent.replace(/\s+/g, ' ').trim());
+        });
+        out.push('');
+      });
+      return out.join('\n').trim();
+    }
+    btn.addEventListener('click', function () {
+      var text = toText();
+      var done = function () { status.textContent = 'Copied.'; setTimeout(function () { status.textContent = ''; }, 2500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallback(text); done(); });
+      } else { fallback(text); done(); }
+    });
+    function fallback(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      ta.remove();
+    }
+  })();
+</script>
+</body>
+</html>

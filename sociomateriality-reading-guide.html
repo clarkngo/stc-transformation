@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Sociomateriality Reading Guide</title>
+  <meta name="description" content="The reference library for the sociomaterial CEAU paper, 31 papers in seven clusters, explained three ways with self-checks. A prototype of effective AI.">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --teal: #0f766e; --teal-dim: #f0fdfa;
+      --red: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    a { color: var(--blue); }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet); margin-bottom: 24px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .panel { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 20px 24px; margin-bottom: 22px; }
+    .panel h2 { margin: 0 0 10px; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .panel p { margin: 0 0 10px; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; } ul.tight li { margin-bottom: 4px; }
+    ol.tight { margin: 0 0 10px; padding-left: 22px; } ol.tight li { margin-bottom: 4px; }
+
+    /* lens switcher */
+    .lens-bar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 10px 0 12px; margin-bottom: 14px; }
+    .lens-inner { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 10px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+    .lens-label { font-size: 0.78rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
+    .lens-btn { font: inherit; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--border); background: var(--bg); color: var(--ink);
+      border-radius: 20px; padding: 6px 14px; cursor: pointer; }
+    .lens-btn[aria-pressed="true"] { background: var(--violet); color: #fff; border-color: var(--violet); }
+    .lens-btn:focus-visible, .check-btn:focus-visible, summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .score { margin-left: auto; font-size: 0.82rem; color: var(--slate); font-weight: 600; }
+
+    /* papers */
+    .paper { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 26px; overflow: hidden; }
+    .paper-head { padding: 20px 24px 14px; border-bottom: 1px solid var(--border); }
+    .paper-num { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--violet); }
+    .paper-head h2 { margin: 4px 0 6px; font-size: 1.22rem; font-weight: 850; letter-spacing: -0.02em; line-height: 1.3; }
+    .cite { font-size: 0.86rem; color: var(--slate); margin: 0 0 8px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 0.74rem; font-weight: 700; border-radius: 12px; padding: 2px 10px; background: var(--bg); color: var(--slate); }
+    .tag.core { background: var(--green-dim); color: var(--green); }
+    .tag.support { background: var(--blue-dim); color: var(--blue); }
+    .dupcard { background: var(--card); border: 1px dashed var(--slate-light); border-radius: var(--radius); padding: 14px 20px; margin-bottom: 26px; font-size: 0.92rem; }
+    .series { display:flex; flex-wrap:wrap; gap:8px; margin: 0 0 22px; }
+    .series a { font-size:0.82rem; font-weight:600; text-decoration:none; border:1px solid var(--border); background:var(--card); border-radius:16px; padding:4px 12px; }
+    .series a[aria-current="page"] { background: var(--violet); color:#fff; border-color: var(--violet); }
+    .paper-body { padding: 16px 24px 20px; }
+    .paper-body h3 { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin: 18px 0 6px; }
+    .paper-body h3:first-child { margin-top: 0; }
+    .paper-body p { margin: 0 0 10px; }
+    .oneliner { font-size: 1.02rem; font-weight: 600; }
+    dl.terms { margin: 0; } dl.terms dt { font-weight: 700; } dl.terms dd { margin: 0 0 8px 0; color: var(--ink); }
+    .lens { border-radius: var(--radius-sm); padding: 14px 16px; background: var(--violet-dim); border-left: 4px solid var(--violet); }
+    .lens[hidden] { display: none; }
+    .lens h4 { margin: 0 0 6px; font-size: 0.95rem; }
+    .lens p:last-child, .lens ul:last-child { margin-bottom: 0; }
+    .ourpaper { border-radius: var(--radius-sm); padding: 12px 16px; background: var(--teal-dim); border-left: 4px solid var(--teal); }
+    .ourpaper p:last-child { margin-bottom: 0; }
+    .q { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    .q p { margin: 0 0 6px; font-weight: 600; }
+    details summary { cursor: pointer; color: var(--blue); font-size: 0.88rem; font-weight: 600; }
+    details .ans { margin: 6px 0 4px; font-size: 0.92rem; }
+    .check-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .check-btn { font: inherit; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--border); background: #fff; border-radius: 16px; padding: 3px 12px; cursor: pointer; color: var(--ink); }
+    .check-btn.got[aria-pressed="true"] { background: var(--green); color: #fff; border-color: var(--green); }
+    .check-btn.notyet[aria-pressed="true"] { background: var(--amber); color: #fff; border-color: var(--amber); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 12px 0 0; }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    @media (max-width: 600px) { .doc-header, .paper-head, .paper-body, .panel { padding-left: 16px; padding-right: 16px; } .score { margin-left: 0; width: 100%; } }
+      .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px,1fr)); gap:14px; margin-bottom: 24px; }
+    .ccard { display:flex; flex-direction:column; gap:6px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px 18px; text-decoration:none; color:var(--ink); }
+    .ccard:hover, .ccard:focus-visible { border-color: var(--violet); }
+    .ccard:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .cnum { font-size:0.7rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--violet); }
+    .ctitle { font-weight:800; font-size:1.02rem; line-height:1.3; }
+    .csub { font-size:0.86rem; color:var(--slate); }
+    .cmeta { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:6px; }
+    .cmeta span { font-size:0.72rem; font-weight:700; background:var(--bg); color:var(--slate); border-radius:12px; padding:2px 9px; }
+    .cmeta .cprog.done { background: var(--green-dim); color: var(--green); }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="meeting-notes-jim-2026-11-13.html">Nov 13 meeting notes</a><span>·</span><a href="jim-ofarrell-collaboration.html">Jim O'Farrell collaboration</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a><span>·</span><a href="corporate-partnerships-hub.html">Corporate Partnerships Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Reading Guide · Effective AI prototype</div>
+    <h1>Sociomateriality Reading Guide</h1>
+    <p class="subtitle">The reference library for our paper on sociomateriality, AI, and authentic assessment: 31 papers in seven clusters, each explained three ways (for a software engineer, a teacher, and a business reader) with self-checks.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📚 31 papers</span>
+      <span class="meta-chip">🗂️ 7 clusters</span>
+      <span class="meta-chip">🔀 3 lenses</span>
+      <span class="meta-chip">✅ 66 check questions</span>
+      <span class="meta-chip" id="total">0 of 66 marked "got it"</span>
+    </div>
+  </header>
+
+  <section class="panel">
+    <h2>What this is</h2>
+    <p>A small test of <strong>effective AI</strong>, an idea from the <a href="meeting-notes-jim-2026-11-13.html">Nov 13 meeting</a>: learning that fits the learner and is checked by whether they actually learned. Every paper gets the same core (a one-liner, the argument, key terms), an on-ramp from your own field, a note on why it matters for our paper, and quick self-checks.</p>
+    <ul class="tight">
+      <li><strong>Where to start:</strong> Cluster 1 is the theory foundation. Clusters 2–4 bring it to AI and education. Clusters 5–7 add classroom evidence, sensemaking, and time.</li>
+      <li><strong>Each page is separate</strong> so it loads fast on a phone. Your lens choice carries across pages; your check marks stay in this browser.</li>
+      <li><strong>Three papers sit in two clusters each.</strong> They're explained once, with a pointer from the other cluster.</li>
+      <li><strong>Each paper is tagged</strong> core, supporting, or peripheral for our paper, so you can skip the peripheral ones.</li>
+    </ul>
+    <div class="callout amber"><strong>How this was made:</strong> Claude drafted the explanations from the PDFs, in our own words, and checked key facts against the text. No PDFs are posted; each paper links to its DOI or an open copy. Check anything you plan to cite against the original.</div>
+  </section>
+
+  <div class="grid">
+    <a class="ccard" href="sociomateriality-reading-guide-cluster-1.html">
+      <span class="cnum">Cluster 1</span>
+      <span class="ctitle">Constitutive Sociomateriality and Relational Agency</span>
+      <span class="csub">The four Orlikowski papers that founded the sociomaterial view of technology at work.</span>
+      <span class="cmeta"><span>4 papers</span><span>Start here</span><span class="cprog" data-c="1" data-q="12">0 of 12 checks</span></span>
+    </a><a class="ccard" href="sociomateriality-reading-guide-cluster-2.html">
+      <span class="cnum">Cluster 2</span>
+      <span class="ctitle">AI and Sociomaterial Agency</span>
+      <span class="csub">What happens to agency when AI becomes a participant in work: in strategy, radiology, team chat, and enterprise knowledge work.</span>
+      <span class="cmeta"><span>5 papers</span><span>Theory, updated for AI</span><span class="cprog" data-c="2" data-q="10">0 of 10 checks</span></span>
+    </a><a class="ccard" href="sociomateriality-reading-guide-cluster-3.html">
+      <span class="cnum">Cluster 3</span>
+      <span class="ctitle">Judgment, Knowing, and Competence</span>
+      <span class="csub">What happens to human judgment, tacit knowledge, and trust when AI does more of the visible work.</span>
+      <span class="cmeta"><span>5 papers</span><span>Judgment and deskilling</span><span class="cprog" data-c="3" data-q="10">0 of 10 checks</span></span>
+    </a><a class="ccard" href="sociomateriality-reading-guide-cluster-4.html">
+      <span class="cnum">Cluster 4</span>
+      <span class="ctitle">AI, Education, and Assessment</span>
+      <span class="csub">Literacy, competence, and what counts as learning when AI takes part, plus three papers on how AI and platforms reshape workplaces.</span>
+      <span class="cmeta"><span>5 papers</span><span>Education anchor</span><span class="cprog" data-c="4" data-q="10">0 of 10 checks</span></span>
+    </a><a class="ccard" href="sociomateriality-reading-guide-cluster-5.html">
+      <span class="cnum">Cluster 5</span>
+      <span class="ctitle">Agentic AI Boundary Conditions</span>
+      <span class="csub">Where AI in teaching works and where it doesn't: teacher agency, structured vs. spontaneous use, orchestration, and digital competence.</span>
+      <span class="cmeta"><span>4 papers</span><span>Classroom evidence</span><span class="cprog" data-c="5" data-q="8">0 of 8 checks</span></span>
+    </a><a class="ccard" href="sociomateriality-reading-guide-cluster-6.html">
+      <span class="cnum">Cluster 6</span>
+      <span class="ctitle">Technology Frames and Sensemaking</span>
+      <span class="csub">How the assumptions and expectations people bring to a technology shape what it becomes, from Lotus Notes to biometrics to generative AI.</span>
+      <span class="cmeta"><span>4 papers</span><span>How groups frame tech</span><span class="cprog" data-c="6" data-q="8">0 of 8 checks</span></span>
+    </a><a class="ccard" href="sociomateriality-reading-guide-cluster-7.html">
+      <span class="cnum">Cluster 7</span>
+      <span class="ctitle">Temporality and Ongoing Becoming</span>
+      <span class="csub">Time, waiting, and the slow, below-the-surface ways that digital change unfolds.</span>
+      <span class="cmeta"><span>4 papers</span><span>Change over time</span><span class="cprog" data-c="7" data-q="8">0 of 8 checks</span></span>
+    </a>
+  </div>
+</div>
+<script>
+(function () {
+  var total = 0;
+  document.querySelectorAll('.cprog').forEach(function (el) {
+    var got = 0, q = +el.dataset.q;
+    try { var m = JSON.parse(localStorage.getItem('socio-c' + el.dataset.c + '-marks') || '{}'); for (var k in m) if (m[k] === 'got') got++; } catch (e) {}
+    total += got;
+    el.textContent = got + ' of ' + q + ' checks';
+    if (got === q && q > 0) el.classList.add('done');
+  });
+  var t = document.getElementById('total');
+  t.textContent = total + ' of 66 marked "got it"';
+})();
+</script>
+</body>
+</html>

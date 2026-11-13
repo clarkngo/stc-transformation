@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Sociomateriality Reading Guide, Cluster 6</title>
+  <meta name="description" content="Cluster 6, Technology Frames and Sensemaking: papers explained three ways, for software engineers, teachers, and business readers.">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --teal: #0f766e; --teal-dim: #f0fdfa;
+      --red: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    a { color: var(--blue); }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet); margin-bottom: 24px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .panel { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 20px 24px; margin-bottom: 22px; }
+    .panel h2 { margin: 0 0 10px; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .panel p { margin: 0 0 10px; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; } ul.tight li { margin-bottom: 4px; }
+    ol.tight { margin: 0 0 10px; padding-left: 22px; } ol.tight li { margin-bottom: 4px; }
+
+    /* lens switcher */
+    .lens-bar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 10px 0 12px; margin-bottom: 14px; }
+    .lens-inner { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 10px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+    .lens-label { font-size: 0.78rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
+    .lens-btn { font: inherit; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--border); background: var(--bg); color: var(--ink);
+      border-radius: 20px; padding: 6px 14px; cursor: pointer; }
+    .lens-btn[aria-pressed="true"] { background: var(--violet); color: #fff; border-color: var(--violet); }
+    .lens-btn:focus-visible, .check-btn:focus-visible, summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .score { margin-left: auto; font-size: 0.82rem; color: var(--slate); font-weight: 600; }
+
+    /* papers */
+    .paper { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 26px; overflow: hidden; }
+    .paper-head { padding: 20px 24px 14px; border-bottom: 1px solid var(--border); }
+    .paper-num { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--violet); }
+    .paper-head h2 { margin: 4px 0 6px; font-size: 1.22rem; font-weight: 850; letter-spacing: -0.02em; line-height: 1.3; }
+    .cite { font-size: 0.86rem; color: var(--slate); margin: 0 0 8px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 0.74rem; font-weight: 700; border-radius: 12px; padding: 2px 10px; background: var(--bg); color: var(--slate); }
+    .tag.core { background: var(--green-dim); color: var(--green); }
+    .tag.support { background: var(--blue-dim); color: var(--blue); }
+    .dupcard { background: var(--card); border: 1px dashed var(--slate-light); border-radius: var(--radius); padding: 14px 20px; margin-bottom: 26px; font-size: 0.92rem; }
+    .series { display:flex; flex-wrap:wrap; gap:8px; margin: 0 0 22px; }
+    .series a { font-size:0.82rem; font-weight:600; text-decoration:none; border:1px solid var(--border); background:var(--card); border-radius:16px; padding:4px 12px; }
+    .series a[aria-current="page"] { background: var(--violet); color:#fff; border-color: var(--violet); }
+    .paper-body { padding: 16px 24px 20px; }
+    .paper-body h3 { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin: 18px 0 6px; }
+    .paper-body h3:first-child { margin-top: 0; }
+    .paper-body p { margin: 0 0 10px; }
+    .oneliner { font-size: 1.02rem; font-weight: 600; }
+    dl.terms { margin: 0; } dl.terms dt { font-weight: 700; } dl.terms dd { margin: 0 0 8px 0; color: var(--ink); }
+    .lens { border-radius: var(--radius-sm); padding: 14px 16px; background: var(--violet-dim); border-left: 4px solid var(--violet); }
+    .lens[hidden] { display: none; }
+    .lens h4 { margin: 0 0 6px; font-size: 0.95rem; }
+    .lens p:last-child, .lens ul:last-child { margin-bottom: 0; }
+    .ourpaper { border-radius: var(--radius-sm); padding: 12px 16px; background: var(--teal-dim); border-left: 4px solid var(--teal); }
+    .ourpaper p:last-child { margin-bottom: 0; }
+    .q { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    .q p { margin: 0 0 6px; font-weight: 600; }
+    details summary { cursor: pointer; color: var(--blue); font-size: 0.88rem; font-weight: 600; }
+    details .ans { margin: 6px 0 4px; font-size: 0.92rem; }
+    .check-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .check-btn { font: inherit; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--border); background: #fff; border-radius: 16px; padding: 3px 12px; cursor: pointer; color: var(--ink); }
+    .check-btn.got[aria-pressed="true"] { background: var(--green); color: #fff; border-color: var(--green); }
+    .check-btn.notyet[aria-pressed="true"] { background: var(--amber); color: #fff; border-color: var(--amber); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 12px 0 0; }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    @media (max-width: 600px) { .doc-header, .paper-head, .paper-body, .panel { padding-left: 16px; padding-right: 16px; } .score { margin-left: 0; width: 100%; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="sociomateriality-reading-guide.html">Reading guide: all clusters</a><span>·</span><a href="meeting-notes-jim-2026-11-13.html">Nov 13 meeting notes</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Reading Guide · Cluster 6 of 7 · Effective AI prototype</div>
+    <h1>Technology Frames and Sensemaking</h1>
+    <p class="subtitle">How the assumptions and expectations people bring to a technology shape what it becomes, from Lotus Notes to biometrics to generative AI.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📚 4 papers</span>
+      
+      <span class="meta-chip">🔀 3 lenses</span>
+      <span class="meta-chip">✅ 8 check questions</span>
+      <span class="meta-chip">📅 Nov 13, 2026</span>
+    </div>
+  </header>
+
+  <nav class="series" aria-label="Reading guide clusters"><a href="sociomateriality-reading-guide.html">All clusters</a><a href="sociomateriality-reading-guide-cluster-1.html">1. Constitutive Sociomateriality</a><a href="sociomateriality-reading-guide-cluster-2.html">2. AI and Agency</a><a href="sociomateriality-reading-guide-cluster-3.html">3. Judgment and Competence</a><a href="sociomateriality-reading-guide-cluster-4.html">4. Education and Assessment</a><a href="sociomateriality-reading-guide-cluster-5.html">5. Boundary Conditions</a><a href="sociomateriality-reading-guide-cluster-6.html" aria-current="page">6. Frames and Sensemaking</a><a href="sociomateriality-reading-guide-cluster-7.html">7. Temporality</a></nav>
+
+  <section class="panel">
+    <h2>How to use this page</h2>
+    <p>Same format as <a href="sociomateriality-reading-guide-cluster-1.html">Cluster 1</a>: the one-liner, argument, and key terms are the same for everyone; pick a lens below to change the "from your field" boxes; then check yourself. Your lens choice carries across all cluster pages, and your check marks stay in this browser only.</p>
+    <div class="callout amber"><strong>How this was made:</strong> Claude drafted these explanations from the PDFs in the paper's reference library, in our own words. Most of these papers are from 2026 and some are preprints or conference papers; check anything you plan to cite against the original. Tags mark each paper as core, supporting, or peripheral for our paper.</div>
+  </section>
+
+  <div class="lens-bar">
+    <div class="lens-inner" role="group" aria-label="Choose a lens">
+      <span class="lens-label">Your lens</span>
+      <button type="button" class="lens-btn" data-lens="swe" aria-pressed="true">💻 Software engineer</button>
+      <button type="button" class="lens-btn" data-lens="teach" aria-pressed="false">🍎 Teacher</button>
+      <button type="button" class="lens-btn" data-lens="biz" aria-pressed="false">📈 Business</button>
+      <span class="score" id="score" aria-live="polite">0 of 8 checks marked "got it"</span>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2>The cluster in 60 seconds</h2>
+    <p>A “technological frame” is the set of assumptions and expectations a group holds about a technology: what it is, why it's being introduced, and how it will be used. When different groups hold different frames (say, the people who chose a tool and the people who have to use it), trouble follows. These papers apply that idea from 1994 to today's AI.</p>
+    <div class="lens" data-lens="swe">
+      <h4>💻 From your field</h4>
+      <p>Frames are like mental models of a system. If the platform team thinks the new tool is “infrastructure for everyone” and the product teams think it's “another mandated chore,” adoption fails, no matter how good the tool is.</p>
+    </div>
+<div class="lens" data-lens="teach" hidden>
+      <h4>🍎 From your field</h4>
+      <p>Students, teachers, and administrators each hold a frame of AI: a cheating tool, a tutor, a cost-saver. When the frames don't match, policies misfire. Surfacing them is the first step.</p>
+    </div>
+<div class="lens" data-lens="biz" hidden>
+      <h4>📈 From your field</h4>
+      <p>Headquarters and the front line usually frame digital change differently: "a journey" vs. "a destination," augmentation vs. replacement. Diagnose the mismatch before the rollout.</p>
+    </div>
+  </section>
+
+  <article class="paper" id="p1" data-paper="p1">
+    <div class="paper-head">
+      <div class="paper-num">Paper 1 of 4</div>
+      <h2>Technological Frames: Making Sense of Information Technology in Organizations</h2>
+      <p class="cite">Orlikowski, W. J., &amp; Gash, D. C. (1994). <em>ACM Transactions on Information Systems</em>, 12(2), 174–207. <a href="https://doi.org/10.1145/196734.196745">doi:10.1145/196734.196745</a></p>
+      <div class="tags"><span class="tag core">Core: the founding paper</span><span class="tag ">Case study, Lotus Notes</span><span class="tag ">1994</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Groups make sense of a technology through frames (assumptions, expectations, knowledge), and when technologists' and users' frames don't match, the technology gets used in unintended ways.</p>
+      <h3>The argument</h3>
+      <p>The paper introduces <strong>technological frames</strong>: the subset of people's understanding that concerns technology. It identifies three domains: <strong>nature of technology</strong> (what it is and can do), <strong>technology strategy</strong> (why it was brought in), and <strong>technology-in-use</strong> (how it will be used day to day).</p><p>In a case at a consulting firm called Alpha (the same Lotus Notes setting as Orlikowski 2000), technologists saw Notes as a platform for collaboration; users saw an email-like individual tool with worrying risks to confidentiality and liability. That <strong>incongruence</strong> helps explain why early use fell short of expectations.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Technological frame</dt><dd>A group's shared assumptions, expectations, and knowledge about a technology.</dd><dt>Frame incongruence</dt><dd>When different groups' frames of the same technology don't line up.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>Classic platform-team problem: you built a collaboration platform; users see a glorified inbox with privacy risks. The three domains are a useful pre-launch checklist: what users think it is, why they think it was bought, and how they think they'll use it.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Before introducing AI in a course, ask students what they think it is, why they think it's allowed, and how they'll use it. If their frame is “an answer machine the school permits,” your assignment design is fighting their frame.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Many failed IT rollouts are frame failures, not technology failures. Leaders frame the tool strategically; users frame it in terms of daily risk and effort. Surface both before go-live.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Core background for the sensemaking side of the framework, and it pairs with Orlikowski 2000 (same case). Learners' frames of AI could be a measured variable in Paper 2.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p1q1"><p>1. Name the three domains of technological frames.</p>
+        <details><summary>Show answer</summary><p class="ans">Nature of technology, technology strategy, and technology-in-use.</p></details></div>
+      <div class="q" data-q="p1q2"><p>2. What explained the gap between expected and actual use at Alpha?</p>
+        <details><summary>Show answer</summary><p class="ans">Incongruent frames: technologists saw a collaboration platform, users saw an individual email-like tool with confidentiality and liability concerns.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p2" data-paper="p2">
+    <div class="paper-head">
+      <div class="paper-num">Paper 2 of 4</div>
+      <h2>The Convergence Paradox: A Constructivist Account of Perceived Template Convergence and Originative Agency under Generative AI</h2>
+      <p class="cite">Cao, Q., Zhou, Z., Wang, L., Liu, Y., &amp; Li, Y. (2026). <em>Frontiers in Psychology</em>, 17, 1924628. <a href="https://doi.org/10.3389/fpsyg.2026.1924628">doi:10.3389/fpsyg.2026.1924628</a> (open access)</p>
+      <div class="tags"><span class="tag core">Core: authorship and originality</span><span class="tag ">Conceptual</span><span class="tag ">Also in Cluster 7</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">When people feel that AI is pushing everyone's ideas toward the same template, their confidence in producing competent work can rise while their sense of authorship and drive to create something original falls.</p>
+      <h3>The argument</h3>
+      <p>Worries about AI “homogenization” are usually stated about outputs or populations. This paper offers an individual-level construct: <strong>perceived template convergence (PTC)</strong>, a person's sense that the ideas available through AI are collapsing toward a shared template.</p><p>Using personal construct theory, social cognitive theory, and research on meaningful work, it argues PTC is two-sided: the same appraisal that raises confidence can weaken authorship and meaning, steering effort toward imitation rather than origination. That's the <strong>convergence paradox</strong>, set out as a propositional model with two mediators and two boundary conditions, plus a measurement agenda.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Perceived template convergence</dt><dd>A person's sense that AI-available ideas are converging on a common template.</dd><dt>Originative agency</dt><dd>The drive and capacity to create something genuinely new.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>If every team's AI-generated architecture doc looks the same, engineers may feel more confident shipping it and less like they designed anything. The paper's levers: tool literacy, rich prior knowledge, and preserving the experience of authorship.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Students using AI may produce competent essays that feel like everyone else's, and stop trying to say something of their own. CEAU's “Create first” step is a direct countermeasure: originate before you converge.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>AI can raise the floor of content quality while flattening differentiation. If staff feel their work is template output, meaning and ownership drop. Design roles that keep origination with people.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Directly supports CEAU's Create/Scaffold step: protecting authorship and origination. A good citation for why “create first” matters.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p2q1"><p>1. What is the convergence paradox?</p>
+        <details><summary>Show answer</summary><p class="ans">The same perception of template convergence can raise confidence in producing competent output while weakening authorship and the drive to originate.</p></details></div>
+      <div class="q" data-q="p2q2"><p>2. What level does the paper move the homogenization debate to?</p>
+        <details><summary>Show answer</summary><p class="ans">From systems and outputs to the individual: how a person perceives convergence and how that changes their agency.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p3" data-paper="p3">
+    <div class="paper-head">
+      <div class="paper-num">Paper 3 of 4</div>
+      <h2>Rethinking Customer Service Digitalization: Incongruent Frames and Alignment Mechanisms in Retailing</h2>
+      <p class="cite">Brock, J. K.-U., van Veen, M., Kramer, V., &amp; Krafft, M. (2026). <em>Journal of Service Research</em>. <a href="https://doi.org/10.1177/10946705261498173">doi:10.1177/10946705261498173</a></p>
+      <div class="tags"><span class="tag support">Supporting: frames today</span><span class="tag ">52 expert interviews</span><span class="tag ">Retail</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Retail headquarters see digital customer service as augmentation and an ongoing journey, while frontline staff see replacement and a fixed destination; four mechanisms help bridge the gap.</p>
+      <h3>The argument</h3>
+      <p>Fifty-two interviews with headquarters managers, store managers, and frontline employees, guided by technology framing theory. HQ frames digitalization as <strong>digitalization, human augmentation, and a continuous journey</strong>; frontline employees frame it as <strong>digitization, human substitution, and a fixed destination</strong>. Store managers sit between, as enablers or barriers.</p><p>Four <strong>collective congruence framing mechanisms</strong> buffer the damage: <strong>Ba</strong> (shared space for knowledge creation), <strong>psychological safety</strong>, <strong>redundancies</strong>, and <strong>nudging</strong>. Store managers acting as translators make them work better.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Frame congruence</dt><dd>How closely different groups' frames of a technology align.</dd><dt>Boundary spanner</dt><dd>Someone who translates between groups, here store managers between HQ and the floor.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>Leadership says "AI will augment engineers and it's a journey." Engineers hear "we're being replaced and this is the end state." The fixes translate well: shared spaces to learn together, safety to raise concerns, keeping old paths (redundancy) during transition, and gentle nudges.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Administrators may frame AI as augmenting teachers; teachers may hear replacement. Department chairs are the boundary spanners. Psychological safety and keeping familiar methods available during the change help close the gap.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>A practical playbook: diagnose frame incongruence before rollout, use HQ store days and temporary redundancies, and develop middle managers as translators between strategy and frontline practice.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Supporting. Shows frame incongruence is alive in AI-era rollouts, and the four mechanisms could inform how a partner community's frames are surfaced in Paper 2's co-design phase.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p3q1"><p>1. How did HQ and frontline frames differ?</p>
+        <details><summary>Show answer</summary><p class="ans">HQ: digitalization, augmentation, a continuous journey. Frontline: digitization, substitution, a fixed destination.</p></details></div>
+      <div class="q" data-q="p3q2"><p>2. Name the four alignment mechanisms.</p>
+        <details><summary>Show answer</summary><p class="ans">Ba, psychological safety, redundancies, and nudging.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p4" data-paper="p4">
+    <div class="paper-head">
+      <div class="paper-num">Paper 4 of 4</div>
+      <h2>Public Managers' Attitudes Towards Biometric Systems: An Exploratory Cluster Analysis</h2>
+      <p class="cite">Chassot, C., Guenduez, A. A., &amp; Mettler, T. (2026). <em>Proceedings of the 12th International Conference on eDemocracy &amp; eGovernment (ICEDEG)</em>. IEEE. <a href="https://doi.org/10.1109/ICEDEG70169.2026.11695447">doi:10.1109/ICEDEG70169.2026.11695447</a></p>
+      <div class="tags"><span class="tag support">Peripheral: frames in government</span><span class="tag ">Survey, 297 managers</span><span class="tag ">Switzerland</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Swiss public managers fall into three attitude profiles toward biometric systems (enthusiasts, skeptics, and pragmatists), and only security is a rationale all of them accept.</p>
+      <h3>The argument</h3>
+      <p>Using technological frames theory and cluster analysis of survey data from 297 Swiss public managers, the study identifies <strong>Biometric Enthusiasts</strong>, <strong>Techno-Skeptics</strong>, and <strong>Pragmatists</strong>. Security is the only rationale for which established applications are supported across all profiles; operational performance, personalization, and health draw mixed responses, with personalization least supported.</p><p>Divergent frames across administrative levels can create friction and enable function creep, so the authors call for adaptive, accountable governance with external scrutiny.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Justificatory rationale</dt><dd>The official reason given for adopting a technology (security, efficiency, and so on).</dd><dt>Function creep</dt><dd>A technology gradually being used for purposes beyond its original justification.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>Your team's attitude to a new auth system probably splits the same way: enthusiasts, skeptics, pragmatists. Security arguments win everyone; "personalization" arguments don't. And watch for function creep once the data exists.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Faculty attitudes to AI proctoring or analytics likely cluster similarly. Integrity arguments may get broad support; personalization arguments less so. Watch for tools adopted for one purpose being used for others.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Segment your managers' frames before rolling out sensitive tech. The one rationale that bridges camps (often security or compliance) can carry adoption, but governance must stop function creep.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Peripheral: a sensitive-technology application of frames theory. Its function-creep point is relevant to data governance in Paper 2, especially with community and Indigenous data sovereignty.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p4q1"><p>1. Name the three profiles.</p>
+        <details><summary>Show answer</summary><p class="ans">Biometric Enthusiasts, Techno-Skeptics, and Pragmatists.</p></details></div>
+      <div class="q" data-q="p4q2"><p>2. Which rationale bridged all profiles?</p>
+        <details><summary>Show answer</summary><p class="ans">Security.</p></details></div>
+      
+    </div>
+  </article>
+
+  <section class="panel">
+    <h2>How these fit together</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Paper</th><th>Contribution</th><th>Use it in our paper for</th></tr></thead>
+      <tbody><tr><td>Orlikowski &amp; Gash 1994</td><td>Technological frames (three domains)</td><td>Sensemaking background; learners' frames as a variable</td></tr><tr><td>Cao et al. 2026</td><td>Convergence paradox</td><td>Supports CEAU's Create-first step</td></tr><tr><td>Brock et al. 2026</td><td>HQ vs. frontline frames; four alignment mechanisms</td><td>Co-design with partner communities</td></tr><tr><td>Chassot et al. 2026</td><td>Three attitude profiles; function creep</td><td>Data governance in Paper 2</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <nav class="series" aria-label="Previous and next cluster"><a href="sociomateriality-reading-guide-cluster-5.html">← Cluster 5: Boundary Conditions</a><a href="sociomateriality-reading-guide-cluster-7.html">Cluster 7: Temporality →</a></nav>
+</div>
+
+<script>
+(function () {
+  var KEY_LENS = 'socio-lens', KEY_MARKS = 'socio-c6-marks';
+  function load(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  var btns = document.querySelectorAll('.lens-btn');
+  function setLens(l) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lens === l ? 'true' : 'false'); });
+    document.querySelectorAll('.lens[data-lens]').forEach(function (el) { el.hidden = el.dataset.lens !== l; });
+    save(KEY_LENS, l);
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { setLens(b.dataset.lens); }); });
+  setLens(load(KEY_LENS, 'swe'));
+
+  var marks = load(KEY_MARKS, {});
+  var qs = document.querySelectorAll('.q[data-q]');
+  var score = document.getElementById('score');
+  function render() {
+    var got = 0;
+    qs.forEach(function (q) {
+      var id = q.dataset.q, m = marks[id];
+      q.querySelectorAll('.check-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === m ? 'true' : 'false'); });
+      if (m === 'got') got++;
+    });
+    score.textContent = got + ' of ' + qs.length + ' checks marked "got it"';
+  }
+  qs.forEach(function (q) {
+    var row = document.createElement('div'); row.className = 'check-row';
+    [['got', 'Got it', 'got'], ['notyet', 'Not yet', 'notyet']].forEach(function (o) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'check-btn ' + o[2];
+      b.dataset.v = o[0]; b.textContent = o[1]; b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-label', o[1] + ': ' + q.querySelector('p').textContent);
+      b.addEventListener('click', function () {
+        marks[q.dataset.q] = marks[q.dataset.q] === o[0] ? undefined : o[0];
+        save(KEY_MARKS, marks); render();
+      });
+      row.appendChild(b);
+    });
+    q.appendChild(row);
+  });
+  render();
+})();
+</script>
+</body>
+</html>

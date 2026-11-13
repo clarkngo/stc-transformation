@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Sociomateriality Reading Guide, Cluster 3</title>
+  <meta name="description" content="Cluster 3, Judgment, Knowing, and Competence: papers explained three ways, for software engineers, teachers, and business readers.">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --teal: #0f766e; --teal-dim: #f0fdfa;
+      --red: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    a { color: var(--blue); }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet); margin-bottom: 24px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .panel { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 20px 24px; margin-bottom: 22px; }
+    .panel h2 { margin: 0 0 10px; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .panel p { margin: 0 0 10px; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; } ul.tight li { margin-bottom: 4px; }
+    ol.tight { margin: 0 0 10px; padding-left: 22px; } ol.tight li { margin-bottom: 4px; }
+
+    /* lens switcher */
+    .lens-bar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 10px 0 12px; margin-bottom: 14px; }
+    .lens-inner { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 10px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+    .lens-label { font-size: 0.78rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
+    .lens-btn { font: inherit; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--border); background: var(--bg); color: var(--ink);
+      border-radius: 20px; padding: 6px 14px; cursor: pointer; }
+    .lens-btn[aria-pressed="true"] { background: var(--violet); color: #fff; border-color: var(--violet); }
+    .lens-btn:focus-visible, .check-btn:focus-visible, summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .score { margin-left: auto; font-size: 0.82rem; color: var(--slate); font-weight: 600; }
+
+    /* papers */
+    .paper { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 26px; overflow: hidden; }
+    .paper-head { padding: 20px 24px 14px; border-bottom: 1px solid var(--border); }
+    .paper-num { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--violet); }
+    .paper-head h2 { margin: 4px 0 6px; font-size: 1.22rem; font-weight: 850; letter-spacing: -0.02em; line-height: 1.3; }
+    .cite { font-size: 0.86rem; color: var(--slate); margin: 0 0 8px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 0.74rem; font-weight: 700; border-radius: 12px; padding: 2px 10px; background: var(--bg); color: var(--slate); }
+    .tag.core { background: var(--green-dim); color: var(--green); }
+    .tag.support { background: var(--blue-dim); color: var(--blue); }
+    .dupcard { background: var(--card); border: 1px dashed var(--slate-light); border-radius: var(--radius); padding: 14px 20px; margin-bottom: 26px; font-size: 0.92rem; }
+    .series { display:flex; flex-wrap:wrap; gap:8px; margin: 0 0 22px; }
+    .series a { font-size:0.82rem; font-weight:600; text-decoration:none; border:1px solid var(--border); background:var(--card); border-radius:16px; padding:4px 12px; }
+    .series a[aria-current="page"] { background: var(--violet); color:#fff; border-color: var(--violet); }
+    .paper-body { padding: 16px 24px 20px; }
+    .paper-body h3 { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin: 18px 0 6px; }
+    .paper-body h3:first-child { margin-top: 0; }
+    .paper-body p { margin: 0 0 10px; }
+    .oneliner { font-size: 1.02rem; font-weight: 600; }
+    dl.terms { margin: 0; } dl.terms dt { font-weight: 700; } dl.terms dd { margin: 0 0 8px 0; color: var(--ink); }
+    .lens { border-radius: var(--radius-sm); padding: 14px 16px; background: var(--violet-dim); border-left: 4px solid var(--violet); }
+    .lens[hidden] { display: none; }
+    .lens h4 { margin: 0 0 6px; font-size: 0.95rem; }
+    .lens p:last-child, .lens ul:last-child { margin-bottom: 0; }
+    .ourpaper { border-radius: var(--radius-sm); padding: 12px 16px; background: var(--teal-dim); border-left: 4px solid var(--teal); }
+    .ourpaper p:last-child { margin-bottom: 0; }
+    .q { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    .q p { margin: 0 0 6px; font-weight: 600; }
+    details summary { cursor: pointer; color: var(--blue); font-size: 0.88rem; font-weight: 600; }
+    details .ans { margin: 6px 0 4px; font-size: 0.92rem; }
+    .check-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .check-btn { font: inherit; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--border); background: #fff; border-radius: 16px; padding: 3px 12px; cursor: pointer; color: var(--ink); }
+    .check-btn.got[aria-pressed="true"] { background: var(--green); color: #fff; border-color: var(--green); }
+    .check-btn.notyet[aria-pressed="true"] { background: var(--amber); color: #fff; border-color: var(--amber); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 12px 0 0; }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    @media (max-width: 600px) { .doc-header, .paper-head, .paper-body, .panel { padding-left: 16px; padding-right: 16px; } .score { margin-left: 0; width: 100%; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="sociomateriality-reading-guide.html">Reading guide: all clusters</a><span>·</span><a href="meeting-notes-jim-2026-11-13.html">Nov 13 meeting notes</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Reading Guide · Cluster 3 of 7 · Effective AI prototype</div>
+    <h1>Judgment, Knowing, and Competence</h1>
+    <p class="subtitle">What happens to human judgment, tacit knowledge, and trust when AI does more of the visible work.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📚 5 papers</span>
+      
+      <span class="meta-chip">🔀 3 lenses</span>
+      <span class="meta-chip">✅ 10 check questions</span>
+      <span class="meta-chip">📅 Nov 13, 2026</span>
+    </div>
+  </header>
+
+  <nav class="series" aria-label="Reading guide clusters"><a href="sociomateriality-reading-guide.html">All clusters</a><a href="sociomateriality-reading-guide-cluster-1.html">1. Constitutive Sociomateriality</a><a href="sociomateriality-reading-guide-cluster-2.html">2. AI and Agency</a><a href="sociomateriality-reading-guide-cluster-3.html" aria-current="page">3. Judgment and Competence</a><a href="sociomateriality-reading-guide-cluster-4.html">4. Education and Assessment</a><a href="sociomateriality-reading-guide-cluster-5.html">5. Boundary Conditions</a><a href="sociomateriality-reading-guide-cluster-6.html">6. Frames and Sensemaking</a><a href="sociomateriality-reading-guide-cluster-7.html">7. Temporality</a></nav>
+
+  <section class="panel">
+    <h2>How to use this page</h2>
+    <p>Same format as <a href="sociomateriality-reading-guide-cluster-1.html">Cluster 1</a>: the one-liner, argument, and key terms are the same for everyone; pick a lens below to change the "from your field" boxes; then check yourself. Your lens choice carries across all cluster pages, and your check marks stay in this browser only.</p>
+    <div class="callout amber"><strong>How this was made:</strong> Claude drafted these explanations from the PDFs in the paper's reference library, in our own words. Most of these papers are from 2026 and some are preprints or conference papers; check anything you plan to cite against the original. Tags mark each paper as core, supporting, or peripheral for our paper.</div>
+  </section>
+
+  <div class="lens-bar">
+    <div class="lens-inner" role="group" aria-label="Choose a lens">
+      <span class="lens-label">Your lens</span>
+      <button type="button" class="lens-btn" data-lens="swe" aria-pressed="true">💻 Software engineer</button>
+      <button type="button" class="lens-btn" data-lens="teach" aria-pressed="false">🍎 Teacher</button>
+      <button type="button" class="lens-btn" data-lens="biz" aria-pressed="false">📈 Business</button>
+      <span class="score" id="score" aria-live="polite">0 of 10 checks marked "got it"</span>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2>The cluster in 60 seconds</h2>
+    <p>These papers share one worry: when AI takes over the explicit, visible parts of work, the practice that used to build human judgment can quietly disappear. None of them say this is inevitable. They name the conditions: whether people must still verify, justify, and take responsibility for what the AI produces.</p>
+    <div class="lens" data-lens="swe">
+      <h4>💻 From your field</h4>
+      <p>Junior engineers used to learn the codebase by writing boilerplate, fixing small bugs, and reading stack traces. If AI does all of that, how do they become the senior engineers who can tell when AI-written code is subtly wrong?</p>
+    </div>
+<div class="lens" data-lens="teach" hidden>
+      <h4>🍎 From your field</h4>
+      <p>Students used to build judgment by drafting, getting stuck, and revising. If AI drafts for them, the product may look better while the skill underneath doesn't grow, unless the course makes them check, defend, and refine.</p>
+    </div>
+<div class="lens" data-lens="biz" hidden>
+      <h4>📈 From your field</h4>
+      <p>New analysts used to learn the business by building the first draft of every model and memo. If AI does that, the organization may get faster output now and weaker judgment later.</p>
+    </div>
+  </section>
+
+  <article class="paper" id="p1" data-paper="p1">
+    <div class="paper-head">
+      <div class="paper-num">Paper 1 of 5</div>
+      <h2>Generative AI and Moral Deskilling in Vocational Education: A Dialectical Agency Perspective</h2>
+      <p class="cite">Mai, A. Y., Syamsuddin, M. M., &amp; Sairah Z, A. R. (2026). <em>Journal of Vocational, Informatics and Computer Education</em>, 4(3), 149–169. <a href="https://doi.org/10.66053/voice.v4i3.1221">doi:10.66053/voice.v4i3.1221</a> (open access)</p>
+      <div class="tags"><span class="tag core">Core: scaffold vs. substitute</span><span class="tag ">Conceptual, literature-based</span><span class="tag ">Also in Cluster 5</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Whether generative AI builds or erodes learners' judgment depends on the interaction between how AI use is structured and how the learner engages with it.</p>
+      <h3>The argument</h3>
+      <p>The authors build a <strong>Dialectical Agency framework</strong> from philosophy of technology (Ellul, Ihde) and virtue ethics (Vallor). It has two poles: <strong>S1</strong>, the structural setup of AI use (for example, efficiency pressure), and <strong>S2</strong>, the learner's mode of engagement. AI works as a <strong>scaffold</strong> for judgment when verification and reflection are institutionally supported, and as a <strong>substitute</strong> when outputs are accepted without evaluation.</p><p>They derive four propositions and are candid that the two mixed cases, where structure and engagement point different ways, remain open. Their suggested test is a longitudinal intervention study within one vocational cohort.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Moral deskilling</dt><dd>Losing practical and ethical judgment because the practice that builds it is displaced.</dd><dt>Phronesis</dt><dd>Practical wisdom: knowing what to do in a specific situation.</dd><dt>Scaffold vs. substitute</dt><dd>AI that supports building a skill vs. AI that replaces the practice.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>Code review is the scaffold. If the team requires every AI-written change to be explained and tested by the person submitting it, AI speeds learning. If AI code gets merged on “looks fine,” juniors stop building the judgment to catch bugs. Same tool; the structure and the habits decide.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>This is the CEAU argument in another vocabulary. If the assignment requires students to verify, justify, and take responsibility for AI output, AI scaffolds judgment. If only the final product is graded, AI substitutes for the thinking.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>In training programs (welding, nursing, auditing), AI checklists can either build practical wisdom or replace it. The lever is institutional: sign-off rules, supervised verification, and accountability for AI-assisted decisions.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Very close to our argument. The scaffold-vs-substitute distinction and the call for structures that require verification and justification map directly onto CEAU's Evaluate and Understand &amp; Refine stages. Cite with Cluster 1's relational agency.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p1q1"><p>1. What are S1 and S2?</p>
+        <details><summary>Show answer</summary><p class="ans">S1 is the structural setup of AI use; S2 is the learner's mode of engagement. Their interaction shapes whether AI scaffolds or substitutes for judgment.</p></details></div>
+      <div class="q" data-q="p1q2"><p>2. When does AI act as a scaffold, according to the paper?</p>
+        <details><summary>Show answer</summary><p class="ans">When verification and reflection are institutionally supported, so learners must check, justify, and take responsibility for AI output.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p2" data-paper="p2">
+    <div class="paper-head">
+      <div class="paper-num">Paper 2 of 5</div>
+      <h2>The Human Agency Deficit in AI-Enabled Knowledge Creation</h2>
+      <p class="cite">Farrukh, M. (2026). <em>Knowledge and Process Management</em>. <a href="https://doi.org/10.1002/kpm.70165">doi:10.1002/kpm.70165</a></p>
+      <div class="tags"><span class="tag core">Core: names the risk precisely</span><span class="tag ">Conceptual + structured review</span><span class="tag ">SECI model</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">AI doesn't have tacit knowledge, but by automating the explicit tasks through which people used to develop it, AI can create a gap between the judgment an organization needs and the judgment it actually builds.</p>
+      <h3>The argument</h3>
+      <p>Starting from Polanyi and Nonaka's SECI spiral, the paper reviews 15 models of AI-enabled knowledge creation (from a Scopus search of 192 records). All of them still rely on humans for tacit knowing, but rarely ask how AI use changes the way people form it over time.</p><p>The paper names the <strong>Human Agency Deficit</strong>: the gap between the human agency an organization needs to evaluate, own, and extend its knowledge, and the agency its AI-supported practices actually develop. It's a conditional risk, not an inevitable outcome, and the paper sets out the conditions under which AI works as a learning scaffold, plus five testable propositions.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Tacit knowing</dt><dd>Know-how carried in experience that's hard to put into words.</dd><dt>SECI spiral</dt><dd>Socialization, externalization, combination, internalization: how knowledge moves between tacit and explicit.</dd><dt>Human Agency Deficit</dt><dd>Needed human agency minus the agency AI-supported practice actually develops.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>It's a skills version of technical debt. Every task AI does that a junior used to learn from is a small loan against the team's future ability to debug, design, and review. The interest comes due during the incident nobody understands.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Writing the first draft was never just about the draft; it was how students learned to think in the subject. If AI writes it, the lesson needs another way to make that tacit learning happen, or students graduate with the output but not the know-how.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>A board can ask: which formative tasks have we automated, and where will tomorrow's experts learn their judgment now? The paper's indicators turn this into something HR and knowledge managers can track.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>A precise, citable name for the risk our framework addresses. CEAU can be presented as a design that closes the Human Agency Deficit by keeping the formative work (evaluate, analyze, refine) with the learner.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p2q1"><p>1. Does the paper claim AI has tacit knowledge?</p>
+        <details><summary>Show answer</summary><p class="ans">No. It agrees AI doesn't. The concern is that AI automates explicit tasks through which people used to develop tacit knowing.</p></details></div>
+      <div class="q" data-q="p2q2"><p>2. Define the Human Agency Deficit.</p>
+        <details><summary>Show answer</summary><p class="ans">The gap between the human agency an organization needs to evaluate, own, and extend its knowledge and the agency its AI-supported practices actually develop and use.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p3" data-paper="p3">
+    <div class="paper-head">
+      <div class="paper-num">Paper 3 of 5</div>
+      <h2>One Ring to Rule Them All: An Allegory of Artificial Intelligence, Corruptive Drift, and the Limits of Organizational Governance</h2>
+      <p class="cite">Saeedi, M. (2026). <em>Proceedings of the 47th International Conference on Information Systems (ICIS 2026)</em>, Lisbon. Completed research paper.</p>
+      <div class="tags"><span class="tag support">Supporting: a vivid construct</span><span class="tag ">Conceptual, allegorical</span><span class="tag ">Governance</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">AI's biggest effects on organizations may be the slowest: sustained use gradually reshapes professional judgment and the standards themselves, so audits keep passing while everyone drifts together.</p>
+      <h3>The argument</h3>
+      <p>The paper uses Tolkien's One Ring, which amplifies power while changing its bearer, as a lens. It opens with evidence that experts lean on AI even when they know it's unreliable, such as consultants who did better with AI on tasks inside its range and worse on tasks just outside it. Its core construct is <strong>corruptive drift</strong>: the gradual reshaping of judgment through sustained AI engagement.</p><p>A five-stage process model: power amplification, uneven usability, illusion of control, corruptive drift, and dependency and lock-in. The governance problem: frameworks built to catch discrete violations can't detect a change that moves the standard itself. The proposed counter-capability is <strong>strategic restraint</strong>.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Corruptive drift</dt><dd>Gradual, hard-to-see reshaping of judgment and standards through sustained AI use.</dd><dt>Strategic restraint</dt><dd>The organizational capability to deliberately limit or not use AI where it would erode judgment.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>It's like a linter whose rules slowly change to match whatever the code already does. Every check passes, but the bar has moved. Drift in what “good code” means can't be caught by tests written against the drifted standard.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>If teachers use AI to grade AI-assisted work against rubrics AI helped write, every assessment can look fine while the standard for “good work” quietly shifts. Strategic restraint means keeping some assessment deliberately AI-free to anchor the bar.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Compliance audits check rule violations, not whether the rules themselves have drifted. If both auditor and audited lean on the same AI, "clean audit" can mean “drifted together.” Restraint has to be designed in, and it gets more expensive the deeper AI is integrated.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Corruptive drift is a strong supporting idea for why assessment needs anchors in human judgment. Keep the allegory light in our paper; the construct is what's useful.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p3q1"><p>1. Why can't conventional governance catch corruptive drift?</p>
+        <details><summary>Show answer</summary><p class="ans">Because it is designed to catch discrete violations against a stable standard, and drift moves the standard itself.</p></details></div>
+      <div class="q" data-q="p3q2"><p>2. What capability does the paper propose in response?</p>
+        <details><summary>Show answer</summary><p class="ans">Strategic restraint: deliberately limiting or not using AI where it would erode judgment.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p4" data-paper="p4">
+    <div class="paper-head">
+      <div class="paper-num">Paper 4 of 5</div>
+      <h2>The Efficiency Trap of Agentic AI in Human Resource Management</h2>
+      <p class="cite">Yang, M. M. (2026). <em>Human Resource Management</em>. <a href="https://doi.org/10.1002/hrm.70106">doi:10.1002/hrm.70106</a> (open access)</p>
+      <div class="tags"><span class="tag support">Supporting: loose coupling</span><span class="tag ">Conceptual</span><span class="tag ">Agentic AI, HR</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Handing HR execution to agentic AI removes human variation and slack, which makes organizations efficient now but brittle in a crisis and weakens how future managers learn.</p>
+      <h3>The argument</h3>
+      <p>Drawing on Weick's idea of <strong>loose coupling</strong>, the paper argues that delegating HR execution to agentic AI creates <strong>algorithmic tight coupling</strong>. Removing human “implementation variance” gives a near-perfect fit in the short term, but strips out strategic slack, leading to structural calcification. Line managers are a buffer: their sensemaking helps organizations absorb shocks.</p><p>It also warns of a developmental cost: managers who never served “the apprenticeship of the routine” may lack the understanding to supervise the systems they're responsible for. The paper proposes a governance framework that balances machine consistency with human stewardship.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Loose coupling</dt><dd>Parts of an organization connected flexibly, so a shock in one doesn't break everything.</dd><dt>Algorithmic tight coupling</dt><dd>When AI execution links processes so rigidly that there's no slack for judgment.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>It's microservices vs. a tightly coupled monolith. Removing every buffer and retry makes the happy path fast, but one unexpected input cascades everywhere. Human managers are the circuit breakers.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Fully automated pacing (an AI that decides every student's next task) removes the teacher's discretion, the slack that lets a class absorb a bad week. And new teachers who never plan a unit lose the practice that builds their judgment.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Zero-touch HR looks great on cost dashboards. The hidden costs: no slack for a crisis, and a pipeline of managers who never learned the routine they now supervise. Keep humans in the loop where judgment, not consistency, is the point.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Adds an organizational argument for keeping humans in the loop: slack and apprenticeship. Useful for the EMBA and corporate-partnership angle more than for CEAU directly.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p4q1"><p>1. What does algorithmic tight coupling trade away?</p>
+        <details><summary>Show answer</summary><p class="ans">Strategic slack and the human sensemaking buffer that help organizations absorb shocks.</p></details></div>
+      <div class="q" data-q="p4q2"><p>2. What developmental risk does the paper name?</p>
+        <details><summary>Show answer</summary><p class="ans">Managers who never did the routine work may lack the understanding to supervise the AI systems running it.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p5" data-paper="p5">
+    <div class="paper-head">
+      <div class="paper-num">Paper 5 of 5</div>
+      <h2>Used More, Trusted Less: AI Coding Assistants and Developer Trust in Stack Overflow Surveys from 2023 to 2026</h2>
+      <p class="cite">Makara, S., &amp; Chhim, N. (2026). <em>Journal of Sociotechnical Inquiry</em>, 1(2), 1–11.</p>
+      <div class="tags"><span class="tag support">Supporting: hard numbers</span><span class="tag ">Secondary survey analysis</span><span class="tag ">234,715 respondents</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Professional developers' use of AI tools rose to 85% while their trust in AI output fell, because they use AI as a draft to check, not an answer to rely on.</p>
+      <h3>The argument</h3>
+      <p>Using the public Stack Overflow Developer Survey for 2023–2026 (234,715 respondents in total), the paper finds use among professional developers rose from 44.2% (2023) to 85.2% (2026). Among users, trust in AI output accuracy fell from 46.3% to 38.4%, and distrust rose from 25.1% to 38.0%. Delegation stayed narrow: in 2025, 58.3% of users wrote code with AI but only 6.6% let AI do most of it. In 2026, 98.2% reported checking AI output before using it.</p><p>The authors call this <strong>supervised use</strong>: adoption counts don't mean reliance. AI moves scarce effort from producing code to judging code. More experienced developers trusted AI less.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Use–trust gap</dt><dd>How widely people use a tool vs. how far they trust its output.</dd><dt>Supervised use</dt><dd>Treating AI output as a draft to verify, not an answer to rely on.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>This is your own profession's data. "Almost right" AI code is the norm, so the job shifted from writing to reviewing. If your team measures AI success by suggestion acceptance rate, it's measuring the wrong thing.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>The professionals students are training to become don't trust AI blindly; they verify everything. A course that teaches students to accept AI output is teaching the opposite of professional practice. Teach verification as the skill.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Adoption dashboards ("85% of staff use AI") say nothing about value or risk. Ask instead: how much do we delegate, how much do we verify, and does verification eat the time AI was supposed to save?</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Good empirical support for the claim that expert AI use is evaluation-heavy, which is CEAU's 20/80 split in professional form. Note the venue is a new journal; verify standing before citing.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p5q1"><p>1. What happened to developer trust in AI output as use rose?</p>
+        <details><summary>Show answer</summary><p class="ans">It fell: trust dropped from 46.3% to 38.4% and distrust rose from 25.1% to 38.0% among users.</p></details></div>
+      <div class="q" data-q="p5q2"><p>2. What does “supervised use” mean here?</p>
+        <details><summary>Show answer</summary><p class="ans">Developers use AI widely but delegate narrowly, treating output as a draft to check; 98.2% reported checking before use in 2026.</p></details></div>
+      
+    </div>
+  </article>
+
+  <section class="panel">
+    <h2>How these fit together</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Paper</th><th>Contribution</th><th>Use it in our paper for</th></tr></thead>
+      <tbody><tr><td>Mai et al. 2026</td><td>Scaffold vs. substitute</td><td>CEAU's verification and refinement stages</td></tr><tr><td>Farrukh 2026</td><td>Human Agency Deficit</td><td>Names the risk CEAU addresses</td></tr><tr><td>Saeedi 2026</td><td>Corruptive drift; strategic restraint</td><td>Why assessment needs human anchors</td></tr><tr><td>Yang 2026</td><td>Algorithmic tight coupling</td><td>Corporate/EMBA angle: keep slack and apprenticeship</td></tr><tr><td>Makara &amp; Chhim 2026</td><td>Used more, trusted less</td><td>Experts' AI use is evaluation-heavy</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <nav class="series" aria-label="Previous and next cluster"><a href="sociomateriality-reading-guide-cluster-2.html">← Cluster 2: AI and Agency</a><a href="sociomateriality-reading-guide-cluster-4.html">Cluster 4: Education and Assessment →</a></nav>
+</div>
+
+<script>
+(function () {
+  var KEY_LENS = 'socio-lens', KEY_MARKS = 'socio-c3-marks';
+  function load(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  var btns = document.querySelectorAll('.lens-btn');
+  function setLens(l) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lens === l ? 'true' : 'false'); });
+    document.querySelectorAll('.lens[data-lens]').forEach(function (el) { el.hidden = el.dataset.lens !== l; });
+    save(KEY_LENS, l);
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { setLens(b.dataset.lens); }); });
+  setLens(load(KEY_LENS, 'swe'));
+
+  var marks = load(KEY_MARKS, {});
+  var qs = document.querySelectorAll('.q[data-q]');
+  var score = document.getElementById('score');
+  function render() {
+    var got = 0;
+    qs.forEach(function (q) {
+      var id = q.dataset.q, m = marks[id];
+      q.querySelectorAll('.check-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === m ? 'true' : 'false'); });
+      if (m === 'got') got++;
+    });
+    score.textContent = got + ' of ' + qs.length + ' checks marked "got it"';
+  }
+  qs.forEach(function (q) {
+    var row = document.createElement('div'); row.className = 'check-row';
+    [['got', 'Got it', 'got'], ['notyet', 'Not yet', 'notyet']].forEach(function (o) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'check-btn ' + o[2];
+      b.dataset.v = o[0]; b.textContent = o[1]; b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-label', o[1] + ': ' + q.querySelector('p').textContent);
+      b.addEventListener('click', function () {
+        marks[q.dataset.q] = marks[q.dataset.q] === o[0] ? undefined : o[0];
+        save(KEY_MARKS, marks); render();
+      });
+      row.appendChild(b);
+    });
+    q.appendChild(row);
+  });
+  render();
+})();
+</script>
+</body>
+</html>

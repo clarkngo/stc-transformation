@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Sociomateriality Reading Guide, Cluster 2</title>
+  <meta name="description" content="Cluster 2, AI and Sociomaterial Agency: papers explained three ways, for software engineers, teachers, and business readers.">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --teal: #0f766e; --teal-dim: #f0fdfa;
+      --red: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    a { color: var(--blue); }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet); margin-bottom: 24px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .panel { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 20px 24px; margin-bottom: 22px; }
+    .panel h2 { margin: 0 0 10px; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .panel p { margin: 0 0 10px; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; } ul.tight li { margin-bottom: 4px; }
+    ol.tight { margin: 0 0 10px; padding-left: 22px; } ol.tight li { margin-bottom: 4px; }
+
+    /* lens switcher */
+    .lens-bar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 10px 0 12px; margin-bottom: 14px; }
+    .lens-inner { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 10px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+    .lens-label { font-size: 0.78rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
+    .lens-btn { font: inherit; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--border); background: var(--bg); color: var(--ink);
+      border-radius: 20px; padding: 6px 14px; cursor: pointer; }
+    .lens-btn[aria-pressed="true"] { background: var(--violet); color: #fff; border-color: var(--violet); }
+    .lens-btn:focus-visible, .check-btn:focus-visible, summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .score { margin-left: auto; font-size: 0.82rem; color: var(--slate); font-weight: 600; }
+
+    /* papers */
+    .paper { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 26px; overflow: hidden; }
+    .paper-head { padding: 20px 24px 14px; border-bottom: 1px solid var(--border); }
+    .paper-num { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--violet); }
+    .paper-head h2 { margin: 4px 0 6px; font-size: 1.22rem; font-weight: 850; letter-spacing: -0.02em; line-height: 1.3; }
+    .cite { font-size: 0.86rem; color: var(--slate); margin: 0 0 8px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 0.74rem; font-weight: 700; border-radius: 12px; padding: 2px 10px; background: var(--bg); color: var(--slate); }
+    .tag.core { background: var(--green-dim); color: var(--green); }
+    .tag.support { background: var(--blue-dim); color: var(--blue); }
+    .dupcard { background: var(--card); border: 1px dashed var(--slate-light); border-radius: var(--radius); padding: 14px 20px; margin-bottom: 26px; font-size: 0.92rem; }
+    .series { display:flex; flex-wrap:wrap; gap:8px; margin: 0 0 22px; }
+    .series a { font-size:0.82rem; font-weight:600; text-decoration:none; border:1px solid var(--border); background:var(--card); border-radius:16px; padding:4px 12px; }
+    .series a[aria-current="page"] { background: var(--violet); color:#fff; border-color: var(--violet); }
+    .paper-body { padding: 16px 24px 20px; }
+    .paper-body h3 { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin: 18px 0 6px; }
+    .paper-body h3:first-child { margin-top: 0; }
+    .paper-body p { margin: 0 0 10px; }
+    .oneliner { font-size: 1.02rem; font-weight: 600; }
+    dl.terms { margin: 0; } dl.terms dt { font-weight: 700; } dl.terms dd { margin: 0 0 8px 0; color: var(--ink); }
+    .lens { border-radius: var(--radius-sm); padding: 14px 16px; background: var(--violet-dim); border-left: 4px solid var(--violet); }
+    .lens[hidden] { display: none; }
+    .lens h4 { margin: 0 0 6px; font-size: 0.95rem; }
+    .lens p:last-child, .lens ul:last-child { margin-bottom: 0; }
+    .ourpaper { border-radius: var(--radius-sm); padding: 12px 16px; background: var(--teal-dim); border-left: 4px solid var(--teal); }
+    .ourpaper p:last-child { margin-bottom: 0; }
+    .q { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    .q p { margin: 0 0 6px; font-weight: 600; }
+    details summary { cursor: pointer; color: var(--blue); font-size: 0.88rem; font-weight: 600; }
+    details .ans { margin: 6px 0 4px; font-size: 0.92rem; }
+    .check-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .check-btn { font: inherit; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--border); background: #fff; border-radius: 16px; padding: 3px 12px; cursor: pointer; color: var(--ink); }
+    .check-btn.got[aria-pressed="true"] { background: var(--green); color: #fff; border-color: var(--green); }
+    .check-btn.notyet[aria-pressed="true"] { background: var(--amber); color: #fff; border-color: var(--amber); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 12px 0 0; }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    @media (max-width: 600px) { .doc-header, .paper-head, .paper-body, .panel { padding-left: 16px; padding-right: 16px; } .score { margin-left: 0; width: 100%; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="sociomateriality-reading-guide.html">Reading guide: all clusters</a><span>·</span><a href="meeting-notes-jim-2026-11-13.html">Nov 13 meeting notes</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Reading Guide · Cluster 2 of 7 · Effective AI prototype</div>
+    <h1>AI and Sociomaterial Agency</h1>
+    <p class="subtitle">What happens to agency when AI becomes a participant in work: in strategy, radiology, team chat, and enterprise knowledge work.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📚 5 papers</span>
+      
+      <span class="meta-chip">🔀 3 lenses</span>
+      <span class="meta-chip">✅ 10 check questions</span>
+      <span class="meta-chip">📅 Nov 13, 2026</span>
+    </div>
+  </header>
+
+  <nav class="series" aria-label="Reading guide clusters"><a href="sociomateriality-reading-guide.html">All clusters</a><a href="sociomateriality-reading-guide-cluster-1.html">1. Constitutive Sociomateriality</a><a href="sociomateriality-reading-guide-cluster-2.html" aria-current="page">2. AI and Agency</a><a href="sociomateriality-reading-guide-cluster-3.html">3. Judgment and Competence</a><a href="sociomateriality-reading-guide-cluster-4.html">4. Education and Assessment</a><a href="sociomateriality-reading-guide-cluster-5.html">5. Boundary Conditions</a><a href="sociomateriality-reading-guide-cluster-6.html">6. Frames and Sensemaking</a><a href="sociomateriality-reading-guide-cluster-7.html">7. Temporality</a></nav>
+
+  <section class="panel">
+    <h2>How to use this page</h2>
+    <p>Same format as <a href="sociomateriality-reading-guide-cluster-1.html">Cluster 1</a>: the one-liner, argument, and key terms are the same for everyone; pick a lens below to change the "from your field" boxes; then check yourself. Your lens choice carries across all cluster pages, and your check marks stay in this browser only.</p>
+    <div class="callout amber"><strong>How this was made:</strong> Claude drafted these explanations from the PDFs in the paper's reference library, in our own words. Most of these papers are from 2026 and some are preprints or conference papers; check anything you plan to cite against the original. Tags mark each paper as core, supporting, or peripheral for our paper.</div>
+  </section>
+
+  <div class="lens-bar">
+    <div class="lens-inner" role="group" aria-label="Choose a lens">
+      <span class="lens-label">Your lens</span>
+      <button type="button" class="lens-btn" data-lens="swe" aria-pressed="true">💻 Software engineer</button>
+      <button type="button" class="lens-btn" data-lens="teach" aria-pressed="false">🍎 Teacher</button>
+      <button type="button" class="lens-btn" data-lens="biz" aria-pressed="false">📈 Business</button>
+      <span class="score" id="score" aria-live="polite">0 of 10 checks marked "got it"</span>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2>The cluster in 60 seconds</h2>
+    <p>Cluster 1 said agency comes from how people and things are put together. These papers ask what that means once AI is one of the things, and sometimes acts on its own. The shared answer: AI doesn't “have” agency or “lack” it. What it does depends on where and how it's set up in the work, and the same system can play different roles from one moment to the next.</p>
+    <div class="lens" data-lens="swe">
+      <h4>💻 From your field</h4>
+      <p>Think of a bot added to your team's Slack and repo. Whether it helps, gets ignored, or causes chaos isn't a property of the model. It depends on its permissions, where it posts, who reviews its PRs, and the team's unwritten rules about pinging people.</p>
+    </div>
+<div class="lens" data-lens="teach" hidden>
+      <h4>🍎 From your field</h4>
+      <p>Think of an AI tutor added to a course. Whether it supports learning, becomes an answer machine, or sits unused isn't decided by the model. It depends on where it appears, what the assignment rewards, and what the teacher expects students to do with it.</p>
+    </div>
+<div class="lens" data-lens="biz" hidden>
+      <h4>📈 From your field</h4>
+      <p>Think of AI agents added to a strategy or HR process. Whether they open the process up or quietly take decisions away from people depends on how they're configured, who reviews their output, and what the organization rewards, not on the vendor's feature list.</p>
+    </div>
+  </section>
+
+  <article class="paper" id="p1" data-paper="p1">
+    <div class="paper-head">
+      <div class="paper-num">Paper 1 of 5</div>
+      <h2>Exploring AI-in-the-making: Sociomaterial Genealogies of AI Performativity</h2>
+      <p class="cite">Scott, S. V., &amp; Orlikowski, W. J. (2025). <em>Information and Organization</em>, 35, 100558. <a href="https://doi.org/10.1016/j.infoandorg.2025.100558">doi:10.1016/j.infoandorg.2025.100558</a> (open access)</p>
+      <div class="tags"><span class="tag core">Core: the 2025 update of the theory</span><span class="tag ">Conceptual</span><span class="tag ">Agential realism</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">AI is not a finished “thing” but a set of practices always in the making, so researchers should trace how different versions of AI get enacted, and with what consequences.</p>
+      <h3>The argument</h3>
+      <p>The authors argue that “AI” lumps together very different techniques and treats them as one stable object. Borrowing Callon's idea of markets “in the making,” they treat AI as <strong>AI-in-the-making</strong>: always being reconfigured through practice. Drawing on Barad's <em>agential realism</em>, they say agency in the age of AI is no different from before: it has always been the ongoing reconfiguring of the world. What's new is the conditions AI creates and how many versions of AI get enacted.</p><p>Their method proposal is a <strong>sociomaterial genealogy</strong>: trace how a given version of AI came to be enacted in practice, what it made possible, and who is accountable for its effects.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>AI-in-the-making</dt><dd>AI as ongoing practice and reconfiguration, never a finished, uniform object.</dd><dt>Performativity</dt><dd>What AI is shows up in what it does in practice; its effects make it what it is.</dd><dt>Sociomaterial genealogy</dt><dd>A way of studying how particular versions of AI came about and what consequences they produce.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>"The model" is never one thing. The production system is a specific model version, a system prompt, retrieval sources, guardrails, and an eval suite, all changed weekly. A sociomaterial genealogy is like reading the git history and the incident log together: how did <em>this</em> version of the assistant come to behave the way it does, and who changed what?</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>"ChatGPT in my class" isn't one thing either. A student on a free tier, a district-approved tutor with guardrails, and a model inside the LMS are different versions of AI, enacted differently. The genealogy question for a teacher: how did the AI my students actually use come to be configured this way, and who decided?</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>"We're deploying AI" hides many versions: the pilot, the vendor's update, the compliance team's restrictions, the shadow use on personal phones. The authors' point for managers: accountability comes from tracing which version produced which outcome, not from a single "AI policy."</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>This is the most direct theoretical anchor for "effective AI": it lets us say effective AI is a <em>version</em> of AI enacted in a particular learning setting, not a property of a model. Pairs naturally with Orlikowski 2007 in the theory section.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p1q1"><p>1. What does “AI-in-the-making” push against?</p>
+        <details><summary>Show answer</summary><p class="ans">Treating AI as one finished, uniform, stable thing. The authors see many versions, always being reconfigured through practice.</p></details></div>
+      <div class="q" data-q="p1q2"><p>2. According to the authors, is agency different in the age of AI?</p>
+        <details><summary>Show answer</summary><p class="ans">No. Agency has always been the ongoing reconfiguring of the world. What's different is the conditions AI creates and the many versions of AI being enacted.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p2" data-paper="p2">
+    <div class="paper-head">
+      <div class="paper-num">Paper 2 of 5</div>
+      <h2>Exploring How Knowledge Workers Situate an Organisationally Embedded LLM Agent in their Collaborative Work Practices</h2>
+      <p class="cite">O'Hara, K., Massimi, M., &amp; Khan, M. (2026). <em>Computer Supported Cooperative Work</em>, 35, 16. <a href="https://doi.org/10.1007/s10606-026-09549-1">doi:10.1007/s10606-026-09549-1</a></p>
+      <div class="tags"><span class="tag core">Core: empirical, enterprise LLM</span><span class="tag ">Qualitative, 14 participants</span><span class="tag ">IT services firm</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">When an LLM agent is built into a company's systems, it doesn't just speed up individual tasks; it reorganizes how meetings, documents, and collaboration fit together.</p>
+      <h3>The argument</h3>
+      <p>Most LLM studies look at individuals using off-the-shelf chatbots. This one studies an IT services firm that built its own LLM agent into its enterprise systems, documents, and workflows, through interviews and observation with 14 employees over time.</p><p>Findings: meetings became persistent, searchable artifacts; work products emerged from long chains of human–AI interaction instead of single authors; and people <strong>changed how they talked</strong>, adding context and structuring speech so the agent's transcripts and summaries would be useful later. The authors conclude that such agents work as <strong>organizational infrastructure</strong>, not standalone productivity tools, which brings new questions of accountability and risk.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Situated practice</dt><dd>Looking at what people actually do with a tool in context, over time.</dd><dt>LLM as infrastructure</dt><dd>The agent becomes part of the background systems work runs on, like email or a document store.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>It's like adding a bot that records stand-ups and indexes them. Soon people start saying ticket numbers out loud and spelling out decisions so the bot will capture them. The tool changed the meeting, not just the notes. That's the paper's core finding.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Picture class sessions that are automatically transcribed and searchable. Students start asking questions “for the record,” and group work starts to happen through the transcript as much as in the room. The tool reshapes participation, not just note-taking.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Enterprise AI's value isn't in minutes saved per task. It's in how knowledge flows: meetings become reusable records, handoffs change, and new risks appear around who's accountable for AI-assembled documents. Measure the reorganization, not just the speed.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Strong evidence that people adapt their own behavior to the AI, a clear sociomaterial point. For CEAU: students will also adapt how they write and think to fit the tool, which is why assessment should look at the process.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p2q1"><p>1. How did workers change their own behavior because of the agent?</p>
+        <details><summary>Show answer</summary><p class="ans">They structured their talk and added context so the agent's transcription, summaries, and retrieval would be more useful.</p></details></div>
+      <div class="q" data-q="p2q2"><p>2. What's the paper's main reframing of LLMs?</p>
+        <details><summary>Show answer</summary><p class="ans">From standalone productivity tools to organizational infrastructure that reorganizes collaboration.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p3" data-paper="p3">
+    <div class="paper-head">
+      <div class="paper-num">Paper 3 of 5</div>
+      <h2>Open Strategy and AI: A New Actor in the Strategy Process?</h2>
+      <p class="cite">Hautz, J., Stadler, C., &amp; Whittington, R. (2026). <em>Long Range Planning</em>, 59, 102693. <a href="https://doi.org/10.1016/j.lrp.2026.102693">doi:10.1016/j.lrp.2026.102693</a> (open access)</p>
+      <div class="tags"><span class="tag support">Supporting: a framework</span><span class="tag ">Short perspective piece</span><span class="tag ">4As framework</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Generative AI is joining strategy-making as a possible new actor, and it can open the process up or close it down, so research needs a differentiated framework.</p>
+      <h3>The argument</h3>
+      <p>The paper opens with a consulting firm that went from 30 consultants to three by running client strategy processes with a network of more than 35 AI agents. The authors propose a <strong>4As framework</strong> for AI's role in open strategy: <strong>affordances</strong> (what AI makes possible), <strong>agency</strong> (AI acting on its own account), <strong>automation</strong> (AI replacing human tasks), and <strong>augmentation</strong> (AI extending human roles).</p><p>Drawing on sociomateriality and Actor-Network Theory, they argue AI's effects will be ambiguous: more transparency and inclusion in some ways, and selectivity, black-boxing, deskilling, and substitution in others.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Open strategy</dt><dd>Making strategy more transparent and including people beyond top management.</dd><dt>4As</dt><dd>Affordances, agency, automation, augmentation: four lenses on AI's role.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>The 4As map onto a familiar product debate. <strong>Affordance:</strong> what the API lets you do. <strong>Automation:</strong> the cron job that replaces a person. <strong>Augmentation:</strong> the copilot that makes a person faster. <strong>Agency:</strong> the autonomous agent that decides and acts. Same model, four very different roles.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Use the 4As to sort AI in a course. <strong>Automation:</strong> auto-graded quizzes. <strong>Augmentation:</strong> students drafting with AI, then revising. <strong>Affordance:</strong> what the tool makes possible, like instant feedback at 2 a.m. <strong>Agency:</strong> an AI that decides what a student studies next.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>A ready-made checklist for any AI rollout: are we automating, augmenting, giving people new affordances, or handing agency to the system? Each one has different risks for openness, skills, and accountability.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>The 4As offer a quick way to classify AI's role in a CEAU activity. Useful as a supporting citation; the case of three consultants replacing 30 is a vivid opener.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p3q1"><p>1. Name the 4As.</p>
+        <details><summary>Show answer</summary><p class="ans">Affordances, agency, automation, augmentation.</p></details></div>
+      <div class="q" data-q="p3q2"><p>2. Does the paper predict AI will make strategy more open?</p>
+        <details><summary>Show answer</summary><p class="ans">Not simply. It argues effects will be ambiguous: more openness in some ways, more closure (selectivity, black-boxing, deskilling) in others.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p4" data-paper="p4">
+    <div class="paper-head">
+      <div class="paper-num">Paper 4 of 5</div>
+      <h2>Recurrent AI Assemblage Forms in Radiological Interpretation Routines</h2>
+      <p class="cite">Berrahou, M. (2026). <em>Proceedings of the 47th International Conference on Information Systems (ICIS 2026)</em>, Lisbon. Completed research paper.</p>
+      <div class="tags"><span class="tag core">Core: the clearest empirical case</span><span class="tag ">Qualitative, cancer center</span><span class="tag ">Organizational routines</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">The same AI tool for spotting lung nodules is used in three different ways within one radiology routine, depending on how the case, the timing, and the systems line up.</p>
+      <h3>The argument</h3>
+      <p>Studies usually treat AI's place in a workflow as fixed: it's either the “second reader” or the “first reader.” This qualitative study of an AI pulmonary-nodule detection tool in a cancer center finds the same artifact recurrently assembled in <strong>three forms</strong>:</p><ul class="tight"><li><strong>Sustained:</strong> a second-look verification device.</li><li><strong>Desynchronized:</strong> bypassed when material or clinical misalignments make the output unusable.</li><li><strong>Aligned:</strong> a first-look triage filter, when it's available early enough.</li></ul><p>Radiologists navigate between these forms exam by exam. AI's role can't be read off its accuracy, user trust, or the workflow mode on paper.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Assemblage form</dt><dd>A recurring configuration of people, tool, case, and timing in which the AI plays a particular role.</dd><dt>Organizational routine</dt><dd>A repeated, recognizable pattern of work, here reading a scan.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>Like a static-analysis tool in CI. Sometimes it's the second check after review (sustained). Sometimes it times out or flags the wrong branch, so everyone ignores it (desynchronized). Sometimes it runs first and decides what humans look at (aligned). Same tool, three roles, depending on the pipeline that day.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Like a plagiarism or AI detector. Sometimes it's a second check after the teacher reads (sustained). Sometimes the report arrives too late or doesn't match the assignment type, so it's skipped (desynchronized). Sometimes it runs first and decides which essays get a closer look (aligned).</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Like a fraud-scoring model. Some days it backs up analysts' judgment, some days data gaps make it useless, and some days it triages the queue before anyone looks. A dashboard showing “AI adoption: yes” hides all three.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>An excellent empirical illustration of Orlikowski's technologies-in-practice, updated for AI: one artifact, several enacted forms. Supports measuring <em>how</em> learners enact AI, not just whether they used it.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p4q1"><p>1. Name the three assemblage forms.</p>
+        <details><summary>Show answer</summary><p class="ans">Sustained (second-look verification), desynchronized (bypassed due to misalignments), aligned (first-look triage).</p></details></div>
+      <div class="q" data-q="p4q2"><p>2. Why can't AI's role be read off its accuracy?</p>
+        <details><summary>Show answer</summary><p class="ans">Because whether the output is available, interpretable, and actionable depends on timing, systems, the clinical case, and professional norms in each exam.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p5" data-paper="p5">
+    <div class="paper-head">
+      <div class="paper-num">Paper 5 of 5</div>
+      <h2>Working with Agentic 'Teammates': When a New Organizational Actor Collides with the Human Ecosystem of Work</h2>
+      <p class="cite">Qadri, R., Denton, R., Madaio, M., et al. (2026). <em>arXiv preprint</em> <a href="https://arxiv.org/abs/2609.29901">arXiv:2609.29901</a> [cs.HC].</p>
+      <div class="tags"><span class="tag core">Core: agentic AI in the wild</span><span class="tag ">Qualitative, in situ</span><span class="tag ">Preprint, not yet peer reviewed</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">When a proactive AI agent “teammate” is deployed across real teams, it triggers breakdowns and negotiations over unwritten rules, boundaries, trust, and who's really in charge.</p>
+      <h3>The argument</h3>
+      <p>Most research on AI teammates uses lab tasks. This in-situ qualitative study looks at a persistent, proactive agent deployed across multiple teams in a large technology company. It sits in team chats and documents, monitors context, and runs multi-step work in the background.</p><p>The boundaries of the human–agent workplace turned out to be in flux, with breakdowns and negotiations across three areas: <strong>(1)</strong> the tacit rules of collaborative workflows; <strong>(2)</strong> the relational boundaries of this new non-human actor; and <strong>(3)</strong> the redistribution of trust and human agency. The authors call for deliberate institutional scaffolding and design that preserves human agency.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Proactive agent</dt><dd>An AI that acts without being asked: it monitors, decides, and executes.</dd><dt>Tacit rules</dt><dd>Unwritten norms of teamwork, like when it's OK to interrupt or who answers what.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>Imagine a bot that opens PRs, comments in threads, and pings people on its own. Suddenly the team has to decide things nobody ever wrote down: can it @-mention the lead? Should it reply in the incident channel? Who owns its mistakes? Those negotiations are the findings.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Imagine an AI teaching assistant that posts in the class forum on its own, nudges students who haven't submitted, and answers questions at midnight. Students and teachers must work out new rules: when it should stay quiet, who is responsible when it's wrong, and whether students trust it over peers.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Agentic AI isn't an IT rollout; it's adding an organizational actor. You need the equivalent of an onboarding: role, permissions, escalation paths, and who's accountable. Without that, the breakdowns land on the people around it.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Strong support for the boundary section on agentic AI. It shows agentic AI disrupts tacit norms, an argument for keeping humans as visible, accountable participants in any AI-enabled learning design.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p5q1"><p>1. Name the three areas where breakdowns and negotiations happened.</p>
+        <details><summary>Show answer</summary><p class="ans">Tacit rules of collaborative workflows; the agent's relational boundaries; the redistribution of trust and human agency.</p></details></div>
+      <div class="q" data-q="p5q2"><p>2. Why does the study's setting matter?</p>
+        <details><summary>Show answer</summary><p class="ans">It's a real, in-situ deployment over time, not a lab task, so it captures the messy, tacit realities of collaboration.</p></details></div>
+      
+    </div>
+  </article>
+
+  <section class="panel">
+    <h2>How these fit together</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Paper</th><th>Contribution</th><th>Use it in our paper for</th></tr></thead>
+      <tbody><tr><td>Scott &amp; Orlikowski 2025</td><td>AI-in-the-making; versions of AI</td><td>Anchors effective AI as a version enacted in a setting</td></tr><tr><td>O'Hara et al. 2026</td><td>LLM as infrastructure; people adapt to the tool</td><td>Process-focused assessment</td></tr><tr><td>Hautz et al. 2026</td><td>4As framework</td><td>Classify AI's role in an activity</td></tr><tr><td>Berrahou 2026</td><td>One tool, three assemblage forms</td><td>Measure how learners enact AI</td></tr><tr><td>Qadri, Denton et al. 2026</td><td>Agentic teammates disrupt tacit rules</td><td>Agentic-AI boundary section</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <nav class="series" aria-label="Previous and next cluster"><a href="sociomateriality-reading-guide-cluster-1.html">← Cluster 1: Constitutive Sociomateriality</a><a href="sociomateriality-reading-guide-cluster-3.html">Cluster 3: Judgment and Competence →</a></nav>
+</div>
+
+<script>
+(function () {
+  var KEY_LENS = 'socio-lens', KEY_MARKS = 'socio-c2-marks';
+  function load(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  var btns = document.querySelectorAll('.lens-btn');
+  function setLens(l) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lens === l ? 'true' : 'false'); });
+    document.querySelectorAll('.lens[data-lens]').forEach(function (el) { el.hidden = el.dataset.lens !== l; });
+    save(KEY_LENS, l);
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { setLens(b.dataset.lens); }); });
+  setLens(load(KEY_LENS, 'swe'));
+
+  var marks = load(KEY_MARKS, {});
+  var qs = document.querySelectorAll('.q[data-q]');
+  var score = document.getElementById('score');
+  function render() {
+    var got = 0;
+    qs.forEach(function (q) {
+      var id = q.dataset.q, m = marks[id];
+      q.querySelectorAll('.check-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === m ? 'true' : 'false'); });
+      if (m === 'got') got++;
+    });
+    score.textContent = got + ' of ' + qs.length + ' checks marked "got it"';
+  }
+  qs.forEach(function (q) {
+    var row = document.createElement('div'); row.className = 'check-row';
+    [['got', 'Got it', 'got'], ['notyet', 'Not yet', 'notyet']].forEach(function (o) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'check-btn ' + o[2];
+      b.dataset.v = o[0]; b.textContent = o[1]; b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-label', o[1] + ': ' + q.querySelector('p').textContent);
+      b.addEventListener('click', function () {
+        marks[q.dataset.q] = marks[q.dataset.q] === o[0] ? undefined : o[0];
+        save(KEY_MARKS, marks); render();
+      });
+      row.appendChild(b);
+    });
+    q.appendChild(row);
+  });
+  render();
+})();
+</script>
+</body>
+</html>

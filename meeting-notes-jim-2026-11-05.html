@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes, Jim O'Farrell, November 5 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--teal); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--teal-dim); border: 1px solid rgba(13,148,136,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p { margin: 0 0 10px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { white-space: nowrap; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; }
+    ul.tight li { margin-bottom: 4px; }
+    h3 { font-size: 0.95rem; margin: 16px 0 6px; }
+    h3:first-child { margin-top: 0; }
+    .checklist { list-style: none; padding-left: 0; margin: 0; }
+    .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 4px; color: var(--slate); }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } td:first-child { white-space: normal; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="jim-ofarrell-collaboration.html">All Jim interactions</a><span>·</span><a href="jim-research-paper-collab-2026-10-30.html">Oct 30 paper proposal</a><span>·</span><a href="corporate-partnerships-hub.html">Corporate Partnerships Hub</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Meeting Notes · Outside STC, adjacent to it</div>
+    <h1>Meeting Notes: Jim O'Farrell, November 5</h1>
+    <p class="subtitle">The research paper takes shape: a sociomaterial, conceptual paper first and an empirical one later. Also covered: Baldrige and AI fluency in EMBA 582, and keeping students thinking when AI can do the assignment.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Nov 5, 2026</span>
+      <span class="meta-chip">👥 Jim O'Farrell · Clark Ngo</span>
+      <span class="meta-chip">📄 Research Charter V2 drafted the same day</span>
+      <span class="meta-chip">🎯 Theory section due Nov 20</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 28px;"><strong>BSAI reminder:</strong> this page mentions AI 410 as the CEAU design case and a possible Phase 2 cohort. The standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>. Nothing decided here conflicts with them.</div>
+
+  <div class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li><strong>Two papers:</strong> a conceptual paper on generative AI and sociomateriality for the ACBSP AI Forum in San Diego, then an empirical study that adds course outcomes.</li>
+      <li><strong>Charter V2:</strong> a revised research charter and drafting plan, dated Nov 5, sets the working title, research questions, milestones, owners, and risks. Both authors still have to approve it.</li>
+      <li><strong>EMBA 582:</strong> make it the capstone that brings together the Baldrige framework and AI fluency in every module, working with Dr. Michael Fors and Vernon Smith.</li>
+      <li><strong>Next deadline:</strong> Jim's sociomaterial theory section, due Nov 20. Clark sets up the shared OneDrive workspace.</li>
+    </ul>
+  </div>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">📚</div><div><h2>1. Research and publication roadmap</h2><div class="section-sub">What was discussed</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>Core theme:</strong> sociomateriality, generative AI, and how people and machines work together, studied from a practical angle.</li>
+        <li><strong>Paper 1:</strong> a conceptual framework on generative AI and sociomateriality for the ACBSP AI Forum in San Diego (March 11–13, 2027).</li>
+        <li><strong>Paper 2:</strong> an experimental or empirical study that uses course outcomes, aimed at a later conference. New Orleans was mentioned as the venue.</li>
+        <li><strong>Support:</strong> work with university leadership, including Joel Domingo and Greg Price, for institutional support and possibly travel funding for presenting together.</li>
+      </ul>
+      <div class="callout amber"><strong>Evidence limit:</strong> the BSAI is upcoming and AI 410 hasn't run with students. Paper 2 needs a confirmed cohort and an ethics determination before any data is collected (charter Phase 2).</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">📝</div><div><h2>Research Charter and Drafting Plan V2</h2><div class="section-sub">Revised draft dated Nov 5, for joint approval. Bracketed items in the charter are still to be confirmed.</div></div></div>
+    <div class="section-body">
+      <h3>Working title</h3>
+      <p><em>Judgment in Human–AI Work: A Sociomaterial Approach to Authentic Assessment with CEAU.</em> The alternative keeps the Bloom framing: <em>Rethinking Bloom's Pyramid for Human–AI Work</em>. Either replaces the Oct 30 title, "Beyond Bloom's Pyramid."</p>
+
+      <h3>Stance</h3>
+      <ul class="tight">
+        <li><strong>Bloom</strong> is a reference point, not a target. The paper argues that AI spreads the thinking Bloom describes across people and tools, so assessment should follow that shift. It doesn't claim to disprove the taxonomy.</li>
+        <li><strong>Sociomateriality:</strong> agency is relational. It comes from how people, tools, and tasks are entangled. The anchoring strand (for example, Orlikowski) is still to be named.</li>
+        <li><strong>Agentic AI</strong> gets a boundary section only, not a separate framework. Generative AI anchors the design case.</li>
+      </ul>
+
+      <h3>Research questions</h3>
+      <ul class="tight">
+        <li>How does AI change the entanglement of human and material agency across creating, evaluating, analyzing, and understanding?</li>
+        <li>How can CEAU turn sociomaterial principles into assessment of judgment, understanding, and demonstrable competence?</li>
+      </ul>
+
+      <h3>Method and evidence</h3>
+      <ul class="tight">
+        <li><strong>Phase 1 (this paper):</strong> a selective, theory-building literature review plus instructional design artifacts. No claims about learning effectiveness.</li>
+        <li><strong>Guarding against self-confirmation:</strong> CEAU is Clark's own design, so the paper discloses that, sets fit criteria in advance, adds at least one contrasting external case, and states where the framework strains.</li>
+        <li><strong>Outputs:</strong> a framework diagram, assessment principles, an EMBA transfer example, and testable propositions, each tagged with the evidence a Phase 2 study would need.</li>
+      </ul>
+
+      <h3>Publication route</h3>
+      <p>Two routes: the ACBSP forum and a CityU-supported journal. The primary route was to be chosen at the Nov 13 meeting, once the forum's call details were in hand. The other becomes a follow-on. ACBSP's site confirms the dates, place, and theme; <strong>Jan 19 is a planning target, not a verified deadline.</strong></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">🗓</div><div><h2>Milestones and owners</h2><div class="section-sub">From the charter, Section 6</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Due</th><th>Deliverable</th><th>Lead</th></tr></thead>
+        <tbody>
+          <tr><td>Nov 9</td><td>ACBSP call and verified deadline. Outline and reference library with search log. Authorship criteria agreed.</td><td>Clark (call); Jim (outline, library); both (criteria)</td></tr>
+          <tr><td>Nov 13</td><td>Choose the primary publication route. Fix the submission checklist.</td><td>Both (Friday meeting)</td></tr>
+          <tr><td>Nov 20</td><td>Sociomaterial theory section; Bloom and Mollick connections; stance on agency.</td><td>Jim</td></tr>
+          <tr><td>Dec 4</td><td>CEAU case, tasks, rubric, and technical design evidence. Contrasting external case identified.</td><td>Clark</td></tr>
+          <tr><td>Dec 11</td><td>Synthesis and propositions (Jim). EMBA transfer example and Phase 2 evidence mapping (Clark). Confirm authorship order.</td><td>Both</td></tr>
+          <tr><td>Dec 18</td><td>Full integrated manuscript and framework diagram. Dec 21–23 held as a buffer.</td><td>Jim integrates; Clark edits</td></tr>
+          <tr><td>Jan 5–12</td><td>Revise by Jan 5; approve the submission package Jan 12.</td><td>Both</td></tr>
+          <tr><td>Jan 19*</td><td>Assemble the package (Clark). File it and keep the receipt (Jim).</td><td>Both</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:10px; font-size:0.85rem; color:var(--slate);">*Planning target only, pending verification of the ACBSP call. Meetings are Fridays at 11 a.m. (Pacific assumed): drafts posted Thursday, tracked-change review, comments resolved Friday.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">🎓</div><div><h2>2. EMBA 582 and the Baldrige framework</h2><div class="section-sub">Product and Service Innovation</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li>Build the Malcolm Baldrige framework into EMBA 582: Product and Service Innovation, working closely with Dr. Michael Fors and Vernon Smith.</li>
+        <li>Make EMBA 582 the capstone that uniquely combines Baldrige's organizational assessment and operational excellence with AI fluency in every module.</li>
+      </ul>
+      <div class="callout amber"><strong>Check the category count:</strong> the summary says Baldrige has 7 categories. That was true through 2025. The framework revised on Aug 13, 2026 has six, with results built into each one (see the <a href="stc-baldrige-self-assessment.html">STC Baldrige self-assessment</a>). Confirm which version the course will use.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-amber">🧠</div><div><h2>3. Teaching strategy and student engagement</h2><div class="section-sub">Keeping students thinking</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>AI and critical thinking:</strong> students lean on AI for assessments. The answer is engaging, scenario-based, reflective assignments that need real thought and the student's own writing.</li>
+        <li><strong>Real-world relevance:</strong> in-depth case studies, articles such as <em>America's Wrecking Ball Democracy</em>, and role-play exercises connect class work to the pressures of industry.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">✅</div><div><h2>4. Action items</h2><div class="section-sub">No outcomes are on file yet for the Nov 9 and Nov 13 items</div></div></div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li><strong>Clark:</strong> set up the shared OneDrive workspace: one master draft, reference library, case artifacts, and decision log.</li>
+        <li><strong>Clark:</strong> get the ACBSP AI Forum call: proposal or paper, word limits, template, review criteria, deadline and time zone, disclosures, upload steps. (Due Nov 9.)</li>
+        <li><strong>Jim:</strong> outline and reference library with search log and inclusion criteria. (In progress; due Nov 9, with the criteria and log due Nov 20.)</li>
+        <li><strong>Both:</strong> agree on authorship criteria (Nov 9) and choose the primary publication route (Nov 13).</li>
+        <li><strong>Jim:</strong> sociomaterial theory section. (Due Nov 20.)</li>
+        <li><strong>Jim:</strong> explore support with Vernon Smith, Michael Fors, and the Research Institute.</li>
+        <li><strong>Both:</strong> approve Charter V2, then circulate it to leadership, Joel Domingo, and Greg Price.</li>
+        <li><strong>Both:</strong> initial draft and framework assembled by mid-December (charter: Dec 18).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">⚠️</div><div><h2>Where the summary and the charter differ</h2><div class="section-sub">Worth settling at the next meeting</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Topic</th><th>Meeting summary</th><th>Charter V2</th></tr></thead>
+        <tbody>
+          <tr><td>Second venue</td><td>An ACBSP conference in New Orleans for the empirical paper.</td><td>A CityU-supported journal route; no New Orleans conference named.</td></tr>
+          <tr><td>Name</td><td>Dr. Michael Force</td><td>Michael Fors (used on this page)</td></tr>
+          <tr><td>Baldrige</td><td>7 categories</td><td>Not stated; the 2026 framework has six.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

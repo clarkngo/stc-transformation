@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Jim Meeting Prep, November 13</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    a { color: var(--blue); }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--violet-dim); border: 1px solid rgba(124,58,237,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p { margin: 0 0 10px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { font-weight: 600; }
+    td.nowrap { white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; }
+    ul.tight li { margin-bottom: 4px; }
+    .decision { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 14px; }
+    .decision:last-child { margin-bottom: 0; }
+    .decision h3 { margin: 0 0 6px; font-size: 0.98rem; }
+    .rec { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border-radius: 12px; padding: 2px 10px; margin-bottom: 6px; }
+    .qa dt { font-weight: 700; margin-top: 12px; }
+    .qa dt:first-child { margin-top: 0; }
+    .qa dd { margin: 4px 0 0; color: var(--ink); }
+    .checklist { list-style: none; padding-left: 0; margin: 0; }
+    .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 4px; color: var(--slate); }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } td.nowrap { white-space: normal; } }
+    @media print { body { background: #fff; } .section, .doc-header { box-shadow: none; } .nav-row { display: none; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="jim-ofarrell-collaboration.html">All Jim interactions</a><span>·</span><a href="meeting-notes-jim-2026-11-05.html">Nov 5 meeting notes</a><span>·</span><a href="jim-paper-clark-workpack.html">Clark's work pack</a><span>·</span><a href="corporate-partnerships-hub.html">Corporate Partnerships Hub</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Meeting Prep · Outside STC, adjacent to it</div>
+    <h1>Jim Meeting Prep: November 13</h1>
+    <p class="subtitle">The Friday working session for the sociomaterial CEAU paper. The charter set this meeting to choose the publication route; the ACBSP findings make that the main decision.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Fri Nov 13, 2026 · 11 a.m. (Pacific assumed)</span>
+      <span class="meta-chip">👥 Jim O'Farrell · Clark Ngo</span>
+      <span class="meta-chip">⏱ 60 minutes</span>
+      <span class="meta-chip">🎯 4 decisions</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 28px;"><strong>BSAI reminder:</strong> this meeting discusses AI 410 as the CEAU design case. The standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>. Nothing proposed here conflicts with them, and the paper makes no learning-outcome claims for AI 410.</div>
+
+  <div class="tldr">
+    <h2>Walk out with</h2>
+    <ul>
+      <li><strong>A publication route:</strong> recommended, the <em>Transnational Journal of Business</em> by Jan 31 as primary, plus an ACBSP Conference '27 (Baltimore) abstract by Jan 19.</li>
+      <li><strong>Charter V2 approved,</strong> with its Section 5 and milestones updated to match the route.</li>
+      <li><strong>Authorship criteria agreed</strong> (overdue since Nov 9), with order confirmed on Dec 11.</li>
+      <li><strong>A reference tool and draft search criteria,</strong> so Jim's Nov 20 theory section and search log can proceed.</li>
+    </ul>
+  </div>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">🕚</div><div><h2>Agenda</h2><div class="section-sub">60 minutes, decisions first</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Time</th><th>Item</th><th>Goal</th></tr></thead>
+        <tbody>
+          <tr><td class="nowrap">11:00 · 5 min</td><td>Check-in: Jim's outline and reference library (due Nov 9); any word from Joel Domingo on the charter</td><td>Know where Jim's track stands</td></tr>
+          <tr><td class="nowrap">11:05 · 15 min</td><td><a href="#d1">Decision 1</a>: publication route</td><td>Choose primary and follow-on</td></tr>
+          <tr><td class="nowrap">11:20 · 10 min</td><td><a href="#d2">Decision 2</a>: approve Charter V2, with title and route edits</td><td>An approved charter to circulate</td></tr>
+          <tr><td class="nowrap">11:30 · 10 min</td><td><a href="#d3">Decision 3</a>: authorship criteria</td><td>Criteria agreed; order deferred to Dec 11</td></tr>
+          <tr><td class="nowrap">11:40 · 5 min</td><td><a href="#d4">Decision 4</a>: reference tool and search criteria</td><td>Unblock the search log</td></tr>
+          <tr><td class="nowrap">11:45 · 10 min</td><td>Walkthrough: folder guide, Figure 1, CEAU case pack, contrasting case (AIAS)</td><td>Jim's first reactions; agree poor-fit criteria are due Dec 4</td></tr>
+          <tr><td class="nowrap">11:55 · 5 min</td><td>Action items and next meeting (Fri Nov 20, theory section due)</td><td>Owners and dates on record</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:10px;font-size:0.85rem;color:var(--slate)">If time runs short, push the walkthrough to Nov 20. Decisions 1–3 are the ones that can't wait.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">⚖️</div><div><h2>Decisions to reach</h2><div class="section-sub">Each with options and a recommendation</div></div></div>
+    <div class="section-body">
+
+      <div class="decision" id="d1">
+        <h3>1. Publication route</h3>
+        <span class="rec">Recommended: option A</span>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Option</th><th>What it means</th><th>Trade-off</th></tr></thead>
+          <tbody>
+            <tr><td>A. Journal first, conference abstract second</td><td>Full paper to the <em>Transnational Journal of Business</em> by Jan 31 (5,000–7,000 words, APA 7). A presentation abstract from it to Conference '27 by Jan 19.</td><td>One manuscript, two outputs. Twelve more days for the paper. Baltimore travel in June instead of San Diego in March.</td></tr>
+            <tr><td>B. Conference only</td><td>Abstract by Jan 19; write the full paper later.</td><td>Less pressure now, but no publication and the momentum may fade.</td></tr>
+            <tr><td>C. Another journal</td><td>A different peer-reviewed venue with no fixed deadline.</td><td>Possibly better fit or indexing, but needs vetting (fees, review time, author rights) and loses the ACBSP audience.</td></tr>
+          </tbody>
+        </table></div>
+        <p style="margin-top:10px"><strong>Bring:</strong> the <a href="jim-paper-clark-workpack.html">work pack</a> comparison table. <strong>Unknowns to name:</strong> the Jan 19 time zone and abstract word limit (behind the portal sign-in), and the journal's fees and indexing. The charter says both authors vet journal fit.</p>
+      </div>
+
+      <div class="decision" id="d2">
+        <h3>2. Approve Charter V2</h3>
+        <span class="rec">Recommended: approve with three edits</span>
+        <ul class="tight">
+          <li><strong>Title:</strong> keep "Judgment in Human–AI Work: A Sociomaterial Approach to Authentic Assessment with CEAU" for the paper. The Bloom framing ("Rethinking Bloom's Pyramid…") could title the conference talk, where a hook helps.</li>
+          <li><strong>Section 5 (route):</strong> replace "AI Forum" with the chosen route, and close the verification gate with the Nov 13 findings.</li>
+          <li><strong>Section 6 (milestones):</strong> Jan 19 becomes the abstract; add Jan 26 (format check) and Jan 31 (journal submission).</li>
+        </ul>
+        <p><strong>Then:</strong> move the approved copy to 00 Charter, and send it to Joel Domingo (who has the earlier draft) and Greg Price.</p>
+      </div>
+
+      <div class="decision" id="d3">
+        <h3>3. Authorship criteria</h3>
+        <span class="rec">Recommended: ICMJE criteria + CRediT roles</span>
+        <p>All four ICMJE criteria to be an author; contributions logged by CRediT role in the Decision Log; order confirmed on Dec 11 from the logged contributions; final approval Jan 12. Conference presenters can differ from the paper's author order. The proposed role split is in the <a href="jim-paper-clark-workpack.html">work pack</a>.</p>
+      </div>
+
+      <div class="decision" id="d4">
+        <h3>4. Reference tool and search criteria</h3>
+        <span class="rec">Recommended: Zotero group library</span>
+        <p>A free Zotero group gives shared PDFs, notes, and APA 7 citations in Word for both authors. A shared .bib file is simpler but has no Word plugin. Also agree, or assign by Nov 20, the four draft criteria on the Search Log's Criteria sheet (peer-reviewed or widely cited; on-topic; exclude K-12-only; exclude opinion pieces without a framework).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">💬</div><div><h2>Questions Jim may raise</h2><div class="section-sub">With answers ready</div></div></div>
+    <div class="section-body">
+      <dl class="qa">
+        <dt>"Can we still present in San Diego?"</dt>
+        <dd>No public call for presenters was found. We can attend ($600 if registered by Jan 31) and ask ACBSP whether the forum takes practitioner sessions. Attending could also surface more contrasting cases.</dd>
+        <dt>"Isn't a conference talk a step down from the forum paper?"</dt>
+        <dd>The journal is where the paper gets published and peer-reviewed. The talk adds visibility with the same audience. One manuscript feeds both.</dd>
+        <dt>"Where did New Orleans come from?"</dt>
+        <dd>Ask Jim. No 2027 ACBSP event in New Orleans was found. It may be a different organization or year.</dd>
+        <dt>"Should agentic AI be bigger?"</dt>
+        <dd>Jim's email to Joel framed the question around generative and agentic AI. Charter V2 keeps agentic AI to a boundary section, so the scope holds for Jan 31. A second paper can take it on.</dd>
+        <dt>"Can we use AI 410 student data?"</dt>
+        <dd>Not for this paper. AI 410 hasn't run, and Phase 2 needs a cohort and an ethics determination first. Joel's note says expedited student reviews take 1–2 weeks plus a fix round; ask Joel which route faculty research takes.</dd>
+        <dt>"Who goes first on the paper?"</dt>
+        <dd>Decided by the criteria on Dec 11, once contributions are logged. No need to settle it today.</dd>
+        <dt>"Can we get travel funding?"</dt>
+        <dd>The charter has Jim exploring support with Vernon Smith, Michael Fors, and the Research Institute, and leadership (Joel Domingo, Greg Price) was named on Nov 5. The route choice changes the ask: Baltimore in June, not San Diego in March.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-amber">📎</div><div><h2>Also worth raising</h2><div class="section-sub">Open since earlier meetings</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>EMBA 582 materials.</strong> Clark's Dec 11 EMBA transfer example needs them; they've been pending since Sep 28.</li>
+        <li><strong>Conflict check.</strong> If Jim grades Clark in any course, settle separation and disclosure before the paper goes further. Open since Sep 28.</li>
+        <li><strong>AI 410 detail in a public paper.</strong> Clark checks with the Dean before internal AI 410 material appears in a submission.</li>
+        <li><strong>Sharing.</strong> Confirm Jim can open the shared folder with edit access.</li>
+        <li><strong>Meeting time zone.</strong> The charter assumes 11 a.m. Pacific; confirm.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">✅</div><div><h2>Likely action items</h2><div class="section-sub">Anticipated; confirm in the meeting and log decisions the same day</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Owner</th><th>Item</th><th>Due</th></tr></thead>
+        <tbody>
+          <tr><td>Clark</td><td>Update Charter V2 (title, Section 5, milestones), move the approved copy to 00 Charter, and log today's decisions in the Decision Log.</td><td class="nowrap">Nov 16</td></tr>
+          <tr><td>Clark</td><td>Email conference@acbsp.org: deadline time zone, abstract fields and word limit, and whether the AI Forum takes presenters.</td><td class="nowrap">Nov 16</td></tr>
+          <tr><td>Clark</td><td>Set up the Zotero group (if chosen) and invite Jim.</td><td class="nowrap">Nov 16</td></tr>
+          <tr><td>Both</td><td>Send the approved charter to Joel Domingo and Greg Price.</td><td class="nowrap">Nov 18</td></tr>
+          <tr><td>Jim</td><td>Sociomaterial theory section; Bloom and Mollick connections; stance on agency. Search log entries and agreed criteria.</td><td class="nowrap">Nov 20</td></tr>
+          <tr><td>Jim</td><td>Send EMBA 582 materials; forward Joel's feedback when it arrives.</td><td class="nowrap">Nov 20</td></tr>
+          <tr><td>Jim</td><td>Raise travel support for the chosen venue with Vernon Smith, Michael Fors, or the Research Institute.</td><td class="nowrap">Dec 4</td></tr>
+          <tr><td>Clark</td><td>CEAU case section, contrasting case (AIAS), and the poor-fit criteria agreed with Jim. Revise Figure 1 after the theory section.</td><td class="nowrap">Dec 4</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">📝</div><div><h2>Decision record</h2><div class="section-sub">Fill in during the meeting, then copy to the Decision Log and the 07 Meetings folder</div></div></div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li><strong>Route:</strong> ______________________________</li>
+        <li><strong>Charter V2:</strong> approved / approved with edits / not yet</li>
+        <li><strong>Title:</strong> ______________________________</li>
+        <li><strong>Authorship criteria:</strong> agreed / revise</li>
+        <li><strong>Reference tool:</strong> Zotero group / shared .bib</li>
+        <li><strong>Search criteria:</strong> agreed / by Nov 20</li>
+        <li><strong>Next meeting:</strong> Fri Nov 20, 11 a.m.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</body>
+</html>

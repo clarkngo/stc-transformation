@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Meeting Notes, Jim O'Farrell, November 13 2026</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--teal); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--teal-dim); border: 1px solid rgba(13,148,136,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p { margin: 0 0 10px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { white-space: nowrap; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; }
+    ul.tight li { margin-bottom: 4px; }
+    h3 { font-size: 0.95rem; margin: 16px 0 6px; }
+    h3:first-child { margin-top: 0; }
+    .checklist { list-style: none; padding-left: 0; margin: 0; }
+    .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 4px; color: var(--slate); }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } td:first-child { white-space: normal; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="jim-ofarrell-collaboration.html">All Jim interactions</a><span>·</span><a href="jim-meeting-prep-2026-11-13.html">Nov 13 meeting prep</a><span>·</span><a href="meeting-notes-jim-2026-11-05.html">Nov 5 meeting notes</a><span>·</span><a href="jim-paper-clark-workpack.html">Clark's work pack</a><span>·</span><a href="corporate-partnerships-hub.html">Corporate Partnerships Hub</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Meeting Notes · Outside STC, adjacent to it</div>
+    <h1>Meeting Notes: Jim O'Farrell, November 13</h1>
+    <p class="subtitle">The paper widens to "effective AI": learning that fits the learner's device, language, and context. Charter V3 is next, on Monday. Recorded from Clark's notes and the session slides; to be checked against the transcript.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Nov 13, 2026</span>
+      <span class="meta-chip">👥 Jim O'Farrell · Clark Ngo</span>
+      <span class="meta-chip">📄 Charter V3 discussion Mon Nov 16</span>
+      <span class="meta-chip">🎯 Theory section due Nov 20</span>
+      <span class="meta-chip">📝 Draft: transcript pending</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 28px;"><strong>BSAI reminder:</strong> this page mentions AI 410 as a possible research testbed. The standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>. Nothing decided here conflicts with them.</div>
+
+  <div class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li><strong>Charter V3:</strong> Jim's Nov 13 two-paper draft gets discussed on Monday, Nov 16. After that, maybe send it to Joel Domingo.</li>
+      <li><strong>Effective AI:</strong> the working idea is a course that still works if the learner only has a basic phone, in the language they speak, fitted to their context and culture.</li>
+      <li><strong>Reading:</strong> Clark reads Jim's reference library (35 PDFs in seven clusters) and Mollick's <em>Co-Intelligence</em>.</li>
+      <li><strong>Bibliography:</strong> Claude manages it. Every entry is checked against its source and logged as AI assistance.</li>
+      <li><strong>AI 410:</strong> not counted on as a near-term testbed for Paper 2.</li>
+    </ul>
+  </div>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">🌍</div><div><h2>1. Effective AI: the working idea</h2><div class="section-sub">From an advisory discussion the paper builds on</div></div></div>
+    <div class="section-body">
+      <p>One advisory framing shaped the meeting. Effective AI is a course that works under the learner's real conditions:</p>
+      <ul class="tight">
+        <li><strong>Device:</strong> a learner may only have a flip phone. That's a delivery constraint (SMS, voice, a light web page), not a promise that a model runs on the phone.</li>
+        <li><strong>Language:</strong> the language the learner speaks, checked by people from that community, not just machine-translated.</li>
+        <li><strong>Context and culture:</strong> examples from the learner's own work and setting, the context where they learn best.</li>
+      </ul>
+      <p>Jim's draft turns this into a construct for the paper: AI-enabled teaching that improves <em>verified</em> learning and learner agency under the real conditions where learning happens. It's the authors' own proposed construct, not an established definition.</p>
+      <div class="callout amber"><strong>No seminal paper defines "effective AI."</strong> A search on Nov 13 found none, so the paper should define it as its own construct and anchor each dimension in existing evidence. Candidate anchors, not yet read in full:
+        <ul class="tight" style="margin:6px 0 0">
+          <li><strong>Basic phones:</strong> Angrist, Bergman &amp; Matsheng (2022), SMS and phone-call support for learning in Botswana, <em>Nature Human Behaviour</em> 6, 941–950.</li>
+          <li><strong>AI tutor on low-bandwidth devices:</strong> Henkel et al. (2024), a WhatsApp math tutor in Ghana, <a href="https://arxiv.org/abs/2402.09809">arXiv:2402.09809</a>.</li>
+          <li><strong>Generative AI tutoring with teacher support:</strong> De Simone et al. (2025), World Bank Policy Research Working Paper 11125 (Nigeria), <a href="https://openknowledge.worldbank.org/entities/publication/15e1ff08-15ae-4f7a-b2a8-d146e6c113ee">World Bank OKR</a>.</li>
+          <li><strong>Evidence review:</strong> Walker &amp; Vorvoreanu, <a href="https://www.microsoft.com/en-us/research/publication/learning-outcomes-with-genai-in-the-classroom-a-review-of-empirical-evidence/">Learning outcomes with GenAI in the classroom</a> (Microsoft Research).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">🧭</div><div><h2>2. Choosing a pilot: five tests</h2><div class="section-sub">From the session slides. Useful for Jim's decision on the first learner group.</div></div></div>
+    <div class="section-body">
+      <p>Before a community or cohort becomes a pilot, the idea should pass all five:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Test</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td>Real need</td><td>Does the community or learner group itself name the need?</td></tr>
+          <tr><td>Partner path</td><td>Is there a willing partner who can co-design and give consent?</td></tr>
+          <tr><td>Feasibility</td><td>Can it run on the devices, connectivity, and languages actually available?</td></tr>
+          <tr><td>Measurable value</td><td>Can learning be measured, not just uptake or satisfaction?</td></tr>
+          <tr><td>Next test</td><td>Is there a small next step that can run within 30–60 days?</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:12px">The slides also showed a three-phase concept roadmap (test, pathways, scale). It was labeled a concept only, not funded, agreed, or implemented, so the paper treats connectivity as a possible enabler, not a dependency.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">📋</div><div><h2>3. Decisions</h2><div class="section-sub">Scope, route, and authorship weren't settled; they carry to Monday</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Topic</th><th>Outcome</th></tr></thead>
+        <tbody>
+          <tr><td>Charter</td><td>Discuss V3 on Monday, Nov 16.</td></tr>
+          <tr><td>Joel Domingo</td><td>Maybe send V3 to Joel after Monday. Not decided.</td></tr>
+          <tr><td>Reading</td><td>Clark reads Jim's reference library.</td></tr>
+          <tr><td>Bibliography</td><td>Claude manages it. Each entry is checked against its PDF, and the help is logged as AI assistance.</td></tr>
+          <tr><td>AI 410</td><td>Clark told Jim AI 410 isn't a near-term testbed, so Paper 2 can't count on an AI 410 cohort.</td></tr>
+          <tr><td>Scope, route, authorship</td><td>Not recorded as settled. Open for Monday.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">✅</div><div><h2>4. Action items</h2></div></div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li><strong>Both:</strong> discuss Charter V3 on Monday, Nov 16, and settle scope, route, and authorship.</li>
+        <li><strong>Both:</strong> decide whether to send V3 to Joel Domingo.</li>
+        <li><strong>Jim:</strong> send the meeting transcript and video. Clark then checks these notes against them.</li>
+        <li><strong>Clark:</strong> read the reference library (35 PDFs, seven clusters).</li>
+        <li><strong>Clark:</strong> read Ethan Mollick, <em>Co-Intelligence</em> (2024), Ch. 7 "AI as a Tutor" and Ch. 8 "AI as a Coach."</li>
+        <li><strong>Clark:</strong> start the Claude-managed bibliography from the library.</li>
+        <li><strong>Jim:</strong> theory anchor, effective-AI definition, framework outline, and literature log. (Due Nov 20.)</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</body>
+</html>

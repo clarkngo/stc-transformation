@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Sociomateriality Reading Guide, Cluster 5</title>
+  <meta name="description" content="Cluster 5, Agentic AI Boundary Conditions: papers explained three ways, for software engineers, teachers, and business readers.">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --teal: #0f766e; --teal-dim: #f0fdfa;
+      --red: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    a { color: var(--blue); }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet); margin-bottom: 24px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .panel { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 20px 24px; margin-bottom: 22px; }
+    .panel h2 { margin: 0 0 10px; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .panel p { margin: 0 0 10px; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; } ul.tight li { margin-bottom: 4px; }
+    ol.tight { margin: 0 0 10px; padding-left: 22px; } ol.tight li { margin-bottom: 4px; }
+
+    /* lens switcher */
+    .lens-bar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 10px 0 12px; margin-bottom: 14px; }
+    .lens-inner { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 10px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+    .lens-label { font-size: 0.78rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
+    .lens-btn { font: inherit; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--border); background: var(--bg); color: var(--ink);
+      border-radius: 20px; padding: 6px 14px; cursor: pointer; }
+    .lens-btn[aria-pressed="true"] { background: var(--violet); color: #fff; border-color: var(--violet); }
+    .lens-btn:focus-visible, .check-btn:focus-visible, summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .score { margin-left: auto; font-size: 0.82rem; color: var(--slate); font-weight: 600; }
+
+    /* papers */
+    .paper { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 26px; overflow: hidden; }
+    .paper-head { padding: 20px 24px 14px; border-bottom: 1px solid var(--border); }
+    .paper-num { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--violet); }
+    .paper-head h2 { margin: 4px 0 6px; font-size: 1.22rem; font-weight: 850; letter-spacing: -0.02em; line-height: 1.3; }
+    .cite { font-size: 0.86rem; color: var(--slate); margin: 0 0 8px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 0.74rem; font-weight: 700; border-radius: 12px; padding: 2px 10px; background: var(--bg); color: var(--slate); }
+    .tag.core { background: var(--green-dim); color: var(--green); }
+    .tag.support { background: var(--blue-dim); color: var(--blue); }
+    .dupcard { background: var(--card); border: 1px dashed var(--slate-light); border-radius: var(--radius); padding: 14px 20px; margin-bottom: 26px; font-size: 0.92rem; }
+    .series { display:flex; flex-wrap:wrap; gap:8px; margin: 0 0 22px; }
+    .series a { font-size:0.82rem; font-weight:600; text-decoration:none; border:1px solid var(--border); background:var(--card); border-radius:16px; padding:4px 12px; }
+    .series a[aria-current="page"] { background: var(--violet); color:#fff; border-color: var(--violet); }
+    .paper-body { padding: 16px 24px 20px; }
+    .paper-body h3 { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin: 18px 0 6px; }
+    .paper-body h3:first-child { margin-top: 0; }
+    .paper-body p { margin: 0 0 10px; }
+    .oneliner { font-size: 1.02rem; font-weight: 600; }
+    dl.terms { margin: 0; } dl.terms dt { font-weight: 700; } dl.terms dd { margin: 0 0 8px 0; color: var(--ink); }
+    .lens { border-radius: var(--radius-sm); padding: 14px 16px; background: var(--violet-dim); border-left: 4px solid var(--violet); }
+    .lens[hidden] { display: none; }
+    .lens h4 { margin: 0 0 6px; font-size: 0.95rem; }
+    .lens p:last-child, .lens ul:last-child { margin-bottom: 0; }
+    .ourpaper { border-radius: var(--radius-sm); padding: 12px 16px; background: var(--teal-dim); border-left: 4px solid var(--teal); }
+    .ourpaper p:last-child { margin-bottom: 0; }
+    .q { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    .q p { margin: 0 0 6px; font-weight: 600; }
+    details summary { cursor: pointer; color: var(--blue); font-size: 0.88rem; font-weight: 600; }
+    details .ans { margin: 6px 0 4px; font-size: 0.92rem; }
+    .check-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .check-btn { font: inherit; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--border); background: #fff; border-radius: 16px; padding: 3px 12px; cursor: pointer; color: var(--ink); }
+    .check-btn.got[aria-pressed="true"] { background: var(--green); color: #fff; border-color: var(--green); }
+    .check-btn.notyet[aria-pressed="true"] { background: var(--amber); color: #fff; border-color: var(--amber); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 12px 0 0; }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    @media (max-width: 600px) { .doc-header, .paper-head, .paper-body, .panel { padding-left: 16px; padding-right: 16px; } .score { margin-left: 0; width: 100%; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="sociomateriality-reading-guide.html">Reading guide: all clusters</a><span>·</span><a href="meeting-notes-jim-2026-11-13.html">Nov 13 meeting notes</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Reading Guide · Cluster 5 of 7 · Effective AI prototype</div>
+    <h1>Agentic AI Boundary Conditions</h1>
+    <p class="subtitle">Where AI in teaching works and where it doesn't: teacher agency, structured vs. spontaneous use, orchestration, and digital competence.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📚 4 papers</span>
+      <span class="meta-chip">🔁 2 shared with another cluster</span>
+      <span class="meta-chip">🔀 3 lenses</span>
+      <span class="meta-chip">✅ 8 check questions</span>
+      <span class="meta-chip">📅 Nov 13, 2026</span>
+    </div>
+  </header>
+
+  <nav class="series" aria-label="Reading guide clusters"><a href="sociomateriality-reading-guide.html">All clusters</a><a href="sociomateriality-reading-guide-cluster-1.html">1. Constitutive Sociomateriality</a><a href="sociomateriality-reading-guide-cluster-2.html">2. AI and Agency</a><a href="sociomateriality-reading-guide-cluster-3.html">3. Judgment and Competence</a><a href="sociomateriality-reading-guide-cluster-4.html">4. Education and Assessment</a><a href="sociomateriality-reading-guide-cluster-5.html" aria-current="page">5. Boundary Conditions</a><a href="sociomateriality-reading-guide-cluster-6.html">6. Frames and Sensemaking</a><a href="sociomateriality-reading-guide-cluster-7.html">7. Temporality</a></nav>
+
+  <section class="panel">
+    <h2>How to use this page</h2>
+    <p>Same format as <a href="sociomateriality-reading-guide-cluster-1.html">Cluster 1</a>: the one-liner, argument, and key terms are the same for everyone; pick a lens below to change the "from your field" boxes; then check yourself. Your lens choice carries across all cluster pages, and your check marks stay in this browser only.</p>
+    <div class="callout amber"><strong>How this was made:</strong> Claude drafted these explanations from the PDFs in the paper's reference library, in our own words. Most of these papers are from 2026 and some are preprints or conference papers; check anything you plan to cite against the original. Tags mark each paper as core, supporting, or peripheral for our paper.</div>
+  </section>
+
+  <div class="lens-bar">
+    <div class="lens-inner" role="group" aria-label="Choose a lens">
+      <span class="lens-label">Your lens</span>
+      <button type="button" class="lens-btn" data-lens="swe" aria-pressed="true">💻 Software engineer</button>
+      <button type="button" class="lens-btn" data-lens="teach" aria-pressed="false">🍎 Teacher</button>
+      <button type="button" class="lens-btn" data-lens="biz" aria-pressed="false">📈 Business</button>
+      <span class="score" id="score" aria-live="polite">0 of 8 checks marked "got it"</span>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2>The cluster in 60 seconds</h2>
+    <p>Despite the cluster's name, most of these papers are about classrooms. Together they mark the edges of when AI and other technology help learning: when teachers keep judgment and control, when use is structured rather than spontaneous, and when we're honest about what self-reports can and can't show.</p>
+    <div class="lens" data-lens="swe">
+      <h4>💻 From your field</h4>
+      <p>Boundary conditions are the preconditions in a function's contract: the inputs under which it behaves as promised. These papers try to write the contract for AI in classrooms, including where it breaks.</p>
+    </div>
+<div class="lens" data-lens="teach" hidden>
+      <h4>🍎 From your field</h4>
+      <p>These are the “it depends” papers. AI helps critical reading when the task structures how it's used. Teachers stay effective when they keep judgment. And some costs, like AI's environmental footprint, stay invisible unless someone makes them visible.</p>
+    </div>
+<div class="lens" data-lens="biz" hidden>
+      <h4>📈 From your field</h4>
+      <p>Every AI rollout has operating conditions. These papers find them for education: structure beats free use, people in the loop matter, and some costs never show up on the dashboard.</p>
+    </div>
+  </section>
+
+  <article class="paper" id="p1" data-paper="p1">
+    <div class="paper-head">
+      <div class="paper-num">Paper 1 of 4</div>
+      <h2>Ecological Invisibility in Classroom AI Use: Rethinking Pedagogical Efficiency, Sustainability and Teacher Agency</h2>
+      <p class="cite">Uğraş, H., &amp; Uğraş, M. (2026). <em>Systems</em>, 14(10), 1268. <a href="https://doi.org/10.3390/systems14101268">doi:10.3390/systems14101268</a> (open access)</p>
+      <div class="tags"><span class="tag support">Supporting: teacher agency</span><span class="tag ">Interviews, 22 teachers</span><span class="tag ">Türkiye</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Teachers who use AI know about its environmental cost, but their professional attention, focused on teaching well, keeps that cost out of everyday decisions.</p>
+      <h3>The argument</h3>
+      <p>Interviews with 22 public-school teachers in Türkiye who had at least a year of classroom AI use, analyzed with reflexive thematic analysis. Five themes: teachers actively mediate AI through pedagogical judgment, a restructured professional agency, and a renewed relational and epistemic role. The central contribution is the last two themes: AI's ecological cost is <strong>not unknown but invisible</strong> in practice, and when it surfaces, teachers <strong>manage rather than resolve</strong> it through pedagogical rationalization and stated intentions of restraint.</p><p>The authors frame ecological invisibility as a by-product of professional attention, not a knowledge gap. They're careful that “restraint” was a reported intention, not verified behavior change.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Ecological invisibility</dt><dd>A known cost that doesn't register in everyday decisions because attention is organized elsewhere.</dd><dt>Pedagogical rationalization</dt><dd>Justifying AI use by its teaching benefits when its other costs come up.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>It's like cloud cost: everyone knows GPUs aren't free, but nobody sees the bill when they hit “regenerate.” Costs that aren't surfaced in the tool you use don't enter decisions. The fix is infrastructural visibility, like cost dashboards, not lectures.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>You probably know AI uses a lot of energy, but it never comes up when you're deciding whether to use it for a worksheet. That's the finding. The paper's suggestion is critical AI literacy that brings ethical, ecological, and teaching concerns into the same decision.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Sustainability targets and AI adoption targets live in different dashboards. Unless the environmental cost of AI use is visible where decisions are made, staff will keep rationalizing it away.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Supporting. Shows teacher agency as both the mechanism and the fix, a sociomaterial point. Relevant if our effective-AI construct includes resource costs (Jim's draft mentions "resource demands").</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p1q1"><p>1. Is ecological invisibility a knowledge gap?</p>
+        <details><summary>Show answer</summary><p class="ans">No. Teachers knew about the cost; it's produced by how their professional attention is organized.</p></details></div>
+      <div class="q" data-q="p1q2"><p>2. How did teachers handle the tension when it surfaced?</p>
+        <details><summary>Show answer</summary><p class="ans">They managed rather than resolved it, through pedagogical rationalization and stated intentions toward restraint.</p></details></div>
+      
+    </div>
+  </article>
+<div class="dupcard" id="dup1"><strong>Foregrounded by AI: What a Sociomaterial Account of Literacy Implies for Postdigital Design Orientations</strong><br>Schlauch (2026). Explained in full in <a href="sociomateriality-reading-guide-cluster-4.html#p1">Cluster 4</a>.</div>
+<div class="dupcard" id="dup2"><strong>Generative AI and Moral Deskilling in Vocational Education: A Dialectical Agency Perspective</strong><br>Mai, Syamsuddin &amp; Sairah Z (2026). Explained in full in <a href="sociomateriality-reading-guide-cluster-3.html#p1">Cluster 3</a>.</div>
+<article class="paper" id="p2" data-paper="p2">
+    <div class="paper-head">
+      <div class="paper-num">Paper 2 of 4</div>
+      <h2>How Does Generative AI Shape Doctoral Students' Critical Reading in Academic Contexts? A Mixed-Methods Investigation</h2>
+      <p class="cite">Ma, L., Cao, M., &amp; Sun, G. (2026). <em>Journal of English for Academic Purposes</em>, 84, 101792. <a href="https://doi.org/10.1016/j.jeap.2026.101792">doi:10.1016/j.jeap.2026.101792</a></p>
+      <div class="tags"><span class="tag core">Core: structured vs. spontaneous use</span><span class="tag ">Mixed methods, 38 PhD students</span><span class="tag ">Sociomateriality + activity theory</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">PhD students read more critically when their AI use was structured than when it was spontaneous, and the strong readers checked AI against the source and kept the final judgment for themselves.</p>
+      <h3>The argument</h3>
+      <p>38 STEM doctoral students in China completed three critical-reading tasks: two with spontaneous AI use, one with structured use. Cluster analysis found three usage profiles (high, selective, and low engagement). Structured use scored much higher (about 13.2 vs. 8.6 on the rubric).</p><p>Focus groups surfaced five interactional processes: <strong>pre-AI independent reading</strong>, <strong>AI output verification</strong>, <strong>iterative prompting</strong>, <strong>AI-assisted deep reading</strong>, and <strong>independent judgment</strong>.</p><p><strong>Important caveat the authors state:</strong> the tasks ran in a fixed order and differed in text type and timing, so the structured task's advantage is confounded with practice. They call it exploratory, not causal.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Structured AI use</dt><dd>AI use guided by set prompts and steps, versus whatever the student does on their own.</dd><dt>Independent judgment</dt><dd>The final step where the reader decides, rather than adopting the AI's view.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>The five processes are a code-review workflow for reading: read the diff yourself first, then run the AI reviewer, verify its claims against the code, iterate on prompts, and make the merge decision yourself. Spontaneous use skips the first and last steps.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>This is the strongest classroom evidence in the library for structuring AI use. The five processes are practically a lesson plan: read first, verify AI against the text, re-prompt, go deeper, decide yourself. Just remember the confound: the structured task came last.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>For professional training: give staff a structured protocol for AI-assisted analysis (read first, verify, decide) rather than open access. But measure carefully: this study's design can't fully separate the protocol's effect from practice.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Very close to CEAU: pre-AI reading and independent judgment bracket AI use, which mirrors Create/Scaffold followed by Evaluate–Analyze–Understand &amp; Refine. Also a cautionary model for Paper 2: counterbalance task order, or the effect is confounded.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p2q1"><p>1. Name the five interactional processes.</p>
+        <details><summary>Show answer</summary><p class="ans">Pre-AI independent reading, AI output verification, iterative prompting, AI-assisted deep reading, independent judgment.</p></details></div>
+      <div class="q" data-q="p2q2"><p>2. Why can't the structured-use advantage be read as causal?</p>
+        <details><summary>Show answer</summary><p class="ans">The tasks were in a fixed order and differed in text type and timing, so the effect is confounded with practice and order.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p3" data-paper="p3">
+    <div class="paper-head">
+      <div class="paper-num">Paper 3 of 4</div>
+      <h2>Supporting Teacher Orchestration in Ubiquitous Learning Environments: A Study in Primary Education</h2>
+      <p class="cite">Muñoz-Cristóbal, J. A., Jorrín-Abellán, I. M., Asensio-Pérez, J. I., Martínez-Monés, A., Prieto, L. P., &amp; Dimitriadis, Y. (2015). <em>IEEE Transactions on Learning Technologies</em>, 8(1), 83–97. <a href="https://doi.org/10.1109/TLT.2014.2370634">doi:10.1109/TLT.2014.2370634</a></p>
+      <div class="tags"><span class="tag support">Peripheral: pre-AI orchestration</span><span class="tag ">Interpretive case study</span><span class="tag ">Primary school, 2015</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">A system called GLUEPS-AR helped a pre-service teacher coordinate a lesson spread across the classroom, the playground, and a park, with multiple devices, though keeping track of students outdoors stayed hard.</p>
+      <h3>The argument</h3>
+      <p>Before generative AI, this paper tackled <strong>orchestration</strong>: the teacher's work of coordinating activities, tools, and people across spaces. A pre-service teacher designed a five-session orienteering unit across classroom, playground, and park, using wikis, Web 2.0 tools, and augmented reality, all coordinated by GLUEPS-AR.</p><p>The system helped with design, runtime adaptation, and sharing orchestration work with students. Main weakness: teacher awareness during outdoor activities. Lessons: technology fails unpredictably across spaces, so changing the design on the fly, from wherever the teacher is, was critical.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Orchestration</dt><dd>The teacher's real-time coordination of activities, tools, groups, and spaces.</dd><dt>Ubiquitous learning environment</dt><dd>Learning spread across physical and digital spaces with mobile devices.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>Orchestration is the teacher's version of deployment and ops across environments. GLUEPS-AR is like an orchestration layer that deploys one design across several platforms, with live config changes when something breaks in production (the park).</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Any multi-tool lesson needs orchestration. The useful lessons still hold with AI: expect tools to fail, be able to change the plan from your phone mid-activity, and share some orchestration with students. The weak spot, knowing what's happening where you can't see, is still unsolved.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Field training across sites faces the same issue: coordination load lands on the facilitator. Tools that let them adapt on the fly and delegate to participants matter more than features.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Peripheral. It predates generative AI and isn't sociomaterial in framing. Possibly relevant to Paper 2 if the low-resource delivery involves teachers coordinating across devices and places.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p3q1"><p>1. What is “orchestration” in this paper?</p>
+        <details><summary>Show answer</summary><p class="ans">The teacher's coordination of activities, resources, groups, and spaces during learning.</p></details></div>
+      <div class="q" data-q="p3q2"><p>2. What did the system struggle to support?</p>
+        <details><summary>Show answer</summary><p class="ans">Teacher awareness of what students were doing during outdoor activities.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p4" data-paper="p4">
+    <div class="paper-head">
+      <div class="paper-num">Paper 4 of 4</div>
+      <h2>Understanding the Relationship Between Digital Competence and Computational Thinking in Secondary Education</h2>
+      <p class="cite">Fadillah, M. A., Husin, M., Akbar, M. F., Amini, R., Tanjung, S., &amp; Usmeldi, U. (2027). <em>Thinking Skills and Creativity</em>, 63, 102420. <a href="https://doi.org/10.1016/j.tsc.2026.102420">doi:10.1016/j.tsc.2026.102420</a></p>
+      <div class="tags"><span class="tag support">Peripheral: self-report correlations</span><span class="tag ">Survey, 316 students</span><span class="tag ">Indonesia</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Among 316 Indonesian high-school students, finding information, creating and adapting digital resources, and evaluating them were the digital skills most associated with computational thinking.</p>
+      <h3>The argument</h3>
+      <p>Using correlation analysis and machine-learning learning analytics on survey data, the study found three digital-competence dimensions most often top-ranked in association with computational thinking: <strong>Search, Find, Access</strong>; <strong>Develop, Apply, Modify</strong>; and <strong>Evaluate</strong>. Results varied for some sub-dimensions such as generalization.</p><p>The authors are explicit: both measures were self-reported and the analysis didn't control for covariates, so the findings reflect <em>perceived</em> competence and associations, not demonstrated skill or causation.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Digital competence</dt><dd>Technical, critical, ethical, and social abilities for using digital technology.</dd><dt>Computational thinking</dt><dd>Problem-solving skills like decomposition, abstraction, and generalization.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>The three skills linked to computational thinking (find it, build or modify it, evaluate it) are the core developer loop: search docs, adapt code, test it. But this is self-reported survey data, so treat it as a hint, not a benchmark.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>A reasonable direction for curriculum (teach searching, making, and evaluating together) but weak evidence: students rated themselves. Use it to motivate, not to prove.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>For digital-skills programs: the skills cluster together, so train them as a set. But self-assessed skill surveys don't tell you what people can actually do.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Peripheral. Mainly useful as a cautionary example for Paper 2: self-report measures can't stand in for demonstrated performance, which is why we plan blind-scored authentic tasks.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p4q1"><p>1. Which three digital-competence dimensions stood out?</p>
+        <details><summary>Show answer</summary><p class="ans">Search, Find, Access; Develop, Apply, Modify; and Evaluate.</p></details></div>
+      <div class="q" data-q="p4q2"><p>2. What's the main limitation the authors stress?</p>
+        <details><summary>Show answer</summary><p class="ans">Both constructs were self-reported, so results reflect perceived rather than demonstrated competence, and they're associations, not causes.</p></details></div>
+      
+    </div>
+  </article>
+
+  <section class="panel">
+    <h2>How these fit together</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Paper</th><th>Contribution</th><th>Use it in our paper for</th></tr></thead>
+      <tbody><tr><td>Uğraş &amp; Uğraş 2026</td><td>Ecological invisibility; teacher agency</td><td>Resource demands in effective AI</td></tr><tr><td>Ma et al. 2026</td><td>Structured beats spontaneous AI use (with caveats)</td><td>Mirrors CEAU; a design lesson for Paper 2</td></tr><tr><td>Muñoz-Cristóbal et al. 2015</td><td>Teacher orchestration across spaces</td><td>Peripheral; low-resource delivery</td></tr><tr><td>Fadillah et al. 2027</td><td>Digital competence and computational thinking</td><td>Peripheral; caution on self-report</td></tr><tr><td>Schlauch 2026, Mai et al. 2026</td><td>See Clusters 4 and 3</td><td></td></tr></tbody>
+    </table></div>
+  </section>
+
+  <nav class="series" aria-label="Previous and next cluster"><a href="sociomateriality-reading-guide-cluster-4.html">← Cluster 4: Education and Assessment</a><a href="sociomateriality-reading-guide-cluster-6.html">Cluster 6: Frames and Sensemaking →</a></nav>
+</div>
+
+<script>
+(function () {
+  var KEY_LENS = 'socio-lens', KEY_MARKS = 'socio-c5-marks';
+  function load(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  var btns = document.querySelectorAll('.lens-btn');
+  function setLens(l) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lens === l ? 'true' : 'false'); });
+    document.querySelectorAll('.lens[data-lens]').forEach(function (el) { el.hidden = el.dataset.lens !== l; });
+    save(KEY_LENS, l);
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { setLens(b.dataset.lens); }); });
+  setLens(load(KEY_LENS, 'swe'));
+
+  var marks = load(KEY_MARKS, {});
+  var qs = document.querySelectorAll('.q[data-q]');
+  var score = document.getElementById('score');
+  function render() {
+    var got = 0;
+    qs.forEach(function (q) {
+      var id = q.dataset.q, m = marks[id];
+      q.querySelectorAll('.check-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === m ? 'true' : 'false'); });
+      if (m === 'got') got++;
+    });
+    score.textContent = got + ' of ' + qs.length + ' checks marked "got it"';
+  }
+  qs.forEach(function (q) {
+    var row = document.createElement('div'); row.className = 'check-row';
+    [['got', 'Got it', 'got'], ['notyet', 'Not yet', 'notyet']].forEach(function (o) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'check-btn ' + o[2];
+      b.dataset.v = o[0]; b.textContent = o[1]; b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-label', o[1] + ': ' + q.querySelector('p').textContent);
+      b.addEventListener('click', function () {
+        marks[q.dataset.q] = marks[q.dataset.q] === o[0] ? undefined : o[0];
+        save(KEY_MARKS, marks); render();
+      });
+      row.appendChild(b);
+    });
+    q.appendChild(row);
+  });
+  render();
+})();
+</script>
+</body>
+</html>

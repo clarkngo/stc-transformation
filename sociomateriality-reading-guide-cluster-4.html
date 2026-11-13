@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Sociomateriality Reading Guide, Cluster 4</title>
+  <meta name="description" content="Cluster 4, AI, Education, and Assessment: papers explained three ways, for software engineers, teachers, and business readers.">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --teal: #0f766e; --teal-dim: #f0fdfa;
+      --red: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    a { color: var(--blue); }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet); margin-bottom: 24px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .panel { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 20px 24px; margin-bottom: 22px; }
+    .panel h2 { margin: 0 0 10px; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .panel p { margin: 0 0 10px; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; } ul.tight li { margin-bottom: 4px; }
+    ol.tight { margin: 0 0 10px; padding-left: 22px; } ol.tight li { margin-bottom: 4px; }
+
+    /* lens switcher */
+    .lens-bar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 10px 0 12px; margin-bottom: 14px; }
+    .lens-inner { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 10px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+    .lens-label { font-size: 0.78rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
+    .lens-btn { font: inherit; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--border); background: var(--bg); color: var(--ink);
+      border-radius: 20px; padding: 6px 14px; cursor: pointer; }
+    .lens-btn[aria-pressed="true"] { background: var(--violet); color: #fff; border-color: var(--violet); }
+    .lens-btn:focus-visible, .check-btn:focus-visible, summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .score { margin-left: auto; font-size: 0.82rem; color: var(--slate); font-weight: 600; }
+
+    /* papers */
+    .paper { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 26px; overflow: hidden; }
+    .paper-head { padding: 20px 24px 14px; border-bottom: 1px solid var(--border); }
+    .paper-num { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--violet); }
+    .paper-head h2 { margin: 4px 0 6px; font-size: 1.22rem; font-weight: 850; letter-spacing: -0.02em; line-height: 1.3; }
+    .cite { font-size: 0.86rem; color: var(--slate); margin: 0 0 8px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 0.74rem; font-weight: 700; border-radius: 12px; padding: 2px 10px; background: var(--bg); color: var(--slate); }
+    .tag.core { background: var(--green-dim); color: var(--green); }
+    .tag.support { background: var(--blue-dim); color: var(--blue); }
+    .dupcard { background: var(--card); border: 1px dashed var(--slate-light); border-radius: var(--radius); padding: 14px 20px; margin-bottom: 26px; font-size: 0.92rem; }
+    .series { display:flex; flex-wrap:wrap; gap:8px; margin: 0 0 22px; }
+    .series a { font-size:0.82rem; font-weight:600; text-decoration:none; border:1px solid var(--border); background:var(--card); border-radius:16px; padding:4px 12px; }
+    .series a[aria-current="page"] { background: var(--violet); color:#fff; border-color: var(--violet); }
+    .paper-body { padding: 16px 24px 20px; }
+    .paper-body h3 { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin: 18px 0 6px; }
+    .paper-body h3:first-child { margin-top: 0; }
+    .paper-body p { margin: 0 0 10px; }
+    .oneliner { font-size: 1.02rem; font-weight: 600; }
+    dl.terms { margin: 0; } dl.terms dt { font-weight: 700; } dl.terms dd { margin: 0 0 8px 0; color: var(--ink); }
+    .lens { border-radius: var(--radius-sm); padding: 14px 16px; background: var(--violet-dim); border-left: 4px solid var(--violet); }
+    .lens[hidden] { display: none; }
+    .lens h4 { margin: 0 0 6px; font-size: 0.95rem; }
+    .lens p:last-child, .lens ul:last-child { margin-bottom: 0; }
+    .ourpaper { border-radius: var(--radius-sm); padding: 12px 16px; background: var(--teal-dim); border-left: 4px solid var(--teal); }
+    .ourpaper p:last-child { margin-bottom: 0; }
+    .q { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    .q p { margin: 0 0 6px; font-weight: 600; }
+    details summary { cursor: pointer; color: var(--blue); font-size: 0.88rem; font-weight: 600; }
+    details .ans { margin: 6px 0 4px; font-size: 0.92rem; }
+    .check-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .check-btn { font: inherit; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--border); background: #fff; border-radius: 16px; padding: 3px 12px; cursor: pointer; color: var(--ink); }
+    .check-btn.got[aria-pressed="true"] { background: var(--green); color: #fff; border-color: var(--green); }
+    .check-btn.notyet[aria-pressed="true"] { background: var(--amber); color: #fff; border-color: var(--amber); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 12px 0 0; }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    @media (max-width: 600px) { .doc-header, .paper-head, .paper-body, .panel { padding-left: 16px; padding-right: 16px; } .score { margin-left: 0; width: 100%; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="sociomateriality-reading-guide.html">Reading guide: all clusters</a><span>·</span><a href="meeting-notes-jim-2026-11-13.html">Nov 13 meeting notes</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Reading Guide · Cluster 4 of 7 · Effective AI prototype</div>
+    <h1>AI, Education, and Assessment</h1>
+    <p class="subtitle">Literacy, competence, and what counts as learning when AI takes part, plus three papers on how AI and platforms reshape workplaces.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📚 5 papers</span>
+      
+      <span class="meta-chip">🔀 3 lenses</span>
+      <span class="meta-chip">✅ 10 check questions</span>
+      <span class="meta-chip">📅 Nov 13, 2026</span>
+    </div>
+  </header>
+
+  <nav class="series" aria-label="Reading guide clusters"><a href="sociomateriality-reading-guide.html">All clusters</a><a href="sociomateriality-reading-guide-cluster-1.html">1. Constitutive Sociomateriality</a><a href="sociomateriality-reading-guide-cluster-2.html">2. AI and Agency</a><a href="sociomateriality-reading-guide-cluster-3.html">3. Judgment and Competence</a><a href="sociomateriality-reading-guide-cluster-4.html" aria-current="page">4. Education and Assessment</a><a href="sociomateriality-reading-guide-cluster-5.html">5. Boundary Conditions</a><a href="sociomateriality-reading-guide-cluster-6.html">6. Frames and Sensemaking</a><a href="sociomateriality-reading-guide-cluster-7.html">7. Temporality</a></nav>
+
+  <section class="panel">
+    <h2>How to use this page</h2>
+    <p>Same format as <a href="sociomateriality-reading-guide-cluster-1.html">Cluster 1</a>: the one-liner, argument, and key terms are the same for everyone; pick a lens below to change the "from your field" boxes; then check yourself. Your lens choice carries across all cluster pages, and your check marks stay in this browser only.</p>
+    <div class="callout amber"><strong>How this was made:</strong> Claude drafted these explanations from the PDFs in the paper's reference library, in our own words. Most of these papers are from 2026 and some are preprints or conference papers; check anything you plan to cite against the original. Tags mark each paper as core, supporting, or peripheral for our paper.</div>
+  </section>
+
+  <div class="lens-bar">
+    <div class="lens-inner" role="group" aria-label="Choose a lens">
+      <span class="lens-label">Your lens</span>
+      <button type="button" class="lens-btn" data-lens="swe" aria-pressed="true">💻 Software engineer</button>
+      <button type="button" class="lens-btn" data-lens="teach" aria-pressed="false">🍎 Teacher</button>
+      <button type="button" class="lens-btn" data-lens="biz" aria-pressed="false">📈 Business</button>
+      <span class="score" id="score" aria-live="polite">0 of 10 checks marked "got it"</span>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2>The cluster in 60 seconds</h2>
+    <p>Two of these papers are squarely about learning: one says literacy was always produced by people plus texts plus tools, and AI just makes that obvious; the other asks which AI skills count as a real competence. The other three look at workplaces (hybrid offices, platform rules, human–machine work environments). They're here because the same question applies to classrooms: who or what really controls the work, and how should the environment be designed?</p>
+    <div class="lens" data-lens="swe">
+      <h4>💻 From your field</h4>
+      <p>The classroom is a system with a configuration: the platform, the rules, the tools, the room. These papers ask which parts of that configuration you can design, and which ones quietly decide outcomes no matter what the syllabus says.</p>
+    </div>
+<div class="lens" data-lens="teach" hidden>
+      <h4>🍎 From your field</h4>
+      <p>Your course is an environment, not just content. The LMS rules, the AI tools allowed, the room or the home desk all shape what students can do. These papers give you vocabulary for designing that environment on purpose.</p>
+    </div>
+<div class="lens" data-lens="biz" hidden>
+      <h4>📈 From your field</h4>
+      <p>Training programs, hybrid offices, and digital platforms all decide more than managers think. These papers show where control really sits once systems and AI are involved, and how to design environments where people and machines work well together.</p>
+    </div>
+  </section>
+
+  <article class="paper" id="p1" data-paper="p1">
+    <div class="paper-head">
+      <div class="paper-num">Paper 1 of 5</div>
+      <h2>Foregrounded by AI: What a Sociomaterial Account of Literacy Implies for Postdigital Design Orientations</h2>
+      <p class="cite">Schlauch, M. (2026). <em>Postdigital Science and Education</em>. <a href="https://doi.org/10.1007/s42438-026-00716-7">doi:10.1007/s42438-026-00716-7</a> (open access)</p>
+      <div class="tags"><span class="tag core">Core: the education anchor</span><span class="tag ">Conceptual</span><span class="tag ">Also in Cluster 5</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">LLMs don't create a new literacy problem; they reveal that literacy was always produced by people, texts, technologies, and infrastructures together, not inside individual heads.</p>
+      <h3>The argument</h3>
+      <p>Instead of asking what new “AI literacy” students need, the paper asks what LLMs reveal about literacy itself. Drawing on Actor-Network Theory and sociomaterial education research, it argues literacy has always been <strong>emergent practice within assemblages</strong>. Competence frameworks that center the individual can't see the distributed, infrastructural, and non-human parts that AI now makes visible.</p><p>It derives three <strong>design orientations</strong>: make assemblages visible; sustain fluid literacy spaces; and preserve conditions for critical reflexivity. It also warns that current AI assemblages may widen educational inequality rather than benefit all learners equally.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Assemblage</dt><dd>The network of people, texts, tools, and infrastructure through which literacy happens.</dd><dt>Design orientation</dt><dd>A guiding principle for designing learning environments, not a fixed rule.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>"Can this developer code?" was always partly "can this developer code with their IDE, docs, Stack Overflow, and teammates?" AI just makes the dependency impossible to ignore. Making the assemblage visible is like documenting your toolchain instead of pretending skill lives only in the person.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Stop asking only “what AI skills should students have?” Start asking “what conditions should my course create?” The three orientations translate into practice: have students show which tools contributed what; leave room to work in different ways; build in moments to step back and critique the AI's role.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Corporate “AI upskilling” that only trains individuals misses the point. Performance comes from the whole setup: tools, data access, templates, and norms. Design the environment, and watch for who gets left behind by it.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Probably the single best education-side citation for Paper 1. It moves the unit of analysis from the individual learner to the assemblage, exactly our argument, and its “make assemblages visible” orientation supports CEAU's disclosure and reflection steps.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p1q1"><p>1. What does the paper say LLMs reveal about literacy?</p>
+        <details><summary>Show answer</summary><p class="ans">That it was always sociomaterial, constituted in more-than-human assemblages, not in individual cognition.</p></details></div>
+      <div class="q" data-q="p1q2"><p>2. Name the three design orientations.</p>
+        <details><summary>Show answer</summary><p class="ans">Make assemblages visible; sustain fluid literacy spaces; preserve conditions for critical reflexivity.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p2" data-paper="p2">
+    <div class="paper-head">
+      <div class="paper-num">Paper 2 of 5</div>
+      <h2>AI Agent Reliance and Creator-Perceived Content Innovation in Digital Entrepreneurship</h2>
+      <p class="cite">Wang, S., &amp; Lu, M. (2027). <em>The International Journal of Management Education</em>, 25, 101576. <a href="https://doi.org/10.1016/j.ijme.2026.101576">doi:10.1016/j.ijme.2026.101576</a></p>
+      <div class="tags"><span class="tag support">Supporting: what counts as a competence</span><span class="tag ">Survey (415) + 35 interviews</span><span class="tag ">Management education</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Among student entrepreneurs, relying on AI agents went with more (self-reported) content innovation, and only one skill, knowing how to steer AI's persuasive output, qualified as a candidate competence.</p>
+      <h3>The argument</h3>
+      <p>A three-wave survey of 415 Chinese university student entrepreneurs who make short-video content, plus 35 interviews. Reliance on AI agents was associated with creator-perceived innovation through two paths: <strong>cognitive offloading</strong> (freeing mental capacity) and <strong>producer-activated persuasion knowledge</strong> (knowing how to steer AI output toward novel, on-brand directions). Seeing the AI as human-like weakened both links.</p><p>The paper is careful: everything is self-reported and no teaching intervention was tested. Using five explicit criteria, only persuasion knowledge qualifies as a <em>candidate</em> competence, and the curriculum ideas are hypotheses.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Cognitive offloading</dt><dd>Handing mental work to a tool to free attention for other things.</dd><dt>Candidate competence</dt><dd>A skill that meets stated criteria for being taught and assessed, but hasn't been proven through scored performance.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>The useful skill wasn't "using AI"; it was steering it: knowing how prompts and context push output in a direction. Like knowing a library's defaults well enough to override them on purpose.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>A good model of rigor: before calling something an “AI competence,” check it against explicit criteria. Most AI skills students pick up in practice aren't yet teachable competencies; one, steering the AI, might be.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>For marketing and content teams: value came from people who could steer AI toward brand-fit novelty, not from heavy use alone. Hire and train for steering, and be wary of staff treating the AI like a colleague rather than a tool.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Methodologically useful: its explicit criteria for classifying a competence could inform how we justify CEAU's skills. Its caution about self-report is a reminder for Paper 2's measures.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p2q1"><p>1. What were the two pathways linking AI reliance to perceived innovation?</p>
+        <details><summary>Show answer</summary><p class="ans">Cognitive offloading effectiveness and producer-activated persuasion knowledge.</p></details></div>
+      <div class="q" data-q="p2q2"><p>2. Why do the authors call it only a “candidate” competence?</p>
+        <details><summary>Show answer</summary><p class="ans">Because it qualified by argument from item content, not by scored performance, and no teaching intervention was tested.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p3" data-paper="p3">
+    <div class="paper-head">
+      <div class="paper-num">Paper 3 of 5</div>
+      <h2>The Future Workplace: Developing the Human–Machine Symbioscape</h2>
+      <p class="cite">Sajtos, L., Le, K. B. Q., Rachakonda, N., &amp; Kunz, W. H. (2026). <em>Journal of Service Management</em>. <a href="https://doi.org/10.1108/JOSM-11-2025-0643">doi:10.1108/JOSM-11-2025-0643</a> (open access)</p>
+      <div class="tags"><span class="tag support">Supporting: designing the environment</span><span class="tag ">Conceptual</span><span class="tag ">Service settings</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">The work environment itself (physical and digital, social, and institutional) shapes how well humans and AI-enabled machines learn to work together.</p>
+      <h3>The argument</h3>
+      <p>The paper extends the “servicescape” idea (how a store's environment shapes service encounters) to hybrid human–machine work. The <strong>symbioscape</strong> has three tiers: <strong>physical–digital</strong>, <strong>socio-relational</strong>, and <strong>institutional–ecosystem</strong> conditions. Across them, six cue categories shape what humans and AI can notice, how they coordinate, and how routines stick.</p><p>Using Weick's sensemaking (enactment, selection, retention), it links these tiers to how fast, how well, and how durably human–AI collaboration adapts. It's purely conceptual.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Symbioscape</dt><dd>The designed environment in which humans and AI-enabled machines collaborate.</dd><dt>Adaptation speed, effectiveness, persistence</dt><dd>How fast, how well, and how lastingly human–AI collaboration adjusts.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>It's developer experience for human–AI teams. Physical–digital: is the agent's activity visible in the tools people already watch? Socio-relational: who reviews what, in what order? Institutional: what training and policies exist? All three decide whether the collaboration works.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Your classroom (or LMS) is a symbioscape. Is the AI's role visible? How are student–AI–teacher handoffs sequenced? What policies and training back it up? Designing these three tiers matters as much as choosing the tool.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>A diagnostic for frontline AI rollouts: check visibility and interface design, workflow sequencing and interaction load, and governance and role design. Weakness in any tier slows adaptation.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Supporting. Its three tiers could help structure Paper 2's description of the learning environment, but it's conceptual and service-focused.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p3q1"><p>1. Name the symbioscape's three tiers.</p>
+        <details><summary>Show answer</summary><p class="ans">Physical–digital, socio-relational, and institutional–ecosystem.</p></details></div>
+      <div class="q" data-q="p3q2"><p>2. What existing idea does the symbioscape extend?</p>
+        <details><summary>Show answer</summary><p class="ans">The servicescape: how the physical environment shapes customer–employee encounters.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p4" data-paper="p4">
+    <div class="paper-head">
+      <div class="paper-num">Paper 4 of 5</div>
+      <h2>Platform Authority vs. Managerial Authority: Who Really Controls Work in Digitised Organisations</h2>
+      <p class="cite">Kuika Watat, J., Masiero, S., &amp; Jonathan, G. M. (2026). <em>ICIS 2026 Proceedings</em>. <a href="https://aisel.aisnet.org/icis2026/orgstrategy/orgstrategy/2">AIS eLibrary</a></p>
+      <div class="tags"><span class="tag support">Supporting: platform control</span><span class="tag ">Qualitative</span><span class="tag ">Health information platforms</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">When validation rules and system thresholds decide whether an action can go through, managers keep formal responsibility while practical control shifts to the platform and the technical people who broker it.</p>
+      <h3>The argument</h3>
+      <p>A qualitative, practice-based study of reporting, validation, and coordination on health information platforms. Three mechanisms: <strong>displacement</strong> (managerial authority comes apart from the ability to make decisions stick), <strong>mediation</strong> (technical intermediaries broker between what managers want and what the system will accept), and <strong>reconstitution</strong> (a provisional settlement forms around output the organization can use).</p><p>The key distinction is <strong>formal authority</strong> vs. <strong>operative authority</strong>. The practical advice: clarify who can change validation rules, document intermediaries' work, and set escalation paths.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Operative authority</dt><dd>The practical ability to make a decision actually take effect.</dd><dt>Technical intermediary</dt><dd>The person who translates between managerial intent and system requirements.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>You've seen this: the VP decides, but the schema validation, the required fields, and the person who knows how to get a record past the checks decide what actually happens. Whoever owns the validation rules owns operative authority.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>The teacher decides the grade, but the LMS gradebook, rubric settings, and submission rules can block or reshape it. The instructional technologist who knows the workaround is a technical intermediary with real power over assessment.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Your org chart shows formal authority. Your systems' validation rules show operative authority. Map who can change the rules, and make the intermediaries' work visible; that's where control really sits.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Peripheral for CEAU, but a useful reminder that platforms (LMS, AI tools) carry authority over assessment. Worth a sentence in the sociomaterial framing.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p4q1"><p>1. Name the three mechanisms.</p>
+        <details><summary>Show answer</summary><p class="ans">Displacement, mediation, and reconstitution.</p></details></div>
+      <div class="q" data-q="p4q2"><p>2. What's the difference between formal and operative authority?</p>
+        <details><summary>Show answer</summary><p class="ans">Formal authority is responsibility attached to a role; operative authority is the practical capacity to make a decision take effect.</p></details></div>
+      
+    </div>
+  </article>
+<article class="paper" id="p5" data-paper="p5">
+    <div class="paper-head">
+      <div class="paper-num">Paper 5 of 5</div>
+      <h2>The New Meaning of Office: How Hybrid Work Changes Formal Organizational Structure from a Place Perspective</h2>
+      <p class="cite">Fuchs, C., &amp; Reichel, A. (2026). <em>Review of Managerial Science</em>. <a href="https://doi.org/10.1007/s11846-026-01074-1">doi:10.1007/s11846-026-01074-1</a> (open access)</p>
+      <div class="tags"><span class="tag support">Peripheral: place and structure</span><span class="tag ">49 interviews, two times</span><span class="tag ">Hybrid work</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Hybrid work made the workplace feel virtual, which loosened how structure was tied to physical space and opened a window for reorganizing, while the office came back as a place for social contact.</p>
+      <h3>The argument</h3>
+      <p>From 49 interviews in two international organizations at two points in time, the authors found a trend toward grouping HR roles by function and centralizing them, sometimes followed by physical relocation. Their explanation uses a <strong>place lens</strong>: as people “re-made” place in virtual and physical spaces, they came to see the workplace as virtual, so the physical expression of formal structure dissolved, creating room for leaders to restructure.</p><p>But the virtual workplace didn't meet people's need for connection, so the office was reconstituted as a place for social contact, and relocation helped new teams form.</p>
+      <h3>Key terms</h3>
+      <dl class="terms"><dt>Place-making</dt><dd>How people turn a space into a meaningful place through what they do there.</dd><dt>Formal structure</dt><dd>The prescribed grouping of positions and reporting lines.</dd></dl>
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>Once the team lives in Slack and GitHub, the floor plan stops defining the team, so reorgs get easier. But people still want an “office” for the social glue, so in-person days get redesigned around team bonding rather than desk work.</p>
+      </div>
+<div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Online and hybrid courses change what the “classroom” means. Once the course lives in the LMS, the room's role shifts toward connection: discussion, community, and working together, rather than content delivery.</p>
+      </div>
+<div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Hybrid work gives leaders a window to restructure, because physical layout no longer locks in the org chart. Plan for the office as a place for connection, and use moves to cement new team structures.</p>
+      </div>
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>Peripheral to the CEAU paper. Possibly useful only if we discuss online or hybrid delivery as part of the learning environment.</p></div>
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p5q1"><p>1. What structural trend did the study find?</p>
+        <details><summary>Show answer</summary><p class="ans">Functional grouping and centralization of previously decentralized HR positions, sometimes followed by relocation.</p></details></div>
+      <div class="q" data-q="p5q2"><p>2. What new role did the physical office take on?</p>
+        <details><summary>Show answer</summary><p class="ans">A place for social contact, compensating for what the virtual workplace lacked.</p></details></div>
+      
+    </div>
+  </article>
+
+  <section class="panel">
+    <h2>How these fit together</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Paper</th><th>Contribution</th><th>Use it in our paper for</th></tr></thead>
+      <tbody><tr><td>Schlauch 2026</td><td>Literacy was always sociomaterial</td><td>Education-side anchor; assemblage as unit of analysis</td></tr><tr><td>Wang &amp; Lu 2027</td><td>Criteria for an AI competence</td><td>Justifying CEAU skills; caution on self-report</td></tr><tr><td>Sajtos et al. 2026</td><td>Symbioscape (three tiers)</td><td>Describing the learning environment</td></tr><tr><td>Kuika Watat et al. 2026</td><td>Formal vs. operative authority</td><td>Platforms carry authority over assessment</td></tr><tr><td>Fuchs &amp; Reichel 2026</td><td>Hybrid work and place</td><td>Peripheral</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <nav class="series" aria-label="Previous and next cluster"><a href="sociomateriality-reading-guide-cluster-3.html">← Cluster 3: Judgment and Competence</a><a href="sociomateriality-reading-guide-cluster-5.html">Cluster 5: Boundary Conditions →</a></nav>
+</div>
+
+<script>
+(function () {
+  var KEY_LENS = 'socio-lens', KEY_MARKS = 'socio-c4-marks';
+  function load(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  var btns = document.querySelectorAll('.lens-btn');
+  function setLens(l) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lens === l ? 'true' : 'false'); });
+    document.querySelectorAll('.lens[data-lens]').forEach(function (el) { el.hidden = el.dataset.lens !== l; });
+    save(KEY_LENS, l);
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { setLens(b.dataset.lens); }); });
+  setLens(load(KEY_LENS, 'swe'));
+
+  var marks = load(KEY_MARKS, {});
+  var qs = document.querySelectorAll('.q[data-q]');
+  var score = document.getElementById('score');
+  function render() {
+    var got = 0;
+    qs.forEach(function (q) {
+      var id = q.dataset.q, m = marks[id];
+      q.querySelectorAll('.check-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === m ? 'true' : 'false'); });
+      if (m === 'got') got++;
+    });
+    score.textContent = got + ' of ' + qs.length + ' checks marked "got it"';
+  }
+  qs.forEach(function (q) {
+    var row = document.createElement('div'); row.className = 'check-row';
+    [['got', 'Got it', 'got'], ['notyet', 'Not yet', 'notyet']].forEach(function (o) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'check-btn ' + o[2];
+      b.dataset.v = o[0]; b.textContent = o[1]; b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-label', o[1] + ': ' + q.querySelector('p').textContent);
+      b.addEventListener('click', function () {
+        marks[q.dataset.q] = marks[q.dataset.q] === o[0] ? undefined : o[0];
+        save(KEY_MARKS, marks); render();
+      });
+      row.appendChild(b);
+    });
+    q.appendChild(row);
+  });
+  render();
+})();
+</script>
+</body>
+</html>

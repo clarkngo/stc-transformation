@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Sociomateriality Reading Guide, Cluster 1</title>
+  <meta name="description" content="Four Orlikowski papers on sociomateriality, explained three ways: for software engineers, teachers, and business readers. A prototype of effective AI.">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --teal: #0f766e; --teal-dim: #f0fdfa;
+      --red: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    a { color: var(--blue); }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet); margin-bottom: 24px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .panel { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 20px 24px; margin-bottom: 22px; }
+    .panel h2 { margin: 0 0 10px; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .panel p { margin: 0 0 10px; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; } ul.tight li { margin-bottom: 4px; }
+    ol.tight { margin: 0 0 10px; padding-left: 22px; } ol.tight li { margin-bottom: 4px; }
+
+    /* lens switcher */
+    .lens-bar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 10px 0 12px; margin-bottom: 14px; }
+    .lens-inner { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 10px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+    .lens-label { font-size: 0.78rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
+    .lens-btn { font: inherit; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--border); background: var(--bg); color: var(--ink);
+      border-radius: 20px; padding: 6px 14px; cursor: pointer; }
+    .lens-btn[aria-pressed="true"] { background: var(--violet); color: #fff; border-color: var(--violet); }
+    .lens-btn:focus-visible, .check-btn:focus-visible, summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .score { margin-left: auto; font-size: 0.82rem; color: var(--slate); font-weight: 600; }
+
+    /* papers */
+    .paper { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 26px; overflow: hidden; }
+    .paper-head { padding: 20px 24px 14px; border-bottom: 1px solid var(--border); }
+    .paper-num { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--violet); }
+    .paper-head h2 { margin: 4px 0 6px; font-size: 1.22rem; font-weight: 850; letter-spacing: -0.02em; line-height: 1.3; }
+    .cite { font-size: 0.86rem; color: var(--slate); margin: 0 0 8px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 0.74rem; font-weight: 700; border-radius: 12px; padding: 2px 10px; background: var(--bg); color: var(--slate); }
+    .tag.core { background: var(--green-dim); color: var(--green); }
+    .tag.support { background: var(--blue-dim); color: var(--blue); }
+    .paper-body { padding: 16px 24px 20px; }
+    .paper-body h3 { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin: 18px 0 6px; }
+    .paper-body h3:first-child { margin-top: 0; }
+    .paper-body p { margin: 0 0 10px; }
+    .oneliner { font-size: 1.02rem; font-weight: 600; }
+    dl.terms { margin: 0; } dl.terms dt { font-weight: 700; } dl.terms dd { margin: 0 0 8px 0; color: var(--ink); }
+    .lens { border-radius: var(--radius-sm); padding: 14px 16px; background: var(--violet-dim); border-left: 4px solid var(--violet); }
+    .lens[hidden] { display: none; }
+    .lens h4 { margin: 0 0 6px; font-size: 0.95rem; }
+    .lens p:last-child, .lens ul:last-child { margin-bottom: 0; }
+    .ourpaper { border-radius: var(--radius-sm); padding: 12px 16px; background: var(--teal-dim); border-left: 4px solid var(--teal); }
+    .ourpaper p:last-child { margin-bottom: 0; }
+    .q { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    .q p { margin: 0 0 6px; font-weight: 600; }
+    details summary { cursor: pointer; color: var(--blue); font-size: 0.88rem; font-weight: 600; }
+    details .ans { margin: 6px 0 4px; font-size: 0.92rem; }
+    .check-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .check-btn { font: inherit; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--border); background: #fff; border-radius: 16px; padding: 3px 12px; cursor: pointer; color: var(--ink); }
+    .check-btn.got[aria-pressed="true"] { background: var(--green); color: #fff; border-color: var(--green); }
+    .check-btn.notyet[aria-pressed="true"] { background: var(--amber); color: #fff; border-color: var(--amber); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 12px 0 0; }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    tr:last-child td { border-bottom: none; }
+    @media (max-width: 600px) { .doc-header, .paper-head, .paper-body, .panel { padding-left: 16px; padding-right: 16px; } .score { margin-left: 0; width: 100%; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="meeting-notes-jim-2026-11-13.html">Nov 13 meeting notes</a><span>·</span><a href="jim-ofarrell-collaboration.html">Jim O'Farrell collaboration</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a><span>·</span><a href="corporate-partnerships-hub.html">Corporate Partnerships Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Reading Guide · Effective AI prototype</div>
+    <h1>Sociomateriality, Explained Three Ways: Cluster 1</h1>
+    <p class="subtitle">Four papers by Wanda Orlikowski that founded the sociomaterial view of technology at work. Each one comes with a plain summary, an on-ramp from your own field (software engineering, teaching, or business), and a quick check to see if it stuck.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📚 4 papers, 2000–2010</span>
+      <span class="meta-chip">🔀 3 lenses</span>
+      <span class="meta-chip">✅ 12 check questions</span>
+      <span class="meta-chip">📅 Nov 13, 2026</span>
+    </div>
+  </header>
+
+  <section class="panel">
+    <h2>Why this page exists</h2>
+    <p>This is a small test of an idea from the <a href="meeting-notes-jim-2026-11-13.html">Nov 13 meeting</a>: <strong>effective AI</strong> means learning that fits the learner, checked by whether they actually learned, not by whether they liked it. Here the learner is a reader of management theory who comes from another field.</p>
+    <ul class="tight">
+      <li><strong>Same core for everyone:</strong> the one-liner, the main argument, and the key terms don't change.</li>
+      <li><strong>Tailored on-ramp:</strong> pick a lens below and the "from your field" box changes to explain the idea in terms you already know.</li>
+      <li><strong>Verified:</strong> each paper ends with three questions. Answer in your head, open the answer, then mark yourself honestly. Your marks stay in this browser only.</li>
+    </ul>
+    <p><strong>Suggested order:</strong> read them in the order shown. The 2007 essay is the shortest way in; the 2000 paper is the oldest and the most detailed, so it comes last.</p>
+    <div class="callout amber"><strong>How this was made:</strong> Claude drafted the explanations from the PDFs in the paper's reference library, and they are in our own words. Check anything you plan to cite against the original paper; the links below go to the publisher or an open-access copy.</div>
+  </section>
+
+  <div class="lens-bar">
+    <div class="lens-inner" role="group" aria-label="Choose a lens">
+      <span class="lens-label">Your lens</span>
+      <button type="button" class="lens-btn" data-lens="swe" aria-pressed="true">💻 Software engineer</button>
+      <button type="button" class="lens-btn" data-lens="teach" aria-pressed="false">🍎 Teacher</button>
+      <button type="button" class="lens-btn" data-lens="biz" aria-pressed="false">📈 Business</button>
+      <span class="score" id="score" aria-live="polite">0 of 12 checks marked "got it"</span>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2>The big idea in 60 seconds</h2>
+    <p>Most research treats people and technology as two separate things that affect each other: technology has "impacts" on people, or people "use" technology. Orlikowski argues that's the wrong starting point. In everyday work, what people can do and what technology does are produced <em>together</em>, in practice. You can't pull them apart and still understand the work. She calls this <strong>sociomateriality</strong>: the social and the material are "constitutively entangled."</p>
+    <div class="lens" data-lens="swe">
+      <h4>💻 From your field</h4>
+      <p>Think of a production system. Nobody can tell you how it behaves by reading the code alone, or by interviewing the team alone. Its behavior comes from code, infrastructure, config, traffic, on-call habits, and users, all at once. Sociomateriality says <em>all</em> work is like that.</p>
+    </div>
+    <div class="lens" data-lens="teach" hidden>
+      <h4>🍎 From your field</h4>
+      <p>Think of a class discussion board. What students learn there isn't decided by the platform, and it isn't decided only by the students. It comes from the prompt, the reply rules, the deadline, the grading rubric, the device students type on, and the students themselves. Sociomateriality says <em>all</em> learning is like that.</p>
+    </div>
+    <div class="lens" data-lens="biz" hidden>
+      <h4>📈 From your field</h4>
+      <p>Think of a CRM rollout. The software is identical in two companies, yet one gets a better sales pipeline and the other gets a data-entry chore. The result isn't "the software's impact" or "the people's fault." It comes from software, incentives, habits, and reporting working together. Sociomateriality says <em>all</em> organizing is like that.</p>
+    </div>
+  </section>
+
+  <!-- PAPER 1 -->
+  <article class="paper" id="p1" data-paper="p1">
+    <div class="paper-head">
+      <div class="paper-num">Paper 1 of 4 · Start here</div>
+      <h2>Sociomaterial Practices: Exploring Technology at Work</h2>
+      <p class="cite">Orlikowski, W. J. (2007). <em>Organization Studies</em>, 28(9), 1435–1448. <a href="https://doi.org/10.1177/0170840607081138">doi:10.1177/0170840607081138</a></p>
+      <div class="tags"><span class="tag core">Core: the anchor citation</span><span class="tag">Short essay, about 14 pages</span><span class="tag">Examples: Google search, BlackBerry</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Organization research either ignores technology or treats it as a special case, and it should instead treat every work practice as social and material at once.</p>
+
+      <h3>The argument</h3>
+      <p>Orlikowski names two problems. First, most organization studies ignore the physical side of work: rooms, devices, networks, documents. Second, studies that do look at technology look at it only during "events" like adoption, and they swing between two extremes. One side is <em>techno-centric</em>: technology causes effects. The other side is <em>human-centered</em>: people interpret and use technology, and the technology itself fades from view.</p>
+      <p>Her alternative is <strong>constitutive entanglement</strong>: there's no social without the material and no material without the social. Two examples carry it. A Google search result isn't just something a researcher "uses." It comes from PageRank, the links millions of people make, servers, and the search terms typed in, and it changes over time. At a small private equity firm, BlackBerrys that "push" email created an expectation of instant replies. That expectation became a norm nobody chose: people felt compelled to check their devices and the line between work and home blurred.</p>
+
+      <h3>Key terms</h3>
+      <dl class="terms">
+        <dt>Sociomaterial</dt><dd>One word, on purpose: the social and the material are not two things that interact; they make each other up in practice.</dd>
+        <dt>Constitutive entanglement</dt><dd>Stronger than "mutual shaping." Mutual shaping still assumes two separate things exist first; entanglement says they don't exist apart.</dd>
+        <dt>Relational agency</dt><dd>The capacity to act isn't owned by a person or a device. It shows up in how people and things are put together.</dd>
+      </dl>
+
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>The Google example is literally your world. "I googled it" sounds like a person used a tool. But ranking is a live system: an algorithm, an index rebuilt constantly, and a link graph written by millions of people. The same query gives different results next month. The result is an <em>emergent property of a running system</em>, not of the code or the user alone.</p>
+        <p>The BlackBerry story maps onto a team's Slack or PagerDuty culture. No one wrote "reply within 10 minutes" into the tool or the handbook, yet always-on notifications plus a few fast responders turn into an unwritten SLA everyone feels bound by.</p>
+      </div>
+      <div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>"The student used ChatGPT" is the same move as "I googled it": it puts all the agency in the student and makes the tool passive. In practice, what the student hands in comes from their prompt, the model's defaults, the assignment wording, the rubric, and the deadline, together.</p>
+        <p>The BlackBerry story maps onto LMS notifications and email. Once students know an instructor answers at 11 p.m., the course quietly gets an "instructor is always available" norm that no syllabus ever set.</p>
+      </div>
+      <div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Most business cases treat technology as an investment with an impact: buy the tool, measure the ROI. Orlikowski says that misses how work actually changes. The private equity firm handed out BlackBerrys to support work-life balance, and ended up with near-constant email and people checking messages at 3 a.m.</p>
+        <p>The lesson for managers: the outcome came from devices plus expectations plus a small, competitive culture. You can't predict it from the device spec sheet or from the HR policy alone.</p>
+      </div>
+
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>This is the anchor citation for the theory section. If agency is relational, then a student's work with AI is a joint product, and assessment should look at <em>how</em> the work was produced, not only at the final answer. That's the case for CEAU's weight on Evaluate, Analyze, and Understand &amp; Refine.</p></div>
+
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p1q1"><p>1. What's the difference between "mutual shaping" and "constitutive entanglement"?</p>
+        <details><summary>Show answer</summary><p class="ans">Mutual shaping assumes people and technology exist separately first and then influence each other. Entanglement says they have no separate existence: each is what it is only through the other, in practice.</p></details></div>
+      <div class="q" data-q="p1q2"><p>2. Why isn't "I googled it" a complete account of a search?</p>
+        <details><summary>Show answer</summary><p class="ans">It puts all control in the searcher. The result also depends on PageRank, the link structure millions of people create, and constant re-indexing, so the same search changes over time.</p></details></div>
+      <div class="q" data-q="p1q3"><p>3. In the BlackBerry case, where did the "always reply fast" norm come from?</p>
+        <details><summary>Show answer</summary><p class="ans">Not from a policy or from the device alone. Push email, frequent checking, and people's expectations of each other reinforced one another until the norm took hold.</p></details></div>
+    </div>
+  </article>
+
+  <!-- PAPER 2 -->
+  <article class="paper" id="p2" data-paper="p2">
+    <div class="paper-head">
+      <div class="paper-num">Paper 2 of 4</div>
+      <h2>Sociomateriality: Challenging the Separation of Technology, Work and Organization</h2>
+      <p class="cite">Orlikowski, W. J., &amp; Scott, S. V. (2008). <em>The Academy of Management Annals</em>, 2(1), 433–474. <a href="https://doi.org/10.1080/19416520802211644">doi:10.1080/19416520802211644</a></p>
+      <div class="tags"><span class="tag core">Core: the map of the field</span><span class="tag">Long review, about 40 pages</span><span class="tag">Read: abstract, the streams table, conclusion</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Over 95% of articles in top management journals ignore technology, and research that does study it falls into two streams; a third, sociomaterial stream is needed.</p>
+
+      <h3>The argument</h3>
+      <p>The authors reviewed four leading management journals and found that more than 95% of the articles don't account for technology at all. The research that does study it splits into two streams:</p>
+      <ul class="tight">
+        <li><strong>Stream I, discrete entities:</strong> technology and organizations are separate things. Technology is an independent variable with impacts on outcomes. The logic is <em>variance</em>: does X predict Y?</li>
+        <li><strong>Stream II, mutually dependent ensembles:</strong> people and technology shape each other over time through interaction. The logic is <em>process</em>: how does the relationship unfold?</li>
+        <li><strong>Stream III, sociomaterial assemblages (proposed):</strong> drop the assumption that they're separate in the first place. The logic is <em>relationality</em>; the key mechanisms are entanglement and performativity.</li>
+      </ul>
+      <p>They note that the first two streams produced mixed, often conflicting results, and suggest the problem is the shared starting assumption. They offer sociomateriality as one more lens in the palette, not the only valid one.</p>
+
+      <h3>Key terms</h3>
+      <dl class="terms">
+        <dt>Variance vs. process vs. relationality</dt><dd>Three logics of explanation: measuring effects between variables, tracing interactions over time, and studying how things are constituted through their relations.</dd>
+        <dt>Performativity</dt><dd>Things are what they do in practice. A technology's properties show up in performance, not in a spec.</dd>
+        <dt>Assemblage</dt><dd>A shifting configuration of people, tools, spaces, rules, and algorithms that together produce work.</dd>
+      </dl>
+
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>The three streams are like three ways to understand a service:</p>
+        <ul class="tight">
+          <li><strong>Stream I = a unit test with mocks.</strong> Isolate the component, fake everything else, and measure input → output.</li>
+          <li><strong>Stream II = an integration test.</strong> Two real systems talk, and you watch how they adapt to each other.</li>
+          <li><strong>Stream III = observability in production.</strong> The "system" is only the running whole: code, infra, traffic, and people. Many real incidents only exist there.</li>
+        </ul>
+        <p>Unit tests are still useful; the authors' point is that they can't tell you everything.</p>
+      </div>
+      <div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <ul class="tight">
+          <li><strong>Stream I:</strong> "Did the laptop program raise test scores?" Technology is the treatment, scores are the outcome.</li>
+          <li><strong>Stream II:</strong> "How did teachers and students adapt the laptops to their routines over the year?"</li>
+          <li><strong>Stream III:</strong> "What is 'doing the assignment' now that student, AI, rubric, and LMS together produce it?"</li>
+        </ul>
+        <p>Most edtech research is Stream I. That's why "does AI help learning?" keeps getting mixed answers: the answer depends on the whole arrangement, not the tool.</p>
+      </div>
+      <div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <ul class="tight">
+          <li><strong>Stream I:</strong> "Firms that adopted ERP saw X% productivity gains." Technology as an investment variable.</li>
+          <li><strong>Stream II:</strong> "How did the finance team and the ERP configuration adjust to each other after go-live?"</li>
+          <li><strong>Stream III:</strong> "What is 'closing the books' now? It's a practice of people, system, controls, and auditors together."</li>
+        </ul>
+        <p>Consultants' ROI studies are Stream I. They often disagree because the same system becomes a different thing in each company.</p>
+      </div>
+
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>This table gives us a way to name our position: Paper 1 is a Stream III argument. It also flags a tension we should address head-on. Paper 2's planned comparison of generic, language-localized, and fully localized content is a <em>variance</em> design, which is Stream I logic. The qualitative, observation-based part of Paper 2 is what keeps it sociomaterial. Worth raising with Jim.</p></div>
+
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p2q1"><p>1. What did the authors find in four leading management journals?</p>
+        <details><summary>Show answer</summary><p class="ans">More than 95% of the articles didn't take into account the role of technology in organizational life.</p></details></div>
+      <div class="q" data-q="p2q2"><p>2. What's the main difference between Stream I and Stream II?</p>
+        <details><summary>Show answer</summary><p class="ans">Stream I treats technology and organizations as separate entities with one-way effects (variance logic). Stream II treats them as interdependent, shaping each other over time (process logic).</p></details></div>
+      <div class="q" data-q="p2q3"><p>3. What assumption do both Streams I and II share, which Stream III rejects?</p>
+        <details><summary>Show answer</summary><p class="ans">That technology and people (or organizations) are separate in the first place.</p></details></div>
+    </div>
+  </article>
+
+  <!-- PAPER 3 -->
+  <article class="paper" id="p3" data-paper="p3">
+    <div class="paper-head">
+      <div class="paper-num">Paper 3 of 4</div>
+      <h2>The Sociomateriality of Organisational Life: Considering Technology in Management Research</h2>
+      <p class="cite">Orlikowski, W. J. (2010). <em>Cambridge Journal of Economics</em>, 34(1), 125–141. <a href="https://doi.org/10.1093/cje/bep058">doi:10.1093/cje/bep058</a> · <a href="http://hdl.handle.net/1721.1/66547">Open-access copy (MIT)</a></p>
+      <div class="tags"><span class="tag support">Supporting: four perspectives</span><span class="tag">About 17 pages</span><span class="tag">Example: a virtual 3D office</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">Using a virtual office as the test case, management research has seen technology in four ways, and only the fourth, entanglement in practice, can explain what's going on.</p>
+
+      <h3>The argument</h3>
+      <p>The paper opens with what looks like a normal software team: people talk at a screen, wander into a meeting, and one person calls in. Then the twist: the room, the screen, and the people are avatars in Sun Microsystems' 3D virtual workplace, and the team is spread across the US. Orlikowski then sorts management research into four perspectives:</p>
+      <ol class="tight">
+        <li><strong>Absent presence:</strong> technology is everywhere but goes unnoticed in the research.</li>
+        <li><strong>Exogenous force:</strong> technology is an outside driver with predictable impacts.</li>
+        <li><strong>Emergent process:</strong> technology is what people's interpretations and interactions make of it.</li>
+        <li><strong>Entanglement in practice:</strong> people and technology have no fixed properties apart from their relations; this includes Actor-Network Theory and Barad's work.</li>
+      </ol>
+      <p>Each of the first three, she shows, would miss something about the virtual office. Only the fourth can explain both what the technology makes possible and how people's engagement keeps changing it.</p>
+
+      <h3>Key terms</h3>
+      <dl class="terms">
+        <dt>Absent presence</dt><dd>Technology is there, but research doesn't see it.</dd>
+        <dt>Actor-Network Theory (ANT)</dt><dd>Treats humans and non-humans symmetrically, as participants in a network that temporarily lines up to produce an effect.</dd>
+        <dt>Relational ontology</dt><dd>Things are defined by their relations, not by built-in properties.</dd>
+      </dl>
+
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>Four ways to explain why a deploy broke checkout:</p>
+        <ol class="tight">
+          <li><strong>Absent presence:</strong> "The team was understaffed." The infrastructure never comes up.</li>
+          <li><strong>Exogenous force:</strong> "Kubernetes caused it." The tool is the whole story.</li>
+          <li><strong>Emergent process:</strong> "The team misread the rollout docs." It's all about people's understanding.</li>
+          <li><strong>Entanglement:</strong> "The canary config, the Friday deploy habit, an alert threshold set last year, and a traffic spike together produced the outage." This is what a good blameless postmortem does.</li>
+        </ol>
+      </div>
+      <div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>Four ways to explain why an online class's discussion fell flat:</p>
+        <ol class="tight">
+          <li><strong>Absent presence:</strong> "The students weren't engaged." The platform never comes up.</li>
+          <li><strong>Exogenous force:</strong> "Online learning reduces interaction." The medium is the cause.</li>
+          <li><strong>Emergent process:</strong> "Students saw the board as busywork." Only meanings matter.</li>
+          <li><strong>Entanglement:</strong> "The 'post one, reply to two' rule, the Sunday deadline, the threaded layout, and a points-per-post rubric together produced box-ticking."</li>
+        </ol>
+      </div>
+      <div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>Four ways to explain why remote collaboration tools didn't pay off:</p>
+        <ol class="tight">
+          <li><strong>Absent presence:</strong> "It's a leadership problem." The tools never come up.</li>
+          <li><strong>Exogenous force:</strong> "Video calls cause fatigue and kill productivity."</li>
+          <li><strong>Emergent process:</strong> "Managers saw the tools as surveillance, so teams resisted."</li>
+          <li><strong>Entanglement:</strong> "Calendar defaults, back-to-back 30-minute calls, status indicators, and a culture of visibility together turned the workday into meetings."</li>
+        </ol>
+      </div>
+
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>This gives us a one-paragraph way to place our stance in the literature: we take the entanglement-in-practice view. It also shows that most "AI in education" claims are written from the exogenous-force view ("AI improves/harms learning"), which is the gap Paper 1 can fill. Being open access, it's also the easiest one to share with collaborators.</p></div>
+
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p3q1"><p>1. Name the four perspectives in order.</p>
+        <details><summary>Show answer</summary><p class="ans">Absent presence, exogenous force, emergent process, entanglement in practice.</p></details></div>
+      <div class="q" data-q="p3q2"><p>2. What does the "emergent process" view miss about the virtual office?</p>
+        <details><summary>Show answer</summary><p class="ans">It focuses on meanings and interactions, so it can't explain how the specific technical capabilities of that virtual world make particular ways of interacting possible.</p></details></div>
+      <div class="q" data-q="p3q3"><p>3. Why does the paper open with a scene and then reveal it's virtual?</p>
+        <details><summary>Show answer</summary><p class="ans">To show how easily the material side of work goes unnoticed. You read a normal office scene and miss that the whole thing is produced by technology. That's absent presence in action.</p></details></div>
+    </div>
+  </article>
+
+  <!-- PAPER 4 -->
+  <article class="paper" id="p4" data-paper="p4">
+    <div class="paper-head">
+      <div class="paper-num">Paper 4 of 4 · The deepest one</div>
+      <h2>Using Technology and Constituting Structures: A Practice Lens for Studying Technology in Organizations</h2>
+      <p class="cite">Orlikowski, W. J. (2000). <em>Organization Science</em>, 11(4), 404–428. <a href="https://doi.org/10.1287/orsc.11.4.404.14600">doi:10.1287/orsc.11.4.404.14600</a>. The reference library holds a later reprint as a book chapter.</p>
+      <div class="tags"><span class="tag core">Core: technologies-in-practice</span><span class="tag">Long, about 50 pages</span><span class="tag">Case: Lotus Notes in three organizations</span></div>
+    </div>
+    <div class="paper-body">
+      <h3>In one sentence</h3>
+      <p class="oneliner">The structure of a technology isn't built into it and then adopted; it's enacted again and again by people as they use it, so the same software becomes different "technologies-in-practice."</p>
+
+      <h3>The argument</h3>
+      <p>Earlier "structurational" models said designers build structures into a technology, and users then appropriate them. Orlikowski says that works poorly for reconfigurable tools like groupware and the web. She separates the <strong>technology as artifact</strong> (the bundle of features) from the <strong>technology in use</strong>. The structures that matter are <em>emergent</em>: rules and resources people reproduce through repeated use. She calls these <strong>technologies-in-practice</strong>.</p>
+      <p>Evidence: Lotus Notes, studied at its developer (Iris Associates), at a large consulting firm she calls Alpha, and in the customer support department of a software company she calls Zeta. The same product became six different technologies-in-practice, such as collaboration, individual productivity, collective problem-solving, and improvisation. They group into three kinds of enactment:</p>
+      <ul class="tight">
+        <li><strong>Inertia:</strong> people use the tool rarely, to keep doing things the old way. The status quo stays put. At Alpha, skepticism, billable hours, and a competitive "up or out" culture went with very light use.</li>
+        <li><strong>Leverage:</strong> people use the tool to refine how they already work. The status quo is reinforced and improved.</li>
+        <li><strong>Change:</strong> people use the tool to do things differently, improvising new work practices. The status quo is transformed.</li>
+      </ul>
+
+      <h3>Key terms</h3>
+      <dl class="terms">
+        <dt>Technology-in-practice</dt><dd>The set of rules and resources that people (re)create in their ongoing, situated use of a particular technology.</dd>
+        <dt>Enactment vs. appropriation</dt><dd>Appropriation implies taking up structures that are already in the tool. Enactment says the structures are produced in use.</dd>
+        <dt>Artifact vs. use</dt><dd>An analytic distinction, not a claim that they exist separately: what the tool contains vs. what people actually do with it.</dd>
+      </dl>
+
+      <h3>From your field</h3>
+      <div class="lens" data-lens="swe">
+        <h4>💻 Software engineer</h4>
+        <p>Git is the perfect example. The artifact is the same everywhere. But one team enacts "trunk-based development with tiny PRs," another "long-lived feature branches and merge-day pain," and a third "a shared drive with commits." Those are three different technologies-in-practice built from one artifact.</p>
+        <p>The three enactments map onto how teams adopt a coding assistant:</p>
+        <ul class="tight">
+          <li><strong>Inertia:</strong> it's installed and mostly ignored.</li>
+          <li><strong>Leverage:</strong> it writes the boilerplate faster, but the process stays the same.</li>
+          <li><strong>Change:</strong> the team restructures work around it, for example spec-first with agents, and humans reviewing.</li>
+        </ul>
+        <p>The features don't decide which one you get. The team's knowledge, incentives, and culture do.</p>
+      </div>
+      <div class="lens" data-lens="teach" hidden>
+        <h4>🍎 Teacher</h4>
+        <p>The same LMS is a file dump in one course and a lively learning space in another. That's two technologies-in-practice from one artifact.</p>
+        <p>The three enactments map onto how a class takes up AI:</p>
+        <ul class="tight">
+          <li><strong>Inertia:</strong> AI is banned or ignored; the assignments stay the same.</li>
+          <li><strong>Leverage:</strong> students use AI to do the same assignments faster. Grades may rise; learning may not.</li>
+          <li><strong>Change:</strong> the course is redesigned so students create with AI and are assessed on judgment: evaluating, analyzing, and refining.</li>
+        </ul>
+        <p>Same tool, different outcomes, depending on what the course rewards.</p>
+      </div>
+      <div class="lens" data-lens="biz" hidden>
+        <h4>📈 Business</h4>
+        <p>This explains why digital transformation fails so often. Alpha rolled out Notes firm-wide, yet the managers and partners Orlikowski shadowed opened it for about two minutes a day, mostly to check email. Skepticism, billable-hours pressure, and an up-or-out culture that rewards individual expertise all pushed toward light use. The tool didn't fail; people enacted it that way.</p>
+        <p>The three enactments are a useful diagnostic for any rollout:</p>
+        <ul class="tight">
+          <li><strong>Inertia:</strong> licenses bought, behavior unchanged.</li>
+          <li><strong>Leverage:</strong> existing processes get faster; the payoff is efficiency.</li>
+          <li><strong>Change:</strong> the work itself is redesigned; the payoff is new capability, with more risk.</li>
+        </ul>
+        <p>If you want "change," look at incentives and culture before you look at features.</p>
+      </div>
+
+      <h3>Why it matters for our paper</h3>
+      <div class="ourpaper"><p>This is our strongest tool for the education side. "AI in a course" is not one thing: the same model becomes different technologies-in-practice depending on assignment design and incentives. CEAU is a deliberate attempt to steer toward the "change" enactment, and the paper can say so explicitly. It also suggests a Paper 2 measure: classify how learners actually enact the AI (inertia, leverage, or change) rather than just whether they used it.</p></div>
+
+      <h3>Check yourself</h3>
+      <div class="q" data-q="p4q1"><p>1. What's a "technology-in-practice"?</p>
+        <details><summary>Show answer</summary><p class="ans">The rules and resources that people repeatedly enact when they use a particular technology in their work. They emerge in use; they aren't stored in the tool.</p></details></div>
+      <div class="q" data-q="p4q2"><p>2. Name the three kinds of enactment and what each does to the status quo.</p>
+        <details><summary>Show answer</summary><p class="ans">Inertia preserves it, leverage reinforces and improves it, and change transforms it.</p></details></div>
+      <div class="q" data-q="p4q3"><p>3. Why did Orlikowski replace "appropriation" with "enactment"?</p>
+        <details><summary>Show answer</summary><p class="ans">Appropriation assumes the structure is already built into the technology, waiting to be taken up. With reconfigurable tools, structure is produced in use, so enactment fits better.</p></details></div>
+    </div>
+  </article>
+
+  <section class="panel">
+    <h2>How the four fit together</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Paper</th><th>Contribution</th><th>Use it in our paper for</th></tr></thead>
+      <tbody>
+        <tr><td>2000, practice lens</td><td>Structures are enacted in use; one tool, many technologies-in-practice</td><td>Why "AI in a course" isn't one thing; the inertia, leverage, and change diagnostic</td></tr>
+        <tr><td>2007, essay</td><td>Constitutive entanglement; "sociomaterial" as one word</td><td>The anchor definition and the core claim of relational agency</td></tr>
+        <tr><td>2008, review</td><td>Three research streams; over 95% of studies ignore technology</td><td>Positioning in the literature; the variance-vs-relational tension in Paper 2</td></tr>
+        <tr><td>2010, four perspectives</td><td>Absent presence to entanglement in practice</td><td>A short framing paragraph; an open-access source to share</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout blue"><strong>Next:</strong> if this format works, the same treatment goes to Clusters 2–7 (AI and agency, judgment and competence, education and assessment, boundary conditions, sensemaking, and temporality).</div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var KEY_LENS = 'socio-c1-lens', KEY_MARKS = 'socio-c1-marks';
+  function load(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  var btns = document.querySelectorAll('.lens-btn');
+  function setLens(l) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lens === l ? 'true' : 'false'); });
+    document.querySelectorAll('.lens[data-lens]').forEach(function (el) { el.hidden = el.dataset.lens !== l; });
+    save(KEY_LENS, l);
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { setLens(b.dataset.lens); }); });
+  setLens(load(KEY_LENS, 'swe'));
+
+  var marks = load(KEY_MARKS, {});
+  var qs = document.querySelectorAll('.q[data-q]');
+  var score = document.getElementById('score');
+  function render() {
+    var got = 0;
+    qs.forEach(function (q) {
+      var id = q.dataset.q, m = marks[id];
+      q.querySelectorAll('.check-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === m ? 'true' : 'false'); });
+      if (m === 'got') got++;
+    });
+    score.textContent = got + ' of ' + qs.length + ' checks marked "got it"';
+  }
+  qs.forEach(function (q) {
+    var row = document.createElement('div'); row.className = 'check-row';
+    [['got', 'Got it', 'got'], ['notyet', 'Not yet', 'notyet']].forEach(function (o) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'check-btn ' + o[2];
+      b.dataset.v = o[0]; b.textContent = o[1]; b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-label', o[1] + ': ' + q.querySelector('p').textContent);
+      b.addEventListener('click', function () {
+        marks[q.dataset.q] = marks[q.dataset.q] === o[0] ? undefined : o[0];
+        save(KEY_MARKS, marks); render();
+      });
+      row.appendChild(b);
+    });
+    q.appendChild(row);
+  });
+  render();
+})();
+</script>
+</body>
+</html>

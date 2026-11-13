@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Clark's Paper Work Pack</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --red: #dc2626; --red-dim: #fef2f2;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    a { color: var(--blue); }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--teal); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--teal-dim); border: 1px solid rgba(13,148,136,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p { margin: 0 0 10px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); } .icon-red { background: var(--red-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.red { background: var(--red-dim); border-left: 4px solid var(--red); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; }
+    ul.tight li { margin-bottom: 4px; }
+    h3 { font-size: 0.95rem; margin: 18px 0 6px; }
+    h3:first-child { margin-top: 0; }
+    pre { background: var(--bg); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 0.82rem; overflow-x: auto; margin: 0 0 10px; }
+    .sources { font-size: 0.82rem; color: var(--slate); }
+    .sources li { margin-bottom: 4px; word-break: break-word; }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="meeting-notes-jim-2026-11-05.html">Nov 5 meeting notes</a><span>·</span><a href="jim-ofarrell-collaboration.html">All Jim interactions</a><span>·</span><a href="corporate-partnerships-hub.html">Corporate Partnerships Hub</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Work Pack · Clark's items from Charter V2</div>
+    <h1>Clark's Paper Work Pack</h1>
+    <p class="subtitle">Research and drafts for Clark's items in the Nov 5 research charter with Jim O'Farrell: the ACBSP check, the publication route, authorship criteria, the OneDrive setup, and the Dec 4 contrasting case.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Researched Nov 13, 2026</span>
+      <span class="meta-chip">🔎 ACBSP call now verified</span>
+      <span class="meta-chip">🎯 Next Clark deadline: Dec 4</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 28px;"><strong>BSAI reminder:</strong> this page treats AI 410's CEAU cycle as a design case. The standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>. Nothing here conflicts with them, and nothing here claims learning outcomes for AI 410.</div>
+
+  <div class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li><strong>Jan 19 is real, but it's for a different event.</strong> It's the deadline for ACBSP's main <strong>Conference '27 (Baltimore, June 24–26, 2027)</strong>, not the San Diego AI Forum. That call wants an abstract for a 30-minute presentation, not a paper.</li>
+      <li><strong>The San Diego AI Forum has no public call.</strong> Its page lists dates, theme, and registration only ($600 early-bird through Jan 31, 2027).</li>
+      <li><strong>The journal route fits:</strong> ACBSP's peer-reviewed <em>Transnational Journal of Business</em> takes 5,000–7,000-word papers in APA 7. Submit by <strong>Jan 31</strong> to be eligible for the June issue.</li>
+      <li><strong>Suggested route:</strong> submit the full paper to the journal, and a presentation abstract from it to Conference '27. Treat San Diego as optional attendance.</li>
+    </ul>
+  </div>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-red">🔎</div><div><h2>1. ACBSP verification</h2><div class="section-sub">Charter item due Nov 9 (Clark). What the official pages say.</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>AI Forum 2027</th><th>Conference '27</th><th>Transnational Journal of Business</th></tr></thead>
+        <tbody>
+          <tr><td>When / where</td><td>Mar 11–13, 2027, San Diego</td><td>June 24–26, 2027, Baltimore</td><td>Rolling; June issue</td></tr>
+          <tr><td>Theme</td><td>"From Fragmentation to Framework: Tools and Practices for GenAI in Business Education"</td><td>"The AI Revolution: Reshaping Business, Reinventing Education, and Transforming Our World"</td><td>Linking teaching and research to improve student learning</td></tr>
+          <tr><td>Submission</td><td>No call found. Three working days built around a shared toolkit.</td><td>Abstract through the Cvent portal. Presentations, workshops, or panels.</td><td>Full manuscript through the journal site</td></tr>
+          <tr><td>Deadline</td><td>None found</td><td><strong>Jan 19, 2027</strong> (no time zone given). Accepted presenters confirm by Feb 26, 2027.</td><td><strong>Jan 31</strong> for June-issue eligibility</td></tr>
+          <tr><td>Format</td><td>n/a</td><td>30 minutes including introductions and Q&amp;A</td><td>5,000–7,000 words including figures and references; APA 7; single-spaced, Times New Roman 12 pt</td></tr>
+          <tr><td>Eligibility</td><td>Registration $700, or $600 by Jan 31, 2027</td><td>At least one presenter must work at an ACBSP member institution. One author per accepted session gets $200 off registration.</td><td>Open</td></tr>
+          <tr><td>Best-fit track</td><td>n/a</td><td>"Teaching with AI" (practical strategies and case studies) under the conference theme</td><td>Topics include Artificial Intelligence and Assessment</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>What this changes:</strong> the charter assumed one forum with a Jan 19 paper deadline. In fact Jan 19 is an abstract for a different conference, and the full paper has a natural home in the journal by Jan 31. That gives 12 extra days for the manuscript. CityU's SBM programs are listed as ACBSP-accredited in CityU's own pages, so Jim should satisfy the member-presenter rule. Confirm current status with SBM.</div>
+      <p style="margin-top:12px"><strong>Still to confirm:</strong> the deadline's time zone and the abstract's word limit and fields. Those are only visible after signing in to the Cvent submission portal. Questions go to conference@acbsp.org. Also ask whether the AI Forum accepts presenters at all.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">🧭</div><div><h2>2. Proposed publication route</h2><div class="section-sub">For the Nov 13 decision (both)</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>Primary: the journal.</strong> The full conceptual paper (5,000–7,000 words) goes to the <em>Transnational Journal of Business</em> by Jan 31. The charter's length and structure already fit, and it's ACBSP-branded, which matches the business-educator audience.</li>
+        <li><strong>Follow-on: Conference '27.</strong> A presentation abstract from the same paper, in the "Teaching with AI" track, by Jan 19. If accepted, both authors present in Baltimore in June.</li>
+        <li><strong>Optional: San Diego.</strong> Attend the AI Forum to test the framework with practitioners and gather contrasting cases. No submission is needed.</li>
+        <li><strong>Paper 2:</strong> the empirical paper stays conditional on a confirmed cohort and ethics review. The New Orleans conference from the meeting summary doesn't match any ACBSP 2027 event found here; ask Jim where it came from.</li>
+      </ul>
+      <h3>Revised end-of-schedule</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Date</th><th>Change from charter</th></tr></thead>
+        <tbody>
+          <tr><td>Jan 12</td><td>Approve the Conference '27 abstract and the near-final manuscript.</td></tr>
+          <tr><td>Jan 19</td><td>Submit the Conference '27 abstract (instead of the full package).</td></tr>
+          <tr><td>Jan 26</td><td>Final read of the manuscript against APA 7 and the journal's format.</td></tr>
+          <tr><td>Jan 31</td><td>Submit the manuscript to the journal. Register for San Diego by this date if attending ($600 early-bird).</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">✍️</div><div><h2>3. Proposed authorship criteria</h2><div class="section-sub">Charter item due Nov 9 (both). A draft for Jim to react to.</div></div></div>
+    <div class="section-body">
+      <p>Use the ICMJE four criteria to decide who is an author, and CRediT roles to record who did what. Both are widely used and easy to cite in a disclosure.</p>
+      <h3>Who counts as an author (all four)</h3>
+      <ul class="tight">
+        <li>Substantial contribution to the conception, design, or analysis.</li>
+        <li>Drafting the work or critically revising it.</li>
+        <li>Final approval of the submitted version.</li>
+        <li>Agreeing to be accountable for all parts of the work.</li>
+      </ul>
+      <h3>How order is set</h3>
+      <ul class="tight">
+        <li>Log contributions in the decision log by CRediT role as the work happens.</li>
+        <li>At the Dec 11 checkpoint, the author with the larger share of conceptualization and writing goes first. If shares are equal, record that the authors contributed equally and agree the order.</li>
+        <li>Both authors approve the final order on Jan 12, as the charter says.</li>
+        <li>Conference '27 presenters can differ from the paper's author order.</li>
+      </ul>
+      <h3>Proposed CRediT split</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Role</th><th>Lead</th><th>Supporting</th></tr></thead>
+        <tbody>
+          <tr><td>Conceptualization</td><td>Both</td><td>—</td></tr>
+          <tr><td>Methodology (review protocol, fit criteria)</td><td>Jim</td><td>Clark</td></tr>
+          <tr><td>Investigation (literature)</td><td>Jim</td><td>Clark</td></tr>
+          <tr><td>Resources (CEAU artifacts, rubric)</td><td>Clark</td><td>—</td></tr>
+          <tr><td>Visualization (framework diagram)</td><td>Clark</td><td>Jim</td></tr>
+          <tr><td>Writing, original draft</td><td>Jim (theory, synthesis); Clark (case, EMBA example)</td><td>—</td></tr>
+          <tr><td>Writing, review and editing</td><td>Clark</td><td>Jim</td></tr>
+          <tr><td>Project administration</td><td>Clark (workspace, submissions)</td><td>Jim (filing)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>Conflict check still open:</strong> if Jim grades Clark in any course, settle separation and disclosure before the paper goes forward. This item has been open since Sep 28.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">🗂️</div><div><h2>4. OneDrive setup kit</h2><div class="section-sub">Clark's Nov 5 action item. A layout and log template to create in OneDrive.</div></div></div>
+    <div class="section-body">
+      <pre>Sociomaterial CEAU Paper/
+├── 00 Charter/            Charter V2 (approved copy), authorship criteria
+├── 01 Master Draft/       one .docx, tracked changes on
+│   └── Milestones/        dated copies: 2026-11-20, 12-04, 12-11, 12-18, 2027-01-12
+├── 02 Reference Library/  Zotero group export or one .bib, plus the search log
+├── 03 CEAU Case/          AI 410 HOS spec, CEAU rubric, design evidence
+├── 04 Contrasting Case/   AIAS and Sydney two-lane sources
+├── 05 EMBA Transfer/      EMBA 582 example
+├── 06 Submissions/        Conference '27 abstract, journal package, receipts
+└── Decision Log.xlsx</pre>
+      <h3>Decision log columns</h3>
+      <p>Date · Decision or change · Type (route, scope, authorship, AI assistance, citation check) · Who decided · Reason · Link to the file affected.</p>
+      <h3>Search log columns</h3>
+      <p>Date · Database · Exact search string · Results · Included · Excluded, with reason. This covers the charter's inclusion criteria and search log, due Nov 20.</p>
+      <p style="font-size:0.85rem;color:var(--slate)">Share with Jim using edit access. Keep student-identifiable material out of this folder entirely until Phase 2 has an ethics determination.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-amber">⚖️</div><div><h2>5. Contrasting external case</h2><div class="section-sub">For Clark's Dec 4 deliverable. Two candidates, one recommended.</div></div></div>
+    <div class="section-body">
+      <p>The charter asks for at least one external AI-era assessment design that CEAU can be tested against, so reviewers don't see the case as self-confirming. A good contrasting case is published, used in practice, and answers the same problem differently.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>AI Assessment Scale (AIAS) — recommended</th><th>University of Sydney two-lane approach</th></tr></thead>
+        <tbody>
+          <tr><td>What it is</td><td>A five-level scale that sets how much generative AI each assessment allows, chosen from the learning outcomes.</td><td>An institution-wide policy. Lane 1: secure, supervised, no AI (exams, vivas). Lane 2: open, AI allowed, and most assessments.</td></tr>
+          <tr><td>Unit of design</td><td>Each assessment gets one permission level.</td><td>Each assessment goes in one lane.</td></tr>
+          <tr><td>Contrast with CEAU</td><td>The AIAS decides <em>how much</em> AI is allowed. CEAU changes <em>who does the work</em> stage by stage within one assessment, with AI leading Create and the student leading the rest.</td><td>Sydney separates secure from AI-allowed across assessments. CEAU puts both inside one task: AI-assisted Create, then a human-only mastery check.</td></tr>
+          <tr><td>Evidence</td><td>Peer-reviewed framework (2024). A pilot at British University Vietnam reported fewer GenAI-related misconduct cases and more engagement with GenAI.</td><td>Policy in force since Semester 2, 2025, and adopted elsewhere (e.g., Auckland). No published outcome evaluation found.</td></tr>
+          <tr><td>Sociomaterial reading</td><td>Treats AI as a tool to be permitted or restricted, which is the separate-agency view the paper argues against. That makes it a sharp foil.</td><td>Treats agency as separable by setting: human-only versus human-with-AI.</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Why AIAS first</h3>
+      <ul class="tight">
+        <li>It's peer-reviewed and has pilot evidence. Sydney's approach is documented mostly on the university's own pages.</li>
+        <li>It works at the same level as CEAU (one assessment), so the comparison is direct.</li>
+        <li>It's well known to business educators, and the forum's audience will recognize it.</li>
+        <li>Use Sydney as a second, institution-level contrast in the boundary-conditions section.</li>
+      </ul>
+      <h3>Pre-set fit criteria (draft, to agree with Jim before Dec 4)</h3>
+      <p>Write down in advance what would count as a poor fit for CEAU, for example:</p>
+      <ul class="tight">
+        <li>An assessment where the scarce human contribution isn't evaluation (for example, a pure recall or skills check).</li>
+        <li>A setting where a human-only mastery check isn't feasible (very large classes, asynchronous with no live check).</li>
+        <li>A case where AIAS or the two-lane approach explains the design as well as CEAU with fewer assumptions.</li>
+      </ul>
+      <h3>Other cases found, if more are needed</h3>
+      <p>Several 2025 course-level redesigns use oral defense to make understanding visible: a graduate machine learning course at Fairfield University (ASEE 2025, work in progress), a postgraduate machine learning module at Atlantic Technological University (ICERI 2025, abstract only), and a graphic design study of 38 students at Tamale Technical University. Evidence in all three is early.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">📌</div><div><h2>Clark's remaining items</h2><div class="section-sub">From Charter V2, with status as of Nov 13</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Due</th><th>Item</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Nov 9</td><td>ACBSP call and verified deadline</td><td>Researched here. Share with Jim, and email conference@acbsp.org for the time zone and abstract fields.</td></tr>
+          <tr><td>Nov 9</td><td>Authorship criteria (both)</td><td>Draft above. Needs Jim's agreement.</td></tr>
+          <tr><td>Nov 5</td><td>OneDrive workspace</td><td>Layout and templates above. Create the folder and share it with Jim.</td></tr>
+          <tr><td>Nov 13</td><td>Primary route (both)</td><td>Proposal above: journal first, Conference '27 abstract second.</td></tr>
+          <tr><td>Dec 4</td><td>CEAU case, tasks, rubric, design evidence; contrasting case</td><td>AIAS recommended. Next: pull AI 410's HOS spec and rubric into 03 CEAU Case.</td></tr>
+          <tr><td>Dec 11</td><td>EMBA transfer example; Phase 2 evidence mapping</td><td>Not started. EMBA 582 materials from Jim are still pending.</td></tr>
+          <tr><td>Dec 18</td><td>Edit the integrated manuscript</td><td>Not started</td></tr>
+          <tr><td>Jan 19</td><td>Assemble the submission</td><td>Now the Conference '27 abstract. The journal package follows by Jan 31.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">🔗</div><div><h2>Sources</h2><div class="section-sub">Checked Nov 13, 2026</div></div></div>
+    <div class="section-body">
+      <ul class="sources">
+        <li>ACBSP Conference '27 call for presentations (deadline, format, tracks): <a href="https://www.cvent.com/c/abstracts/8754cd80-717a-48f7-aa6a-e667d5ad03b8">cvent.com/c/abstracts/8754cd80…</a></li>
+        <li>ACBSP "Present at an Event" (Baltimore, June 24–26, 2027): <a href="https://acbsp.org/page/present">acbsp.org/page/present</a></li>
+        <li>AI Forum 2027 (dates, theme, pricing): <a href="https://web.cvent.com/event/5b900b29-3610-4a5c-bc6a-d44f8868ecb9/summary">web.cvent.com/event/5b900b29…</a></li>
+        <li>Transnational Journal of Business call for papers: <a href="https://acbspjournal.org/call-for-papers/">acbspjournal.org/call-for-papers</a></li>
+        <li>Perkins, Furze, Roe &amp; MacVaugh (2024), The AI Assessment Scale, <em>Journal of University Teaching and Learning Practice</em> 21(6), doi:10.53761/q3azde36: <a href="https://durham-repository.worktribe.com/output/3355786/the-artificial-intelligence-assessment-scale-aias-a-framework-for-ethical-integration-of-generative-ai-in-educational-assessment">Durham repository</a></li>
+        <li>Furze, Perkins, Roe &amp; MacVaugh (2024), The AIAS in action (pilot), <em>Australasian Journal of Educational Technology</em> 40(4): <a href="https://researchonline.jcu.edu.au/86951/">JCU repository</a></li>
+        <li>University of Sydney two-lane approach: <a href="https://educational-innovation.sydney.edu.au/teaching@sydney/?p=22452">Teaching@Sydney</a>, <a href="https://www.sydney.edu.au/news-opinion/news/2024/11/27/university-of-sydney-ai-assessment-policy.html">University news, Nov 2024</a></li>
+        <li>Oral-defense redesigns: <a href="https://nemo.asee.org/public/conferences/365/papers/48514/download">Fairfield (ASEE 2025)</a>, <a href="https://library.iated.org/view/FUREY2025BEN">ATU Donegal (ICERI 2025)</a></li>
+        <li>CityU SBM ACBSP accreditation: <a href="https://cityu.smartcatalogiq.com/en/2023-2024/2023-2024-catalog/profile-of-the-university/accreditation-and-approval">CityU catalog 2023–24</a></li>
+        <li>Authorship: ICMJE "Defining the Role of Authors and Contributors"; CRediT contributor roles taxonomy (credit.niso.org).</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</body>
+</html>

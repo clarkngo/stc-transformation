@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 410 Content Refresh Proposal</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--teal); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--teal-dim); border: 1px solid rgba(13,148,136,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p { margin: 0 0 10px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { white-space: nowrap; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; }
+    ul.tight li { margin-bottom: 4px; }
+    h3 { font-size: 0.95rem; margin: 16px 0 6px; }
+    h3:first-child { margin-top: 0; }
+    .checklist { list-style: none; padding-left: 0; margin: 0; }
+    .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 4px; color: var(--slate); }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } td:first-child { white-space: normal; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="bsai-hub.html">BSAI Hub</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a><span>·</span><a href="sociomateriality-reading-guide.html#picks">Reading guide: Clark's picks</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Proposal · AI 410 · Draft for Clark's review</div>
+    <h1>AI 410 Content Refresh: Teaching Notes from the Reading</h1>
+    <p class="subtitle">Eight small additions to the AI 410 course pages, drawn from Clark's picks in the sociomateriality reading guide. The syllabus, rubrics, grade weights, and deliverables stay exactly as they are.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Nov 16, 2026</span>
+      <span class="meta-chip">✏️ 8 changes, all wording or guidance</span>
+      <span class="meta-chip">🔒 Syllabus and rubrics unchanged</span>
+      <span class="meta-chip">🗂️ Current version kept for reference</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 28px;"><strong>BSAI reminder:</strong> the standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>. Nothing here changes the official description or outcomes, Codespaces, free tiers, or the two-week HOS schedule.</div>
+
+  <div class="tldr">
+    <h2>In short</h2>
+    <ul>
+      <li><strong>AI 410 already teaches the core idea.</strong> Every HOS runs Create/Scaffold → Evaluate ("the critical gate") → Analyze → Understand &amp; Refine ("by hand, no AI"). The reading mostly confirms the design.</li>
+      <li><strong>What's missing is the why.</strong> Students see the rules but not the reasons. These changes make the reasons visible, where students are working.</li>
+      <li><strong>Nothing new is graded or submitted.</strong> Every change is page wording, an ungraded step, or guidance on something students already hand in.</li>
+    </ul>
+  </div>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">✏️</div><div><h2>The eight changes</h2><div class="section-sub">Each one names where it goes and which paper it comes from</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>Change and where</th><th>What it looks like</th><th>From</th></tr></thead>
+        <tbody><tr><td>1</td><td><strong>Name what students think AI is</strong><br><span style="color:var(--slate);font-size:0.84rem">Start Here (a short new section)</span></td><td>Three quick questions before Module 1: what is AI in this course, why is it allowed, how will you use it? No submission; it surfaces the 'answer machine' frame early.</td><td><a href="sociomateriality-reading-guide-cluster-6.html#p1">Technological Frames</a></td></tr><tr><td>2</td><td><strong>Label AI's role in every activity</strong><br><span style="color:var(--slate);font-size:0.84rem">Each module page, next to each stage</span></td><td>A small tag: Create/Scaffold = <em>augmentation</em>, Evaluate = <em>you judge the AI</em>, Analyze = <em>you explain</em>, Understand &amp; Refine = <em>no AI</em>, knowledge checks = <em>no AI role</em>. Makes the AI Use rules visible where students work.</td><td><a href="sociomateriality-reading-guide-cluster-2.html#p3">Open Strategy and AI (4As)</a></td></tr><tr><td>3</td><td><strong>Plan before you prompt</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, top of Create/Scaffold</span></td><td>A two-minute step: jot your own plan for the app before prompting the assistant, then compare. Not submitted and not graded; the Engagement credit stays as is.</td><td><a href="sociomateriality-reading-guide-cluster-6.html#p2">The Convergence Paradox</a></td></tr><tr><td>4</td><td><strong>Show how professionals verify</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, Evaluate stage</span></td><td>A short callout: most developers now use AI, fewer trust its output, and nearly all check it before use. Evaluate is the professional skill, not a hoop.</td><td><a href="sociomateriality-reading-guide-cluster-3.html#p5">Used More, Trusted Less</a></td></tr><tr><td>5</td><td><strong>Explain why the by-hand stage exists</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, Understand &amp; Refine stage</span></td><td>One or two sentences: this is where the know-how forms that AI can't give you. The rule doesn't change; the reason becomes explicit.</td><td><a href="sociomateriality-reading-guide-cluster-3.html#p1">Moral Deskilling</a>, <a href="sociomateriality-reading-guide-cluster-3.html#p2">Human Agency Deficit</a></td></tr><tr><td>6</td><td><strong>Treat snags as learning moments</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, Common snags; lecture notes</span></td><td>Reframe 'Common snags' as expected, useful breakdowns, with a line on what each one teaches. Where an Evaluate test already breaks the app on purpose, say why that matters.</td><td><a href="sociomateriality-reading-guide-cluster-7.html#p2">Heavy Time</a></td></tr><tr><td>7</td><td><strong>Fresh discussion prompts</strong><br><span style="color:var(--slate);font-size:0.84rem">Muddiest Point and Concept Debate examples</span></td><td>Optional new prompts: an AI teammate that acts on its own (who's responsible?); do grades still signal skill when AI helps everyone? Debate topics follow the shared rotation, so these would be offered as examples, not swapped in.</td><td><a href="sociomateriality-reading-guide-cluster-2.html#p5">Agentic Teammates</a>, <a href="sociomateriality-reading-guide-cluster-7.html#p1">Digital Undertow</a></td></tr><tr><td>8</td><td><strong>Trace which tool did what</strong><br><span style="color:var(--slate);font-size:0.84rem">Evaluate note guidance</span></td><td>A suggested sentence for the existing Evaluate note: which parts came from the AI, which from you. Guidance on the note you already submit, not a new item.</td><td><a href="sociomateriality-reading-guide-cluster-4.html#p1">Foregrounded by AI</a></td></tr></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-amber">🔒</div><div><h2>What stays fixed</h2><div class="section-sub">The line every change has to stay behind</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li>The syllabus (the OneDrive master), the rubrics, grade weights, and due dates.</li>
+        <li>What students submit and where: HOS work is still pushed to the Classroom50 repo, with no new Brightspace items.</li>
+        <li>The AI Use rules per activity. The changes explain the rules; they don't loosen or tighten them.</li>
+        <li>Knowledge-check banks and the Term Project phases.</li>
+      </ul>
+      <div class="callout amber"><strong>Test for each change:</strong> if a student skipped it entirely, would their grade change? If yes, it's out of scope.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-teal">🗂️</div><div><h2>Keeping the current version</h2><div class="section-sub">So the old version stays available for reference</div></div></div>
+    <div class="section-body">
+      <p><strong>Recommended:</strong> before any edit, tag the current state of the <code>cityuseattle/ai410</code> repo as <code>v1.0</code> and publish a GitHub release with a zip of the site. Then make the changes as v1.1 in one pull request.</p>
+      <ul class="tight">
+        <li><strong>Why a tag, not a second copy of the site:</strong> a copy published next to the live course would give students two versions to find in search. A tag keeps v1.0 exact and easy to compare (<code>git diff v1.0</code>) without confusing anyone.</li>
+        <li><strong>If you also want to browse it:</strong> the release zip opens locally in any browser.</li>
+        <li><strong>Rollback:</strong> any single change can be reverted on its own, or the whole site restored to <code>v1.0</code>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-green">✅</div><div><h2>Next steps</h2></div></div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li><strong>Clark:</strong> review the eight changes; drop or edit any.</li>
+        <li><strong>Claude:</strong> tag and release <code>v1.0</code> in the ai410 repo.</li>
+        <li><strong>Claude:</strong> apply the approved changes across Modules 1–4 (and Start Here and reference pages where relevant) as v1.1, in one pull request.</li>
+        <li><strong>Clark:</strong> review the pull request before it's merged; check that the Brightspace shell links still point to the right pages.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</body>
+</html>

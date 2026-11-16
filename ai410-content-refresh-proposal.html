@@ -60,7 +60,24 @@
     .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
     .checklist li:last-child { border-bottom: none; }
     .checklist li::before { content: "☐"; position: absolute; left: 4px; color: var(--slate); }
-    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } td:first-child { white-space: normal; } }
+    .ex { border: 1px solid var(--border); border-radius: var(--radius-sm); margin: 0 0 16px; overflow: hidden; scroll-margin-top: 16px; }
+    .ex:last-of-type { margin-bottom: 0; }
+    .ex-head { padding: 10px 14px; font-weight: 700; font-size: 0.92rem; border-bottom: 1px solid var(--border); }
+    .ex-head .ex-where { font-weight: 500; color: var(--slate); font-size: 0.82rem; }
+    .ex-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    .ex-col { padding: 12px 14px; font-size: 0.9rem; }
+    .ex-col p { margin: 0 0 8px; } .ex-col p:last-child { margin-bottom: 0; }
+    .ex-col ol, .ex-col ul { margin: 0 0 8px; padding-left: 20px; }
+    .ex-before { background: var(--bg); color: var(--slate); border-right: 1px solid var(--border); }
+    .ex-after { background: var(--green-dim); }
+    .ex-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+    .ex-before .ex-label { color: var(--slate); }
+    .ex-after .ex-label { color: #15803d; }
+    .ex-tag { display: inline-block; font-size: 0.74rem; font-weight: 600; border: 1px solid var(--border); background: var(--card); border-radius: 20px; padding: 1px 9px; margin: 2px 4px 2px 0; color: var(--ink); }
+    .ex-new { background: #dcfce7; border-color: rgba(21,128,61,0.35); }
+    .ex-link { display: inline-block; margin-top: 4px; font-size: 0.8rem; font-weight: 600; color: var(--blue); text-decoration: none; }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } td:first-child { white-space: normal; }
+      .ex-grid { grid-template-columns: 1fr; } .ex-before { border-right: none; border-bottom: 1px solid var(--border); } }
   </style>
 </head>
 <body>
@@ -95,8 +112,117 @@
     <div class="section-body">
       <div class="table-wrap"><table>
         <thead><tr><th>#</th><th>Change and where</th><th>What it looks like</th><th>From</th></tr></thead>
-        <tbody><tr><td>1</td><td><strong>Name what students think AI is</strong><br><span style="color:var(--slate);font-size:0.84rem">Start Here (a short new section)</span></td><td>Three quick questions before Module 1: what is AI in this course, why is it allowed, how will you use it? No submission; it surfaces the 'answer machine' frame early.</td><td><a href="sociomateriality-reading-guide-cluster-6.html#p1">Technological Frames</a></td></tr><tr><td>2</td><td><strong>Label AI's role in every activity</strong><br><span style="color:var(--slate);font-size:0.84rem">Each module page, next to each stage</span></td><td>A small tag: Create/Scaffold = <em>augmentation</em>, Evaluate = <em>you judge the AI</em>, Analyze = <em>you explain</em>, Understand &amp; Refine = <em>no AI</em>, knowledge checks = <em>no AI role</em>. Makes the AI Use rules visible where students work.</td><td><a href="sociomateriality-reading-guide-cluster-2.html#p3">Open Strategy and AI (4As)</a></td></tr><tr><td>3</td><td><strong>Plan before you prompt</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, top of Create/Scaffold</span></td><td>A two-minute step: jot your own plan for the app before prompting the assistant, then compare. Not submitted and not graded; the Engagement credit stays as is.</td><td><a href="sociomateriality-reading-guide-cluster-6.html#p2">The Convergence Paradox</a></td></tr><tr><td>4</td><td><strong>Show how professionals verify</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, Evaluate stage</span></td><td>A short callout: most developers now use AI, fewer trust its output, and nearly all check it before use. Evaluate is the professional skill, not a hoop.</td><td><a href="sociomateriality-reading-guide-cluster-3.html#p5">Used More, Trusted Less</a></td></tr><tr><td>5</td><td><strong>Explain why the by-hand stage exists</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, Understand &amp; Refine stage</span></td><td>One or two sentences: this is where the know-how forms that AI can't give you. The rule doesn't change; the reason becomes explicit.</td><td><a href="sociomateriality-reading-guide-cluster-3.html#p1">Moral Deskilling</a>, <a href="sociomateriality-reading-guide-cluster-3.html#p2">Human Agency Deficit</a></td></tr><tr><td>6</td><td><strong>Treat snags as learning moments</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, Common snags; lecture notes</span></td><td>Reframe 'Common snags' as expected, useful breakdowns, with a line on what each one teaches. Where an Evaluate test already breaks the app on purpose, say why that matters.</td><td><a href="sociomateriality-reading-guide-cluster-7.html#p2">Heavy Time</a></td></tr><tr><td>7</td><td><strong>Fresh discussion prompts</strong><br><span style="color:var(--slate);font-size:0.84rem">Muddiest Point and Concept Debate examples</span></td><td>Optional new prompts: an AI teammate that acts on its own (who's responsible?); do grades still signal skill when AI helps everyone? Debate topics follow the shared rotation, so these would be offered as examples, not swapped in.</td><td><a href="sociomateriality-reading-guide-cluster-2.html#p5">Agentic Teammates</a>, <a href="sociomateriality-reading-guide-cluster-7.html#p1">Digital Undertow</a></td></tr><tr><td>8</td><td><strong>Trace which tool did what</strong><br><span style="color:var(--slate);font-size:0.84rem">Evaluate note guidance</span></td><td>A suggested sentence for the existing Evaluate note: which parts came from the AI, which from you. Guidance on the note you already submit, not a new item.</td><td><a href="sociomateriality-reading-guide-cluster-4.html#p1">Foregrounded by AI</a></td></tr></tbody>
+        <tbody><tr><td>1</td><td><strong>Name what students think AI is</strong><br><span style="color:var(--slate);font-size:0.84rem">Start Here (a short new section)</span></td><td>Three quick questions before Module 1: what is AI in this course, why is it allowed, how will you use it? No submission; it surfaces the 'answer machine' frame early.<br><a class="ex-link" href="#ex-1">See the wording ↓</a></td><td><a href="sociomateriality-reading-guide-cluster-6.html#p1">Technological Frames</a></td></tr><tr><td>2</td><td><strong>Label AI's role in every activity</strong><br><span style="color:var(--slate);font-size:0.84rem">Each module page, next to each stage</span></td><td>A small tag: Create/Scaffold = <em>augmentation</em>, Evaluate = <em>you judge the AI</em>, Analyze = <em>you explain</em>, Understand &amp; Refine = <em>no AI</em>, knowledge checks = <em>no AI role</em>. Makes the AI Use rules visible where students work.<br><a class="ex-link" href="#ex-2">See the wording ↓</a></td><td><a href="sociomateriality-reading-guide-cluster-2.html#p3">Open Strategy and AI (4As)</a></td></tr><tr><td>3</td><td><strong>Plan before you prompt</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, top of Create/Scaffold</span></td><td>A two-minute step: jot your own plan for the app before prompting the assistant, then compare. Not submitted and not graded; the Engagement credit stays as is.<br><a class="ex-link" href="#ex-3">See the wording ↓</a></td><td><a href="sociomateriality-reading-guide-cluster-6.html#p2">The Convergence Paradox</a></td></tr><tr><td>4</td><td><strong>Show how professionals verify</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, Evaluate stage</span></td><td>A short callout: most developers now use AI, fewer trust its output, and nearly all check it before use. Evaluate is the professional skill, not a hoop.<br><a class="ex-link" href="#ex-4">See the wording ↓</a></td><td><a href="sociomateriality-reading-guide-cluster-3.html#p5">Used More, Trusted Less</a></td></tr><tr><td>5</td><td><strong>Explain why the by-hand stage exists</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, Understand &amp; Refine stage</span></td><td>One or two sentences: this is where the know-how forms that AI can't give you. The rule doesn't change; the reason becomes explicit.<br><a class="ex-link" href="#ex-5">See the wording ↓</a></td><td><a href="sociomateriality-reading-guide-cluster-3.html#p1">Moral Deskilling</a>, <a href="sociomateriality-reading-guide-cluster-3.html#p2">Human Agency Deficit</a></td></tr><tr><td>6</td><td><strong>Treat snags as learning moments</strong><br><span style="color:var(--slate);font-size:0.84rem">HOS guides, Common snags; lecture notes</span></td><td>Reframe 'Common snags' as expected, useful breakdowns, with a line on what each one teaches. Where an Evaluate test already breaks the app on purpose, say why that matters.<br><a class="ex-link" href="#ex-6">See the wording ↓</a></td><td><a href="sociomateriality-reading-guide-cluster-7.html#p2">Heavy Time</a></td></tr><tr><td>7</td><td><strong>Fresh discussion prompts</strong><br><span style="color:var(--slate);font-size:0.84rem">Muddiest Point and Concept Debate examples</span></td><td>Optional new prompts: an AI teammate that acts on its own (who's responsible?); do grades still signal skill when AI helps everyone? Debate topics follow the shared rotation, so these would be offered as examples, not swapped in.<br><a class="ex-link" href="#ex-7">See the wording ↓</a></td><td><a href="sociomateriality-reading-guide-cluster-2.html#p5">Agentic Teammates</a>, <a href="sociomateriality-reading-guide-cluster-7.html#p1">Digital Undertow</a></td></tr><tr><td>8</td><td><strong>Trace which tool did what</strong><br><span style="color:var(--slate);font-size:0.84rem">Evaluate note guidance</span></td><td>A suggested sentence for the existing Evaluate note: which parts came from the AI, which from you. Guidance on the note you already submit, not a new item.<br><a class="ex-link" href="#ex-8">See the wording ↓</a></td><td><a href="sociomateriality-reading-guide-cluster-4.html#p1">Foregrounded by AI</a></td></tr></tbody>
       </table></div>
+    </div>
+  </section>
+
+  <section class="section" id="examples">
+    <div class="section-header"><div class="section-icon icon-blue">💬</div><div><h2>Example wordings</h2><div class="section-sub">What students see now, and what the new version would say</div></div></div>
+    <div class="section-body">
+      <p>Module 1 is the sample throughout; Modules 2–4 follow the same pattern with their own details. The new wording is drafted on the <code>v1.1-content-refresh</code> branch of the ai410 repo, so anything here can be cut or rewritten before it's merged.</p>
+
+      <div class="ex" id="ex-1">
+        <div class="ex-head">1 · Name what students think AI is <span class="ex-where">· course home, above the module list</span></div>
+        <div class="ex-grid">
+          <div class="ex-col ex-before"><div class="ex-label">Now</div><p>Nothing. The page goes straight from the course intro to the list of modules.</p></div>
+          <div class="ex-col ex-after"><div class="ex-label">New wording</div>
+            <p><strong>Before Module 1: three questions for yourself</strong><br>Two minutes, nothing to submit. Answer in your head or in a note, and look again at the end of the term.</p>
+            <ol>
+              <li>In one sentence, what is AI to you right now: something that gives answers, something you work with, or something else?</li>
+              <li>Why might this course let you use AI in some stages and not in others?</li>
+              <li>When an AI writes part of your code, what do you still need to be able to do yourself?</li>
+            </ol>
+            <p>Many people start out treating AI as an answer machine. In this course it's a fast first draft that you test, explain and extend. Every HOS is built that way: it starts with AI and ends by hand.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex" id="ex-2">
+        <div class="ex-head">2 · Label AI's role in every activity <span class="ex-where">· each module page, in each activity's header</span></div>
+        <div class="ex-grid">
+          <div class="ex-col ex-before"><div class="ex-label">Now</div>
+            <p><span class="ex-tag">HOS 1 · Stage 2 of 4</span></p>
+            <p>Headers show only the stage. Understand &amp; Refine is the one activity whose header says anything about AI ("No AI assistant for this part"); for the rest, the AI Use rules are stated elsewhere, not next to the activity.</p></div>
+          <div class="ex-col ex-after"><div class="ex-label">New wording</div>
+            <p><span class="ex-tag">HOS 1 · Stage 2 of 4</span><span class="ex-tag ex-new">AI: your judgment</span></p>
+            <p>The full set of tags:</p>
+            <p><span class="ex-tag ex-new">AI: expected</span> Create / Scaffold<br>
+               <span class="ex-tag ex-new">AI: your judgment</span> Evaluate<br>
+               <span class="ex-tag ex-new">AI: your own words</span> Analyze<br>
+               <span class="ex-tag ex-new">No AI</span> Understand &amp; Refine, Knowledge check<br>
+               <span class="ex-tag ex-new">AI: think, don't write</span> Muddiest Point, Concept Debate<br>
+               <span class="ex-tag ex-new">AI: allowed, disclose</span> Application Challenge</p>
+            <p>With one line at the top of the lesson: "Each activity below is tagged with its AI rule, from <em>AI: expected</em> in Create / Scaffold to <em>No AI</em> in Understand &amp; Refine and the Knowledge Check."</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex" id="ex-3">
+        <div class="ex-head">3 · Plan before you prompt <span class="ex-where">· HOS guide and lesson, top of Create / Scaffold</span></div>
+        <div class="ex-grid">
+          <div class="ex-col ex-before"><div class="ex-label">Now</div><p>"Get a working app running fast with an AI coding assistant. This is the starting point, not the deliverable — you don't hand-edit anything yet."</p></div>
+          <div class="ex-col ex-after"><div class="ex-label">New wording (added above it)</div>
+            <p><strong>Plan before you prompt · 2 minutes, ungraded.</strong> Before you paste the prompt, jot a few lines of your own plan: which files you expect, where the key logic should live, and one thing you think the assistant might get wrong. When it's done, compare. Where its version differs from yours is where to look first in Evaluate. Nothing to submit; this doesn't change how Create / Scaffold is graded.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex" id="ex-4">
+        <div class="ex-head">4 · Show how professionals verify <span class="ex-where">· HOS guide and lesson, Evaluate stage</span></div>
+        <div class="ex-grid">
+          <div class="ex-col ex-before"><div class="ex-label">Now</div><p>"The critical gate — is the AI-produced result actually correct?"</p></div>
+          <div class="ex-col ex-after"><div class="ex-label">New wording (added below it)</div>
+            <p><strong>Why it counts:</strong> checking AI output is what working developers do. In Stack Overflow's developer surveys, the share of professional developers using AI tools rose to 85% by 2026, but only about 4 in 10 of them trusted its accuracy, and 98% said they check its output before using it (Makara &amp; Chhim, 2026).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex" id="ex-5">
+        <div class="ex-head">5 · Explain why the by-hand stage exists <span class="ex-where">· HOS guide and lesson, Understand &amp; Refine</span></div>
+        <div class="ex-grid">
+          <div class="ex-col ex-before"><div class="ex-label">Now</div><p>"By hand this time — no AI assistance for this stage."</p></div>
+          <div class="ex-col ex-after"><div class="ex-label">New wording (added below it)</div>
+            <p><strong>Why by hand?</strong> You can only judge AI output against know-how of your own, and that know-how comes from doing the work yourself. This stage is where it forms.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex" id="ex-6">
+        <div class="ex-head">6 · Treat snags as learning moments <span class="ex-where">· HOS guide, Common snags; lesson, Evaluate</span></div>
+        <div class="ex-grid">
+          <div class="ex-col ex-before"><div class="ex-label">Now</div>
+            <p>A list of snags with fixes, no introduction. For example:</p>
+            <p>"<strong>The agent always calls the tool, even when it shouldn't</strong> — check the tool's description in its schema. A vague description ("does math") makes the model over-eager; a specific one narrows it down."</p></div>
+          <div class="ex-col ex-after"><div class="ex-label">New wording</div>
+            <p>A new opening line: "These all came up in testing, so expect to hit one or two. A snag doesn't mean you did it wrong. Most show how the system really works, and the ones marked <strong>What it teaches</strong> make good material for your Analyze or Understand writing."</p>
+            <p>The same snag, with one line added: "<strong>What it teaches:</strong> the model routes on the tool's description. The description is part of your code."</p>
+            <p>In Evaluate: "A test that breaks the app is a good result here: it shows you exactly where the AI's code is weakest."</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex" id="ex-7">
+        <div class="ex-head">7 · Fresh discussion prompts <span class="ex-where">· Concept Debate example page, new optional section</span></div>
+        <div class="ex-grid">
+          <div class="ex-col ex-before"><div class="ex-label">Now</div><p>Only each module's graded question, e.g. "When a request might need a tool, who should decide — the model, or deterministic backend code?" That stays as it is.</p></div>
+          <div class="ex-col ex-after"><div class="ex-label">New wording (optional, ungraded)</div>
+            <p><strong>Your agent emails a customer the wrong refund amount. Who is responsible?</strong><br><em>Side A:</em> the people who built and deployed it. An agent is software, and its owners answer for what it does.<br><em>Side B:</em> responsibility is shared. When an agent decides for itself, the model provider and the company that set its limits share the blame.</p>
+            <p><strong>When every student can use AI, do grades still show skill?</strong><br><em>Side A:</em> yes, if the work checks judgment rather than output: testing, explaining, and changing code by hand.<br><em>Side B:</em> less and less. If AI can produce the work, a grade says little about the person, and employers will look for other proof.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex" id="ex-8">
+        <div class="ex-head">8 · Trace which tool did what <span class="ex-where">· HOS guide and lesson, under the Evaluate note</span></div>
+        <div class="ex-grid">
+          <div class="ex-col ex-before"><div class="ex-label">Now</div><p>The note's prompt: "What I tested · what I found · what the AI got wrong, missed, or handled surprisingly well"</p></div>
+          <div class="ex-col ex-after"><div class="ex-label">New wording (added below it)</div>
+            <p><strong>A line worth adding to your Evaluate note:</strong> which tests you came up with, which (if any) an AI suggested, and which problems you found yourself. It makes your own judgment easy to see.</p>
+            <p>A student's line might read: "I wrote the divide-by-zero and empty-input tests; Copilot suggested the large-number test. I found the missing error message myself."</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 430 Meeting Prep</title>
+  <meta name="description" content="Four topics raised for AI 430 (MLOps and AgentOps): agentic CI/CD, GitHub Agentic Workflows, Gemini Enterprise Agent Platform, and the agentic AI tools that help students get hired. What AI 430 already does, the gaps, and a recommendation for each.">
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #15803d; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #b45309; --amber-dim: #fffbeb;
+      --rose: #be123c; --rose-dim: #fff1f2;
+      --teal: #0f766e; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 900px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    a { color: var(--blue); }
+    code { font-size: 0.86em; background: #eef2f7; border-radius: 4px; padding: 1px 5px; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--teal); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--teal-dim); border: 1px solid rgba(15,118,110,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .tldr li { margin-bottom: 6px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; scroll-margin-top: 16px; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p { margin: 0 0 10px; }
+    .section-body h3 { margin: 18px 0 6px; font-size: 0.98rem; }
+    .section-body h3:first-child { margin-top: 0; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.green { background: var(--green-dim); border-left: 4px solid var(--green); }
+    .callout ul { margin: 6px 0 0; padding-left: 20px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { font-weight: 600; }
+    td.num { white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; }
+    ul.tight li { margin-bottom: 4px; }
+    .status { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 12px; padding: 2px 10px; margin-bottom: 8px; }
+    .status.yes { color: var(--green); background: var(--green-dim); }
+    .status.part { color: var(--amber); background: var(--amber-dim); }
+    .status.no { color: var(--rose); background: var(--rose-dim); }
+    .pill { display: inline-block; font-size: 0.72rem; font-weight: 700; border-radius: 10px; padding: 1px 8px; white-space: nowrap; }
+    .pill.yes { color: var(--green); background: var(--green-dim); }
+    .pill.part { color: var(--amber); background: var(--amber-dim); }
+    .pill.no { color: var(--rose); background: var(--rose-dim); }
+    .rec { border: 1px solid var(--border); border-left: 4px solid var(--teal); border-radius: var(--radius-sm); padding: 12px 16px; margin-top: 14px; background: #fbfdfd; }
+    .rec h4 { margin: 0 0 6px; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal); }
+    .rec p:last-child, .rec ul:last-child { margin-bottom: 0; }
+    .checklist { list-style: none; padding-left: 0; margin: 0; }
+    .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 4px; color: var(--slate); }
+    .sources { font-size: 0.86rem; }
+    .sources li { margin-bottom: 4px; overflow-wrap: anywhere; }
+    .muted { color: var(--slate); font-size: 0.85rem; }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } .section-body { padding: 16px 16px; } .section-header { padding: 16px 16px 12px; } }
+    @media print { body { background: #fff; } .section, .doc-header { box-shadow: none; } .nav-row { display: none; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="bsai-hub.html">BSAI Hub</a><span>·</span><a href="courses/AI-430.html">AI 430 course outline</a><span>·</span><a href="https://clarkngo.github.io/ai430/">AI 430 lesson site (draft)</a><span>·</span><a href="bsai-course-design-constraints.html">Course design constraints</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Meeting Prep · BSAI · AI 430</div>
+    <h1>AI 430 Meeting Prep: Agentic CI/CD, GitHub Agentic Workflows, Gemini Enterprise Agent Platform, and Job-Ready Tools</h1>
+    <p class="subtitle">Four topics raised for AI 430: MLOps and AgentOps. For each one: what it is, what the AI 430 draft already does, what's missing, and a recommendation that fits the course rules.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📄 Prepared Nov 17, 2026</span>
+      <span class="meta-chip">📅 Meeting date and attendees: to fill in</span>
+      <span class="meta-chip">🧭 Against outline v0.2 and the draft lesson site</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 28px;"><strong>BSAI reminder:</strong> the standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>: fixed official outcomes, every hands-on unit in GitHub Codespaces, free tiers first (paid keys optional only), and two-week HOS in Weeks 1–8. Two of today's topics run into rule 3:
+    <ul>
+      <li><strong>GitHub Agentic Workflows</strong> needs a coding-agent credential for every run: a GitHub Copilot entitlement or a paid API key. Whether a free student Copilot plan is enough is untested, so it can be required only if that test passes.</li>
+      <li><strong>Gemini Enterprise Agent Platform</strong> needs Google Cloud billing after a 90-day express-mode trial, so it can only be optional or an instructor demo.</li>
+    </ul>
+  Nothing else here conflicts with the rules. The official outcomes already name "agentic workflows" (O2), so topic 1 needs no change to the outcomes.</div>
+
+  <div class="tldr">
+    <h2>Walk out with</h2>
+    <ul>
+      <li><strong>Agentic CI/CD: mostly already there.</strong> HOS 2 ships the agent through the same CI/CD/CT pipeline and evaluation gate as the model. What's missing is an agent working <em>inside</em> the pipeline. Decide whether to add that.</li>
+      <li><strong>GitHub Agentic Workflows (gh-aw): a strong fit, still to test.</strong> Recommended as an optional HOS 2 extension and an Application Challenge, made a required step only if a free student Copilot plan can run it.</li>
+      <li><strong>Gemini Enterprise Agent Platform: teach it, don't build on it.</strong> Use it as the enterprise reference architecture that the free tools map onto, with an optional deploy for students who have credits.</li>
+      <li><strong>Job-ready tools: AI 430 already teaches what postings ask for most</strong> (evals, observability, CI/CD, RAG, guardrails). The gaps are running MCP servers in production, OpenTelemetry, Kubernetes, and one cloud deploy. Pick which to add.</li>
+    </ul>
+  </div>
+
+  <section class="section" id="cicd">
+    <div class="section-header"><div class="section-icon icon-green">🔁</div><div><h2>1 · CI/CD agentic workflow</h2><div class="section-sub">Outcome O2: "Apply CI/CD/CT principles to automate deployment of machine learning models and agentic workflows"</div></div></div>
+    <div class="section-body">
+      <span class="status yes">Mostly addressed</span>
+      <p>"Agentic CI/CD" can mean two different things, and AI 430 covers the first well:</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Two meanings of agentic CI/CD"><table>
+        <thead><tr><th>Meaning</th><th>In AI 430 now</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>CI/CD <em>for</em> an agent: ship the agent's code and prompts through tests, an evaluation gate and an automatic deploy</td><td>HOS 2 (Weeks 3–4): students write three GitHub Actions workflows. <code>ci.yml</code> tests every push, <code>deploy.yml</code> gates the model <em>and</em> the agent before deploying to a free Hugging Face Space, and <code>ct.yml</code> retrains weekly on drift. The Evaluate stage merges a prompt edit that raises the agent's success rate but doubles its tool calls, and asks whether the gate notices.</td><td><span class="pill yes">Covered</span></td></tr>
+          <tr><td>An agent <em>inside</em> CI/CD: a coding agent runs as a pipeline step and investigates failures, reviews changes or opens issues</td><td>Not taught. Students use Copilot Chat in Agent mode to <em>write</em> the workflows, but no agent runs in them.</td><td><span class="pill no">Gap</span></td></tr>
+        </tbody>
+      </table></div>
+      <div class="rec"><h4>Recommendation</h4>
+        <p>Keep HOS 2's design: the evaluation gate for a prompt change is the core AgentOps idea. Add the second meaning as a small, clearly bounded step, using GitHub Agentic Workflows (topic 2) as the example. It fits O2 ("agentic workflows") and gives HOS 4 (O5) a real case of an agent that can act on a repository.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="gh-aw">
+    <div class="section-header"><div class="section-icon icon-violet">🤖</div><div><h2>2 · GitHub Agentic Workflows (gh-aw)</h2><div class="section-sub"><a href="https://github.github.com/gh-aw/">github.github.com/gh-aw</a> · read Nov 17, 2026</div></div></div>
+    <div class="section-body">
+      <span class="status part">Not yet addressed · good fit · feasibility untested</span>
+      <h3>What it is</h3>
+      <p>You write a workflow as a Markdown file: YAML frontmatter for the trigger, permissions and allowed outputs, and plain-language instructions in the body. <code>gh aw compile</code> turns it into a hardened GitHub Actions workflow (a <code>.lock.yml</code> committed next to the <code>.md</code>), and GitHub Actions runs a coding agent on that trigger.</p>
+      <ul class="tight">
+        <li><strong>Engines:</strong> Copilot is the default. Claude Code and OpenAI Codex are also supported, Gemini CLI is marked deprecated, and an <code>agy</code> engine is experimental (Antigravity's CLI is called <code>agy</code>).</li>
+        <li><strong>Security model:</strong> the agent job is read-only by default. Writes such as creating an issue or a pull request go through <strong>safe outputs</strong>, which are applied by separate jobs with scoped permissions, and can be previewed with <code>staged: true</code>. The <strong>Agent Workflow Firewall</strong> limits network access to an allowlist, a separate <strong>threat detection</strong> job checks the output, and protected environments can require a human approval.</li>
+        <li><strong>Examples in the docs:</strong> "CI Doctor" investigates a failing CI run and opens an issue with the likely root cause. Others triage issues, review pull requests, write daily status reports, improve tests and update docs.</li>
+        <li><strong>Status:</strong> the docs link a "technical preview" deck and mark several parts experimental. No general-availability label.</li>
+      </ul>
+      <h3>Fit with AI 430</h3>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Where gh-aw fits in AI 430"><table>
+        <thead><tr><th>Where</th><th>How it would be used</th></tr></thead>
+        <tbody>
+          <tr><td>HOS 2 (O2)</td><td>Add a CI Doctor-style workflow to the HOS 2 repo. When <code>ci.yml</code> or the deploy gate fails, the agent reads the logs and opens an issue with a diagnosis. Students judge the diagnosis against the real cause in the Evaluate stage.</td></tr>
+          <tr><td>HOS 4 (O5)</td><td>Use gh-aw's security model as a case study: read-only by default, safe outputs, the network allowlist, threat detection. Then red-team it: can a malicious issue body make the agent do something it shouldn't (prompt injection, unintended actions)?</td></tr>
+          <tr><td>Application Challenge</td><td>A no-credential option: critique a given gh-aw workflow file. Which permissions does it grant, what could go wrong, and what should go through a human?</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>Rule check (free tiers first):</strong> every run needs an engine credential. That means a fine-grained token with the "Copilot Requests" permission, drawing on the token owner's Copilot entitlement, or a paid Anthropic, OpenAI or Gemini key. The docs don't say whether a free student Copilot plan qualifies, or how private repositories and Actions minutes are counted. Agents run on Actions runners, not in the Codespace, which is fine: HOS 2's workflows already work that way. Until this is tested, gh-aw can be optional only.</div>
+      <div class="rec"><h4>Recommendation</h4>
+        <ul class="tight">
+          <li><strong>Run a feasibility test before the HOS 2 build:</strong> a verified student GitHub account, a Classroom repo, <code>gh extension install github/gh-aw</code>, then the CI Doctor sample on a failing build. Record whether the Copilot engine runs and what it costs in AI credits.</li>
+          <li><strong>If it passes:</strong> add it as an extension step in HOS 2's Understand &amp; Refine stage, plus the HOS 4 red-team case.</li>
+          <li><strong>If it doesn't:</strong> keep the no-credential Application Challenge and an instructor demo.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="gemini-enterprise">
+    <div class="section-header"><div class="section-icon icon-blue">☁️</div><div><h2>3 · Gemini Enterprise Agent Platform</h2><div class="section-sub">Google Cloud's agent platform, announced April 22, 2026 as the evolution of Vertex AI</div></div></div>
+    <div class="section-body">
+      <span class="status part">Partly addressed through ADK · platform not used</span>
+      <h3>What it is</h3>
+      <p>Google's platform for building, deploying, governing and optimizing enterprise agents. It replaces Vertex AI, and the Gemini Enterprise app for employees is built on it. Google's documentation names these parts: Model Garden, RAG Engine, Agent Platform Sessions (state within a conversation), Memory Bank (memory across sessions), and a governance layer of Agent Identity, Agent Registry and Agent Gateway.</p>
+      <p>AI 430 already uses the same family of tools: Google ADK for agents and Gemini through a free AI Studio key, with the starter's <code>.env</code> set to <code>GOOGLE_GENAI_USE_VERTEXAI=FALSE</code>. So the platform is the paid, managed version of what students build by hand. That makes it a useful map, not a lab.</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Agent Platform parts and free equivalents"><table>
+        <thead><tr><th>Platform part</th><th>What students build instead, for free</th><th>Unit</th></tr></thead>
+        <tbody>
+          <tr><td>Managed deployment of an agent</td><td>GitHub Actions deploy to a Hugging Face Space, behind an evaluation gate</td><td>HOS 2</td></tr>
+          <tr><td>RAG Engine</td><td>Chroma vs. Qdrant in Docker, measured with Ragas</td><td>HOS 3</td></tr>
+          <tr><td>Sessions and Memory Bank</td><td>Long-term memory and memory retrieval performance</td><td>HOS 3, Term Project</td></tr>
+          <tr><td>Agent Identity, Registry and Gateway</td><td>Guardrails through ADK callbacks; agent-to-agent calls with a2a-sdk; OWASP Top 10 for LLM Applications and NIST AI RMF as the enterprise framework</td><td>HOS 4</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>Rule check (free tiers first):</strong> express mode lets new Google Cloud users try the platform without billing for 90 days. It is limited to quotas and "basic generative AI services", and it is separate from the $300 new-customer credit. After 90 days it needs billing, so it can't be a required step. Whether express mode includes agent deployment is untested.</div>
+      <div class="rec"><h4>Recommendation</h4>
+        <ul class="tight">
+          <li><strong>Teach it as the reference architecture.</strong> In the HOS 4 lecture and the Week 8 architecture review, students put each part of their own pipeline next to the matching platform part and name what the managed version would add, mainly identity and governance.</li>
+          <li><strong>Optional extension for the Term Project:</strong> students with credits, or a school-paid Google Cloud education grant, deploy their ADK agent to the platform. This is never graded as required.</li>
+          <li><strong>Instructor demo:</strong> one recorded deploy of the HOS 4 agent, so every student sees it without paying.</li>
+          <li><strong>To check:</strong> whether CityU can get Google Cloud education credits for the course, and what express mode allows.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="jobs">
+    <div class="section-header"><div class="section-icon icon-amber">💼</div><div><h2>4 · Tools that help students get hired</h2><div class="section-sub">What agentic AI job postings asked for in 2026, and where AI 430 stands</div></div></div>
+    <div class="section-body">
+      <p>Two job-posting counts give usable numbers; neither is a neutral survey.</p>
+      <ul class="tight">
+        <li><strong>Agentic AI Jobs Index:</strong> 2,331 open agentic roles at 193 companies, Sep 28, 2026. It is published by a vendor and doesn't describe its sourcing.</li>
+        <li><strong>Simplilearn:</strong> 98 US postings with "agent" in the title, Oct 6, 2026. It is a training seller, and its sample leans toward Bay Area start-ups and big tech.</li>
+      </ul>
+      <p>Read the numbers as direction, not precision.</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Job-posting skill counts"><table>
+        <thead><tr><th>Skill</th><th>Jobs Index (of 2,331)</th><th>Simplilearn (of 98)</th><th>In AI 430</th></tr></thead>
+        <tbody>
+          <tr><td>Python</td><td class="num">1,633 (~70%)</td><td class="num">65</td><td><span class="pill yes">Every HOS</span></td></tr>
+          <tr><td>LLM evaluation</td><td class="num">288</td><td class="num">56</td><td><span class="pill yes">HOS 2 gate, HOS 3 judge scores</span></td></tr>
+          <tr><td>Observability, tracing</td><td class="num">not counted</td><td class="num">39</td><td><span class="pill yes">HOS 3: Langfuse, Evidently</span></td></tr>
+          <tr><td>RAG</td><td class="num">637</td><td class="num">34</td><td><span class="pill yes">HOS 3: Chroma, Qdrant, Ragas</span></td></tr>
+          <tr><td>Vector databases</td><td class="num">312</td><td class="num">27</td><td><span class="pill yes">HOS 3</span></td></tr>
+          <tr><td>Multi-agent</td><td class="num">369</td><td class="num">27</td><td><span class="pill yes">HOS 4: a2a-sdk</span></td></tr>
+          <tr><td>Guardrails, safety</td><td class="num">not counted</td><td class="num">25</td><td><span class="pill yes">HOS 4: promptfoo, ADK callbacks</span></td></tr>
+          <tr><td>CI/CD</td><td class="num">not counted</td><td class="num">18</td><td><span class="pill yes">HOS 2: GitHub Actions</span></td></tr>
+          <tr><td>MCP</td><td class="num">588</td><td class="num">22</td><td><span class="pill part">Built in AI 420; not operated in AI 430</span></td></tr>
+          <tr><td>Docker</td><td class="num">not counted</td><td class="num">13</td><td><span class="pill part">HOS 3, for the vector databases only</span></td></tr>
+          <tr><td>Kubernetes</td><td class="num">594</td><td class="num">18</td><td><span class="pill no">Not covered</span></td></tr>
+          <tr><td>Cloud platform</td><td class="num">995 ("Cloud")</td><td class="num">AWS 28 · Azure 19 · GCP 19</td><td><span class="pill no">Hugging Face Spaces only</span></td></tr>
+          <tr><td>LangChain / LangGraph</td><td class="num">405 / 331</td><td class="num">16 / 15</td><td><span class="pill no">Not covered (ADK instead)</span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted">A third count, 390 AI engineer postings from July 2026 on a personal blog, also puts evaluation in 56% of postings. Two warnings recur across all the sources: junior roles are rare (110 of the Index's 2,331 are junior or intern), and only about 9% of agentic roles are remote. Students need proof they can operate a system, not only a certificate.</p>
+
+      <div class="callout green"><strong>What AI 430 already gives students:</strong> the skills that most often separate an AgentOps candidate are evaluation and observability. Evaluation appears in more than half of the postings in both counts that report it. AI 430 teaches both with open-source tools (Langfuse, Evidently, Ragas, promptfoo) that don't tie students to one framework. Add CI/CD, RAG performance and guardrails, and the course covers most of the "operate it in production" list.</div>
+
+      <div class="rec"><h4>Recommendation: ranked by job value against effort</h4>
+        <ol class="tight" style="padding-left:20px">
+          <li><strong>Keep the current core and say it plainly in the course copy:</strong> evals, tracing, CI/CD gates, RAG benchmarking, red-teaming. These are what employers name.</li>
+          <li><strong>Operate an MCP server (HOS 4):</strong> reuse the MCP server students built in AI 420. Trace it, put a tool allowlist on it, and red-team it for injection through tool descriptions and results. The highest-demand gap, low cost, no new account.</li>
+          <li><strong>OpenTelemetry (HOS 3):</strong> export the agent's traces in OpenTelemetry format alongside Langfuse, so the skill carries over to whichever tracing tool an employer uses (Datadog, Arize, LangSmith). Small change.</li>
+          <li><strong>gh-aw (HOS 2, optional):</strong> see topic 2. It shows the agent-in-the-pipeline pattern employers are starting to adopt.</li>
+          <li><strong>Containers and Kubernetes (Term Project, optional):</strong> package the agent as a Docker image; a local Kubernetes cluster (kind or k3d) in a Codespace is worth a feasibility test, not a commitment.</li>
+          <li><strong>One cloud deploy (Term Project, optional):</strong> Gemini Enterprise Agent Platform for students with credits (topic 3).</li>
+          <li><strong>LangGraph: discuss, don't switch.</strong> ADK stays the framework, matching AI 420 and the free Gemini key. A Concept Debate or Application Challenge can compare ADK and LangGraph so students can talk about both in interviews.</li>
+        </ol>
+        <p><strong>Make the work show:</strong> the Term Project repository is the job artifact. Its README should show the CI badge, the evaluation report, trace screenshots and the red-team findings, so a recruiter sees a running, measured system.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="questions">
+    <div class="section-header"><div class="section-icon icon-teal">❓</div><div><h2>Questions for the meeting</h2><div class="section-sub">Decisions that change what gets built next</div></div></div>
+    <div class="section-body">
+      <ol class="tight" style="padding-left:20px">
+        <li>Does "CI/CD agentic workflow" mean the agent <em>being deployed</em> (already in HOS 2), an agent <em>working in the pipeline</em> (gh-aw), or both?</li>
+        <li>Can the course rely on GitHub's free student Copilot plan? If yes, gh-aw can become a required step once tested.</li>
+        <li>Is there budget, or a Google Cloud education grant, for Gemini Enterprise Agent Platform credits? Without one it stays optional.</li>
+        <li>Which job-market gaps go in: MCP operations, OpenTelemetry, Kubernetes, a cloud deploy? Each adds time to a two-week HOS.</li>
+        <li>Who runs the gh-aw and express-mode feasibility tests, and by when?</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-violet">📝</div><div><h2>Decision record</h2><div class="section-sub">Fill in during the meeting</div></div></div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li><strong>Agentic CI/CD scope:</strong> as is / add agent-in-pipeline step / other: ________</li>
+        <li><strong>gh-aw:</strong> feasibility test owner ________, due ________; then required / optional / demo only</li>
+        <li><strong>Gemini Enterprise Agent Platform:</strong> reference architecture only / plus optional deploy / plus instructor demo</li>
+        <li><strong>Google Cloud education credits:</strong> ask ________ / not pursuing</li>
+        <li><strong>Job-market additions:</strong> MCP operations ☐ · OpenTelemetry ☐ · Kubernetes test ☐ · cloud deploy ☐</li>
+        <li><strong>ADK vs. LangGraph:</strong> keep ADK, add a comparison activity / other: ________</li>
+        <li><strong>Next step:</strong> update the <a href="courses/AI-430.html">course outline</a> feasibility table and the lesson site</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><div class="section-icon icon-blue">🔗</div><div><h2>Sources</h2><div class="section-sub">Read Nov 17, 2026</div></div></div>
+    <div class="section-body">
+      <ul class="sources">
+        <li>AI 430 <a href="courses/AI-430.html">course outline v0.2</a> (official description and outcomes) and the <a href="https://clarkngo.github.io/ai430/">draft lesson site</a>, HOS 2 guide.</li>
+        <li>GitHub Agentic Workflows: <a href="https://github.github.com/gh-aw/">home</a>, <a href="https://github.github.com/gh-aw/introduction/overview/">overview</a>, <a href="https://github.github.com/gh-aw/setup/quick-start/">quick start</a>, <a href="https://github.github.com/gh-aw/reference/engines/">engines</a>, <a href="https://github.github.com/gh-aw/introduction/architecture/">architecture</a>, <a href="https://github.github.com/gh-aw/reference/billing/">billing</a>, <a href="https://github.github.com/gh-aw/reference/cost-management/">cost management</a>.</li>
+        <li>Gemini Enterprise Agent Platform: <a href="https://cloud.google.com/blog/products/ai-machine-learning/introducing-gemini-enterprise-agent-platform">launch post</a>, <a href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview">overview docs</a>, <a href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/start/express-mode/overview">express mode</a>, <a href="https://cloud.google.com/products/gemini-enterprise-agent-platform">product page</a>.</li>
+        <li>Job postings: <a href="https://www.getreadyforagents.com/jobs/report/2026-09/">Agentic AI Jobs Index, September 2026</a> (vendor); <a href="https://www.simplilearn.com/career-roadmap/agentic-ai-engineer-usa">Simplilearn, Agentic AI Engineer in the US</a> (training seller); <a href="https://dev.to/ali_82f3409ed625e8ba8515b/ai-engineer-roadmap-2026-what-390-job-postings-actually-require-3jdo">390 AI engineer postings, DEV Community</a> (personal blog).</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 410 Revamp Plan</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--teal); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--teal-dim); border: 1px solid rgba(13,148,136,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p { margin: 0 0 10px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { white-space: nowrap; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; }
+    ul.tight li { margin-bottom: 4px; }
+    h3 { font-size: 0.95rem; margin: 16px 0 6px; }
+    h3:first-child { margin-top: 0; }
+    .checklist { list-style: none; padding-left: 0; margin: 0; }
+    .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 4px; color: var(--slate); }
+    .ex { border: 1px solid var(--border); border-radius: var(--radius-sm); margin: 0 0 16px; overflow: hidden; scroll-margin-top: 16px; }
+    .ex:last-of-type { margin-bottom: 0; }
+    .ex-head { padding: 10px 14px; font-weight: 700; font-size: 0.92rem; border-bottom: 1px solid var(--border); }
+    .ex-head .ex-where { font-weight: 500; color: var(--slate); font-size: 0.82rem; }
+    .ex-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    .ex-col { padding: 12px 14px; font-size: 0.9rem; }
+    .ex-col p { margin: 0 0 8px; } .ex-col p:last-child { margin-bottom: 0; }
+    .ex-col ol, .ex-col ul { margin: 0 0 8px; padding-left: 20px; }
+    .ex-before { background: var(--bg); color: var(--slate); border-right: 1px solid var(--border); }
+    .ex-after { background: var(--green-dim); }
+    .ex-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+    .ex-before .ex-label { color: var(--slate); }
+    .ex-after .ex-label { color: #15803d; }
+    .ex-tag { display: inline-block; font-size: 0.74rem; font-weight: 600; border: 1px solid var(--border); background: var(--card); border-radius: 20px; padding: 1px 9px; margin: 2px 4px 2px 0; color: var(--ink); }
+    .ex-new { background: #dcfce7; border-color: rgba(21,128,61,0.35); }
+    .ex-link { display: inline-block; margin-top: 4px; font-size: 0.8rem; font-weight: 600; color: var(--blue); text-decoration: none; }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } td:first-child { white-space: normal; }
+      .ex-grid { grid-template-columns: 1fr; } .ex-before { border-right: none; border-bottom: 1px solid var(--border); } }
+  </style>
+  <style>
+    .pick { background: var(--green-dim); }
+    .badge { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 20px; padding: 1px 8px; margin-left: 6px; vertical-align: 1px; }
+    .badge.decided { background: #dcfce7; color: #15803d; }
+    .badge.open { background: var(--amber-dim); color: #b45309; border: 1px solid rgba(217,119,6,0.3); }
+    .badge.lean { background: var(--blue-dim); color: var(--blue); }
+    td.num, th.num { text-align: right; white-space: nowrap; }
+    .strike { color: var(--slate-light); text-decoration: line-through; }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="bsai-hub.html">BSAI Hub</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a><span>·</span><a href="ai410-content-refresh-proposal.html">AI 410 content refresh (v1.1)</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Planning · AI 410 · For review with the Dean</div>
+    <h1>AI 410 Revamp: New Grading and a Weekly Rhythm</h1>
+    <p class="subtitle">The Muddiest Point is removed, the HOS absorbs the Application Challenge, Concept Debates and Knowledge Checks move to weekly, and the Term Project doubles to 40%. AI 410 goes first; AI 420, 430 and 440 copy it once it's final.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Nov 17, 2026</span>
+      <span class="meta-chip">✅ 6 decisions made</span>
+      <span class="meta-chip">❓ 2 still open</span>
+      <span class="meta-chip">🧮 Still 1,000 points</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 28px;"><strong>BSAI reminder:</strong> the standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>. This plan keeps all four: the official description and outcomes stay fixed, work stays in Codespaces on free tiers, and each HOS still spans two weeks (Weeks 1–8) with the Term Project in Weeks 9–10. The syllabus master stays Clark's OneDrive Word file; changes are drafted for him to apply there.</div>
+
+  <div class="tldr">
+    <h2>In short</h2>
+    <ul>
+      <li><strong>Fewer, bigger graded pieces:</strong> HOS 40% (with the challenge inside it), Term Project 40%, Concept Debate 10%, Knowledge Check 10%.</li>
+      <li><strong>Every week has the same small beat:</strong> one Concept Debate and one Knowledge Check. Week 1's check covers theory and Week 2's covers skills.</li>
+      <li><strong>The name stays "HOS".</strong> Each HOS gets two named halves: Part A: Build (Week 1) and Part B: Apply (Week 2). The other names considered are kept <a href="#naming">below</a> for the Dean.</li>
+      <li><strong>Still open:</strong> how the 100 HOS points split between the build and the challenge, and whether the Dean prefers another name.</li>
+    </ul>
+  </div>
+
+  <section class="section" id="weights">
+    <div class="section-header"><div class="section-icon icon-teal">⚖️</div><div><h2>Grade weights, before and after</h2><div class="section-sub">Total stays 1,000 points</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Category</th><th class="num">Now</th><th class="num">New</th><th>New points</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Hands-On Skill (HOS)</td><td class="num">40%</td><td class="num"><strong>40%</strong></td><td>4 × 100 = 400 (now includes the challenge)</td><td><span class="badge decided">Decided</span></td></tr>
+          <tr><td>Application Challenge (AC)</td><td class="num">20%</td><td class="num"><span class="strike">20%</span> 0%</td><td>Merged into each HOS as Part B</td><td><span class="badge decided">Decided</span></td></tr>
+          <tr><td>Term Project (TP)</td><td class="num">20%</td><td class="num"><strong>40%</strong></td><td>400 (every deliverable doubles)</td><td><span class="badge decided">Decided</span></td></tr>
+          <tr><td>The Muddiest Point (MP)</td><td class="num">5%</td><td class="num"><span class="strike">5%</span> 0%</td><td>Removed</td><td><span class="badge decided">Decided</span></td></tr>
+          <tr><td>Concept Debate (CD)</td><td class="num">5%</td><td class="num"><strong>10%</strong></td><td>10 × 10 = 100 (weekly, CD01–CD10)</td><td><span class="badge decided">Decided</span></td></tr>
+          <tr><td>Knowledge Check (KC)</td><td class="num">10%</td><td class="num"><strong>10%</strong></td><td>10 × 10 = 100 (weekly, KC01–KC10)</td><td><span class="badge decided">Decided</span></td></tr>
+          <tr><td>Total</td><td class="num">100%</td><td class="num">100%</td><td>1,000</td><td></td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>Syllabus grouping:</strong> today's table splits "Major Assessments 80%" (HOS, AC, TP) from "Instructor Determined Assignments 20%" (MP, CD, KC). Under the new weights that becomes <strong>80% major</strong> (HOS 40 + TP 40) and <strong>20% instructor-determined</strong> (CD 10 + KC 10), so the 80/20 template split still holds.</div>
+    </div>
+  </section>
+
+  <section class="section" id="rhythm">
+    <div class="section-header"><div class="section-icon icon-violet">🗓️</div><div><h2>The weekly rhythm</h2><div class="section-sub">Same two-week HOS, now with a debate and a check in both weeks</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Week</th><th>HOS part</th><th>Concept Debate</th><th>Knowledge Check</th></tr></thead>
+        <tbody>
+          <tr><td>Odd week (1, 3, 5, 7)</td><td><strong>Part A: Build</strong>: lecture, Create / Scaffold, Evaluate</td><td>Debate A, on the module's core idea</td><td><strong>Theory:</strong> concepts from the lecture and readings</td></tr>
+          <tr><td>Even week (2, 4, 6, 8)</td><td><strong>Part B: Apply</strong>: Analyze, Understand &amp; Refine (by hand), then the challenge (formerly the AC)</td><td>Debate B, on a design trade-off the challenge raises</td><td><strong>Skill:</strong> reading logs, code and "what happens next"</td></tr>
+          <tr><td>Week 9</td><td>Term Project work, reviewing the architecture across all four HOS</td><td>CD09: integration across HOS 1–4</td><td>KC09: cumulative theory</td></tr>
+          <tr><td>Week 10</td><td>Term Project presentation and final deliverables</td><td>CD10: the deployed system in the real world</td><td>KC10: cumulative skill</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:12px">The Muddiest Point used to come before each HOS. Without it, the first Knowledge Check of each module gives early feedback instead, and its results show the instructor what to reteach (the Just-in-Time Teaching role the MP had).</p>
+    </div>
+  </section>
+
+  <section class="section" id="naming">
+    <div class="section-header"><div class="section-icon icon-blue">🏷️</div><div><h2>Naming the combined HOS</h2><div class="section-sub">Decision for now, plus the alternatives to check with the Dean</div></div></div>
+    <div class="section-body">
+      <p><strong>Current decision <span class="badge decided">Decided</span>:</strong> keep <strong>Hands-On Skill (HOS)</strong> and name its halves <strong>Part A: Build</strong> and <strong>Part B: Apply</strong>. For example: "HOS 1 · Part B: Apply — a clinic's booking agent".</p>
+      <p>"HOS" is the term in the Dean's two-week rule and in other STC courses. It also appears in Brightspace grade items, Classroom50 assignments, template repo names and about 700 times on the AI 410 site, so keeping it costs nothing to rename.</p>
+      <h3>Alternatives considered</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Name</th><th>Pros</th><th>Cons</th></tr></thead>
+        <tbody>
+          <tr class="pick"><td>Hands-On Skill (HOS), with Part A: Build and Part B: Apply</td><td>Nothing to rename; matches STC-wide wording and the Dean's rule; the part names show the challenge is inside.</td><td>The top-level name alone doesn't say there's a transfer task.</td></tr>
+          <tr><td>Hands-On Skill &amp; Application (HOSA)</td><td>Says both halves; "HOS" stays recognizable.</td><td>Clunky acronym; grade items, pages and templates need renaming.</td></tr>
+          <tr><td>Build &amp; Apply (B&amp;A)</td><td>Clearest description of the two weeks.</td><td>Breaks from the STC-wide "HOS"; Classroom50 slugs, template repos and every page need renaming.</td></tr>
+          <tr><td>Hands-On Challenge (HOC)</td><td>Short; stresses the transfer task.</td><td>Loses "skill"; still a full rename.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>For the Dean:</strong> does the two-week rule depend on the name "HOS", or only on two weeks per unit? If another name is preferred, it can be swapped in before the AI 410 pages are rebuilt. The part names (Build / Apply) work under any of these.</div>
+    </div>
+  </section>
+
+  <section class="section" id="rubric">
+    <div class="section-header"><div class="section-icon icon-amber">📐</div><div><h2>Splitting the 100 HOS points <span class="badge open">Open</span></h2><div class="section-sub">Which split is fairest to students, and grading once at the end of Week 2</div></div></div>
+    <div class="section-body">
+      <h3>What "fair" means here</h3>
+      <ul class="tight">
+        <li><strong>Weight follows the work.</strong> The build takes about a week and a half, the challenge about half a week. The old weighting was 100 : 50, so the challenge was about a third.</li>
+        <li><strong>One mistake isn't punished twice.</strong> A broken build shouldn't sink the challenge too. The challenge has its own starter in <code>challenge/</code>, so it can be graded on its own.</li>
+        <li><strong>Each skill is scored once.</strong> Analyze and Evaluate shouldn't be counted in both halves.</li>
+        <li><strong>Students know the split up front</strong> and see it on the rubric.</li>
+      </ul>
+
+      <h3>The three options</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Option</th><th>Fairness to students</th><th>Grading</th></tr></thead>
+        <tbody>
+          <tr><td>A. 5 × 20, Apply = the challenge</td><td>Least fair. The challenge falls to 8% of the course grade. A weak build lowers four of the five criteria, so one mistake counts many times. The open design decision, worth 40% of the old AC, nearly disappears.</td><td>Easiest: same shape as rubric 100981.</td></tr>
+          <tr class="pick"><td>B. Build 60 / Challenge 40, overlaps trimmed <span class="badge lean">Lean</span></td><td>Fairest. It stays close to the old one-third weighting while giving the individual transfer task real weight. Each half is scored on its own, so a broken build doesn't zero the challenge, and each skill is scored once.</td><td>One rubric with two sections and seven criteria.</td></tr>
+          <tr><td>C. Build 50 / Challenge 50</td><td>Over-weights the challenge, which is about a quarter of the time. Week 2 also holds the by-hand work on the build, so it isn't really one week per half.</td><td>Simple to explain.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>The lean, option B in detail</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Part</th><th>Criterion</th><th class="num">Points</th><th>Comes from</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="5">A + B: the build (60)</td><td>Create: AI-assisted scaffold that runs</td><td class="num">10</td><td>HOS Create (was 20)</td></tr>
+          <tr><td>Evaluate: tested whether the AI's result was right</td><td class="num">15</td><td>HOS Evaluate</td></tr>
+          <tr><td>Analyze: accurate mechanism walkthrough</td><td class="num">15</td><td>HOS Analyze, which also covers the old AC Analysis</td></tr>
+          <tr><td>Apply: the hand-written change works</td><td class="num">10</td><td>HOS Apply</td></tr>
+          <tr><td>Understand: own explanation, no AI</td><td class="num">10</td><td>HOS Understand</td></tr>
+          <tr><td rowspan="2">B: the challenge (40)</td><td>Design: a working solution to the new scenario that passes the tests, plus the open decision</td><td class="num">20</td><td>AC Design + Application</td></tr>
+          <tr><td>Justify: the decision argued against criteria, with a named trade-off</td><td class="num">20</td><td>AC Evaluation</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:10px">Levels stay at 100 / 90 / 75 / 60% of each criterion, as on every other AI 410 rubric. A 60/40 split doesn't depend on these exact criterion points; they can be tuned.</p>
+
+      <h3>What if the instructor grades once, at the end of Week 2?</h3>
+      <p>That already matches how HOS work is submitted: the last push to the Classroom50 repo before the end of Week 2 is what counts. Grading once works with any option. Option B still works well as one rubric with two sections, filled in at one sitting. The real trade-offs are about feedback, not points:</p>
+      <ul class="tight">
+        <li><strong>Pro:</strong> one grading pass per module (4 per student per term, not 8), and students get the whole second week to fix Week 1 problems before anything is scored.</li>
+        <li><strong>Con:</strong> no instructor feedback in the middle of the module. A student who misunderstood the build in Week 1 may only find out after the module ends.</li>
+        <li><strong>Con:</strong> work can pile up at the end of Week 2, because nothing forces a Week 1 checkpoint.</li>
+        <li><strong>Mitigation, ungraded:</strong> the Week 1 theory Knowledge Check gives automatic feedback. The existing "End of Week 1" checklist on each lesson stays as a self-check, and commit history still shows whether Evaluate happened in Week 1.</li>
+      </ul>
+      <p><strong>Recommendation:</strong> option B, graded once at the end of Week 2, with the Week 1 Knowledge Check and self-check as the early feedback. This needs Clark's confirmation before the rubric is built.</p>
+    </div>
+  </section>
+
+  <section class="section" id="tp">
+    <div class="section-header"><div class="section-icon icon-green">🚀</div><div><h2>Term Project at 400 points <span class="badge decided">Decided</span></h2><div class="section-sub">Every deliverable doubles; due weeks and internal percentages stay the same</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Phase (due)</th><th>Deliverable</th><th class="num">Now</th><th class="num">New</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="2">1 (Week 3)</td><td>System v0.3</td><td class="num">10</td><td class="num">20</td></tr>
+          <tr><td>Proposal</td><td class="num">10</td><td class="num">20</td></tr>
+          <tr><td rowspan="2">2 (Week 7)</td><td>System v0.7</td><td class="num">30</td><td class="num">60</td></tr>
+          <tr><td>Progress Report</td><td class="num">30</td><td class="num">60</td></tr>
+          <tr><td rowspan="4">3 (Week 10)</td><td>System v1.0</td><td class="num">40</td><td class="num">80</td></tr>
+          <tr><td>Final Report</td><td class="num">50</td><td class="num">100</td></tr>
+          <tr><td>Final Presentation</td><td class="num">20</td><td class="num">40</td></tr>
+          <tr><td>Final Demo Video</td><td class="num">10</td><td class="num">20</td></tr>
+          <tr><td>Total</td><td></td><td class="num">200</td><td class="num"><strong>400</strong></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section" id="changes">
+    <div class="section-header"><div class="section-icon icon-teal">🧩</div><div><h2>What has to change</h2><div class="section-sub">AI 410 first; once approved, the same list repeats for AI 420, 430 and 440</div></div></div>
+    <div class="section-body">
+      <h3>Syllabus (OneDrive master)</h3>
+      <ul class="tight">
+        <li>Rewrite the grading table, the 80/20 category tables and the HOS section with Part A / Part B and the new rubric. Remove the AC and MP sections.</li>
+        <li>CD: weekly, with Debate A and Debate B. KC: weekly, theory then skill, 10 points each. TP points table at 400.</li>
+        <li>Course schedule "Format" column becomes: Lecture → CD → Build → KC (theory) | Apply + challenge → CD → KC (skill).</li>
+        <li>Claude drafts a revised Word file plus a change list. Clark applies it in OneDrive, then the repo mirror and <code>syllabus.html</code> are updated.</li>
+      </ul>
+      <h3>Rubrics (Brightspace)</h3>
+      <ul class="tight">
+        <li>New combined HOS rubric /100, copied from 100981 and not edited in place. Archive the AC (100982) and MP (100983) rubrics.</li>
+        <li>CD rubric stays 5 + 5 = /10 and is reused for CD01–10. Eight TP rubrics rescaled to the doubled points.</li>
+      </ul>
+      <h3>Interactive lessons and site (cityuseattle/ai410)</h3>
+      <ul class="tight">
+        <li>Module 1–4 pages: remove the Muddiest Point section and its JS, retitle the Week 1 / Week 2 halves as Part A / Part B, and fold the Application Challenge section into Part B.</li>
+        <li>Add a second debate (Debate B) per module and a Week 1 and Week 2 Knowledge Check entry. Update the "what's due" lists, the course home, README, the AI Use Guide and the concept companion.</li>
+        <li>Keep <code>module-N/application-challenge.html</code> at the same URL, retitled as the Part B guide, because Brightspace links depend on it. Keep section ids such as <code>#challenge</code>.</li>
+        <li>Module 5: add CD09/CD10 prompts and KC09/KC10 entries.</li>
+      </ul>
+      <h3>Repos and Classroom50</h3>
+      <ul class="tight">
+        <li>Copy each AI410-AC0N starter into AI410-HOS0N as <code>challenge/</code>, keeping its tests, and add a Part B heading to <code>NOTES.md</code>.</li>
+        <li>Retire Classroom50 assignments ac01–04 and archive the AI410-AC01–04 templates. Both are kept, not deleted.</li>
+      </ul>
+      <h3>Instructor repo (cityuseattle/ai410-instructor, private)</h3>
+      <ul class="tight">
+        <li>Re-split the KC banks into KC01–10: odd weeks theory, even weeks skill, with new questions where a side runs short. Rebuild the import CSVs.</li>
+        <li>Merge the AC answer keys and exemplars into the HOS answer keys, and update the teaching guide, running-the-course and delivery walkthrough.</li>
+      </ul>
+      <h3>Brightspace dev shell (125368)</h3>
+      <ul class="tight">
+        <li><strong>Grade items:</strong> delete MP01–05 and AC01–04, rename the TP items' points, and create CD06–10 and KC06–10. Every CD and KC item becomes 10 points.</li>
+        <li><strong>Discussions and quizzes:</strong> add CD06–10 topics and KC06–10 quizzes, then rebuild the question pools at 10 points each.</li>
+        <li><strong>Pages:</strong> rewrite the HOS, CD and KC instruction pages and the HOS01–04 pages. Retire the MP and AC pages and folders.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="open">
+    <div class="section-header"><div class="section-icon icon-amber">❓</div><div><h2>Still to decide</h2></div></div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li><strong>Clark:</strong> HOS rubric split (lean: option B, 60/40, graded once at the end of Week 2).</li>
+        <li><strong>Clark, with the Dean:</strong> keep "HOS", or one of the alternative names.</li>
+        <li><strong>Clark:</strong> approve the Debate B topics, one new question per module plus CD09/CD10, before they go on the site.</li>
+        <li><strong>Open KC questions from the 11-03 review:</strong> attempts, the data plan and timing. Moving to weekly 10-point checks is a good moment to fix the "90 seconds per question" wording, since Brightspace can only time the whole quiz.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</body>
+</html>

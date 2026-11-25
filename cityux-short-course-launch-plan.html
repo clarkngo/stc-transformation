@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUx Short-Course Launch Plan — AI Fluency for X</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+    .qa { margin: 0; padding-left: 20px; }
+    .qa > li { margin-bottom: 18px; font-size: 0.92rem; }
+    .qa > li > strong.q { display: block; font-size: 0.95rem; margin-bottom: 6px; }
+    .qa ul { margin: 0; padding-left: 18px; }
+    .qa ul li { margin-bottom: 6px; }
+    .fill { background: #fef9c3; border: 1px dashed #ca8a04; border-radius: 4px; padding: 0 4px; color: #713f12; }
+    .copy-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .copy-btn { font: inherit; font-size: 0.85rem; font-weight: 700; background: var(--blue); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+    .copy-btn:hover { background: #1e40af; }
+    .copy-status { font-size: 0.82rem; color: var(--green); font-weight: 600; min-height: 1em; }
+    table.map { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    table.map th, table.map td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.map th { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+    .table-wrap { overflow-x: auto; }
+    @media (max-width: 600px) { .doc-header, .section-body { padding-left: 16px; padding-right: 16px; } .point { flex-direction: column; gap: 6px; } }
+    .h3 { font-size: 0.95rem; font-weight: 800; margin: 22px 0 10px; letter-spacing: -0.01em; }
+    .h3:first-child { margin-top: 0; }
+    .note { font-size: 0.86rem; color: var(--slate); margin: 14px 0 0; }
+    ol.tight { margin: 8px 0 0; padding-left: 20px; }
+    ol.tight li { margin-bottom: 6px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    @media (max-width: 700px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+    .stat { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+    .stat-num { font-size: 1.35rem; font-weight: 900; color: var(--blue); letter-spacing: -0.02em; }
+    .stat-label { font-size: 0.78rem; color: var(--slate); line-height: 1.4; margin-top: 2px; }
+    .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+    .pill-green { background: var(--green-dim); color: #15803d; }
+    .pill-blue { background: var(--blue-dim); color: var(--blue); }
+    .pill-amber { background: var(--amber-dim); color: #b45309; }
+    .pill-red { background: var(--red-dim); color: #b91c1c; }
+    table.score td:nth-child(n+2):nth-child(-n+8) { text-align: center; }
+    table.score tr.win td:first-child { font-weight: 700; }
+    table.score tr.lose td { color: var(--slate); }
+    .gap-band { display: grid; grid-template-columns: 1fr 1.4fr 1fr; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); font-size: 0.82rem; font-weight: 700; text-align: center; }
+    .gap-seg { padding: 12px 10px; }
+    .gap-seg span { display: block; font-weight: 400; font-size: 0.76rem; margin-top: 2px; }
+    .gap-free { background: #e2e8f0; color: var(--slate); }
+    .gap-us { background: var(--blue); color: #fff; }
+    .gap-us span { color: #dbeafe; }
+    .gap-grad { background: #e2e8f0; color: var(--slate); }
+    @media (max-width: 600px) { .gap-band { grid-template-columns: 1fr; } }
+    .course-card { border: 1px solid var(--border); border-left: 5px solid var(--blue); border-radius: var(--radius-sm); padding: 16px 18px; margin-bottom: 16px; background: #fff; }
+    .course-card:last-child { margin-bottom: 0; }
+    .course-card.c-teal { border-left-color: var(--teal); }
+    .course-card.c-amber { border-left-color: var(--amber); }
+    .course-top h3 { margin: 6px 0 4px; font-size: 1.02rem; font-weight: 800; }
+    .course-promise { margin: 0 0 12px; font-style: italic; color: var(--slate); font-size: 0.9rem; }
+    .kv > div { display: grid; grid-template-columns: 120px 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 0.87rem; }
+    .kv > div > span { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); padding-top: 2px; }
+    @media (max-width: 600px) { .kv > div { grid-template-columns: 1fr; gap: 2px; } }
+    .timeline { list-style: none; margin: 0; padding: 0; border-left: 3px solid var(--blue-dim); }
+    .timeline li { display: grid; grid-template-columns: 120px 1fr; gap: 12px; padding: 0 0 16px 16px; position: relative; font-size: 0.9rem; }
+    .timeline li::before { content: ""; position: absolute; left: -8px; top: 5px; width: 13px; height: 13px; border-radius: 50%; background: var(--blue); }
+    .tl-date { font-weight: 800; color: var(--blue); font-size: 0.82rem; }
+    @media (max-width: 600px) { .timeline li { grid-template-columns: 1fr; gap: 2px; } }
+    .scenario-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .scn { font: inherit; font-size: 0.85rem; font-weight: 700; border: 1px solid var(--blue); background: #fff; color: var(--blue); border-radius: 8px; padding: 6px 14px; cursor: pointer; }
+    .scn[aria-pressed="true"] { background: var(--blue); color: #fff; }
+    .scn:focus-visible, .model input:focus-visible, .table-wrap:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+    .model input { width: 100%; max-width: 110px; font: inherit; font-size: 0.86rem; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 6px; }
+    .model td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .model tr.sum td { font-weight: 800; background: var(--bg); }
+    .model tr.net td { font-size: 1rem; }
+    .model .neg { color: var(--red); }
+    .model .pos { color: #15803d; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-hub.html">CityUx Hub</a>
+    <span class="nav-sep">›</span>
+    <span>Short-Course Launch Plan</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Stakeholder Plan — CityUx</div>
+    <h1>Launching CityUx Short Courses: AI Fluency for X</h1>
+    <p class="subtitle">A market study and launch plan for CityU's first paid micro-credential short courses. It covers three audiences: people who work in higher education, workers changing jobs or fields, and the skilled trades, starting with plumbing and 3D visual training.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Nov 24, 2026</span>
+      <span class="meta-chip">Draft for discussion</span>
+      <span class="meta-chip">Horizon: Dec 2026 – Jun 2028</span>
+      <span class="meta-chip">Prepared by: Clark Ngo, STC</span>
+    </div>
+  </div>
+
+  <div class="callout callout-amber" style="margin-bottom:24px">
+    <strong>See also:</strong> <a href="cityux-short-course-plan-critique.html">the critique of this plan and an alternative, Plan B</a>.<br>
+    <strong>Read this first.</strong> Market figures were checked in November 2026 against the sources listed at the end. Where sources disagree, this page says so. Prices, enrollments and costs in Sections 7 and 9 are <strong>hypotheses to test</strong>, not forecasts. Funding eligibility for L&amp;I continuing education, the WIOA training list and Workforce Pell has to be confirmed with each agency before anything is promised to learners.
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#summary">Executive summary</a></li>
+      <li><a href="#context">Market context: why now</a></li>
+      <li><a href="#demand">Demand evidence for the three aims</a></li>
+      <li><a href="#competition">Competitive landscape and the gap we fill</a></li>
+      <li><a href="#portfolio">Which courses to launch: scoring the options</a></li>
+      <li><a href="#courses">The three launch courses</a></li>
+      <li><a href="#pricing">Pricing and who pays</a></li>
+      <li><a href="#gtm">Go-to-market</a></li>
+      <li><a href="#finance">Year-one financial model</a></li>
+      <li><a href="#roadmap">Launch roadmap</a></li>
+      <li><a href="#kpis">Success metrics and stage gates</a></li>
+      <li><a href="#risks">Risks and mitigations</a></li>
+      <li><a href="#team">Team and governance</a></li>
+      <li><a href="#asks">Decisions we need from stakeholders</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="section" id="summary">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🎯</div>
+      <div><h2>1 · Executive summary</h2><div class="section-sub">The recommendation on one screen</div></div>
+    </div>
+    <div class="section-body">
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-num">#1</div><div class="stat-label">Generative AI is Coursera's most-enrolled skill: 14 enrollments a minute in 2026, up from 8</div></div>
+        <div class="stat"><div class="stat-num">19%</div><div class="stat-label">Young workers in AI-exposed jobs sit 19% below their less-exposed peers (Stanford, Aug 2026)</div></div>
+        <div class="stat"><div class="stat-num">4.8%</div><div class="stat-label">Washington unemployment in Sept 2026, against 4.1% for the U.S.</div></div>
+        <div class="stat"><div class="stat-num">94% / 54%</div><div class="stat-label">Higher-ed employees using AI at work, and those who know their institution's AI policy</div></div>
+        <div class="stat"><div class="stat-num">69%</div><div class="stat-label">Plumbing contractors now using AI, though few see profit gains yet (ServiceTitan, Sept 2026)</div></div>
+        <div class="stat"><div class="stat-num">24 hrs</div><div class="stat-label">Approved continuing education every WA journey-level plumber needs each 3-year renewal</div></div>
+      </div>
+
+      <div class="point mt16">
+        <span class="point-label lbl-red">Finding</span>
+        <div class="point-body"><strong>Demand for AI skills is real, but generic "AI fluency" is now free.</strong> Anthropic, OpenAI and Microsoft give away beginner AI courses with certificates, and Google's runs about $49 a month on Coursera. A general CityU "Intro to AI" would compete with free and lose.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Our lane</span>
+        <div class="point-body"><strong>CityUx can win on the "for X" part.</strong> That means one specific audience, a live cohort, a real work product the learner keeps, a credential that stacks toward a CityU program, and <strong>someone other than the learner who pays</strong>: an institution's development budget, a workforce fund, a grant, an employer, or a license-renewal requirement.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">Recommend</span>
+        <div class="point-body">Launch <strong>three courses in two waves</strong>, one for each aim, and give each one a different payer so we aren't betting on a single funding stream:
+          <ol class="tight">
+            <li><strong>AI Fluency for Higher Education: Redesign One Thing.</strong> Wave 1, March 2027. Institutions pay for their faculty and staff. We pilot it on CityU's own people first.</li>
+            <li><strong>AI Career Pivot Lab.</strong> Wave 1, March 2027. This is for laid-off, underemployed and service-sector workers. Grants pay for the first cohorts while we build the outcome record we need for workforce funding, and later for Workforce Pell.</li>
+            <li><strong>Plumbing Systems in 3D</strong> (an L&amp;I-approved CE course) <strong>plus AI for the Trades Shop.</strong> Wave 2, after L&amp;I approval. Plumbers' required license-renewal hours and contractors pay.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Be honest</span>
+        <div class="point-body">Year one will roughly break even at best. CityU's own micro-credential evidence review found that <a href="microcredentialing-relevance-research.html">revenue is not the prize</a>. The payoff is a pipeline into CityU programs, partners who come back, and an outcome record that opens bigger public funding in year two.</div>
+      </div>
+      <div class="callout callout-blue mt16"><strong>The ask (Section 14):</strong> approve the two-wave plan, a seed budget and staff time for three course builds, an internal CityU pilot in February 2027, and permission to start the L&amp;I, Career Bridge and Workforce Pell eligibility conversations now, since each one takes months.</div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="section" id="context">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🌐</div>
+      <div><h2>2 · Market context: why now</h2><div class="section-sub">Three pressures meeting at once, and a fourth that changes who can pay</div></div>
+    </div>
+    <div class="section-body">
+      <div class="point">
+        <span class="point-label lbl-red">Higher ed</span>
+        <div class="point-body"><strong>Higher education is under real strain.</strong> New international enrollment fell 18% this fall (Open Doors, via Fortune, Nov 2026). Hampshire College is one of about nine colleges set to close in 2026, and large universities have cut hundreds of positions each. Total enrollment is still flat to slightly up (fall 2025 grew 1% to 19.4M). The crisis shows up as budget pressure, cuts and the question of what a degree is for. Faculty and staff are using AI already but mostly on their own: only <strong>37%</strong> of institutions run upskilling, and <strong>80%</strong> of those mostly expect people to learn by themselves (EDUCAUSE 2025).</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Jobs</span>
+        <div class="point-body"><strong>The labor market is growing without much hiring, and the pain is concentrated.</strong> In October 2026 the U.S. added 165,000 jobs and unemployment held at 4.1%. Washington is worse. It ran 5.2% in June and 4.8% in September, Seattle has matched or exceeded the state rate every month since September 2025, and the state's tech layoffs are the second highest in the country. Recent college graduates are unemployed at about 5.6%, above the overall rate, and about 42.5% are underemployed (NY Fed). Employers cited AI in roughly 121,000 announced U.S. job cuts from January through October 2026, about 20% of all cuts (Challenger).</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Growth</span>
+        <div class="point-body"><strong>The growth is in care, service and hands-on work.</strong> Health care and social assistance added 680,500 jobs in the year to March 2026, by far the largest gain. Without that sector, the rest of the private sector averaged only about 35,000 jobs a month in 2026 (Deloitte). Public two-year vocational enrollment has grown for several years running, as students look for careers less exposed to AI. The plumbing trade alone has about 44,000 openings a year nationally, at a median wage of $62,970 (BLS/O*NET).</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">AI premium</span>
+        <div class="point-body"><strong>AI skills pay, and mostly outside tech.</strong> Job postings that ask for at least one AI skill advertise about 28% higher pay, and about 51% of those postings are outside IT and computer science (Lightcast, 2024 data). The learners who gain most are not engineers. They are people in every other job who learn to use AI well.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">New money</span>
+        <div class="point-body"><strong>Public money for short programs opened in 2026.</strong> Since July 1, 2026, <strong>Workforce Pell</strong> covers programs of 150–599 clock hours that run 8 to 15 weeks. Programs need governor approval, a 70% completion benchmark and a track record. Washington's existing routes (WIOA training accounts through the Eligible Training Provider List, and ESD Training Benefits) also pay for or support approved training. Each has performance rules, so <strong>outcome data from the first cohorts is a strategic asset</strong>, not paperwork.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="section" id="demand">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📈</div>
+      <div><h2>3 · Demand evidence for the three aims</h2><div class="section-sub">What the data says about each audience, and what it means for course design</div></div>
+    </div>
+    <div class="section-body">
+      <h3 class="h3">Aim A: people who work in higher education</h3>
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Signal</th><th>Evidence</th><th>What it means for us</th></tr></thead>
+        <tbody>
+          <tr><td>Use is near universal, guidance is not</td><td>94% of higher-ed employees used AI for work in the last six months; 54% know their institution's AI policy (EDUCAUSE 2026)</td><td>Sell <strong>safe, policy-aware practice</strong>, not awareness. Data privacy, FERPA and accessibility have to be built in.</td></tr>
+          <tr><td>Training is the top planning item</td><td>"Faculty training" is the most common element in institutions' AI strategic plans; AI literacy is EDUCAUSE's #2 issue for 2026</td><td>A budget line exists. The buyer is the provost's office, the teaching center or HR.</td></tr>
+          <tr><td>Training is mostly do-it-yourself</td><td>Of institutions that upskill, 80% encourage self-directed learning and 71% offer in-house sessions</td><td>Many teaching centers are stretched thin. A ready-made cohort course they can license fills a real gap.</td></tr>
+          <tr><td>People want control over AI in assessment</td><td>Faculty and staff want to choose when to use AI tools for assessment (EDUCAUSE, June 2026)</td><td>Teach a decision method (which activity, which rule), the way STC's <a href="https://cityuseattle.github.io/ai410/start-here/ai-use.html">AI 410 AI Use Guide</a> does.</td></tr>
+          <tr><td>Jobs inside higher ed are at risk</td><td>Closures and cuts in 2026 (Section 2)</td><td>Some staff need a career pivot, not just a workflow upgrade. Point them to the Career Pivot Lab.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3 class="h3">Aim B: the trades, starting with plumbing and 3D visual training</h3>
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Signal</th><th>Evidence</th><th>What it means for us</th></tr></thead>
+        <tbody>
+          <tr><td>Training is required by law</td><td>WA journey-level and residential plumbers need 24 approved CE hours per 3-year renewal, at least 12 of them in plumbing. Trainees need 8 hours a year. L&amp;I approves courses and providers report rosters within 30 days.</td><td><strong>Built-in, recurring demand.</strong> The 3D course has to be plumbing content (code, systems, troubleshooting) to count. AI-for-business material goes in a separate course.</td></tr>
+          <tr><td>The work is growing and pays well</td><td>About 504,500 U.S. plumbers, pipefitters and steamfitters; about 44,000 openings a year; median pay $62,970 (BLS 2024)</td><td>A steady pool of trainees and career changers moving into the trade.</td></tr>
+          <tr><td>Contractors use AI but don't know how to get value from it</td><td>69% of plumbing contractors use AI, and productivity gains outpace profit gains (ServiceTitan, Sept 2026). In an April residential survey, more than half weren't sure where to start.</td><td>Shop owners and office managers need practical help with estimating, scheduling, customer messages and safe code lookup.</td></tr>
+          <tr><td>3D and VR training is catching on, but the evidence is thin</td><td>Interplay Learning's 3D/VR simulations are now built into HVAC and plumbing apprenticeships (Modigent). Peer-reviewed proof of better job skills is still scarce, and one 2025 plumbing AR study measured confidence only.</td><td>Don't promise outcomes. <strong>Measure them</strong> with a pre and post scenario test, and say on day one that 3D supports hands-on work rather than replacing it.</td></tr>
+          <tr><td>Young people are choosing trades</td><td>Public two-year vocational enrollment rose about 20% from 2020 to 2025 and kept growing in 2026. Quartz cautions that the fastest growth is in culinary and health programs, and that some viral numbers are overstated.</td><td>Speak to the "AI-proof career" motive honestly. The trades are using AI too, so being fluent in it is an advantage.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3 class="h3">Aim C: helping people change jobs or fields</h3>
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Signal</th><th>Evidence</th><th>What it means for us</th></tr></thead>
+        <tbody>
+          <tr><td>Entry-level hiring has shrunk</td><td>Workers aged 22–25 in the most AI-exposed jobs are 19% below where they would be if they had kept pace with less-exposed peers. The cause is less hiring, not more firing (Stanford Digital Economy Lab, Aug 2026).</td><td>Recent grads need proof of work, not another certificate. Every Pivot Lab learner <strong>builds work samples</strong>.</td></tr>
+          <tr><td>Seattle tech workers were hit hard</td><td>Washington tech lost more than 11,000 workers (May 2025 – April 2026, Revelio); Seattle metro unemployment rose above 5%</td><td>A local audience that is skilled, motivated and often has severance. Employers running layoffs can also buy the course as an outplacement benefit.</td></tr>
+          <tr><td>People are moving into service and care work</td><td>Health care drives job growth; leisure and hospitality is a distant second</td><td>Pivot Lab tracks point at <strong>where hiring actually is</strong>: health-care operations and administration, customer and AI operations, and running a small business.</td></tr>
+          <tr><td>Retraining support comes with fine print</td><td>ESD Training Benefits extends unemployment benefits for approved, full-time training, but only for claimants whose past jobs paid under $22.26 an hour on average (2026)</td><td>That route fits service workers, not most laid-off tech workers. Plan a separate payer for each group (Section 7).</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="section" id="competition">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🧭</div>
+      <div><h2>4 · Competitive landscape and the gap we fill</h2><div class="section-sub">Free beginner courses at one end, $5,000+ graduate certificates at the other</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Provider</th><th>Price</th><th>Format</th><th>What's missing for our audiences</th></tr></thead>
+        <tbody>
+          <tr><td>Anthropic AI Fluency</td><td>Free, free certificate</td><td>Self-paced, about 3–5 hours</td><td>General, no cohort, nothing tied to a specific job</td></tr>
+          <tr><td>OpenAI Academy</td><td>Mostly free</td><td>Self-paced videos and certificates</td><td>Same</td></tr>
+          <tr><td>Google AI Essentials (Coursera)</td><td>About $49/month subscription</td><td>Self-paced</td><td>Same, plus a recurring subscription</td></tr>
+          <tr><td>Microsoft Elevate Washington</td><td>Free to WA's 34 community and technical colleges and 295 school districts</td><td>Tools, training, $25K consulting grants</td><td><strong>A potential partner, not a competitor.</strong></td></tr>
+          <tr><td>UW iSchool, AI for Organizations</td><td>$1,000 per credit; first 5-credit course about $5,282</td><td>9-month graduate certificate, cohorts of 30</td><td>Expensive and long. Built for managers, not for career changers or the trades.</td></tr>
+          <tr><td>UW Engineering, AI &amp; ML certificate</td><td>About $18,000</td><td>Graduate certificate</td><td>For technical professionals only</td></tr>
+          <tr><td>Bellevue College Continuing Education</td><td>Non-credit; AI course prices not found</td><td>Short non-credit courses</td><td>Closest local competitor. Strong in Seattle's Eastside; not focused on the trades or higher education.</td></tr>
+          <tr><td>Interplay Learning</td><td>Licensed to employers and schools</td><td>3D/VR trades simulations</td><td>Not Washington-specific for plumbing code CE, and no AI-for-business content. Could be a partner or a benchmark.</td></tr>
+          <tr><td>Union training centers (JATCs), community and technical colleges</td><td>Apprenticeship and tuition models</td><td>Hands-on labs</td><td>They own the hands-on training. <strong>We'd add 3D and AI, and partner with them rather than compete.</strong></td></tr>
+        </tbody>
+      </table></div>
+      <div class="gap-band mt16" role="img" aria-label="Price band diagram: free self-paced courses on the left, five-thousand-dollar-plus graduate certificates on the right, and the CityUx lane between about 150 and 900 dollars">
+        <div class="gap-seg gap-free">Free – $49/mo<br><span>generic, self-paced</span></div>
+        <div class="gap-seg gap-us">$150 – $900<br><span><strong>CityUx lane:</strong> cohort, "for X", stackable, paid for by someone else</span></div>
+        <div class="gap-seg gap-grad">$5,000 – $18,000<br><span>graduate certificates</span></div>
+      </div>
+      <div class="callout callout-teal mt16"><strong>CityU's right to win.</strong> (1) CityU is a working university that is redesigning its own teaching for AI. The <a href="teaching-framework-hub.html">teaching framework</a>, assessment redesign and AI 410's per-activity AI rules are real examples that faculty buyers trust. (2) STC's example-first, hands-on, concepts-last approach was built for adults who were left behind by lecture-first teaching. (3) STC already builds browser-based 3D and lab tools (the <a href="cityux-life-sciences-labs-plan.html">life-science labs</a>, 3D twin labs). (4) CityU is accredited, which most of the free providers and bootcamps are not. That matters for Workforce Pell and for credit.</div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="section" id="portfolio">
+    <div class="section-header">
+      <div class="section-icon icon-green">⚖️</div>
+      <div><h2>5 · Which courses to launch: scoring the options</h2><div class="section-sub">Seven candidates scored 1–5 on six criteria (5 = best). These are team judgment scores, backed by the evidence above.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map score">
+        <thead><tr><th>Candidate course</th><th>Demand</th><th>Clear payer</th><th>Room vs. competitors</th><th>CityU right to win</th><th>Build effort (5 = light)</th><th>Leads to CityU programs</th><th>Total /30</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr class="win"><td>AI Fluency for Higher Education</td><td>4</td><td>4</td><td>3</td><td>5</td><td>4</td><td>4</td><td><strong>24</strong></td><td><span class="pill pill-green">Wave 1</span></td></tr>
+          <tr class="win"><td>AI Career Pivot Lab</td><td>5</td><td>3</td><td>3</td><td>4</td><td>3</td><td>5</td><td><strong>23</strong></td><td><span class="pill pill-green">Wave 1</span></td></tr>
+          <tr class="win"><td>AI for the Trades Shop (owners and office managers)</td><td>4</td><td>3</td><td>4</td><td>3</td><td>4</td><td>2</td><td><strong>20</strong></td><td><span class="pill pill-blue">Wave 2 bundle</span></td></tr>
+          <tr class="win"><td>Plumbing Systems in 3D (L&amp;I CE)</td><td>4</td><td>5</td><td>4</td><td>2</td><td>2</td><td>2</td><td><strong>19</strong></td><td><span class="pill pill-blue">Wave 2 bundle</span></td></tr>
+          <tr><td>AI Fluency for Health-Care Support Workers</td><td>5</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td><strong>20</strong></td><td><span class="pill pill-amber">Wave 3</span></td></tr>
+          <tr><td>AI for Life-Science Professionals</td><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>3</td><td><strong>19</strong></td><td><span class="pill pill-amber">Wave 3</span></td></tr>
+          <tr class="lose"><td>Generic "Introduction to AI"</td><td>5</td><td>1</td><td>1</td><td>1</td><td>5</td><td>2</td><td><strong>15</strong></td><td><span class="pill pill-red">Don't build</span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">The trades courses score lower on their own but go together: one is required by law, the other gets contractors through the door. Health care is the largest growth sector, but it moves to Wave 3 because hospital training buyers take longer and the health-care partner channel still has to be built.</p>
+      <div class="callout callout-violet mt16"><strong>One core, many "X" versions.</strong> All AI Fluency for X courses share a 2-module core (what AI is and isn't, plus safe everyday use with checking and privacy), built once on Open edX. Each audience adds 2–4 modules of its own and a final work product. That keeps the cost of each new audience low, which is how "for X" can grow to more audiences without starting over each time.</div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="section" id="courses">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🧩</div>
+      <div><h2>6 · The three launch courses</h2><div class="section-sub">Each is cohort-based, example-first, ends in something the learner keeps, and earns a CityUx digital credential</div></div>
+    </div>
+    <div class="section-body">
+
+      <div class="course-card c-blue">
+        <div class="course-top"><span class="pill pill-green">Wave 1 · Mar 2027</span><h3>A · AI Fluency for Higher Education: Redesign One Thing</h3></div>
+        <p class="course-promise">"In four weeks, redesign one assignment, one process or one policy in your own job, and be able to defend it."</p>
+        <div class="kv">
+          <div><span>Who</span>Faculty, academic and student-services staff, and academic leaders. Three tracks share one cohort: <em>Teach</em>, <em>Serve</em> and <em>Lead</em>.</div>
+          <div><span>Format</span>4 weeks, about 16 hours: 3 self-paced hours plus a 1-hour live session each week. Cohorts of 20–25.</div>
+          <div><span>Modules</span>1) Shared core: how AI works, hands-on first. 2) Shared core: guardrails (FERPA, privacy, accessibility, bias, checking output). 3) Track sprint: Teach redesigns an assessment with per-activity AI rules; Serve redesigns an advising or admissions workflow; Lead drafts an AI policy and staff-training plan. 4) Show and defend to peers, with a rubric.</div>
+          <div><span>Learner keeps</span>A redesigned artifact ready to use, plus a one-page rationale</div>
+          <div><span>Credential</span>CityUx digital badge. Explore whether CityU's School of Education could accept it toward its programs.</div>
+          <div><span>Price (test)</span>$395 per person; institutional cohort license of $6,000 for up to 25 seats (about $240 each); free internal pilot for CityU staff</div>
+          <div><span>Channels</span>CityU's own staff first, then independent colleges in Washington and the Northwest, community and technical colleges (alongside Microsoft Elevate rather than against it), EDUCAUSE and regional conference talks</div>
+          <div><span>Leads to</span>CityU School of Education programs, and STC certificates for staff moving into tech roles</div>
+        </div>
+      </div>
+
+      <div class="course-card c-teal">
+        <div class="course-top"><span class="pill pill-green">Wave 1 · Mar 2027</span><h3>B · AI Career Pivot Lab</h3></div>
+        <p class="course-promise">"Six weeks from 'my job is shrinking' to a target role, three work samples, and a plan you can act on."</p>
+        <div class="kv">
+          <div><span>Who</span>Laid-off and underemployed workers in the Seattle area: tech-adjacent staff, recent grads, higher-ed staff, and service workers who want to move up</div>
+          <div><span>Format</span>6 weeks, about 36 hours: two evening live sessions a week plus lab time. Cohorts of 20. Built as modules that can later stack into a 150+ clock-hour program.</div>
+          <div><span>Modules</span>1) Skills inventory and a map of Washington's labor market, using state and federal data. 2) AI fluency core. 3–4) A domain sprint in one track (health-care operations and administration, customer and AI operations, or small-business operations) where learners build two work samples with AI. 5) An honest AI-assisted job search: tailoring, practice interviews, no made-up experience. 6) Demo day with employers.</div>
+          <div><span>Learner keeps</span>A portfolio with three work samples, a target-role plan, and an employer contact list</div>
+          <div><span>Credential</span>CityUx badge. In year two, stack it into an "Applied AI Workforce Certificate" of 150+ clock hours over 8–14 weeks, sized for Workforce Pell and the training provider list.</div>
+          <div><span>Price (test)</span>$495 list. The goal is <strong>$0 to the learner</strong>, paid by a grant, workforce funds or an employer's outplacement budget.</div>
+          <div><span>Channels</span>WorkSource and the King and Snohomish workforce boards, outplacement firms, community partners, alumni networks, LinkedIn</div>
+          <div><span>Leads to</span>STC's CS 11A/11B bridge courses into the graduate programs, STC bachelor's programs and graduate certificates</div>
+        </div>
+      </div>
+
+      <div class="course-card c-amber">
+        <div class="course-top"><span class="pill pill-blue">Wave 2 · from Jun 2027</span><h3>C · Plumbing Systems in 3D + AI for the Trades Shop</h3></div>
+        <p class="course-promise">"See inside the wall before you open it, and run the shop with less paperwork."</p>
+        <div class="kv">
+          <div><span>C1 · 3D course</span>An 8-hour L&amp;I CE course (pending approval). An interactive browser 3D model of drain-waste-vent and water-supply systems. Learners work through code scenarios (venting, slope, fixture units, backflow) and diagnose faults in 3D, then check their answer against the code text. It runs on a phone or tablet in the field. Also usable by trainees for their 8 hours a year.</div>
+          <div><span>C2 · AI for the Shop</span>4 evenings, about 8 hours, for owners and office managers: estimating and quoting, scheduling and dispatch, customer messages, and code or manual lookup <em>with verification</em> (AI can be wrong about code). Not CE-eligible; sold to employers.</div>
+          <div><span>Learner keeps</span>C1: CE hours reported to L&amp;I. C2: the shop's own set of prompts and templates, plus an AI-use checklist.</div>
+          <div><span>Price (test)</span>C1 $129 per learner (benchmark against current WA CE prices before launch). C2 $295 per seat, or $1,500 for a shop's team.</div>
+          <div><span>Partners</span>A union training center or a community or technical college with hands-on labs (for credibility and reach)</div>
+          <div><span>Build</span>Browser 3D (three.js) on the same free, static, no-API-key pattern as STC's other labs. A licensed plumber reviews all code content.</div>
+          <div><span>Leads to</span>Repeat CE purchases each renewal cycle, the AI Fluency for X core, and STC programs for workers' families and office staff</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="section" id="pricing">
+    <div class="section-header">
+      <div class="section-icon icon-violet">💳</div>
+      <div><h2>7 · Pricing and who pays</h2><div class="section-sub">Different payers for different learners, so no single course depends on learners' own wallets</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Payer</th><th>Pays for</th><th>Fits</th><th>Requirements and timing</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Institutions' development and HR budgets</td><td>Cohort licenses</td><td>A</td><td>Budgets are tight in 2026, so keep licenses well under the cost of one conference trip per person</td><td><span class="pill pill-green">Ready</span></td></tr>
+          <tr><td>Microsoft Elevate</td><td>AI skilling at scale through nonprofit partners</td><td>A, B, the "for X" core</td><td>Long-term partnership route; WA community colleges already take part</td><td><span class="pill pill-amber">Explore</span></td></tr>
+          <tr><td>Employer outplacement and training budgets</td><td>Seats for laid-off or current staff</td><td>B, C2</td><td>Sell directly to HR and outplacement firms</td><td><span class="pill pill-green">Ready</span></td></tr>
+          <tr><td>Plumbers' required CE hours</td><td>Self- or employer-paid CE</td><td>C1</td><td>L&amp;I course approval first; 12 of the 24 hours must be plumbing content</td><td><span class="pill pill-amber">Apply Q1 2027</span></td></tr>
+          <tr><td>WIOA training accounts (Eligible Training Provider List on Career Bridge)</td><td>Tuition for eligible job seekers</td><td>B</td><td>Register, add the program, sign assurances, meet completion, employment and earnings thresholds. <strong>Ask Career Bridge whether a private nonprofit university's non-credit program qualifies.</strong></td><td><span class="pill pill-amber">Verify</span></td></tr>
+          <tr><td>ESD Training Benefits / Commissioner Approved Training</td><td>Extra unemployment weeks (income, not tuition)</td><td>B (service workers)</td><td>Approved full-time training; past wages under $22.26/hr in 2026; ESD has discussed changing the program</td><td><span class="pill pill-amber">Verify</span></td></tr>
+          <tr><td>Workforce Pell</td><td>Pell grants for short programs</td><td>B stacked into 150+ hours</td><td>150–599 clock hours, 8 to 15 weeks, governor approval, 70% completion benchmark, track record. Realistic target: 2028 after a year of outcome data.</td><td><span class="pill pill-blue">Year 2</span></td></tr>
+          <tr><td>Learners paying for themselves</td><td>List price</td><td>A, B, C</td><td>Founding-cohort discount; payment plans</td><td><span class="pill pill-green">Ready</span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">CityU's earlier evidence review found that learners' willingness to pay for micro-credentials is shaky. In one study only 20% were interested in a paid micro-credential (see the <a href="microcredentialing-relevance-research.html">review</a>). That is why every course above has a payer other than the learner.</p>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="section" id="gtm">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📣</div>
+      <div><h2>8 · Go-to-market</h2><div class="section-sub">Runs on the CityUx funnel the president approved: TOFU → MOFU → BOFU → Conversion</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Funnel stage</th><th>Higher education (A)</th><th>Career pivot (B)</th><th>Trades (C)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>TOFU</strong> · discover</td><td>CityU Guide ebook "Redesign One Assignment for AI"; conference talks</td><td>Ebook "Where Washington Is Hiring in 2027"; LinkedIn; WorkSource info sessions</td><td>Short 3D clips ("what's behind this wall?"); trade association newsletters</td></tr>
+          <tr><td><strong>MOFU</strong> · try</td><td>Free 45-minute self-paced sample module on Open edX</td><td>Free "skills inventory" mini-lab</td><td>Free 3D model demo on the web, no login</td></tr>
+          <tr><td><strong>BOFU</strong> · commit</td><td>Live info webinar for deans and teaching-center leaders; pilot license</td><td>Info night with employers on the panel</td><td>Partner demo at a union training center or college lab; shop-owner breakfast</td></tr>
+          <tr><td><strong>Conversion</strong></td><td>Cohort license; School of Education pathway</td><td>Enrollment; follow-up stackable certificate; STC programs</td><td>CE registration; buying again each renewal cycle</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout callout-blue mt16"><strong>Founding-cohort offer.</strong> The first cohort of each course gets 40% off in exchange for a testimonial, outcome surveys at 3 and 6 months, and permission to use their (anonymized) work samples. Buyers in this market want proof, and this is the fastest way to collect it.</div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="section" id="finance">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🧮</div>
+      <div><h2>9 · Year-one financial model (calendar 2027)</h2><div class="section-sub">Placeholder numbers to discuss. Change any input and the totals update. Replace them with CityU's real cost rates.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="scenario-bar" role="group" aria-label="Scenario">
+        <button type="button" class="scn" data-s="low" aria-pressed="false">Conservative</button>
+        <button type="button" class="scn" data-s="base" aria-pressed="true">Base</button>
+        <button type="button" class="scn" data-s="high" aria-pressed="false">Stretch</button>
+      </div>
+      <div class="table-wrap" tabindex="0" aria-label="Financial model table, scrollable">
+      <table class="map model">
+        <thead><tr><th>Course</th><th>Cohorts / yr</th><th>Seats / cohort</th><th>Avg. net price / seat ($)</th><th>Revenue</th></tr></thead>
+        <tbody>
+          <tr><td>A · Higher Education</td><td><input aria-label="Higher education cohorts per year" type="number" min="0" id="a-c"></td><td><input aria-label="Higher education seats per cohort" type="number" min="0" id="a-s"></td><td><input aria-label="Higher education average net price per seat" type="number" min="0" id="a-p"></td><td id="a-r"></td></tr>
+          <tr><td>B · Career Pivot Lab</td><td><input aria-label="Career pivot cohorts per year" type="number" min="0" id="b-c"></td><td><input aria-label="Career pivot seats per cohort" type="number" min="0" id="b-s"></td><td><input aria-label="Career pivot average net price per seat" type="number" min="0" id="b-p"></td><td id="b-r"></td></tr>
+          <tr><td>C · Trades (3D CE + AI for the Shop)</td><td><input aria-label="Trades cohorts per year" type="number" min="0" id="c-c"></td><td><input aria-label="Trades seats per cohort" type="number" min="0" id="c-s"></td><td><input aria-label="Trades average net price per seat" type="number" min="0" id="c-p"></td><td id="c-r"></td></tr>
+          <tr><td>Grants (foundations, workforce, Microsoft Elevate)</td><td colspan="3"><input aria-label="Grant income" type="number" min="0" id="g"></td><td id="g-r"></td></tr>
+          <tr class="sum"><td colspan="4">Total income</td><td id="rev"></td></tr>
+          <tr><td>Course development (one time, all three)</td><td colspan="3"><input aria-label="Course development cost" type="number" min="0" id="dev"></td><td id="dev-r"></td></tr>
+          <tr><td>Instruction per cohort ($)</td><td colspan="3"><input aria-label="Instruction cost per cohort" type="number" min="0" id="inst"></td><td id="inst-r"></td></tr>
+          <tr><td>Marketing, partners, credentials</td><td colspan="3"><input aria-label="Marketing and other costs" type="number" min="0" id="mkt"></td><td id="mkt-r"></td></tr>
+          <tr class="sum"><td colspan="4">Total cost</td><td id="cost"></td></tr>
+          <tr class="sum net"><td colspan="4">Net, year one</td><td id="net"></td></tr>
+        </tbody>
+      </table></div>
+      <p class="note" id="learners-note" aria-live="polite"></p>
+      <p class="note">Assumptions: Open edX hosting and CityUx branding already exist. "Average net price" mixes license, list and discounted seats. Development is about $15K per course in faculty and designer time. Not included: CityU staff overhead, and the value of learners who later enroll in CityU programs. At CityU's tuition, even a few enrollments a year would outweigh any year-one loss.</p>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="section" id="roadmap">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🗓️</div>
+      <div><h2>10 · Launch roadmap</h2><div class="section-sub">Eighteen months, with a go / fix / stop review after Wave 1</div></div>
+    </div>
+    <div class="section-body">
+      <ol class="timeline">
+        <li><span class="tl-date">Dec 2026</span><div><strong>Decide and start the long-lead tasks.</strong> Stakeholders approve the plan; form a steering group; contact L&amp;I (CE provider and course approval), Career Bridge (training-list eligibility) and the state Workforce Board (Workforce Pell process); line up 2 pilot institutions for Course A and 1 trades training partner.</div></li>
+        <li><span class="tl-date">Jan – Feb 2027</span><div><strong>Build Wave 1.</strong> Build the shared AI Fluency core plus Courses A and B on Open edX (WCAG 2.2 AA, free tools only). <strong>Run Course A free for 20 CityU faculty and staff</strong> in February. Recruit the first Pivot Lab cohort through WorkSource and partners. Submit the 3D course to L&amp;I for approval.</div></li>
+        <li><span class="tl-date">Mar 2027</span><div><strong>Public launch of Wave 1.</strong> First paid Course A cohort (with pilot institutions) and Pivot Lab cohort 1 (grant-funded, founding pricing).</div></li>
+        <li><span class="tl-date">Apr – Jun 2027</span><div><strong>Build and pilot Wave 2.</strong> Build the 3D plumbing model and the AI for the Shop course; licensed-plumber review; pilot with the training partner, with pre and post scenario tests. Pivot Lab cohort 2. Collect 3-month outcome data.</div></li>
+        <li><span class="tl-date">Jul 2027</span><div><strong>Review gate.</strong> Go, fix or stop for each course against the Section 11 targets. Report to stakeholders.</div></li>
+        <li><span class="tl-date">Aug – Dec 2027</span><div><strong>Scale what works.</strong> Course A institutional licenses beyond the Northwest; Wave 3 (health-care support workers, life sciences); apply to the training provider list with Pivot Lab outcome data; design the 150+ hour stackable certificate.</div></li>
+        <li><span class="tl-date">Jan – Jun 2028</span><div><strong>Bigger funding.</strong> With a year of outcomes, apply for Workforce Pell through the governor's process and pursue a Microsoft Elevate partnership. Decide whether to make CityUx short courses a permanent line.</div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="section" id="kpis">
+    <div class="section-header">
+      <div class="section-icon icon-green">📊</div>
+      <div><h2>11 · Success metrics and stage gates</h2><div class="section-sub">What "a successful launch" means, decided in advance</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Stage</th><th>Metric</th><th>Wave 1 target (by Jul 2027)</th></tr></thead>
+        <tbody>
+          <tr><td>Interest</td><td>Waitlist and ebook sign-ups</td><td>500+ across the three audiences</td></tr>
+          <tr><td>Interest</td><td>Info-session attendees who enroll</td><td>At least 25%</td></tr>
+          <tr><td>Learning</td><td>Completion rate</td><td><strong>At least 70%</strong> (matches the Workforce Pell benchmark; cohorts help, since one fixed-schedule MOOC kept 45% of learners against 13% self-paced)</td></tr>
+          <tr><td>Learning</td><td>Final work products meeting the rubric</td><td>At least 80% of completers</td></tr>
+          <tr><td>Learning (C)</td><td>Gain on the 3D scenario test, pre to post</td><td>A measurable gain, reported honestly either way</td></tr>
+          <tr><td>Outcome (B)</td><td>New job, promotion or field change within 6 months</td><td>At least 50% of completers (follow-up survey)</td></tr>
+          <tr><td>Satisfaction</td><td>Would recommend (0–10)</td><td>Average of 8 or higher</td></tr>
+          <tr><td>Buyers (A)</td><td>Institutions that license again or sign up</td><td>3 or more</td></tr>
+          <tr><td>Pipeline</td><td>Learners who request CityU program information</td><td>At least 10%; track actual enrollments</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout callout-amber mt16"><strong>Gate rule (July 2027):</strong> a course that hits completion and outcome targets <em>scales</em>. One that misses but shows learning gains gets <em>fixed</em> and runs one more cohort. One that misses on both <em>stops</em>, and its parts go back into the shared core.</div>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section class="section" id="risks">
+    <div class="section-header">
+      <div class="section-icon icon-red">⚠️</div>
+      <div><h2>12 · Risks and mitigations</h2></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td>Free courses undercut us</td><td>High</td><td>Never sell general fluency. Sell a cohort, a work product, a credential and a payer. Point people to free resources as pre-work.</td></tr>
+          <tr><td>Higher-ed budget cuts slow down licenses</td><td>High</td><td>Low license price, a free CityU pilot as proof, consortium deals, and a pitch built on cost and risk (policy compliance)</td></tr>
+          <tr><td>Funding eligibility (L&amp;I, training list, Workforce Pell) is slower or narrower than hoped</td><td>Medium</td><td>Start applications in December; diversify payers; build year-one finances so they don't depend on any of these</td></tr>
+          <tr><td>Trades learners don't see CityU as credible</td><td>Medium</td><td>Co-deliver with a union training center or college; licensed plumber reviews content; 3D supports hands-on training rather than replacing it</td></tr>
+          <tr><td>The 3D training doesn't improve skills</td><td>Medium</td><td>Pre and post measurement in the pilot; publish the result; reshape or stop at the gate</td></tr>
+          <tr><td>AI content goes out of date quickly</td><td>High</td><td>Quarterly content refresh; teach habits (checking output, privacy) more than specific tools</td></tr>
+          <tr><td>Badges that don't lead anywhere hurt the brand</td><td>Medium</td><td>Every course states its next step (stackable certificate, CityU program, CE cycle) from day one</td></tr>
+          <tr><td>Small team stretched across courses and BSAI work</td><td>High</td><td>Seed budget for an instructional designer and adjunct instructors; Wave 2 doesn't start until Wave 1 is running</td></tr>
+          <tr><td>Privacy, compliance and accessibility</td><td>Medium</td><td>FERPA and data-privacy module; no learner data in AI tools; WCAG 2.2 AA; free tools with no required paid accounts</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 13 -->
+  <section class="section" id="team">
+    <div class="section-header">
+      <div class="section-icon icon-violet">👥</div>
+      <div><h2>13 · Team and governance</h2><div class="section-sub">Follows the CityUx governance decision: <a href="aili-governance-options.html">Option A</a>, President's Office, scope across schools</div></div>
+    </div>
+    <div class="section-body">
+      <div class="module-grid">
+        <div class="module-card"><div class="module-name">Executive sponsor</div><div class="module-desc">President's Office. Approves the plan, the seed budget and partnership agreements.</div></div>
+        <div class="module-card"><div class="module-name">CityUx steering group</div><div class="module-desc">STC (Dr. Sam Chung, Brian Maeng, Clark Ngo), plus the School of Education, marketing and workforce partnerships. Meets every two weeks; owns the July 2027 gate.</div></div>
+        <div class="module-card"><div class="module-name">Course leads (proposed)</div><div class="module-desc">A: School of Education with STC. B: STC with career services. C: STC with a trades partner and a licensed plumber reviewer.</div></div>
+        <div class="module-card"><div class="module-name">Partners</div><div class="module-desc">Pilot institutions; a union training center or community college; WorkSource and workforce boards.</div></div>
+        <div class="module-card"><div class="module-name">Needed hires or contracts</div><div class="module-desc">One instructional designer (0.5 FTE), adjunct cohort instructors, and a 3D developer for Wave 2 (contract).</div></div>
+        <div class="module-card"><div class="module-name">Platform</div><div class="module-desc">CityU Open edX (the micro-credential, workshop and seminar layer), digital badges, and the CityUx funnel's sign-up sheet and CRM tracking.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 -->
+  <section class="section" id="asks">
+    <div class="section-header">
+      <div class="section-icon icon-blue">✅</div>
+      <div><h2>14 · Decisions we need from stakeholders</h2></div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item"><span class="action-check">1</span><div class="action-body"><strong>Approve the two-wave launch:</strong> Courses A and B in March 2027, Course C from June 2027, and the July 2027 go / fix / stop gate.</div></li>
+        <li class="action-item"><span class="action-check">2</span><div class="action-body"><strong>Approve a seed budget</strong> for development, a half-time instructional designer and marketing (about $100K in the base case; Section 9), with release time for the course leads.</div></li>
+        <li class="action-item"><span class="action-check">3</span><div class="action-body"><strong>Authorize the eligibility conversations now:</strong> L&amp;I CE provider and course approval, Career Bridge training-list eligibility, and the state Workforce Pell process.</div></li>
+        <li class="action-item"><span class="action-check">4</span><div class="action-body"><strong>Bring in the School of Education</strong> as co-lead of Course A, and explore whether the badge can count toward its programs.</div></li>
+        <li class="action-item"><span class="action-check">5</span><div class="action-body"><strong>Approve a free internal pilot</strong> of Course A for 20 CityU faculty and staff in February 2027. It upskills CityU and gives us our first proof.</div></li>
+        <li class="action-item"><span class="action-check">6</span><div class="action-body"><strong>Approve test pricing</strong> and the 40% founding-cohort discount, to be reviewed at the gate.</div></li>
+      </ul>
+      <div class="callout callout-teal mt16"><strong>Related CityUx work:</strong> <a href="cityux-open-ecosystem-execution-plan.html">Open Ecosystem execution plan</a> · <a href="cityux-user-journey.html">Learner journey</a> · <a href="microcredentialing-relevance-research.html">Micro-credential evidence review</a></div>
+    </div>
+  </section>
+
+  <!-- 15 -->
+  <section class="section" id="sources">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📚</div>
+      <div><h2>15 · Sources</h2><div class="section-sub">Checked November 2026. Secondary sources are marked; check primary figures before using them outside CityU.</div></div>
+    </div>
+    <div class="section-body">
+      <ul class="link-list">
+        <li><a href="https://www.bls.gov/news.release/empsit.nr0.htm">BLS, The Employment Situation, October 2026</a><span class="link-desc">+165,000 jobs; unemployment 4.1%</span></li>
+        <li><a href="https://www.axios.com/local/seattle/2026/10/15/washington-state-job-losses-september-2026-seattle-unemployment-rate">Axios Seattle, Washington lost 15,400 jobs in September (Oct 2026)</a><span class="link-desc">WA 4.8% vs. U.S. 4.1%. Earlier reports show 5.2% in June (<a href="https://www.kvi.com/2026/07/15/washington-unemployment-holds-at-5-2-as-tech-losses-deepen-and-temporary-service-hiring-props-up-june-numbers/">KVI</a>). Confirm with ESD.</span></li>
+        <li><a href="https://www.opb.org/article/2026/05/14/washington-state-tech-layoffs-second-highest-in-nation/">OPB / KUOW, Washington tech layoffs second highest in the country (May 2026)</a></li>
+        <li><a href="https://www.kuow.org/stories/tech-layoffs-drive-seattle-area-unemployment-above-5-5296">KUOW, Tech layoffs drive Seattle-area unemployment above 5%</a></li>
+        <li><a href="https://www.jobroute.ai/blog/october-2026-ai-layoffs-fall-growth-without-hiring">JobRoute summary of Challenger, Gray &amp; Christmas, October 2026</a><span class="link-desc">Secondary. 121,401 AI-attributed announced cuts from January through October.</span></li>
+        <li><a href="https://www.newyorkfed.org/research/college-labor-market">Federal Reserve Bank of New York, The Labor Market for Recent College Graduates</a></li>
+        <li><a href="https://digitaleconomy.stanford.edu/app/uploads/2026/08/Canaries_August2026.pdf">Brynjolfsson et al., Canaries in the Coal Mine (Aug 2026 revision)</a><span class="link-desc">19% gap for young workers in AI-exposed jobs; descriptive, not causal</span></li>
+        <li><a href="https://www.bls.gov/opub/ted/2026/health-care-and-social-assistance-employment-increased-by-2-9-percent-or-680500-from-march-2025-to-march-2026.htm">BLS TED, Health care and social assistance +680,500 (Mar 2025 – Mar 2026)</a></li>
+        <li><a href="https://www.deloitte.com/us/en/insights/topics/economy/spotlight/private-sector-job-growth.html">Deloitte Insights, Private-sector job growth</a></li>
+        <li><a href="https://lightcast.io/resources/blog/beyond-the-buzz-press-release-2025-07-23">Lightcast, Beyond the Buzz (Jul 2025)</a><span class="link-desc">28% advertised pay premium; 51% of AI-skill postings outside IT</span></li>
+        <li><a href="https://blog.coursera.org/introducing-courseras-job-skills-report-2026-the-most-critical-skills-the-worlds-learners-need-this-year/">Coursera, Job Skills Report 2026</a></li>
+        <li><a href="https://www.educause.edu/research/2026/the-impact-of-ai-on-work-in-higher-education">EDUCAUSE, The Impact of AI on Work in Higher Education (2026)</a></li>
+        <li><a href="https://er.educause.edu/articles/2025/10/2026-educause-top-10-2-the-human-edge-of-ai">EDUCAUSE Top 10 for 2026, #2: The Human Edge of AI</a><span class="link-desc">Cites the 2025 AI Landscape Study (37% upskilling; 80% self-directed)</span></li>
+        <li><a href="https://library.educause.edu/resources/2026/6/2026-educause-the-impact-of-ai-on-learning-assessment-report">EDUCAUSE, The Impact of AI on Learning Assessment (Jun 2026)</a></li>
+        <li><a href="https://fortune.com/2026/11/18/international-students-enrollment-drop-open-doors-trump-colleges-tuition">Fortune, International student enrollment fell 18% (Nov 2026)</a></li>
+        <li><a href="https://www.ed.gov/media/document/workforce-pell-grant-final-rule-fact-sheet-114075.pdf">U.S. Department of Education, Workforce Pell final rule fact sheet</a> · <a href="https://www.federalregister.gov/documents/2026/05/19/2026-10013/accountability-in-higher-education-and-access-through-demand-driven-workforce-pell-pell-grant">Federal Register (May 19, 2026)</a></li>
+        <li><a href="https://careerbridge.wa.gov/get-help/eligible-training-provider-list">Career Bridge, Eligible Training Provider List</a> · <a href="https://wtb.wa.gov/wp-content/uploads/2026/01/2024-ETP-State-Policy-20260113.pdf">ETP State Policy (Jan 2026)</a></li>
+        <li><a href="https://esd.wa.gov/jobs-and-training/job-training-support/training-benefits-program">Washington ESD, Training Benefits program</a></li>
+        <li><a href="https://lni.wa.gov/licensing-permits/plumbing/continuing-education">Washington L&amp;I, Plumbing continuing education</a> · <a href="https://lni.wa.gov/licensing-permits/plumbing/plumber-certification/plumber-trainee">Plumber trainee</a></li>
+        <li><a href="https://www.bls.gov/ooh/construction-and-extraction/plumbers-pipefitters-and-steamfitters.htm">BLS Occupational Outlook Handbook, Plumbers, Pipefitters, and Steamfitters</a> · <a href="https://www.onetonline.org/link/localtrends/47-2152.00">O*NET employment trends</a></li>
+        <li><a href="https://www.servicetitan.com/guides/the-update-2026-state-of-ai-in-the-trades">ServiceTitan, The Update: 2026 State of AI in the Trades</a><span class="link-desc">Vendor survey of 1,017 contractors; adoption figures differ across ServiceTitan's reports</span></li>
+        <li><a href="https://www.contractingbusiness.com/industry-news/news/55315211/modigent-and-interplay-learning-launch-simulation-based-hvac-and-plumbing-apprenticeships">Contracting Business, Modigent and Interplay Learning simulation-based apprenticeships</a></li>
+        <li><a href="https://ui.adsabs.harvard.edu/abs/2025aihe.conf....9P/abstract">Markerless AR application for plumbing tool training (2025)</a><span class="link-desc">Small study; confidence, not job skills</span></li>
+        <li><a href="https://www.vice.com/en/article/gen-z-is-choosing-trade-school-as-ai-threatens-white-collar-jobs/">VICE, Gen Z is choosing trade school</a> · <a href="https://qz.com/trade-school-enrollment-1421-percent-gen-z-explained-071026">Quartz caution on the numbers</a></li>
+        <li><a href="https://blogs.microsoft.com/on-the-issues/2026/10/22/expanding-ai-literacy-with-the-american-library-association-and-community-based-programs/">Microsoft On the Issues, Expanding AI literacy (Oct 2026)</a> · <a href="https://www.geekwire.com/2025/microsoft-to-provide-free-copilot-tools-for-washington-state-schools-amid-debate-over-ais-role-in-learning/">GeekWire, Microsoft Elevate Washington</a></li>
+        <li><a href="https://ischool.uw.edu/programs/certificate-ai-organizations/tuition-financial-aid">UW iSchool, Certificate in AI for Organizations: tuition</a> · <a href="https://www.cs.washington.edu/academics/graduate/certificate-modern-ai/program-overview/cost-fees/">UW certificate cost pages</a></li>
+        <li><a href="https://www.frontiersin.org/articles/10.3389/feduc.2022.1008545/full">Frontiers in Education (2022), self-paced vs. fixed-schedule MOOC retention</a></li>
+        <li><a href="https://skillscouter.com/best-free-ai-courses-for-beginners/">Free AI course roundups (secondary)</a><span class="link-desc">Anthropic, OpenAI and Google offerings and prices. Check each provider's own page before quoting.</span></li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+<script>
+(function () {
+  var S = {
+    low:  {"a-c":3,"a-s":18,"a-p":280,"b-c":2,"b-s":15,"b-p":400,"c-c":4,"c-s":12,"c-p":140,g:20000,dev:45000,inst:2500,mkt:8000},
+    base: {"a-c":6,"a-s":20,"a-p":300,"b-c":4,"b-s":20,"b-p":450,"c-c":8,"c-s":15,"c-p":150,g:20000,dev:45000,inst:2500,mkt:10000},
+    high: {"a-c":10,"a-s":24,"a-p":320,"b-c":6,"b-s":20,"b-p":480,"c-c":14,"c-s":16,"c-p":160,g:40000,dev:45000,inst:2500,mkt:15000}
+  };
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = function (n) { return (n < 0 ? "−$" : "$") + Math.abs(Math.round(n)).toLocaleString("en-US"); };
+  var v = function (id) { var x = parseFloat($(id).value); return isNaN(x) ? 0 : x; };
+  function calc() {
+    var r = {}, cohorts = 0, learners = 0;
+    ["a","b","c"].forEach(function (k) {
+      r[k] = v(k+"-c") * v(k+"-s") * v(k+"-p");
+      cohorts += v(k+"-c"); learners += v(k+"-c") * v(k+"-s");
+      $(k+"-r").textContent = fmt(r[k]);
+    });
+    var rev = r.a + r.b + r.c + v("g");
+    var inst = cohorts * v("inst");
+    var cost = v("dev") + inst + v("mkt");
+    $("g-r").textContent = fmt(v("g"));
+    $("rev").textContent = fmt(rev);
+    $("dev-r").textContent = fmt(v("dev"));
+    $("inst-r").textContent = fmt(inst) + " (" + cohorts + " cohorts)";
+    $("mkt-r").textContent = fmt(v("mkt"));
+    $("cost").textContent = fmt(cost);
+    var net = rev - cost, n = $("net");
+    n.textContent = fmt(net);
+    n.className = net < 0 ? "neg" : "pos";
+    $("learners-note").textContent = "This scenario serves " + learners + " learners in " + cohorts + " cohorts.";
+  }
+  function load(s) {
+    Object.keys(S[s]).forEach(function (k) { $(k).value = S[s][k]; });
+    document.querySelectorAll(".scn").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.s === s ? "true" : "false"); });
+    calc();
+  }
+  document.querySelectorAll(".scn").forEach(function (b) { b.addEventListener("click", function () { load(b.dataset.s); }); });
+  document.querySelectorAll(".model input").forEach(function (i) { i.addEventListener("input", calc); });
+  load("base");
+})();
+</script>
+</body>
+</html>

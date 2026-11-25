@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUx Short-Course Plan — Critique and Plan B</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+    .qa { margin: 0; padding-left: 20px; }
+    .qa > li { margin-bottom: 18px; font-size: 0.92rem; }
+    .qa > li > strong.q { display: block; font-size: 0.95rem; margin-bottom: 6px; }
+    .qa ul { margin: 0; padding-left: 18px; }
+    .qa ul li { margin-bottom: 6px; }
+    .fill { background: #fef9c3; border: 1px dashed #ca8a04; border-radius: 4px; padding: 0 4px; color: #713f12; }
+    .copy-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .copy-btn { font: inherit; font-size: 0.85rem; font-weight: 700; background: var(--blue); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+    .copy-btn:hover { background: #1e40af; }
+    .copy-status { font-size: 0.82rem; color: var(--green); font-weight: 600; min-height: 1em; }
+    table.map { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    table.map th, table.map td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.map th { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+    .table-wrap { overflow-x: auto; }
+    @media (max-width: 600px) { .doc-header, .section-body { padding-left: 16px; padding-right: 16px; } .point { flex-direction: column; gap: 6px; } }
+    .lead { font-size: 0.95rem; margin: 0 0 16px; }
+    .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+    .pill-green { background: var(--green-dim); color: #15803d; }
+    .pill-blue { background: var(--blue-dim); color: var(--blue); }
+    .pill-amber { background: var(--amber-dim); color: #b45309; }
+    .pill-red { background: var(--red-dim); color: #b91c1c; }
+    .note { font-size: 0.86rem; color: var(--slate); margin: 14px 0 0; }
+    ul.checks { margin: 0; padding-left: 0; list-style: none; }
+    ul.checks li { padding: 7px 0 7px 26px; position: relative; font-size: 0.92rem; border-bottom: 1px solid var(--border); }
+    ul.checks li:last-child { border-bottom: none; }
+    ul.checks li::before { content: "✓"; position: absolute; left: 4px; color: var(--green); font-weight: 800; }
+    .issue { padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .issue:first-child { padding-top: 0; }
+    .issue:last-child { border-bottom: none; padding-bottom: 0; }
+    .issue-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .issue-head h3 { margin: 0; font-size: 0.98rem; font-weight: 800; }
+    .issue p { font-size: 0.9rem; margin: 8px 0 0; }
+    .issue p.fix { background: var(--green-dim); border-left: 3px solid var(--green); padding: 8px 12px; border-radius: 0 6px 6px 0; color: #14532d; }
+    .layers { display: flex; flex-direction: column; gap: 6px; }
+    .layer { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.88rem; }
+    .layer strong { display: block; font-size: 0.95rem; }
+    .layer span { display: block; margin-top: 2px; }
+    .layer-tag { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 2px; }
+    .layer.l1 { background: var(--teal-dim); border: 1px solid #99f6e4; color: #134e4a; }
+    .layer.l2 { background: var(--blue-dim); border: 1px solid #bfdbfe; color: #1e3a8a; margin: 0 6%; }
+    .layer.l3 { background: var(--violet-dim); border: 1px solid #c4b5fd; color: #4c1d95; margin: 0 12%; }
+    @media (max-width: 600px) { .layer.l2, .layer.l3 { margin: 0; } }
+    .timeline { list-style: none; margin: 0; padding: 0; border-left: 3px solid var(--blue-dim); }
+    .timeline li { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 0 0 18px 16px; position: relative; font-size: 0.9rem; }
+    .timeline li::before { content: ""; position: absolute; left: -8px; top: 5px; width: 13px; height: 13px; border-radius: 50%; background: var(--blue); }
+    .tl-date { font-weight: 800; color: var(--blue); font-size: 0.82rem; }
+    @media (max-width: 600px) { .timeline li { grid-template-columns: 1fr; gap: 2px; } }
+    ul.tight { margin: 6px 0 0; padding-left: 18px; }
+    ul.tight li { margin-bottom: 3px; }
+    .gate { margin-top: 8px; background: var(--amber-dim); border: 1px solid #fde68a; color: #92400e; border-radius: 6px; padding: 8px 12px; font-size: 0.86rem; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+    table.money td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    table.money tr.sum td { font-weight: 800; background: var(--bg); }
+    table.money tr.neg-row td:last-child { color: var(--red); }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-hub.html">CityUx Hub</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-short-course-launch-plan.html">Short-Course Launch Plan</a>
+    <span class="nav-sep">›</span>
+    <span>Critique &amp; Plan B</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Plan Review — CityUx</div>
+    <h1>Short-Course Launch: Critique of Plan A, and Plan B</h1>
+    <p class="subtitle">A frank review of the <a href="cityux-short-course-launch-plan.html">three-course launch plan</a> (Plan A), followed by a different approach, Plan B: an open, free AI Fluency for X course where CityUx charges for assessed proof and live coaching instead of content, with demand tested before anything big is built.</p>
+    <div class="callout callout-blue" style="margin-bottom:16px"><strong>Updated Nov 24:</strong> Plan B's test audiences now come from the <a href="cityux-target-market-quadrant.html">target-market quadrant</a>: K-12 educators, career changers, and state agencies (partner exploration). The trades are parked. Sections 4–7 and 10 reflect this.</div>
+    <div class="meta-row">
+      <span class="meta-chip">Nov 24, 2026</span>
+      <span class="meta-chip">Companion to Plan A</span>
+      <span class="meta-chip">Draft for discussion</span>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#verdict">Verdict on Plan A</a></li>
+      <li><a href="#keep">What Plan A gets right</a></li>
+      <li><a href="#critique">Eleven problems with Plan A</a></li>
+      <li><a href="#planb">Plan B: Open Core, Prove Then Scale</a></li>
+      <li><a href="#phases">Plan B phases and evidence gates</a></li>
+      <li><a href="#aims">What happens to the three aims</a></li>
+      <li><a href="#money">Plan B money and metrics</a></li>
+      <li><a href="#brisks">Where Plan B could fail</a></li>
+      <li><a href="#compare">Plan A vs. Plan B</a></li>
+      <li><a href="#rec">Recommendation</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="section" id="verdict">
+    <div class="section-header">
+      <div class="section-icon icon-red">🔍</div>
+      <div><h2>1 · Verdict on Plan A</h2><div class="section-sub">Good diagnosis, not ready to present as a launch plan</div></div>
+    </div>
+    <div class="section-body">
+      <p class="lead">Plan A reads the market correctly: generic AI fluency is free, so CityUx has to win on specificity and on who pays. But it acts as if those questions are settled. It launches <strong>three products into three unrelated markets in about ten weeks</strong>, with a small team that is also launching the BSAI, payers that are mostly unconfirmed, and no conversations yet with a single real customer. Stakeholders who read it closely will ask, "How do you know anyone will buy this?" Plan A has no answer yet.</p>
+      <div class="table-wrap"><table class="map grade">
+        <thead><tr><th>Dimension</th><th>Grade</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Market diagnosis</td><td><span class="pill pill-green">Strong</span></td><td>Correct read on free competitors, the labor market and the new public funding</td></tr>
+          <tr><td>Honesty</td><td><span class="pill pill-green">Strong</span></td><td>It admits year one is near break-even, and it flags shaky data</td></tr>
+          <tr><td>Evidence of demand</td><td><span class="pill pill-red">Weak</span></td><td>All desk research; no interviews, waitlists or price tests; the scoring matrix is the team's own judgment</td></tr>
+          <tr><td>Focus</td><td><span class="pill pill-red">Weak</span></td><td>Three buyers, three sales approaches, three partner networks and three content areas at once</td></tr>
+          <tr><td>Feasibility</td><td><span class="pill pill-red">Weak</span></td><td>The March 2027 launch overlaps the BSAI launch; partners and institutional buyers aren't lined up</td></tr>
+          <tr><td>Who pays</td><td><span class="pill pill-amber">Mixed</span></td><td>Good thinking about payers, but only 3 of the 8 payers are available today</td></tr>
+          <tr><td>Financial realism</td><td><span class="pill pill-amber">Mixed</span></td><td>320 learners in year one with no brand in these markets; several costs are missing</td></tr>
+          <tr><td>Fit with CityUx strategy</td><td><span class="pill pill-amber">Mixed</span></td><td>Paid-first, while the funnel the president approved is open and free at the top</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="section" id="keep">
+    <div class="section-header">
+      <div class="section-icon icon-green">👍</div>
+      <div><h2>2 · What Plan A gets right (Plan B keeps all of it)</h2></div>
+    </div>
+    <div class="section-body">
+      <ul class="checks">
+        <li><strong>No generic "Intro to AI."</strong> Competing with free content is a losing game.</li>
+        <li><strong>"Who pays?" is asked for every course.</strong> The learner's own wallet is the weakest payer.</li>
+        <li><strong>One shared core with an "X" layer for each audience</strong>, which keeps the cost of each new audience low.</li>
+        <li><strong>Outcome data treated as an asset</strong>, since the state training list and Workforce Pell both require it.</li>
+        <li><strong>A go / fix / stop review with targets set in advance.</strong></li>
+        <li><strong>Cohorts and a work product the learner keeps</strong>, rather than videos alone.</li>
+        <li><strong>Honest about revenue.</strong> It matches CityU's own <a href="microcredentialing-relevance-research.html">micro-credential evidence review</a>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="section" id="critique">
+    <div class="section-header">
+      <div class="section-icon icon-amber">⚠️</div>
+      <div><h2>3 · Eleven problems with Plan A</h2><div class="section-sub">Most serious first. Each has a fix, and Plan B is built from the fixes.</div></div>
+    </div>
+    <div class="section-body">
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-red">High</span><h3>1. No primary research: we haven't talked to a buyer</h3></div>
+        <p>Every demand claim comes from national reports. Nobody has interviewed a teaching-center director, a laid-off Seattle worker or a plumbing shop owner, and nobody has tested a price or collected a waitlist. The course-scoring table gives "demand" scores that are really our own guesses, and it rates CityU's own strengths highly, which is the score most open to bias.</p>
+        <p class="fix"><strong>Fix:</strong> run a short validation sprint (interviews, landing pages, refundable seat reservations, free live workshops) <em>before</em> building any course.</p></div>
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-red">High</span><h3>2. Three markets at once is three startups</h3></div>
+        <p>Higher-ed buyers, workforce agencies and unemployed adults, and trades contractors share almost nothing: different buyers, different sales cycles, different partners, different expertise. Plan A calls having three payers "diversification," but it actually triples the marketing and sales work. And the team is the same three STC people currently rebuilding AI 410–440 for the BSAI's winter launch.</p>
+        <p class="fix"><strong>Fix:</strong> pick <strong>one beachhead audience</strong> and one product. Treat the other aims as experiments that have to earn their way in.</p></div>
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-red">High</span><h3>3. The timeline doesn't hold up</h3></div>
+        <p>Approval in December and paid external cohorts in March leaves about ten weeks, including the holidays, to build two courses, run an internal pilot, sign outside institutions and recruit an unemployed cohort. Institutions usually buy staff training in their annual budget cycle, not within weeks. The Career Pivot cohort is "grant-funded," but no grant has been secured.</p>
+        <p class="fix"><strong>Fix:</strong> make March a <em>free pilot and evidence</em> milestone, not a paid launch, and set paid dates by what the pilot shows.</p></div>
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-red">High</span><h3>4. Most of the payers are hopes</h3></div>
+        <p>Of the eight payers in Plan A, only institutional budgets, employer outplacement and self-paying learners are available now. Institutions are in a budget crisis by Plan A's own account, and CityU's evidence review found only about 20% of learners interested in a <em>paid</em> micro-credential. Training-list eligibility for a private university's non-credit program is unknown. ESD Training Benefits excludes most laid-off tech workers. Workforce Pell is 2028 at the earliest. L&amp;I approval hasn't been requested.</p>
+        <p class="fix"><strong>Fix:</strong> a model that works with <em>low</em> paid conversion, where free reach builds the case for grant funders, and the agency eligibility work runs alongside rather than blocking the launch.</p></div>
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-amber">Medium</span><h3>5. The higher-ed course sells into shrinking budgets and to competitors</h3></div>
+        <p>The same section that describes college budget cuts expects colleges to buy $6,000 licenses. Other universities may not want staff training from a peer institution they compete with for students. Free AI courses made specifically for educators already exist from large tech companies, and teaching-center associations also sell faculty development.</p>
+        <p class="fix"><strong>Fix:</strong> start <strong>inside CityU</strong>, where CityU is both the buyer and the proof. Sell outside only once there are results to show, and lead with "open, free to adapt, with paid facilitation."</p></div>
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-amber">Medium</span><h3>6. The trades market is small and crowded, and CityU has no standing there</h3></div>
+        <p>Washington employs about 12,000 plumbers (BLS via a secondary source). Each needs about 8 CE hours a year, and L&amp;I's own Contractor Training Days, union training centers and supply houses already provide them, often cheaply. CityU has no licensed plumbers on staff. A credible 3D plumbing model costs far more than the $15,000 per course Plan A budgets. And by keeping AI out of the CE course to qualify for credit, Plan A split your 3D idea away from the AI Fluency brand.</p>
+        <p class="fix"><strong>Fix:</strong> park the trades. Take the same required-renewal idea to <strong>K-12 educators</strong>, who need 100 clock hours per five-year renewal and already trust CityU's School of Education (see the <a href="cityux-target-market-quadrant.html">quadrant</a>). Keep 3D as a teaching approach across all courses.</p></div>
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-amber">Medium</span><h3>7. The Career Pivot Lab promises outcomes we can't control</h3></div>
+        <p>"50% in a new job within six months" and an employer demo day both depend on employers who aren't lined up, in a market where entry-level hiring is shrinking. Charging unemployed people for a course whose results are uncertain is also an ethical and reputational risk. And if the outcomes come in poor, the data that was meant to open public funding will instead rule CityU out.</p>
+        <p class="fix"><strong>Fix:</strong> promise what CityUx controls (a portfolio, an assessed credential, coaching). Report job outcomes, but don't sell on them until we have them. Keep it free or nearly free for unemployed learners.</p></div>
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-amber">Medium</span><h3>8. The money model is optimistic</h3></div>
+        <p>The base case needs 320 paying learners in year one in markets where CityUx has no name yet. It leaves out sales and partnership time, learner support, a badge platform, refunds and overhead, and it counts a $20,000 grant that hasn't been won. A base-case profit of $10,000 is within the margin of error of zero, and the conservative case loses $21,660.</p>
+        <p class="fix"><strong>Fix:</strong> spend less up front, and add the missing costs to the model.</p></div>
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-amber">Medium</span><h3>9. "It feeds CityU degrees" is assumed, not shown</h3></div>
+        <p>The main justification is that learners move on to CityU programs, but the evidence review says the step from micro-credential to degree is weak in the research. Plan A measures program inquiries but has no specific design for turning learners into students.</p>
+        <p class="fix"><strong>Fix:</strong> build in specific next steps, such as credit for the assessed credential, a named advisor, and a tuition credit for completers. Track the share of learners who actually enroll.</p></div>
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-blue">Lower</span><h3>10. It drifts from the CityUx strategy already approved</h3></div>
+        <p>The president approved an <em>open</em> funnel: free YouTube and GitHub content and self-paced Open edX courses at the top and middle, with paid and high-touch offerings at the bottom. The board briefing set out an open-source content model. Plan A goes to paid courses first, with small free samples.</p>
+        <p class="fix"><strong>Fix:</strong> keep the content open, as the approved funnel does, and charge at the bottom of the funnel.</p></div>
+
+      <div class="issue"><div class="issue-head"><span class="pill pill-blue">Lower</span><h3>11. No market sizing</h3></div>
+        <p>There is no count of how many people in each audience CityUx could realistically reach (for example, higher-ed employees in Washington, displaced workers in King and Snohomish counties, or certified plumbers). Stakeholders will ask for these numbers.</p>
+        <p class="fix"><strong>Fix:</strong> started in the <a href="cityux-target-market-quadrant.html">quadrant</a>, which sizes 12 Washington audiences. Phase 0 fills the gaps, such as the exact 2025–26 teacher count from OSPI's personnel report.</p></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="section" id="planb">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔓</div>
+      <div><h2>4 · Plan B: Open Core, Prove Then Scale</h2><div class="section-sub">Give the learning away. Charge for proof, people and private cohorts.</div></div>
+    </div>
+    <div class="section-body">
+      <p class="lead">Free providers have made AI <em>content</em> worthless as a product. What they don't offer is a <strong>human-assessed credential from an accredited university</strong>, <strong>live coaching</strong>, and <strong>versions built for specific jobs</strong>. Plan B gives away an open AI Fluency for X course and charges for those three things. It also follows the CityUx funnel the president approved, and it starts with the people CityU already knows.</p>
+
+      <div class="layers" role="img" aria-label="Three layers: a free open core at the bottom, paid proof and coaching in the middle, and private cohorts for institutions and employers at the top">
+        <div class="layer l3"><div class="layer-tag">Paid · organizations</div><strong>Private cohorts</strong><span>For employers, colleges and partners: their own cohort, their examples, completion reports. $3K–$8K per cohort.</span></div>
+        <div class="layer l2"><div class="layer-tag">Paid · individuals</div><strong>Proof and people</strong><span><em>Proof of AI Fluency</em>, a human-scored performance task plus a short live defense, $99. <em>Coached cohort</em>, 4 live weeks with feedback, $249. Free or discounted for unemployed learners.</span></div>
+        <div class="layer l1"><div class="layer-tag">Free · open (CC BY)</div><strong>AI Fluency for X: open core</strong><span>4 self-paced modules on Open edX and YouTube, taught example-first, plus short "X lenses" for specific jobs, starting with K-12 educators and career changers. Anyone can use it, including other colleges.</span></div>
+      </div>
+
+      <div class="point mt16">
+        <span class="point-label lbl-blue">Beachhead</span>
+        <div class="point-body"><strong>Two audiences where CityU is already trusted:</strong> (1) <strong>K-12 educators</strong>, who need 100 clock hours per five-year renewal and whom CityU's School of Education already prepares; and (2) <strong>career changers</strong>, starting with CityU alumni, then office and admin staff, workers over 50 and recent grads through WorkSource. CityU's own faculty and staff are the internal pilot. State agencies, whose staff must all take AI training under state policy, are explored as a partner play. See the <a href="cityux-target-market-quadrant.html">quadrant</a> for why.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-green">Credential</span>
+        <div class="point-body">The paid credential reuses STC's spec, build and defend assessment model and the CityUx <a href="assessment-infrastructure-playbook.html">assessment playbook</a>: a real task from the learner's own job, a rubric, and a 10-minute defense like the AI 410 faculty interview. That is something free providers don't offer, and the evidence review found employers trust assessed, university-issued credentials most.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-violet">Funding</span>
+        <div class="point-body">Grant funders and AI skilling programs (for example Microsoft Elevate, philanthropy and workforce boards) pay for <em>free, wide-reaching</em> training, not paid courses. Plan B's free core and its enrollment numbers make CityUx a far stronger applicant, and the credential layer can later be expanded into a 150+ hour program for Workforce Pell.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">Degrees</span>
+        <div class="point-body">A designed path into CityU programs: the credential is assessed in the same format as STC courses, and CityU should look at granting it credit (for example toward the CS 11A/11B bridge courses). Completers get a named advisor and a tuition credit for a first course, which would need approval.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="section" id="phases">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🚦</div>
+      <div><h2>5 · Plan B phases and evidence gates</h2><div class="section-sub">Each phase has to pass its gate before the next one gets money</div></div>
+    </div>
+    <div class="section-body">
+      <ol class="timeline">
+        <li><span class="tl-date">Phase 0<br>Dec 2026 – Feb 2027</span><div><strong>Validation sprint, 10 weeks, about $8K.</strong> Build almost nothing. Instead:
+          <ul class="tight">
+            <li>15 interviews with each of 2 audiences: K-12 teachers and principals (starting with School of Education alumni), and career changers (CityU alumni, office and admin staff, workers 50+, recent grads)</li>
+            <li>Meetings with 2–3 state agency training managers on how they meet WaTech's AI training requirement and how agencies buy training</li>
+            <li>2 landing pages (educators, career changers) with waitlists and a <strong>$25 refundable seat reservation</strong>; for educators, test willingness to pay for clock hours</li>
+            <li>3 free 90-minute live workshops: CityU faculty and staff (internal pilot), K-12 educators, and career changers</li>
+            <li>One interactive 3D teaching scene (for example, a classroom or office workflow) to test 3D as CityUx's teaching style across all X lenses</li>
+            <li>Talks with OSPI (clock-hour provider approval), with the School of Education (co-ownership of the educator lens), and with Career Bridge and the Workforce Board</li>
+            <li>A size estimate for each audience</li>
+          </ul>
+          <div class="gate"><strong>Gate 0:</strong> pick the 1–2 audiences that reach <strong>150+ waitlist sign-ups, 20+ paid reservations, or a signed letter of intent from a partner (a school district, a state agency or an employer)</strong>. Audiences that miss stop here, at the cost of a few weeks rather than a full course build.</div></div></li>
+        <li><span class="tl-date">Phase 1<br>Mar – Jun 2027</span><div><strong>Build and open.</strong> Release the free open core (4 modules) and the winning X lenses. Launch credential v1. Run 2 coached cohorts and roll out internal CityU staff training. Publish under CC BY, the same license as AI 410.
+          <div class="gate"><strong>Gate 1 (Jul 2027):</strong> 1,500+ free enrollments, 40%+ finishing module 1, 5%+ of core completers buying the credential or a cohort, 70%+ cohort completion.</div></div></li>
+        <li><span class="tl-date">Phase 2<br>Jul – Dec 2027</span><div><strong>Prove and sell.</strong> First private cohorts for employers and colleges, using CityU's own results as evidence. Add the next X lens based on traffic data. Run a first state agency cohort if a partner and a purchasing route are found. Offer OSPI clock hours on the educator lens once approved. Collect outcome data for the training list.
+          <div class="gate"><strong>Gate 2 (Jan 2028):</strong> 3+ paying organizations, measured enrollment into CityU programs, and a grant application submitted with the reach data.</div></div></li>
+        <li><span class="tl-date">Phase 3<br>2028</span><div><strong>Fund and scale.</strong> Microsoft Elevate or philanthropic partnership, a 150+ hour stackable program for Workforce Pell and the state training list, and more X lenses.</div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="section" id="aims">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🎯</div>
+      <div><h2>6 · What happens to the three aims</h2><div class="section-sub">None are dropped. They are tested in order, cheapest test first.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Aim</th><th>In Plan A</th><th>In Plan B</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Higher education</strong></td><td>Paid course with $6,000 licenses to other colleges, launching March 2027</td><td>An X lens, first used <strong>inside CityU</strong> for staff training. Other colleges get it free to adapt, with paid facilitation once CityU has results.</td></tr>
+          <tr><td><strong>Trades and 3D</strong></td><td>8-hour L&amp;I CE course plus an AI course for shops, built in Wave 2</td><td><strong>Parked.</strong> CityU has no standing in the trades, so the required-renewal idea moves to K-12 educators instead. 3D visuals become a <em>teaching approach</em> used across every X lens. The trades come back only if a training partner appears.</td></tr>
+          <tr><td><strong>Career change</strong></td><td>Grant-funded Pivot Lab that sells on job outcomes</td><td><strong>One of the two test audiences</strong>, starting with CityU alumni, then office and admin staff, workers 50+ and recent grads. The free core plus a paid credential and coaching, with outcomes reported but not promised.</td></tr>
+          <tr><td><strong>New: K-12 educators</strong></td><td>Not in Plan A</td><td><strong>The other test audience.</strong> An educator lens with OSPI clock hours and district cohorts, built with CityU's School of Education.</td></tr>
+          <tr><td><strong>New: state agencies</strong></td><td>Not in Plan A</td><td><strong>Partner exploration only</strong> in Phase 0. A role-based course mapped to WaTech's AI policy if a partner and purchasing route are found.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="section" id="money">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🧮</div>
+      <div><h2>7 · Plan B money and metrics (calendar 2027)</h2><div class="section-sub">Placeholder numbers, like Plan A's. The key difference is lower spending at risk.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="two-col">
+        <div class="table-wrap"><table class="map money">
+          <thead><tr><th>Cost</th><th>$</th></tr></thead>
+          <tbody>
+            <tr><td>Phase 0 validation sprint</td><td>8,000</td></tr>
+            <tr><td>Open core, 4 modules</td><td>20,000</td></tr>
+            <tr><td>2 X lenses (educators, career changers)</td><td>16,000</td></tr>
+            <tr><td>3D teaching scene (reused across lenses)</td><td>5,000</td></tr>
+            <tr><td>Credential scoring (120 × $25)</td><td>3,000</td></tr>
+            <tr><td>Coached cohorts (6 × $2,500)</td><td>15,000</td></tr>
+            <tr><td>Badges, support, marketing</td><td>12,000</td></tr>
+            <tr class="sum"><td>Total</td><td>79,000</td></tr>
+          </tbody>
+        </table></div>
+        <div class="table-wrap"><table class="map money">
+          <thead><tr><th>Income</th><th>$</th></tr></thead>
+          <tbody>
+            <tr><td>Credentials (120 × $99)*</td><td>11,880</td></tr>
+            <tr><td>Coached cohorts (6 × 15 × $249)</td><td>22,410</td></tr>
+            <tr><td>Private cohorts (3 × $5,000)</td><td>15,000</td></tr>
+            <tr><td>Grants</td><td>0 (not counted)</td></tr>
+            <tr class="sum"><td>Total</td><td>49,290</td></tr>
+            <tr class="sum neg-row"><td>Net, before grants</td><td>−29,710</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <p class="note">*About 100 credentials come from coached and private-cohort learners adding the assessment, and about 20 from the free core (5% of an estimated 375 core completers). Plan B spends about 20% less than Plan A's base case ($79,000 against $100,000). Only about $8,000 is spent before demand is tested, and if Gate 0 fails, most of the rest is never spent. It also reaches far more people (a target of 1,500+ free learners against Plan A's 320 paying learners), and that reach is what grant applications and the CityU enrollment pipeline need. It shows a bigger loss than Plan A because it earns less and doesn't count grants it hasn't won (Plan A's +$10,000 assumed a $20,000 grant). Plan B is the cheaper way to find out; it is not the more profitable plan in year one.</p>
+      <div class="table-wrap mt16"><table class="map">
+        <thead><tr><th>Funnel metric</th><th>Gate 1 target</th></tr></thead>
+        <tbody>
+          <tr><td>Free enrollments (open core)</td><td>1,500+</td></tr>
+          <tr><td>Finish module 1</td><td>40%+</td></tr>
+          <tr><td>Core completers who buy the credential or a cohort</td><td>5%+ (an assumption to test; edX research found free certificates <em>lowered</em> certification rates, so price matters)</td></tr>
+          <tr><td>Coached cohort completion</td><td>70%+</td></tr>
+          <tr><td>Learners who ask about CityU programs / who enroll</td><td>10%+ / tracked by name</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="section" id="brisks">
+    <div class="section-header">
+      <div class="section-icon icon-red">🧯</div>
+      <div><h2>8 · Where Plan B could fail</h2><div class="section-sub">Plan B gets the same critique as Plan A</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Weakness</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Free learners rarely pay.</strong> Paid conversion could fall well under 5%.</td><td>Private cohorts and grants carry the finances; the credential is a bonus. Test prices from $49 to $149 in Phase 1.</td></tr>
+          <tr><td><strong>Slower revenue.</strong> Leadership may want income in 2027.</td><td>Spending at risk is lower, and Gate 1 gives a clear revenue decision point in July 2027.</td></tr>
+          <tr><td><strong>Free can look low-value.</strong></td><td>The accredited-university credential and live defense are the premium. Brand the core as "open," not "free."</td></tr>
+          <tr><td><strong>Reach takes marketing.</strong> Open content nobody finds helps nobody.</td><td>Start with CityU's own staff, students and alumni, then YouTube and WorkSource, which are already in the CityUx funnel.</td></tr>
+          <tr><td><strong>Human scoring is hard to scale.</strong></td><td>Trained adjunct scorers, a rubric with examples, and a price that covers about $25 of scoring per attempt</td></tr>
+          <tr><td><strong>The validation sprint delays the launch</strong> by about 3 months.</td><td>That's intended. Three months of testing costs far less than a year spent on the wrong course.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="section" id="compare">
+    <div class="section-header">
+      <div class="section-icon icon-teal">⚖️</div>
+      <div><h2>9 · Plan A vs. Plan B</h2></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th></th><th>Plan A: three paid courses</th><th>Plan B: open core, prove then scale</th></tr></thead>
+        <tbody>
+          <tr><td>Focus</td><td>3 audiences, 3 products</td><td>1 core product; 1–2 audiences chosen by evidence</td></tr>
+          <tr><td>Evidence before building</td><td>None</td><td>10-week sprint with a pass or fail gate</td></tr>
+          <tr><td>Spend before learning anything</td><td>About $45K in course builds</td><td>About $8K</td></tr>
+          <tr><td>First revenue</td><td>March 2027 (if payers come through)</td><td>March–April 2027 (credentials and cohorts, small amounts)</td></tr>
+          <tr><td>Year-one reach</td><td>About 320 paying learners</td><td>1,500+ learners, of whom about 200 pay</td></tr>
+          <tr><td>Net, year one</td><td>+$10K base, counting a $20K grant</td><td>About −$30K before grants; lower spend and much lower downside</td></tr>
+          <tr><td>Fit with the approved CityUx funnel</td><td>Partial (paid first)</td><td>Strong (open at the top, paid at the bottom)</td></tr>
+          <tr><td>Fit with grant funders</td><td>Weak (paid products)</td><td>Strong (free reach to point to)</td></tr>
+          <tr><td>Team load during the BSAI launch</td><td>Heavy</td><td>Light until Gate 0, then moderate</td></tr>
+          <tr><td>If we're wrong</td><td>Up to three courses nobody buys</td><td>A few weeks of interviews and landing pages</td></tr>
+          <tr><td>Best when</td><td>Leadership needs paid courses in 2027 and accepts the risk</td><td>Leadership wants reach, evidence and a funding case first</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="section" id="rec">
+    <div class="section-header">
+      <div class="section-icon icon-green">✅</div>
+      <div><h2>10 · Recommendation</h2></div>
+    </div>
+    <div class="section-body">
+      <p class="lead">Take <strong>Plan B</strong> to stakeholders, testing two audiences from the <a href="cityux-target-market-quadrant.html">target-market quadrant</a>, K-12 educators and career changers, with state agencies explored through a partner. Plan A's higher-ed and Career Pivot designs become ready-made material for the X lenses. Plan B makes a smaller, verifiable promise ("in ten weeks we'll know which audience will pay, for about $8K"). That is easier to approve, fits the funnel the president already validated, and leaves CityUx with an evidence-based plan by March instead of a guess.</p>
+      <ul class="action-list mt16">
+        <li class="action-item"><span class="action-check">1</span><div class="action-body">Approve the <strong>Phase 0 validation sprint</strong> (about $8K, December 2026 to February 2027) and its pass or fail criteria.</div></li>
+        <li class="action-item"><span class="action-check">2</span><div class="action-body">Approve an <strong>open license</strong> (CC BY) for the AI Fluency for X core, consistent with the CityUx open-source model.</div></li>
+        <li class="action-item"><span class="action-check">3</span><div class="action-body">Give permission to contact <strong>CityU alumni and staff</strong> for interviews and the pilot workshops, and ask the <strong>School of Education</strong> to co-own the educator lens and open its alumni network.</div></li>
+        <li class="action-item"><span class="action-check">4</span><div class="action-body">Ask the registrar and academic affairs to look into <strong>credit for the assessed credential</strong> and a completer tuition credit.</div></li>
+        <li class="action-item"><span class="action-check">5</span><div class="action-body">Start the <strong>OSPI clock-hour provider, Career Bridge and Workforce Pell</strong> conversations now, plus introductions to state agency training managers, alongside the sprint rather than blocking it.</div></li>
+      </ul>
+      <div class="callout callout-blue mt16"><strong>Sources:</strong> market figures are from <a href="cityux-short-course-launch-plan.html#sources">Plan A's source list</a>. Additional sources: <a href="https://dspace.mit.edu/handle/1721.1/135259">Littenberg-Tobias, Ruipérez-Valiente &amp; Reich, free vs. paid certificates on edX (MIT)</a>, and Washington plumber employment from <a href="https://www.servicetitan.com/licensing/plumbing/washington">ServiceTitan's WA licensing guide</a> (secondary, citing BLS; confirm with L&amp;I).</div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

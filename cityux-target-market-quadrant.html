@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUx Target-Market Quadrant</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+    .qa { margin: 0; padding-left: 20px; }
+    .qa > li { margin-bottom: 18px; font-size: 0.92rem; }
+    .qa > li > strong.q { display: block; font-size: 0.95rem; margin-bottom: 6px; }
+    .qa ul { margin: 0; padding-left: 18px; }
+    .qa ul li { margin-bottom: 6px; }
+    .fill { background: #fef9c3; border: 1px dashed #ca8a04; border-radius: 4px; padding: 0 4px; color: #713f12; }
+    .copy-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .copy-btn { font: inherit; font-size: 0.85rem; font-weight: 700; background: var(--blue); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+    .copy-btn:hover { background: #1e40af; }
+    .copy-status { font-size: 0.82rem; color: var(--green); font-weight: 600; min-height: 1em; }
+    table.map { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    table.map th, table.map td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.map th { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+    .table-wrap { overflow-x: auto; }
+    @media (max-width: 600px) { .doc-header, .section-body { padding-left: 16px; padding-right: 16px; } .point { flex-direction: column; gap: 6px; } }
+      .lead { font-size: 0.95rem; margin: 0 0 14px; }
+    .note { font-size: 0.86rem; color: var(--slate); margin: 14px 0 0; }
+    .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+    .pill-green { background: var(--green-dim); color: #15803d; }
+    .pill-blue { background: var(--blue-dim); color: var(--blue); }
+    .pill-amber { background: var(--amber-dim); color: #b45309; }
+    .pill-gray { background: #f1f5f9; color: #475569; }
+    .quad-wrap { overflow-x: auto; }
+    .quad-svg { width: 100%; min-width: 520px; height: auto; display: block; }
+    .quad-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 12px; font-size: 0.84rem; color: var(--slate); }
+    @media (max-width: 600px) { .quad-legend { grid-template-columns: 1fr; } }
+    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+    table.seg { min-width: 900px; }
+    table.seg td:nth-child(7), table.seg td:nth-child(8) { text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .seg-card { border: 1px solid var(--border); border-left: 5px solid var(--green); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; }
+    .seg-card.c-amber { border-left-color: var(--amber); }
+    .seg-card h3 { margin: 0 0 8px; font-size: 1rem; font-weight: 800; }
+    .kv > div { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 0.87rem; }
+    .kv > div > span { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); padding-top: 2px; }
+    @media (max-width: 600px) { .kv > div { grid-template-columns: 1fr; gap: 2px; } }
+    .table-wrap:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-hub.html">CityUx Hub</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-short-course-plan-critique.html">Critique &amp; Plan B</a>
+    <span class="nav-sep">›</span>
+    <span>Target-Market Quadrant</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Market Research — CityUx</div>
+    <h1>Who Should CityUx Serve First? A Target-Market Quadrant</h1>
+    <p class="subtitle">Twelve Washington audiences for AI Fluency for X, scored on how attractive each market is and how well CityU can win it. This page also answers two questions: which launch plan is more feasible, and, if the trades aren't a good market, what is.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Nov 24, 2026</span>
+      <span class="meta-chip">Feeds Plan B, Phase 0</span>
+      <span class="meta-chip">12 segments scored</span>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#feasible">Which plan is more feasible?</a></li>
+      <li><a href="#answer">If not the trades, then who?</a></li>
+      <li><a href="#quadrant">The quadrant</a></li>
+      <li><a href="#method">How the scores work</a></li>
+      <li><a href="#table">All twelve segments, with evidence</a></li>
+      <li><a href="#top">The three segments to test first</a></li>
+      <li><a href="#phase0">How this changes Plan B's Phase 0</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="section" id="feasible">
+    <div class="section-header">
+      <div class="section-icon icon-green">✅</div>
+      <div><h2>1 · Which plan is more feasible, with fewer downsides?</h2><div class="section-sub">Plan B</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Test</th><th>Plan A: three paid courses</th><th>Plan B: open core, prove then scale</th></tr></thead>
+        <tbody>
+          <tr><td>Can three STC people do it during the BSAI launch?</td><td>Hard: three courses, three markets, by March</td><td><strong>Yes:</strong> interviews and landing pages until February, then one core course</td></tr>
+          <tr><td>Money spent before we know anyone will buy</td><td>About $45K in course builds</td><td><strong>About $8K</strong></td></tr>
+          <tr><td>Worst case</td><td>Three courses nobody buys</td><td><strong>A few weeks of research</strong></td></tr>
+          <tr><td>Depends on unconfirmed payers?</td><td>Yes, for most of its income</td><td><strong>No:</strong> grants are upside, not part of the plan</td></tr>
+          <tr><td>Fits the funnel the president approved?</td><td>Partly</td><td><strong>Yes</strong></td></tr>
+          <tr><td>Year-one income</td><td><strong>Higher if it works</strong> (+$10K, counting a grant)</td><td>Lower (about −$30K before grants)</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Plan B's one real downside is slower income. Its other risks are smaller and cheaper to recover from. The quadrant below replaces Plan B's four guessed test audiences with three chosen from evidence.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="section" id="answer">
+    <div class="section-header">
+      <div class="section-icon icon-blue">💡</div>
+      <div><h2>2 · If not the trades, then who?</h2><div class="section-sub">Keep what made the trades idea work, and apply it where CityU is already trusted</div></div>
+    </div>
+    <div class="section-body">
+      <p class="lead">The plumbing idea had the <strong>right business model in the wrong field</strong>. Its strength was <em>required, recurring</em> training: every plumber has to earn CE hours to renew a license. Its weakness was that CityU has no standing with plumbers. Two Washington markets have the same built-in demand <em>and</em> a reason to trust CityU:</p>
+      <div class="point">
+        <span class="point-label lbl-green">1 · Teachers</span>
+        <div class="point-body"><strong>K-12 educators renewing their certificates.</strong> Most Washington five-year teaching certificates require <strong>100 clock hours</strong> to renew, and providers other than districts must be on OSPI's approved list. In a 2026 survey, 42% of U.S. teachers said they'd had no training on using AI in the classroom. CityU's School of Education already prepares Washington teachers, so this is CityU's home ground, much as the trades are a training center's.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-amber">2 · State staff</span>
+        <div class="point-body"><strong>Washington state agency employees.</strong> WaTech's AI policy requires agencies to give <strong>every employee role-based AI awareness training</strong>, with new hires finishing it within 60 days of starting. There are about 76,500 executive-branch employees. Agencies choose their own training, so the payer is clear and the demand repeats. CityU would need a partner or a way into the state's procurement process, which makes this a partner play rather than a quick win.</div>
+      </div>
+      <div class="point">
+        <span class="point-label lbl-blue">3 · Career change</span>
+        <div class="point-body">The other strong area is <strong>career change</strong>, which combines four groups from the quadrant that share a need and a course: career changers, office and administrative staff (the most AI-exposed jobs), workers over 50, and recent grads. About 176,000 Washingtonians were unemployed in September 2026 (not seasonally adjusted). The weak point is that these learners usually pay for themselves, and many can't. Plan B's free core plus paid credential fits them better than a paid course does.</div>
+      </div>
+      <div class="callout callout-amber mt16"><strong>Don't throw away the 3D work.</strong> Interactive 3D (pipes inside a wall, a hospital workflow, a classroom seating plan) can become CityUx's <em>teaching approach</em> across every X version, rather than a plumbing product.</div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="section" id="quadrant">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🧭</div>
+      <div><h2>3 · The quadrant</h2><div class="section-sub">Bubble size is the audience's size in Washington. Bubble color shows the quadrant. Scores are from the table in Section 5.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="quad-wrap"><svg viewBox="0 0 680 560" role="img" aria-labelledby="qt qd" xmlns="http://www.w3.org/2000/svg" class="quad-svg">
+<title id="qt">Target-market quadrant</title>
+<desc id="qd">Twelve Washington audiences plotted by market attractiveness (vertical) and CityU's ability to win (horizontal). Top right, lead with: K-12 educators, career changers, office and admin staff. Top left, enter with a partner: state agency staff, health-care support, plumbing trades, small business. Bottom right, proving ground: higher-ed staff, recent grads, workers 50 and over. Bottom left, avoid: veterans and nonprofit staff.</desc>
+<rect x="340" y="40" width="280" height="230" fill="#f0fdf4"/>
+<rect x="60" y="40" width="280" height="230" fill="#fffbeb"/>
+<rect x="340" y="270" width="280" height="230" fill="#eff6ff"/>
+<rect x="60" y="270" width="280" height="230" fill="#f8fafc"/>
+<line x1="340" y1="40" x2="340" y2="500" stroke="#94a3b8" stroke-dasharray="4 4"/>
+<line x1="60" y1="270" x2="620" y2="270" stroke="#94a3b8" stroke-dasharray="4 4"/>
+<rect x="60" y="40" width="560" height="460" fill="none" stroke="#cbd5e1"/>
+<g font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700" letter-spacing="0.06em">
+<text x="612" y="58" text-anchor="end" fill="#15803d">LEAD WITH</text>
+<text x="68" y="58" fill="#b45309">ENTER WITH A PARTNER</text>
+<text x="612" y="492" text-anchor="end" fill="#1d4ed8">PROVING GROUND</text>
+<text x="68" y="492" fill="#64748b">AVOID OR PARK</text></g>
+<g font-family="Inter,system-ui,sans-serif" font-size="12" fill="#475569">
+<text x="340" y="546" text-anchor="middle">CityU's ability to win → (access, credibility, competition gap, assets we can reuse)</text>
+<text x="62" y="516">1</text><text x="333" y="516">3</text><text x="610" y="516">5</text>
+<text transform="translate(22 270) rotate(-90)" text-anchor="middle">Market attractiveness → (size, urgency, clear payer, repeat demand)</text>
+<text x="48" y="504" text-anchor="end">1</text><text x="48" y="274" text-anchor="end">3</text><text x="48" y="46" text-anchor="end">5</text>
+</g><g font-family="Inter,system-ui,sans-serif">
+<circle cx="445" cy="212" r="11" fill="#16a34a" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="445" y="216" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">1</text>
+<text x="461" y="216" font-size="12" font-weight="600" fill="#0f172a">K-12 educators</text>
+<circle cx="480" cy="270" r="13" fill="#16a34a" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="480" y="274" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">2</text>
+<text x="498" y="274" font-size="12" font-weight="600" fill="#0f172a">Career changers</text>
+<circle cx="375" cy="241" r="16" fill="#16a34a" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="375" y="245" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">3</text>
+<text x="396" y="245" font-size="12" font-weight="600" fill="#0f172a">Office &amp; admin staff</text>
+<circle cx="305" cy="155" r="11" fill="#d97706" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="305" y="159" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">4</text>
+<text x="321" y="159" font-size="12" font-weight="600" fill="#0f172a">State agency staff</text>
+<circle cx="305" cy="184" r="16" fill="#d97706" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="305" y="188" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">5</text>
+<text x="326" y="188" font-size="12" font-weight="600" fill="#0f172a">Health-care support</text>
+<circle cx="165" cy="212" r="8" fill="#d97706" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="165" y="216" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">6</text>
+<text x="178" y="216" font-size="12" font-weight="600" fill="#0f172a">Plumbing trades</text>
+<circle cx="305" cy="270" r="16" fill="#d97706" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="305" y="274" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">7</text>
+<text x="326" y="274" font-size="12" font-weight="600" fill="#0f172a">Small business</text>
+<circle cx="305" cy="299" r="8" fill="#94a3b8" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="305" y="303" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">8</text>
+<text x="318" y="303" font-size="12" font-weight="600" fill="#0f172a">Veterans</text>
+<circle cx="480" cy="328" r="8" fill="#1d4ed8" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="480" y="332" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">9</text>
+<text x="493" y="332" font-size="12" font-weight="600" fill="#0f172a">Higher-ed staff</text>
+<circle cx="410" cy="328" r="11" fill="#1d4ed8" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="410" y="332" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">10</text>
+<text x="394" y="332" text-anchor="end" font-size="12" font-weight="600" fill="#0f172a">Recent grads</text>
+<circle cx="410" cy="299" r="13" fill="#1d4ed8" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="410" y="303" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">11</text>
+<text x="428" y="303" font-size="12" font-weight="600" fill="#0f172a">Workers 50+</text>
+<circle cx="235" cy="414" r="8" fill="#94a3b8" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"/>
+<text x="235" y="418" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">12</text>
+<text x="248" y="418" font-size="12" font-weight="600" fill="#0f172a">Nonprofit staff</text>
+</g></svg></div>
+      <div class="quad-legend">
+        <div><span class="dot" style="background:#16a34a"></span><strong>Lead with</strong>: attractive and winnable. Test these first.</div>
+        <div><span class="dot" style="background:#d97706"></span><strong>Enter with a partner</strong>: attractive, but CityU lacks access or credibility on its own.</div>
+        <div><span class="dot" style="background:#1d4ed8"></span><strong>Proving ground</strong>: CityU wins easily, but the market is small or can't pay. Good for pilots and evidence.</div>
+        <div><span class="dot" style="background:#94a3b8"></span><strong>Avoid or park</strong>: revisit only if something changes.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="section" id="method">
+    <div class="section-header">
+      <div class="section-icon icon-amber">📐</div>
+      <div><h2>4 · How the scores work</h2></div>
+    </div>
+    <div class="section-body">
+      <div class="module-grid">
+        <div class="module-card"><div class="module-name">Market attractiveness (vertical)</div><div class="module-desc">The average of four 1–5 scores. <strong>Size</strong>: people in Washington. <strong>Urgency</strong>: how much AI or the job market is hurting them now. <strong>Clear payer</strong>: whether an employer, agency or fund will pay, rather than the learner. <strong>Repeat demand</strong>: required renewal training or a steady flow of new hires.</div></div>
+        <div class="module-card"><div class="module-name">CityU's ability to win (horizontal)</div><div class="module-desc">The average of four 1–5 scores. <strong>Access</strong>: whether CityU already reaches these people. <strong>Credibility</strong>: whether they'd trust CityU on this. <strong>Competition gap</strong>: whether the free options leave room. <strong>Reuse</strong>: how much existing STC and CityU material we can use.</div></div>
+      </div>
+      <div class="callout callout-amber mt16"><strong>These are judgment scores, backed by the evidence in Section 5, not measurements.</strong> They exist to choose which audiences to <em>test</em> in Phase 0, not which ones to build for. Changing one score by one point moves a bubble by a quarter of a unit, so audiences near the dashed lines (state agency staff, small business, career changers) could fall in either quadrant.</div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="section" id="table">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📋</div>
+      <div><h2>5 · All twelve segments, with evidence</h2><div class="section-sub">Attractiveness (A) = size, urgency, clear payer, repeat demand. Ability to win (W) = access, credibility, competition gap, reuse.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" aria-label="Segment scoring table, scrollable">
+      <table class="map seg">
+        <thead><tr><th>#</th><th>Segment</th><th>Washington size</th><th>Key evidence</th><th>Who pays</th><th>Main competition</th><th>A</th><th>W</th><th>Quadrant</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>K-12 educators</strong></td><td>Tens of thousands of certificated staff (OSPI personnel report; exact 2025–26 total to confirm)</td><td>100 clock hours per 5-year renewal; 42% of U.S. teachers had no AI training (EdWeek 2026); Gallup: more than 60% got no AI guidance</td><td>Teachers (small amounts), districts</td><td>Districts and regional education service districts (free clock hours); Microsoft Elevate WA (free to all 295 districts)</td><td>3.5</td><td>3.75</td><td><span class="pill pill-green">Lead</span></td></tr>
+          <tr><td>2</td><td><strong>Career changers</strong> (incl. CityU alumni)</td><td>About 176,000 unemployed (Sept 2026, not seasonally adjusted); 4.08M labor force</td><td>WA 4.8% seasonally adjusted (Sept), 4.7% (Oct); WA tech layoffs second highest in the U.S.</td><td>Mostly learners; some workforce funds, outplacement</td><td>Bootcamps, Coursera, free courses</td><td>3.0</td><td>4.0</td><td><span class="pill pill-green">Lead</span></td></tr>
+          <tr><td>3</td><td><strong>Office &amp; admin staff</strong></td><td>Large (one of the biggest job groups; WA total 3.65M jobs)</td><td>Most AI-exposed job group (about 90% of tasks; Anthropic 2026, via secondary sources); clerical roles have the lowest adaptability and about 86% are women (GovAI/Brookings)</td><td>Learners; some employers</td><td>Free courses; employers' own tool training</td><td>3.25</td><td>3.25</td><td><span class="pill pill-green">Lead</span></td></tr>
+          <tr><td>4</td><td><strong>State agency staff</strong></td><td>76,484 executive-branch employees (OFM, June 2026)</td><td>WaTech policy: role-based AI awareness training for all employees; new hires within 60 days</td><td><strong>Agencies</strong> (clear, repeats)</td><td>DES training catalog, vendors, free courses</td><td>4.0</td><td>2.75</td><td><span class="pill pill-amber">Partner</span></td></tr>
+          <tr><td>5</td><td><strong>Health-care support</strong> (admin, medical secretaries, nurses)</td><td>About 495,600 health and social assistance jobs (Mar 2026); WA's main source of job growth</td><td>46% of nurses had no AI training in the past year; 44% use AI (Incredible Health 2026); medical secretaries rated highly vulnerable</td><td>Employers (slow buyers)</td><td>Vendor training such as EHR companies; nursing schools</td><td>3.75</td><td>2.75</td><td><span class="pill pill-amber">Partner</span></td></tr>
+          <tr><td>6</td><td>Plumbing trades</td><td>About 12,000 plumbers (BLS via secondary source)</td><td>24 CE hours per 3 years; 69% of plumbing contractors use AI</td><td>Plumbers and employers (required)</td><td>L&amp;I training days, union centers, supply houses</td><td>3.5</td><td>1.75</td><td><span class="pill pill-amber">Partner</span></td></tr>
+          <tr><td>7</td><td>Small business owners</td><td>695,695 small businesses, 1.5M employees (SBA 2025)</td><td>28% using AI, 39% exploring (Washington employer survey, July 2026)</td><td>Owners (price-sensitive)</td><td>Small Business Development Centers, chambers of commerce, free Google/Microsoft</td><td>3.0</td><td>2.75</td><td><span class="pill pill-amber">Partner</span></td></tr>
+          <tr><td>8</td><td>Veterans and transitioning service members</td><td>Joint Base Lewis-McChord transitions (count not found)</td><td>VET TEC 2.0 funded only through Sept 2027, about 4,000 participants a year nationally</td><td>VA (approval required)</td><td>Bootcamps already approved for VET TEC</td><td>2.75</td><td>2.75</td><td><span class="pill pill-gray">Park</span></td></tr>
+          <tr><td>9</td><td>Higher-ed faculty and staff</td><td>Small in WA, under budget cuts</td><td>94% use AI, 54% know their institution's policy (EDUCAUSE 2026)</td><td>Institutions (cutting budgets)</td><td>Teaching centers, faculty-development associations, free courses</td><td>2.5</td><td>4.0</td><td><span class="pill pill-blue">Proving</span></td></tr>
+          <tr><td>10</td><td>Recent grads</td><td>CityU's own graduates and others</td><td>Recent-grad unemployment about 5.6%; 19% gap in AI-exposed entry-level jobs</td><td>Learners (little money)</td><td>Free courses, career centers</td><td>2.5</td><td>3.5</td><td><span class="pill pill-blue">Proving</span></td></tr>
+          <tr><td>11</td><td>Workers 50+</td><td>Large</td><td>47–49% interested in AI training, 10–12% have had any; 33% say employers assume they're less tech-savvy (AARP)</td><td>Learners</td><td>Few courses designed for this age group</td><td>2.75</td><td>3.5</td><td><span class="pill pill-blue">Proving</span></td></tr>
+          <tr><td>12</td><td>Nonprofit staff</td><td>Moderate</td><td>Microsoft's Elevate for Changemakers gives a free AI credential</td><td>Rarely anyone</td><td>Free Microsoft, LinkedIn and NetHope credential</td><td>1.75</td><td>2.25</td><td><span class="pill pill-gray">Avoid</span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Segments 2, 3, 10 and 11 share a need (their work is changing and they need a next step) and can share one "AI Fluency for Your Next Job" course with lenses for different starting points. Put together, they form the largest group in the "lead with" quadrant.</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="section" id="top">
+    <div class="section-header">
+      <div class="section-icon icon-green">🎯</div>
+      <div><h2>6 · The three segments to test first</h2></div>
+    </div>
+    <div class="section-body">
+      <div class="seg-card c-green">
+        <h3>1 · AI Fluency for Educators (K-12), with clock hours</h3>
+        <div class="kv">
+          <div><span>Why</span>Required renewal hours, a big training gap, and CityU's School of Education is a trusted name with teachers</div>
+          <div><span>Offer</span>Free open core plus an educator lens (lesson design, AI rules for each activity, academic integrity, student data privacy). Paid: OSPI clock hours and an assessed credential; district cohorts.</div>
+          <div><span>Watch out</span>Districts give clock hours for free, and Microsoft Elevate is training WA districts at no cost. Win on quality and on credential value, and work with the School of Education rather than around it.</div>
+          <div><span>Test in Phase 0</span>Ask OSPI about provider approval; interview 15 teachers and principals (CityU School of Education alumni); test teachers' willingness to pay for clock hours</div>
+        </div>
+      </div>
+      <div class="seg-card c-green">
+        <h3>2 · AI Fluency for Your Next Job (career changers, admin staff, 50+, recent grads)</h3>
+        <div class="kv">
+          <div><span>Why</span>The most urgent need, CityU's core working-adult audience, an alumni base CityU can reach directly, and a path into STC programs</div>
+          <div><span>Offer</span>Free open core plus starting-point lenses (office and admin, mid-career and 50+, early career). Paid: $99 assessed credential and $249 coached cohort, free for unemployed learners when a grant covers it.</div>
+          <div><span>Watch out</span>Learners can't pay much. Grants and employers' outplacement budgets have to carry the cost.</div>
+          <div><span>Test in Phase 0</span>Alumni survey and 15 interviews, a WorkSource info session, a landing page with refundable reservations</div>
+        </div>
+      </div>
+      <div class="seg-card c-amber">
+        <h3>3 · Role-based AI training for Washington state agencies (partner play)</h3>
+        <div class="kv">
+          <div><span>Why</span>A mandated, repeating, budgeted need: about 76,500 employees plus every new hire</div>
+          <div><span>Offer</span>A role-based awareness course mapped to WaTech's policy and data categories, delivered as agency cohorts</div>
+          <div><span>Watch out</span>Procurement is slow, and CityU has few ties to state agencies yet. Explore the DES training catalog or a partner that already holds a state contract.</div>
+          <div><span>Test in Phase 0</span>Meet 2–3 agency training managers; check how agencies currently meet the requirement; check the procurement route</div>
+        </div>
+      </div>
+      <p class="note">Higher-ed staff stay as the <strong>internal proving ground</strong>: CityU's own faculty and staff pilot the core first. The trades, veterans and nonprofit staff are parked. Health care and small business are worth revisiting if a partner appears.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="section" id="phase0">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🚦</div>
+      <div><h2>7 · How this changes Plan B's Phase 0</h2></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap"><table class="map">
+        <thead><tr><th>Plan B's original Phase 0 audiences</th><th>Updated by this quadrant</th></tr></thead>
+        <tbody>
+          <tr><td>CityU staff</td><td>Kept as the internal pilot (proving ground), not a market test</td></tr>
+          <tr><td>Alumni changing careers</td><td><strong>Expanded:</strong> career changers, office and admin staff, workers 50+ and recent grads</td></tr>
+          <tr><td>Seattle job seekers</td><td>Merged into the line above</td></tr>
+          <tr><td>Plumbing shops and training centers</td><td><strong>Replaced by K-12 educators</strong> (same required-renewal logic, where CityU has credibility)</td></tr>
+          <tr><td>(none)</td><td><strong>Added:</strong> state agency training managers (partner exploration only)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout callout-blue mt16"><strong>Gate 0 is unchanged:</strong> an audience goes forward if it reaches 150+ waitlist sign-ups, 20+ paid reservations, or a signed letter of intent from a partner (a district, an agency or an employer).</div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="section" id="sources">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📚</div>
+      <div><h2>8 · Sources</h2><div class="section-sub">Checked November 2026. Sources marked secondary should be confirmed before quoting outside CityU.</div></div>
+    </div>
+    <div class="section-body">
+      <ul class="link-list">
+        <li><a href="https://ospi.k12.wa.us/educator-support/continuing-education-clock-hours/educator-clock-hour-information">OSPI, Educator clock hour information</a> · <a href="https://ospi.k12.wa.us/certification/certificate-reissue-renewal/renew-your-five-year-certificate">Renew your five-year certificate</a></li>
+        <li><a href="https://edweek.org/technology/more-schools-are-providing-ai-training-for-teachers-is-it-any-good/2026/05">EdWeek, More schools are providing AI training for teachers (May 2026)</a> · <a href="https://k12dive.com/news/most-teachers-receive-no-formal-ai-guidance-for-learning-and-instruction-g/821146">K-12 Dive on Gallup teacher survey</a></li>
+        <li><a href="https://watech.wa.gov/sites/default/files/2025-12/DATA-04_AI_Policy.pdf">WaTech, Artificial Intelligence Policy (DATA-04)</a> · <a href="https://des.wa.gov/services/training/required-and-recommended-training">DES, Required and recommended training</a></li>
+        <li><a href="https://ofm.wa.gov/state-human-resources/workforce-data/workforce">OFM, State workforce characteristics</a></li>
+        <li><a href="https://esd.wa.gov/node/278">ESD, Labor market county profiles (Sept 2026)</a> · <a href="https://www.axios.com/local/seattle/2026/10/15/washington-state-job-losses-september-2026-seattle-unemployment-rate">Axios Seattle (Oct 2026)</a></li>
+        <li><a href="https://fred.stlouisfed.org/series/SMU53000006562000001">FRED, WA health care and social assistance employment</a></li>
+        <li><a href="https://nurse.org/articles/nurses-ai-tools-training-trust-2026/">Nurse.org, nurses' AI training survey (2026)</a> · <a href="https://www.beckershospitalreview.com/healthcare-information-technology/ai/nurse-ai-adoption-outpaces-hospital-strategy-survey/">Becker's, Incredible Health survey</a></li>
+        <li><a href="https://careerjanus.com/blog/ai-exposure-by-occupation-research">Summary of AI exposure studies, incl. Anthropic March 2026</a> (secondary)</li>
+        <li><a href="https://advocacy.sba.gov/wp-content/uploads/2025/06/Washington_2025-State-Profile.pdf">SBA Office of Advocacy, Washington 2025 State Profile</a></li>
+        <li><a href="https://www.uschamber.com/technology/empowering-small-business-the-impact-of-technology-on-u-s-small-business">U.S. Chamber, Small business use of AI</a> · <a href="https://www.axios.com/2026/10/22/goldman-sachs-state-ai-data">Axios, small-business AI by state (Oct 2026)</a></li>
+        <li><a href="https://www.va.gov/education/eligibility/">VA, education benefit eligibility (VET TEC 2.0)</a> · <a href="https://usmilitary.org/vet-tec-program/">VET TEC 2.0 overview</a> (secondary)</li>
+        <li><a href="https://www.aarp.org/pri/topics/work-finances-retirement/employers-workforce/workforce-trends-older-adults-artificial-intelligence/">AARP, Workforce trends: older adults and AI</a> · <a href="https://www.aarp.org/work/age-discrimination/age-bias-survey-2026/">AARP age bias survey 2026</a></li>
+        <li><a href="https://blogs.microsoft.com/on-the-issues/2026/03/25/empowering-the-nonprofit-sector-to-meet-tomorrows-challenges/">Microsoft, Elevate for nonprofits (Mar 2026)</a></li>
+        <li>Higher-ed, plumbing and recent-grad figures: see <a href="cityux-short-course-launch-plan.html#sources">Plan A's sources</a>.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

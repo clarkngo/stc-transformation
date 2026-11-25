@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUx Competitor Scan</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+    .qa { margin: 0; padding-left: 20px; }
+    .qa > li { margin-bottom: 18px; font-size: 0.92rem; }
+    .qa > li > strong.q { display: block; font-size: 0.95rem; margin-bottom: 6px; }
+    .qa ul { margin: 0; padding-left: 18px; }
+    .qa ul li { margin-bottom: 6px; }
+    .fill { background: #fef9c3; border: 1px dashed #ca8a04; border-radius: 4px; padding: 0 4px; color: #713f12; }
+    .copy-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .copy-btn { font: inherit; font-size: 0.85rem; font-weight: 700; background: var(--blue); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+    .copy-btn:hover { background: #1e40af; }
+    .copy-status { font-size: 0.82rem; color: var(--green); font-weight: 600; min-height: 1em; }
+    table.map { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    table.map th, table.map td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.map th { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+    .table-wrap { overflow-x: auto; }
+    @media (max-width: 600px) { .doc-header, .section-body { padding-left: 16px; padding-right: 16px; } .point { flex-direction: column; gap: 6px; } }
+      .lead { font-size: 0.95rem; margin: 0 0 14px; }
+    .note { font-size: 0.86rem; color: var(--slate); margin: 14px 0 0; }
+    .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+    .pill-green { background: var(--green-dim); color: #15803d; }
+    .pill-blue { background: var(--blue-dim); color: var(--blue); }
+    .pill-amber { background: var(--amber-dim); color: #b45309; }
+    .pill-gray { background: #f1f5f9; color: #475569; }
+    .quad-wrap { overflow-x: auto; }
+    .quad-svg { width: 100%; min-width: 520px; height: auto; display: block; }
+    .quad-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 12px; font-size: 0.84rem; color: var(--slate); }
+    @media (max-width: 600px) { .quad-legend { grid-template-columns: 1fr; } }
+    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+    table.seg { min-width: 900px; }
+    table.seg td:nth-child(7), table.seg td:nth-child(8) { text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .seg-card { border: 1px solid var(--border); border-left: 5px solid var(--green); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; }
+    .seg-card.c-amber { border-left-color: var(--amber); }
+    .seg-card h3 { margin: 0 0 8px; font-size: 1rem; font-weight: 800; }
+    .kv > div { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 0.87rem; }
+    .kv > div > span { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); padding-top: 2px; }
+    @media (max-width: 600px) { .kv > div { grid-template-columns: 1fr; gap: 2px; } }
+    .table-wrap:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+  
+    table.scan { min-width: 720px; }
+    table.scan td:first-child { width: 26%; }
+    table.gap { min-width: 760px; font-size: 0.8rem; }
+    table.gap td.y { background: var(--green-dim); color: #14532d; font-weight: 600; }
+    table.gap td.p { background: var(--amber-dim); color: #92400e; }
+    table.gap td.n { background: #f8fafc; color: #64748b; }
+    table.gap th:last-child, table.gap td:last-child { border-left: 2px solid var(--blue); }
+    .small { font-size: 0.87rem; margin: 0 0 10px; }
+    ul.tight { margin: 0; padding-left: 20px; font-size: 0.88rem; }
+    ul.tight li { margin-bottom: 6px; }
+    .src { display: inline-block; font-size: 0.66rem; font-weight: 700; line-height: 1.5; letter-spacing: 0.02em; padding: 0 7px; margin: 0 1px 0 4px; border-radius: 10px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; text-decoration: none; vertical-align: 1px; white-space: nowrap; }
+    .src::after { content: " \2197"; }
+    .src:hover { background: #dbeafe; text-decoration: none; }
+    .src:focus-visible { outline: 3px solid #93c5fd; outline-offset: 1px; }
+    .src.sec { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+    .src.sec:hover { background: #fef3c7; }
+    .src-legend { font-size: 0.8rem; color: var(--slate); margin: 14px 0 0; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-hub.html">CityUx Hub</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-short-course-plan-critique.html">Critique &amp; Plan B</a>
+    <span class="nav-sep">›</span>
+    <span>Competitor Scan</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Market Research — CityUx</div>
+    <h1>Who Else Teaches AI to Educators and Career Changers, and What They Lack</h1>
+    <p class="subtitle">A scan of about 25 courses and credentials that overlap with Plan B's two lead audiences: national free courses, paid professional programs, and what's on offer in Washington. For each, what it gives learners, what it leaves out, and what that means for CityUx.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Nov 25, 2026</span>
+      <span class="meta-chip">Feeds Plan B and Gate 0</span>
+      <span class="meta-chip">About 25 offerings reviewed</span>
+    </div>
+    <p class="src-legend">Figures and claims carry source tags that open the original in a new tab: <span class="src" aria-hidden="true">Source</span> for primary sources, <span class="src sec" aria-hidden="true">Secondary</span> for summaries or roundups to confirm before quoting.</p>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#findings">Five findings</a></li>
+      <li><a href="#educators">Courses for educators</a></li>
+      <li><a href="#careers">Courses for career changers</a></li>
+      <li><a href="#washington">What's already in Washington</a></li>
+      <li><a href="#gaps">What they lack: the gap matrix</a></li>
+      <li><a href="#win">Where CityUx can win, and where it can't</a></li>
+      <li><a href="#changes">What this changes in Plan B</a></li>
+      <li><a href="#verify">Check before quoting</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="section" id="findings">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔎</div>
+      <div><h2>1 · Five findings</h2><div class="section-sub">The short version for stakeholders</div></div>
+    </div>
+    <div class="section-body">
+      <div class="point"><span class="point-label lbl-red">1</span><div class="point-body"><strong>Both lead audiences are already being trained for free, at scale, by the biggest AI companies.</strong> Anthropic, Google, Microsoft and OpenAI all have free AI courses for teachers or job seekers, often with a certificate. The teachers' unions are in it too: the AFT's academy, funded by Microsoft, OpenAI and Anthropic, aims to train 400,000 teachers<a class="src" href="https://www.k12dive.com/news/aft-AI-academy-train-teachers/752497/" target="_blank" rel="noopener noreferrer" title="Source: K-12 Dive (opens in a new tab)">K-12 Dive</a>, and the U.S. Department of Labor runs a free AI course by text message<a class="src" href="https://www.dol.gov/newsroom/releases/osec/osec20260324" target="_blank" rel="noopener noreferrer" title="Source: DOL (opens in a new tab)">DOL</a>. Plan B was right not to sell the basics.</div></div>
+      <div class="point"><span class="point-label lbl-amber">2</span><div class="point-body"><strong>"AI Fluency" is already Anthropic's course name.</strong> Anthropic offers <em>AI Fluency for Educators</em> and <em>AI Fluency for pK–12 Educators</em>, the second built with Teach For America<a class="src" href="https://anthropic.skilljar.com/ai-fluency-for-pk12-educators" target="_blank" rel="noopener noreferrer" title="Source: Anthropic Academy (opens in a new tab)">Anthropic</a>. A CityUx course called "AI Fluency for Educators" would look like a copy of a free one.</div></div>
+      <div class="point"><span class="point-label lbl-amber">3</span><div class="point-body"><strong>For Washington teachers, AI clock hours are already cheap and close by.</strong> Educational service districts sell short AI courses for about $3 a clock hour<a class="src" href="https://www.pdenroller.org/catalog/event/202304" target="_blank" rel="noopener noreferrer" title="Source: ESD 113 on pdEnroller (opens in a new tab)">ESD 113</a>, and WEA grants 15 clock hours for each NEA micro-credential, including a set of AI ones<a class="src" href="https://www.washingtonea.org/events-training/pd/micro-credentials/micro-credential-clock-hours/" target="_blank" rel="noopener noreferrer" title="Source: WEA (opens in a new tab)">WEA</a>. Clock hours alone won't justify a $249 cohort.</div></div>
+      <div class="point"><span class="point-label lbl-green">4</span><div class="point-body"><strong>The clearest gap is for career changers: proof of skill that a person checks, tied to a degree path and to local employers.</strong> The free job-seeker courses end in a completion certificate. The one free assessed option we found, Microsoft Applied Skills, is an automated lab test of Microsoft's own tools<a class="src" href="https://learn.microsoft.com/en-us/credentials/applied-skills/streamline-business-workflows-with-ai-chat/" target="_blank" rel="noopener noreferrer" title="Source: Microsoft Learn (opens in a new tab)">Microsoft</a>. None of them offers college credit.</div></div>
+      <div class="point"><span class="point-label lbl-green">5</span><div class="point-body"><strong>CityUx doesn't need to build its own free core.</strong> Good free beginner courses already exist. Plan B could point learners to them and spend its money only on what nobody else offers: the human-scored credential, the coached cohort, and a credit path into CityU.</div></div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="section" id="educators">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🍎</div>
+      <div><h2>2 · Courses for educators</h2><div class="section-sub">National offerings that a Washington teacher could take today</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Courses for educators">
+        <table class="map scan">
+          <thead><tr><th>Offering</th><th>Format and cost</th><th>Credential</th><th>What it lacks</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Anthropic, AI Fluency for pK–12 Educators</strong> (with Teach For America); also a higher-ed version and an AFT train-the-trainer course</td><td>Free, self-paced; the higher-ed version is about 3 hours<a class="src" href="https://www.coursera.org/learn/ai-fluency-for-educators" target="_blank" rel="noopener noreferrer" title="Source: Coursera (opens in a new tab)">Coursera</a></td><td>Certificate after a final assessment<a class="src" href="https://anthropic.skilljar.com/ai-fluency-for-educators" target="_blank" rel="noopener noreferrer" title="Source: Anthropic Academy (opens in a new tab)">Anthropic</a></td><td>No live feedback; no Washington clock hours found; not tied to one tool, but made by an AI company</td></tr>
+            <tr><td><strong>Microsoft Elevate for Educators</strong></td><td>Free courses, live sessions and simulations</td><td>Free Elevate Educator Credential, built with ISTE+ASCD<a class="src" href="https://news.microsoft.com/source/2026/01/15/microsoft-expands-its-commitment-to-education-with-elevate-for-educators-program-and-new-ai-powered-tools" target="_blank" rel="noopener noreferrer" title="Source: Microsoft (opens in a new tab)">Microsoft</a></td><td>Centered on Microsoft tools; no college credit</td></tr>
+            <tr><td><strong>Google, Generative AI for Educators</strong> (with MIT RAISE)</td><td>Free, about 2 hours, self-paced<a class="src sec" href="https://skillscouter.com/best-ai-courses-for-teachers-in-2026-top-10-many-earn-pd-credit/" target="_blank" rel="noopener noreferrer" title="Secondary source: Course roundup (opens in a new tab)">Course roundup</a></td><td>Free certificate</td><td>Short and tool-centered; no feedback on your own work. Google is also funding free ISTE+ASCD training for six million educators<a class="src" href="https://ascd.org/news-media/iste-ascd-and-google-partner-to-provide-ai-literacy-training-to-six-million-u-s-educators" target="_blank" rel="noopener noreferrer" title="Source: ISTE+ASCD (opens in a new tab)">ISTE+ASCD</a></td></tr>
+            <tr><td><strong>Common Sense Education, AI Basics for K–12 Teachers</strong></td><td>Free, about 1 hour, plus lesson plans<a class="src" href="https://www.commonsense.org/education/training/ai-basics-for-k-12-teachers" target="_blank" rel="noopener noreferrer" title="Source: Common Sense Education (opens in a new tab)">Common Sense</a></td><td>Completion only</td><td>An introduction, not practice; no assessment of your own work</td></tr>
+            <tr><td><strong>Khan Academy, AI for Education</strong></td><td>Free, three units<a class="src" href="https://blog.khanacademy.org/?p=17038" target="_blank" rel="noopener noreferrer" title="Source: Khan Academy (opens in a new tab)">Khan Academy</a></td><td>Certificate</td><td>Built around Khan's own AI tutor</td></tr>
+            <tr><td><strong>AFT National Academy for AI Instruction</strong> (Microsoft, OpenAI, Anthropic; $23M)</td><td>Free workshops and courses, teachers training teachers; first sessions March 2026<a class="src" href="https://www.edweek.org/technology/teachers-move-beyond-ai-basics-to-more-sophisticated-instructional-uses/2026/03" target="_blank" rel="noopener noreferrer" title="Source: EdWeek (opens in a new tab)">EdWeek</a></td><td>Credential pathways and CE credits planned</td><td>Starts with AFT members (Washington teachers are mostly WEA/NEA); critics call it a tech-funded experiment<a class="src" href="https://www.the74million.org/article/will-new-ai-academy-help-teachers-or-just-improve-techs-bottom-line/" target="_blank" rel="noopener noreferrer" title="Source: The 74 (opens in a new tab)">The 74</a></td></tr>
+            <tr><td><strong>NEA AI micro-credentials</strong> (13 aligned to TeachAI<a class="src" href="https://www.govtech.com/education/k-12/istelive-26-nea-offers-professional-learning-to-keep-pace-with-ai" target="_blank" rel="noopener noreferrer" title="Source: GovTech (opens in a new tab)">GovTech</a>)</td><td>Low or no cost for members; evidence submitted for review</td><td>Micro-credential; WEA adds 15 clock hours each<a class="src" href="https://www.washingtonea.org/events-training/pd/micro-credentials/micro-credential-clock-hours/" target="_blank" rel="noopener noreferrer" title="Source: WEA (opens in a new tab)">WEA</a></td><td><strong>The closest match to Plan B's credential:</strong> evidence from the teacher's own practice, reviewed by people. No college credit found.</td></tr>
+            <tr><td><strong>ISTE+ASCD, Next Level AI Skills</strong></td><td>15 hours, instructor-led; $186 members, $249 non-members (Feb 2025 flyer)<a class="src" href="https://cms-live-media.iste.org/courses/pdf/ISTE-NextLevelAI-Course-Flyer-Feb25.pdf" target="_blank" rel="noopener noreferrer" title="Source: ISTE flyer (opens in a new tab)">ISTE</a></td><td>Certificate</td><td>The price benchmark for a paid, facilitated educator course. Plan B's $249 cohort is at the top of this range.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-violet mt16"><strong>What districts say is missing.</strong> In a RAND study of district leaders, 11 of 14 built their own AI training, and half said they struggled to find trainers who understood AI in an education setting. Low-poverty districts were far more likely to have trained teachers (about 67%) than high-poverty ones (39%)<a class="src" href="https://news.asu.edu/sites/default/files/2024-07/rand_rra956-21.pdf" target="_blank" rel="noopener noreferrer" title="Source: RAND (opens in a new tab)">RAND</a>. The shortage is expert facilitation for a whole school, not another course for individual teachers.</div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="section" id="careers">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🧭</div>
+      <div><h2>3 · Courses for career changers</h2><div class="section-sub">National AI courses and credentials aimed at workers and job seekers</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Courses for career changers">
+        <table class="map scan">
+          <thead><tr><th>Offering</th><th>Format and cost</th><th>Credential</th><th>What it lacks</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Google AI Professional Certificate</strong> (and the older AI Essentials)</td><td>About 8 hours, 20+ hands-on activities; Coursera subscription, about $49 a month<a class="src" href="https://www.coursera.org/professional-certificates/google-ai" target="_blank" rel="noopener noreferrer" title="Source: Coursera (opens in a new tab)">Coursera</a></td><td>Google certificate</td><td>Automated grading; Google tools; a reviewer argues these certificates are becoming something employers simply expect<a class="src sec" href="https://blog.theinterviewguys.com/?p=10876" target="_blank" rel="noopener noreferrer" title="Secondary source: Review (opens in a new tab)">Review</a></td></tr>
+            <tr><td><strong>OpenAI Certifications</strong></td><td>On Coursera, moving into ChatGPT; aims to certify 10 million Americans by 2030<a class="src" href="https://openai.com/index/openai-certificate-courses" target="_blank" rel="noopener noreferrer" title="Source: OpenAI (opens in a new tab)">OpenAI</a></td><td>Certification levels, linked to a planned jobs platform</td><td>Centered on ChatGPT; price and hiring link not yet public</td></tr>
+            <tr><td><strong>Microsoft Elevate + National Association of Workforce Boards</strong></td><td>Three free LinkedIn Learning courses, one for job seekers, aligned to the DOL AI Literacy Framework<a class="src" href="https://www.nawb.org/national-association-of-workforce-boards-and-microsoft-elevate-partner-to-build-ai-skills-across-the-american-workforce/" target="_blank" rel="noopener noreferrer" title="Source: NAWB (opens in a new tab)">NAWB</a></td><td>LinkedIn Learning certificate</td><td>Video course; no feedback. But it reaches workforce boards, the same partners Plan B wants.</td></tr>
+            <tr><td><strong>U.S. Department of Labor, Make America AI-Ready</strong></td><td>Free, one week, by text message<a class="src" href="https://www.dol.gov/newsroom/releases/osec/osec20260324" target="_blank" rel="noopener noreferrer" title="Source: DOL (opens in a new tab)">DOL</a></td><td>None found</td><td>Very short. Its five-area framework (principles, use cases, prompting, evaluating output, responsible use) is becoming the national reference<a class="src" href="https://www.axios.com/2026/02/13/labor-department-ai-literacy-framework" target="_blank" rel="noopener noreferrer" title="Source: Axios (opens in a new tab)">Axios</a></td></tr>
+            <tr><td><strong>Microsoft Applied Skills</strong> (for example, Streamline business workflows with AI chat)</td><td>Free, on-demand lab assessment<a class="src" href="https://learn.microsoft.com/en-us/credentials/microsoft-credentials-ai-challenge" target="_blank" rel="noopener noreferrer" title="Source: Microsoft Learn (opens in a new tab)">Microsoft</a></td><td>Microsoft credential, earned by doing tasks in a lab<a class="src" href="https://learn.microsoft.com/en-us/credentials/applied-skills/streamline-business-workflows-with-ai-chat/" target="_blank" rel="noopener noreferrer" title="Source: Microsoft Learn (opens in a new tab)">Microsoft</a></td><td><strong>The closest free match to Plan B's $99 credential.</strong> But it tests Copilot tasks in a standard lab, scored automatically, not work from the learner's own field.</td></tr>
+            <tr><td><strong>UW iSchool, AI for Organizations</strong></td><td>Graduate certificate, 15 credits at $1,000 a credit, cohorts of 30<a class="src" href="https://ischool.uw.edu/programs/certificate-ai-organizations/tuition-financial-aid" target="_blank" rel="noopener noreferrer" title="Source: UW iSchool (opens in a new tab)">UW</a></td><td>Graduate credit</td><td>Has everything Plan B wants to add (cohort, feedback, credit) but costs about $15,000 and takes 9 months</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">On completion: free self-paced courses keep few learners. One fixed-schedule course kept 45% of learners against 13% for its self-paced version<a class="src" href="https://www.frontiersin.org/articles/10.3389/feduc.2022.1008545/full" target="_blank" rel="noopener noreferrer" title="Source: Frontiers (opens in a new tab)">Frontiers</a>, and edX research found free certificates lowered certification rates<a class="src" href="https://dspace.mit.edu/handle/1721.1/135259" target="_blank" rel="noopener noreferrer" title="Source: MIT (opens in a new tab)">MIT</a>. That's the case for a coached, paid layer on top of free material.</p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="section" id="washington">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📍</div>
+      <div><h2>4 · What's already in Washington</h2><div class="section-sub">Local providers our learners would compare us with</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Washington offerings">
+        <table class="map scan">
+          <thead><tr><th>Provider</th><th>Offering</th><th>Cost and credit</th><th>Note for CityUx</th></tr></thead>
+          <tbody>
+            <tr><td>ESD 113 (Olympia)</td><td>AI Ready series; Colleague AI course</td><td>Up to 10 clock hours; $3 per clock hour plus $5<a class="src" href="https://www.pdenroller.org/catalog/event/202304" target="_blank" rel="noopener noreferrer" title="Source: pdEnroller (opens in a new tab)">pdEnroller</a></td><td>Sets the price floor for teacher clock hours</td></tr>
+            <tr><td>ESD 112 (Vancouver)</td><td>AI-generated images for STEM learning</td><td>11 STEM clock hours, $55<a class="src" href="https://www.pdenroller.org/catalog/event/187257" target="_blank" rel="noopener noreferrer" title="Source: pdEnroller (opens in a new tab)">pdEnroller</a></td><td>Subject-specific, self-paced</td></tr>
+            <tr><td>NWESD 189 (Anacortes)</td><td>AI Literacy in Education</td><td>5 clock hours, self-paced<a class="src" href="https://www.pdenroller.org/aesd/catalog/event/189337" target="_blank" rel="noopener noreferrer" title="Source: pdEnroller (opens in a new tab)">pdEnroller</a></td><td>Covers the Everett–Bellingham area</td></tr>
+            <tr><td>ESD 123 (Pasco)</td><td>AI Basics for Educators, cohort 4</td><td>7 clock hours<a class="src" href="https://www.pdenroller.org/catalog/event/205100" target="_blank" rel="noopener noreferrer" title="Source: pdEnroller (opens in a new tab)">pdEnroller</a></td><td>Already running repeat cohorts</td></tr>
+            <tr><td>WEA</td><td>Clock hours for NEA micro-credentials, including AI</td><td>15 clock hours each<a class="src" href="https://www.washingtonea.org/events-training/pd/micro-credentials/micro-credential-clock-hours/" target="_blank" rel="noopener noreferrer" title="Source: WEA (opens in a new tab)">WEA</a></td><td>A possible partner, not just a competitor</td></tr>
+            <tr><td>Goodwill of the Olympics &amp; Rainier Region</td><td>AI for Your Career Skills workshops (Tacoma)</td><td>Free<a class="src" href="https://goodwillwa.org/ai-for-your-career-skills/" target="_blank" rel="noopener noreferrer" title="Source: Goodwill (opens in a new tab)">Goodwill</a></td><td>Free intro for job seekers; a referral partner for the assessed credential</td></tr>
+            <tr><td>Avance (on Career Bridge)</td><td>AI Workforce Readiness Training, live online</td><td>Listed on the state training list<a class="src" href="https://careerbridge.wa.gov/learn/program/10462" target="_blank" rel="noopener noreferrer" title="Source: Career Bridge (opens in a new tab)">Career Bridge</a></td><td>Already on Career Bridge, the route to WIOA funding</td></tr>
+            <tr><td>Clover Park Technical College</td><td>Learn AI Certificate</td><td>On Career Bridge<a class="src" href="https://careerbridge.wa.gov/learn/program/7846" target="_blank" rel="noopener noreferrer" title="Source: Career Bridge (opens in a new tab)">Career Bridge</a></td><td>A community-college credential in the South Sound</td></tr>
+            <tr><td>Spokane Falls Community College</td><td>AI certificate and short community classes</td><td>State-funded; short classes about $65<a class="src" href="https://www.govtech.com/education/higher-ed/spokane-falls-ccs-new-ai-certificate-focuses-on-cybersecurity-health" target="_blank" rel="noopener noreferrer" title="Source: GovTech (opens in a new tab)">GovTech</a></td><td>Focused on cybersecurity, health care and manufacturing</td></tr>
+            <tr><td>WSU Carson College of Business</td><td>Online AI Essentials certificate</td><td>Non-credit certificate<a class="src" href="https://news.wsu.edu/news/2026/07/15/carson-college-of-business-expands-certificate-offerings-to-build-washingtons-workforce/" target="_blank" rel="noopener noreferrer" title="Source: WSU (opens in a new tab)">WSU</a></td><td>The nearest university competitor in Plan B's lane</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Not found: short AI courses for the public at Seattle Colleges, Bellevue College, Lake Washington Tech or Highline. They may exist in continuing-education catalogs that searches didn't reach. Check before saying the Seattle area has no community-college option.</p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="section" id="gaps">
+    <div class="section-header">
+      <div class="section-icon icon-red">🧩</div>
+      <div><h2>5 · What they lack: the gap matrix</h2><div class="section-sub">Which features each type of offering has. Plan B's planned offer is in the last column.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Gap matrix">
+        <table class="map gap">
+          <thead><tr><th>Feature</th><th>Big-tech free courses</th><th>Union and ISTE programs</th><th>WA ESD clock-hour courses</th><th>Job-seeker courses (DOL, LinkedIn, Goodwill)</th><th>UW certificates</th><th>Plan B</th></tr></thead>
+          <tbody>
+            <tr><td>Free or under $100</td><td class="y">Yes</td><td class="p">Mostly</td><td class="y">Yes</td><td class="y">Yes</td><td class="n">No</td><td class="y">Core free; $99 credential</td></tr>
+            <tr><td>Not tied to one company's tools</td><td class="n">No</td><td class="y">Yes</td><td class="p">Varies</td><td class="p">Varies</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+            <tr><td>Live coaching or feedback</td><td class="n">No</td><td class="p">Some</td><td class="p">Some</td><td class="p">Workshops only</td><td class="y">Yes</td><td class="y">$249 cohort</td></tr>
+            <tr><td>A person scores work from your own job</td><td class="n">No</td><td class="y">NEA micro-credentials</td><td class="n">No</td><td class="n">No</td><td class="y">Yes</td><td class="y">Yes</td></tr>
+            <tr><td>Washington clock hours</td><td class="n">No</td><td class="y">Via WEA</td><td class="y">Yes</td><td class="n">n/a</td><td class="n">No</td><td class="p">Pending approval</td></tr>
+            <tr><td>College credit or a degree path</td><td class="n">No</td><td class="n">No</td><td class="n">No</td><td class="n">No</td><td class="y">Graduate credit</td><td class="p">Proposed, needs approval</td></tr>
+            <tr><td>Tied to local employers or WorkSource</td><td class="n">No</td><td class="n">No</td><td class="n">n/a</td><td class="p">Some</td><td class="n">No</td><td class="p">Planned</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Yes = most offerings in the group have it. Some or Varies = a few do. Plan B's column shows what it plans, not what exists yet.</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="section" id="win">
+    <div class="section-header">
+      <div class="section-icon icon-green">🎯</div>
+      <div><h2>6 · Where CityUx can win, and where it can't</h2><div class="section-sub">Being honest about each audience</div></div>
+    </div>
+    <div class="section-body">
+      <div class="module-grid">
+        <div class="seg-card c-amber">
+          <h3>Educators: a thinner gap than we thought</h3>
+          <p class="small">Free courses, cheap ESD clock hours and NEA micro-credentials with human review already cover most of what Plan B's educator lens offers. Selling $249 seats to individual teachers will be hard.</p>
+          <p class="small"><strong>What's still open:</strong> expert facilitation for a whole school or district (what RAND's district leaders couldn't find), and <strong>credit toward a CityU education degree or endorsement</strong>, which no one else offers. That points to district contracts and a credit path, not individual seats.</p>
+        </div>
+        <div class="seg-card">
+          <h3>Career changers: a real gap</h3>
+          <p class="small">Every free job-seeker option ends with a completion certificate or an automated lab test. None has a person score the learner's own work, none grants college credit, and few connect to local employers.</p>
+          <p class="small"><strong>What CityUx can offer:</strong> a $99 human-scored task from the job the learner wants, a short live defense, credit toward a CityU program, and referrals from WorkSource and Goodwill, which already run the free introductions.</p>
+        </div>
+      </div>
+      <div class="callout callout-teal mt16"><strong>Partner where others are strong.</strong> WEA and the NEA micro-credentials, the ESDs, Goodwill, and the workforce boards that Microsoft is already funding all reach our audiences. CityUx can be the next step after their free courses rather than another first course.</div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="section" id="changes">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🛠️</div>
+      <div><h2>7 · What this changes in Plan B</h2><div class="section-sub">Proposals for the CityUx team to decide on</div></div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item"><span class="action-check">1</span><div class="action-body"><strong>Rename the course.</strong> "AI Fluency for X" collides with Anthropic's free courses of the same name. Pick a CityUx name that says what's different, for example something built around "proof" or "applied AI".</div></li>
+        <li class="action-item"><span class="action-check">2</span><div class="action-body"><strong>Curate the free core instead of building it.</strong> Point learners to the best free courses (for example Anthropic's, Common Sense's, and the DOL framework) and map them to the CityUx credential. That would remove most of the $16,000 set aside for building two X lenses, and lets the team start on the credential sooner.</div></li>
+        <li class="action-item"><span class="action-check">3</span><div class="action-body"><strong>Lead the sales pitch with the credential and credit, not the course.</strong> What nobody else offers is a person scoring your own work plus credit toward a CityU program. Ask the Registrar and School of Education early whether that credit is possible, because it is the strongest differentiator.</div></li>
+        <li class="action-item"><span class="action-check">4</span><div class="action-body"><strong>Reprice the educator offer, or sell it to districts.</strong> Against $3 clock hours and $186–$249 ISTE courses, test a district cohort price and a credit-bearing option rather than $249 per teacher.</div></li>
+        <li class="action-item"><span class="action-check">5</span><div class="action-body"><strong>Add three questions to the Gate 0 interviews:</strong> which free AI courses they've already taken, what they got from them, and what would make a credential worth more than the certificate they already have.</div></li>
+        <li class="action-item"><span class="action-check">6</span><div class="action-body"><strong>Talk to WEA and Goodwill in Phase 0.</strong> Both already reach our audiences with free AI training and could refer learners to the assessed credential.</div></li>
+      </ul>
+      <p class="note">Related: <a href="cityux-short-course-plan-critique.html">Plan B</a> · <a href="cityux-gate0-demand-test.html">Gate 0 demand test</a> · <a href="cityux-target-market-quadrant.html">Target-market quadrant</a> · <a href="cityux-short-course-launch-plan.html#competition">Plan A's competitor table</a></p>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="section" id="verify">
+    <div class="section-header">
+      <div class="section-icon icon-amber">⚠️</div>
+      <div><h2>8 · Check before quoting</h2><div class="section-sub">Searched Nov 25, 2026. Offerings change quickly.</div></div>
+    </div>
+    <div class="section-body">
+      <ul class="tight">
+        <li>Prices for ISTE courses come from a February 2025 flyer; Google's price is the U.S. subscription rate and may change.</li>
+        <li>Several ESD course listings were for past 2026 terms. They show what's typical, not what's open now.</li>
+        <li>Whether WEA grants clock hours for the specific NEA AI micro-credentials wasn't confirmed; WEA says "most" NEA micro-credentials qualify.</li>
+        <li>OpenAI's certification prices and jobs platform weren't public at the time of the search.</li>
+        <li>Google's educator course details come from a roundup, not Google's own page.</li>
+        <li>The RAND district figures are from a 2024 report; newer RAND data on teacher training wasn't found.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUx Gate 0 Demand Test</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+    .qa { margin: 0; padding-left: 20px; }
+    .qa > li { margin-bottom: 18px; font-size: 0.92rem; }
+    .qa > li > strong.q { display: block; font-size: 0.95rem; margin-bottom: 6px; }
+    .qa ul { margin: 0; padding-left: 18px; }
+    .qa ul li { margin-bottom: 6px; }
+    .fill { background: #fef9c3; border: 1px dashed #ca8a04; border-radius: 4px; padding: 0 4px; color: #713f12; }
+    .copy-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .copy-btn { font: inherit; font-size: 0.85rem; font-weight: 700; background: var(--blue); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+    .copy-btn:hover { background: #1e40af; }
+    .copy-status { font-size: 0.82rem; color: var(--green); font-weight: 600; min-height: 1em; }
+    table.map { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    table.map th, table.map td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.map th { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+    .table-wrap { overflow-x: auto; }
+    @media (max-width: 600px) { .doc-header, .section-body { padding-left: 16px; padding-right: 16px; } .point { flex-direction: column; gap: 6px; } }
+      .lead { font-size: 0.95rem; margin: 0 0 14px; }
+    .note { font-size: 0.86rem; color: var(--slate); margin: 14px 0 0; }
+    .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+    .pill-green { background: var(--green-dim); color: #15803d; }
+    .pill-blue { background: var(--blue-dim); color: var(--blue); }
+    .pill-amber { background: var(--amber-dim); color: #b45309; }
+    .pill-gray { background: #f1f5f9; color: #475569; }
+    .quad-wrap { overflow-x: auto; }
+    .quad-svg { width: 100%; min-width: 520px; height: auto; display: block; }
+    .quad-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 12px; font-size: 0.84rem; color: var(--slate); }
+    @media (max-width: 600px) { .quad-legend { grid-template-columns: 1fr; } }
+    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+    table.seg { min-width: 900px; }
+    table.seg td:nth-child(7), table.seg td:nth-child(8) { text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .seg-card { border: 1px solid var(--border); border-left: 5px solid var(--green); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; }
+    .seg-card.c-amber { border-left-color: var(--amber); }
+    .seg-card h3 { margin: 0 0 8px; font-size: 1rem; font-weight: 800; }
+    .kv > div { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 0.87rem; }
+    .kv > div > span { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); padding-top: 2px; }
+    @media (max-width: 600px) { .kv > div { grid-template-columns: 1fr; gap: 2px; } }
+    .table-wrap:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+  
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    @media (max-width: 700px) { .stat-grid { grid-template-columns: 1fr 1fr; } }
+    .stat { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+    .stat-num { font-size: 1.5rem; font-weight: 900; color: var(--blue); line-height: 1.1; }
+    .stat-lbl { font-size: 0.78rem; color: var(--slate); margin-top: 4px; line-height: 1.35; }
+    .h3 { font-size: 0.95rem; font-weight: 800; margin: 0 0 6px; }
+    .small { font-size: 0.88rem; margin: 0 0 10px; }
+    ol.tight, ul.tight { margin: 0; padding-left: 20px; font-size: 0.87rem; }
+    ol.tight li, ul.tight li { margin-bottom: 5px; }
+    .copy-card { border: 1px dashed #93c5fd; background: #f8fbff; border-radius: var(--radius-sm); padding: 14px 16px; font-size: 0.88rem; }
+    .copy-card p { margin: 0 0 8px; }
+    .copy-card .module-name { color: var(--blue); }
+    .free-toggle { font-size: 0.88rem; display: flex; gap: 8px; align-items: center; }
+    .checker { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; background: var(--bg); }
+    .checker label { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 0.85rem; padding: 5px 0; }
+    .checker input { width: 84px; font: inherit; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: right; }
+    .checker input:focus-visible, .free-toggle input:focus-visible { outline: 3px solid #93c5fd; outline-offset: 1px; }
+    .verdict { margin-top: 10px; font-size: 0.85rem; font-weight: 600; border-radius: 6px; padding: 8px 10px; }
+    .verdict.pass { background: var(--green-dim); color: #14532d; border: 1px solid #86efac; }
+    .verdict.extend { background: var(--amber-dim); color: #92400e; border: 1px solid #fde68a; }
+    .verdict.stop { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    table.budget td:nth-child(2) { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+    table.budget tr.total td { font-weight: 900; border-top: 2px solid var(--ink); }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-hub.html">CityUx Hub</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-short-course-plan-critique.html">Critique &amp; Plan B</a>
+    <span class="nav-sep">›</span>
+    <span>Gate 0 Demand Test</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Launch Plan — CityUx</div>
+    <h1>Gate 0: Testing Demand Before We Build</h1>
+    <p class="subtitle">How Plan B's Phase 0 runs week by week: what we test with K-12 educators and career changers, the pages, workshops and reservation offer we use, what it costs, and the pass/fail rules for deciding in February which AI Fluency for X versions get built.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Nov 25, 2026</span>
+      <span class="meta-chip">Dec 7, 2026 – Feb 12, 2027</span>
+      <span class="meta-chip">Budget about $8,000</span>
+      <span class="meta-chip">Gate meeting Feb 17, 2027</span>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#summary">The test in one page</a></li>
+      <li><a href="#before">Decide before Dec 7</a></li>
+      <li><a href="#questions">What we need to learn</a></li>
+      <li><a href="#assets">What we put in front of people</a></li>
+      <li><a href="#channels">How we reach each audience</a></li>
+      <li><a href="#timeline">Ten-week timeline</a></li>
+      <li><a href="#interviews">Interview guides</a></li>
+      <li><a href="#measure">What we count, and how</a></li>
+      <li><a href="#rules">Gate rules</a></li>
+      <li><a href="#checker">Gate checker</a></li>
+      <li><a href="#budget">Budget</a></li>
+      <li><a href="#risks">Risks and safeguards</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="section" id="summary">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🚦</div>
+      <div><h2>1 · The test in one page</h2><div class="section-sub">Ten weeks, two audiences, one decision</div></div>
+    </div>
+    <div class="section-body">
+      <p class="lead">Plan B gives away the AI Fluency for X course and charges for a human-scored credential ($99), a coached cohort ($249) and private cohorts. Before anything is built, Gate 0 checks one thing: <strong>will people in our two lead audiences commit time or money now?</strong> If they won't, we stop after ten weeks and about $8,000, not after a $45,000 course build.</p>
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-num">2</div><div class="stat-lbl">audiences tested: K-12 educators and career changers</div></div>
+        <div class="stat"><div class="stat-num">30</div><div class="stat-lbl">interviews, 15 per audience</div></div>
+        <div class="stat"><div class="stat-num">3</div><div class="stat-lbl">free 90-minute workshops, each ending with the reservation offer</div></div>
+        <div class="stat"><div class="stat-num">$25</div><div class="stat-lbl">refundable seat reservation, the test's main signal</div></div>
+      </div>
+      <div class="point mt16"><span class="point-label lbl-green">Pass</span><div class="point-body">An audience passes with <strong>20 or more paid reservations</strong>, or a <strong>signed letter of intent</strong> from a school district, state agency or employer. The audience gets its X lens built in Phase 1 (March–June 2027).</div></div>
+      <div class="point"><span class="point-label lbl-amber">Extend</span><div class="point-body">An audience with <strong>150 or more waitlist sign-ups</strong> but too few reservations gets <strong>one 4-week follow-up test</strong>, not a build. A waitlist costs people nothing, so it isn't enough on its own.</div></div>
+      <div class="point"><span class="point-label lbl-red">Stop</span><div class="point-body">Everything else stops. Reservations are refunded, the waitlist is told the outcome, and we write up what we learned.</div></div>
+      <div class="callout callout-amber mt16"><strong>This is a little stricter than Plan B as written.</strong> Plan B lets 150 waitlist sign-ups count as a pass on their own. A free sign-up is a weak signal, so this page treats it as a reason to keep testing rather than a reason to build. The CityUx team should agree to these rules before Dec 7, so the results can't move the goalposts.</div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="section" id="before">
+    <div class="section-header">
+      <div class="section-icon icon-red">✋</div>
+      <div><h2>2 · Decide before Dec 7</h2><div class="section-sub">Four things that block the test if they aren't settled</div></div>
+    </div>
+    <div class="section-body">
+      <ul class="action-list">
+        <li class="action-item"><span class="action-check">1</span><div class="action-body"><strong>A way to take $25 reservations.</strong> Ask CityU Finance how the university takes small payments for non-credit events, and whether they can be refunded easily. This is the biggest blocker. <em>Fallback:</em> a free reservation for a named cohort date with a signed commitment. That is a weaker signal, so it would need 40 reservations instead of 20 to pass.</div></li>
+        <li class="action-item"><span class="action-check">2</span><div class="action-body"><strong>Permission to email CityU lists.</strong> School of Education alumni and STC and CityU alumni are the first two channels. Ask Marketing and Alumni Relations what can be sent, how often, and under whose name.</div></li>
+        <li class="action-item"><span class="action-check">3</span><div class="action-body"><strong>A School of Education partner.</strong> One named faculty member who co-owns the educator test, reviews the copy and helps with interviews. Ask whether CityU already issues OSPI clock hours. If it does, the educator lens can use that approval rather than applying from scratch.</div></li>
+        <li class="action-item"><span class="action-check">4</span><div class="action-body"><strong>Agreement on the gate rules.</strong> The CityUx team signs off on Section 9 before anything goes live.</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="section" id="questions">
+    <div class="section-header">
+      <div class="section-icon icon-violet">❓</div>
+      <div><h2>3 · What we need to learn</h2><div class="section-sub">Each question is tied to a piece of evidence we will collect</div></div>
+    </div>
+    <div class="section-body">
+      <div class="module-grid">
+        <div class="seg-card">
+          <h3>K-12 educators</h3>
+          <ol class="tight">
+            <li><strong>Will they commit?</strong> Reservations for a spring cohort and workshop turnout.</li>
+            <li><strong>Do clock hours matter?</strong> Compare sign-ups on two versions of the page, with and without "earn clock hours", and ask in interviews how they chose their last clock-hour course.</li>
+            <li><strong>Who pays?</strong> The teacher, the district, or a grant? Interviews, plus at least two conversations with district professional-development leads.</li>
+            <li><strong>What do they want AI for?</strong> Lesson prep, feedback, communication with families, or student use policy? This shapes the lens.</li>
+          </ol>
+        </div>
+        <div class="seg-card c-amber">
+          <h3>Career changers</h3>
+          <ol class="tight">
+            <li><strong>Will they commit?</strong> Reservations and workshop turnout, as for educators.</li>
+            <li><strong>Is $99 for proof believable?</strong> Interviews ask what training they have paid for in the last year and why.</li>
+            <li><strong>Which subgroup responds?</strong> Alumni, office and admin staff, workers over 50, or recent grads. The sign-up form asks, so the counts can be split.</li>
+            <li><strong>Would an employer value the credential?</strong> Three or four short calls with hiring managers in CityU's employer network.</li>
+          </ol>
+        </div>
+      </div>
+      <p class="note">Also in Phase 0, but not part of the pass/fail count: 2–3 meetings with state agency training managers about how they meet WaTech's AI training requirement; one interactive 3D teaching scene tried out in the workshops; and a size estimate for each audience. A state agency letter of intent would still count as a pass.</p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="section" id="assets">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🧰</div>
+      <div><h2>4 · What we put in front of people</h2><div class="section-sub">Almost nothing is built: two pages, a form, three workshops and one offer</div></div>
+    </div>
+    <div class="section-body">
+      <h3 class="h3">Two landing pages</h3>
+      <p class="small">Short pages on the CityUx site, one per audience. Each page has a headline, three bullets, an outline of the four modules, and two buttons: <em>Join the waitlist</em> (free) and <em>Reserve a spring seat</em> ($25). Draft copy:</p>
+      <div class="module-grid">
+        <div class="copy-card">
+          <div class="module-name">Educators</div>
+          <p><strong>AI Fluency for Educators</strong><br>Use AI well in the work you already do: planning, feedback and talking with families. Built with CityU's School of Education.</p>
+          <ul class="tight">
+            <li>Free, self-paced course, about 6 hours</li>
+            <li>Optional coached cohort this spring, 4 live weeks</li>
+            <li>Clock hours planned (pending approval)</li>
+          </ul>
+        </div>
+        <div class="copy-card">
+          <div class="module-name">Career changers</div>
+          <p><strong>AI Fluency for Your Next Job</strong><br>Show employers you can use AI on real work, not just talk about it. From City University of Seattle.</p>
+          <ul class="tight">
+            <li>Free, self-paced course, about 6 hours</li>
+            <li>$99 credential: a real task from your field, scored by a person</li>
+            <li>Free or reduced cost if you're out of work</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">Say "planned" or "pending" for anything that doesn't exist yet. People are reserving a seat in a course that will be built only if enough of them do, and the page should say so plainly.</p>
+
+      <h3 class="h3 mt16">The sign-up form</h3>
+      <p class="small">One form for both pages, with a hidden field for which page it came from. Fields: name, email, role (with subgroup choices for career changers), school district or employer (optional), ZIP code, how you heard about us, and one question: <em>"Would you pay $99 for a CityU credential that proves you can use AI at work?"</em> (yes, maybe, no).</p>
+
+      <h3 class="h3 mt16">The reservation offer</h3>
+      <div class="callout callout-blue"><strong>$25 holds a seat in the spring coached cohort.</strong> It is credited toward the $249 cohort price, or fully refunded on request at any time before the cohort starts, or automatically if the cohort doesn't run. Unemployed learners can reserve for free by checking a box; those reservations are counted separately.</div>
+
+      <h3 class="h3 mt16">Three free workshops (online, 90 minutes)</h3>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Workshop schedule">
+        <table class="map">
+          <thead><tr><th>When</th><th>Who</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>Wed Jan 13, noon</td><td>CityU faculty and staff</td><td>Internal pilot. Tests the material and the 3D scene, and gives us practice before the external workshops.</td></tr>
+            <tr><td>Wed Jan 20, 4:00 pm</td><td>K-12 educators</td><td>After school hours. Ends with the reservation offer.</td></tr>
+            <tr><td>Tue Jan 26, 6:00 pm</td><td>Career changers</td><td>Evening, for people who are working. Ends with the reservation offer.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Each workshop teaches one real piece of Module 1, example first, then spends the last 10 minutes on the offer. Reservations made within 72 hours of a workshop are tracked as workshop conversions.</p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="section" id="channels">
+    <div class="section-header">
+      <div class="section-icon icon-green">📣</div>
+      <div><h2>5 · How we reach each audience</h2><div class="section-sub">Warm lists first, then a small amount of paid reach</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Channels by audience">
+        <table class="map">
+          <thead><tr><th>Channel</th><th>Educators</th><th>Career changers</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>CityU email lists</td><td>School of Education alumni</td><td>STC and CityU alumni</td><td>Two emails each, two weeks apart. Needs approval (Section 2).</td></tr>
+            <tr><td>Partners</td><td>District professional-development leads; educational service districts' PD catalogs</td><td>WorkSource offices in King and Snohomish counties; public library job-help programs</td><td>Ask to share the free workshop, not to sell. Any partner who says yes is a lead for a letter of intent.</td></tr>
+            <tr><td>LinkedIn</td><td>Posts from School of Education faculty</td><td>Posts from STC faculty; ads to Washington job seekers</td><td>Most of the paid reach goes here.</td></tr>
+            <tr><td>Facebook groups</td><td>Washington teacher groups, where allowed</td><td>Local job-seeker groups</td><td>Follow each group's rules; post only the free workshop.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-amber mt16"><strong>Count strangers separately.</strong> People on CityU's own lists already know us, so their sign-ups overstate demand. Every link carries a tag for its channel, so the gate can look at how many sign-ups and reservations came from people who had never heard of CityU.</div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="section" id="timeline">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🗓️</div>
+      <div><h2>6 · Ten-week timeline</h2><div class="section-sub">Built around the school winter break and the new-year job search</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Ten-week timeline">
+        <table class="map">
+          <thead><tr><th>Week of</th><th>Educators</th><th>Career changers</th><th>Everyone</th></tr></thead>
+          <tbody>
+            <tr><td>Nov 30</td><td colspan="2">Settle the four blockers in Section 2. Write the pages and form.</td><td>Gate rules signed off</td></tr>
+            <tr><td><strong>1 · Dec 7</strong></td><td>Pages live. First School of Education alumni email. Book interviews.</td><td>Pages live. First alumni email. Book interviews.</td><td>Tracking sheet set up</td></tr>
+            <tr><td><strong>2 · Dec 14</strong></td><td>5 interviews before break</td><td>5 interviews</td><td>First weekly review</td></tr>
+            <tr><td><strong>3 · Dec 21</strong></td><td colspan="1">Quiet: schools are on break</td><td>LinkedIn posts on New Year job plans</td><td>Build the 3D scene</td></tr>
+            <tr><td><strong>4 · Dec 28</strong></td><td>Quiet</td><td>LinkedIn ads start. Ask WorkSource and libraries to share the workshop.</td><td></td></tr>
+            <tr><td><strong>5 · Jan 4</strong></td><td>Second alumni email. Ask districts and service districts to share the workshop. LinkedIn ads start.</td><td>5 interviews</td><td>Talks with OSPI (clock hours)</td></tr>
+            <tr><td><strong>6 · Jan 11</strong></td><td>5 interviews</td><td>Second alumni email</td><td><strong>Internal workshop, Wed Jan 13</strong></td></tr>
+            <tr><td><strong>7 · Jan 18</strong></td><td><strong>Workshop, Wed Jan 20</strong></td><td>5 interviews</td><td>Mon Jan 18 is a holiday</td></tr>
+            <tr><td><strong>8 · Jan 25</strong></td><td>5 interviews. District PD lead calls.</td><td><strong>Workshop, Tue Jan 26</strong>. Hiring manager calls.</td><td></td></tr>
+            <tr><td><strong>9 · Feb 1</strong></td><td>Follow up with districts about letters of intent</td><td>Follow up with partners</td><td>State agency meetings. Size estimates.</td></tr>
+            <tr><td><strong>10 · Feb 8</strong></td><td colspan="2">Close sign-ups on Fri Feb 12. Count, split by channel, and write the decision memo.</td><td></td></tr>
+            <tr><td>Feb 15</td><td colspan="3"><strong>Gate meeting, Wed Feb 17.</strong> Mon Feb 15 is a holiday.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="section" id="interviews">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🎙️</div>
+      <div><h2>7 · Interview guides</h2><div class="section-sub">20–30 minutes. Ask about what people have done, not what they say they would do.</div></div>
+    </div>
+    <div class="section-body">
+      <p class="small">People are poor at predicting what they would buy, so these questions ask about the past. Don't pitch the course until the last two minutes. Offer a $50 gift card, get consent to take notes, and don't record anyone's name in the shared notes.</p>
+      <div class="module-grid">
+        <div class="seg-card">
+          <h3>Educators</h3>
+          <ol class="tight">
+            <li>Tell me about the last time you used an AI tool for school work. What happened?</li>
+            <li>What is your school or district telling teachers about AI right now?</li>
+            <li>How did you earn your clock hours last time? How did you pick those courses, and who paid?</li>
+            <li>What's the most you have paid yourself for professional development in the last two years? What was it?</li>
+            <li>When during the year do you do professional development?</li>
+            <li>What would make an AI course a waste of your time?</li>
+            <li><em>Last:</em> show the page. Would you reserve a seat today? Why or why not?</li>
+          </ol>
+        </div>
+        <div class="seg-card c-amber">
+          <h3>Career changers</h3>
+          <ol class="tight">
+            <li>Walk me through the last month of your job search or career move.</li>
+            <li>What training or courses have you paid for in the last year? How did you decide?</li>
+            <li>Have AI skills come up in a job posting or interview? What did they ask?</li>
+            <li>How do you show an employer you can do something new?</li>
+            <li>What help have you used from WorkSource, a library or your college?</li>
+            <li>What would make a credential worth $99 to you?</li>
+            <li><em>Last:</em> show the page. Would you reserve a seat today? Why or why not?</li>
+          </ol>
+        </div>
+      </div>
+      <p class="note">After each interview, write three lines in the tracking sheet: what they do now, what surprised you, and whether they reserved. Look for patterns at the weekly review.</p>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="section" id="measure">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📊</div>
+      <div><h2>8 · What we count, and how</h2><div class="section-sub">One shared tracking sheet, reviewed for 15 minutes each week</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Measures">
+        <table class="map">
+          <thead><tr><th>Measure</th><th>Where it comes from</th><th>Why it matters</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Paid reservations</strong></td><td>Payment records, matched to the sign-up form</td><td>The main pass signal. Money committed now.</td></tr>
+            <tr><td><strong>Letters of intent</strong></td><td>Signed letters from a district, agency or employer</td><td>The other pass signal. One organization can bring a whole cohort.</td></tr>
+            <tr><td>Waitlist sign-ups</td><td>Sign-up form</td><td>Interest. Counts toward "extend", not "pass".</td></tr>
+            <tr><td>Sign-ups from strangers</td><td>Channel tag on each link</td><td>Shows whether demand exists beyond people who already know CityU.</td></tr>
+            <tr><td>"Would pay $99": yes</td><td>Sign-up form question</td><td>Price check for the credential. Treat as optimistic.</td></tr>
+            <tr><td>Workshop show rate</td><td>Registrations vs. attendees</td><td>Below 30% suggests interest is shallow.</td></tr>
+            <tr><td>Workshop conversion</td><td>Reservations within 72 hours</td><td>Shows whether the teaching sells the course.</td></tr>
+            <tr><td>Refund requests</td><td>Payment records</td><td>Reservations that are refunded before Feb 12 don't count.</td></tr>
+            <tr><td>Interview notes</td><td>Tracking sheet</td><td>Explains the numbers and shapes the lens.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="section" id="rules">
+    <div class="section-header">
+      <div class="section-icon icon-green">⚖️</div>
+      <div><h2>9 · Gate rules</h2><div class="section-sub">Agree to these before Dec 7. Each audience is judged on its own.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Gate rules">
+        <table class="map">
+          <thead><tr><th>Result</th><th>Rule</th><th>What happens</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill pill-green">Pass</span></td><td>20+ paid reservations (40+ if reservations are free), <em>or</em> 1+ signed letter of intent from an organization</td><td>Build this audience's X lens in Phase 1, with the open core.</td></tr>
+            <tr><td><span class="pill pill-amber">Extend</span></td><td>No pass, but 150+ waitlist sign-ups with at least 40 from strangers</td><td>One 4-week follow-up: a second workshop and a direct reservation ask to the waitlist. Then pass or stop.</td></tr>
+            <tr><td><span class="pill pill-gray">Stop</span></td><td>Anything else</td><td>Refund every reservation, tell the waitlist, write up what we learned.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="module-grid mt16">
+        <div class="module-card"><div class="module-name">Both pass</div><div class="module-desc">Build the open core and both lenses, the educator lens first because it has the School of Education partner and a renewal cycle.</div></div>
+        <div class="module-card"><div class="module-name">One passes</div><div class="module-desc">Build the open core and that one lens. The other audience waits for Phase 2 data.</div></div>
+        <div class="module-card"><div class="module-name">Only a state agency letter</div><div class="module-desc">Build a role-based course for that agency as a private cohort. Don't build the public lenses yet.</div></div>
+        <div class="module-card"><div class="module-name">Nothing passes</div><div class="module-desc">Stop Plan B. Report back to stakeholders with the interview findings and what to try instead.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="section" id="checker">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🧮</div>
+      <div><h2>10 · Gate checker</h2><div class="section-sub">Enter each audience's counts to see where it stands against the rules</div></div>
+    </div>
+    <div class="section-body">
+      <label class="free-toggle"><input type="checkbox" id="freeRes"> Reservations are free (no payment route), so the bar is 40</label>
+      <div class="module-grid mt16">
+        <div class="checker" data-aud="Educators">
+          <div class="module-name">K-12 educators</div>
+          <label>Reservations (not refunded) <input type="number" min="0" value="0" data-f="res"></label>
+          <label>Signed letters of intent <input type="number" min="0" value="0" data-f="loi"></label>
+          <label>Waitlist sign-ups <input type="number" min="0" value="0" data-f="wait"></label>
+          <label>Of those, from strangers <input type="number" min="0" value="0" data-f="str"></label>
+          <div class="verdict" aria-live="polite"></div>
+        </div>
+        <div class="checker" data-aud="Career changers">
+          <div class="module-name">Career changers</div>
+          <label>Reservations (not refunded) <input type="number" min="0" value="0" data-f="res"></label>
+          <label>Signed letters of intent <input type="number" min="0" value="0" data-f="loi"></label>
+          <label>Waitlist sign-ups <input type="number" min="0" value="0" data-f="wait"></label>
+          <label>Of those, from strangers <input type="number" min="0" value="0" data-f="str"></label>
+          <div class="verdict" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="section" id="budget">
+    <div class="section-header">
+      <div class="section-icon icon-amber">💵</div>
+      <div><h2>11 · Budget</h2><div class="section-sub">About $8,000, as in Plan B. Staff time is not included.</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Budget">
+        <table class="map budget">
+          <thead><tr><th>Item</th><th>Cost</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Paid reach (LinkedIn, Facebook)</td><td>$2,500</td><td>Split evenly between the two audiences so the comparison is fair</td></tr>
+            <tr><td>Interview gift cards</td><td>$1,500</td><td>30 interviews × $50</td></tr>
+            <tr><td>3D teaching scene</td><td>$2,000</td><td>Student or contractor build of one scene</td></tr>
+            <tr><td>Page design and copy review</td><td>$500</td><td>Accessibility check included</td></tr>
+            <tr><td>Workshop costs</td><td>$300</td><td>Handouts, internal pilot lunch</td></tr>
+            <tr><td>Payment and form tools</td><td>$200</td><td>Processing fees on reservations</td></tr>
+            <tr><td>Contingency</td><td>$1,000</td><td>For the 4-week follow-up if an audience is extended</td></tr>
+            <tr class="total"><td>Total</td><td>$8,000</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Reservation money isn't income. It is held until the cohort runs or refunded.</p>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section class="section" id="risks">
+    <div class="section-header">
+      <div class="section-icon icon-red">🛡️</div>
+      <div><h2>12 · Risks and safeguards</h2><div class="section-sub">What could make the result misleading, and what we do about it</div></div>
+    </div>
+    <div class="section-body">
+      <div class="point"><span class="point-label lbl-red">Warm-list bias</span><div class="point-body">Alumni like CityU, so their numbers flatter demand. <strong>Safeguard:</strong> track strangers separately, and require 40 strangers for an "extend".</div></div>
+      <div class="point"><span class="point-label lbl-amber">Timing</span><div class="point-body">The winter break cuts two weeks from the educator test. <strong>Safeguard:</strong> front-load educator interviews before Dec 18 and hold their workshop in late January.</div></div>
+      <div class="point"><span class="point-label lbl-amber">Overpromising</span><div class="point-body">Clock hours and the credential don't exist yet. <strong>Safeguard:</strong> say "planned" or "pending" on every page, and make the refund automatic if the cohort doesn't run.</div></div>
+      <div class="point"><span class="point-label lbl-violet">Privacy</span><div class="point-body">The waitlist holds personal data. <strong>Safeguard:</strong> use it only for CityUx, keep it in a CityU system, and delete it if the audience stops and people don't opt in to hear more.</div></div>
+      <div class="point"><span class="point-label lbl-blue">Unequal effort</span><div class="point-body">If one audience gets more attention, the comparison is unfair. <strong>Safeguard:</strong> same ad budget, same number of emails, interviews and workshops for both.</div></div>
+      <div class="point"><span class="point-label lbl-teal">Moving the goalposts</span><div class="point-body">It's tempting to relax the rules after seeing the numbers. <strong>Safeguard:</strong> sign off on Section 9 before Dec 7 and report against it as written.</div></div>
+      <p class="note">Related: <a href="cityux-short-course-plan-critique.html">Plan B and its phases</a> · <a href="cityux-target-market-quadrant.html">Target-market quadrant</a> · <a href="cityux-short-course-launch-plan.html">Plan A launch plan</a></p>
+    </div>
+  </section>
+
+</div>
+<script>
+(function(){
+  var free=document.getElementById('freeRes');
+  function v(card,f){var n=parseInt(card.querySelector('[data-f="'+f+'"]').value,10);return isNaN(n)||n<0?0:n;}
+  function update(){
+    var bar=free.checked?40:20;
+    document.querySelectorAll('.checker').forEach(function(c){
+      var res=v(c,'res'),loi=v(c,'loi'),wait=v(c,'wait'),str=Math.min(v(c,'str'),wait),out=c.querySelector('.verdict');
+      var cls,txt;
+      if(res>=bar||loi>=1){cls='pass';txt='Pass: build this lens in Phase 1. '+(loi>=1?'A letter of intent is in hand.':res+' reservations; '+bar+' needed.');}
+      else if(wait>=150&&str>=40){cls='extend';txt='Extend: one 4-week follow-up. Reservations are '+res+' of '+bar+'.';}
+      else{cls='stop';txt='Stop for now. Needs '+(bar-res)+' more reservations or a letter of intent'+(wait<150||str<40?'; for an extend, 150 sign-ups with 40 from strangers ('+wait+' and '+str+' so far).':'.');}
+      out.className='verdict '+cls;out.textContent=txt;
+    });
+  }
+  document.querySelectorAll('.checker input, #freeRes').forEach(function(i){i.addEventListener('input',update);i.addEventListener('change',update);});
+  update();
+})();
+</script>
+</body>
+</html>

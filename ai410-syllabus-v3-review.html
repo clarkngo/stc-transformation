@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 410 Syllabus v3</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 900px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--teal); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .tldr { background: var(--teal-dim); border: 1px solid rgba(13,148,136,0.25); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p { margin: 0 0 10px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    td.num, th.num { text-align: right; white-space: nowrap; }
+    tr.total td { font-weight: 700; border-top: 2px solid var(--border); }
+    ul.tight { margin: 0 0 10px; padding-left: 20px; }
+    ul.tight li { margin-bottom: 4px; }
+    h3 { font-size: 0.95rem; margin: 18px 0 6px; }
+    h3:first-child { margin-top: 0; }
+    .badge { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 20px; padding: 1px 8px; margin-left: 6px; vertical-align: 1px; }
+    .badge.open { background: var(--amber-dim); color: #b45309; border: 1px solid rgba(217,119,6,0.3); }
+    .badge.kept { background: #dcfce7; color: #15803d; }
+    .scott { background: var(--green-dim); }
+    .strike { color: var(--slate-light); text-decoration: line-through; }
+    .checklist { list-style: none; padding-left: 0; margin: 0; }
+    .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before { content: "☐"; position: absolute; left: 4px; color: var(--slate); }
+    code { font-size: 0.85em; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } .section-body { padding: 16px; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="bsai-hub.html">BSAI Hub</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a><span>·</span><a href="ai410-revamp-plan.html">AI 410 revamp plan</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Syllabus review · AI 410 · Draft for Clark</div>
+    <h1>AI 410 Syllabus v3: Scott's Committee Review Meets the Revamp</h1>
+    <p class="subtitle">Scott Zhou's Nov 5 version, written after his meeting with the Curriculum Committee, was based on the v1 syllabus. Our v2 draft was built without it. The v3 draft starts from Scott's file and keeps his rubrics. It then layers on the revamp (AI Challenge, weekly debates and checks, Term Project 40%) and adds the course outcome table the committee asked for.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Nov 24, 2026</span>
+      <span class="meta-chip">📝 v3 = tracked changes on Scott's file</span>
+      <span class="meta-chip">🎯 16 assignments mapped to 5 COs</span>
+      <span class="meta-chip">❓ 5 decisions for Clark</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 28px;"><strong>BSAI reminder:</strong> the standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>. <strong>One conflict to flag:</strong> rule 1 says the official course description and outcomes are fixed, but Scott's file rewrites the description and trims the outcome verbs (for example, "Define and explain" becomes "Explain"). v3 keeps Scott's wording. If it is the committee-approved text, it becomes the new fixed version, and the constraints page and course pages need to match it.</div>
+
+  <div class="tldr">
+    <h2>In short</h2>
+    <ul>
+      <li><strong>Scott rebuilt every rubric</strong> as a four-level grid (Exceeds 100–92%, At 91–75%, Approaching 74–62%, Below 61–0%). Each criterion has its own descriptor. Ours had one line per criterion and no levels. <a href="#rubrics">Side by side below.</a></li>
+      <li><strong>His weights differ from ours in three places (Nov 24: we follow his):</strong> the HOS build (5 × 20% vs our 10/15/15/10/10), the challenge (4 criteria at 10/20/30/40 vs our Design 20 / Justify 20), and the Concept Debate (60/40 vs our 50/50). v3 uses Scott's.</li>
+      <li><strong>v3 keeps everything Scott removed</strong> out of the syllabus: the course schedule, the HOS and AC module descriptions, the Term Project phase and deliverable details, and the decimal grade table. The rubrics still refer to some of those details, though. <a href="#removed">See the list.</a></li>
+      <li><strong>Course outcome alignment (new):</strong> each assignment maps to the one outcome it assesses most directly. Hands-on work maps to the practical COs and conceptual work to CO1 and CO3, per today's meeting. <a href="#co">Table below</a>, also inserted into v3.</li>
+      <li><strong>Faculty interview (decided Nov 24):</strong> one 15-minute interview, 200 points (20%), mapped to CO1, with its own section and four-level rubric in v3. The Term Project stays at 20% with its v1 points. <a href="ai410-faculty-interview.html">Interview page.</a></li>
+      <li><strong>BSAI PDG 2026:</strong> AI 410–440 aren't named in columns G and H, so none of them is a program-level assessment point. AI 410's Final Report still uses the same rubric rows. <a href="#pdg">Details.</a></li>
+    </ul>
+  </div>
+
+  <section class="section" id="meeting">
+    <div class="section-header"><div class="section-icon icon-violet">🗒️</div><div><h2>From today's meeting (Nov 24)</h2><div class="section-sub">Curriculum Committee (CC) and outcome alignment</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>Strict CO mapping:</strong> the CC wants each assignment mapped to specific course outcomes. An assignment shouldn't claim to cover them all. Hands-on activities align with practical COs; conceptual activities align with theoretical COs.</li>
+        <li><strong>Mapping table:</strong> an explicit CO mapping table in the syllabus helps the CC review go faster.</li>
+      </ul>
+      <p style="margin-top:8px"><strong>Conflict with Scott's file:</strong> his Term Project heading lists CO1–CO5 and his HOS heading lists four COs. That is the "covers everything" pattern the CC asked us to avoid. v3 moves the COs onto each Term Project deliverable and each AIC module.</p>
+    </div>
+  </section>
+
+  <section class="section" id="rubrics">
+    <div class="section-header"><div class="section-icon icon-amber">📐</div><div><h2>Rubrics: ours (v2 draft) vs Scott's (Nov 5)</h2><div class="section-sub">What changed in each rubric, and what v3 does with it. The highlighted column is what v3 keeps.</div></div></div>
+    <div class="section-body">
+      <p>Scott's file started from v1. Wherever "ours" below differs from v1, the difference comes from the revamp (Nov 17–20), not from Scott.</p>
+
+      <h3>Performance levels (all rubrics)</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Item</th><th>Ours (v2 draft)</th><th class="scott">Scott (Nov 5)</th></tr></thead>
+        <tbody>
+          <tr><td>Levels</td><td>None in the syllabus: criterion, a one-line outcome, %. The level scale sat once at the top (decimal grade table).</td><td class="scott">Every rubric has an Exceeds / At / Approaching / Below grid with a descriptor per cell, plus a score-range row (100–92 / 91–75 / 74–62 / 61–0). The decimal grade table at the top is removed.</td></tr>
+          <tr><td>Brightspace</td><td colspan="2">The dev shell rubrics use levels at 100 / 90 / 75 / 60% of each criterion. Scott's bands are percentage ranges (92 / 75 / 62 cut-offs). <strong>This is a mismatch</strong>, to be fixed whenever the Brightspace rubric work (on hold) resumes.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>AI Challenge, the build (was the HOS rubric)</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Criterion</th><th class="num">Ours, of 100</th><th class="num scott">Scott, of HOS</th><th class="num">v3 points</th><th>What differs</th></tr></thead>
+        <tbody>
+          <tr><td>Create / Creation</td><td class="num">10</td><td class="num scott">20%</td><td class="num">12</td><td>Scott adds what counts as evidence: the AI prompt, a screenshot or reproducible run, the code pushed. Exceeds needs a justified adaptation.</td></tr>
+          <tr><td>Evaluate / Evaluation</td><td class="num">15</td><td class="num scott">20%</td><td class="num">12</td><td>Exceeds needs at least one test the student designed.</td></tr>
+          <tr><td>Analyze / Analysis</td><td class="num">15</td><td class="num scott">20%</td><td class="num">12</td><td>Traces <em>one</em> required mechanism; Exceeds also predicts how a change or failure would affect it.</td></tr>
+          <tr><td>Apply</td><td class="num">10</td><td class="num scott">20%</td><td class="num">12</td><td>Exceeds needs an edge case shown working as well as the expected case.</td></tr>
+          <tr><td>Understand</td><td class="num">10</td><td class="num scott">20%</td><td class="num">12</td><td>Exceeds: explains how the concept applies to a different example and answers follow-up questions. Ours also grades the Post Mortem here; v3 says so in the prose, not in Scott's grid.</td></tr>
+          <tr class="total"><td>Build total</td><td class="num">60</td><td class="num scott">100%</td><td class="num">60</td><td>v3 reads Scott's percentages as shares of the 60-point build.</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:8px">Ours also renamed "Engagement / Skills" to one Build block and moved weight from Create to Evaluate and Analyze. Scott's equal split undoes that move.</p>
+
+      <h3>AI Challenge, the challenge (was the Application Challenge rubric)</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Criterion</th><th class="num">Ours, of 100</th><th class="num scott">Scott, of AC</th><th class="num">v3 points</th><th>What differs</th></tr></thead>
+        <tbody>
+          <tr><td>Application</td><td class="num">(in Design)</td><td class="num scott">10%</td><td class="num">4</td><td>Ours folded it into Design. Scott keeps it separate: runs in the new scenario, graded on the transcript or report.</td></tr>
+          <tr><td>Analysis</td><td class="num">(in build Analyze)</td><td class="num scott">20%</td><td class="num">8</td><td>Ours dropped it so analysis wasn't scored twice. Scott keeps it: risks or failures broken into parts tied to evidence (DECISIONS.md section 2).</td></tr>
+          <tr><td>Evaluation / Justify</td><td class="num">20</td><td class="num scott">30%</td><td class="num">12</td><td>Same idea: a rule for the open decision, judged against criteria, with an alternative rejected.</td></tr>
+          <tr><td>Design</td><td class="num">20</td><td class="num scott">40%</td><td class="num">16</td><td>Scott's Design is about tests: the provided tests pass, and the student's own tests cover the hardest edge case.</td></tr>
+          <tr class="total"><td>Challenge total</td><td class="num">40</td><td class="num scott">100%</td><td class="num">40</td><td>v3 reads Scott's percentages as shares of the 40-point challenge.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>Side effect:</strong> with Scott's challenge rubric, analysis is scored in both halves (build Analysis and challenge Analysis). On Nov 17 we chose option B partly so each skill was scored once. Also, the Part B exemplars in the instructor repo were re-scored on Design 20 / Justify 20 on Nov 20, so they would need re-scoring on Scott's four criteria.</div>
+
+      <h3>Term Project</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Deliverable</th><th>Ours (v2 draft)</th><th class="scott">Scott (Nov 5)</th></tr></thead>
+        <tbody>
+          <tr><td>Proposal and Progress Report</td><td>One shared table "TP01 and TP02": Structure 20, Content 30, Writing 30, Reference 10, Collaboration 10, with bullet outcomes.</td><td class="scott">Separate grids, same weights. Specific per milestone: the Proposal is 1 page with at least 3 references; the Progress Report has at least 12 and must address the TP01 feedback. <em>His second heading says "TP02 Proposal Rubric"; v3 renames it "Progress Report".</em></td></tr>
+          <tr><td>System v0.3 / v0.7 / v1.0</td><td>One table written for v1.0: Environment, Architecture, Execution Guide, Security, Git Workflow, 20% each.</td><td class="scott">A grid per version, same five criteria at 20% each. Each version expects less than v1.0: v0.3 has a layout and the starter app running, v0.7 has two combined pieces working end to end. The v0.7 grid has no weight table above it.</td></tr>
+          <tr><td>Final Report</td><td>Grouped: General Computing Knowledge 20 / Critical Thinking 60 / Collaboration 20, eight rows.</td><td class="scott">The same eight rows and weights, ungrouped, with a level grid. Most Exceeds cells copy the PDG rubric rows word for word (Openness to Cultural Differences doesn't); the other levels are paraphrased.</td></tr>
+          <tr><td>Presentation</td><td>Structure 20, Visual 30, Verbal 30, Team 20, with a description per criterion.</td><td class="scott">Same criteria and weights, with a level grid (including solo-student wording).</td></tr>
+          <tr><td>Demo video</td><td>Functionality 30, Structure 20, Verbal 20, Production 20, Collaboration 10.</td><td class="scott">Same, with a level grid.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Weekly and instructor-determined work</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Item</th><th>Ours (v2 draft)</th><th class="scott">Scott (Nov 5)</th><th>v3</th></tr></thead>
+        <tbody>
+          <tr><td>Concept Debate</td><td>Participation 50 / Writing 50, one line each. Weekly, 10%.</td><td class="scott">Participation 60 / Writing 40, with a grid where participation is about lateness by stage. One per HOS, 5%.</td><td>Scott's grid and 60/40; weekly at 10% (Debate A = CO1, Debate B and integration = CO3).</td></tr>
+          <tr><td>Knowledge Check</td><td>Correctness 100%: 2 points per question, highest attempt counts.</td><td class="scott">No section at all (only the 10% row in the overview table).</td><td>Our KC text added, with the CO it assesses; no grid, since it's auto-scored.</td></tr>
+          <tr><td>Muddiest Point</td><td>Removed (Nov 17).</td><td class="scott">Kept, with a new Participation 80 / Writing 20 grid.</td><td>Removed (tracked deletion). Its job moved to the Post Mortem.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section" id="removed">
+    <div class="section-header"><div class="section-icon icon-blue">✂️</div><div><h2>Everything else Scott changed</h2><div class="section-sub">v3 keeps all of these as Scott left them</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Area</th><th>v1 and our v2 draft</th><th class="scott">Scott (Nov 5), kept in v3</th></tr></thead>
+        <tbody>
+          <tr><td>Course manager</td><td>Brian Maeng, Program Director</td><td class="scott">Scott Zhou, Program Manager</td></tr>
+          <tr><td>Prerequisites</td><td>CS 352 and DS 479</td><td class="scott">CS 351 <em>or</em> CS 352 (DS 479 dropped); the separate Prerequisites section is removed</td></tr>
+          <tr><td>Effective date</td><td>(not set)</td><td class="scott">1/1/2027</td></tr>
+          <tr><td>Course description</td><td>The long "rigorous software engineering principles…" paragraph</td><td class="scott">A shorter paragraph that names topics (LLMs, agent architectures, RAG, vector databases, guardrails, async, mobile, evaluation and monitoring)</td></tr>
+          <tr><td>Outcomes</td><td>O1–O5 ("Define and explain", "Design and implement", "Analyze and break down", "Evaluate and critique")</td><td class="scott">CO1–CO5 with one verb each ("Explain", "Implement", "Analyze", "Evaluate"); CO5 unchanged</td></tr>
+          <tr><td>Removed sections</td><td colspan="2">Additional Information (core concepts and tools), the decimal grade table, the "Major 80% / Instructor-determined 20%" split, the HOS 1–4 and AC 1–4 descriptions, the Term Project's solo/group rules, phases table, deliverables table, and System and Report details (naming conventions, ISCAP, page lengths), and the Course Schedule.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>Loose ends from the removals:</strong> Scott's Term Project rubrics still refer to "the ISCAP template", "the file-naming convention" and "the Progress Report length", which the removed sections defined. Solo and group rules now appear only inside the rubric cells. Before v3 goes to the CC, either bring back a short deliverables table (week due, length, points) or point to where students find it in Brightspace.</div>
+    </div>
+  </section>
+
+  <section class="section" id="co">
+    <div class="section-header"><div class="section-icon icon-green">🎯</div><div><h2>Course outcome alignment: AI 410</h2><div class="section-sub">One outcome per assignment where possible; inserted into v3 after the outcomes list</div></div></div>
+    <div class="section-body">
+      <p>Rule used: <strong>hands-on</strong> work (AIC builds and challenges, the Term Project system and demo, and the written reports about the system) maps to the practical outcomes CO2–CO5. <strong>Conceptual</strong> work (Knowledge Checks and Concept Debates) maps to CO1 (explain) and CO3 (analyze). Each AIC's build and challenge share the module's outcome.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Assignment</th><th>Type</th><th>CO</th><th class="num">Points</th><th>Why this outcome</th></tr></thead>
+        <tbody>
+          <tr><td>AIC 1: Foundations &amp; the Agentic Loop</td><td>Hands-on</td><td>CO3</td><td class="num">100</td><td>Students build and trace the agent loop and its tool calls, the nondeterministic reasoning layer.</td></tr>
+          <tr><td>AIC 2: Embeddings, Chunking, &amp; RAG</td><td>Hands-on</td><td>CO2</td><td class="num">100</td><td>Implements the RAG pipeline on a vector database; the challenge tunes retrieval.</td></tr>
+          <tr><td>AIC 3: Guardrails &amp; Async Processing</td><td>Hands-on</td><td>CO3</td><td class="num">100</td><td>Finds and fixes the async bottleneck and guards nondeterministic tool calls.</td></tr>
+          <tr><td>AIC 4: Mobile, Push, &amp; Observability</td><td>Hands-on</td><td>CO4 + CO5</td><td class="num">100</td><td>Tracing and a groundedness score (CO4), plus the mobile client with push (CO5), 50 points each.</td></tr>
+          <tr><td>TP01 Proposal</td><td>Written</td><td>CO1</td><td class="num">10</td><td>Explains the problem and the system's components before building.</td></tr>
+          <tr><td>TP01 System v0.3</td><td>Hands-on</td><td>CO5</td><td class="num">10</td><td>Foundation of the full-stack application.</td></tr>
+          <tr><td>TP02 Progress Report</td><td>Written</td><td>CO3</td><td class="num">30</td><td>Methodology and architecture analysis, early results.</td></tr>
+          <tr><td>TP02 System v0.7</td><td>Hands-on</td><td>CO2</td><td class="num">30</td><td>"Working prototype and RAG core": the RAG pipeline working end to end.</td></tr>
+          <tr><td>TP03 Final Report</td><td>Written</td><td>CO4</td><td class="num">50</td><td>Evaluates the system's performance and reliability with evidence.</td></tr>
+          <tr><td>TP03 System v1.0</td><td>Hands-on</td><td>CO5</td><td class="num">40</td><td>The complete agent-driven mobile application.</td></tr>
+          <tr><td>TP03 Final Presentation</td><td>Oral</td><td>CO3</td><td class="num">20</td><td>Defends the architecture decisions and trade-offs.</td></tr>
+          <tr><td>TP03 Demo Video</td><td>Hands-on</td><td>CO5</td><td class="num">10</td><td>Shows the full system working.</td></tr>
+          <tr><td>Faculty Interview (Week 9 or 10)</td><td>Oral, individual</td><td>CO1</td><td class="num">200</td><td>Each student explains their own system's components and how a request moves through them. Added Nov 24; see <a href="ai410-faculty-interview.html">the interview page</a>.</td></tr>
+          <tr><td>Concept Debate A (Weeks 1, 3, 5, 7)</td><td>Conceptual</td><td>CO1</td><td class="num">40</td><td>Debates the module's core idea.</td></tr>
+          <tr><td>Concept Debate B + integration (Weeks 2, 4, 6, 8, 9, 10)</td><td>Conceptual</td><td>CO3</td><td class="num">60</td><td>Design trade-offs across the architecture.</td></tr>
+          <tr><td>Knowledge Check, theory (Weeks 1, 3, 5, 7, 9)</td><td>Conceptual</td><td>CO1</td><td class="num">50</td><td>Concepts from the lecture and readings.</td></tr>
+          <tr><td>Knowledge Check, skill (Weeks 2, 4, 6, 8, 10)</td><td>Conceptual</td><td>CO3</td><td class="num">50</td><td>Reading code, logs and outputs.</td></tr>
+          <tr class="total"><td>Total</td><td></td><td></td><td class="num">1,000</td><td>Post Mortem sits inside each AIC.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Points per outcome</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Outcome</th><th class="num">Points</th><th class="num">Share</th><th>Assessed by</th></tr></thead>
+        <tbody>
+          <tr><td>CO1 Explain</td><td class="num">300</td><td class="num">30%</td><td>Faculty Interview, Proposal, Debate A, theory KCs</td></tr>
+          <tr><td>CO2 Implement RAG</td><td class="num">130</td><td class="num">13%</td><td>AIC 2, System v0.7</td></tr>
+          <tr><td>CO3 Analyze</td><td class="num">360</td><td class="num">36%</td><td>AIC 1, AIC 3, Progress Report, Presentation, Debate B, skill KCs</td></tr>
+          <tr><td>CO4 Evaluate</td><td class="num">100</td><td class="num">10%</td><td>AIC 4 (half), Final Report</td></tr>
+          <tr><td>CO5 Develop</td><td class="num">110</td><td class="num">11%</td><td>AIC 4 (half), System v0.3, v1.0, Demo</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>Check before the CC sees it:</strong> CO3 carries 36% because two of the four AICs land there, and CO1 now carries 30% with the faculty interview. To even it out, AIC 1 could map to CO1 (it explains the agent loop) or the Progress Report to CO4 (it reports early evaluation results). Each move shifts 60–100 points.</div>
+    </div>
+  </section>
+
+  <section class="section" id="pdg">
+    <div class="section-header"><div class="section-icon icon-teal">🏛️</div><div><h2>BSAI PDG 2026: where AI 410 fits</h2><div class="section-sub">Columns G (course) and H (assessment) of the BSAI sheet</div></div></div>
+    <div class="section-body">
+      <p>The PDG assigns each program outcome rubric row to <em>one</em> course and assessment, such as IS 312 / TP03 Final Report or CS 340 / CD10 Concept Debate. <strong>None of AI 410, 420, 430 or 440 appears in column G.</strong> So their activities carry no program-level assessment duty. They should still teach toward the same outcomes and, where it's natural, reuse the same rubric rows. AI 410 already does:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>PDG outcome · rubric row</th><th>Assessed in the PDG at</th><th>Used in AI 410</th></tr></thead>
+        <tbody>
+          <tr><td>PO2 Critical Thinking · Issue, Evidence, Context and Awareness, Conclusions</td><td>IS 312, CS 330, IS 345, CS 340 · TP03 Final Report</td><td>TP03 Final Report rows (60%)</td></tr>
+          <tr><td>PO3 Diversity · Knowledge of Cultural Frameworks, Openness to Cultural Differences</td><td>IS 312, IS 345 · TP03 Final Report</td><td>TP03 Final Report rows (5% + 5%)</td></tr>
+          <tr><td>PO8 Collaboration · Team Contributions</td><td>IS 312 · TP03 Final Report</td><td>Close to the Final Report "Teamwork" row (10%)</td></tr>
+          <tr><td>PO8 Collaboration · Respect for Diverse Perspectives, Shared Decisions</td><td>CS 340, CS 330 · CD10 Concept Debate</td><td>Not used; AI 410's debate grid grades participation and writing</td></tr>
+          <tr><td>PO6 / PO7 · AI knowledge and practice</td><td>CS 320, DS 479, CS 497 and others</td><td>No AI 410 row; AI Engineering in the Final Report is the nearest</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout amber"><strong>Two things to raise with Scott about the sheet:</strong> (1) in rows 37–56 (PO6–PO8) the levels run backwards. The "Exceeds" column holds the weakest descriptor (for example, "Completes few assigned tasks…") and "Below" holds the strongest. (2) If an AI course ever becomes a PDG assessment point, its rubric should use the PDG wording at every level. Scott's Final Report grid paraphrases the At, Approaching and Below cells.</div>
+    </div>
+  </section>
+
+  <section class="section" id="files">
+    <div class="section-header"><div class="section-icon icon-green">📁</div><div><h2>The v3 draft and what's left</h2><div class="section-sub">Nothing is applied to the OneDrive master or committed</div></div></div>
+    <div class="section-body">
+      <p><strong>File:</strong> <code>ai410-instructor/syllabus/AI410-Syllabus-v3-draft (tracked changes).docx</code> in the local clone (branch <code>revamp-v2</code>, uncommitted). It is Scott's Nov 5 file with every change tracked under the author "Claude": accept or reject each one in Word, then save the result as the OneDrive master. Brian's comment on the TP01 rubric ("rubric is needed which contains the pointers/requirements of each criterion") is still attached. Scott's level grids look like they answer it.</p>
+      <h3>Decisions for Clark <span class="badge open">Open</span></h3>
+      <ul class="checklist">
+        <li><strong>Decided Nov 24:</strong> follow Scott's rubric weights: build 5 × 12, challenge Application 4 / Analysis 8 / Evaluation 12 / Design 16, Concept Debate 60 / 40. Analysis is scored in both halves, accepted.</li>
+        <li>Is Scott's description and CO wording the approved text? If so, update the constraints page and course pages to match.</li>
+        <li>Bring back a short Term Project deliverables table and the course schedule, or leave them to Brightspace?</li>
+        <li>Accept the CO map as drafted, or rebalance CO3 (36%) and CO1 (30%)?</li>
+      </ul>
+      <p style="margin-top:10px">After these are settled: update the Brightspace rubric levels to Scott's bands (on hold with the rest of the shell), re-score the Part B exemplars if the challenge rubric changes, and repeat the CO mapping for AI 420, 430 and 440.</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>

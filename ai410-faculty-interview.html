@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 410 Faculty Interview</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+      --red: #b91c1c; --red-dim: #fef2f2;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 900px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+    .toc a { font-size: 0.82rem; font-weight: 600; color: var(--ink); text-decoration: none; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; }
+    .tldr { background: var(--violet-dim); border: 1px solid rgba(124,58,237,0.22); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; scroll-margin-top: 12px; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p { margin: 0 0 10px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.green { background: var(--green-dim); border-left: 4px solid var(--green); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    td.num, th.num { text-align: right; white-space: nowrap; }
+    table.rubric { min-width: 760px; }
+    table.rubric td:first-child { width: 15%; }
+    table.rubric .lvl { font-size: 0.68rem; color: var(--slate); font-weight: 600; display: block; text-transform: none; letter-spacing: 0; }
+    ul.tight, ol.tight { margin: 0 0 10px; padding-left: 20px; }
+    ul.tight li, ol.tight li { margin-bottom: 4px; }
+    h3 { font-size: 0.95rem; margin: 18px 0 6px; }
+    h3:first-child { margin-top: 0; }
+    .badge { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 20px; padding: 1px 8px; margin-left: 6px; vertical-align: 1px; }
+    .badge.open { background: var(--amber-dim); color: #b45309; border: 1px solid rgba(217,119,6,0.3); }
+    .badge.lean { background: var(--blue-dim); color: var(--blue); }
+    .badge.decided { background: #dcfce7; color: #15803d; }
+    th.pick { color: #15803d; }
+    .flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 4px 0 8px; }
+    .stage { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; background: var(--bg); font-size: 0.82rem; }
+    .stage b { display: block; font-size: 0.86rem; }
+    .stage .min { color: var(--violet); font-weight: 700; font-size: 0.74rem; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 0.9rem; }
+    .card h4 { margin: 0 0 6px; font-size: 0.86rem; }
+    .card.do { background: var(--green-dim); } .card.dont { background: var(--red-dim); }
+    .card ul { margin: 0; padding-left: 18px; }
+    .qcard { border: 1px dashed var(--slate-light); border-radius: var(--radius-sm); padding: 14px 16px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; white-space: pre-wrap; background: var(--bg); line-height: 1.55; }
+    code { font-size: 0.85em; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+    @media (max-width: 700px) { .flow { grid-template-columns: repeat(2, 1fr); } .two { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } .section-body { padding: 16px; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="bsai-hub.html">BSAI Hub</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a><span>·</span><a href="ai410-revamp-plan.html">AI 410 revamp plan</a><span>·</span><a href="ai410-syllabus-v3-review.html">Syllabus v3 review</a><span>·</span><a href="ai410-faculty-interview-guide.html">Instructor guide</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Assessment design · AI 410 Term Project · Draft for Clark</div>
+    <h1>The Faculty Interview: Run It Like a Job Interview</h1>
+    <p class="subtitle">A 15-minute one-on-one in Week 9 or 10, worth 20% of the course grade, that feels like a technical interview for an AI engineering role. The interviewer leads with questions and the student answers. There are no slides and no prepared walkthrough, and the student shows the system only when asked. This page has the format, the rubric, the instructor's preparation and question bank, and the student prep guide. To run the interviews, use the <a href="ai410-faculty-interview-guide.html">instructor guide</a>.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Nov 24, 2026</span>
+      <span class="meta-chip">⏱️ 15 min + 5 min to score</span>
+      <span class="meta-chip">📐 5 criteria, 4 levels</span>
+      <span class="meta-chip">🧮 200 points (20%), decided Nov 24</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 24px;"><strong>BSAI reminder:</strong> the standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>. Nothing here conflicts with them: the interview uses the system students already run in Codespaces and needs no new tools. The official description and outcomes are unchanged. <strong>Wording change:</strong> the live Module 5 page and the teaching guide currently say the student "walks you through" the system. The job-interview format below replaces that with interviewer-led questions, so both pages need a small edit once this is approved.</div>
+
+  <nav class="toc" aria-label="On this page">
+    <a href="#format">Format</a><a href="#rubric">Rubric</a><a href="#counts">How it counts</a><a href="#prep-instructor">Instructor prep</a><a href="#questions">Question bank</a><a href="#during">During &amp; after</a><a href="#prep-student">Student prep</a><a href="#fair">Fairness</a>
+  </nav>
+
+  <div class="tldr">
+    <h2>In short</h2>
+    <ul>
+      <li><strong>Interviewer-led, not presenter-led.</strong> It opens with "Tell me about your project in 60 seconds" and moves straight to questions. Screen sharing happens only when the interviewer says "show me".</li>
+      <li><strong>Six stages, like a real interview loop:</strong> the pitch, a deep dive on one request path, design trade-offs, a debugging scenario, ownership and AI use, then the student's own questions.</li>
+      <li><strong>Five criteria</strong> in the same four-level grid as Scott's rubrics: Technical Understanding 25%, Design Reasoning 25%, Debugging 20%, Ownership &amp; AI Transparency 15%, Professional Communication 15%. Each level also reads as a hiring signal, from Strong hire to No hire.</li>
+      <li><strong>Weight (decided Nov 24): 200 points (20%), one 15-minute interview in Week 9 or 10.</strong> The points come out of the Term Project's team deliverables, which go back to their v1 points (200). The total stays 1,000, and AIC, CD and KC don't change. <a href="#counts">Details below.</a></li>
+      <li><strong>Every interview is tailored</strong> from the student's own repo, commits, Post Mortems and Progress Report, using a one-page interview card. It takes about 10 minutes of prep per student.</li>
+      <li><strong>Students prepare like a job candidate:</strong> a 60-second pitch, one request path they can trace end to end, three decisions with the alternatives they rejected, one "it broke and here's how I fixed it" story, and a question to ask back.</li>
+    </ul>
+  </div>
+
+  <section class="section" id="format">
+    <div class="section-header"><div class="section-icon icon-violet">🧭</div><div><h2>Format: a 15-minute technical interview</h2><div class="section-sub">Book 20-minute slots: 15 to talk, 5 to score while it's fresh</div></div></div>
+    <div class="section-body">
+      <div class="flow">
+        <div class="stage"><span class="min">0–2 min</span><b>1. The pitch</b>"Tell me about your project like you would to a hiring manager." No screen.</div>
+        <div class="stage"><span class="min">2–7 min</span><b>2. Deep dive</b>The interviewer picks one request path; the student traces it. "Show me" only here.</div>
+        <div class="stage"><span class="min">7–10 min</span><b>3. Trade-offs</b>"Why X and not Y? What did you give up?"</div>
+        <div class="stage"><span class="min">10–12 min</span><b>4. Debugging</b>A short "it's broken in production" scenario.</div>
+        <div class="stage"><span class="min">12–14 min</span><b>5. Ownership &amp; AI</b>What's yours, what the AI wrote, what you changed by hand.</div>
+        <div class="stage"><span class="min">14–15 min</span><b>6. Your questions</b>"What would you ask me?" or "What would you build next?"</div>
+      </div>
+      <h3>Ground rules</h3>
+      <div class="two">
+        <div class="card do"><h4>What makes it an interview</h4><ul>
+          <li>The interviewer asks and the student answers. Answers run 30–90 seconds, not 5 minutes.</li>
+          <li>The student has the running system, the repo in Codespaces and one Langfuse trace open <em>but not shared</em> until asked.</li>
+          <li>Follow-ups go deeper: "Why?", "What else did you consider?", "What would break?"</li>
+          <li>"I don't know, but here's how I'd find out" is a good answer.</li>
+          <li>Live, on camera or in person. Same six stages for every student.</li>
+        </ul></div>
+        <div class="card dont"><h4>What makes it a presentation (avoid)</h4><ul>
+          <li>Slides, a scripted walkthrough, or a demo the student drives from start to finish.</li>
+          <li>Reading from notes or the README.</li>
+          <li>The interviewer filling silences or rescuing a stuck answer straight away. Give it 10 seconds.</li>
+          <li>Questions any classmate could answer from the course pages. Ask about <em>this</em> system.</li>
+          <li>Any AI assistant open during the interview (the <a href="https://cityuseattle.github.io/ai410/start-here/ai-use.html">AI Use Guide</a> already says "No AI").</li>
+        </ul></div>
+      </div>
+      <p style="margin-top:12px"><strong>Groups:</strong> each member is interviewed alone. At least one deep-dive question is about a part a <em>teammate</em> built. In a real team you're expected to know the seams. Use the same scenario for every member of a team so their answers can be compared.</p>
+    </div>
+  </section>
+
+  <section class="section" id="rubric">
+    <div class="section-header"><div class="section-icon icon-amber">📐</div><div><h2>Rubric: Faculty Interview</h2><div class="section-sub">Same four-level grid and score bands as the v3 syllabus rubrics · maps to CO1 (explain the system's components; see the points breakdown)</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Criterion</th><th class="num">% of grade</th><th>Interview stage</th></tr></thead>
+        <tbody>
+          <tr><td>Technical Understanding</td><td class="num">25%</td><td>1, 2</td></tr>
+          <tr><td>Design Reasoning</td><td class="num">25%</td><td>3</td></tr>
+          <tr><td>Debugging &amp; Problem Solving</td><td class="num">20%</td><td>4</td></tr>
+          <tr><td>Ownership &amp; AI Transparency</td><td class="num">15%</td><td>5 (and throughout)</td></tr>
+          <tr><td>Professional Communication</td><td class="num">15%</td><td>All, especially 1 and 6</td></tr>
+          <tr><td>Total</td><td class="num">100%</td><td></td></tr>
+        </tbody>
+      </table></div>
+      <div class="table-wrap" style="margin-top:14px"><table class="rubric">
+        <thead><tr><th>Criteria</th><th>Exceeds Standard<span class="lvl">100–92% · Strong hire</span></th><th>At Standard<span class="lvl">91–75% · Hire</span></th><th>Approaching Standard<span class="lvl">74–62% · Lean no hire</span></th><th>Below Standard<span class="lvl">61–0% · No hire</span></th></tr></thead>
+        <tbody>
+          <tr><td>Technical Understanding (25%)</td>
+            <td>Traces the chosen request end to end without notes, through the client, API, agent loop, tools, retrieval, worker and trace. Names the actual files and functions, and explains why each step happens in that order.</td>
+            <td>Traces the request correctly with minor gaps, and points to the right code when asked to show it.</td>
+            <td>Describes the components but not how a request moves between them, or needs the README to find the code.</td>
+            <td>Can't explain how the system works, or the explanation contradicts the code. Missing interview earns 0 points.</td></tr>
+          <tr><td>Design Reasoning (25%)</td>
+            <td>Justifies key decisions against stated criteria such as cost, latency, reliability or safety, names the rejected alternative, and predicts what would break first under change (10× users, a new document type, a model outage).</td>
+            <td>Justifies decisions with a reason and an alternative considered; the prediction under change is reasonable but general.</td>
+            <td>Gives reasons such as "it was in the guide" or "the AI suggested it", with no alternatives.</td>
+            <td>Can't say why the system is built the way it is.</td></tr>
+          <tr><td>Debugging &amp; Problem Solving (20%)</td>
+            <td>Given a failure scenario, forms a hypothesis, names the first place to look (log, trace, queue, test), and narrows it systematically. Reads a live trace or log confidently when asked.</td>
+            <td>Finds a sensible starting point and reasons toward the cause, with some prompting.</td>
+            <td>Guesses, or jumps to rewriting code without first locating the fault.</td>
+            <td>Has no approach to the failure, even with hints.</td></tr>
+          <tr><td>Ownership &amp; AI Transparency (15%)</td>
+            <td>States clearly which parts they built, which parts the AI generated and what they changed by hand, matching the commits and the AI Tool Disclosure. Knows a teammate's seam well enough to work on it. Connects a Post Mortem "carry forward" item to the project.</td>
+            <td>Ownership and AI use are clear and consistent with the repo; knowledge of teammates' parts is partial.</td>
+            <td>Vague about what they built or what the AI wrote, or answers don't fully match the commit history.</td>
+            <td>Can't explain code they're credited with, or claims don't match the repo. The instructor follows up under the Academic Integrity policy, not in the room.</td></tr>
+          <tr><td>Professional Communication (15%)</td>
+            <td>A crisp 60-second pitch (problem, user, what it does, what makes it AI). Answers are concise and structured, the student asks clarifying questions, handles "I don't know" honestly and asks a thoughtful question back.</td>
+            <td>Clear pitch and answers, with occasional rambling; asks a question back.</td>
+            <td>Answers are hard to follow, or the pitch turns into a feature list or a scripted presentation.</td>
+            <td>Mostly unable to communicate the work, or reads from a script.</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:10px">Score each criterion at its level's midpoint (96 / 83 / 68 / 30%) unless the notes clearly put it higher or lower in the band. The hiring-signal labels help students understand the level; the grade comes from the percentage.</p>
+    </div>
+  </section>
+
+  <section class="section" id="counts">
+    <div class="section-header"><div class="section-icon icon-teal">⚖️</div><div><h2>Points: 200, one interview <span class="badge decided">Decided Nov 24</span></h2><div class="section-sub">Clark: the interview should carry real weight, in a single round. The total stays 1,000, and AIC, CD and KC don't change.</div></div></div>
+    <div class="section-body">
+      <p><strong>The idea:</strong> the Term Project stays at 40%, but up to half of it becomes <em>individual</em>. The Term Project went to 40% on Nov 17, and the interview was added on Nov 19 because a 40% group grade needs a check on what each student understands. Moving points from the team deliverables to the interview does that directly. It also deals with free-riding in groups, since every member is scored on their own answers.</p>
+
+      <h3>Three options</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Category</th><th class="num">v3 today</th><th class="num">A · 10%</th><th class="num pick">B · 20%, one round ✓</th><th class="num">C · 20%, two rounds</th></tr></thead>
+        <tbody>
+          <tr><td>AI Challenge (4 × 100)</td><td class="num">400</td><td class="num">400</td><td class="num">400</td><td class="num">400</td></tr>
+          <tr><td>Term Project, team deliverables</td><td class="num">400</td><td class="num">300</td><td class="num">200</td><td class="num">200</td></tr>
+          <tr><td>Faculty interview, individual</td><td class="num">0</td><td class="num">100</td><td class="num">200</td><td class="num">50 + 150</td></tr>
+          <tr><td>Concept Debate (10 × 10)</td><td class="num">100</td><td class="num">100</td><td class="num">100</td><td class="num">100</td></tr>
+          <tr><td>Knowledge Check (10 × 10)</td><td class="num">100</td><td class="num">100</td><td class="num">100</td><td class="num">100</td></tr>
+          <tr><td>Total</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td><td class="num">1,000</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>The Term Project's team deliverables under each option</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Deliverable</th><th>Due</th><th class="num">v3 today</th><th class="num">A (× 0.75)</th><th class="num">B and C (× 0.5)</th></tr></thead>
+        <tbody>
+          <tr><td>System v0.3</td><td>Week 3</td><td class="num">20</td><td class="num">15</td><td class="num">10</td></tr>
+          <tr><td>Proposal</td><td>Week 3</td><td class="num">20</td><td class="num">15</td><td class="num">10</td></tr>
+          <tr><td>System v0.7</td><td>Week 7</td><td class="num">60</td><td class="num">45</td><td class="num">30</td></tr>
+          <tr><td>Progress Report</td><td>Week 7</td><td class="num">60</td><td class="num">45</td><td class="num">30</td></tr>
+          <tr><td>System v1.0</td><td>Week 10</td><td class="num">80</td><td class="num">60</td><td class="num">40</td></tr>
+          <tr><td>Final Report</td><td>Week 10</td><td class="num">100</td><td class="num">75</td><td class="num">50</td></tr>
+          <tr><td>Final Presentation (team)</td><td>Week 10</td><td class="num">40</td><td class="num">30</td><td class="num">20</td></tr>
+          <tr><td>Demo Video</td><td>Week 10</td><td class="num">20</td><td class="num">15</td><td class="num">10</td></tr>
+          <tr><td>Team subtotal</td><td></td><td class="num">400</td><td class="num">300</td><td class="num">200</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:8px">Every deliverable scales by the same factor, so the shares <em>inside</em> the team work, and all of Scott's rubric percentages, stay as they are. Under B and C the team deliverables return exactly to the v1 points in Scott's Nov 5 file. In other words, the Nov 17 doubling of the Term Project now goes to the individual interview instead.</p>
+
+      <h3>Chosen: option B, one 15-minute interview</h3>
+      <ul class="tight">
+        <li><strong>When:</strong> Week 9 or 10, after System v1.0 is feature-frozen or close to it. Sign-up slots go up at the start of Week 9.</li>
+        <li><strong>Length:</strong> 15 minutes in a 20-minute slot (5 minutes to score right after). Clark (Nov 24): 15 minutes only.</li>
+        <li><strong>Instructor time:</strong> about 20 minutes per student plus about 10 minutes of prep. For 25 students that's roughly 12–13 hours across Weeks 9–10.</li>
+        <li><strong>Considered and not chosen:</strong> option C added a 10-minute Week 8 screen (50 + 150 points) as practice. Clark chose a single interview. The published format, rubric and sample questions are there to take most of the surprise out instead.</li>
+      </ul>
+
+      <h3>What each option does to the course outcome balance</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Outcome</th><th class="num">v3 today</th><th class="num">A</th><th class="num">B / C</th></tr></thead>
+        <tbody>
+          <tr><td>CO1 Explain</td><td class="num">110 (11%)</td><td class="num">205 (21%)</td><td class="num">300 (30%)</td></tr>
+          <tr><td>CO2 Implement RAG</td><td class="num">160 (16%)</td><td class="num">145 (15%)</td><td class="num">130 (13%)</td></tr>
+          <tr><td>CO3 Analyze</td><td class="num">410 (41%)</td><td class="num">385 (39%)</td><td class="num">360 (36%)</td></tr>
+          <tr><td>CO4 Evaluate</td><td class="num">150 (15%)</td><td class="num">125 (13%)</td><td class="num">100 (10%)</td></tr>
+          <tr><td>CO5 Develop</td><td class="num">170 (17%)</td><td class="num">140 (14%)</td><td class="num">110 (11%)</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:8px"><strong>The interview maps to CO1</strong> (the B / C column applies) ("explain the essential components of full-stack AI systems… agentic loops…"). The interview is the student explaining the components of their own system out loud. That makes it the cleanest CO1 evidence in the course, and it's the oral, conceptual work that the CC's rule sends to the theoretical outcome. As a side effect it fixes CO1's thin 11% and eases CO3's 41%. The cost: CO4 and CO5 drop to 10–11% under B and C. If that's a concern, map the debugging stage to CO4 in the rubric notes, or keep System v1.0 at 60 points and take the difference from the Final Report.</p>
+      <div class="callout amber"><strong>Changes this would need:</strong> the overview table and CO alignment table in syllabus v3, Scott's agreement (his Term Project rubric weights stay, but the deliverable points change), the Term Project points on the course site and in the instructor hub, and the Brightspace grade items (on hold with the rest of the shell). It also reverses part of the Nov 17 "every deliverable doubles" decision on the revamp plan page, so that page needs a note.</div>
+    </div>
+  </section>
+
+  <section class="section" id="prep-instructor">
+    <div class="section-header"><div class="section-icon icon-blue">🧑‍🏫</div><div><h2>How instructors prepare</h2><div class="section-sub">About 1 hour once per term, then about 10 minutes per student</div></div></div>
+    <div class="section-body">
+      <div class="callout green" style="margin:0 0 12px"><strong>Running the interviews?</strong> The <a href="ai410-faculty-interview-guide.html">instructor guide</a> has the term timeline, what to say in each stage, scoring with a worked example, sample answers at each level, keys for the debugging scenarios and what to do in awkward situations.</div>
+      <h3>Once per term (start of Week 9)</h3>
+      <ul class="tight">
+        <li>Post the interview sign-up slots in Brightspace for Weeks 9–10 (20-minute slots), with the student prep guide below and the rubric attached. <a href="https://cityuseattle.github.io/ai410/module-5/">Module 5</a> already tells students to watch for them.</li>
+        <li>Pick the <strong>scenario set</strong> for the term (the debugging scenarios below) so every student gets one of the same few. Rotate the sets between terms so they don't spread.</li>
+        <li>If two instructors share a section, both score the first three interviews together and compare, then split the rest.</li>
+        <li>Check accommodations with Disability Support Services before the first slot.</li>
+      </ul>
+      <h3>For each student (about 10 minutes, the day before)</h3>
+      <ol class="tight">
+        <li><strong>Read the README and architecture diagram.</strong> Choose <em>one</em> request path to trace, ideally one that crosses two AICs (for example, a question that triggers retrieval and a tool call, or an upload that goes through the worker and ends in a push notification).</li>
+        <li><strong>Skim the commits by this student.</strong> In a group, pick one file they own and one seam with a teammate's part.</li>
+        <li><strong>Read their four Post Mortems.</strong> Note one "still unclear" item and one "carry forward" item to ask about.</li>
+        <li><strong>Read the Progress Report and AI Tool Disclosure.</strong> Note one stated decision to probe, and one AI-generated part to ask about.</li>
+        <li><strong>Fill in the interview card</strong> (below) with three tailored questions and the scenario. Don't send questions in advance.</li>
+      </ol>
+      <h3>Interview card (one per student)</h3>
+<div class="qcard">AI 410 Faculty Interview · Week __ · Date ______
+Student ______________  Team ____  Solo / Group
+Repo ____________________
+
+TAILORED
+  Request path to trace: _______________________________
+  Decision to probe (from Progress Report): _____________
+  Ownership check (file they own / teammate seam): ______
+  Post Mortem item (unclear → still unclear? / carry forward → where?): ___
+  Debug scenario #: ___
+
+NOTES (stage → what they said, evidence)
+  1 Pitch:
+  2 Deep dive:
+  3 Trade-offs:
+  4 Debugging:
+  5 Ownership & AI:
+  6 Their question:
+
+SCORES  TU __/25  DR __/25  DB __/20  OW __/15  PC __/15  = __/100
+Hiring signal: Strong hire / Hire / Lean no / No
+One strength: ______________   One thing to work on: ______________
+Follow-up needed?  Y / N  (why)</div>
+    </div>
+  </section>
+
+  <section class="section" id="questions">
+    <div class="section-header"><div class="section-icon icon-green">💬</div><div><h2>Question bank</h2><div class="section-sub">Pick one or two per stage and tailor them to the student's system. Don't publish this list; students get sample questions only.</div></div></div>
+    <div class="section-body">
+      <h3>1. The pitch</h3>
+      <ul class="tight">
+        <li>Tell me about your project in 60 seconds, as if I were a hiring manager who has never seen it.</li>
+        <li>Who is the user, and what were they doing before your system existed?</li>
+        <li>What makes this an <em>AI</em> system, rather than a regular app with a chatbot added?</li>
+      </ul>
+      <h3>2. Deep dive (by AIC)</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Area</th><th>Questions</th></tr></thead>
+        <tbody>
+          <tr><td>AIC 1 · Agent loop &amp; tools</td><td>Show me where the model decides to call a tool. What does the model actually receive back, and what happens if the tool throws? How many turns can the loop take, and what stops it? Why does the API key live in the backend and not the client?</td></tr>
+          <tr><td>AIC 2 · RAG</td><td>Walk me from an uploaded document to a stored vector. How did you choose chunk size and overlap? Why are documents and queries embedded differently? Show me an answer and the chunks it was grounded in. What does the system do when nothing relevant is retrieved?</td></tr>
+          <tr><td>AIC 3 · Guardrails &amp; async</td><td>Show me your validation schema. What happens to a malformed tool call, step by step? Why is ingestion a background job? If the worker is down, what does the user see? Where could the same job run twice, and does that matter?</td></tr>
+          <tr><td>AIC 4 · Mobile, push &amp; observability</td><td>How does the phone find out the job is done? Show me a trace: which step was slowest, and which cost the most tokens? How does your groundedness score work, and when would it be wrong?</td></tr>
+          <tr><td>Seams (groups)</td><td>Your teammate built the retrieval. What does your code assume about what it returns? If they changed the chunking tomorrow, what in your part would break?</td></tr>
+        </tbody>
+      </table></div>
+      <h3>3. Design trade-offs</h3>
+      <ul class="tight">
+        <li>Name one decision you'd defend in a design review. What did you reject, and why?</li>
+        <li>You're going from 10 users to 10,000 tomorrow. What breaks first, and what do you change?</li>
+        <li>What may the agent do on its own, and where does a person have to approve? How did you draw that line (your AIC challenge decisions)?</li>
+        <li>Where did you choose free-tier tools? What would you change with a budget, and what wouldn't you?</li>
+        <li>If the model provider went down for an hour, what would your users see?</li>
+      </ul>
+      <h3>4. Debugging scenarios (pick one, the same within a team)</h3>
+      <ol class="tight">
+        <li>Users say answers have become confidently wrong since yesterday's document upload. Where do you look first?</li>
+        <li>The push notification never arrives, but the job shows as finished. Talk me through it.</li>
+        <li>Latency doubled overnight and nobody changed the code. What do you check?</li>
+        <li>The model keeps calling a tool with an invalid date and the guardrail retries forever. What's happening, and how do you stop it?</li>
+        <li>Open a trace from your system now and tell me something you didn't expect to see. <em>(Use when the student is strong.)</em></li>
+      </ol>
+      <h3>5. Ownership &amp; AI use</h3>
+      <ul class="tight">
+        <li>Which part of this code would you be most comfortable changing right now, live? <em>(Optionally ask for a one-line change.)</em></li>
+        <li>What did an AI assistant write here, and what did you have to fix or rewrite by hand? How did you know it was wrong?</li>
+        <li>Your Post Mortem said <em>[X]</em> was still unclear after AIC <em>[n]</em>. Is it clear now? What changed?</li>
+        <li>Tell me about a time in this project when something broke badly. What happened, what did you do, and what was the result? (Situation, Task, Action, Result.)</li>
+      </ul>
+      <h3>6. Their questions</h3>
+      <ul class="tight">
+        <li>What question would you ask me about this system if you were interviewing for my team?</li>
+        <li>What would you build next with two more weeks, and why that first?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="during">
+    <div class="section-header"><div class="section-icon icon-violet">🎙️</div><div><h2>During and after the interview</h2><div class="section-sub">Keep it a conversation; score straight after</div></div></div>
+    <div class="section-body">
+      <h3>During</h3>
+      <ul class="tight">
+        <li><strong>Open warmly and state the format:</strong> "This is like a technical interview. I'll ask, you answer, and I'll tell you when to share your screen. It's fine to think out loud or ask me to clarify."</li>
+        <li><strong>Use the follow-up ladder</strong> on one or two answers: <em>Why?</em> → <em>What else did you consider?</em> → <em>What would break?</em> Stop when the student reaches the edge of what they know. That edge is the information you need.</li>
+        <li><strong>Watch the clock</strong> and move on at each stage's time, even mid-answer: "Good, let's switch to…"</li>
+        <li><strong>Write evidence, not impressions:</strong> "traced upload → worker → Chroma, missed where embeddings are batched", not "seemed solid".</li>
+        <li><strong>Don't teach mid-interview.</strong> Save corrections for the feedback note. If a student is stuck for more than 20 seconds, give one hint, then move on.</li>
+      </ul>
+      <h3>After (the 5 minutes in the slot)</h3>
+      <ul class="tight">
+        <li>Score each criterion from the notes on the card, and pick the hiring signal.</li>
+        <li>Write the feedback like an interview debrief: <strong>one strength, one thing to work on</strong>, two sentences each. Post it in Brightspace within two days.</li>
+        <li>If claims and the repo don't match, don't decide in the room. Check the commits and the AI Tool Disclosure afterwards, and use the Academic Integrity process if needed.</li>
+        <li>Enter the score in the interview's own grade item. Also use the notes as evidence when you check ownership against the commits for TP03.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="prep-student">
+    <div class="section-header"><div class="section-icon icon-green">🎒</div><div><h2>Student guide: preparing for your faculty interview</h2><div class="section-sub">Written to go on the Module 5 page as it is</div></div></div>
+    <div class="section-body">
+      <p><strong>What it is:</strong> a 15-minute, one-on-one technical interview about your Term Project, in Week 9 or 10. It's worth 200 points (20% of your grade) and is scored on your own answers, even if you work in a group. Treat it like an interview for an AI engineering job. Your instructor asks the questions; you answer them, and you show your system when asked. <strong>It is not a presentation:</strong> no slides, and no prepared walkthrough.</p>
+      <h3>Before: what to prepare</h3>
+      <ol class="tight">
+        <li><strong>A 60-second pitch.</strong> The problem, who the user is, what your system does, and what makes it an AI system. Practise it out loud until it fits in a minute.</li>
+        <li><strong>One request, end to end.</strong> Pick a request that crosses at least two AICs and trace it on paper: client → API → agent loop → tool or retrieval → worker → notification → trace. Be ready to open each file on that path.</li>
+        <li><strong>Three decisions you'd defend.</strong> For each one: what you chose, what you rejected, and why. Your AIC challenge decisions and Progress Report are good sources.</li>
+        <li><strong>One "it broke" story.</strong> Something that really went wrong, told as Situation, Task, Action, Result, in under a minute.</li>
+        <li><strong>Your AI use, honestly.</strong> Which parts an assistant wrote, what you changed by hand, and how you checked it. It should match your commits and your README's AI Tool Disclosure.</li>
+        <li><strong>Your Post Mortems.</strong> Re-read all four. Expect a question about something you said was unclear, and where your "carry forward" items went.</li>
+        <li><strong>Your limits.</strong> What doesn't work yet, what would break at scale, and what you'd build next.</li>
+        <li><strong>A question to ask back,</strong> as you would at the end of any job interview.</li>
+      </ol>
+      <h3>Practise</h3>
+      <ul class="tight">
+        <li>Run a mock interview with a classmate, taking turns as interviewer. Use the sample questions below and ask "why?" after every answer.</li>
+        <li>Record one practice answer and listen back: aim for 30–90 seconds per answer.</li>
+        <li>In a group, interview each other about the parts you <em>didn't</em> build.</li>
+      </ul>
+      <h3>Sample questions (the real ones are tailored to your project)</h3>
+      <ul class="tight">
+        <li>Tell me about your project in 60 seconds.</li>
+        <li>Show me where your agent decides to call a tool.</li>
+        <li>Why did you choose that chunk size?</li>
+        <li>The push notification never arrives. Where do you look first?</li>
+        <li>What did the AI write here, and what did you change?</li>
+      </ul>
+      <h3>On the day</h3>
+      <div class="two">
+        <div class="card do"><h4>Have ready (10 minutes before)</h4><ul>
+          <li>Your Codespace running: API, worker and vector store up.</li>
+          <li>The app on your phone or emulator, logged in.</li>
+          <li>One recent Langfuse trace open.</li>
+          <li>The repo open in the editor. Don't share your screen until asked.</li>
+          <li>Camera on, quiet room, a working microphone.</li>
+        </ul></div>
+        <div class="card dont"><h4>Leave out</h4><ul>
+          <li>Slides or a scripted walkthrough.</li>
+          <li>Reading answers from notes or the README. A few keywords on paper are fine.</li>
+          <li>Any AI assistant, chat window or copilot (the AI Use Guide says "No AI" for the interview).</li>
+          <li>Bluffing. "I don't know, but here's how I'd find out" scores better than a confident wrong answer.</li>
+        </ul></div>
+      </div>
+      <h3>During</h3>
+      <ul class="tight">
+        <li>Think out loud: the reasoning counts as much as the answer.</li>
+        <li>Ask a clarifying question if one isn't clear. Interviewers expect it.</li>
+        <li>Keep answers short and structured; your interviewer will ask for more if they want it.</li>
+      </ul>
+      <p><strong>After:</strong> you'll get written feedback within two days, with one strength and one thing to work on, like an interview debrief. It's practice for the real thing.</p>
+      <div class="callout green"><strong>Groups:</strong> everyone is interviewed alone. Know the whole system, and especially where your part meets your teammates' parts. Expect at least one question about a part you didn't build.</div>
+    </div>
+  </section>
+
+  <section class="section" id="fair">
+    <div class="section-header"><div class="section-icon icon-amber">🤝</div><div><h2>Fairness and accessibility</h2><div class="section-sub">So the interview measures understanding, not polish or confidence</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>Same structure for everyone:</strong> the same six stages and timing, and the same scenario set. Only the tailored questions differ, and they come from each student's own work.</li>
+        <li><strong>Judge content, not accent or fluency.</strong> Professional Communication is about clarity and structure. Allow pauses and repeat questions on request. Many BSAI students are working in a second language.</li>
+        <li><strong>Accommodations</strong> through Disability Support Services: extra time, a written-first option (questions shown on screen), or a camera-off format. Record the accommodation on the card.</li>
+        <li><strong>Interview anxiety is real:</strong> publishing the format, the rubric and sample questions in advance takes most of the surprise out. The first question is always the pitch the student has practised.</li>
+        <li><strong>Technical failures:</strong> if Codespaces or the app won't start, carry on with the questions and use the code on GitHub. Don't mark down for infrastructure, and reschedule only if no code can be shown at all.</li>
+        <li><strong>Recording:</strong> don't record by default. Record only with the student's written consent, for instructor calibration, and delete it after the term.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="next">
+    <div class="section-header"><div class="section-icon icon-teal">📌</div><div><h2>Next steps</h2><div class="section-sub">The syllabus v3 draft has the interview; the live site and instructor repo haven't changed yet</div></div></div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>Decided Nov 24:</strong> one 15-minute interview, 200 points (option B). Added to syllabus v3.</li>
+        <li>Agree the Term Project points change with Scott. His rubric weights stay; only the deliverable points scale.</li>
+        <li>After Scott agrees: Put the student guide on <code>ai410/module-5</code>. Put the prep, question bank and card in the <code>ai410-instructor</code> teaching guide, and update the Term Project points on the site and in the instructor hub. The question bank stays instructor-only.</li>
+        <li>Done Nov 24: the revamp plan's Term Project section is marked as replaced. The Brightspace grade items follow when the shell work resumes.</li>
+        <li>Move the <a href="ai410-faculty-interview-guide.html">instructor guide</a> into the private <code>ai410-instructor</code> repo with the question bank.</li>
+        <li>AI 420–440: reuse the format and rubric, and rewrite the deep-dive and debugging questions for each course's stack.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</body>
+</html>

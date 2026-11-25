@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>AI 410 Interview Guide</title>
+  <style>
+    :root {
+      --ink: #0f172a; --slate: #475569; --slate-light: #94a3b8;
+      --card: #ffffff; --bg: #f1f5f9; --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px; --radius-sm: 8px;
+      --green: #16a34a; --green-dim: #f0fdf4;
+      --blue: #1d4ed8; --blue-dim: #eff6ff;
+      --violet: #7c3aed; --violet-dim: #f5f3ff;
+      --amber: #d97706; --amber-dim: #fffbeb;
+      --teal: #0d9488; --teal-dim: #f0fdfa;
+      --red: #b91c1c; --red-dim: #fef2f2;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px; }
+    .shell { max-width: 900px; margin: 0 auto; padding: 28px 16px 100px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .doc-header { background: var(--card); border-radius: var(--radius); padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--violet); margin-bottom: 28px; }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+    .toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+    .toc a { font-size: 0.82rem; font-weight: 600; color: var(--ink); text-decoration: none; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; }
+    .tldr { background: var(--violet-dim); border: 1px solid rgba(124,58,237,0.22); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 28px; }
+    .tldr h2 { margin: 0 0 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); }
+    .tldr ul { margin: 0; padding-left: 20px; }
+    .section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; scroll-margin-top: 12px; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px 14px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 18px 24px; }
+    .section-body p { margin: 0 0 10px; }
+    .icon-teal { background: var(--teal-dim); } .icon-violet { background: var(--violet-dim); }
+    .icon-amber { background: var(--amber-dim); } .icon-green { background: var(--green-dim); } .icon-blue { background: var(--blue-dim); }
+    .callout { border-radius: var(--radius-sm); padding: 12px 16px; font-size: 0.92rem; margin: 14px 0 0; }
+    .callout.blue { background: var(--blue-dim); border-left: 4px solid var(--blue); }
+    .callout.amber { background: var(--amber-dim); border-left: 4px solid var(--amber); }
+    .callout.green { background: var(--green-dim); border-left: 4px solid var(--green); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+    td:first-child { font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    td.num, th.num { text-align: right; white-space: nowrap; }
+    table.rubric { min-width: 760px; }
+    table.rubric td:first-child { width: 15%; }
+    table.rubric .lvl { font-size: 0.68rem; color: var(--slate); font-weight: 600; display: block; text-transform: none; letter-spacing: 0; }
+    ul.tight, ol.tight { margin: 0 0 10px; padding-left: 20px; }
+    ul.tight li, ol.tight li { margin-bottom: 4px; }
+    h3 { font-size: 0.95rem; margin: 18px 0 6px; }
+    h3:first-child { margin-top: 0; }
+    .badge { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 20px; padding: 1px 8px; margin-left: 6px; vertical-align: 1px; }
+    .badge.open { background: var(--amber-dim); color: #b45309; border: 1px solid rgba(217,119,6,0.3); }
+    .badge.lean { background: var(--blue-dim); color: var(--blue); }
+    .badge.decided { background: #dcfce7; color: #15803d; }
+    th.pick { color: #15803d; }
+    .flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 4px 0 8px; }
+    .stage { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; background: var(--bg); font-size: 0.82rem; }
+    .stage b { display: block; font-size: 0.86rem; }
+    .stage .min { color: var(--violet); font-weight: 700; font-size: 0.74rem; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 0.9rem; }
+    .card h4 { margin: 0 0 6px; font-size: 0.86rem; }
+    .card.do { background: var(--green-dim); } .card.dont { background: var(--red-dim); }
+    .card ul { margin: 0; padding-left: 18px; }
+    .qcard { border: 1px dashed var(--slate-light); border-radius: var(--radius-sm); padding: 14px 16px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; white-space: pre-wrap; background: var(--bg); line-height: 1.55; }
+    code { font-size: 0.85em; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+    @media (max-width: 700px) { .flow { grid-template-columns: repeat(2, 1fr); } .two { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .doc-header { padding: 22px 18px; } .section-body { padding: 16px; } }
+      .script { display: grid; gap: 10px; margin-bottom: 4px; }
+    .step { border: 1px solid var(--border); border-left: 4px solid var(--violet); border-radius: var(--radius-sm); padding: 10px 14px; background: var(--bg); }
+    .step b { display: block; font-size: 0.92rem; }
+    .step .min { color: var(--violet); font-weight: 700; font-size: 0.74rem; }
+    .step p { margin: 6px 0 0; font-size: 0.9rem; }
+    .step .say { font-style: italic; }
+    .step .note { color: var(--slate); font-size: 0.84rem; }
+    .lvls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
+    .lv { border-radius: var(--radius-sm); padding: 10px 12px; font-size: 0.86rem; border: 1px solid var(--border); }
+    .lv b { display: block; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+    .lv.ex { background: var(--green-dim); } .lv.at { background: var(--blue-dim); }
+    .lv.ap { background: var(--amber-dim); } .lv.be { background: var(--red-dim); }
+    @media (max-width: 700px) { .lvls { grid-template-columns: 1fr; } }
+    @media print { body { background: #fff; } .nav-row, .toc { display: none; } .section, .doc-header { box-shadow: none; break-inside: avoid-page; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav-row"><a href="index.html">← STC Docs Hub</a><span>·</span><a href="bsai-hub.html">BSAI Hub</a><span>·</span><a href="teaching-framework-hub.html">Teaching Framework Hub</a><span>·</span><a href="ai410-faculty-interview.html">Faculty Interview (design)</a><span>·</span><a href="ai410-revamp-plan.html">AI 410 revamp plan</a></nav>
+
+  <header class="doc-header">
+    <div class="eyebrow">Instructor guide · AI 410 Term Project · Draft for Clark</div>
+    <h1>Running the Faculty Interview: An Instructor's Guide</h1>
+    <p class="subtitle">How to run the Week 9–10 interviews from start to finish: the term timeline, what to say in each of the 15 minutes, how to score consistently, sample answers and scenario keys (in the private repo), awkward situations, and the feedback note. The format, rubric and question bank are on the <a href="ai410-faculty-interview.html">interview design page</a>; this guide is about running it.</p>
+    <div class="meta-row">
+      <span class="meta-chip">📅 Nov 24, 2026</span>
+      <span class="meta-chip">⏱️ 15 min + 5 min to score, per student</span>
+      <span class="meta-chip">🧮 200 points (20%), CO1</span>
+      <span class="meta-chip">🔒 Keys in the private repo</span>
+    </div>
+  </header>
+
+  <div class="callout blue" style="margin: 0 0 16px;"><strong>BSAI reminder:</strong> the standing rules for AI 410 / 420 / 430 / 440 are in the <a href="bsai-course-design-constraints.html">course design constraints</a>. Nothing here conflicts with them: the interview uses the system students already run in Codespaces on free tiers, inside the Week 9–10 Term Project window. The official description and outcomes are unchanged.</div>
+  <div class="callout amber" style="margin: 0 0 24px;"><strong>The full guide is in the private instructor repo:</strong> <a href="https://github.com/cityuseattle/ai410-instructor/blob/revamp-v2/faculty-interview.html">ai410-instructor → faculty-interview.html</a> (on the revamp-v2 branch, PR #4, until it merges). It adds the question bank, sample answers and scenario keys, which stay out of this public site. This page is the planning copy.</div>
+
+  <nav class="toc" aria-label="On this page">
+    <a href="#timeline">Timeline</a><a href="#day">Interview day</a><a href="#script">The 15 minutes</a><a href="#scoring">Scoring</a><a href="#calibration">Sample answers</a><a href="#keys">Scenario keys</a><a href="#situations">Awkward situations</a><a href="#feedback">Feedback &amp; grades</a><a href="#sheet">Scoring sheet</a>
+  </nav>
+
+  <div class="tldr">
+    <h2>In short</h2>
+    <ul>
+      <li><strong>You lead, they answer.</strong> Open with the pitch, then ask. The student shares their screen only when you say "show me". If it turns into a presentation, interrupt kindly and ask a question.</li>
+      <li><strong>Prepare each interview from the student's own work</strong>: about 10 minutes the day before, using the interview card.</li>
+      <li><strong>Hold the clock.</strong> Six stages in 15 minutes; move on at each stage's time, even mid-answer.</li>
+      <li><strong>Write evidence, score straight after,</strong> at the level midpoints (96 / 83 / 68 / 30%). Don't give the score in the room.</li>
+      <li><strong>Calibrate:</strong> re-read your first three cards after the last interview and adjust if you drifted.</li>
+      <li><strong>Never decide integrity questions in the room.</strong> Note what you saw, check the repo afterwards, then use the Academic Integrity process if needed.</li>
+    </ul>
+  </div>
+
+  <section class="section" id="timeline">
+    <div class="section-header"><div class="section-icon icon-blue">🗓️</div><div><h2>Timeline for the term</h2><div class="section-sub">About an hour of setup, then about 30 minutes per student (10 prep + 20 slot)</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>When</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td>Week 1</td><td>Point students to the interview in the syllabus and the student prep guide, so they know from the start that they'll explain their own code. Tell them it's 20% and scored individually.</td></tr>
+          <tr><td>Week 8</td><td>Pick the term's <a href="ai410-faculty-interview.html#questions">debugging scenario set</a> (three or four of the five, rotated between terms). Ask Disability Support Services for accommodation letters. Plan your calendar: about 25 students × 20 minutes ≈ 8½ hours of slots, plus prep.</td></tr>
+          <tr><td>Start of Week 9</td><td>Post the sign-up slots (20 minutes each) for Weeks 9–10, with the student prep guide and rubric attached. Put teammates' slots close together if you can, so the team's scenario stays the same and fresh.</td></tr>
+          <tr><td>Day before each interview</td><td>Prepare the interview card (next section). Schedule no more than 5–6 interviews in a row before a 15-minute break: tired interviewers score lower and drift.</td></tr>
+          <tr><td>Weeks 9–10</td><td>Run the interviews. Score each one in its last 5 minutes. Post the feedback note within two days.</td></tr>
+          <tr><td>After the last interview</td><td>Calibration check (see <a href="#scoring">Scoring</a>), enter grades, then use the ownership notes when grading TP03.</td></tr>
+          <tr><td>End of term</td><td>Keep the cards with your grading records for the term, the same way you keep other graded work, then dispose of them as the university's records policy says. Note which questions worked for next term.</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Preparing the card (about 10 minutes, the day before)</h3>
+      <ol class="tight">
+        <li><strong>README and architecture diagram:</strong> choose one request path that crosses two AICs, for example an upload → background worker → Chroma → Expo push, or a question → agent loop → retrieval tool → Langfuse trace.</li>
+        <li><strong>This student's commits:</strong> one file they own; in a group, one seam with a teammate's part.</li>
+        <li><strong>Their four Post Mortems:</strong> one "still unclear" item, one "carry forward" item.</li>
+        <li><strong>Progress Report and AI Tool Disclosure:</strong> one stated decision to probe, one part the AI generated.</li>
+        <li><strong>Write three tailored questions and the scenario number</strong> on the <a href="ai410-faculty-interview.html#prep-instructor">interview card</a>. Don't send questions in advance.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="day">
+    <div class="section-header"><div class="section-icon icon-teal">☑️</div><div><h2>On the day</h2><div class="section-sub">Five minutes before each slot</div></div></div>
+    <div class="section-body">
+      <div class="two">
+        <div class="card"><h4>Your setup</h4><ul>
+          <li>The student's card, printed or open beside the call.</li>
+          <li>Their repo open in a browser tab (to check claims afterwards, not during).</li>
+          <li>The rubric and this guide's <a href="#sheet">scoring sheet</a>.</li>
+          <li>A visible clock or timer with the stage times: 2, 7, 10, 12, 14, 15.</li>
+          <li>Notifications off. Online: your camera on, the student's camera on unless accommodated.</li>
+        </ul></div>
+        <div class="card"><h4>If the student isn't there</h4><ul>
+          <li>Wait 5 minutes, then message them once.</li>
+          <li>Joined late: start, keep the original end time, drop stage 6 (see <a href="#situations">awkward situations</a>).</li>
+          <li>Didn't come: record a no-show on the card. The rules for rescheduling are below.</li>
+        </ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="script">
+    <div class="section-header"><div class="section-icon icon-violet">🎙️</div><div><h2>The 15 minutes: what to say</h2><div class="section-sub">Suggested words, not a script to read. The same six stages for every student.</div></div></div>
+    <div class="section-body">
+      <div class="script">
+        <div class="step"><span class="min">Before 0:00 · 30 s</span><b>Set the frame</b>
+          <p class="say">"Thanks for coming. This works like a technical job interview: I'll ask questions, you answer, and I'll tell you when to share your screen. Thinking out loud is good, and so is asking me to clarify. 'I don't know, but here's how I'd find out' is a fine answer. Please close any AI assistant or chat window now. Ready?"</p>
+          <p class="note">Don't count this against the 15 minutes. Online, ask them to close AI tools on camera if you need to.</p></div>
+        <div class="step"><span class="min">0–2 min</span><b>1. The pitch</b>
+          <p class="say">"Tell me about your project in about a minute, as if I were a hiring manager who has never seen it."</p>
+          <p class="note">No screen. If it runs past 90 seconds or becomes a feature list, stop it kindly: "Thanks, that's enough to go on." One follow-up: "What makes it an <em>AI</em> system?"</p></div>
+        <div class="step"><span class="min">2–7 min</span><b>2. Deep dive</b>
+          <p class="say">"Let's follow one request. Say a user [request path from the card]. What happens first? … Show me where that happens in the code."</p>
+          <p class="note">This is the only stage where screen sharing is expected. Let them drive, but you choose the stops: "Stop there. What does the model receive at this point?" In a group, ask one question about the teammate seam on the card.</p></div>
+        <div class="step"><span class="min">7–10 min</span><b>3. Trade-offs</b>
+          <p class="say">"In your Progress Report you chose [decision]. What else did you consider, and why didn't you pick it?" Then: "You go from 10 users to 10,000 tomorrow. What breaks first?"</p>
+          <p class="note">Use the follow-up ladder on one answer: <em>Why?</em> → <em>What else?</em> → <em>What would break?</em> Stop when they reach the edge of what they know.</p></div>
+        <div class="step"><span class="min">10–12 min</span><b>4. Debugging</b>
+          <p class="say">"Here's a scenario. [Read the scenario word for word.] Where do you look first?"</p>
+          <p class="note">Read it the same way to every student. Give one hint after 20 seconds of silence (for example, "What would the trace tell you?"), then let them continue. Don't confirm or correct the answer.</p></div>
+        <div class="step"><span class="min">12–14 min</span><b>5. Ownership &amp; AI</b>
+          <p class="say">"Which part of this would you be most comfortable changing right now?" and "What did an AI assistant write here, and what did you have to fix by hand?" and, from the card, "Your Post Mortem said [X] was still unclear. Is it clear now?"</p>
+          <p class="note">Ask neutrally. You're checking consistency with the repo, not trying to catch them out.</p></div>
+        <div class="step"><span class="min">14–15 min</span><b>6. Their questions</b>
+          <p class="say">"What would you ask me about this system if you were interviewing for my team?" or "With two more weeks, what would you build next?"</p>
+          <p class="note">Then close: "Thank you, that's time. You'll get written feedback within two days." Don't give a score or a hint of one.</p></div>
+      </div>
+      <div class="callout blue"><strong>Moving on mid-answer:</strong> "Good, I want to make sure we get to everything, so let's switch to…" Said kindly, it's normal interview practice and students expect it from the prep guide.</div>
+    </div>
+  </section>
+
+  <section class="section" id="scoring">
+    <div class="section-header"><div class="section-icon icon-amber">📐</div><div><h2>Scoring consistently</h2><div class="section-sub">In the 5 minutes after each interview, from the notes on the card</div></div></div>
+    <div class="section-body">
+      <ol class="tight">
+        <li><strong>Read your notes for each stage,</strong> then place each criterion at a level using the <a href="ai410-faculty-interview.html#rubric">rubric</a>. Look for the descriptor that fits most of the evidence, not the best or worst moment.</li>
+        <li><strong>Use the level midpoint</strong> (96 / 83 / 68 / 30%) unless your notes clearly put it higher or lower in the band. Write why if you move off the midpoint.</li>
+        <li><strong>Convert to points</strong> with the <a href="#sheet">scoring sheet</a>: add the five criterion scores (out of 100), then double for the 200-point grade item. Round to the nearest whole point.</li>
+        <li><strong>Pick the hiring signal</strong> that matches the overall level, and write the one strength and one thing to work on while it's fresh.</li>
+      </ol>
+      <h3>Worked example</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Criterion</th><th>Level</th><th class="num">Midpoint</th><th class="num">Weight</th><th class="num">Score</th></tr></thead>
+        <tbody>
+          <tr><td>Technical Understanding</td><td>At</td><td class="num">83%</td><td class="num">25</td><td class="num">20.75</td></tr>
+          <tr><td>Design Reasoning</td><td>Approaching</td><td class="num">68%</td><td class="num">25</td><td class="num">17.00</td></tr>
+          <tr><td>Debugging &amp; Problem Solving</td><td>At</td><td class="num">83%</td><td class="num">20</td><td class="num">16.60</td></tr>
+          <tr><td>Ownership &amp; AI Transparency</td><td>Exceeds</td><td class="num">96%</td><td class="num">15</td><td class="num">14.40</td></tr>
+          <tr><td>Professional Communication</td><td>At</td><td class="num">83%</td><td class="num">15</td><td class="num">12.45</td></tr>
+          <tr><td>Total</td><td></td><td></td><td class="num">100</td><td class="num">81.20 → <strong>162 / 200</strong></td></tr>
+        </tbody>
+      </table></div>
+      <h3>Common scoring traps</h3>
+      <ul class="tight">
+        <li><strong>Halo effect:</strong> a polished pitch pulls every criterion up. Score each one from its own stage's notes.</li>
+        <li><strong>Confidence isn't understanding.</strong> A hesitant answer that's correct beats a fluent one that contradicts the code.</li>
+        <li><strong>Accent and fluency aren't Communication.</strong> Professional Communication scores clarity and structure: does the answer have a point, and does it get there?</li>
+        <li><strong>Don't grade the system.</strong> A weak system explained well scores well here; the system itself is graded in the Term Project deliverables.</li>
+        <li><strong>Drift:</strong> scores tend to drop late in a long day and rise after a weak interview. Breaks and the calibration check below catch most of it.</li>
+      </ul>
+      <h3>Calibration check (after the last interview)</h3>
+      <ul class="tight">
+        <li>Re-read your first three cards and re-score them without looking at the original scores. If any criterion moves a full level, re-check the cards from that day.</li>
+        <li>Look at the spread. If nearly everyone is At Standard in every criterion, you may be using the midpoint as a default; check that the notes support it.</li>
+        <li>With two instructors: score the first three interviews together and talk through every difference of a level or more, then split the rest. Repeat with one interview in the middle of the second week.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="calibration">
+    <div class="section-header"><div class="section-icon icon-blue">🧪</div><div><h2>What answers sound like at each level</h2><div class="section-sub">Instructor-only: moved to the private instructor repo</div></div></div>
+    <div class="section-body"><p>Sample answers at each rubric level are in the <a href="https://github.com/cityuseattle/ai410-instructor/blob/revamp-v2/faculty-interview.html">faculty interview guide in ai410-instructor</a> (private; sign in to GitHub with access to cityuseattle). They're kept out of this public planning site so students can't read them.</p></div>
+  </section>
+
+  <section class="section" id="keys">
+    <div class="section-header"><div class="section-icon icon-blue">🔑</div><div><h2>Debugging scenario keys</h2><div class="section-sub">Instructor-only: moved to the private instructor repo</div></div></div>
+    <div class="section-body"><p>What a strong answer covers for each debugging scenario, with likely causes and weak signs are in the <a href="https://github.com/cityuseattle/ai410-instructor/blob/revamp-v2/faculty-interview.html">faculty interview guide in ai410-instructor</a> (private; sign in to GitHub with access to cityuseattle). They're kept out of this public planning site so students can't read them.</p></div>
+  </section>
+
+  <section class="section" id="situations">
+    <div class="section-header"><div class="section-icon icon-amber">🧯</div><div><h2>Awkward situations</h2><div class="section-sub">What to do, and what not to do in the room</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Situation</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td>The student starts presenting (slides, a long scripted walkthrough)</td><td>Let the first 30 seconds go, then: "Thanks, let me stop you there and ask about one part." Ask a specific question. If it happens again, say plainly: "This works best as questions and answers."</td></tr>
+          <tr><td>Reading answers from notes or the screen</td><td>"Could you put your notes aside and tell me in your own words?" Then ask a follow-up that isn't in any document. Note it on the card; score the answers you get.</td></tr>
+          <tr><td>The student freezes or is visibly anxious</td><td>Slow down, rephrase, and offer a smaller step: "Start with just the first thing that happens." Remind them thinking out loud counts. Don't add time unless they have an accommodation.</td></tr>
+          <tr><td>Signs of AI help during the interview (typing pauses before answers, eyes on another window, answers in a different register)</td><td>Ask them to share their whole screen or move the camera to show the desk, neutrally. Ask follow-ups that need reasoning, not recall. Write down what you observed. Don't accuse; check afterwards and use the Academic Integrity process if needed.</td></tr>
+          <tr><td>Claims don't match the repo</td><td>Don't challenge in the room. Ask one more neutral question ("Which commit was that?"), note it, and compare with the commits and AI Tool Disclosure afterwards.</td></tr>
+          <tr><td>A teammate clearly did most of the work</td><td>Score this student on their own answers only. Note the ownership finding; it's evidence for TP03's teamwork and contribution grading. Don't discuss teammates' grades.</td></tr>
+          <tr><td>Codespaces or the app won't start</td><td>Don't spend more than 2 minutes on it. Carry on with the code on GitHub and screenshots. Don't mark down for infrastructure. Reschedule only if no code can be shown at all.</td></tr>
+          <tr><td>The student joins late</td><td>Start when they arrive, keep the original end time, drop stage 6, and score Communication from the other stages. More than 10 minutes late counts as a no-show.</td></tr>
+          <tr><td>No-show</td><td>A missing interview earns 0 points. Offer one reschedule if they contact you within 24 hours with a reason the syllabus attendance or incomplete policy accepts, or if they have an accommodation that covers it.</td></tr>
+          <tr><td>The student asks how they did</td><td>"You'll get written feedback within two days." Don't give a score, a level or a hint in the room.</td></tr>
+          <tr><td>The student asks to record the interview</td><td>Not by default. Recording only with both parties' written consent, for calibration, deleted after the term.</td></tr>
+          <tr><td>The student disputes the score</td><td>Follow the course's regrade policy. Re-read the card's evidence with them; change the score if the notes support it. This is why the card records evidence, not impressions.</td></tr>
+          <tr><td>Accommodations</td><td>Follow the DSS letter: extra time, questions shown in writing as well, or a camera-off format. Record the accommodation on the card; score against the same rubric.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="section" id="feedback">
+    <div class="section-header"><div class="section-icon icon-green">📝</div><div><h2>Feedback and grades</h2><div class="section-sub">Within two days, like an interview debrief</div></div></div>
+    <div class="section-body">
+      <p>Post one short note per student with the grade, in the interview's own grade item. Keep it specific and forward-looking; quote what they said where you can.</p>
+<div class="qcard">Faculty Interview: [score] / 200  ([hiring signal])
+
+Strength: [one specific thing, with evidence].
+  e.g. You traced the upload path from the API through the Redis
+  queue to Chroma without notes, and explained why ingestion is async.
+
+To work on: [one specific thing, and how].
+  e.g. When I asked what would break at 10,000 users you said
+  "probably the database". Next time, name the component, why it
+  breaks, and the first thing you'd measure.
+
+Scores: Technical Understanding __/25 · Design Reasoning __/25 ·
+Debugging __/20 · Ownership & AI __/15 · Communication __/15</div>
+      <ul class="tight" style="margin-top:12px">
+        <li><strong>Grade item:</strong> one 200-point item for the Faculty Interview, separate from the Term Project deliverables. Attach the rubric with its five criteria so students see their level for each.</li>
+        <li><strong>Use the notes twice:</strong> the ownership answers are evidence when you grade TP03's System v1.0 and Final Report contributions.</li>
+        <li><strong>Course improvement:</strong> at the end of term, note which questions and scenarios separated levels well and which didn't. Use it only to improve the course.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="sheet">
+    <div class="section-header"><div class="section-icon icon-violet">🧮</div><div><h2>Scoring sheet</h2><div class="section-sub">Points for each criterion at its level midpoint (out of 100; double for the 200-point grade)</div></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Criterion</th><th class="num">Weight</th><th class="num">Exceeds 96%</th><th class="num">At 83%</th><th class="num">Approaching 68%</th><th class="num">Below 30%</th></tr></thead>
+        <tbody>
+          <tr><td>Technical Understanding</td><td class="num">25</td><td class="num">24.00</td><td class="num">20.75</td><td class="num">17.00</td><td class="num">7.50</td></tr>
+          <tr><td>Design Reasoning</td><td class="num">25</td><td class="num">24.00</td><td class="num">20.75</td><td class="num">17.00</td><td class="num">7.50</td></tr>
+          <tr><td>Debugging &amp; Problem Solving</td><td class="num">20</td><td class="num">19.20</td><td class="num">16.60</td><td class="num">13.60</td><td class="num">6.00</td></tr>
+          <tr><td>Ownership &amp; AI Transparency</td><td class="num">15</td><td class="num">14.40</td><td class="num">12.45</td><td class="num">10.20</td><td class="num">4.50</td></tr>
+          <tr><td>Professional Communication</td><td class="num">15</td><td class="num">14.40</td><td class="num">12.45</td><td class="num">10.20</td><td class="num">4.50</td></tr>
+          <tr><td>All at one level</td><td class="num">100</td><td class="num">96 → 192</td><td class="num">83 → 166</td><td class="num">68 → 136</td><td class="num">30 → 60</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:10px">A missing interview is 0. Hiring signals: Exceeds = Strong hire, At = Hire, Approaching = Lean no hire, Below = No hire. They help students read the level; the grade comes from the points.</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>

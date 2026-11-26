@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUx Plan B Addendum</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+    .qa { margin: 0; padding-left: 20px; }
+    .qa > li { margin-bottom: 18px; font-size: 0.92rem; }
+    .qa > li > strong.q { display: block; font-size: 0.95rem; margin-bottom: 6px; }
+    .qa ul { margin: 0; padding-left: 18px; }
+    .qa ul li { margin-bottom: 6px; }
+    .fill { background: #fef9c3; border: 1px dashed #ca8a04; border-radius: 4px; padding: 0 4px; color: #713f12; }
+    .copy-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .copy-btn { font: inherit; font-size: 0.85rem; font-weight: 700; background: var(--blue); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+    .copy-btn:hover { background: #1e40af; }
+    .copy-status { font-size: 0.82rem; color: var(--green); font-weight: 600; min-height: 1em; }
+    table.map { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    table.map th, table.map td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.map th { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+    .table-wrap { overflow-x: auto; }
+    @media (max-width: 600px) { .doc-header, .section-body { padding-left: 16px; padding-right: 16px; } .point { flex-direction: column; gap: 6px; } }
+      .lead { font-size: 0.95rem; margin: 0 0 14px; }
+    .note { font-size: 0.86rem; color: var(--slate); margin: 14px 0 0; }
+    .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+    .pill-green { background: var(--green-dim); color: #15803d; }
+    .pill-blue { background: var(--blue-dim); color: var(--blue); }
+    .pill-amber { background: var(--amber-dim); color: #b45309; }
+    .pill-gray { background: #f1f5f9; color: #475569; }
+    .quad-wrap { overflow-x: auto; }
+    .quad-svg { width: 100%; min-width: 520px; height: auto; display: block; }
+    .quad-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 12px; font-size: 0.84rem; color: var(--slate); }
+    @media (max-width: 600px) { .quad-legend { grid-template-columns: 1fr; } }
+    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+    table.seg { min-width: 900px; }
+    table.seg td:nth-child(7), table.seg td:nth-child(8) { text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .seg-card { border: 1px solid var(--border); border-left: 5px solid var(--green); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; }
+    .seg-card.c-amber { border-left-color: var(--amber); }
+    .seg-card h3 { margin: 0 0 8px; font-size: 1rem; font-weight: 800; }
+    .kv > div { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 0.87rem; }
+    .kv > div > span { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); padding-top: 2px; }
+    @media (max-width: 600px) { .kv > div { grid-template-columns: 1fr; gap: 2px; } }
+    .table-wrap:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+  
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    @media (max-width: 700px) { .stat-grid { grid-template-columns: 1fr 1fr; } }
+    .stat { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+    .stat-num { font-size: 1.5rem; font-weight: 900; color: var(--blue); line-height: 1.1; }
+    .stat-lbl { font-size: 0.78rem; color: var(--slate); margin-top: 4px; line-height: 1.35; }
+    .h3 { font-size: 0.95rem; font-weight: 800; margin: 0 0 6px; }
+    .small { font-size: 0.88rem; margin: 0 0 10px; }
+    ol.tight, ul.tight { margin: 0; padding-left: 20px; font-size: 0.87rem; }
+    ol.tight li, ul.tight li { margin-bottom: 5px; }
+    .copy-card { border: 1px dashed #93c5fd; background: #f8fbff; border-radius: var(--radius-sm); padding: 14px 16px; font-size: 0.88rem; }
+    .copy-card p { margin: 0 0 8px; }
+    .copy-card .module-name { color: var(--blue); }
+    .free-toggle { font-size: 0.88rem; display: flex; gap: 8px; align-items: center; }
+    .checker { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; background: var(--bg); }
+    .checker label { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 0.85rem; padding: 5px 0; }
+    .checker input { width: 84px; font: inherit; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: right; }
+    .checker input:focus-visible, .free-toggle input:focus-visible { outline: 3px solid #93c5fd; outline-offset: 1px; }
+    .verdict { margin-top: 10px; font-size: 0.85rem; font-weight: 600; border-radius: 6px; padding: 8px 10px; }
+    .verdict.pass { background: var(--green-dim); color: #14532d; border: 1px solid #86efac; }
+    .verdict.extend { background: var(--amber-dim); color: #92400e; border: 1px solid #fde68a; }
+    .verdict.stop { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    table.budget td:nth-child(2) { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+    table.budget tr.total td { font-weight: 900; border-top: 2px solid var(--ink); }
+
+    .src { display: inline-block; font-size: 0.66rem; font-weight: 700; line-height: 1.5; letter-spacing: 0.02em; padding: 0 7px; margin: 0 1px 0 4px; border-radius: 10px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; text-decoration: none; vertical-align: 1px; white-space: nowrap; }
+    .src::after { content: " \2197"; }
+    .src:hover { background: #dbeafe; text-decoration: none; }
+    .src:focus-visible { outline: 3px solid #93c5fd; outline-offset: 1px; }
+    .src.sec { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+    .src.sec:hover { background: #fef3c7; }
+    .src-legend { font-size: 0.8rem; color: var(--slate); margin: 14px 0 0; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-hub.html">CityUx Hub</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-short-course-plan-critique.html">Critique &amp; Plan B</a>
+    <span class="nav-sep">›</span>
+    <span>Plan B Addendum</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Plan B Addendum — CityUx</div>
+    <h1>Plan B Addendum: Three More Angles to Test</h1>
+    <p class="subtitle">Three ways to make Plan B's paid layer stronger without changing its model (free learning, paid proof, people and private cohorts): train district trainers instead of single teachers, get career changers' seats paid by workforce funds, and teach in other languages through DeoSpheres' community partners. Each one is tested inside Gate 0 and decided at the Feb 17 gate.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Nov 25, 2026</span>
+      <span class="meta-chip">Adds to Gate 0, Dec 7 – Feb 12</span>
+      <span class="meta-chip">About $1,200 extra</span>
+      <span class="meta-chip">Decided Feb 17, 2027</span>
+    </div>
+    <p class="src-legend">Figures and claims carry source tags that open the original in a new tab: <span class="src" aria-hidden="true">Source</span> for primary sources, <span class="src sec" aria-hidden="true">Secondary</span> for summaries or roundups to confirm before quoting.</p>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#summary">The addendum in one page</a></li>
+      <li><a href="#trainers">Angle 1: Train the trainers for educators</a></li>
+      <li><a href="#funded">Angle 2: Funded seats for career changers</a></li>
+      <li><a href="#language">Angle 3: In-language community cohorts</a></li>
+      <li><a href="#gate0">What Gate 0 adds</a></li>
+      <li><a href="#changes">How this changes Plan B</a></li>
+      <li><a href="#decisions">Decisions needed</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="section" id="summary">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🧩</div>
+      <div><h2>1 · The addendum in one page</h2><div class="section-sub">Same model, better payers</div></div>
+    </div>
+    <div class="section-body">
+      <p class="lead">Plan B's weakest point is that individual learners rarely pay. These three angles each move the bill to someone who pays more reliably: <strong>a district or service district</strong>, <strong>a workforce fund</strong>, or <strong>a grant and a community partner</strong>. None of them needs anything built before Feb 17. Angles 1 and 2 add only interview questions and partner calls to Gate 0; Angle 3 adds one workshop.</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Three angles summary">
+        <table class="map">
+          <thead><tr><th>Angle</th><th>Who pays</th><th>What Gate 0 adds</th><th>Extra cost</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1 · Train the trainers</strong> (educators)</td><td>Districts and service districts, for a facilitator kit and certification</td><td>Questions for district PD leads; calls with 2–3 service districts</td><td>$0</td></tr>
+            <tr><td><strong>2 · Funded seats</strong> (career changers)</td><td>Workforce funds for eligible job seekers</td><td>Eligibility questions to Career Bridge and WorkSource; two interview questions</td><td>$0</td></tr>
+            <tr><td><strong>3 · In-language cohorts</strong> (Korean American and Filipino American communities)</td><td>Grants, with community partners co-applying</td><td>One in-language workshop and a translated landing page, with DeoSpheres</td><td>About $1,200</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-amber mt16"><strong>These are tests, not commitments.</strong> The two main audience gates in <a href="cityux-gate0-demand-test.html#rules">Gate 0 Section 9</a> don't change. Each angle has its own signal (Section 5), and the Feb 17 meeting decides whether it joins Phase 1, waits, or stops.</div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="section" id="trainers">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🍎</div>
+      <div><h2>2 · Angle 1: Train the trainers for educators</h2><div class="section-sub">Sell capacity to districts, not seats to teachers</div></div>
+    </div>
+    <div class="section-body">
+      <p class="small"><strong>The idea.</strong> Instead of CityU teaching every cohort of teachers, CityU certifies district professional-development leads and service-district coaches to run the educator lens themselves. CityU sells three things: a <strong>facilitator kit</strong> (the sessions, packets, examples and rubrics, kept CC BY so the content stays open), <strong>facilitator certification</strong> (a short coached course plus a scored practice session), and the <strong>human-scored credential</strong> for teachers who want it, scored centrally by CityU.</p>
+      <div class="point"><span class="point-label lbl-green">Why</span><div class="point-body">The competitor scan found teacher clock hours are cheap and close by: service districts sell short AI courses for about $3 a clock hour <a class="src" href="https://www.pdenroller.org/catalog/event/202304" target="_blank" rel="noopener noreferrer" title="Source: ESD 113 on pdEnroller (opens in a new tab)">ESD 113 on pdEnroller</a>, and WEA grants 15 clock hours per NEA micro-credential <a class="src" href="https://www.washingtonea.org/events-training/pd/micro-credentials/micro-credential-clock-hours/" target="_blank" rel="noopener noreferrer" title="Source: WEA (opens in a new tab)">WEA</a>. A $99–$149 seat competes with that price. A district buying the ability to train all its own teachers is a different, larger purchase, and service districts become partners rather than competitors.</div></div>
+      <div class="point"><span class="point-label lbl-amber">Who else</span><div class="point-body">Anthropic offers a free train-the-trainer course through AFT, and Microsoft's Elevate for Educators is free with live sessions <a class="src" href="https://news.microsoft.com/source/2026/01/15/microsoft-expands-its-commitment-to-education-with-elevate-for-educators-program-and-new-ai-powered-tools" target="_blank" rel="noopener noreferrer" title="Source: Microsoft (opens in a new tab)">Microsoft</a>. CityUx's case: not tied to one AI company's tools, built around Washington's own "Human, AI, Human" guidance <a class="src" href="https://ospi.k12.wa.us/student-success/resources-subject-area/human-centered-artificial-intelligence-schools" target="_blank" rel="noopener noreferrer" title="Source: OSPI, Human-Centered AI in Schools (opens in a new tab)">OSPI</a>, co-owned by CityU's School of Education, with human scoring and a credit path.</div></div>
+      <div class="point"><span class="point-label lbl-blue">Prices to test</span><div class="point-body">Facilitator certification per person, and a district kit license sized by number of teachers. These are hypotheses for the interviews, not quotes: ask what the district paid for its last outside PD package before naming a number.</div></div>
+      <div class="point"><span class="point-label lbl-red">Watch out</span><div class="point-body">Quality drifts when others teach. Keep the credential scored centrally, certify facilitators with a scored practice run, and refresh the kit each term. It can also undercut the district-cohort price in Plan B, so treat the two as one offer with two delivery options.</div></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="section" id="funded">
+    <div class="section-header">
+      <div class="section-icon icon-red">🧳</div>
+      <div><h2>3 · Angle 2: Funded seats for career changers</h2><div class="section-sub">Turn "free if you're out of work" from a cost into income</div></div>
+    </div>
+    <div class="section-body">
+      <p class="small"><strong>The idea.</strong> Plan B offers the coached cohort free or reduced to unemployed learners. If the cohort and credential qualify for public workforce funding, those seats are paid for instead. Plan B already puts this in Phase 3 (2028); this angle starts the eligibility work now so the first cohorts collect the outcome data the funders require.</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Workforce funding routes">
+        <table class="map">
+          <thead><tr><th>Route</th><th>What it pays</th><th>Fit for Plan B</th></tr></thead>
+          <tbody>
+            <tr><td>WIOA training accounts, through the Eligible Training Provider List on Career Bridge <a class="src" href="https://careerbridge.wa.gov/get-help/eligible-training-provider-list" target="_blank" rel="noopener noreferrer" title="Source: Career Bridge (opens in a new tab)">Career Bridge</a></td><td>Tuition for eligible job seekers, through WorkSource</td><td>The nearest route. Unknown: whether a private nonprofit university's non-credit program qualifies. Ask now.</td></tr>
+            <tr><td>ESD Training Benefits <a class="src" href="https://esd.wa.gov/jobs-and-training/job-training-support/training-benefits-program" target="_blank" rel="noopener noreferrer" title="Source: ESD (opens in a new tab)">ESD</a></td><td>Extends unemployment benefits during approved full-time training</td><td>Only for claimants whose past jobs paid under $22.26 an hour on average (2026). Fits service workers, not most laid-off tech workers, and a part-time 4-week cohort may not count as full-time.</td></tr>
+            <tr><td>Workforce Pell <a class="src" href="https://www.ed.gov/media/document/workforce-pell-grant-final-rule-fact-sheet-114075.pdf" target="_blank" rel="noopener noreferrer" title="Source: ED fact sheet (opens in a new tab)">ED fact sheet</a></td><td>Pell grants for short programs of 150–599 clock hours over 8–15 weeks</td><td>Not the 4-week cohort. Possible later for a stacked program (free path + cohort + credential + more), which needs a completion and job-placement record first.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="point mt16"><span class="point-label lbl-green">Why</span><div class="point-body">Career changers are where the competitor scan found the clearest gap, but they're also the group least able to pay. A funded seat removes the biggest barrier and pays CityU the full price.</div></div>
+      <div class="point"><span class="point-label lbl-amber">The real cost</span><div class="point-body">Paperwork and performance rules: completion, employment and earnings thresholds. That makes <strong>outcome tracking from the very first cohort</strong> (completion, credential pass rate, job change at 3 and 6 months) a requirement, not an extra.</div></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="section" id="language">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🗣️</div>
+      <div><h2>4 · Angle 3: In-language community cohorts</h2><div class="section-sub">With DeoSpheres' Korean American and Filipino American partners</div></div>
+    </div>
+    <div class="section-body">
+      <p class="small"><strong>The idea.</strong> Teach the same Module 1 (Frame, Check, Own) in Korean or Tagalog, or bilingually, with examples from the community's own work, through the partners already in the <a href="deospheres-hub.html">DeoSpheres partnership</a>. Bilingual facilitators come from the partners; CityU provides the lesson, the scoring and the credential.</p>
+      <div class="point"><span class="point-label lbl-green">Why</span><div class="point-body">The big free AI courses in the competitor scan are almost all in English. In-language teaching is a real gap the free providers aren't filling, and it fits what community grants fund. It also gives a second route into <strong>health-care support</strong>, which the quadrant scored attractive (3.75) but hard for CityU to win alone (2.75): many Filipino American workers are in health care, and the partner brings the access CityU lacks.</div></div>
+      <div class="point"><span class="point-label lbl-blue">Who pays</span><div class="point-body">Grants, with the community partner co-applying: the DeoSpheres notes already name a Microsoft Community First grant for Korean Americans and a longer-term Microsoft Elevate partnership. Workforce boards are also partnering with Microsoft Elevate on AI skills <a class="src" href="https://www.nawb.org/national-association-of-workforce-boards-and-microsoft-elevate-partner-to-build-ai-skills-across-the-american-workforce/" target="_blank" rel="noopener noreferrer" title="Source: NAWB (opens in a new tab)">NAWB</a>. Individual learners stay free.</div></div>
+      <div class="point"><span class="point-label lbl-red">Watch out</span><div class="point-body">CityU has no bilingual facilitators of its own, so the partner must supply them. Translation must be reviewed by a fluent person, not left to an AI tool, which is also a good live example of the Check move. Keep the results separate from the two main Gate 0 audiences so they don't blur either decision.</div></div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="section" id="gate0">
+    <div class="section-header">
+      <div class="section-icon icon-violet">🚦</div>
+      <div><h2>5 · What Gate 0 adds</h2><div class="section-sub">Extra questions, calls and one workshop, each with its own signal</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Gate 0 additions">
+        <table class="map">
+          <thead><tr><th>Angle</th><th>Add to Gate 0</th><th>When</th><th>Signal at Feb 17</th></tr></thead>
+          <tbody>
+            <tr><td>1 · Trainers</td><td>In the district PD lead calls, ask: "Would you rather send teachers to us, or have us train your own coaches to run it?" and "What did your last outside PD package cost, and who approved it?" Call 2–3 service districts' PD directors.</td><td>Weeks 8–9 (Jan 25 – Feb 5), with the planned district calls</td><td><strong>Go:</strong> one district or service district agrees in writing to pilot a facilitator cohort in spring. <strong>Wait:</strong> interest but no commitment.</td></tr>
+            <tr><td>2 · Funded seats</td><td>Ask Career Bridge and two WorkSource offices whether a private nonprofit university's non-credit program can join the training list, and how long it takes. Add two interview questions for career changers: "Have you used WIOA or training benefits before?" and "Would a funded seat change whether you'd join?"</td><td>Weeks 4–9, with the planned WorkSource outreach</td><td><strong>Go:</strong> written confirmation that CityUx can apply, with a timeline. <strong>Stop:</strong> not eligible as a non-credit program (revisit with a credit-bearing version).</td></tr>
+            <tr><td>3 · In-language</td><td>One free in-language workshop with a DeoSpheres community partner, on a Saturday; a translated version of the career-changer landing page with its own channel tag.</td><td>Sat Feb 6, week 9</td><td><strong>Go:</strong> 25+ attendees and a partner willing to co-apply for a grant. <strong>Wait:</strong> good turnout, no partner commitment.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="h3 mt16">Extra budget</h3>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Extra budget">
+        <table class="map budget">
+          <thead><tr><th>Item</th><th>Cost</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Translation and fluent review of the landing page and packet</td><td>$500</td><td>A person reviews any machine translation</td></tr>
+            <tr><td>Bilingual co-facilitator stipend</td><td>$400</td><td>Paid to the partner's facilitator</td></tr>
+            <tr><td>Community venue or partner fee, refreshments</td><td>$300</td><td>Or the partner hosts online</td></tr>
+            <tr><td><strong>Total</strong></td><td><strong>$1,200</strong></td><td>Angles 1 and 2 cost staff time only. The Gate 0 contingency stays reserved for an extend.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="section" id="changes">
+    <div class="section-header">
+      <div class="section-icon icon-green">🔁</div>
+      <div><h2>6 · How this changes Plan B</h2><div class="section-sub">If each angle gets a "go" on Feb 17</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Changes to Plan B">
+        <table class="map">
+          <thead><tr><th>Plan B part</th><th>Today</th><th>With the addendum</th></tr></thead>
+          <tbody>
+            <tr><td>Educator private cohorts</td><td>CityU teaches district cohorts, $3K–$8K each</td><td>Two delivery options: CityU teaches, or CityU certifies the district's own coaches and licenses the kit</td></tr>
+            <tr><td>Free seats for unemployed learners</td><td>A cost CityU absorbs</td><td>Paid by workforce funds where eligible; outcome tracking starts with cohort one</td></tr>
+            <tr><td>Phase 3 Workforce Pell work</td><td>2028</td><td>Eligibility questions start in Phase 0; the stacked 150+ hour program is designed in Phase 2</td></tr>
+            <tr><td>Audiences</td><td>K-12 educators, career changers</td><td>Plus partner-led in-language cohorts, grant-funded, counted separately</td></tr>
+            <tr><td>Phase 0 cost</td><td>About $8,000</td><td>About $9,200</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">The year-one money in Plan B (cost $63,000, income $49,290, net −$13,710) is unchanged here. Each angle that gets a "go" should come with its own revised numbers at the gate meeting, using what the calls and interviews found rather than guesses made now.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="section" id="decisions">
+    <div class="section-header">
+      <div class="section-icon icon-amber">✋</div>
+      <div><h2>7 · Decisions needed</h2><div class="section-sub">Before Dec 7, alongside Gate 0's four</div></div>
+    </div>
+    <div class="section-body">
+      <ol class="tight">
+        <li><strong>Approve the three tests</strong> and their signals in Section 5, so they're fixed before results come in.</li>
+        <li><strong>Approve $1,200</strong> for the in-language workshop, or agree that the partner covers it.</li>
+        <li><strong>Name an owner for the workforce-funding questions</strong> (Career Bridge, WorkSource), since the answers take weeks.</li>
+        <li><strong>Ask the DeoSpheres partners</strong> which community, language and date suit them best for the Feb 6 workshop.</li>
+        <li><strong>Agree with the School of Education</strong> that the educator lens may be taught by certified district coaches.</li>
+      </ol>
+      <p class="note">Related: <a href="cityux-short-course-plan-critique.html">Plan B</a> · <a href="cityux-gate0-demand-test.html">Gate 0 demand test</a> · <a href="cityux-gate0-workshops.html">Gate 0 workshops</a> · <a href="cityux-competitor-scan.html">Competitor scan</a> · <a href="cityux-target-market-quadrant.html">Target-market quadrant</a> · <a href="deospheres-hub.html">DeoSpheres hub</a></p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

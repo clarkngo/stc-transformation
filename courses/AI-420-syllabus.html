@@ -18,7 +18,7 @@ table.syl td p { margin:0 0 4px; }
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="top">
   <div class="top-inner">
-    <a class="brand" href="AI-420.html"><span class="brand-icon">420</span><span><b>AI 420: Agentic AI</b><small>Syllabus · draft</small></span></a>
+    <a class="brand" href="AI-420.html"><span class="brand-icon">420</span><span><b>AI 420: Agentic AI</b><small>Syllabus · v3 draft</small></span></a>
     <div class="top-right"><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
   </div>
 </header>
@@ -27,8 +27,8 @@ table.syl td p { margin:0 0 4px; }
 <nav aria-label="Breadcrumb" class="small" style="margin:0 0 12px"><a href="../index.html">STC Hub</a> / <a href="../bsai-hub.html">BSAI Hub</a> / <a href="AI-420.html">AI 420</a> / Syllabus</nav>
 <h1>AI 420: Agentic AI · Syllabus</h1>
 <div class="callout blue syl-src">
-  <span class="label">Instructor copy · draft</span>
-  <p>Generated from <a href="ai-420-assets/AI420-Syllabus.docx"><b>AI420-Syllabus.docx</b></a> (download), built from the AI 410 master <i>03 AI410 Syllabus 2026-09-14 (12)</i> with its review changes accepted and comments removed. Layout, grading, Term Project and policy text mirror the master. The description, prerequisites and outcomes come word for word from <i>03 New Courses Description</i>; Core Concepts &amp; Tools, the Application Challenges, the Term Project description and the file names are AI 420's own. Once the Word file is in OneDrive, OneDrive is the master: if it changes, regenerate this page from it rather than editing here. This page is a copy of that build (Nov 3, 2026); the earlier syllabus page, from before the AI 410 (12) review and the move to Antigravity + Google ADK, is <a href="AI-420-syllabus-archive-2026-11-04.html">archived here</a>.</p>
+  <span class="label">Instructor copy · v3 draft</span>
+  <p>Generated from <a href="ai-420-assets/AI420-Syllabus.docx"><b>AI420-Syllabus.docx</b></a> (download), the v3 draft built on Nov 25, 2026 from the current AI 410 OneDrive master (Nov 24). Structure, grading, rubrics and policies mirror AI 410 v2.1: AI Challenges (AIC) 40%, Term Project 40% (200 team + 200 interview), Concept Debates 10% and Knowledge Checks 10%. The description, prerequisites and outcomes are AI 420's official text; the course-outcome map, AIC titles, Term Project text and rubric technology wording are AI 420's own. Once the Word file is in OneDrive, OneDrive is the master: if it changes, regenerate this page from it rather than editing here. Earlier versions: <a href="AI-420-syllabus-archive-2026-11-25.html">Nov 3 build (HOS and Application Challenges)</a> and <a href="AI-420-syllabus-archive-2026-11-04.html">the page from before the move to Antigravity + Google ADK</a>.</p>
 </div>
 <figure>
 <img alt="City University of Seattle" src="ai-420-assets/cityu-logo.png"
@@ -61,10 +61,11 @@ course that can be repeated</p></li>
 registration?<br />
 <strong>No</strong></p></li>
 <li><p>Are there pre-requisites?<br />
-<strong>CS352 Discrete Mathematics and Data Structures in Computing
-(NS)</strong></p></li>
+<strong>CS352 Discrete Mathematics and Data Structures in Computing (NS)
+and</strong></p></li>
 </ul>
-<p><strong>DS479 Algorithms for Machine and Deep Learning</strong></p>
+<p><strong>DS479<br />
+</strong></p>
 <ul>
 <li><p>Are there co-requisites?</p></li>
 </ul>
@@ -94,7 +95,7 @@ Computing</h2>
 <p>Effective Date (1/1/2027)</p>
 <p>Grading Type: (Decimal)</p>
 <p>List any Pre-requisite:</p>
-<p>CS352 &amp; DS479</p>
+<p>(CS352 &amp; DS479)</p>
 <p><em>Access to the Internet is required.</em></p>
 <p><em>All written assignments must be in Microsoft-Word-compatible
 formats.</em></p>
@@ -149,92 +150,205 @@ latency.</p>
 <p>CO5 Produce a professional-grade portfolio project that automates a
 multi-step business process, such as an autonomous marketing department
 or a self-healing coding assistant.</p>
-<h2 id="additional-information"><strong>Additional
-Information</strong></h2>
-<p><strong>Core Concepts &amp; Tools</strong></p>
-<ul>
-<li><p>The four agent components (reasoning, planning, tool use, and
-memory) and how an agent differs from a single LLM inference
-call</p></li>
-<li><p>Agent-first development with Google Antigravity (directing a
-coding agent through plans, task lists, and reviewable artifacts), then
-agents built in Google ADK on the Gemini API: function tools, the run
-loop, events, and the adk web developer UI</p></li>
-<li><p>Agentic patterns in ADK: tool-calling loops (ReAct),
-plan-and-execute, reflection loops, and routing with workflow
-graphs</p></li>
-<li><p>Custom tools for APIs, web pages, and databases: typed function
-tools with errors returned as data, and tools served over the Model
-Context Protocol (MCP) and connected with McpToolset</p></li>
-<li><p>Agent memory: short-term session state, long-term user state that
-survives a restart, and ADK memory services searched by the
-agent</p></li>
-<li><p>Reasoning traces and failure diagnosis from ADK events and
-traces: tool-call errors, invented actions, logic loops, and confident
-wrong answers</p></li>
-<li><p>Self-correction without human intervention: errors returned to
-the model, callbacks that stop repeated calls and enforce step budgets,
-retries, and reflection loops, with human confirmation for risky
-actions</p></li>
-<li><p>Multi-agent orchestration and agent-on-agent evaluation: a
-coordinator with sub-agents and workflow graphs, ADK evaluation (adk
-eval) with a simulated user and an LLM judge checked against human
-grading, and success rate, cost per task, and latency</p></li>
-</ul>
+<h2 id="course-outcome-alignment"><strong>Course Outcome
+Alignment</strong></h2>
+<p>Each graded assignment is mapped to the course outcome it assesses
+most directly, rather than to every outcome. Hands-on work (the AI
+Challenges and the Term Project system, demo and reports) maps to the
+practical outcomes CO2 to CO5; conceptual work (Knowledge Checks and
+Concept Debates) maps to CO1 (explain) and CO3 (analyze). The Term
+Project interview, where each student explains their own system orally,
+maps to CO1.</p>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 23%" />
+<col style="width: 24%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Assignment</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Course outcome</th>
+<th style="text-align: left;">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">AIC 1: Anatomy of an Agent</td>
+<td style="text-align: left;">Hands-on</td>
+<td style="text-align: left;">CO2</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">AIC 2: Custom Tools, MCP, &amp;
+Memory</td>
+<td style="text-align: left;">Hands-on</td>
+<td style="text-align: left;">CO2</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">AIC 3: Traces &amp; Self-Correction</td>
+<td style="text-align: left;">Hands-on</td>
+<td style="text-align: left;">CO3</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">AIC 4: Multi-Agent Orchestration &amp;
+Evaluation</td>
+<td style="text-align: left;">Hands-on</td>
+<td style="text-align: left;">CO4</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP01 Proposal</td>
+<td style="text-align: left;">Written</td>
+<td style="text-align: left;">CO1</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP01 System v0.3</td>
+<td style="text-align: left;">Hands-on</td>
+<td style="text-align: left;">CO5</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP02 Progress Report</td>
+<td style="text-align: left;">Written</td>
+<td style="text-align: left;">CO3</td>
+<td style="text-align: left;">30</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP02 System v0.7</td>
+<td style="text-align: left;">Hands-on</td>
+<td style="text-align: left;">CO5</td>
+<td style="text-align: left;">30</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP03 Final Report</td>
+<td style="text-align: left;">Written</td>
+<td style="text-align: left;">CO4</td>
+<td style="text-align: left;">50</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP03 System v1.0</td>
+<td style="text-align: left;">Hands-on</td>
+<td style="text-align: left;">CO5</td>
+<td style="text-align: left;">40</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP03 Final Presentation</td>
+<td style="text-align: left;">Oral</td>
+<td style="text-align: left;">CO3</td>
+<td style="text-align: left;">20</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP03 Demo Video</td>
+<td style="text-align: left;">Hands-on</td>
+<td style="text-align: left;">CO5</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP Interview (individual, Week 9 or
+10)</td>
+<td style="text-align: left;">Oral</td>
+<td style="text-align: left;">CO1</td>
+<td style="text-align: left;">200</td>
+</tr>
+<tr>
+<td style="text-align: left;">Concept Debate A (Weeks 1, 3, 5, 7)</td>
+<td style="text-align: left;">Conceptual</td>
+<td style="text-align: left;">CO1</td>
+<td style="text-align: left;">40</td>
+</tr>
+<tr>
+<td style="text-align: left;">Concept Debate B and integration debates
+(Weeks 2, 4, 6, 8, 9, 10)</td>
+<td style="text-align: left;">Conceptual</td>
+<td style="text-align: left;">CO3</td>
+<td style="text-align: left;">60</td>
+</tr>
+<tr>
+<td style="text-align: left;">Knowledge Check, theory (Weeks 1, 3, 5, 7,
+9)</td>
+<td style="text-align: left;">Conceptual</td>
+<td style="text-align: left;">CO1</td>
+<td style="text-align: left;">50</td>
+</tr>
+<tr>
+<td style="text-align: left;">Knowledge Check, skill (Weeks 2, 4, 6, 8,
+10)</td>
+<td style="text-align: left;">Conceptual</td>
+<td style="text-align: left;">CO3</td>
+<td style="text-align: left;">50</td>
+</tr>
+<tr>
+<td style="text-align: left;">TOTAL</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1,000</td>
+</tr>
+</tbody>
+</table></div>
+<p>Points per outcome:</p>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 15%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Course outcome</strong></th>
+<th style="text-align: left;"><strong>Points</strong></th>
+<th style="text-align: left;"><strong>% of final grade</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>CO1 Explain</strong></td>
+<td style="text-align: left;"><strong>300</strong></td>
+<td style="text-align: left;"><strong>30%</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CO2 Implement</strong></td>
+<td style="text-align: left;"><strong>200</strong></td>
+<td style="text-align: left;"><strong>20%</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CO3 Analyze</strong></td>
+<td style="text-align: left;"><strong>260</strong></td>
+<td style="text-align: left;"><strong>26%</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CO4 Assess</strong></td>
+<td style="text-align: left;"><strong>150</strong></td>
+<td style="text-align: left;"><strong>15%</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CO5 Produce</strong></td>
+<td style="text-align: left;"><strong>90</strong></td>
+<td style="text-align: left;"><strong>9%</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>TOTAL</strong></td>
+<td style="text-align: left;"><strong>1,000</strong></td>
+<td style="text-align: left;"><strong>100%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>The Post Mortem is graded inside each AIC (under Understand), so it
+has no row of its own.</p>
 <h2 id="grading-scale"><strong>Grading Scale</strong></h2>
 <p>The grades earned for the course will be calculated using City
 University of Seattle’s decimal grading system, found in the current <a
-href="https://www.cityu.edu/catalog/"><u>University
-Catalog.</u></a> </p>
+href="https://www.cityu.edu/catalog/">University Catalog.</a> </p>
 <p>Grading rubrics with details on how each assignment will be graded
 are located under <em>Assignments</em> and/or in <em>My Grades</em> in
 the online course menu. Students should review the rubric for each
 assignment prior to completing their work in order to understand how it
 will be assessed. </p>
-<h2 id="course-assignments-and-grading"><strong>Course Assignments and
-Grading</strong></h2>
-<p>Undergraduate Values </p>
-<div class="table-wrap" tabindex="0"><table class="syl">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 10%" />
-<col style="width: 10%" />
-<col style="width: 13%" />
-<col style="width: 10%" />
-</colgroup>
-<thead>
-<tr>
-<th> </th>
-<th>Exceeds Standard </th>
-<th>At Standard </th>
-<th>Approaching Standard </th>
-<th>Below Standard </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Overall Score Row Value </td>
-<td>92 </td>
-<td>75 </td>
-<td>62 </td>
-<td>0 </td>
-</tr>
-<tr>
-<td>Value  Range </td>
-<td>100-92 </td>
-<td>91-75 </td>
-<td>74-62 </td>
-<td>61-0 </td>
-</tr>
-<tr>
-<td>Decimal Range </td>
-<td>4.0-3.7 </td>
-<td>3.6-2.0 </td>
-<td>1.9-0.7 </td>
-<td>0.6-0.0 </td>
-</tr>
-</tbody>
-</table></div>
 <div class="table-wrap" tabindex="0"><table class="syl">
 <colgroup>
 <col style="width: 48%" />
@@ -252,35 +366,19 @@ ASSIGNMENTS</strong> </th>
 <tbody>
 <tr>
 <td><blockquote>
-<p><em><strong>Major Assessments</strong></em></p>
-</blockquote></td>
-<td style="text-align: center;"><strong>80%</strong></td>
-<td></td>
-</tr>
-<tr>
-<td><blockquote>
-<p>Hands-On Skill (HOS) </p>
+<p>AI Challenge (AIC)  </p>
 </blockquote></td>
 <td style="text-align: center;">40% </td>
-<td><blockquote>
-<p>400 = 100 points * 4 modules </p>
-</blockquote></td>
-</tr>
-<tr>
-<td><blockquote>
-<p>Application Challenge (AC)  </p>
-</blockquote></td>
-<td style="text-align: center;">20% </td>
-<td><blockquote>
-<p>200 = 50 points  * 4 modules </p>
+<td style="text-align: left;"><blockquote>
+<p>400 = 100 points  * 4 modules </p>
 </blockquote></td>
 </tr>
 <tr>
 <td><blockquote>
 <p>Term Project (TP) </p>
 </blockquote></td>
-<td style="text-align: center;">20% </td>
-<td><blockquote>
+<td style="text-align: center;">40% </td>
+<td style="text-align: left;"><blockquote>
 <p>TP Phase 1</p>
 <p>System v0.3:  10 points </p>
 <p>Proposal:  10 points </p>
@@ -292,32 +390,17 @@ ASSIGNMENTS</strong> </th>
 <p>Final Report:  50 points </p>
 <p>Final PPT:  20 points </p>
 <p>Final Demo:  10 points </p>
-<p>Subtotal:  200 points </p>
-</blockquote></td>
-</tr>
-<tr>
-<td><blockquote>
-<p><em><strong>Instructor Determined Assignments</strong></em></p>
-</blockquote></td>
-<td style="text-align: center;"><strong>20%</strong></td>
-<td></td>
-</tr>
-<tr>
-<td><blockquote>
-<p>The Muddiest Point (MP)</p>
-</blockquote></td>
-<td style="text-align: center;">5% </td>
-<td><blockquote>
-<p>50 = 10 points * 5 modules </p>
+<p>Interview: 200 points</p>
+<p>Total:  400 points </p>
 </blockquote></td>
 </tr>
 <tr>
 <td><blockquote>
 <p>Concept Debate (CD) </p>
 </blockquote></td>
-<td style="text-align: center;">5% </td>
-<td><blockquote>
-<p>50 = 10 points * 5 modules </p>
+<td style="text-align: center;">10% </td>
+<td style="text-align: left;"><blockquote>
+<p>100 = 10 points * 10 weeks</p>
 </blockquote></td>
 </tr>
 <tr>
@@ -325,8 +408,8 @@ ASSIGNMENTS</strong> </th>
 <p>Knowledge Check (KC) </p>
 </blockquote></td>
 <td style="text-align: center;">10% </td>
-<td><blockquote>
-<p>100 = 20 points * 5 modules </p>
+<td style="text-align: left;"><blockquote>
+<p>100 = 10 points * 10 weeks</p>
 </blockquote></td>
 </tr>
 <tr>
@@ -334,822 +417,1061 @@ ASSIGNMENTS</strong> </th>
 <p><strong>TOTAL</strong> </p>
 </blockquote></td>
 <td style="text-align: center;"><strong>100%</strong> </td>
-<td><blockquote>
+<td style="text-align: left;"><blockquote>
 <p><strong>1,000 points</strong> </p>
 </blockquote></td>
 </tr>
 </tbody>
 </table></div>
-<h4 id="section"></h4>
-<p><strong>Hands-On Skill (HOS – 20%)</strong></p>
-<ul>
-<li><p><strong>HOS 1 — Anatomy of an Agent: CO1 and
-CO2</strong></p></li>
-<li><p><strong>HOS 2 — Custom Tools, MCP, &amp; Memory: CO1 and
-CO2</strong></p></li>
-<li><p><strong>HOS 3 — Traces &amp; Self-Correction:
-CO3</strong></p></li>
-<li><p><strong>HOS 4 — Multi-Agent Orchestration &amp; Evaluation:
-CO4</strong></p></li>
-</ul>
+<h2 id="course-assignments-and-grading"><strong>Course Assignments and
+Grading</strong></h2>
+<p>The instructor will provide grading rubrics that will provide more
+detail as to how the assignment will be graded.</p>
+<p><strong>AI Challenge (AIC) (40% of Final Grade) CO2, CO3 &amp;
+CO4</strong></p>
+<p>The AI Challenge (AIC) is designed to support “learning-by-example”
+and “learning-by-doing.” Students learn to<br />
+create a system by reorganizing elements into a new pattern or structure
+through system<br />
+development or virtual labs.</p>
+<p>Each AIC runs over two weeks: Part A: Build in the first week and
+Part B: Apply in the second. It is graded once, from the last push to
+its repository before the end of its second week, with one rubric of
+nine criteria worth 100 points: five Build criteria for Part A (12%
+each) and four Challenge criteria for Part B (Application 4%, Analysis
+8%, Evaluation 12% and Design 16%).</p>
+<p>In Part B, students apply what they learned to a smaller, individual
+task in a new scenario and make an open design decision. The challenge
+is completed individually in the challenge/ folder of the same AIC
+repository.</p>
+<p>Part B ends with a short Post Mortem in NOTES.md, written without AI:
+the idea from the module that is still least clear, one thing the
+student would do differently next time (including how they used AI), and
+one thing they will carry into the Term Project. It is graded under
+Understand; a missing or one-line Post Mortem cannot earn full
+Understand marks.</p>
 <div class="table-wrap" tabindex="0"><table class="syl">
 <colgroup>
-<col style="width: 16%" />
-<col style="width: 66%" />
-<col style="width: 17%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: center;"><em><strong>Criteria</strong></em> </th>
-<th style="text-align: center;"><em><strong>Outcome
-(CEAAU)</strong></em></th>
-<th style="text-align: center;"><em><strong>%</strong></em> </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">Engagement<strong> </strong> </td>
-<td><ul>
-<li><p>Create (C) - Putting elements, patterns, or different parts
-together to form a new, coherent, or functional whole through
-scaffolding. (20%)</p></li>
-</ul></td>
-<td style="text-align: center;">20%<strong> </strong> </td>
-</tr>
-<tr>
-<td style="text-align: center;">Skills </td>
-<td><ul>
-<li><p>Evaluate (E) - Making a judgment about whether the AI-produced
-result was actually right. (20%)</p></li>
-<li><p>Analyze (A) - Breaking information into constituent parts and
-determining the accuracy of the written mechanism walkthrough.
-(20%)</p></li>
-<li><p>Apply (A) - Executing a procedure, information, or concept in a
-practical situation. (20%)</p></li>
-<li><p>Understand (U) - Explaining ideas, concepts, or meaning through
-interpreting, classifying, summarizing, or inferring without AI
-assistance. (20%)</p></li>
-</ul></td>
-<td style="text-align: center;">80%<strong> </strong> </td>
-</tr>
-<tr>
-<td style="text-align: center;"><strong>TOTAL</strong> </td>
-<td></td>
-<td style="text-align: center;"><strong>100% </strong> </td>
-</tr>
-</tbody>
-</table></div>
-<p> </p>
-<p><strong>Application Challenge (AC) - Grading Criteria</strong></p>
-<p>Students are required to apply what they experienced and learned
-through HOS to a smaller, individual task following each HOS. Students
-must complete the application challenge individually. </p>
-<ul>
-<li><p><strong>AC 1 — Anatomy of an Agent: CO1 and CO2</strong></p></li>
-<li><p><strong>AC 2 — Custom Tools, MCP, &amp; Memory: CO1 and
-CO2</strong></p></li>
-<li><p><strong>AC 3 — Traces &amp; Self-Correction:
-CO3</strong></p></li>
-<li><p><strong>AC 4 — Multi-Agent Orchestration &amp; Evaluation:
-CO4</strong></p></li>
-</ul>
-<div class="table-wrap" tabindex="0"><table class="syl">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 67%" />
-<col style="width: 12%" />
+<col style="width: 27%" />
+<col style="width: 29%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: center;"><em><strong>Criteria</strong></em></th>
-<th style="text-align: center;"><em><strong>Outcome</strong></em></th>
-<th style="text-align: center;"><em><strong>%</strong></em></th>
+<th style="text-align: center;"><em><strong>% of
+Grade</strong></em></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Application</td>
-<td>Genuine application to the new scenario, not a restatement of the
-week's HOS build.</td>
-<td style="text-align: center;"><strong>10%</strong></td>
+<td style="text-align: center;">Build: Creation</td>
+<td style="text-align: center;">12%<strong> </strong></td>
 </tr>
 <tr>
-<td>Analysis</td>
-<td>Breaking information into parts to explore structural connections,
-patterns, and relationships.</td>
-<td style="text-align: center;"><strong>20%</strong></td>
+<td style="text-align: center;">Build: Evaluation</td>
+<td style="text-align: center;">12%<strong> </strong></td>
 </tr>
 <tr>
-<td>Evaluation</td>
-<td>Justifying a decision, stand, or opinion by critiquing and making
-judgments based on criteria.</td>
-<td style="text-align: center;"><strong>30%</strong></td>
+<td style="text-align: center;">Build: Analyze</td>
+<td style="text-align: center;">12%</td>
 </tr>
 <tr>
-<td>Design</td>
-<td>Reorganizing elements into a new pattern or structure; compiling
-original work or solutions.</td>
-<td style="text-align: center;"><strong>40%</strong></td>
+<td style="text-align: center;">Build: Apply</td>
+<td style="text-align: center;">12%</td>
 </tr>
 <tr>
-<td><strong>TOTAL</strong></td>
-<td></td>
-<td style="text-align: center;"><strong>100%</strong></td>
+<td style="text-align: center;">Build: Understand</td>
+<td style="text-align: center;">12%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Challenge: Application</td>
+<td style="text-align: center;">4%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Challenge: Analysis</td>
+<td style="text-align: center;">8%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Challenge: Evaluation</td>
+<td style="text-align: center;">12%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Challenge: Design</td>
+<td style="text-align: center;">16%</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>TOTAL</strong></td>
+<td style="text-align: center;"><strong>100% </strong></td>
 </tr>
 </tbody>
 </table></div>
-<ul>
-<li><p>AC 1 — Anatomy of an Agent</p></li>
-</ul>
-<p>Students build the loop for a fictional travel agency’s trip-planning
-agent (search flights, check hotel availability, convert currency),
-including its step budget and stopping rules, and must pass the provided
-tests. The open decision is what the agent tells a customer when it runs
-out of steps before the trip is fully planned. Students also decide
-which of five requests from the agency need an agent at all, and which a
-single model call or a fixed script would handle better.</p>
-<ul>
-<li><p>AC 2 — Custom Tools, MCP, &amp; Memory<br />
-Students rebuild a badly written tool set for a fictional property
-manager’s maintenance agent (look up a unit, open a work order, read a
-vendor’s web page) as an MCP server with typed schemas and errors
-returned as data, and must pass the provided tests. The open decision is
-which tenant details the agent may keep in long-term memory and which it
-must never store. Students also predict how a model would have misused
-each original tool.</p></li>
-<li><p>AC 3 — Traces &amp; Self-Correction<br />
-Students receive recorded traces from a fictional food bank’s
-volunteer-scheduling agent, without its source code, and name each
-failure and the step where it first appears. They then build guards that
-make the recorded failing runs pass the provided replay tests. The open
-decision is when the agent should stop retrying and hand the request to
-a staff member. Students also explain which failures their guards cannot
-catch.</p></li>
-<li><p>AC 4 — Multi-Agent Orchestration &amp; Evaluation<br />
-Students build the evaluation for a vendor’s invoice-processing agent
-team, which claims a 94% success rate: a judge, a check of the judge
-against human grades, and success rate, cost per invoice, and latency.
-They run a recorded set of conversations through it. The open decision
-is the success rate and cost per invoice at which the company should
-adopt the system. Students also explain what the vendor’s claim left
-out.</p></li>
-</ul>
-<p><strong>Term Project (TP) - Grading Criteria</strong></p>
-<ul>
-<li><p><strong>CO1, CO2, CO3, CO4, and CO5</strong></p></li>
-</ul>
 <div class="table-wrap" tabindex="0"><table class="syl">
 <colgroup>
-<col style="width: 17%" />
-<col style="width: 48%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
 </colgroup>
 <thead>
 <tr>
-<th style="text-align: center;"><strong>Deliverables</strong></th>
-<th style="text-align: center;"><strong>Description</strong></th>
-<th style="text-align: center;"><strong>Week<br />
-Due</strong></th>
-<th style="text-align: center;"><strong>Points</strong></th>
-<th style="text-align: center;"><strong>%</strong></th>
+<th style="text-align: center;"><strong>Criteria</strong></th>
+<th style="text-align: center;"><strong>Exceeds Standard</strong></th>
+<th style="text-align: center;"><strong>At Standard</strong></th>
+<th style="text-align: center;"><strong>Approaching
+Standard</strong></th>
+<th style="text-align: center;"><strong>Below Standard</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;">System</td>
-<td><ul>
-<li><p>System v0.3 (10 points)</p></li>
-<li><p>System v0.7 (30 points)</p></li>
-<li><p>System v1.0 (40 points)</p></li>
-</ul></td>
-<td style="text-align: center;"><blockquote>
-<p>3</p>
-<p>7</p>
-<p>10</p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>80</p>
-</blockquote></td>
-<td style="text-align: center;"><strong>40%</strong></td>
+<td style="text-align: center;"><strong>Score Range</strong></td>
+<td style="text-align: center;"><strong>100–92%</strong></td>
+<td style="text-align: center;"><strong>91–75%</strong></td>
+<td style="text-align: center;"><strong>74–62%</strong></td>
+<td style="text-align: center;"><strong>61–0%</strong></td>
 </tr>
 <tr>
-<td style="text-align: center;">Report</td>
-<td><ul>
-<li><p>Proposal (10 points)</p></li>
-<li><p>Progress Report (30 points)</p></li>
-<li><p>Final Report (50 points)</p></li>
-</ul></td>
-<td style="text-align: center;"><blockquote>
-<p>3</p>
-<p>7</p>
-<p>10</p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>90</p>
-</blockquote></td>
-<td style="text-align: center;"><strong>45%</strong></td>
+<td style="text-align: center;"><strong>Build: Creation</strong><br />
+<strong>(12%)</strong></td>
+<td style="text-align: center;">Produces a working scaffolded
+application that meets all requirements and includes a justified
+adaptation that improves functionality or reliability. Provides the AI
+prompt, reproducible execution evidence, and source code committed and
+pushed to the AIC repository.</td>
+<td style="text-align: center;">Produces a working scaffolded
+application that meets the required functionality. Provides the AI
+prompt, a screenshot showing execution, and source code committed and
+pushed to the AIC repository.</td>
+<td style="text-align: center;">Produces an application that works
+partially or has gaps in required functionality. The prompt, execution
+evidence, or repository submission is incomplete.</td>
+<td style="text-align: center;">Does not demonstrate a functioning
+scaffold or omits substantial required functionality and evidence.
+Missing work earns 0 points.</td>
 </tr>
 <tr>
-<td style="text-align: center;">Presentation</td>
-<td><ul>
-<li><p>Final Presentation (20 points)</p></li>
-</ul></td>
-<td style="text-align: center;"><blockquote>
-<p>10</p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>20</p>
-</blockquote></td>
-<td style="text-align: center;"><strong>10%</strong></td>
+<td style="text-align: center;"><strong>Build: Evaluation</strong><br />
+<strong>(12%)</strong></td>
+<td style="text-align: center;">Runs all required tests and at least one
+relevant student-designed test. Uses results to justify correctness,
+identify failures or limitations, and explain their implications.</td>
+<td style="text-align: center;">Runs all required tests and reports
+results accurately. Uses test evidence to explain whether the
+AI-produced result meets the requirements.</td>
+<td style="text-align: center;">Runs only some required tests or
+provides incomplete results. Judgments about correctness have limited
+supporting evidence.</td>
+<td style="text-align: center;">Provides little or no meaningful
+testing, unsupported judgments, or no evaluation. Missing work earns 0
+points.</td>
 </tr>
 <tr>
-<td style="text-align: center;">Demo Video</td>
-<td><ul>
-<li><p>Final Demo Video (10 points)</p></li>
-</ul></td>
-<td style="text-align: center;"><blockquote>
-<p>10</p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>10</p>
-</blockquote></td>
-<td style="text-align: center;"><strong>5%</strong></td>
+<td style="text-align: center;"><strong>Build: Analysis</strong><br />
+<strong>(12%)</strong></td>
+<td style="text-align: center;">Accurately traces one required mechanism
+across its components, explains their relationships, and predicts how a
+change or failure would affect the mechanism. Supports the analysis with
+specific code or execution evidence.</td>
+<td style="text-align: center;">Accurately explains the components and
+execution sequence of one required mechanism. Connects the explanation
+to specific code or execution evidence.</td>
+<td style="text-align: center;">Explains only part of the mechanism,
+includes inaccuracies, or describes files without explaining how the
+components interact.</td>
+<td style="text-align: center;">Does not explain the required mechanism
+or provides a substantially inaccurate analysis. Missing work earns 0
+points.</td>
 </tr>
 <tr>
-<td style="text-align: center;">Total</td>
-<td></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"><blockquote>
-<p>200</p>
-</blockquote></td>
-<td style="text-align: center;"><strong>100%</strong></td>
+<td style="text-align: center;"><strong>Build: Apply</strong><br />
+<strong>(12%)</strong></td>
+<td style="text-align: center;">Independently implements and integrates
+the required modification. Demonstrates correct behavior for the
+expected case and at least one relevant edge case using tests, logs, or
+screenshots.</td>
+<td style="text-align: center;">Independently implements and integrates
+the required modification. Demonstrates that it works for the expected
+case using tests, logs, or screenshots.</td>
+<td style="text-align: center;">Implements the modification partially,
+introduces integration problems, or provides insufficient evidence that
+it works.</td>
+<td style="text-align: center;">Does not implement the required
+modification or does not demonstrate independent application through the
+required evidence. Missing work earns 0 points.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Build: Understand</strong><br />
+<strong>(12%)</strong></td>
+<td style="text-align: center;">Independently explains the underlying
+concept, why the modification works, and how the concept applies to a
+different example. Answers follow-up questions accurately.</td>
+<td style="text-align: center;">Independently explains what changed, the
+underlying concept, and why the modification produces the observed
+result.</td>
+<td style="text-align: center;">Gives a partially correct explanation
+but leaves gaps in the underlying concept or why the modification
+works.</td>
+<td style="text-align: center;">Cannot explain the underlying concept or
+why the modification works, or provides no individual explanation.
+Missing work earns 0 points.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Challenge: Application
+(4%)</strong></td>
+<td style="text-align: center;">Runs in the new scenario and handles
+every case as intended (graded on the transcript or report).</td>
+<td style="text-align: center;">Runs and handles the scenario; minor
+gaps in the transcript or report.</td>
+<td style="text-align: center;">Runs, but a case is handled in a way
+that isn’t explained.</td>
+<td style="text-align: center;">Restates the Part A build or doesn’t
+run.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Challenge: Analysis
+(8%)</strong></td>
+<td style="text-align: center;">Breaks the scenario’s risks or failures
+into specific parts, each tied to concrete evidence (a tool, question,
+call or trace step) (DECISIONS.md, section 2).</td>
+<td style="text-align: center;">A specific breakdown with minor
+gaps.</td>
+<td style="text-align: center;">Parts are named, but only in general
+terms or not tied to the evidence.</td>
+<td style="text-align: center;">No breakdown.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Challenge: Evaluation
+(12%)</strong></td>
+<td style="text-align: center;">A clear rule for the open decision,
+judged against stated criteria, with an alternative rejected and why
+(DECISIONS.md, section 1).</td>
+<td style="text-align: center;">A clear rule judged against criteria;
+the rejected alternative is thin.</td>
+<td style="text-align: center;">A rule with a reason, but no criteria or
+no rejected alternative.</td>
+<td style="text-align: center;">No rule, or no justification.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Challenge: Design
+(16%)</strong></td>
+<td style="text-align: center;">All provided tests pass, and the
+student’s own tests check the rule, including the hardest edge case
+(code, own tests and pytest output).</td>
+<td style="text-align: center;">All provided tests pass; own tests check
+the rule but miss the edge case.</td>
+<td style="text-align: center;">Most provided tests pass, or own tests
+cover only the easy case.</td>
+<td style="text-align: center;">Doesn’t run, or no tests of the
+student’s own.</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Project Description</strong><br />
-Students design, build, and present one multi-agent system that
+<p><strong>Term Project (40% of Final Grade) CO1, CO3, CO4 &amp;
+CO5</strong></p>
+<p>Students design, build, and present one multi-agent system that
 automates a realistic multi-step business process, such as an autonomous
 marketing department or a self-healing coding assistant, working on
 their own or in a group of up to three (four with instructor approval).
-The system combines all four HOS:</p>
+The system combines all four AICs:</p>
 <ul>
-<li><p>An agentic loop with reasoning, planning, and tool calling (HOS
+<li><p>An agentic loop with reasoning, planning, and tool calling (AIC
 1)</p></li>
 <li><p>Custom tools served over MCP, with short- and long-term memory
-(HOS 2)</p></li>
-<li><p>Reasoning traces and self-correction (HOS 3)</p></li>
-<li><p>Multi-agent orchestration and agent-on-agent evaluation (HOS
+(AIC 2)</p></li>
+<li><p>Reasoning traces and self-correction (AIC 3)</p></li>
+<li><p>Multi-agent orchestration and agent-on-agent evaluation (AIC
 4)</p></li>
 </ul>
-<p>It also applies to the judgment practiced in the Application
-Challenges, such as which actions the model may take on its own and when
-the system should be handed off to a person.</p>
-<p><strong>Working Solo or in a Group</strong></p>
-<p>You may complete the Term Project on your own or in a group of up to
-three students; a group of four needs the instructor’s approval. Decide
-by the end of Week 1. Solo and group projects have the same
-deliverables, points, and scope (all four HOS). Wherever this section
-refers to a “team,” a solo student is a team of one; criteria about
-splitting work among members are graded on the evidence one person can
-show, such as steady commits across the term and use of feedback. A
-group’s roles and responsibilities must be clearly described in its
-final report.</p>
-<p><strong>Project Phases</strong></p>
-<p>The term project consists of three phases with the following schedule
-and activities:</p>
-<div class="table-wrap" tabindex="0"><table class="syl">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 21%" />
-<col style="width: 68%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: center;"><strong>Phase</strong></th>
-<th style="text-align: center;"><strong>Schedule</strong></th>
-<th style="text-align: center;"><strong>Activities</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;"><p>Weeks 1 - 3</p>
-<p>(3 Weeks)</p></td>
-<td><strong>Scope is locked.</strong> Which of the 4 HOS your project
-combines, and why — in writing, not just discussed verbally. If it's a
-team, roles/ownership per HOS piece are assigned. A rough architecture
-sketch exists, even hand-drawn.</td>
-</tr>
-<tr>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;"><p>Weeks 4 - 7</p>
-<p>(4 weeks)</p></td>
-<td><strong>A rough, working version exists.</strong> Not polished — but
-something a partner or the instructor could run and interact with,
-touching at least two of the combined HOS pieces end to end.</td>
-</tr>
-<tr>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">Weeks 8 - 10 <br />
-(3 weeks)</td>
-<td><strong>Feature-complete and rehearsed.</strong> All combined HOS
-pieces work together; remaining time goes to polish, edge cases, and a
-practiced walkthrough of the Week 10 demo — not new features.</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Deliverables</strong></p>
-<p>The term project consists of four components – an executable system,
-a report, a presentation, and a demo.</p>
-<div class="table-wrap" tabindex="0"><table class="syl">
-<colgroup>
-<col style="width: 13%" />
-<col style="width: 9%" />
-<col style="width: 76%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: center;"><strong>Phase<br />
-(Due)</strong></th>
-<th style="text-align: center;"><strong>Points (%)</strong></th>
-<th style="text-align: center;"><strong>Deliverables</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">1<br />
-(Week 3)</td>
-<td style="text-align: center;">20 points<br />
-(10%)</td>
-<td><ul>
-<li><p>System v0.3 (10 points) – A proposed system after 3 weeks in a
-shared GitHub repository including README.md (5%)</p></li>
-<li><p>Proposal (10 points) – A 1-page proposal including 3 key
-references on a shared OneDrive (5%)</p></li>
-</ul></td>
-</tr>
-<tr>
-<td style="text-align: center;">2<br />
-(Week 7)</td>
-<td style="text-align: center;"><p>60 points</p>
-<p>(30%)</p></td>
-<td><ul>
-<li><p>System v0.7 (30 points) – a progressed system after 7 weeks in a
-shared GitHub, including README.md and showing architecture with a
-working version (15%)</p></li>
-<li><p>Progress Report (30 points) – A 3-4-page progress report
-including at least 12 references on a shared OneDrive (15%)</p></li>
-</ul></td>
-</tr>
-<tr>
-<td style="text-align: center;">3<br />
-(Week 10)</td>
-<td style="text-align: center;"><p>120 points</p>
-<p>(60%)</p></td>
-<td><ul>
-<li><p>System v1.0 (40 points) – A feature-complete and rehearsed final
-system after 10 weeks in a shared GitHub including README.md and showing
-architecture with working version (20%)</p></li>
-<li><p>Final Report (50 points) – A 5-6-page final report including at
-least 12 references on a shared OneDrive (25%)</p></li>
-<li><p>Final Presentation with 15+4 slides (20 points) - Final
-presentation with 15+4 slides (10%)</p></li>
-<li><p>Final Demo Video (10 points) – A 1–2-minute final demo video
-(5%)</p></li>
-</ul></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>System</strong></p>
-<ul>
-<li><p>Phase-by-Phase System Milestones &amp; Expectations</p>
-<ul>
-<li><p>Phase 1: System v0.3 (Week 3 — 10 Points) - "Repository
-Foundation &amp; Environment Setup"</p></li>
-<li><p>Phase 2: System v0.7 (Week 7 — 30 Points) - "Working Prototype
-&amp; Agent Core"</p></li>
-<li><p>Phase 3: System v1.0 (Week 10 — 40 Points) - "Feature-Complete,
-Hardened, and Rehearsed System"</p></li>
-</ul></li>
-<li><p>Source code is shared in the team’s GitHub repository named
-“AI420 T0X Term Project”  </p></li>
-<li><p>Each team member is involved in the system release.</p></li>
-<li><p>The README.md shows the system’s execution guidelines and
-explains high-level system architecture.</p></li>
-<li><p>The “.gitignore” shows the team’s commit policies.</p></li>
-<li><p>Any system configuration files are handled securely.</p></li>
-<li><p>The directory structures show your system architecture for
-deployment.</p></li>
-<li><p>Any AI tools used are shown in the README.md.</p></li>
-</ul>
-<div class="table-wrap" tabindex="0"><table class="syl">
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 63%" />
-<col style="width: 11%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: center;"><em><strong>Criteria</strong> </em></th>
-<th style="text-align: center;"><em><strong>Outcome</strong></em></th>
-<th style="text-align: center;"><em><strong>%</strong></em></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Environment</strong></td>
-<td><ul>
-<li><p><strong>Reproducibility &amp; One-Click Launch:</strong> The
-repository contains a working .devcontainer/devcontainer.json or
-reproducible setup script. A grader or peer can open a GitHub
-Codespaces, follow simple terminal instructions, and run the system
-without hunting for missing dependencies.</p></li>
-</ul></td>
-<td style="text-align: center;">20%</td>
-</tr>
-<tr>
-<td><strong>Architecture</strong></td>
-<td><ul>
-<li><p><strong>Modular Engineering Structure:</strong> Clean separation
-of concerns (e.g., /agents, /tools, /mcp_server, /evals, /tests). The
-directory layout clearly reflects the agent, tool, and evaluation
-pipeline rather than dumping all scripts into the root folder.</p></li>
-</ul></td>
-<td style="text-align: center;">20%</td>
-</tr>
-<tr>
-<td><p><strong>Execution Guide</strong></p>
-<p><strong>(README.md)</strong></p></td>
-<td><ul>
-<li><p><strong>Documentation &amp; Transparency:</strong> Clear
-prerequisites, setup/run commands, high-level architecture diagram or
-ASCII flow, and an explicit <strong>AI Tool Disclosure</strong> listing
-all LLMs, agent frameworks (Google ADK), MCP servers, coding agents
-(Google Antigravity), or coding assistants used.</p></li>
-</ul></td>
-<td style="text-align: center;">20%</td>
-</tr>
-<tr>
-<td><strong>Security &amp; Configuration (</strong>.gitignore,
-.env<strong>)</strong></td>
-<td><ul>
-<li><p><strong>Secrets Management &amp; Hygiene:</strong> No committed
-API keys (OpenAI, Anthropic, HuggingFace) or private credentials. Proper
-use of .env.example templates and a comprehensive .gitignore preventing
-data dumps, virtual environments (venv/), .DS_Store, and temporary
-caches from being tracked.</p></li>
-</ul></td>
-<td style="text-align: center;">20%</td>
-</tr>
-<tr>
-<td><strong>Git Workflow &amp; Collaboration</strong></td>
-<td><ul>
-<li><p><strong>Balanced, Sustained Activity:</strong> an active commit
-history across all three phases. In a group, every member contributes
-code, reviews PRs, or handles releases; solo, commits are steady across
-the term. Not a single monolithic push before the deadline.</p></li>
-</ul></td>
-<td style="text-align: center;">20%</td>
-</tr>
-<tr>
-<td style="text-align: center;"><strong>TOTAL</strong> </td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">100%</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Report</strong><br />
-The student will provide a report formatted based on a template provided
-by the instructor. Students are required to improve their writing
-iteratively and incrementally every week. The revision will always
-happen during a quarter. Students will add new required sections to the
-existing paper every week.    </p>
-<p>The final report is the culmination of applied research and
-activities conducted throughout the quarter. The final report provides a
-detailed problem, and its solution is likely to be encountered by a
-company or organization described in a case study supplied by the
-student. </p>
-<p>The paper is to be between 5 and 6 pages. The required <a
-href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fiscap.us%2Fdocs%2Fsubmissions%2FISCAPProceedingsTemplate.docx&amp;wdOrigin=BROWSELINK">template</a>
-for class submissions comes from an international organization, <a
-href="https://iscap.us/org/">ISCAP</a> (Information Systems &amp;
-Computing Academic Professionals). The instructor may recommend teams
-submit their paper to conferences. Submissions are optional and will not
-impact the course grade. Additional revisions may be required after the
-course.    <br />
-<br />
-The file name consists of the project phase, report type, team number,
-and the list of your team members. Each report must be maintained in
-OneDrive to trace team collaboration. Each report must include the
-team’s GitHub repository named after the keywords. Also, the final
-report must include the YouTube link for the demo. Three report
-submissions are required according to the following schedule:  </p>
-<ul>
-<li><p>Proposal (1 page; 10 points)</p>
-<ul>
-<li><p>Duration: 3 weeks (Week 1 – Week 3) </p></li>
-<li><p>Purpose: Start with preliminary case studies and focus heavily on
-the problem definition, motivation, background, key related work, and
-proposed approach, and ISCAP template compliance.</p></li>
-<li><p>Report Name in OneDrive: “AI420 TP T0X Proposal Author1 Author2
-Author3.docx”  </p></li>
-<li><p>GitHub Repository: “AI420 TP T0X Your_System_Name,” which shows
-the high-level architecture of your team’s application system</p></li>
-</ul></li>
-<li><p>Progress Report (3-4 pages; 30 points)</p>
-<ul>
-<li><p>Duration: 4 weeks (Week 4 – Week 7)</p></li>
-<li><p>Purpose: Focus on the extended related work, proposed technical
-methodology/architecture, data collection, evaluation, and revision of
-TP01 based on instructor feedback.</p></li>
-<li><p>Report name in One Drive: “AI420 TP T0X Progress Report Author1
-Author2 Author3.docx”  </p></li>
-<li><p>GitHub Repository: “AI420 TP T0X Your_System_Name,” which shows
-the implementation of your team’s application system</p></li>
-</ul></li>
-<li><p>Final Report (5-6 pages; 50 points)</p>
-<ul>
-<li><p>Duration: 3 weeks (Week 8 – Week 10) </p></li>
-<li><p>Purpose: Focus on findings, conclusions, limitations, future
-work, complete APA bibliography, and overall publication
-readiness.</p></li>
-<li><p>Report Name in OneDrive: “AI420 TP T0X Final Report Author1
-Author2 Author3.docx”  </p></li>
-<li><p>GitHub Repository: “AI420 TP T0X Your_System_Name,” which shows
-your team’s final executable application system</p></li>
-<li><p>YouTube Name: “AI420 TP T0X Demo Video Author1 Author2
-Author3.”</p></li>
-</ul></li>
-</ul>
-<p>As in any scholarly writing, students should not merely copy
-information from another author. Students should use evidence to support
-the contentions they have drawn from their findings and critically
-analyze related literature. In essence, each paper needs to be an
-analytical paper, not a summary of readings.  </p>
-<p>Students are expected to use the assigned readings, videos, and other
-materials throughout the quarter. Students will need to utilize
-additional sources that were not assigned by the professor. While
-stylized after an industry report, students are expected to employ APA
-formatting for citations, footnotes, and bibliography. Students must
-cite the sources of all ideas, facts, and information used that are not
-their own, even if they have put the information into their own words.
-Failure to do so is plagiarism, although the oversight is
-unintentional. To avoid plagiarism, check <a
-href="https://library.cityu.edu/howto/apa-writing/avoid-plagiarism/">https://library.cityu.edu/howto/apa-writing/avoid-plagiarism/</a><u>.</u>  </p>
-<p><strong>TP01 and TP02</strong></p>
+<p>It also applies to the judgment practiced in the AIC challenges, such
+as which actions the model may take on its own and when the system
+should be handed off to a person.</p>
+<p>The Term Project is 40% of the final grade: 200 points for the team
+deliverables below and 200 points for an individual Interview in Week 9
+or Week 10 (see TP Interview below). Half of each student’s Term Project
+grade is therefore earned individually.</p>
+<p>Each Term Project deliverable is mapped to one course outcome, shown
+in its rubric heading and in the Course Outcome Alignment table.</p>
+<p><strong>TP01</strong> <strong>Proposal Rubric (10 points)
+CO1</strong></p>
 <div class="table-wrap" tabindex="0"><table class="syl">
 <colgroup>
 <col style="width: 17%" />
-<col style="width: 73%" />
 <col style="width: 9%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: center;"><em><strong>Criteria</strong> </em></th>
-<th style="text-align: center;"><em><strong>Outcome</strong></em></th>
 <th style="text-align: center;"><em><strong>% </strong> </em></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Structure </td>
-<td><ul>
-<li><p>Adheres strictly to the designated ISCAP manuscript
-template.</p></li>
-<li><p>Conforms precisely to required length requirements per
-milestone.</p></li>
-<li><p>Follows the mandated file-naming convention precisely.</p></li>
-<li><p>Demonstrates clear iterative and incremental
-progression.</p></li>
-</ul></td>
 <td style="text-align: center;">20%<strong> </strong> </td>
 </tr>
 <tr>
 <td>Content </td>
-<td><ul>
-<li><p>Formulates a clear, realistic organizational problem grounded in
-a concrete business case study.</p></li>
-<li><p>Synthesizes and critically analyzes literature and empirical
-findings rather than merely summarizing readings.</p></li>
-<li><p>Proposes and validates a clear technical solution (e.g., system
-architecture, engineering methodology, trade-offs, and empirical
-results).</p></li>
-<li><p>Successfully incorporates instructor feedback and revisions from
-prior weekly submissions and milestones.</p></li>
-</ul></td>
 <td style="text-align: center;">30%<strong> </strong> </td>
 </tr>
 <tr>
 <td>Writing </td>
-<td><ul>
-<li><p>Maintains a professional, academic tone suitable for conference
-review (e.g., ISCAP submission caliber).</p></li>
-<li><p>Demonstrates clear paragraph coherence, logical transitions,
-concise phrasing, and active sentence structure.</p></li>
-<li><p>Completely free of grammatical errors, syntax flaws, spelling
-mistakes, and colloquialisms.</p></li>
-<li><p>Figures, pipeline diagrams, and tables are clearly captioned,
-high-resolution, and explicitly discussed in the body text.</p></li>
-</ul></td>
 <td style="text-align: center;">30%<strong> </strong> </td>
 </tr>
 <tr>
 <td>Reference </td>
-<td><ul>
-<li><p>Applies APA format (7th edition) systematically for all in-text
-citations, parenthetical references, and the final
-bibliography/reference list.</p></li>
-<li><p>Integrates a balanced mix of assigned course readings,
-peer-reviewed academic literature, and relevant outside industry
-sources.</p></li>
-<li><p>Completely avoids plagiarism by properly attributing all
-third-party concepts, data, diagrams, and methodologies.</p></li>
-</ul></td>
 <td style="text-align: center;">10%<strong> </strong> </td>
 </tr>
 <tr>
 <td>Collaboration </td>
-<td><ul>
-<li><p>Clear evidence of collaborative authoring, resulting in a
-cohesive single-voice paper (avoids disjointed, patchwork writing
-styles).</p></li>
-<li><p>Includes an explicit Author Contribution/Credit statement at the
-end of the report detailing each member’s weekly tasks (solo: your own
-weekly tasks, with a visible revision history).</p></li>
-<li><p>All team members actively participate in iterative draft
-revisions and shared document history.</p></li>
-</ul></td>
 <td style="text-align: center;">10%<strong> </strong> </td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>TOTAL</strong> </td>
-<td style="text-align: center;"></td>
 <td style="text-align: center;">100%<strong> </strong> </td>
 </tr>
 </tbody>
 </table></div>
 <p><strong> </strong> </p>
-<p><strong>TP03</strong></p>
 <div class="table-wrap" tabindex="0"><table class="syl">
 <colgroup>
-<col style="width: 3%" />
-<col style="width: 25%" />
-<col style="width: 55%" />
-<col style="width: 15%" />
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
 </colgroup>
 <thead>
 <tr>
-<th style="text-align: center;"> </th>
-<th style="text-align: center;"><blockquote>
-<p><em><strong>Criteria</strong></em> </p>
-</blockquote></th>
-<th style="text-align: center;"><blockquote>
-<p><em><strong>Outcome</strong></em> </p>
-</blockquote></th>
-<th style="text-align: center;"><blockquote>
-<p><strong><em>% of Grade</em> </strong>  </p>
-</blockquote></th>
+<th style="text-align: center;"><strong>Criteria</strong></th>
+<th style="text-align: center;"><strong>Exceeds Standard</strong></th>
+<th style="text-align: center;"><strong>At Standard</strong></th>
+<th style="text-align: center;"><strong>Approaching
+Standard</strong></th>
+<th style="text-align: center;"><strong>Below Standard</strong></th>
+</tr>
+<tr>
+<th style="text-align: center;"><strong>Overall Score
+Range</strong></th>
+<th style="text-align: center;"><strong>100–92%</strong></th>
+<th style="text-align: center;"><strong>91–75%</strong></th>
+<th style="text-align: center;"><strong>74–62%</strong></th>
+<th style="text-align: center;"><strong>61–0%</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td colspan="4" style="text-align: center;">General Computing
-Knowledge (20%) </td>
+<td style="text-align: center;"><strong>Structure<br />
+(20%)</strong></td>
+<td>Uses the ISCAP template, fits one page, follows the file-naming
+convention, and is kept in the shared OneDrive with a visible revision
+history.</td>
+<td>Meets these with a minor slip in formatting or naming.</td>
+<td>Template or length not followed, or the file is not in
+OneDrive.</td>
+<td>Not in the template, or missing.</td>
 </tr>
 <tr>
-<td style="text-align: center;">1 </td>
-<td style="text-align: center;"><blockquote>
-<p>Agentic AI</p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>Integrate autonomous agents into a system. </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>20% </p>
-</blockquote></td>
+<td style="text-align: center;"><strong>Content<br />
+(30%)</strong></td>
+<td>A clear, realistic organizational problem from a concrete case
+study, with the motivation and background, key related work, and a
+proposed approach naming the AIC pieces it combines.</td>
+<td>All parts present; one is thin.</td>
+<td>The problem is vague, or the proposed approach is missing.</td>
+<td>No clear problem, or not a proposal.</td>
 </tr>
 <tr>
-<td colspan="4" style="text-align: center;">Critical
-Thinking (60%) </td>
+<td style="text-align: center;"><strong>Writing<br />
+(30%)</strong></td>
+<td>Professional, academic tone; coherent paragraphs, logical
+transitions, concise active sentences; free of grammar and spelling
+errors.</td>
+<td>Clear, with a few minor errors.</td>
+<td>Readable, but wordy, informal or with frequent errors.</td>
+<td>Hard to follow.</td>
 </tr>
 <tr>
-<td style="text-align: center;">2 </td>
-<td style="text-align: center;"><blockquote>
-<p>Issue </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>Issue is stated and described thoroughly so that it is understood
-fully. </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>20% </p>
-</blockquote></td>
+<td style="text-align: center;"><strong>Reference<br />
+(10%)</strong></td>
+<td>At least 3 key references, cited in APA 7th edition in the text and
+the reference list, with every source attributed.</td>
+<td>3 references, with minor APA errors.</td>
+<td>Fewer than 3 references, or APA not followed.</td>
+<td>No references, or unattributed material.</td>
 </tr>
 <tr>
-<td style="text-align: center;">3  </td>
-<td style="text-align: center;"><blockquote>
-<p>Evidence </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>Information is taken from source(s) appropriate to the scope with
-enough interpretation and evaluation to develop a comprehensive analysis
-or synthesis, and expert opinions are thoroughly scrutinized. </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>10% </p>
-</blockquote></td>
+<td style="text-align: center;"><strong>Collaboration<br />
+(10%)</strong></td>
+<td>A cohesive single-voice paper with an Author Contribution statement
+of each member’s tasks (solo: your own tasks, with a visible revision
+history).</td>
+<td>Statement present; minor unevenness in voice.</td>
+<td>Disjointed sections, or the statement is vague.</td>
+<td>No Author Contribution statement.</td>
 </tr>
 <tr>
-<td style="text-align: center;">4 </td>
-<td style="text-align: center;"><blockquote>
-<p>Context and Awareness </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>Thoroughly analyzes assumptions and biases, carefully evaluating
-contextual relevance when presenting a position. </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>20% </p>
-</blockquote></td>
-</tr>
-<tr>
-<td style="text-align: center;">5 </td>
-<td style="text-align: center;"><blockquote>
-<p>Conclusions </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>Conclusions are logical and reflect an informed evaluation of
-evidence and perspectives in priority order. </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>10% </p>
-</blockquote></td>
-</tr>
-<tr>
-<td colspan="4" style="text-align: center;">Collaboration (20%) </td>
-</tr>
-<tr>
-<td style="text-align: center;">6 </td>
-<td style="text-align: center;"><blockquote>
-<p>Teamwork </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>Works effectively on diverse, global and/or distributed teams; solo
-students show it by seeking and using feedback from the instructor and
-classmates.</p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>10% </p>
-</blockquote></td>
-</tr>
-<tr>
-<td style="text-align: center;">7 </td>
-<td style="text-align: center;"><blockquote>
-<p>Knowledge of Cultural Frameworks </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>Demonstrates sophisticated understanding of the complexity of
-elements important to members of another culture in relation to its
-history, values, politics, communication styles, economy, or beliefs and
-practices. </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>5% </p>
-</blockquote></td>
-</tr>
-<tr>
-<td style="text-align: center;">8 </td>
-<td style="text-align: center;"><blockquote>
-<p>Openness to Cultural Differences </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>Demonstrates openness to the diverse population of students in STC
-programs, collaboratively and professionally communicates with team
-members to form a collective decision and provide resolutions to the
-challenges that arise. Solo: shown through engagement in class
-discussions and the users the system is designed for.</p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>5% </p>
-</blockquote></td>
-</tr>
-<tr>
-<td style="text-align: center;"> </td>
-<td style="text-align: center;"><blockquote>
-<p><strong>TOTAL</strong> </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p> </p>
-</blockquote></td>
-<td style="text-align: center;"><blockquote>
-<p>100% </p>
-</blockquote></td>
+<td style="text-align: center;"><strong>TOTAL</strong></td>
+<td style="text-align: center;"><strong>100%</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Presentation</strong></p>
+<p><strong>TP01 System v0.3 Rubric (10 points) CO5</strong></p>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><em><strong>Criteria</strong></em></th>
+<th style="text-align: center;"><em><strong>% of
+Grade</strong></em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Environment</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Architecture</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Execution Guide (README.md)</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Security &amp; Configuration
+(.gitignore, .env)</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Git Workflow &amp; Collaboration</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>TOTAL</strong></td>
+<td style="text-align: center;">100%</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><strong>Criteria</strong></th>
+<th style="text-align: center;"><strong>Exceeds Standard</strong></th>
+<th style="text-align: center;"><strong>At Standard</strong></th>
+<th style="text-align: center;"><strong>Approaching
+Standard</strong></th>
+<th style="text-align: center;"><strong>Below Standard</strong></th>
+</tr>
+<tr>
+<th style="text-align: center;"><strong>Overall Score
+Range</strong></th>
+<th style="text-align: center;"><strong>100–92%</strong></th>
+<th style="text-align: center;"><strong>91–75%</strong></th>
+<th style="text-align: center;"><strong>74–62%</strong></th>
+<th style="text-align: center;"><strong>61–0%</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Environment<br />
+(20%)</strong></td>
+<td>The repository opens locally or in GitHub Codespaces with a working
+setup script or devcontainer, and the starter app runs from the README’s
+commands.</td>
+<td>Opens locally or in Codespaces and runs, with one missing step or
+dependency the grader has to fix.</td>
+<td>A setup exists but doesn’t run without significant fixes.</td>
+<td>No reproducible setup, or the repository doesn’t open.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Architecture<br />
+(20%)</strong></td>
+<td>A planned folder layout that matches the architecture sketch (for
+example /src, /data, /tests), with a place for each AIC piece the
+project combines.</td>
+<td>A sensible starting layout with minor gaps against the sketch.</td>
+<td>Files mostly in the root folder, or the layout doesn’t match the
+sketch.</td>
+<td>No structure, or no architecture sketch.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Execution Guide
+(README.md)<br />
+(20%)</strong></td>
+<td>README states the problem, which AIC pieces the system combines,
+prerequisites and run commands, a rough architecture sketch or ASCII
+flow, and an AI Tool Disclosure.</td>
+<td>README covers all of these; one is thin.</td>
+<td>README is missing the sketch, the run commands or the AI Tool
+Disclosure.</td>
+<td>No README, or only a placeholder.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Security &amp; Configuration
+(.gitignore, .env)<br />
+(20%)</strong></td>
+<td>No committed keys; a .env.example template and a .gitignore covering
+.env, venv/, caches and data dumps.</td>
+<td>No committed keys; the .gitignore or .env.example has a minor
+gap.</td>
+<td>No committed keys, but the .gitignore is missing or ineffective
+(venv/ or caches tracked).</td>
+<td>A key or credential is committed.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Git Workflow &amp;
+Collaboration<br />
+(20%)</strong></td>
+<td>Meaningful commits from the start of the term with clear messages.
+In a group, every member has commits; solo, work spans more than one
+session.</td>
+<td>Regular commits with minor gaps (one member light, or vague
+messages).</td>
+<td>Few commits, mostly bunched just before the deadline.</td>
+<td>A single push, or only one member of a group has commits.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>TP02 Progress Report Rubric (30 points) CO3</strong></p>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><em><strong>Criteria</strong></em></th>
+<th style="text-align: center;"><em><strong>% of
+Grade</strong></em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Structure</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Content</td>
+<td style="text-align: center;">30%</td>
+</tr>
+<tr>
+<td>Writing</td>
+<td style="text-align: center;">30%</td>
+</tr>
+<tr>
+<td>Reference</td>
+<td style="text-align: center;">10%</td>
+</tr>
+<tr>
+<td>Collaboration</td>
+<td style="text-align: center;">10%</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>TOTAL</strong></td>
+<td style="text-align: center;">100%</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><strong>Criteria</strong></th>
+<th style="text-align: center;"><strong>Exceeds Standard</strong></th>
+<th style="text-align: center;"><strong>At Standard</strong></th>
+<th style="text-align: center;"><strong>Approaching
+Standard</strong></th>
+<th style="text-align: center;"><strong>Below Standard</strong></th>
+</tr>
+<tr>
+<th style="text-align: center;"><strong>Overall Score
+Range</strong></th>
+<th style="text-align: center;"><strong>100–92%</strong></th>
+<th style="text-align: center;"><strong>91–75%</strong></th>
+<th style="text-align: center;"><strong>74–62%</strong></th>
+<th style="text-align: center;"><strong>61–0%</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Structure<br />
+(20%)</strong></td>
+<td>Uses the ISCAP template, meets the Progress Report length, follows
+the file-naming convention, and shows iterative revision in the shared
+OneDrive history.</td>
+<td>Meets these with a minor slip in formatting or naming.</td>
+<td>Template or length not followed, or no visible revision
+history.</td>
+<td>Not in the template, or missing.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Content<br />
+(30%)</strong></td>
+<td>Builds on the Proposal: extended related work that is synthesized
+rather than summarized, the technical methodology and architecture, data
+collection, early evaluation results, and revisions from instructor
+feedback on TP01.</td>
+<td>All parts present; one is thin.</td>
+<td>Mostly summary; or the methodology or evaluation is missing; or TP01
+feedback is not addressed.</td>
+<td>Little beyond the Proposal.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Writing<br />
+(30%)</strong></td>
+<td>Professional, academic tone at ISCAP submission caliber; coherent,
+concise and error-free; figures, diagrams and tables are captioned and
+discussed in the text.</td>
+<td>Clear, with a few minor errors or a figure that isn’t
+discussed.</td>
+<td>Wordy, informal or with frequent errors; figures not explained.</td>
+<td>Hard to follow.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Reference<br />
+(10%)</strong></td>
+<td>At least 12 references in APA 7th edition, balancing course
+readings, peer-reviewed literature and credible industry sources, with
+every source attributed.</td>
+<td>12 or more references, with minor APA errors or a narrow mix of
+sources.</td>
+<td>Fewer than 12 references, or APA not followed.</td>
+<td>Few or no references, or unattributed material.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Collaboration<br />
+(10%)</strong></td>
+<td>Clear evidence of collaborative authoring, resulting in a cohesive
+single-voice paper, with an explicit Author Contribution statement
+detailing each member’s weekly tasks (solo: your own weekly tasks, with
+a visible revision history).</td>
+<td>Statement present; minor unevenness in voice or in the revision
+history.</td>
+<td>Patchwork sections, or the statement is vague.</td>
+<td>No Author Contribution statement.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>TP02 System v0.7 Rubric (30 points) CO2</strong></p>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 19%" />
+<col style="width: 21%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><strong>Criteria</strong></th>
+<th style="text-align: center;"><strong>Exceeds Standard</strong></th>
+<th style="text-align: center;"><strong>At Standard</strong></th>
+<th style="text-align: center;"><strong>Approaching
+Standard</strong></th>
+<th style="text-align: center;"><strong>Below Standard</strong></th>
+</tr>
+<tr>
+<th style="text-align: center;"><strong>Overall Score
+Range</strong></th>
+<th style="text-align: center;"><strong>100–92%</strong></th>
+<th style="text-align: center;"><strong>91–75%</strong></th>
+<th style="text-align: center;"><strong>74–62%</strong></th>
+<th style="text-align: center;"><strong>61–0%</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Environment<br />
+(20%)</strong></td>
+<td>Opens locally or in GitHub Codespaces and the working prototype runs
+end to end from the README, including the MCP server and the session
+database.</td>
+<td>Runs end to end, with one minor setup step missing from the
+instructions.</td>
+<td>Only part of the prototype runs without fixes.</td>
+<td>Doesn’t run, or no reproducible setup.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Architecture<br />
+(20%)</strong></td>
+<td>Clear separation of concerns (for example /agents, /tools,
+/mcp_server, /tests), with at least two combined AIC pieces working end
+to end.</td>
+<td>Modular, with minor tangles; two AIC pieces connected end to
+end.</td>
+<td>Partly modular, or only one AIC piece works end to end.</td>
+<td>Scripts dumped in the root folder, or no working pieces.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Execution Guide
+(README.md)<br />
+(20%)</strong></td>
+<td>README has prerequisites, setup and run commands, an up-to-date
+architecture diagram showing what now works, and an AI Tool
+Disclosure.</td>
+<td>Covers all of these; one part is thin or out of date.</td>
+<td>Missing the diagram, the run commands or the AI Tool
+Disclosure.</td>
+<td>README not updated since v0.3, or missing.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Security &amp; Configuration
+(.gitignore, .env)<br />
+(20%)</strong></td>
+<td>No committed keys for any service added so far; .env.example lists
+every variable; .gitignore covers .env, venv/, caches, session databases
+and data dumps.</td>
+<td>No committed keys; the .gitignore or .env.example has a minor
+gap.</td>
+<td>No committed keys, but generated files, caches or session databases
+are tracked.</td>
+<td>A key or credential is committed.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Git Workflow &amp;
+Collaboration<br />
+(20%)</strong></td>
+<td>Steady commits across Phases 1 and 2. In a group, every member
+contributes code, reviews pull requests or handles releases; solo,
+commits are spread across the weeks.</td>
+<td>Steady activity with minor gaps.</td>
+<td>Long gaps, or most work in one push before the deadline; or one
+member does most of the work.</td>
+<td>A single monolithic push, or a group member with no
+contribution.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>TP03 Final Report Rubric (50 points) CO4</strong></p>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><em><strong>Criteria</strong></em></th>
+<th style="text-align: center;"><em><strong>% of
+Grade</strong></em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agentic AI</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Issue</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Evidence</td>
+<td style="text-align: center;">10%</td>
+</tr>
+<tr>
+<td>Context and Awareness</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Conclusions</td>
+<td style="text-align: center;">10%</td>
+</tr>
+<tr>
+<td>Teamwork</td>
+<td style="text-align: center;">10%</td>
+</tr>
+<tr>
+<td>Knowledge of Cultural Frameworks</td>
+<td style="text-align: center;">5%</td>
+</tr>
+<tr>
+<td>Openness to Cultural Differences</td>
+<td style="text-align: center;">5%</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>TOTAL</strong></td>
+<td style="text-align: center;">100%</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><strong>Criteria</strong></th>
+<th style="text-align: center;"><strong>Exceeds Standard</strong></th>
+<th style="text-align: center;"><strong>At Standard</strong></th>
+<th style="text-align: center;"><strong>Approaching
+Standard</strong></th>
+<th style="text-align: center;"><strong>Below Standard</strong></th>
+</tr>
+<tr>
+<th style="text-align: center;"><strong>Overall Score
+Range</strong></th>
+<th style="text-align: center;"><strong>100–92%</strong></th>
+<th style="text-align: center;"><strong>91–75%</strong></th>
+<th style="text-align: center;"><strong>74–62%</strong></th>
+<th style="text-align: center;"><strong>61–0%</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Agentic AI<br />
+(20%)</strong></td>
+<td>Integrates the combined AI technologies (agents and custom tools,
+MCP and memory, traces and self-correction, multi-agent orchestration
+and evaluation) into one working system, and the report explains how
+they fit together.</td>
+<td>Integration is complete, with one piece explained thinly.</td>
+<td>Some pieces are integrated or explained only partly.</td>
+<td>The AI pieces are not integrated, or not described.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Issue<br />
+(20%)</strong></td>
+<td>Issue is stated and described thoroughly so that it is understood
+fully.</td>
+<td>The issue is stated and described, with minor omissions that don’t
+seriously impede understanding.</td>
+<td>The issue is stated, but some terms are undefined or its boundaries
+unclear.</td>
+<td>The issue is stated without clarification or description.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Evidence<br />
+(10%)</strong></td>
+<td>Information is taken from source(s) appropriate to the scope with
+enough interpretation and evaluation to develop a comprehensive analysis
+or synthesis, and expert opinions are thoroughly scrutinized.</td>
+<td>Sources are interpreted and evaluated enough to develop a coherent
+analysis; expert views are questioned.</td>
+<td>Sources are used with some interpretation; expert views are mostly
+taken as fact.</td>
+<td>Sources are used without interpretation or evaluation.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Context and Awareness<br />
+(20%)</strong></td>
+<td>Thoroughly analyzes assumptions and biases, carefully evaluating
+contextual relevance when presenting a position.</td>
+<td>Identifies one’s own and others’ assumptions and several relevant
+contexts.</td>
+<td>Questions some assumptions; context is noted but not evaluated.</td>
+<td>Shows little awareness of assumptions or context.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Conclusions<br />
+(10%)</strong></td>
+<td>Conclusions are logical and reflect an informed evaluation of
+evidence and perspectives in priority order.</td>
+<td>Conclusions follow logically from the evidence, with related
+outcomes identified clearly.</td>
+<td>Conclusions are tied to only some of the evidence; outcomes are
+oversimplified.</td>
+<td>Conclusions don’t follow from the evidence, or are missing.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Teamwork<br />
+(10%)</strong></td>
+<td>Works effectively on diverse, global and/or distributed teams; solo
+students show it by seeking and using feedback from the instructor and
+classmates.</td>
+<td>Contributes consistently and responds to others’ input (solo: acts
+on most feedback).</td>
+<td>Contributes unevenly, or responds to input only when asked.</td>
+<td>Little evidence of working with others or using feedback.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Knowledge of Cultural
+Frameworks<br />
+(5%)</strong></td>
+<td>Demonstrates sophisticated understanding of the complexity of
+elements important to members of another culture in relation to its
+history, values, politics, communication styles, economy, or beliefs and
+practices.</td>
+<td>Shows adequate understanding of elements important to members of
+another culture.</td>
+<td>Shows partial understanding of elements important to members of
+another culture.</td>
+<td>Shows only surface understanding.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Openness to Cultural
+Differences<br />
+(5%)</strong></td>
+<td>Demonstrates openness to the diverse population of students in STC
+programs, collaboratively and professionally communicates with team
+members to form a collective decision and provide resolutions to the
+challenges that arise. Solo: shown through engagement in class
+discussions and the users the system is designed for.</td>
+<td>Communicates respectfully and works toward shared decisions (solo:
+engages with different perspectives in discussions and in the system’s
+users).</td>
+<td>Open to differences when prompted, with limited effect on
+decisions.</td>
+<td>Shows little openness to different perspectives.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>TP03 System v1.0 Rubric (40 points) CO5</strong></p>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><em><strong>Criteria</strong></em></th>
+<th style="text-align: center;"><em><strong>% of
+Grade</strong></em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Environment</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Architecture</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Execution Guide (README.md)</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Security &amp; Configuration (.gitignore, .env)</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Git Workflow &amp; Collaboration</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>TOTAL</strong></td>
+<td style="text-align: center;">100%</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><strong>Criteria</strong></th>
+<th style="text-align: center;"><strong>Exceeds Standard</strong></th>
+<th style="text-align: center;"><strong>At Standard</strong></th>
+<th style="text-align: center;"><strong>Approaching
+Standard</strong></th>
+<th style="text-align: center;"><strong>Below Standard</strong></th>
+</tr>
+<tr>
+<th style="text-align: center;"><strong>Overall Score
+Range</strong></th>
+<th style="text-align: center;"><strong>100–92%</strong></th>
+<th style="text-align: center;"><strong>91–75%</strong></th>
+<th style="text-align: center;"><strong>74–62%</strong></th>
+<th style="text-align: center;"><strong>61–0%</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Environment<br />
+(20%)</strong></td>
+<td>Reproducibility &amp; one-click launch: a grader or peer opens it
+locally or in GitHub Codespaces, follows simple terminal instructions,
+and runs the full system without hunting for missing dependencies.</td>
+<td>Runs fully, with one minor missing step or dependency.</td>
+<td>Runs only after significant fixes, or only part of the system
+runs.</td>
+<td>Doesn’t run, or no reproducible setup.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Architecture<br />
+(20%)</strong></td>
+<td>Modular engineering structure: clean separation of concerns (for
+example /agents, /tools, /mcp_server, /evals, /tests) that reflects the
+agent, tool and evaluation pipeline, with all combined AIC pieces
+working together.</td>
+<td>Clean structure with minor tangles.</td>
+<td>Partly modular; some pieces mixed together or left in the root
+folder.</td>
+<td>Scripts dumped in the root folder.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Execution Guide
+(README.md)<br />
+(20%)</strong></td>
+<td>Documentation &amp; transparency: clear prerequisites, setup and run
+commands, a final architecture diagram or ASCII flow, and an explicit AI
+Tool Disclosure listing all LLMs, agent frameworks (Google ADK), MCP
+servers and coding agents (Google Antigravity) used.</td>
+<td>Covers all of these; one is thin.</td>
+<td>Missing one of: the run commands, the diagram, the AI Tool
+Disclosure.</td>
+<td>README missing, or not usable to run the system.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Security &amp; Configuration
+(.gitignore, .env)<br />
+(20%)</strong></td>
+<td>Secrets management &amp; hygiene: no committed API keys or
+credentials, a complete .env.example, and a comprehensive .gitignore
+(data dumps, venv/, .DS_Store, caches).</td>
+<td>No committed keys; minor gaps in the .gitignore or
+.env.example.</td>
+<td>No committed keys, but generated files or caches are tracked.</td>
+<td>A key or credential is committed.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Git Workflow &amp;
+Collaboration<br />
+(20%)</strong></td>
+<td>Balanced, sustained activity: an active commit history across all
+three phases. In a group, every member contributes code, reviews PRs, or
+handles releases; solo, commits are steady across the term. Not a single
+monolithic push before the deadline.</td>
+<td>Sustained activity with minor gaps.</td>
+<td>Long gaps, or most work in one push; or uneven contribution in a
+group.</td>
+<td>A single monolithic push before the deadline, or a group member with
+no contribution.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>TP03 Final Presentation (20 points) CO3</strong></p>
 <p>In an advanced engineering course, technical competence alone does
 not make a successful engineer. A team slide deck presentation is
 required. We assume that each presenter will have 15 minutes for the
@@ -1175,77 +1497,123 @@ the demo.</p></li>
 <li><p>The presentation should not be a copy of the contents from your
 report. The content must be edited for presentation, not
 report.</p></li>
-<li><p>The final presentation slide - “AI420 TP T0X <em>Presentation
+<li><p>The final presentation slide - “AI420 <em>TP T0X Presentation
 Author1 Author2 Author3.pptx</em>”  </p></li>
 </ul>
 <div class="table-wrap" tabindex="0"><table class="syl">
 <colgroup>
-<col style="width: 16%" />
-<col style="width: 63%" />
-<col style="width: 20%" />
+<col style="width: 33%" />
+<col style="width: 17%" />
 </colgroup>
 <thead>
 <tr>
-<th style="text-align: center;"><em><strong>Criteria</strong> </em></th>
-<th style="text-align: center;"><em><strong>Outcome</strong></em></th>
-<th style="text-align: center;"><em><strong>% </strong> </em></th>
+<th><em><strong>Criteria</strong></em></th>
+<th style="text-align: center;"><em><strong>% of
+Grade</strong></em></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Structure  </td>
-<td><ul>
-<li><p>Assess whether the team can organize a technical engineering
-defense logically and respect strict operational time
-constraints.</p></li>
-<li><p>Strict 15-minute adherence, balanced time allocation, logical
-engineering narrative from problem to benchmarks.</p></li>
-</ul></td>
-<td style="text-align: center;">20%<strong> </strong> </td>
+<td>Structure</td>
+<td style="text-align: center;">20%</td>
 </tr>
 <tr>
-<td><p>Visual</p>
-<p>Presentation  </p></td>
-<td><ul>
-<li><p>Evaluate how well slides communicate complex AI system
-architectures and empirical results without cognitive overload.</p></li>
-<li><p>Clear, detailed agent architecture and orchestration schematics,
-legible quantitative charts/tables, no text walls.</p></li>
-</ul></td>
-<td style="text-align: center;">30%<strong> </strong> </td>
+<td>Visual / Presentation</td>
+<td style="text-align: center;">30%</td>
 </tr>
 <tr>
-<td>Verbal Quality &amp; Engagement  </td>
-<td><ul>
-<li><p>Measure individual and collective mastery of advanced AI
-terminology, poise under scrutiny, and clarity of technical
-explanation.</p></li>
-<li><p>Flawless technical terminology, professional and script-free
-delivery, rigorous and evidence-backed 5-minute Q&amp;A
-defense.</p></li>
-</ul></td>
-<td style="text-align: center;">30%<strong> </strong> </td>
+<td>Verbal Quality &amp; Engagement</td>
+<td style="text-align: center;">30%</td>
 </tr>
 <tr>
-<td>Team Collaboration  </td>
-<td><ul>
-<li><p>Verify equitable distribution of effort, joint technical command,
-and cohesive system integration across all team members (solo: full
-command of every part of the system).</p></li>
-<li><p>An even speaking split, smooth narrative transitions, unified
-slide design, and every member fielding panel questions (solo: you
-answer every question).</p></li>
-</ul></td>
-<td style="text-align: center;">20%<strong> </strong> </td>
+<td>Team Collaboration</td>
+<td style="text-align: center;">20%</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong>TOTAL</strong> </td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">100%<strong> </strong> </td>
+<td style="text-align: center;"><strong>TOTAL</strong></td>
+<td style="text-align: center;">100%</td>
 </tr>
 </tbody>
 </table></div>
-<p>Demo Video (1-2 Minutes)</p>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><strong>Criteria</strong></th>
+<th style="text-align: center;"><strong>Exceeds Standard</strong></th>
+<th style="text-align: center;"><strong>At Standard</strong></th>
+<th style="text-align: center;"><strong>Approaching
+Standard</strong></th>
+<th style="text-align: center;"><strong>Below Standard</strong></th>
+</tr>
+<tr>
+<th style="text-align: center;"><strong>Overall Score
+Range</strong></th>
+<th style="text-align: center;"><strong>100–92%</strong></th>
+<th style="text-align: center;"><strong>91–75%</strong></th>
+<th style="text-align: center;"><strong>74–62%</strong></th>
+<th style="text-align: center;"><strong>61–0%</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Structure<br />
+(20%)</strong></td>
+<td>Organizes a technical engineering defense logically within the
+strict 15-minute limit, with balanced time allocation and a clear
+narrative from problem to solution.</td>
+<td>A logical narrative within the time limit; time allocation slightly
+uneven.</td>
+<td>Runs over or under, or the narrative jumps around.</td>
+<td>Disorganized, or far outside the time limit.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Visual / Presentation<br />
+(30%)</strong></td>
+<td>Slides communicate the AI system architecture and empirical results
+without cognitive overload: clear pipeline schematics, legible charts
+and tables, no text walls.</td>
+<td>Clear slides, with a few dense or hard-to-read ones.</td>
+<td>Several text-heavy slides, or the architecture or results are hard
+to follow.</td>
+<td>The slides don’t communicate the system or the results.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Verbal Quality &amp;
+Engagement<br />
+(30%)</strong></td>
+<td>Mastery of AI terminology, poise under scrutiny, and clear technical
+explanation: professional, script-free delivery and an evidence-backed
+Q&amp;A defense.</td>
+<td>Accurate terminology and clear explanations; Q&amp;A answers mostly
+backed by evidence.</td>
+<td>Reads from the slides or a script, or struggles with several
+questions.</td>
+<td>Inaccurate terminology, or can’t answer questions.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Team Collaboration<br />
+(20%)</strong></td>
+<td>Equitable distribution of effort, joint technical command and
+cohesive integration: balanced speaking time, smooth transitions,
+unified slide design, and every member fielding questions. Solo: full
+command of every part of the system, and you answer every question.</td>
+<td>Mostly balanced, with minor unevenness in speaking or answering
+(solo: answers most questions with command).</td>
+<td>One member dominates, or the slides feel stitched together (solo:
+gaps in command of parts of the system).</td>
+<td>Members can’t speak to each other’s parts (solo: can’t explain major
+parts of the system).</td>
+</tr>
+</tbody>
+</table></div>
+<p>TP03 Demo Video (1-2 Minutes, 10 points) CO5</p>
 <p>Requiring a short YouTube demo serves as proof of functional
 execution and concise technical communication:</p>
 <ul>
@@ -1279,165 +1647,272 @@ tools.</p></li>
 </ul>
 <div class="table-wrap" tabindex="0"><table class="syl">
 <colgroup>
-<col style="width: 23%" />
-<col style="width: 56%" />
+<col style="width: 27%" />
 <col style="width: 20%" />
 </colgroup>
 <thead>
 <tr>
-<th style="text-align: center;"><em><strong>Criteria</strong> </em></th>
-<th style="text-align: center;"><em><strong>Outcome</strong></em></th>
-<th style="text-align: center;"><em><strong>%</strong></em></th>
+<th><em><strong>Criteria</strong></em></th>
+<th style="text-align: center;"><em><strong>% of
+Grade</strong></em></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Functionality</td>
-<td><ul>
-<li><p>Clear demonstration of the primary deliverable</p></li>
-</ul></td>
 <td style="text-align: center;">30%</td>
 </tr>
 <tr>
 <td>Structure</td>
-<td><ul>
-<li><p>Strictly conforms to 60–120 seconds with correct title info and
-logical progression from problem to solution.</p></li>
-</ul></td>
 <td style="text-align: center;">20%</td>
 </tr>
 <tr>
 <td>Verbal Communication</td>
-<td><ul>
-<li><p>Shows a live, interactive UI, not just static code slides, and
-explains <em>why</em> and <em>how</em>, not just clicking through
-screens.</p></li>
-</ul></td>
 <td style="text-align: center;">20%</td>
 </tr>
 <tr>
 <td>Production Quality</td>
-<td><ul>
-<li><p>Clear screen recording, smooth transitions, and no time wasted on
-slow loading screens</p></li>
-</ul></td>
 <td style="text-align: center;">20%</td>
 </tr>
 <tr>
-<td>Collaboration </td>
-<td><ul>
-<li><p>Brief title card listing affiliation and individual contributions
-of team members (solo: your name).</p></li>
-</ul></td>
+<td>Collaboration</td>
 <td style="text-align: center;">10%</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>TOTAL</strong></td>
-<td></td>
-<td style="text-align: center;"><strong>100%</strong></td>
+<td style="text-align: center;">100%</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Instructor-Determined Assignments (20% of Final
-Grade)</strong></p>
 <div class="table-wrap" tabindex="0"><table class="syl">
 <colgroup>
-<col style="width: 23%" />
-<col style="width: 10%" />
-<col style="width: 66%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: center;"><strong>Category</strong></th>
-<th style="text-align: center;"><strong>Weight</strong></th>
-<th style="text-align: center;"><strong>What It Covers</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">The Muddiest Point (MP)</td>
-<td style="text-align: center;"><strong>5%</strong></td>
-<td>A short reflection identifying the most confusing part of that
-week's HOS content, submitted before the week's HOS begins. (Usually by
-Wednesday midnight)</td>
-</tr>
-<tr>
-<td style="text-align: center;">Concept Debate (CD)</td>
-<td style="text-align: center;"><strong>5%</strong></td>
-<td>A structured, staged discussion-board activity connecting that
-week's concepts.</td>
-</tr>
-<tr>
-<td style="text-align: center;">Knowledge Check (KC)</td>
-<td style="text-align: center;"><strong>10%</strong></td>
-<td>Weekly quizzes measure knowledge concepts required for HOS.</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>The Muddiest Point (MP) - Grading Criteria</strong></p>
-<p>Before starting each module, students are required to submit the
-Muddiest Point (MP) activity. The purpose of this activity is to
-stimulate student engagement. The instructor uses the MP to assess how
-students understood each module’s HOS and its required readings. The
-instructor also uses the MP to customize the lecture scope to implement
-Just-in-Time Teaching (JiTT).</p>
-<p>The MP consists of four short fields:</p>
-<ol type="1">
-<li><p><strong>What you were doing</strong> right before you got
-confused (the specific concept, video timestamp, or line of the
-guide).</p></li>
-<li><p><strong>The exact place you got stuck</strong> — not "I don't get
-agents," but "I don't understand why ADK sends the tool's result back to
-the model before the agent answers."</p></li>
-<li><p><strong>What you already tried</strong> — re-reading, a specific
-search, asking a classmate — before submitting.</p></li>
-<li><p><em>Optional:</em> your best guess at the answer, even if you
-think it's wrong.</p></li>
-</ol>
-<div class="table-wrap" tabindex="0"><table class="syl">
-<colgroup>
-<col style="width: 17%" />
-<col style="width: 62%" />
-<col style="width: 19%" />
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: center;"><strong>Criteria</strong></th>
-<th
-style="text-align: center;"><em><strong>Description</strong></em></th>
-<th style="text-align: center;"><em><strong>%</strong></em></th>
+<th style="text-align: center;"><strong>Exceeds Standard</strong></th>
+<th style="text-align: center;"><strong>At Standard</strong></th>
+<th style="text-align: center;"><strong>Approaching
+Standard</strong></th>
+<th style="text-align: center;"><strong>Below Standard</strong></th>
+</tr>
+<tr>
+<th style="text-align: center;"><strong>Overall Score
+Range</strong></th>
+<th style="text-align: center;"><strong>100–92%</strong></th>
+<th style="text-align: center;"><strong>91–75%</strong></th>
+<th style="text-align: center;"><strong>74–62%</strong></th>
+<th style="text-align: center;"><strong>61–0%</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;">Participation</td>
-<td>Submitted on time, addresses a genuine point of confusion</td>
-<td style="text-align: center;">80%<strong> </strong></td>
+<td style="text-align: center;"><strong>Functionality<br />
+(30%)</strong></td>
+<td>Clear demonstration of the primary deliverable working end to
+end.</td>
+<td>The primary deliverable is shown working, with a minor gap.</td>
+<td>Only part of the system is shown working.</td>
+<td>The system isn’t shown working.</td>
 </tr>
 <tr>
-<td style="text-align: center;">Writing</td>
-<td>Clear, specific, not generic</td>
-<td style="text-align: center;">20% </td>
+<td style="text-align: center;"><strong>Structure<br />
+(20%)</strong></td>
+<td>Strictly conforms to 60–120 seconds with correct title information
+and a logical progression from problem to solution.</td>
+<td>Within 60–120 seconds, with a minor issue in the title information
+or flow.</td>
+<td>Outside the time limit, or the title information is missing.</td>
+<td>Far outside the limit and disorganized.</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong>TOTAL</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"><strong>100%</strong> </td>
+<td style="text-align: center;"><strong>Verbal Communication<br />
+(20%)</strong></td>
+<td>Shows a live, interactive UI, not just static code slides, and
+explains why and how, not just clicking through screens.</td>
+<td>A live UI with explanation, with a few stretches of just clicking
+through.</td>
+<td>Mostly clicking through, or mostly static slides or code.</td>
+<td>No live UI and no explanation.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Production Quality<br />
+(20%)</strong></td>
+<td>Clear screen recording, smooth transitions, and no time wasted on
+slow loading screens.</td>
+<td>A clear recording, with a few rough transitions or a short
+wait.</td>
+<td>Hard to see or hear in places, or long waits left in.</td>
+<td>The recording is unclear throughout.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Collaboration<br />
+(10%)</strong></td>
+<td>A brief title card listing affiliation and the individual
+contributions of team members (solo: your name).</td>
+<td>Title card present, with a minor omission.</td>
+<td>Title card is missing the affiliation or the contributions.</td>
+<td>No title card.</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Concept Debate (CD) – Grading Criteria</strong></p>
+<p><strong>TP Interview (individual, 200 points) CO1</strong></p>
+<p>In Week 9 or Week 10, each student has a 15-minute, one-on-one
+interview with the instructor about their Term Project, run like a
+technical job interview rather than a presentation. There are no slides:
+the instructor leads with questions, and the student answers with the
+running system, the repository and the traces open. Students in a team
+are interviewed and scored individually, on their own answers.</p>
+<p>The interview has six stages: a 60-second pitch, a deep dive tracing
+one request through the system, design trade-offs, a debugging scenario,
+ownership and AI use, and the student’s own questions. Sign-up slots are
+posted at the start of Week 9. AI assistants may not be used during the
+interview. Students with approved accommodations may request extra time
+or another format.</p>
+<p>A missing interview earns 0 points. Each criterion is scored at its
+level’s midpoint (96%, 83%, 68% or 30%) unless the notes clearly put it
+higher or lower in the band.</p>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;"><em>Criteria</em></th>
+<th style="text-align: left;"><em>% of Grade</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Technical Understanding</td>
+<td style="text-align: left;">25%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Design Reasoning</td>
+<td style="text-align: left;">25%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Debugging &amp; Problem Solving</td>
+<td style="text-align: left;">20%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ownership &amp; AI Transparency</td>
+<td style="text-align: left;">15%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Professional Communication</td>
+<td style="text-align: left;">15%</td>
+</tr>
+<tr>
+<td style="text-align: left;">Total</td>
+<td style="text-align: left;">100%</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-wrap" tabindex="0"><table class="syl">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 29%" />
+<col style="width: 20%" />
+<col style="width: 19%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Criteria</th>
+<th style="text-align: left;">Exceeds Standard 100–92%</th>
+<th style="text-align: left;">At Standard 91–75%</th>
+<th style="text-align: left;">Approaching Standard 74–62%</th>
+<th style="text-align: left;">Below Standard 61–0%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Technical Understanding (25%)</td>
+<td style="text-align: left;">Traces a request end to end without notes,
+through the coordinator and sub-agents, their tools and MCP server,
+memory and the recorded trace; names the actual files and functions and
+explains why each step happens in that order.</td>
+<td style="text-align: left;">Traces the request correctly with minor
+gaps, and points to the right code when asked.</td>
+<td style="text-align: left;">Describes the components but not how a
+request moves between them, or needs the README to find the code.</td>
+<td style="text-align: left;">Cannot explain how the system works, or
+the explanation contradicts the code.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Design Reasoning (25%)</td>
+<td style="text-align: left;">Justifies key decisions against stated
+criteria (cost, latency, reliability, safety), names the rejected
+alternative, and predicts what would break first under change.</td>
+<td style="text-align: left;">Justifies decisions with a reason and an
+alternative considered; the prediction under change is reasonable but
+general.</td>
+<td style="text-align: left;">Gives reasons such as “it was in the
+guide” or “the AI suggested it”, with no alternatives.</td>
+<td style="text-align: left;">Cannot say why the system is built the way
+it is.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Debugging &amp; Problem Solving (20%)</td>
+<td style="text-align: left;">Given a failure scenario, forms a
+hypothesis, names the first place to look (log, trace, eval result,
+test) and narrows it systematically; reads a live trace or log
+confidently.</td>
+<td style="text-align: left;">Finds a sensible starting point and
+reasons toward the cause, with some prompting.</td>
+<td style="text-align: left;">Guesses, or jumps to rewriting code
+without first locating the fault.</td>
+<td style="text-align: left;">Has no approach to the failure, even with
+hints.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ownership &amp; AI Transparency (15%)</td>
+<td style="text-align: left;">States clearly which parts they built,
+which the AI generated and what they changed by hand, matching the
+commits and the AI Tool Disclosure; knows a teammate’s part well enough
+to work on it.</td>
+<td style="text-align: left;">Ownership and AI use are clear and
+consistent with the repository; knowledge of teammates’ parts is
+partial.</td>
+<td style="text-align: left;">Vague about what they built or what the AI
+wrote, or answers do not fully match the commit history.</td>
+<td style="text-align: left;">Cannot explain code they are credited
+with, or claims do not match the repository.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Professional Communication (15%)</td>
+<td style="text-align: left;">A crisp 60-second pitch; concise,
+structured answers; asks clarifying questions, handles “I don’t know”
+honestly and asks a thoughtful question back.</td>
+<td style="text-align: left;">Clear pitch and answers, with occasional
+rambling; asks a question back.</td>
+<td style="text-align: left;">Answers are hard to follow, or the pitch
+becomes a feature list or a scripted presentation.</td>
+<td style="text-align: left;">Mostly unable to communicate the work, or
+reads from a script.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Concept Debate (10% of Final Grade) CO1, CO3</strong></p>
 <p>Students engage in a structured discussion of their reasoning with
-classmates. Each HOS comes with a Concept Debate question, already
-provided in the course, rooted in HOS’s key concepts. Each question has
-two defensible sides, and students consider both before taking a
-position.</p>
+classmates. Each week comes with a Concept Debate question, already
+provided in the course, rooted in that week’s key concepts: Debate A in
+the first week of each AIC, on the module’s core idea (CO1); Debate B in
+the second week, on a design trade-off (CO3); and integration debates in
+Weeks 9–10 (CO3). Each question has two defensible sides, and students
+consider both before taking a position.</p>
 <p>Before the first debate, each student joins one of two groups. The
 instructor may assign students, or they may choose a group, as long as
 the groups remain roughly equal in size. The groups alternate between
 arguing Side A and Side B in successive debates.</p>
-<p>In the first week of each HOS, students complete a three-stage
-response sequence:</p>
+<p>Each week, students complete a three-stage response sequence:</p>
 <ol type="1">
 <li><p><strong>Initial position (assigned side):</strong> Present a
 clear argument for the side your debate group is assigned, using a
@@ -1455,72 +1930,96 @@ points, I agree.”</p></li>
 <div class="table-wrap" tabindex="0"><table class="syl">
 <colgroup>
 <col style="width: 17%" />
-<col style="width: 62%" />
 <col style="width: 19%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: center;"><strong>Criteria</strong></th>
-<th
-style="text-align: center;"><em><strong>Description</strong></em></th>
-<th style="text-align: center;"><em><strong>%</strong></em></th>
+<th style="text-align: center;"><em><strong>% of
+Grade</strong></em></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: center;">Participation</td>
-<td>Initial position plus response to at least one peer</td>
-<td style="text-align: center;">50%<strong> </strong></td>
+<td style="text-align: center;">60%<strong> </strong></td>
 </tr>
 <tr>
 <td style="text-align: center;">Writing</td>
-<td>Quality of argument and reasoning</td>
-<td style="text-align: center;">50% </td>
+<td style="text-align: center;">40% </td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>TOTAL</strong></td>
-<td style="text-align: center;"></td>
 <td style="text-align: center;"><strong>100%</strong> </td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Knowledge Check (KC)</strong><br />
-Weekly quizzes assess your understanding of key concepts learned through
-HOSs. Emphasize grasping underlying principles over rote memorization
-when preparing for the quizzes. Each question has a 90-second time
-limit, simulating the pace of industry certification exams.</p>
-<p>Students are required to adhere to the honor code, which strictly
-prohibits the use of AI assistants. You may retake each exam as many
-times as needed, and a passing score is set at 80%. After every attempt,
-you will receive feedback on any questions answered incorrectly to help
-guide your learning.</p>
 <div class="table-wrap" tabindex="0"><table class="syl">
 <colgroup>
-<col style="width: 17%" />
-<col style="width: 62%" />
-<col style="width: 19%" />
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: center;"><strong>Criteria</strong></th>
-<th
-style="text-align: center;"><em><strong>Description</strong></em></th>
-<th style="text-align: center;"><em><strong>%</strong></em></th>
+<th style="text-align: center;"><strong>Exceeds Standard</strong></th>
+<th style="text-align: center;"><strong>At Standard</strong></th>
+<th style="text-align: center;"><strong>Approaching
+Standard</strong></th>
+<th style="text-align: center;"><strong>Below Standard</strong></th>
+</tr>
+<tr>
+<th style="text-align: center;"><strong>Overall Score
+Range</strong></th>
+<th style="text-align: center;"><strong>100–92%</strong></th>
+<th style="text-align: center;"><strong>91–75%</strong></th>
+<th style="text-align: center;"><strong>74–62%</strong></th>
+<th style="text-align: center;"><strong>61–0%</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;">Correctness </td>
-<td>The correct answers are only counted.</td>
-<td style="text-align: center;">100%<strong> </strong></td>
+<td style="text-align: center;"><strong>Participation<br />
+(60%)</strong></td>
+<td>All three stages posted on time (initial position for the assigned
+side, the opposite side, a synthesis in reply to a classmate).</td>
+<td>All three stages posted; one is a few hours late.</td>
+<td>One stage is a day or more late, or one stage is missing.</td>
+<td>Two or more stages late or missing, or no posts.</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong>TOTAL</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"><strong>100%</strong> </td>
+<td style="text-align: center;"><strong>Writing<br />
+(40%)</strong></td>
+<td>Stage 1 makes a specific claim with evidence; Stage 2 is a genuine
+best case for the other side; Stage 3 cites a classmate’s specific point
+and states a real synthesis.</td>
+<td>All three stages are specific; one is thinner than the others.</td>
+<td>One or more stages is a summary or generic.</td>
+<td>Generic throughout: a summary, a one-liner, or “great points, I
+agree.”</td>
 </tr>
 </tbody>
 </table></div>
+<p><strong>Knowledge Check (10% of Final Grade) CO1, CO3</strong></p>
+<p>Weekly quizzes assess your understanding of key concepts learned
+through the AICs. Emphasize grasping underlying principles over rote
+memorization when preparing for the quizzes. Each question has a
+90-second time limit, simulating the pace of industry certification
+exams.</p>
+<p>There are ten Knowledge Checks, one per week, worth 10 points each.
+In each AIC, the first-week check covers theory: the concepts from the
+lecture and readings (CO1). The second-week check covers skills: reading
+code, logs, and outputs like those in the build (CO3). The Week 9 and
+Week 10 checks are cumulative.</p>
+<p>Students are required to adhere to the honor code, which strictly
+prohibits the use of AI assistants. You may retake each Knowledge Check
+as many times as needed, and your highest score counts. Each question is
+worth 2 points, for 10 points per check, and is scored automatically.
+After every attempt, you will receive feedback on any questions answered
+incorrectly to help guide your learning.</p>
 <h2 id="course-policies"><strong>Course Policies</strong></h2>
 <p>Course policies on topics such as <em>Late Assignments,
 Participation,</em> and <em>Professional Writing</em> are found under

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>CityUx Gate 0 Workshops</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --slate: #475569;
+      --slate-light: #94a3b8;
+      --card: #ffffff;
+      --bg: #f1f5f9;
+      --border: rgba(15,23,42,0.08);
+      --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 8px 32px rgba(15,23,42,0.07);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --red: #dc2626;
+      --red-dim: #fef2f2;
+      --green: #16a34a;
+      --green-dim: #f0fdf4;
+      --blue: #1d4ed8;
+      --blue-dim: #eff6ff;
+      --violet: #7c3aed;
+      --violet-dim: #f5f3ff;
+      --amber: #d97706;
+      --amber-dim: #fffbeb;
+      --teal: #0d9488;
+      --teal-dim: #f0fdfa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 16px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; padding: 28px 20px 100px; }
+
+    .nav-row { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 24px; font-size: 0.88rem; }
+    .nav-row a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .nav-row a:hover { text-decoration: underline; }
+    .nav-sep { color: var(--slate-light); }
+
+    .doc-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px 32px 24px; box-shadow: var(--shadow);
+      border: 1px solid var(--border); border-left: 5px solid var(--blue);
+      margin-bottom: 32px;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .doc-header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; }
+    .doc-header .subtitle { color: var(--slate); font-size: 0.95rem; margin: 0 0 18px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; font-weight: 600; }
+    .meta-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--slate); }
+
+    .toc {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 32px; box-shadow: var(--shadow);
+    }
+    .toc h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+    }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+    .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .section-header h2 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header .section-sub { font-size: 0.82rem; color: var(--slate); margin-top: 2px; }
+    .section-body { padding: 20px 24px; }
+
+    .icon-violet { background: var(--violet-dim); }
+    .icon-blue { background: var(--blue-dim); }
+    .icon-amber { background: var(--amber-dim); }
+    .icon-teal { background: var(--teal-dim); }
+    .icon-green { background: var(--green-dim); }
+    .icon-red { background: var(--red-dim); }
+
+    .point { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .point:last-child { border-bottom: none; padding-bottom: 0; }
+    .point:first-child { padding-top: 0; }
+    .point-label { flex-shrink: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; height: fit-content; margin-top: 2px; white-space: nowrap; }
+    .point-body { font-size: 0.92rem; color: var(--ink); }
+    .point-body strong { font-weight: 700; }
+    .lbl-blue { background: var(--blue-dim); color: var(--blue); }
+    .lbl-red  { background: var(--red-dim);  color: var(--red);  }
+    .lbl-green { background: var(--green-dim); color: var(--green); }
+    .lbl-amber { background: var(--amber-dim); color: var(--amber); }
+    .lbl-violet { background: var(--violet-dim); color: var(--violet); }
+    .lbl-teal { background: var(--teal-dim); color: var(--teal); }
+
+    .callout { border-radius: var(--radius-sm); padding: 14px 18px; font-size: 0.88rem; border: 1px solid transparent; line-height: 1.55; }
+    .callout-violet { background: var(--violet-dim); border-color: #c4b5fd; color: #4c1d95; }
+    .callout-amber  { background: var(--amber-dim);  border-color: #fde68a; color: #92400e; }
+    .callout-teal   { background: var(--teal-dim);   border-color: #99f6e4; color: #115e59; }
+    .callout-green  { background: var(--green-dim);  border-color: #86efac; color: #14532d; }
+    .callout-blue   { background: var(--blue-dim);   border-color: #bfdbfe; color: #1e3a8a; }
+    .callout strong { font-weight: 700; }
+    .mt16 { margin-top: 16px; }
+
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+    .module-card { border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 14px 16px; background: var(--bg); }
+    .module-card .module-name { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .module-card .module-desc { font-size: 0.84rem; color: var(--slate); line-height: 1.45; }
+
+    .link-list { margin: 0; padding: 0; list-style: none; }
+    .link-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .link-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .link-list a { color: var(--blue); text-decoration: none; font-weight: 600; word-break: break-word; }
+    .link-list a:hover { text-decoration: underline; }
+    .link-list .link-desc { display: block; color: var(--slate); font-size: 0.84rem; margin-top: 2px; font-weight: 400; }
+
+    .action-list { margin: 0; padding: 0; list-style: none; }
+    .action-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .action-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .action-item:first-child { padding-top: 0; }
+    .action-check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-dim); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; margin-top: 1px; }
+    .action-body { font-size: 0.92rem; }
+    .qa { margin: 0; padding-left: 20px; }
+    .qa > li { margin-bottom: 18px; font-size: 0.92rem; }
+    .qa > li > strong.q { display: block; font-size: 0.95rem; margin-bottom: 6px; }
+    .qa ul { margin: 0; padding-left: 18px; }
+    .qa ul li { margin-bottom: 6px; }
+    .fill { background: #fef9c3; border: 1px dashed #ca8a04; border-radius: 4px; padding: 0 4px; color: #713f12; }
+    .copy-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .copy-btn { font: inherit; font-size: 0.85rem; font-weight: 700; background: var(--blue); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+    .copy-btn:hover { background: #1e40af; }
+    .copy-status { font-size: 0.82rem; color: var(--green); font-weight: 600; min-height: 1em; }
+    table.map { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    table.map th, table.map td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    table.map th { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+    .table-wrap { overflow-x: auto; }
+    @media (max-width: 600px) { .doc-header, .section-body { padding-left: 16px; padding-right: 16px; } .point { flex-direction: column; gap: 6px; } }
+      .lead { font-size: 0.95rem; margin: 0 0 14px; }
+    .note { font-size: 0.86rem; color: var(--slate); margin: 14px 0 0; }
+    .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+    .pill-green { background: var(--green-dim); color: #15803d; }
+    .pill-blue { background: var(--blue-dim); color: var(--blue); }
+    .pill-amber { background: var(--amber-dim); color: #b45309; }
+    .pill-gray { background: #f1f5f9; color: #475569; }
+    .quad-wrap { overflow-x: auto; }
+    .quad-svg { width: 100%; min-width: 520px; height: auto; display: block; }
+    .quad-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 12px; font-size: 0.84rem; color: var(--slate); }
+    @media (max-width: 600px) { .quad-legend { grid-template-columns: 1fr; } }
+    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+    table.seg { min-width: 900px; }
+    table.seg td:nth-child(7), table.seg td:nth-child(8) { text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .seg-card { border: 1px solid var(--border); border-left: 5px solid var(--green); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; }
+    .seg-card.c-amber { border-left-color: var(--amber); }
+    .seg-card h3 { margin: 0 0 8px; font-size: 1rem; font-weight: 800; }
+    .kv > div { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 0.87rem; }
+    .kv > div > span { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); padding-top: 2px; }
+    @media (max-width: 600px) { .kv > div { grid-template-columns: 1fr; gap: 2px; } }
+    .table-wrap:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+  
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    @media (max-width: 700px) { .stat-grid { grid-template-columns: 1fr 1fr; } }
+    .stat { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+    .stat-num { font-size: 1.5rem; font-weight: 900; color: var(--blue); line-height: 1.1; }
+    .stat-lbl { font-size: 0.78rem; color: var(--slate); margin-top: 4px; line-height: 1.35; }
+    .h3 { font-size: 0.95rem; font-weight: 800; margin: 0 0 6px; }
+    .small { font-size: 0.88rem; margin: 0 0 10px; }
+    ol.tight, ul.tight { margin: 0; padding-left: 20px; font-size: 0.87rem; }
+    ol.tight li, ul.tight li { margin-bottom: 5px; }
+    .copy-card { border: 1px dashed #93c5fd; background: #f8fbff; border-radius: var(--radius-sm); padding: 14px 16px; font-size: 0.88rem; }
+    .copy-card p { margin: 0 0 8px; }
+    .copy-card .module-name { color: var(--blue); }
+    .free-toggle { font-size: 0.88rem; display: flex; gap: 8px; align-items: center; }
+    .checker { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; background: var(--bg); }
+    .checker label { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 0.85rem; padding: 5px 0; }
+    .checker input { width: 84px; font: inherit; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: right; }
+    .checker input:focus-visible, .free-toggle input:focus-visible { outline: 3px solid #93c5fd; outline-offset: 1px; }
+    .verdict { margin-top: 10px; font-size: 0.85rem; font-weight: 600; border-radius: 6px; padding: 8px 10px; }
+    .verdict.pass { background: var(--green-dim); color: #14532d; border: 1px solid #86efac; }
+    .verdict.extend { background: var(--amber-dim); color: #92400e; border: 1px solid #fde68a; }
+    .verdict.stop { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    table.budget td:nth-child(2) { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+    table.budget tr.total td { font-weight: 900; border-top: 2px solid var(--ink); }
+
+    .src { display: inline-block; font-size: 0.66rem; font-weight: 700; line-height: 1.5; letter-spacing: 0.02em; padding: 0 7px; margin: 0 1px 0 4px; border-radius: 10px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; text-decoration: none; vertical-align: 1px; white-space: nowrap; }
+    .src::after { content: " \2197"; }
+    .src:hover { background: #dbeafe; text-decoration: none; }
+    .src:focus-visible { outline: 3px solid #93c5fd; outline-offset: 1px; }
+    .src.sec { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+    .src.sec:hover { background: #fef3c7; }
+    .src-legend { font-size: 0.8rem; color: var(--slate); margin: 14px 0 0; }
+    .callout-red { background: var(--red-dim); border-color: #fecaca; color: #991b1b; }
+    .prompt { background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; margin: 8px 0; font-size: 0.86rem; white-space: pre-wrap; line-height: 1.55; }
+    .prompt.script { border-left: 4px solid var(--blue); }
+    .prompt .tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 1px 8px; border-radius: 20px; margin-right: 8px; }
+    .prompt .tag.weak { background: var(--red-dim); color: #b91c1c; }
+    .prompt .tag.strong { background: var(--green-dim); color: #15803d; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav-row">
+    <a href="index.html">Home</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-hub.html">CityUx Hub</a>
+    <span class="nav-sep">›</span>
+    <a href="cityux-gate0-demand-test.html">Gate 0 Demand Test</a>
+    <span class="nav-sep">›</span>
+    <span>Gate 0 Workshops</span>
+  </nav>
+
+  <div class="doc-header">
+    <div class="eyebrow">Course Draft — CityUx</div>
+    <h1>Gate 0 Workshops: Three Free 90-Minute Sessions</h1>
+    <p class="subtitle">Draft plans for the three free online workshops in Plan B's demand test: a CityU faculty and staff pilot, a session for K-12 educators, and a session for career changers. Each one teaches one real piece of Module 1 of the free path (working name Applied AI for X), example first, and the two external sessions end with the $25 reservation offer.</p>
+    <div class="meta-row">
+      <span class="meta-chip">Draft, Nov 25, 2026</span>
+      <span class="meta-chip">Jan 13, 20 and 26, 2027</span>
+      <span class="meta-chip">90 minutes each, online</span>
+      <span class="meta-chip">Materials CC BY 4.0</span>
+    </div>
+    <p class="src-legend">Figures and claims carry source tags that open the original in a new tab: <span class="src" aria-hidden="true">Source</span> for primary sources, <span class="src sec" aria-hidden="true">Secondary</span> for summaries or roundups to confirm before quoting.</p>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#glance">The three workshops at a glance</a></li>
+      <li><a href="#module">What every workshop teaches</a></li>
+      <li><a href="#runofshow">Run of show</a></li>
+      <li><a href="#staff">Workshop 1: CityU faculty and staff pilot</a></li>
+      <li><a href="#educators">Workshop 2: K-12 educators</a></li>
+      <li><a href="#changers">Workshop 3: Career changers</a></li>
+      <li><a href="#offer">The 10-minute offer</a></li>
+      <li><a href="#logistics">People, tools and materials</a></li>
+      <li><a href="#measure">What each workshop measures</a></li>
+      <li><a href="#open">Open items before Jan 13</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section class="section" id="glance">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🗓️</div>
+      <div><h2>1 · The three workshops at a glance</h2><div class="section-sub">Same lesson, same timing, a different job in front of each audience</div></div>
+    </div>
+    <div class="section-body">
+      <p class="lead">These are the only teaching Plan B builds before the Feb 17 gate. They have two jobs: <strong>give people something useful for free</strong>, and <strong>show whether they want more enough to reserve a seat</strong>. Both external workshops use the same 90-minute plan, so their results can be compared fairly.</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Workshop overview">
+        <table class="map">
+          <thead><tr><th>When</th><th>Who</th><th>The task we teach on</th><th>How it ends</th></tr></thead>
+          <tbody>
+            <tr><td>Wed Jan 13, noon</td><td>CityU faculty and staff (internal pilot)</td><td>Turning a dense policy paragraph into a clear note for students</td><td>Feedback form. No offer; results don't count toward the gate.</td></tr>
+            <tr><td>Wed Jan 20, 4:00 pm</td><td>K-12 educators</td><td>A plain-language newsletter for families</td><td>The $25 reservation offer, plus "bring a cohort to your school"</td></tr>
+            <tr><td>Tue Jan 26, 6:00 pm</td><td>Career changers</td><td>Turning past duties into honest resume bullets for a new job</td><td>The $25 reservation offer, free for people who are out of work</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-amber mt16"><strong>These are drafts for the CityUx team and the School of Education partner to edit.</strong> Nothing here is a published course. The sample texts are invented for teaching and contain no real people or student data.</div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="section" id="module">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🧭</div>
+      <div><h2>2 · What every workshop teaches</h2><div class="section-sub">Module 1 of the free path: hand off a real task, then check it</div></div>
+    </div>
+    <div class="section-body">
+      <p class="small">The free path points learners to existing free AI courses for the basics. What CityUx adds is practice on real work. Module 1 is the smallest useful piece of that: <strong>three moves</strong> people can use the next morning.</p>
+      <div class="module-grid">
+        <div class="copy-card">
+          <div class="module-name">1 · Frame</div>
+          <p>Tell the AI what a new colleague would need: who it's for, the goal, the facts it must use, limits (length, reading level, tone), and what it must <em>not</em> make up.</p>
+        </div>
+        <div class="copy-card">
+          <div class="module-name">2 · Check</div>
+          <p>Read the result against a four-point check before using it: <strong>facts</strong> (anything changed or invented?), <strong>fit</strong> (right reader, length, level?), <strong>fairness and privacy</strong> (anyone left out, anything shared that shouldn't be?), <strong>voice</strong> (does it sound like you?).</p>
+        </div>
+        <div class="copy-card">
+          <div class="module-name">3 · Own</div>
+          <p>Fix it, then say in two sentences what you changed and why. You are responsible for anything you send. This is also a small version of the live defense in the planned $99 credential.</p>
+        </div>
+      </div>
+      <h3 class="h3 mt16">By the end, participants can</h3>
+      <ul class="tight">
+        <li>Rewrite a weak one-line request into a framed request for a task from their own job.</li>
+        <li>Find at least two planted problems in an AI draft using the four-point check.</li>
+        <li>Explain, in their own words, what they changed in a draft and why.</li>
+      </ul>
+      <p class="note">For educators, this matches the order in Washington's guidance for schools, which asks that AI use start with human inquiry and end with human reflection ("Human, AI, Human") <a class="src" href="https://ospi.k12.wa.us/student-success/resources-subject-area/human-centered-artificial-intelligence-schools" target="_blank" rel="noopener noreferrer" title="Source: OSPI, Human-Centered AI in Schools (opens in a new tab)">OSPI</a>. Say so in the educator workshop; it shows the lesson fits what their state already expects.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="section" id="runofshow">
+    <div class="section-header">
+      <div class="section-icon icon-violet">⏱️</div>
+      <div><h2>3 · Run of show</h2><div class="section-sub">90 minutes, example first, the offer only in the last 10</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Run of show">
+        <table class="map">
+          <thead><tr><th>Minutes</th><th>Segment</th><th>What happens</th></tr></thead>
+          <tbody>
+            <tr><td>0–5</td><td>Welcome</td><td>Who we are, what people will leave with, captions on, chat open. One poll: "How often do you use AI for work now?" (never, tried it, weekly, daily).</td></tr>
+            <tr><td>5–15</td><td>Example first</td><td>The host shows the weak request and its weak result, then the framed request and its better result, on the audience's task. No slides of theory before this.</td></tr>
+            <tr><td>15–30</td><td>Move 1: Frame</td><td>Name the five parts of a framed request. Participants rewrite a second weak request (from the packet) in the chat or on paper; the host reads two out.</td></tr>
+            <tr><td>30–50</td><td>Move 2: Check</td><td>Everyone gets the same AI draft with three planted problems. Five minutes alone, then the room calls them out. Reveal the answer key.</td></tr>
+            <tr><td>50–65</td><td>Move 3: Own</td><td>Breakout rooms of three (or stay in the main room): each person fixes the draft and tells the others in two sentences what they changed and why.</td></tr>
+            <tr><td>65–72</td><td>The 3D scene</td><td>A short walk through the interactive scene (a classroom or an office), asking "where would AI help here, and where must a person decide?" Skip if the Jan 13 pilot shows it isn't ready.</td></tr>
+            <tr><td>72–80</td><td>Your own task, and questions</td><td>Participants pick one task from their own week and write a framed request for it. Open questions. Share the free-path link.</td></tr>
+            <tr><td>80–90</td><td>The offer, and an exit poll</td><td>See Section 7. The workshop pilot (Jan 13) replaces this with the feedback form.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">If time runs short, cut the 3D scene first, then shorten questions. Never cut the Check exercise; it is the part people remember.</p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="section" id="staff">
+    <div class="section-header">
+      <div class="section-icon icon-green">🧪</div>
+      <div><h2>4 · Workshop 1: CityU faculty and staff pilot</h2><div class="section-sub">Wed Jan 13, noon · a dress rehearsal that also helps colleagues</div></div>
+    </div>
+    <div class="section-body">
+      <p class="small"><strong>Purpose.</strong> Test the material, the timing, the breakouts and the 3D scene before the public sessions, and collect feedback. Invite 15–30 colleagues, including a few from the School of Education and Student Services. Its numbers are kept out of the gate count.</p>
+      <h3 class="h3 mt16">Example: weak and framed requests</h3>
+      <div class="prompt"><span class="tag weak">Weak</span>Make this policy easier for students to read.</div>
+      <div class="prompt"><span class="tag strong">Framed</span>I work at a university with many adult students who study while working. Rewrite the late-work policy below as a short note to students (under 120 words, plain language, about an 8th-grade reading level, friendly but clear). Keep every rule and number exactly as written, including the exception. Don't add rules. End with who to contact.
+[policy paragraph from the packet]</div>
+      <h3 class="h3 mt16">Check exercise: the planted problems</h3>
+      <p class="small">The packet's policy says work is accepted up to 72 hours late with a 10% deduction, and that documented emergencies are handled by the instructor. The AI draft in the packet:</p>
+      <ul class="tight">
+        <li>changes "72 hours" to "three school days" (a <strong>fact</strong> change);</li>
+        <li>drops the emergency exception entirely (<strong>fairness</strong>: the students who most need it lose it);</li>
+        <li>opens with "Hey team! 🎉", which doesn't fit a policy note (<strong>voice and fit</strong>).</li>
+      </ul>
+      <h3 class="h3 mt16">Feedback form (replaces the offer)</h3>
+      <ul class="tight">
+        <li>Which segment was most useful? Which would you cut?</li>
+        <li>Where did you get lost or feel rushed?</li>
+        <li>Did the 3D scene help you think, or get in the way?</li>
+        <li>Would you send a colleague, a student or a family member to the public version? Who?</li>
+        <li>Anything you'd change before we show this to K-12 teachers or job seekers?</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="section" id="educators">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🍎</div>
+      <div><h2>5 · Workshop 2: K-12 educators</h2><div class="section-sub">Wed Jan 20, 4:00 pm · co-led with the School of Education partner</div></div>
+    </div>
+    <div class="section-body">
+      <p class="small"><strong>Title on the sign-up page:</strong> <em>Use AI Well in the Work You Already Do: A Free 90-Minute Workshop for Washington Educators.</em> After school hours, so teachers can join from their classroom.</p>
+      <div class="callout callout-red"><strong>Ground rule, said out loud at minute 2:</strong> never put a student's name, grades, IEP details or anything from a student record into an AI tool unless your district has approved that tool for student data. Washington's guidance names FERPA, COPPA and CIPA as the laws to check against <a class="src" href="https://ospi.k12.wa.us/sites/default/files/2024-06/comprehensive-ai-guidance.pdf" target="_blank" rel="noopener noreferrer" title="Source: OSPI Human-Centered AI Guidance, Version 3.0 (opens in a new tab)">OSPI</a>. Everything in today's packet is invented.</div>
+      <h3 class="h3 mt16">Example: weak and framed requests</h3>
+      <div class="prompt"><span class="tag weak">Weak</span>Write a newsletter about our science unit.</div>
+      <div class="prompt"><span class="tag strong">Framed</span>I teach 4th grade in Washington. Many of my families read English as a second language. Write a 150-word note to families about our three-week unit on wetland ecosystems. Facts to use: field trip to the county wetland on Wed Feb 10; students need boots or old shoes; permission slips are due Wed Feb 3; the trip is free. Plain language, short sentences, no idioms, warm tone, one clear ask. Use only these facts; if something is missing, leave a [blank] instead of guessing.</div>
+      <h3 class="h3 mt16">Check exercise: the planted problems</h3>
+      <ul class="tight">
+        <li>The trip date becomes "Friday, February 13" (<strong>fact</strong>).</li>
+        <li>It adds "a $15 fee covers the bus" when the trip is free (<strong>fact</strong>, and a real barrier for families).</li>
+        <li>It asks families to "pitch in and get the ball rolling", two idioms that are hard for English learners and for translation tools (<strong>fit and fairness</strong>).</li>
+      </ul>
+      <h3 class="h3 mt16">Packet tasks for "your own task"</h3>
+      <ul class="tight">
+        <li>Rewrite a reading passage at three levels for the same lesson.</li>
+        <li>Draft three feedback comments on a short invented student paragraph, then check them against your own rubric.</li>
+        <li>Turn a dense district announcement into a family-friendly note.</li>
+      </ul>
+      <p class="note">Link the OSPI classroom guide's five-level AI Scaffolding Scale in the follow-up email for teachers who want to set rules for student use <a class="src" href="https://ospi.k12.wa.us/sites/default/files/2024-06/ai-guidance_classroom-considerations.pdf" target="_blank" rel="noopener noreferrer" title="Source: OSPI, A Practical Guide for the Classroom (opens in a new tab)">OSPI</a>. Mention clock hours only as "planned, pending approval".</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="section" id="changers">
+    <div class="section-header">
+      <div class="section-icon icon-red">🧳</div>
+      <div><h2>6 · Workshop 3: Career changers</h2><div class="section-sub">Tue Jan 26, 6:00 pm · evening, for people who are working</div></div>
+    </div>
+    <div class="section-body">
+      <p class="small"><strong>Title on the sign-up page:</strong> <em>Show Employers You Can Use AI on Real Work: A Free 90-Minute Workshop from City University of Seattle.</em> The examples come from moves people make often: retail or hospitality to operations, admin to project coordination, and returning to work after time away.</p>
+      <div class="callout callout-red"><strong>Ground rule, said out loud at minute 2:</strong> AI will happily invent experience, numbers and skills you don't have. Anything on your resume has to be true and something you can talk about in an interview. Don't paste in other people's personal details.</div>
+      <h3 class="h3 mt16">Example: weak and framed requests</h3>
+      <div class="prompt"><span class="tag weak">Weak</span>Write my resume for an operations job.</div>
+      <div class="prompt"><span class="tag strong">Framed</span>I've been a retail shift lead for four years and I'm applying for an operations coordinator role. Below are my real duties and the job posting. Write four resume bullets for my shift-lead job that match the posting's language. Use only facts I gave you. Where a bullet would be stronger with a number I didn't give, write [add number?] instead of making one up.
+[duties: scheduled a team of 8; opened and closed the store; handled weekly inventory counts; trained new hires; resolved customer complaints]
+[posting excerpt from the packet]</div>
+      <h3 class="h3 mt16">Check exercise: the planted problems</h3>
+      <ul class="tight">
+        <li>"Managed a team of 40 associates" when the duties say 8 (<strong>fact</strong>).</li>
+        <li>"Reduced inventory costs by 23%", a number nobody gave it (<strong>fact</strong>, and the kind interviewers ask about).</li>
+        <li>"Advanced SQL and Tableau reporting" added to match the posting (<strong>fact</strong>; claiming skills you can't show is the fastest way to lose an offer).</li>
+      </ul>
+      <h3 class="h3 mt16">Packet tasks for "your own task"</h3>
+      <ul class="tight">
+        <li>Prepare for an interview: ask AI for five likely questions for the posting, then check its answers against what you've really done.</li>
+        <li>Make a work sample: turn a messy set of notes into a one-page step-by-step guide, the kind of thing a coordinator writes.</li>
+        <li>Write a short, honest explanation of a career gap or change.</li>
+      </ul>
+      <p class="note">Point people to free help that already exists in the area, such as WorkSource and public library job-help programs, in the follow-up email. CityUx is the next step after those, not a replacement.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="section" id="offer">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🤝</div>
+      <div><h2>7 · The 10-minute offer</h2><div class="section-sub">Honest, short, and easy to say no to</div></div>
+    </div>
+    <div class="section-body">
+      <p class="small">Draft script for the host, minutes 80–85. Adjust the bracketed parts for each audience.</p>
+      <div class="prompt script">Everything you did today is free, and the free learning path stays free. We're deciding now whether to build the next part: a coached cohort this spring, four live weeks with feedback on your own work[, and a $99 credential: a real task from your field, scored by a person, with credit toward a CityU program planned].
+
+We'll only build it if enough people want it. So we're asking for a $25 reservation. It counts toward the cohort price, you can get it back any time before the cohort starts, and if we don't run the cohort, you get it back automatically. [If you're out of work right now, check the box and reserve for free.] [If you'd like this for the teachers in your building, there's a separate box: bring a cohort to your school.]
+
+If you're not ready, joining the waitlist is free and still helps us. The link is in the chat.</div>
+      <p class="small mt16"><strong>Minutes 85–90: exit poll</strong>, the same three questions in every external workshop: How useful was today (1–5)? Would you pay $99 for a CityU credential that proves you can use AI at work (yes, maybe, no)? What's one task you'll try this week?</p>
+      <div class="callout callout-amber mt16"><strong>Don't say:</strong> that clock hours, credit or the credential are approved; that the cohort "is filling up"; or anything that pressures people. Gate 0 needs real interest, and pressure would inflate it.</div>
+      <p class="note">The links in the chat carry the workshop's channel tag, so reservations within 72 hours count as workshop conversions, as Gate 0 Section 4 sets out.</p>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="section" id="logistics">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🧰</div>
+      <div><h2>8 · People, tools and materials</h2><div class="section-sub">Three people per session, free tools, everything shared ahead</div></div>
+    </div>
+    <div class="section-body">
+      <div class="kv">
+        <div><span>Host</span><div>Teaches. STC faculty for all three; the educator session is co-led with the School of Education partner.</div></div>
+        <div><span>Producer</span><div>Runs polls, breakouts, chat links and the 3D scene; watches the chat for people who are stuck.</div></div>
+        <div><span>Note-taker</span><div>Logs questions, objections and quotes for the gate memo. No names in the shared notes.</div></div>
+        <div><span>Platform</span><div>CityU's video platform, with live captions on and the main room recorded; breakouts never recorded.</div></div>
+        <div><span>AI tools</span><div>Whatever free AI assistant people already have, or their district- or employer-approved tool. The host demos on one free tier. No one needs an account: the practice works on paper or in the chat.</div></div>
+        <div><span>Packet</span><div>A short PDF and web page: the weak requests, the AI drafts with planted problems, the four-point check, the answer key and the own-task prompts. Licensed CC BY 4.0. Sent the day before.</div></div>
+        <div><span>Accessibility</span><div>Slides and packet shared ahead in accessible formats; nothing depends on color alone; the 3D scene has a text description.</div></div>
+        <div><span>Follow-up</span><div>Within 24 hours: recording, packet, free-path link, the reservation and waitlist links, and the audience-specific links above.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="section" id="measure">
+    <div class="section-header">
+      <div class="section-icon icon-violet">📏</div>
+      <div><h2>9 · What each workshop measures</h2><div class="section-sub">Feeds Gate 0 Section 8 directly</div></div>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Workshop measures">
+        <table class="map">
+          <thead><tr><th>Measure</th><th>How</th><th>Why it matters</th></tr></thead>
+          <tbody>
+            <tr><td>Registrations and show rate</td><td>Platform report, split by channel tag and stranger vs. CityU list</td><td>Shows which channels bring people who actually turn up</td></tr>
+            <tr><td>Practice completion</td><td>Count of chat or poll responses in the Frame and Check exercises</td><td>Tells us whether the lesson works, not just whether people liked it</td></tr>
+            <tr><td>Exit poll</td><td>The three questions in Section 7</td><td>Usefulness, price signal and the tasks people care about for the X lens</td></tr>
+            <tr><td>Reservations within 72 hours</td><td>Reservation form, by channel tag</td><td>The main gate signal</td></tr>
+            <tr><td>"Bring a cohort" interest</td><td>Separate box in the educator offer</td><td>Leads for a district letter of intent</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="section" id="open">
+    <div class="section-header">
+      <div class="section-icon icon-amber">📝</div>
+      <div><h2>10 · Open items before Jan 13</h2><div class="section-sub">Small decisions, but each one blocks a session</div></div>
+    </div>
+    <div class="section-body">
+      <ul class="tight">
+        <li><strong>Hosts:</strong> name the STC host for each session and confirm the School of Education co-lead for Jan 20.</li>
+        <li><strong>Demo tool:</strong> pick one free AI assistant for the host's demos and run every example on it, so the planted-problem drafts are realistic.</li>
+        <li><strong>Packet:</strong> write the full policy paragraph, job posting excerpt and second weak requests; School of Education reviews the educator packet by Fri Jan 8.</li>
+        <li><strong>Educator price:</strong> settle the per-teacher cohort price ($99–$149) shown on Jan 20, as the Gate 0 price test requires.</li>
+        <li><strong>3D scene:</strong> working build by Fri Jan 8 for the pilot; if it isn't ready, run the sessions without it.</li>
+        <li><strong>Registration and reservation links:</strong> depend on Gate 0 Section 2 (Finance and list permissions).</li>
+      </ul>
+      <p class="note">Related: <a href="cityux-gate0-demand-test.html">Gate 0 demand test</a> · <a href="cityux-short-course-plan-critique.html">Plan B and its phases</a> · <a href="cityux-competitor-scan.html">Competitor scan</a> · <a href="cityux-target-market-quadrant.html">Target-market quadrant</a></p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
